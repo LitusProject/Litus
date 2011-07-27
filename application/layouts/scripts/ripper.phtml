@@ -1,0 +1,18 @@
+<?= $this->broker('doctype'); ?>
+<html>
+<head>
+	<?= $this->broker('headTitle')->direct('Litus Programmaboekripper', 'PREPEND'); ?>
+	<?= $this->broker('headLink'); ?>
+	<?= $this->broker('headMeta'); ?>
+	<?= $this->broker('headScript'); ?>
+	<?= $this->broker('headStyle'); ?>
+</head>
+<body>
+	<header>
+		<h1>Litus Programmaboekripper</h1>
+	</header>
+	<section id="content">
+		<?= $this->broker('layout')->direct()->content; ?>
+	</section>
+</body>
+</html>

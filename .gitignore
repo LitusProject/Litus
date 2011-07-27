@@ -1,0 +1,3 @@
+# We don't want to version the folders some IDE's create.
+.idea
+.project

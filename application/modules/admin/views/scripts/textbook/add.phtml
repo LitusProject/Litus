@@ -1,0 +1,103 @@
+<?php
+$this->broker('headMeta')       ->setCharset('utf-8');
+$this->broker('headTitle')      ->direct('Litus Admin', 'PREPEND')
+                                ->setSeparator('-');
+$this->broker('headScript')     ->appendFile($this->broker('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
+
+$this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+?>
+
+<?= $this->broker('doctype'); ?>
+
+<head>
+
+    <?= $this->broker('headMeta'); ?>
+    <?= $this->broker('headTitle'); ?>
+    <?= $this->broker('headScript'); ?>
+
+	<style type="text/css">
+		
+		* {
+            padding: 0;
+            margin: 1px;
+            border: 0;
+            font-family: tahoma, arial;
+            font-size: 11px;
+            color: #7f7c7c;
+        }
+		
+		.label {
+			padding-top: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+			margin-right: 7px;
+ 			width: 120px;
+ 			/* Leaving this out caused troubles in Chrome and Firefox */
+ 			height: 0px;
+ 			text-align: right;
+ 			float: left;
+ 		}
+ 		
+ 		.field {
+ 			padding-left: 3px;
+ 		}
+ 		
+ 		input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+ 		}
+ 		
+        input[type=text] {
+        	border: 1px solid #d7d4d4;
+            width: 160px;
+            height: 20px;
+           	background-color: #FFFFFF;
+        }
+        
+        input[type=checkbox] {
+        	margin-top: 15px;
+        	height: 10px;
+        	width: 10px;
+        	padding: 5px;
+        	background-color: #FFFFFF;
+        }
+        
+        input[type=submit] {
+        	height: 20px;
+        	width: 100px;
+        	background-color: #ffae00;
+			color: #0f0f0f;
+			padding: 5px;
+			padding-right: 20px;
+			float: right;
+        }
+        
+        ul.errors {
+        	margin-left: 127px;
+        }
+        
+        ul.errors li {
+        	color: #FF0000;
+        }
+		
+        #form {
+        	margin: 10px;
+        }
+        
+        .required:after {
+        	content:"*";
+        }
+		
+	</style>
+
+</head>
+
+<body>
+
+	<h1>
+	</h1>
+	<?= $this->form; ?>
+	
+</body>
+
+</html>

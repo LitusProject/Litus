@@ -1,0 +1,83 @@
+<?php
+$this->broker('headMeta')       ->setCharset('utf-8');
+$this->broker('headTitle')      ->direct('Litus Admin', 'PREPEND')
+                                ->setSeparator('-');
+$this->broker('headLink')       ->appendStylesheet($this->broker('baseurl')->direct('/_admin/css/style.css'));
+$this->broker('headScript')     ->appendFile($this->broker('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
+
+$this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')
+                                ->appendFile($this->broker('baseurl')->direct('/_admin/js/functions.js'));
+?>
+
+<?= $this->broker('doctype'); ?>
+
+<!--[if lt IE 7 ]> 	   <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    	   <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    	   <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    	   <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> 		 <!--<![endif]-->
+
+<head id="litus" data-template-set="html5-reset">
+
+    <?= $this->broker('headMeta'); ?>
+	<?= $this->broker('headTitle'); ?>
+	<?= $this->broker('headLink'); ?>
+    <?= $this->broker('headScript'); ?>
+
+</head>
+
+<body>
+
+<div id="layout">
+	<div id="content">
+		<header id="content_header">
+			<a href="#" title="Litus Manager"></a>
+            
+			<p><time datetime="<?= date('c', time()); ?>"><?= date('l, F j Y, H:i', time()); ?></time></p>
+			<p id="tag">Welcome, <?= $this->authenticatedUser; ?></p>
+		</header>
+
+		<nav id="content_nav">
+            <div class="topmenu">
+                <div class="title">Admin</div>
+
+				<ul>
+                	<li><a href="/admin">Dashboard</a></li>
+                	<li><a href="#">Settings</a></li>
+                	<li><a href="#">Users</a></li>
+                    <li><a href="/admin/acl">Groups</a></li>
+				</ul>
+            </div>
+
+            <div class="submenu">
+				<div class="title">Divisions</div>
+
+                <div class="subtitle"><p id="toggleCursusdienst"><b>Cursusdienst</b><br />Textbooks, Stock &amp; Financial</p></div>
+                <ul id="submenu_cursusdienst">
+					<li><a href ="/admin/textbook">Textbooks</a></li>
+					<li><a href ="/admin/syllabus">Syllabus</a></li>
+					<li>Stock</li>
+                    <li>Financieel</li>
+                </ul>
+				<div class="subtitle"><p id="toggleBedrijvenrelaties"><b>Bedrijvenrelaties</b><br />Companies &amp; Contracts</p></div>
+                <ul id="submenu_bedrijvenrelaties">
+					<li>Bedrijven</li>
+					<li>Contracten</li>
+                </ul>
+            </div>
+        </nav>
+
+		<div id="content_controller">
+            <?= $this->broker('layout')->direct()->content; ?>
+        </div>
+	</div>
+
+	<div id="footer_push"></div>
+</div>
+
+<footer>Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a></footer>
+
+<?= $this->broker('inlineScript'); ?>
+
+</body>
+</html>
