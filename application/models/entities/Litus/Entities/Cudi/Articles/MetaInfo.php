@@ -6,6 +6,8 @@ namespace Litus\Entities\Cudi\Articles;
  * @Entity(repositoryClass="Litus\Repositories\Cudi\Articles\MetaInfoRepository")
  * @Table(name="cudi.articles_metainfo")
  */
+use Litus\Entities\Cudi\Article;
+
 class MetaInfo
 {
 	/**
@@ -51,19 +53,19 @@ class MetaInfo
 	}
 	
 	/**
-	 * @return bigint
+	 * @return Article
 	 */
-	public function getArticleId()
+	public function getArticle()
 	{
 		return $this->article;
 	}
 	
 	/**
-	 * @param bigint $id The id of the article to link to this metainfo object.
+	 * @param Article $article The article to link to this metainfo object.
 	 */
-	public function setArticleId($id)
+	public function setArticle($article)
 	{
-		return $this->article;
+		$this->article = $article;
 	}
 	
 	/**

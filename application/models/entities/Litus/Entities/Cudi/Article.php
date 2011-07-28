@@ -2,6 +2,10 @@
 
 namespace Litus\Entities\Cudi;
 
+use Litus\Entities\Cudi\Articles\MetaInfo;
+
+use DateTime;
+
 /**
  * @Entity
  * @Table(name="cudi.articles")
@@ -43,12 +47,12 @@ abstract class Article
 	 */
 	public function __construct($title, $metaInfo)
 	{
-		if ($metaInfo->getArticleId() != null)
+		if ($metaInfo->getArticle() != null)
 			throw new InvalidArgumentException('');
 		
 		$this->title = $title;
-		$this->metaInfo = $metaInfo->getId();
-		$metaInfo->setArticleId($this->getId());
+		$this->metaInfo = $metaInfo;
+		$metaInfo->setArticle($this);
 		$this->timestamp = new DateTime();
 	}
 	
@@ -69,9 +73,9 @@ abstract class Article
 	}
 	
 	/**
-	 * @return bigint
+	 * @return MetaInfo
 	 */
-	public function getMetaInfoId()
+	public function getMetaInfo()
 	{
 		return $this->metaInfo;
 	}
