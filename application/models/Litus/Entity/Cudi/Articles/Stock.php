@@ -44,7 +44,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 
     /**
      * @param string $title The title of the article
-     * @param Litus\Entities\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param Litus\Entity\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      * @param bigint $purchase_price The purchase price of this article.
      * @param bigint $sellPrice The sell price of this article for non-members.
      * @param bigint $sellPriceMembers The sell price of this article for members.
