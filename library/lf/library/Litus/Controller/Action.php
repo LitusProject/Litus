@@ -84,7 +84,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         if (null === self::$_authentication) {
             self::$_authentication = new Authentication(
-                new DoctrineAdapter('\Litus\Entities\Users\Person', 'username'),
+                new DoctrineAdapter('\Litus\Entity\Users\Person', 'username'),
                 new SessionCookieService('litus')
             );
         }

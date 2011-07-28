@@ -2,7 +2,7 @@
 
 namespace Litus\Controller;
 
-use \Litus\Entities\Users\Person;
+use \Litus\Entity\Users\Person;
 
 interface AuthenticationAware
 {

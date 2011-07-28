@@ -2,6 +2,8 @@
 
 namespace Litus\Acl;
 
+use \Doctrine\ORM\QueryBuilder;
+
 use \Zend\Cache\Frontend\Core as CacheCore;
 use \Zend\Cache\Backend\File as CacheFile;
 use \Zend\Acl\Acl as ZendAcl;
@@ -58,8 +60,13 @@ class Acl
      */
     public function loadResources()
     {
+        $query = new QueryBuilder(Registry::get('EntityManager'));
+        $query->select('r')
+            ->from('Litus\Entity\Acl\Resource', 'r')
+            ->where('r.parent IS NULL');
+
         $this->_addResources(
-            Registry::get('EntityManager')->getRepository('Litus\Entities\Acl\Resource')->findByParent('NULL')
+            $query->getQuery()->useResultCache(true)->getResult()
         );
     }
 
@@ -89,7 +96,7 @@ class Acl
     public function loadRoles()
     {
         $this->_addRoles(
-            Registry::get('EntityManager')->getRepository('Litus\Entities\Acl\Role')->findAll()
+            Registry::get('EntityManager')->getRepository('Litus\Entity\Acl\Role')->findAll()
         );
     }
 

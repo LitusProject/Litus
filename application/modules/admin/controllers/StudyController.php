@@ -31,7 +31,7 @@ class StudyController extends \Litus\Controller\Action
     {
         $query = new QueryBuilder(Registry::get('EntityManager'));
         $query->select('r')
-                ->from('Litus\Entities\Syllabus\Study', 'r');
+                ->from('Litus\Entity\Syllabus\Study', 'r');
 
         $paginator = new Paginator(new ArrayAdapter($query->getQuery()->useResultCache(true)->getResult()));
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));

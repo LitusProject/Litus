@@ -2,7 +2,7 @@
 
 namespace Admin;
 
-// use \Admin\Form\Textbook\Add as AddForm;
+use \Admin\Form\Textbook\Add as AddForm;
 
 /*
  * Temporary use statements
@@ -46,7 +46,7 @@ class TextbookController extends \Litus\Controller\Action
     
     public function addAction()
     {
-    	$form = new Form;
+    	$form = new AddForm;
     	
     	/*
     	 * Temporary until forms are fixed

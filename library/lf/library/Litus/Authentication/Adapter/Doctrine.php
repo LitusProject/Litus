@@ -39,7 +39,7 @@ class Doctrine implements \Litus\Authentication\Adapter
     private $_authenticationResult = array();
 
     /**
-     * @var \Litus\Entities\Users\Person The object returned by our DQL query
+     * @var \Litus\Entity\Users\Person The object returned by our DQL query
      */
     private $_personObject = null;
 
@@ -166,7 +166,9 @@ class Doctrine implements \Litus\Authentication\Adapter
         try {
             $resultSet = $query->getQuery()->getResult();
         } catch (\Exception $e) {
-            throw new \Litus\Authentication\Adapter\Exception\QueryFailedException('The adapter failed to execute the query.', 0, $e);
+            throw new \Litus\Authentication\Adapter\Exception\QueryFailedException(
+                'The adapter failed to execute the query.', 0, $e
+            );
         }
 
         $this->_validateResultSet($resultSet);

@@ -51,30 +51,46 @@ class Doctrine extends \Zend\Application\Resource\AbstractResource
 
             require_once realpath($options['lib']['common']) . '/Doctrine/Common/ClassLoader.php';
 
-            $classLoader = new ClassLoader('Doctrine\Common', realpath($options['lib']['common']));
+            $classLoader = new ClassLoader(
+                'Doctrine\Common', realpath($options['lib']['common'])
+            );
             $classLoader->register();
 
-            $classLoader = new ClassLoader('Doctrine\DBAL', realpath($options['lib']['dbal']));
+            $classLoader = new ClassLoader(
+                'Doctrine\DBAL', realpath($options['lib']['dbal'])
+            );
             $classLoader->register();
 
-            $classLoader = new ClassLoader('Doctrine\ORM', realpath($options['lib']['orm']));
+            $classLoader = new ClassLoader(
+                'Doctrine\ORM', realpath($options['lib']['orm'])
+            );
             $classLoader->register();
 
             $classLoader = new ClassLoader('Symfony', realpath($options['lib']['symfony']));
             $classLoader->register();
 
-            $classLoader = new ClassLoader($options['config']['entityNamespace'], realpath($options['config']['entityDir']));
+            $classLoader = new ClassLoader(
+                $options['config']['entityNamespace'], realpath($options['config']['entityDir'])
+            );
             $classLoader->register();
 
-            $classLoader = new ClassLoader($options['config']['proxyNamespace'], realpath($options['config']['proxyDir']));
+            $classLoader = new ClassLoader(
+                $options['config']['proxyNamespace'], realpath($options['config']['proxyDir'])
+            );
             $classLoader->register();
 
-            $classLoader = new ClassLoader($options['config']['repositoryNamespace'], realpath($options['config']['repositoryDir']));
+            $classLoader = new ClassLoader(
+                $options['config']['repositoryNamespace'], realpath($options['config']['repositoryDir'])
+            );
             $classLoader->register();
 
             $config = new \Doctrine\ORM\Configuration();
 
-            $config->setProxyDir($options['config']['proxyDir']);
+            $config->setProxyDir(
+                $options['config']['proxyDir'] . DIRECTORY_SEPARATOR . str_replace(
+                    '\\', DIRECTORY_SEPARATOR, $options['config']['proxyNamespace']
+                )
+            );
             $config->setProxyNamespace($options['config']['proxyNamespace']);
             if (isset($options['config']['autoGenerateProxyClasses'])) {
                 $config->setAutoGenerateProxyClasses($options['config']['autoGenerateProxyClasses']);
