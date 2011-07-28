@@ -7,7 +7,7 @@ use \Litus\Util\AcademicYear;
 use \InvalidArgumentException;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Users\UniversityStatusRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Users\UniversityStatus")
  * @Table(name="users.university_statuses")
  */
 class UniversityStatus

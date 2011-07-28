@@ -4,7 +4,7 @@ namespace Litus\Entities\Users;
 use \InvalidArgumentException;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Users\CredentialRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Users\Credential")
  * @Table(name="users.credentials")
  */
 class Credential

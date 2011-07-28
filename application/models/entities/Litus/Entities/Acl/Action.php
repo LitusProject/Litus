@@ -3,21 +3,20 @@
 namespace Litus\Entities\Acl;
 
 /**
- * Class that represents an Action that can be executed on a certain {@link \Litus\Entities\Acl\Resource}
+ * Class that represents an Action that can be executed on a certain {@see \Litus\Entities\Acl\Resource}.
  *
  * Example, DELETE a forum post, COOK a contact form
  *
- * @Entity(repositoryClass="Litus\Repositories\Acl\ActionRepository")
- * @Table(name="acl.actions"),
+ * @Entity(repositoryClass="Litus\Repositories\Acl\Action")
+ * @Table(
+ *      name="acl.actions"),
  *      uniqueConstraints={@UniqueConstraint(name="action_unique", columns={"name", "resource"})}
  * )
  */
 class Action
 {
     /**
-     * The ID of this action
-     *
-     * @var int $id
+     * @var int The ID of this action
      *
      * @Id
      * @GeneratedValue
@@ -26,9 +25,7 @@ class Action
     private $id;
 
     /**
-     * The name of the resource
-     *
-     * @var Litus\Entities\Acl\Resource $resource
+     * @var \Litus\Entities\Acl\Resource The name of the resource
      *
      * @ManyToOne(targetEntity="Litus\Entities\Acl\Resource", cascade={"ALL"}, fetch="LAZY")
      * @JoinColumn(name="name", referencedColumnName="name")
@@ -36,9 +33,7 @@ class Action
     private $resource;
 
     /**
-     * The name of the action
-     *
-     * @var string $name
+     * @var string $name The name of the action
      *
      * @Column(type="string")
      */
@@ -46,7 +41,7 @@ class Action
 
     /**
      * @param string $name The name of the action
-     * @param Litus\Entities\Acl\Resource $resource The resource to which the action belongs
+     * @param \Litus\Entities\Acl\Resource $resource The resource to which the action belongs
      */
     public function __construct($name, Resource $resource)
     {
@@ -55,7 +50,7 @@ class Action
     }
 
     /**
-     * @return Litus\Entities\Acl\Resource
+     * @return \Litus\Entities\Acl\Resource
      */
     public function getResource()
     {

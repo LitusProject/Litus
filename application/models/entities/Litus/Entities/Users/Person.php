@@ -5,11 +5,17 @@ namespace Litus\Entities\Users;
 use \Litus\Entities\Users\Credential;
 
 /**
- * @Entity
- * @Table(name="users.people", uniqueConstraints={@UniqueConstraint(name="unique_username", columns={"username"})})
+ * @Entity(repositoryClass="Litus\Repositories\Users\Person")
+ * @Table(
+ *      name="users.people",
+ *      uniqueConstraints={@UniqueConstraint(name="unique_username", columns={"username"})}
+ * )
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({"company"="Litus\Entities\Users\People\Company", "academic"="Litus\Entities\Users\People\Academic"})
+ * @DiscriminatorMap({
+ *      "company"="Litus\Entities\Users\People\Company",
+ *      "academic"="Litus\Entities\Users\People\Academic"}
+ * )
  */
 abstract class Person
 {

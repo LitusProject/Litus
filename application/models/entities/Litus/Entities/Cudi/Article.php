@@ -3,11 +3,15 @@
 namespace Litus\Entities\Cudi;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Article")
  * @Table(name="cudi.articles")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({"stub"="Litus\Entities\Cudi\Articles\Stub", "external"="Litus\Entities\Cudi\Articles\StockArticles\External", "internal"="Litus\Entities\Cudi\Articles\StockArticles\Internal"})
+ * @DiscriminatorMap({
+ *      "stub"="Litus\Entities\Cudi\Articles\Stub",
+ *      "external"="Litus\Entities\Cudi\Articles\StockArticles\External",
+ *      "internal"="Litus\Entities\Cudi\Articles\StockArticles\Internal"}
+ * )
  */
 abstract class Article
 {

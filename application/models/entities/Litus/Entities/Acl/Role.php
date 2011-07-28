@@ -2,20 +2,21 @@
 
 namespace Litus\Entities\Acl;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
- * Represents a group of Users and is capable of determining which rights those users have
+ * Represents a group of users and is capable of determining which rights those users have.
  *
- * @Entity(repositoryClass="Litus\Repositories\Acl\RoleRepository")
- * @Table(name="acl.roles",
+ * @Entity(repositoryClass="Litus\Repositories\Acl\Role")
+ * @Table(
+ *      name="acl.roles",
  *      uniqueConstraints={@UniqueConstraint(name="role_unique_name", columns={"name"})}
  * )
  */
 class Role
 {
     /**
-     * The name of the Role
-     *
-     * @var string $name
+     * @var string $name The name of the Role
      *
      * @Id
      * @Column(type="string")
@@ -28,7 +29,8 @@ class Role
      * @var Litus\Entities\Acl\Role $parents
      *
      * @ManyToMany(targetEntity="Litus\Entities\Acl\Role", cascade={"ALL"}, fetch="LAZY")
-     * @JoinTable(name="acl.roles_inheritance",
+     * @JoinTable(
+     *      name="acl.roles_inheritance",
      *      joinColumns={@JoinColumn(name="parent", referencedColumnName="name")},
      *      inverseJoinColumns={@JoinColumn(name="child", referencedColumnName="name")}
      * )
@@ -36,12 +38,11 @@ class Role
     private $parents;
 
     /**
-     * The actions that this role can execute
-     *
-     * @var Role $actions
+     * @var \Litus\Entities\Acl\Role $actions The actions that this role can execute
      *
      * @ManyToMany(targetEntity="Litus\Entities\Acl\Action", cascade={"ALL"}, fetch="LAZY")
-     * @JoinTable(name="acl.roles_actions",
+     * @JoinTable(
+     *      name="acl.roles_actions",
      *      joinColumns={@JoinColumn(name="role", referencedColumnName="name")},
      *      inverseJoinColumns={@JoinColumn(name="action", referencedColumnName="id")}
      * )
@@ -54,8 +55,8 @@ class Role
     public function __construct($name)
     {
         $this->name = $name;
-        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->actions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     /**
@@ -67,7 +68,7 @@ class Role
     }
 
     /**
-     * @return Doctrine\Common\Collections\ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getParents()
     {
@@ -75,7 +76,7 @@ class Role
     }
 
     /**
-     * @return Doctrine\Common\Collections\ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getActions()
     {
@@ -85,7 +86,7 @@ class Role
     /**
      * Add a new action to the allow list of this Role
      *
-     * @param Litus\Entities\Acl\Action $action
+     * @param \Litus\Entities\Acl\Action $action
      * @return void
      */
     public function allow(Action $action)

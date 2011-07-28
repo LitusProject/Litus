@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\ArticleSubjectMapRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\ArticleSubjectMap")
  * @Table(name="cudi.article_subject_map")
  */
 class ArticleSubjectMap
