@@ -2,20 +2,14 @@
 
 namespace Litus\Form\Decorator;
 
-use Zend\Form\Decorator\Errors;
-
-use Zend\Form\Decorator\ViewHelper;
-
-use Zend\Form\Decorator\Label;
-
-use Zend\Form\Decorator\AbstractDecorator;
+use \Zend\Form\Decorator\Errors;
+use \Zend\Form\Decorator\ViewHelper;
 
 /**
 * This decorator combines all decorators needed to decorate a field with a label.
 */
-class FieldDecorator extends AbstractDecorator
+class FieldDecorator extends \Zend\Form\Decorator\AbstractDecorator
 {
-    
     public function render($content)
     {	
     	$viewHelper = new ViewHelper();
@@ -28,7 +22,7 @@ class FieldDecorator extends AbstractDecorator
     	
     	$error = new Errors();
     	$error->setElement($this->getElement());
-    	$error->setOption('placement', 'prepend');
+    	$error->setOption('placement', 'append');
     	$content = $error->render($content);
     	
     	return $content;

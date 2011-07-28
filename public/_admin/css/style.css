@@ -11,9 +11,10 @@ html, body {height: 100%;}
 
 ul {list-style: none;}
 
-input, select {height: 20px; background: url(../img/i.png) repeat-x; border: 1px solid #d7d4d4; color: #7f7c7c;}
+input, select {height: 20px; background: #fff url(../img/i.png) repeat-x; border: 1px solid #d7d4d4; color: #7f7c7c;}
 input {padding-left: 3px;}
-input[type=submit] {padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
+input[type=submit] {margin-top: 7px; padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
+select[multiple=multiple] {height: 64px;}
 
 .dashboard {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 0;}
 .groups {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -16px;}
@@ -65,11 +66,14 @@ body {background: #fff url(../img/bg.png) 50% 0 repeat-x; font-family: Tahoma, A
                 #controller_nav li:last-child a {padding-right: 0;}
                 #controller_nav li a:hover {color: #000;}
 
-    /**
-    dl .zend_form {clear: both; padding-top: 10px;}
-        dt {float: left; width: 100px; text-align: right;}
-        dd {float: right; width: 335px; text-align: left;}
-    **/
+        .form {padding: 0;}
+            .form .row {clear: both; padding-top: 10px; width: 620px;}
+                .form .row .label {float: left; width: 80px; margin-top: 2px; height: 0px; text-align: right;}
+                .form .row .field {float: right; width: 530px; text-align: left;}
+
+            .form .errors {clear: both; margin-left: 100px; padding-top: 2px;}
+                .form .errors li {color: #FF6633;}
+            .form .required:after {content:"*";}
 
 #footer_push {height: 40px; display: block; clear: both;}
 

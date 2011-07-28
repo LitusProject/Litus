@@ -2,12 +2,10 @@
 
 namespace Admin;
 
-use \Admin\Application\Form\Acl\Add as AddForm;
+use \Admin\Form\Acl\Add as AddForm;
 
-use \Doctrine\ORM\QueryBuilder;
-
-use \Litus\Entities\Acl\Action as AclAction;
-use \Litus\Entities\Acl\Role;
+use \Litus\Entity\Acl\Action as AclAction;
+use \Litus\Entity\Acl\Role;
 
 use \Zend\Paginator\Paginator;
 use \Zend\Paginator\Adapter\ArrayAdapter;
@@ -27,29 +25,37 @@ class AclController extends \Litus\Controller\Action
 
     public function addAction()
     {
-        $roles = $this->getEntityManager()->getRepository('Litus\Entities\Acl\Role')->findAll();
+        $roles = $this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll();
         $parentOptions = array();
-        foreach($roles as $role) {
+        foreach ($roles as $role) {
             $parentOptions[$role->getName()] = $role->getName();
         }
-        $form = new AddForm(array_merge(array('null' => 'No Parent'), $parentOptions));
+        $form = new AddForm($parentOptions);
         $this->view->form = $form;
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if($form->isValid($formData)) {
-                $parent = 'null' != $formData['parent'] ? $this->getEntityManager()->getRepository('Litus\Entities\Acl\Role')->findOneByName($formData['parent']) : null;
-                $role = new Role($formData['name'], $parent);
-                
-                $this->getEntityManager()->persist($role);
+            if ($form->isValid($formData)) {
+                $parents = array();
+                if (isset($formData['parents'])) {
+                    foreach ($formData['parents'] as $parent) {
+                        $parents[] = $this->getEntityManager()
+                                ->getRepository('Litus\Entity\Acl\Role')
+                                ->findOneByName($parent);
+                    }
+                }
+
+                $this->getEntityManager()->persist(
+                    new Role($formData['name'], $parents)
+                );
             }
         }
     }
 
     public function manageAction()
     {
-        $paginator = new Paginator(new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entities\Acl\Role')->findAll()));
+        $paginator = new Paginator(new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll()));
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
     }
