@@ -2,12 +2,12 @@
 
 namespace Litus\Entity\Cudi\Articles;
 
+use Litus\Entity\Cudi\Article;
+
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\MetaInfo")
  * @Table(name="cudi.articles_metainfo")
  */
-use Litus\Entities\Cudi\Article;
-
 class MetaInfo
 {
 	/**
