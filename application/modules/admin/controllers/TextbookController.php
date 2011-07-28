@@ -8,6 +8,10 @@ namespace Admin;
  * Temporary use statements
  */
 
+use Litus\Entities\Cudi\Articles\MetaInfo;
+
+use Litus\Entities\Cudi\Articles\StockArticles\External;
+
 use Zend\Form\Element;
 
 use Zend\Form\Decorator\HtmlTag;
@@ -102,11 +106,12 @@ class TextbookController extends \Litus\Controller\Action
     		->addValidator(new PriceValidator());
     	$form->addElement($sellpricemember);
     	
-    	$supplier = new Text('supplier');
-    	$supplier->setLabel('Supplier')
-    		->setRequired()
-    		->setDecorators(array(new FieldDecorator()));
-    	$form->addElement($supplier);
+    	// TODO: readd when db is ready for it
+//     	$supplier = new Text('supplier');
+//     	$supplier->setLabel('Supplier')
+//     		->setRequired()
+//     		->setDecorators(array(new FieldDecorator()));
+//     	$form->addElement($supplier);
     	
     	$bookable = new Checkbox('bookable');
     	$bookable->setLabel('Bookable')
@@ -218,9 +223,30 @@ class TextbookController extends \Litus\Controller\Action
     		
     		if($form->isValid($formData)) {
     			
-    			// Add the newly inserted textbook to the database.
-    			echo 'VALIDATED! ';
-    			var_dump($formData);
+    			if (!$formData['internal']) {
+    				
+    				$authors = $formData['author'];
+    				$publishers = $formData['publisher'];
+    				$yearPublished = $formData['year_published'];
+    				
+    				$metaInfo = new MetaInfo($authors, $publishers, $yearPublished);
+    				
+    				$title = $formData['title'];
+    				$purchase_price = $formData['purchaseprice'];
+    				$sellPrice = $formData['sellpricenomember'];
+    				$sellPriceMembers = $formData['sellpricemember'];
+    				$barcode = 0; // TODO barcode
+    				$bookable = $formData['bookable'];
+    				$unbookable = $formData['unbookable'];
+    				
+    				$article = new External($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable);
+    				
+    				
+    			} else {
+    				// Add the newly inserted textbook to the database.
+    				echo 'VALIDATED! ';
+    				var_dump($formData);
+    			}
     			
     			
     		}
