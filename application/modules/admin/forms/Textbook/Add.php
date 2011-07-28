@@ -2,6 +2,8 @@
 
 namespace Admin\Form\Textbook;
 
+use Zend\Form\SubForm;
+
 use Litus\Validator\PriceValidator;
 
 use Litus\Form\Decorator\FieldDecorator;
@@ -14,6 +16,14 @@ use Zend\Form\Element\Checkbox;
 
 class Add extends \Litus\Form\Form
 {
+	
+	/**
+	 * 
+	 * This variable contains the subform for internal articles.
+	 * @var SubForm
+	 */
+	private $internal_form;
+	
     public function __construct($options = null)
     {
         parent::__construct($options);
@@ -95,8 +105,8 @@ class Add extends \Litus\Form\Form
     	// TODO: internal articles
 
     	// Create the subform for internal articles
-    	$internal_form = new AddInternal();
-    	$this->addSubForm($internal_form, 'internalform');
+    	$this->internal_form = new AddInternal();
+    	$this->addSubForm($this->internal_form, 'internalform');
 
     	// Create the button    	 
     	$submit = new Submit('submit');
@@ -106,5 +116,14 @@ class Add extends \Litus\Form\Form
     	));
     	$this->addElement($submit);
 
+    }
+    
+    /**
+     * 
+     * This method returns the subform for internal articles.
+     * @return SubForm
+     */
+    public function getInternalForm() {
+    	return $this->internal_form;
     }
 }

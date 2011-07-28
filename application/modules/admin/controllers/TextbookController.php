@@ -2,41 +2,12 @@
 
 namespace Admin;
 
-// use \Admin\Form\Textbook\Add as AddForm;
-
-/*
- * Temporary use statements
- */
-
 use Admin\Form\Textbook\Add;
-
 use Admin\Form\Textbook\AddInternal;
 
-use Litus\Entities\Cudi\Articles\StockArticles\Internal;
-
-use Litus\Entities\Cudi\Articles\MetaInfo;
-
-use Litus\Entities\Cudi\Articles\StockArticles\External;
-
-use Zend\Form\Element;
-
-use Zend\Form\Decorator\HtmlTag;
-use Zend\Form\Decorator\Errors;
-
-use Litus\Validator\PriceValidator;
-
-use Zend\Validator\Regex;
-use Zend\Validator\Int;
-
-use Litus\Form\Decorator\DivSpanWrapper;
-use Litus\Form\Decorator\FieldDecorator;
-
-use Zend\Form\Form;
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
-use Zend\Form\SubForm;
+use Litus\Entity\Cudi\Articles\StockArticles\Internal;
+use Litus\Entity\Cudi\Articles\MetaInfo;
+use Litus\Entity\Cudi\Articles\StockArticles\External;
 
 /*
  * End of temporary
@@ -63,6 +34,7 @@ class TextbookController extends \Litus\Controller\Action
     public function addAction()
     {
     	$form = new Add();
+    	$internal_form = $form->getInternalForm();
 
     	$this->view->form = $form;
     	
