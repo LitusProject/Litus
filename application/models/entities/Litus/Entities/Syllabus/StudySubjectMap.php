@@ -3,7 +3,7 @@
 namespace Litus\Entities\Syllabus;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Syllabus\StudySubjectMapRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Syllabus\StudySubjectMap")
  * @Table(name="syllabus.study_subject_map")
  */
 class StudySubjectMap

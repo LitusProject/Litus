@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\Sales\SaleItemRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Sales\SaleItem")
  * @Table(name="cudi.sales_saleitem")
  */
 class SaleItem

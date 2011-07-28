@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi\Articles;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\Articles\MetaInfoRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Articles\MetaInfo")
  * @Table(name="cudi.articles_metainfo")
  */
 class MetaInfo

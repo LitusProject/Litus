@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\FileRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\File")
  * @Table(name="cudi.file")
  */
 class File

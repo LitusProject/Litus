@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\InventoryMapRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\InventoryMap")
  * @Table(name="cudi.inventory_map")
  */
 class InventoryMap

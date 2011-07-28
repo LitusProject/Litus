@@ -89,14 +89,35 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
         }
 		
 	</style>
+	
+	<script type="text/javascript">
+	<!--
+		function toggle_visibility() {
+			var e = document.getElementById('internal_form');
+	      	if(document.getElementById('internal').checked) {
+				e.style.display = 'block';
+	      	} else {
+	          	e.style.display = 'none';
+	      	}
+	    }
+	//-->
+	</script>
 
 </head>
 
 <body>
 
 	<h1>
+		Add a new textbook
 	</h1>
 	<?= $this->form; ?>
+	
+	<script type="text/javascript">
+	<!--
+		// Run the script on pageload to set the visibility correctly
+		toggle_visibility();
+	//-->
+	</script>
 	
 </body>
 

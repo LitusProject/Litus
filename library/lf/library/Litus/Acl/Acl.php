@@ -2,7 +2,6 @@
 
 namespace Litus\Acl;
 
-use \Doctrine\ORM\QueryBuilder;
 use \Zend\Cache\Frontend\Core as CacheCore;
 use \Zend\Cache\Backend\File as CacheFile;
 use \Zend\Acl\Acl as ZendAcl;
@@ -10,20 +9,32 @@ use \Zend\Registry;
 
 class Acl
 {
-    private $_acl;
+    /**
+     * @var \Zend\Acl\Acl The ACL object
+     */
+    private $_acl = null;
 
     /**
      * Initializes a new ACL object.
      */
     public function __construct()
     {
-        $cache = new CacheCore(array('lifetime' => 86400, 'automatic_serialization' => true));
-        $cache->setBackend(new CacheFile(array('cache_dir' => '../cache/')));
+        $cache = new CacheCore(
+            array(
+                 'lifetime' => 86400,
+                 'automatic_serialization' => true
+            )
+        );
+        $cache->setBackend(
+            new CacheFile(array('cache_dir' => '../cache/'))
+        );
 
         if (!$cache->test('acl')) {
             $this->_acl = new ZendAcl();
+
             $this->loadResources();
             $this->loadRoles();
+
             $cache->save($this->_acl, 'acl');
         } else {
             $this->_acl = $cache->load('acl');
@@ -41,62 +52,72 @@ class Acl
     }
 
     /**
-     * Load resources from the database, using a DQL query.
+     * Load resources from the database.
+     *
+     * @return void
      */
-    private function loadResources()
+    public function loadResources()
     {
-        $query = new QueryBuilder(Registry::get('EntityManager'));
-        $query->select('r')
-                ->from('Litus\Entities\Acl\Resource', 'r')
-                ->where('r.parent is NULL');
-
-        $this->addResources($query->getQuery()->useResultCache(true)->getResult());
+        $this->_addResources(
+            Registry::get('EntityManager')->getRepository('Litus\Entities\Acl\Resource')->findByParent('NULL')
+        );
     }
 
     /**
-     * Add the resources loaded in loadResources to prime instance.
+     * Adding all resources retrieved from the database as well as their children.
      *
-     * @param mixed $resources The resources that should be added
+     * @param array $resources The resources that should be added
      * @return void
      */
-    private function addResources($resources)
+    private function _addResources(array $resources)
     {
         foreach ($resources as $resource) {
-            $this->_acl->addResource($resource->getName(), $resource->getParent() == null ? null : $resource->getParent()->getName());
-            $this->addResources($resource->getChildren());
+            $this->_acl->addResource(
+                $resource->getName(),
+                null === $resource->getParent() ? null : $resource->getParent()->getName()
+            );
+            
+            $this->_addResources($resource->getChildren());
         }
     }
 
     /**
-     * Load roles from the database, using a DQL query.
+     * Load roles from the database.
      *
      * @return void
      */
-    private function loadRoles()
+    public function loadRoles()
     {
-        $query = new QueryBuilder(Registry::get('EntityManager'));
-        $query->select('r')
-                ->from('Litus\Entities\Acl\Role', 'r')
-                ->where('r.parent is NULL');
-
-        $this->addRoles($query->getQuery()->useResultCache(true)->getResult());
+        $this->_addRoles(
+            Registry::get('EntityManager')->getRepository('Litus\Entities\Acl\Role')->findAll()
+        );
     }
 
     /**
-     * Add the roles loaded in loadRoles to the prime instance, along with their actions. This method also checks
-     * whether or not the given roles have children and adds them if that's the case.
+     * Adding all roles retrieved from the database.
      *
-     * @param mixed $roles The roles that should be added
+     * @param array $roles The roles that should be added
      * @return void
      */
-    private function addRoles($roles)
+    private function _addRoles(array $roles)
     {
         foreach ($roles as $role) {
-            $this->_acl->addRole($role->getName(), $role->getParent() == null ? null : $role->getParent()->getName());
-            foreach ($role->getActions() as $action) {
-                $this->_acl->allow($role->getName(), $action->getResource()->getName(), $action->getName());
+            $parents = array();
+            foreach($role->getParents() as $parentRole) {
+                $parents[] = $parentRole->getName();
             }
-            $this->addRoles($role->getChildren());
+            
+            $this->_acl->addRole(
+                $role->getName(),
+                $role->getParents()->isEmpty() ? null : $parents
+            );
+
+            foreach ($role->getActions() as $action) {
+                $this->_acl->allow(
+                    $role->getName(),
+                    $action->getResource()->getName(),
+                    $action->getName());
+            }
         }
     }
 }

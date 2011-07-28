@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi\Stock;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\Stock\StockItemRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Stock\StockItem")
  * @Table(name="cudi.stock_stockitem")
  */
 class StockItem

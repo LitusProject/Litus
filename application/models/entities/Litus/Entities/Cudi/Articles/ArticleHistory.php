@@ -3,7 +3,7 @@
 namespace Litus\Entities\Cudi\Articles;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\Articles\ArticleHistoryRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Articles\ArticleHistory")
  * @Table(name="cudi.articles_articlehistory")
  */
 class ArticleHistory

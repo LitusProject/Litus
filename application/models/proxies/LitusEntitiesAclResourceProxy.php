@@ -20,6 +20,14 @@ class LitusEntitiesAclResourceProxy extends \Litus\Entities\Acl\Resource impleme
     {
         if (!$this->__isInitialized__ && $this->_entityPersister) {
             $this->__isInitialized__ = true;
+
+            if (method_exists($this, "__wakeup")) {
+                // call this after __isInitialized__to avoid infinite recursion
+                // but before loading to emulate what ClassMetadata::newInstance()
+                // provides.
+                $this->__wakeup();
+            }
+
             if ($this->_entityPersister->load($this->_identifier, $this) === null) {
                 throw new \Doctrine\ORM\EntityNotFoundException();
             }
@@ -28,28 +36,22 @@ class LitusEntitiesAclResourceProxy extends \Litus\Entities\Acl\Resource impleme
     }
     
     
-    public function getParent()
-    {
-        $this->__load();
-        return parent::getParent();
-    }
-
     public function getName()
     {
         $this->__load();
         return parent::getName();
     }
 
-    public function getChildren()
+    public function getParent()
     {
         $this->__load();
-        return parent::getChildren();
+        return parent::getParent();
     }
 
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'parent', 'name', 'children');
+        return array('__isInitialized__', 'name', 'parent');
     }
 
     public function __clone()

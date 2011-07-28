@@ -4,19 +4,18 @@ namespace Litus\Entities\Acl;
 
 /**
  * Class that represents a resource that can get accessed and/or manipulated, for example, a forum post, or a contact
- * form
+ * form.
  *
- * @Entity(repositoryClass="Litus\Repositories\Acl\ResourceRepository")
- * @Table(name="acl.resources",
+ * @Entity(repositoryClass="Litus\Repositories\Acl\Resource")
+ * @Table(
+ *      name="acl.resources",
  *      uniqueConstraints={@UniqueConstraint(name="resource_unique_name", columns={"name"})}
  * )
  */
 class Resource
 {
     /**
-     * The name of this resource
-     *
-     * @var string $name
+     * @var string $name The name of this resource
      *
      * @Id
      * @Column(type="string")
@@ -24,17 +23,16 @@ class Resource
     private $name;
 
     /**
-     * The parent of this resource
+     * @var \Litus\Entities\Acl\Resource The parent of this resource
      *
-     * @var Litus\Entities\Acl\Resource $parent
-     *
-     * @OneToMany(targetEntity="Litus\Entities\Acl\Resource", cascade={"ALL"}, fetch="LAZY", mappedBy="name")
+     * @OneToOne(targetEntity="Litus\Entities\Acl\Resource", cascade={"ALL"}, fetch="LAZY")
+     * @JoinColumn(name="parent", referencedColumnName="name")
      */
     private $parent;
 
     /**
      * @param string $name The name of the resource
-     * @param Litus\Entities\Acl\Resource $parent The parent of the resource, or null if there is no parent
+     * @param \Litus\Entities\Acl\Resource $parent The parent of the resource, or null if there is no parent
      */
     public function __construct($name, Resource $parent = null)
     {
@@ -51,7 +49,7 @@ class Resource
     }
 
     /**
-     * @return Litus\Entities\Acl\Resource
+     * @return \Litus\Entities\Acl\Resource
      */
     public function getParent()
     {

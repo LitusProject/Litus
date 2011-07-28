@@ -6,7 +6,7 @@ use Litus\Entities\Cudi\Sales\Booking;
 use \InvalidArgumentException;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Cudi\Sales\BookingStatusRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Cudi\Sales\BookingStatus")
  * @Table(name="cudi.sales_bookingstatus")
  */
 class BookingStatus

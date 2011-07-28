@@ -3,7 +3,7 @@
 namespace Litus\Entities\Users\People;
 
 /**
- * @Entity(repositoryClass="Litus\Repositories\Users\People\CompanyRepository")
+ * @Entity(repositoryClass="Litus\Repositories\Users\People\Company")
  * @Table(name="users.people_companies")
  */
 class Company extends \Litus\Entities\Users\Person
