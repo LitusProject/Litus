@@ -2,71 +2,76 @@
 
 namespace Litus\Entity\Br\Contracts;
 
+use \Zend\Pdf\Pdf;
+use \Zend\Pdf\Page;
+
 use \Doctrine\Common\Collections\ArrayCollection;
 
-use \Litus\Entity\Users\People\Company;
 use \Litus\Entity\Users\Person;
+use \Litus\Entity\Users\People\Company;
 
-use \Zend\Pdf\Page;
-use \Zend\Pdf\Pdf;
+use \InvalidArgumentException;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Contract")
+ *
+ * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractRepository")
  * @Table(name="br.contract")
  */
 class Contract {
 
     /**
-     * @var int
+     * @var int A generated ID.
      *
      * @Id
-     * @Column(type="integer")
+     * @Column(type="bigint")
      * @GeneratedValue
      */
     private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var array The sections this contract contains.
      *
      * @OneToMany(targetEntity="Litus\Entity\Br\Contracts\ContractComposition", mappedBy="contract")
      */
     private $sections;
 
     /**
-     * @var \DateTime
+     * @var \DateTime The date and time when this contract was written.
      *
      * @Column(type="datetime")
      */
     private $date;
 
     /**
+     * @var Person The author of this contract.
+     *
      * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="LAZY")
      * @JoinColumn(name="author", referencedColumnName="id", nullable="false")
-     *
-     * @var Person
      */
     private $author;
 
     /**
+     * @var Company The company for which this contract is meant.
+     *
      * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company", fetch="LAZY")
      * @JoinColumn(name="company", referencedColumnName="id", nullable="false")
-     *
-     * @var Company
      */
     private $company;
 
     public function __construct()
     {
-        $this->sections = new ArrayCollection();
         $this->parts = new ArrayCollection();
+        setDate();
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Returns all the Parts of this contract.
+     *
+     * @return array
      */
     public function getParts()
     {
-        return $this->parts;
+        return $this->parts->toArray();
     }
 
     /**
@@ -90,34 +95,49 @@ class Contract {
     }
 
     /**
-     * @throws \Exception
+     * @throws InvalidArgumentException
      * @param \Litus\Entity\Users\Person $author
      * @return void
      */
     public function setAuthor(Person $author)
     {
         if($author === null)
-            throw new \InvalidArgumentException('Author cannot be null');
+            throw new InvalidArgumentException('Author cannot be null.');
         $this->author = $author;
     }
 
+    /**
+     * @return Company
+     */
     public function getCompany()
     {
         return $this->company;
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     * @param \Litus\Entity\Users\People\Company $company
+     * @return void
+     */
     public function setCompany(Company $company)
     {
         if($company === null)
-            throw new \InvalidArgumentException('Company cannot be null');
+            throw new InvalidArgumentException('Company cannot be null.');
         $this->company = $company;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getDate()
     {
         return $this->date;
     }
 
+    /**
+     * @param \DateTime|null $date if $date is null, the current date and time are used.
+     * @return void
+     */
     public function setDate(\DateTime $date = null)
     {
         if($date === null)
