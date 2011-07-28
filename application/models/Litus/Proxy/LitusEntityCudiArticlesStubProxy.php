@@ -36,6 +36,30 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getTitle()
+    {
+        $this->__load();
+        return parent::getTitle();
+    }
+
+    public function getMetaInfo()
+    {
+        $this->__load();
+        return parent::getMetaInfo();
+    }
+
+    public function getTimestamp()
+    {
+        $this->__load();
+        return parent::getTimestamp();
+    }
+
 
     public function __sleep()
     {

@@ -46,7 +46,7 @@ abstract class Article
      * @throws \InvalidArgumentException If the given meta info object already has an article linked to it
      *
      * @param string $title The title of the article
-     * @param Litus\Entities\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param Litus\Entity\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      */
     public function __construct($title, $metaInfo)
     {
