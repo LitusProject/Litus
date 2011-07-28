@@ -2,11 +2,17 @@
 
 namespace Admin;
 
-use \Admin\Form\Textbook\Add as AddForm;
+// use \Admin\Form\Textbook\Add as AddForm;
 
 /*
  * Temporary use statements
  */
+
+use Litus\Entities\Cudi\Articles\StockArticles\Internal;
+
+use Litus\Entities\Cudi\Articles\MetaInfo;
+
+use Litus\Entities\Cudi\Articles\StockArticles\External;
 
 use Zend\Form\Element;
 
@@ -32,6 +38,12 @@ use Zend\Form\SubForm;
  * End of temporary
  */
 
+/**
+ * 
+ * This class controlls management and adding of textbooks.
+ * @author Niels Avonds
+ *
+ */
 class TextbookController extends \Litus\Controller\Action
 {
     public function init()
@@ -46,7 +58,7 @@ class TextbookController extends \Litus\Controller\Action
     
     public function addAction()
     {
-    	$form = new AddForm;
+    	$form = new Form;
     	
     	/*
     	 * Temporary until forms are fixed
@@ -102,11 +114,12 @@ class TextbookController extends \Litus\Controller\Action
     		->addValidator(new PriceValidator());
     	$form->addElement($sellpricemember);
     	
-    	$supplier = new Text('supplier');
-    	$supplier->setLabel('Supplier')
-    		->setRequired()
-    		->setDecorators(array(new FieldDecorator()));
-    	$form->addElement($supplier);
+    	// TODO: supplier when db is ready for it
+//     	$supplier = new Text('supplier');
+//     	$supplier->setLabel('Supplier')
+//     		->setRequired()
+//     		->setDecorators(array(new FieldDecorator()));
+//     	$form->addElement($supplier);
     	
     	$bookable = new Checkbox('bookable');
     	$bookable->setLabel('Bookable')
@@ -142,20 +155,23 @@ class TextbookController extends \Litus\Controller\Action
     	$nrbwpages = new Text('nrbwpages');
     	$nrbwpages->setLabel('Number of black and white pages')
     		->setRequired()
+    		->addValidator('int')
     		->setDecorators(array(new FieldDecorator()));
     	$internal_form->addElement($nrbwpages);
 
     	$nrcolorpages = new Text('nrcolorpages');
     	$nrcolorpages->setLabel('Number of colored pages')
     		->setRequired()
+    		->addValidator('int')
     		->setDecorators(array(new FieldDecorator()));
     	$internal_form->addElement($nrcolorpages);
     	
-    	$binding = new Text('binding');
-    	$binding->setLabel('Binding')
-    		->setRequired()
-    		->setDecorators(array(new FieldDecorator()));
-    	$internal_form->addElement($binding);
+    	// TODO: binding when db is ready for it
+//     	$binding = new Text('binding');
+//     	$binding->setLabel('Binding')
+//     		->setRequired()
+//     		->setDecorators(array(new FieldDecorator()));
+//     	$internal_form->addElement($binding);
     	
     	$official = new Checkbox('official');
     	$official->setLabel('Official')
@@ -167,11 +183,12 @@ class TextbookController extends \Litus\Controller\Action
     		->setDecorators(array(new FieldDecorator()));
     	$internal_form->addElement($rectoverso);
     	
-    	$frontcolor = new Text('frontcolor');
-    	$frontcolor->setLabel('Front page color')
-    		->setRequired()
-    		->setDecorators(array(new FieldDecorator()));
-    	$internal_form->addElement($frontcolor);
+    	// TODO: frontcolor when db is ready for it
+//     	$frontcolor = new Text('frontcolor');
+//     	$frontcolor->setLabel('Front page color')
+//     		->setRequired()
+//     		->setDecorators(array(new FieldDecorator()));
+//     	$internal_form->addElement($frontcolor);
 		
     	$form->addSubForm($internal_form, 'internalform');
     	
@@ -214,20 +231,51 @@ class TextbookController extends \Litus\Controller\Action
     			}
     		}
     		
-    		
-    		
     		if($form->isValid($formData)) {
     			
-    			// Add the newly inserted textbook to the database.
-    			echo 'VALIDATED! ';
-    			var_dump($formData);
+    			// Add the new article to the database
+    			
+    			// Insert common information (between internal and external) in variables
+    			
+    			$authors = $formData['author'];
+				$publishers = $formData['publisher'];
+    			$yearPublished = $formData['year_published'];
+    			    				
+    			$metaInfo = new MetaInfo($authors, $publishers, $yearPublished);
+    			
+    			$title = $formData['title'];
+    			$purchase_price = $formData['purchaseprice'];
+    			$sellPrice = $formData['sellpricenomember'];
+    			$sellPriceMembers = $formData['sellpricemember'];
+    			$barcode = 0; // TODO barcode
+    			$bookable = $formData['bookable'];
+    			$unbookable = $formData['unbookable'];
+    			
+    			if (!$formData['internal']) {
+    				
+    				$article = new External($title, $metaInfo, $purchase_price, $sellPrice, 
+    					$sellPriceMembers, $barcode, $bookable, $unbookable);
+    				
+    			} else {
+    				
+    				// Insert additional information needed for internal textbooks in variables
+    				$nrbwpages = $formData['nrbwpages'];
+    				$nrcolorpages = $formData['nrcolorpages'];
+    				$official = $formData['official'];
+    				$rectoverso = $formData['rectoverso'];
+
+    				$article = new Internal($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, 
+    					$bookable, $unbookable, $nrbwpages, $nrcolorpages, $official, $rectoverso);
+
+    			}
+    			
+    			$this->getEntityManager()->persist($metaInfo);
+    			$this->getEntityManager()->persist($article);
     			
     			
     		}
 			
-    		/*
-    		 * Make sure the validators and required flags are added again.
-    		 */
+    		// Make sure the validators and required flags are added again.
     		if (!$formData['internal']) {
     			 
     			foreach ($internal_form->getElements() as $formelement) {
@@ -238,17 +286,5 @@ class TextbookController extends \Litus\Controller\Action
     		}
     		
     	}
-    }
-    
-    private function setRequireForTextsInForm($form, $required = true) {
-    	
-    	foreach ($form->getElements() as $formelement) {
-    		 
-    		if ($formelement->getType() == 'Zend\Form\Element\Text') {
-    			$formelement->setRequired($required);
-    		}
-    		 
-    	}
-    	
     }
 }

@@ -37,4 +37,15 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	 * @TODO Column(name="front_page_color", type="")
 	 */
 	private $frontPageColor;
+	
+	public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, 
+			$barcode, $bookable, $unbookable, $nrbwpages, $nrcolorpages, $official, $rectoverso) {
+		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable);
+		
+		$this->nbBlackAndWhite = $nrbwpages;
+		$this->nbColored = $nrcolorpages;
+		$this->official = $official;
+		$this->rectoVerso = $rectoverso;
+		
+	}
 }

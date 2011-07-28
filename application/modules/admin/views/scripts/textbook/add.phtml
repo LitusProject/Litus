@@ -1,12 +1,112 @@
-<h1>
-    Add a new textbook
-</h1>
-<?= $this->form
-; ?>
+<?php
+$this->broker('headMeta')       ->setCharset('utf-8');
+$this->broker('headTitle')      ->direct('Litus Admin', 'PREPEND')
+                                ->setSeparator('-');
+$this->broker('headScript')     ->appendFile($this->broker('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
 
-<script type="text/javascript">
-    <!--
-    // Run the script on pageload to set the visibility correctly
-    toggle_visibility();
-    //-->
-</script>
+$this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+?>
+
+<?= $this->broker('doctype'); ?>
+
+<head>
+
+    <?= $this->broker('headMeta'); ?>
+    <?= $this->broker('headTitle'); ?>
+    <?= $this->broker('headScript'); ?>
+
+	<style type="text/css">
+		
+		.label {
+			padding-top: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+			margin-right: 7px;
+ 			width: 120px;
+ 			/* Leaving this out caused troubles in Chrome and Firefox */
+ 			height: 0px;
+ 			text-align: right;
+ 			float: left;
+ 		}
+ 		
+ 		.field {
+ 			padding-left: 3px;
+ 		}
+ 		
+ 		input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+ 		}
+ 		
+        input[type=text] {
+            width: 160px;
+        }
+        
+        input[type=checkbox] {
+        	margin-top: 15px;
+        	height: 10px;
+        	width: 10px;
+        	padding: 1px;
+        	background-color: #FFFFFF;
+        }
+        
+        input[type=submit] {
+        	background: none;
+        	width: 100px;
+        	background-color: #ffae00;
+			color: #0f0f0f;
+			padding: 5px;
+			padding-right: 17px;
+			float: right;
+        }
+        
+        ul.errors {
+        	margin-left: 127px;
+        }
+        
+        ul.errors li {
+        	color: #FF0000;
+        }
+		
+        #form {
+        	margin: 10px;
+        }
+        
+        .required:after {
+        	content:"*";
+        }
+		
+	</style>
+	
+	<script type="text/javascript">
+	<!--
+		function toggle_visibility() {
+			var e = document.getElementById('internal_form');
+	      	if(document.getElementById('internal').checked) {
+				e.style.display = 'block';
+	      	} else {
+	          	e.style.display = 'none';
+	      	}
+	    }
+	//-->
+	</script>
+
+</head>
+
+<body>
+
+	<h1>
+		Add a new textbook
+	</h1>
+	<?= $this->form; ?>
+	
+	<script type="text/javascript">
+	<!--
+		// Run the script on pageload to set the visibility correctly
+		toggle_visibility();
+	//-->
+	</script>
+	
+</body>
+
+</html>
