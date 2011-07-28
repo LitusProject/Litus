@@ -6,6 +6,8 @@ namespace Litus\Entity\Cudi\Articles;
  * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\MetaInfo")
  * @Table(name="cudi.articles_metainfo")
  */
+use Litus\Entities\Cudi\Article;
+
 class MetaInfo
 {
 	/**
@@ -35,4 +37,58 @@ class MetaInfo
 	 * @Column(name="year_published", type="integer", length=4)
 	 */
 	private $yearPublished;
+	
+	public function __construct($authors, $publishers, $yearPublished) {
+		$this->authors = $authors;
+		$this->publishers = $publishers;
+		$this->yearPublished = $yearPublished;
+	}
+	
+	/**
+	 * @return bigint
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	/**
+	 * @return Article
+	 */
+	public function getArticle()
+	{
+		return $this->article;
+	}
+	
+	/**
+	 * @param Article $article The article to link to this metainfo object.
+	 */
+	public function setArticle($article)
+	{
+		$this->article = $article;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getAuthors()
+	{
+		return $this->authors;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getPublishers()
+	{
+		return $this->publishers;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getYearPublished()
+	{
+		return $this->yearPublished;
+	}
 }
