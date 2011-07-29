@@ -10,9 +10,7 @@ use \InvalidArgumentException;
 class Credential
 {
     /**
-     * The ID of this Credential.
-     *
-     * @var int
+     * @var int The ID of this Credential
      *
      * @Id
      * @GeneratedValue
@@ -21,27 +19,21 @@ class Credential
     private $id;
 
     /**
-     * The algorithm used to create the hash.
+     * @var string The algorithm used to create the hash
      *
-     * @var string
-     *
-     * @Column(type="string", length="50")
+     * @Column(type="string", length=50)
      */
     private $algorithm;
 
     /**
-     * The salt used to create the hash.
+     * @var string The salt used to create the hash
      *
-     * @var string
-     *
-     * @Column(type="string", length="32")
+     * @Column(type="string", length=32)
      */
     private $salt;
 
     /**
-     * The hashed credential, given by the user.
-     *
-     * @var string
+     * @var string The hashed credential, given by the user
      *
      * @Column(type="text")
      */
@@ -64,16 +56,6 @@ class Credential
     }
 
     /**
-     * Returns an encrypted version of the hash, using the generated salt.
-     *
-     * @return string
-     */
-    public function getCredential()
-    {
-        return crypt($this->hash, $this->salt);
-    }
-
-    /**
      * Checks whether or not the given credential is valid.
      *
      * @param string $credential The credential that should be checked
@@ -81,6 +63,6 @@ class Credential
      */
     public function validateCredential($credential)
     {
-        return $credential == $this->getHash();
+        return $credential == $this->hash;
     }
 }

@@ -70,19 +70,19 @@ class Role
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return array
      */
     public function getParents()
     {
-        return $this->parents;
+        return $this->parents->toArray();
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return array
      */
     public function getActions()
     {
-        return $this->actions;
+        return $this->actions->toArray();
     }
 
     /**
@@ -93,6 +93,6 @@ class Role
      */
     public function allow(Action $action)
     {
-        $this->getActions()->add($action);
+        $this->actions->add($action);
     }
 }

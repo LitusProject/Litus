@@ -21,7 +21,7 @@ class AclController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->_forward('manage');
+        $this->_forward('add');
     }
 
     public function addAction()
@@ -62,8 +62,10 @@ class AclController extends \Litus\Controller\Action
         $paginator = new Paginator(new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll()));
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
+    }
 
-        /**
+    public function loadAction()
+    {
         $adminResource = new Resource('admin');
         $this->getEntityManager()->persist($adminResource);
         $this->getEntityManager()->flush();
@@ -91,6 +93,5 @@ class AclController extends \Litus\Controller\Action
         );
         $this->getEntityManager()->persist($loginAction);
         $this->getEntityManager()->flush();
-        **/
     }
 }

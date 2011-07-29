@@ -36,7 +36,7 @@ class UnionStatus
      * @var Person
      *
      * @Column(name="person")
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", cascade={"all"}, fetch="LAZY", inversedBy="unionStatuses")
+     * @ManyToOne(targetEntity="Litus\Entity\Users\Academic", cascade={"all"}, fetch="LAZY", inversedBy="unionStatuses")
      */
     private $person;
 
