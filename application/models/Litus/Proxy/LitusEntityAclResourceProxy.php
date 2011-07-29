@@ -54,6 +54,12 @@ class LitusEntityAclResourceProxy extends \Litus\Entity\Acl\Resource implements 
         return parent::getChildren();
     }
 
+    public function getActions()
+    {
+        $this->__load();
+        return parent::getActions();
+    }
+
 
     public function __sleep()
     {

@@ -36,16 +36,17 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         $authenticatedUser = 'Guest';
         /**
         if ($this->hasAccess()) {
+            if ($this->getAuthentication()->isAuthenticated())
+                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+        } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
                     $this->_redirect('/admin/auth/login');
             } else {
-                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+                throw new Exception\HasNoAccessException(
+                    'You do not have sufficient permissions to access this resource'
+                );
             }
-        } else {
-            throw new Exception\HasNoAccessException(
-                'You do not have sufficient permissions to access this resource'
-            );
         }
         **/
         $this->view->authenticatedUser = $authenticatedUser;
@@ -53,7 +54,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
 
     /**
      * Called after an action is dispatched by Zend\Controller\Dispatcher.
-     * 
+     *
      * @return void
      */
     public function postDispatch()
@@ -105,7 +106,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         return $acl->getAcl()->isAllowed(
             $this->getAuthentication()->isAuthenticated() ?
                     $this->getAuthentication()->getPersonObject()->getRole()->getName() : 'guest',
-            $request->getModuleName() . '/' . $request->getControllerName(),
+            $request->getModuleName() . '.' . $request->getControllerName(),
             $request->getActionName()
         );
     }
