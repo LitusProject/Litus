@@ -31,82 +31,102 @@ abstract class Person
     /**
      * @var string The person's username
      *
-     * @Column(type="string")
+     * @Column(type="string", length=50)
      */
     private $username;
 
     /**
-     * @var \Litus\Entity\Users\Credential The person's credential.
+     * @var \Litus\Entity\Users\Credential The person's credential
      *
      * @OneToOne(targetEntity="\Litus\Entity\Users\Credential", cascade={"ALL"}, fetch="LAZY")
      */
     private $credential;
 
     /**
-     * @Column(name="first_name", type="string")
+     * @Column(name="first_name", type="string", length=20)
      */
     private $firstName;
 
     /**
-     * @Column(name="last_name", type="string")
+     * @Column(name="last_name", type="string", length=30)
      */
     private $lastName;
 
     /**
-     * @Column(type="string")
+     * @Column(type="text")
      */
     private $address;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", length=15)
      */
     private $telephone;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", length=100)
      */
     private $email;
 
     /**
-     * @ManyToMany(targetEntity="Litus\Entity\Users\UniversityStatus", mappedBy="user", cascade={"ALL"}, fetch="LAZY")
+     * @param string $username The user's username
+     * @param \Litus\Entity\Users\Credential $credential The user's credential
+     * @param string $firstName The user's first name
+     * @param string $lastName The user's last name
+     * @param string $email  The user's e-mail address
      */
-    private $universityStatuses;
-
-    /**
-     * @OneToMany(targetEntity="Litus\Entity\Users\UnionStatus", mappedBy="user", cascade={"ALL"}, fetch="LAZY")
-     */
-    private $unionStatuses;
-
-    public function __construct()
+    public function __construct($username, Credential $credential, $firstName, $lastName, $email)
     {
-        $this->unionStatuses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->universityStatuses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->username = $username;
+        $this->credential = $credential;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
     }
 
     /**
-     * @return bool
+     * @param int $id
+     * @return \Litus\Entity\Users\Person
      */
-    public function canHaveUnionStatus()
+    public function setId($id)
     {
-        return true;
+        $this->id = $id;
+        return $this;
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function canHaveUniversityStatus()
+    public function getId()
     {
-        return true;
+        return $this->id;
     }
 
     /**
-     * Return this person's credential.
-     *
+     * @param string $username
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public function getCredential()
+    public function getUsername()
     {
-        return $this->credential->getCredential();
+        return $this->username;
+    }
+
+    /**
+     * @param \Litus\Entity\Users\Credential $credential
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setCredential(Credential $credential)
+    {
+        $this->credential = $credential;
+        return $this;
     }
 
     /**
@@ -118,5 +138,95 @@ abstract class Person
     public function validateCredential($credential)
     {
         return $this->credential->validateCredential($credential);
+    }
+
+    /**
+     * @param string $firstName
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $lastName
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $address
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $telephone
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param string $email
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

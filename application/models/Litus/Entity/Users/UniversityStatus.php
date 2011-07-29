@@ -41,7 +41,9 @@ class UniversityStatus
      * @var Person
      *
      * @Column(name="person")
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", cascade={"all"}, fetch="LAZY", inversedBy="universityStatuses")
+     * @ManyToOne(
+     *      targetEntity="Litus\Entity\Users\Academic", cascade={"all"}, fetch="LAZY", inversedBy="universityStatuses"
+     * )
      */
     private $person;
 

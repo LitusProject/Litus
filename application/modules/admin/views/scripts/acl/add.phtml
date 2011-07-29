@@ -1,8 +1,6 @@
 <?= $this->broker('partial')->direct('acl/partials/navigation.phtml', array('currentAction' => 'add')); ?>
 
 <div id="controller_action">
-    <h1>Add Role</h1>
-
     <? if (!$this->roleCreated): ?>
     <?= $this->form; ?>
     <? else: ?>

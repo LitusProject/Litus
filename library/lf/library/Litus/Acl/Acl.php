@@ -44,7 +44,7 @@ class Acl
     }
 
     /**
-     * Return the Acl object from Zend.
+     * Return the Zend ACL object.
      *
      * @return \Zend\Acl\Acl
      */

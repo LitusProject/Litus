@@ -11,8 +11,6 @@ html, body {height: 100%;}
 
 ul {list-style: none;}
 
-h1 {width: 500px; padding-left: 5px; border-bottom: 2px solid #d7d4d4; font-size: 13px; font-style: italic;}
-
 input, select {height: 20px; background: #fff url(../img/i.png) repeat-x; border: 1px solid #d7d4d4; color: #7f7c7c;}
 input {padding-left: 3px;}
 input[type=submit] {margin-top: 7px; padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
