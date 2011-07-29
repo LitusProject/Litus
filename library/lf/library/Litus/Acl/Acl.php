@@ -81,7 +81,7 @@ class Acl
         foreach ($resources as $resource) {
             $this->_acl->addResource(
                 $resource->getName(),
-                null === $resource->getParent() ? null : $resource->getParent()->getName()
+                (null === $resource->getParent()) ? null : $resource->getParent()->getName()
             );
             
             $this->_addResources($resource->getChildren());

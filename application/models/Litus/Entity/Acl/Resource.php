@@ -64,4 +64,11 @@ class Resource
                 ->getRepository('Litus\Entity\Acl\Resource')
                 ->findByParent($this->getName());
     }
+
+    public function getActions()
+    {
+        return Registry::get('EntityManager')
+                ->getRepository('Litus\Entity\Acl\Action')
+                ->findByResource($this->getName());
+    }
 }

@@ -6,6 +6,7 @@ use \Admin\Form\Acl\Add as AddForm;
 
 use \Litus\Entity\Acl\Action as AclAction;
 use \Litus\Entity\Acl\Role;
+use \Litus\Entity\Acl\Resource;
 
 use \Zend\Paginator\Paginator;
 use \Zend\Paginator\Adapter\ArrayAdapter;
@@ -25,13 +26,10 @@ class AclController extends \Litus\Controller\Action
 
     public function addAction()
     {
-        $roles = $this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll();
-        $parentOptions = array();
-        foreach ($roles as $role) {
-            $parentOptions[$role->getName()] = $role->getName();
-        }
-        $form = new AddForm($parentOptions);
+        $form = new AddForm();
+
         $this->view->form = $form;
+        $this->view->roleCreated = false;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -46,9 +44,15 @@ class AclController extends \Litus\Controller\Action
                     }
                 }
 
-                $this->getEntityManager()->persist(
-                    new Role($formData['name'], $parents)
-                );
+                $newRole = new Role($formData['name'], $parents);
+                foreach ($formData['actions'] as $action) {
+                    $newRole->allow(
+                        $this->getEntityManager()->getRepository('Litus\Entity\Acl\Action')->findOneById($action)
+                    );
+                }
+                $this->getEntityManager()->persist($newRole);
+
+                $this->view->roleCreated = true;
             }
         }
     }
@@ -58,5 +62,35 @@ class AclController extends \Litus\Controller\Action
         $paginator = new Paginator(new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll()));
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
+
+        /**
+        $adminResource = new Resource('admin');
+        $this->getEntityManager()->persist($adminResource);
+        $this->getEntityManager()->flush();
+
+        $aclResource = new Resource('admin.acl',
+            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin')
+        );
+        $this->getEntityManager()->persist($aclResource);
+        $authResource = new Resource('admin.auth',
+            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin')
+        );
+        $this->getEntityManager()->persist($authResource);
+        $this->getEntityManager()->flush();
+
+        $addAction = new AclAction('add',
+            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.acl')
+        );
+        $this->getEntityManager()->persist($addAction);
+        $manageAction = new AclAction('manage',
+            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.acl')
+        );
+        $this->getEntityManager()->persist($manageAction);
+        $loginAction = new AclAction('login',
+            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.auth')
+        );
+        $this->getEntityManager()->persist($loginAction);
+        $this->getEntityManager()->flush();
+        **/
     }
 }

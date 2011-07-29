@@ -2,16 +2,12 @@
 
 namespace Admin;
 
-use Admin\Form\Textbook\Add;
-use Admin\Form\Textbook\AddInternal;
+use \Admin\Form\Textbook\Add;
+use \Admin\Form\Textbook\AddInternal;
 
-use Litus\Entity\Cudi\Articles\StockArticles\Internal;
-use Litus\Entity\Cudi\Articles\MetaInfo;
-use Litus\Entity\Cudi\Articles\StockArticles\External;
-
-/*
- * End of temporary
- */
+use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
+use \Litus\Entity\Cudi\Articles\MetaInfo;
+use \Litus\Entity\Cudi\Articles\StockArticles\External;
 
 /**
  * 
@@ -49,7 +45,6 @@ class TextbookController extends \Litus\Controller\Action
     		$validators = array();
     		$required = array();
     		if (!$formData['internal']) {
-    			
     		    foreach ($internal_form->getElements() as $formelement) {
     				$validators[$formelement->getName()] = $formelement->getValidators();
     				$required[$formelement->getName()] = $formelement->isRequired();
@@ -79,9 +74,10 @@ class TextbookController extends \Litus\Controller\Action
     			$unbookable = $formData['unbookable'];
     			
     			if (!$formData['internal']) {
-    				
-    				$article = new External($title, $metaInfo, $purchase_price, $sellPrice, 
-    					$sellPriceMembers, $barcode, $bookable, $unbookable);
+    				$article = new External(
+                        $title, $metaInfo, $purchase_price, $sellPrice,
+    					$sellPriceMembers, $barcode, $bookable, $unbookable
+                    );
     				
     			} else {
     				
