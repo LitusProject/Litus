@@ -86,6 +86,8 @@ footer {position: relative; width: 1088px; height: 40px; margin: 0 auto; line-he
     footer a {text-decoration: underline; color: #666}
     footer a:hover {text-decoration: none; color: inherit}
 
+    footer .development_information {float: right; margin-right: 10px;}
+
 /**
  * Print Style
  */

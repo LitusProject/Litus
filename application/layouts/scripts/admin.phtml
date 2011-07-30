@@ -75,7 +75,13 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 	<div id="footer_push"></div>
 </div>
 
-<footer>Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a></footer>
+<footer>
+    Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
+    
+    <div class="development_information">
+        Execution Time: <?= round(microtime(true) - $this->startExecutionTime, 3) * 1000; ?> ms
+    </div>
+</footer>
 
 <?= $this->broker('inlineScript'); ?>
 

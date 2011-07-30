@@ -33,6 +33,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     public function preDispatch()
     {
+        $this->view->startExecutionTime = microtime(true);
+
         $this->getAuthentication()->authenticate();
 
         $authenticatedUser = 'Guest';
