@@ -1,0 +1,13 @@
+<?= $this->broker('partial')->direct('users/partials/navigation.phtml', array('currentAction' => 'add')); ?>
+
+<div id="controller_action">
+    <? if (!$this->userCreated): ?>
+        <? if(isset($this->error)): ?>
+            <span class="error_message"><?= $this->error; ?></span>
+        <? endif; ?>
+        
+        <?= $this->form; ?>
+    <? else: ?>
+        <span class="success_message">The user was successfully created!</span>
+    <? endif; ?>
+</div>

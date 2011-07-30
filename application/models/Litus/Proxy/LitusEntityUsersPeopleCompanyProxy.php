@@ -36,16 +36,58 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
     }
     
     
-    public function canHaveUnionStatus()
+    public function setName($name)
     {
         $this->__load();
-        return parent::canHaveUnionStatus();
+        return parent::setName($name);
     }
 
-    public function canHaveUniversityStatus()
+    public function getName()
     {
         $this->__load();
-        return parent::canHaveUniversityStatus();
+        return parent::getName();
+    }
+
+    public function setVatNumber($vatNumber)
+    {
+        $this->__load();
+        return parent::setVatNumber($vatNumber);
+    }
+
+    public function getVatNumber()
+    {
+        $this->__load();
+        return parent::getVatNumber();
+    }
+
+    public function setId($id)
+    {
+        $this->__load();
+        return parent::setId($id);
+    }
+
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setUsername($username)
+    {
+        $this->__load();
+        return parent::setUsername($username);
+    }
+
+    public function getUsername()
+    {
+        $this->__load();
+        return parent::getUsername();
+    }
+
+    public function setCredential(\Litus\Entity\Users\Credential $credential)
+    {
+        $this->__load();
+        return parent::setCredential($credential);
     }
 
     public function getCredential()
@@ -60,10 +102,82 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
         return parent::validateCredential($credential);
     }
 
+    public function getRoles()
+    {
+        $this->__load();
+        return parent::getRoles();
+    }
+
+    public function addRoles(array $roles)
+    {
+        $this->__load();
+        return parent::addRoles($roles);
+    }
+
+    public function setFirstName($firstName)
+    {
+        $this->__load();
+        return parent::setFirstName($firstName);
+    }
+
+    public function getFirstName()
+    {
+        $this->__load();
+        return parent::getFirstName();
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->__load();
+        return parent::setLastName($lastName);
+    }
+
+    public function getLastName()
+    {
+        $this->__load();
+        return parent::getLastName();
+    }
+
+    public function setEmail($email)
+    {
+        $this->__load();
+        return parent::setEmail($email);
+    }
+
+    public function getEmail()
+    {
+        $this->__load();
+        return parent::getEmail();
+    }
+
+    public function setAddress($address)
+    {
+        $this->__load();
+        return parent::setAddress($address);
+    }
+
+    public function getAddress()
+    {
+        $this->__load();
+        return parent::getAddress();
+    }
+
+    public function setTelephone($telephone)
+    {
+        $this->__load();
+        return parent::setTelephone($telephone);
+    }
+
+    public function getTelephone()
+    {
+        $this->__load();
+        return parent::getTelephone();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'firstName', 'lastName', 'address', 'telephone', 'email', 'universityStatuses', 'unionStatuses', 'name', 'vatNumber');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'name', 'vatNumber');
     }
 
     public function __clone()

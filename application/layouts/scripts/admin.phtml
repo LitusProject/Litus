@@ -44,7 +44,7 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 				<ul>
                 	<li><a href="/admin">Dashboard</a></li>
                 	<li><a href="#">Settings</a></li>
-                	<li><a href="#">Users</a></li>
+                	<li><a href="/admin/users">Users</a></li>
                     <li><a href="/admin/acl">Groups</a></li>
 				</ul>
             </div>
@@ -75,7 +75,16 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 	<div id="footer_push"></div>
 </div>
 
-<footer>Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a></footer>
+<footer>
+    Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
+
+    <? if ('development' == getenv('APPLICATION_ENV')): ?>
+        <div class="development_information">
+            Execution Time: <?= round(microtime(true) - $this->startExecutionTime, 3) * 1000; ?> ms |
+                Doctrine's UoW: <?= $this->doctrineUnitOfWork; ?>
+        </div>
+    <? endif; ?>
+</footer>
 
 <?= $this->broker('inlineScript'); ?>
 

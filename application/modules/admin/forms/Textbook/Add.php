@@ -4,7 +4,7 @@ namespace Admin\Form\Textbook;
 
 use Zend\Form\SubForm;
 
-use Litus\Validator\PriceValidator;
+use Litus\Validator\Price as PriceValidator;
 
 use Litus\Form\Decorator\FieldDecorator;
 

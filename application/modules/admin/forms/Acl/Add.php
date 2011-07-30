@@ -19,30 +19,33 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $name = new Text('name');
-        $name->setLabel('Name')
+        $this->setAction('/admin/acl/add');
+        $this->setMethod('post');
+
+        $field = new Text('name');
+        $field->setLabel('Name')
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($name);
+        $this->addElement($field);
 
-        $parents = new Multiselect('parents');
-        $parents->setLabel('Parents')
+        $field = new Multiselect('parents');
+        $field->setLabel('Parents')
                 ->setMultiOptions($this->_generateParents())
                 ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($parents);
+        $this->addElement($field);
 
-        $actions = new Multiselect('actions');
-        $actions->setLabel('Allowed Actions')
+        $field = new Multiselect('actions');
+        $field->setLabel('Allowed Actions')
                 ->setRequired()
                 ->setMultiOptions($this->_generateActions())
                 ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($actions);
+        $this->addElement($field);
 
-        $submit = new Submit('submit');
-        $submit->setLabel('Add')
+        $field = new Submit('submit');
+        $field->setLabel('Add')
                 ->setAttrib('class', 'groups_add')
                 ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($submit);
+        $this->addElement($field);
     }
 
     private function _generateParents()
