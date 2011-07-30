@@ -77,10 +77,13 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 
 <footer>
     Litus Admin | Code by Litus | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
-    
-    <div class="development_information">
-        Execution Time: <?= round(microtime(true) - $this->startExecutionTime, 3) * 1000; ?> ms
-    </div>
+
+    <? if ('development' == getenv('APPLICATION_ENV')): ?>
+        <div class="development_information">
+            Execution Time: <?= round(microtime(true) - $this->startExecutionTime, 3) * 1000; ?> ms |
+                Doctrine's UoW: <?= $this->doctrineUnitOfWork; ?>
+        </div>
+    <? endif; ?>
 </footer>
 
 <?= $this->broker('inlineScript'); ?>
