@@ -52,7 +52,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      */
     public function __construct(
         $entityName, $expire = -1, Storage $storage = null, $namespace = self::NAMESPACE_DEFAULT,
-            $cookieSuffix = self::COOKIE_SUFFIX_DEFAULT
+        $cookieSuffix = self::COOKIE_SUFFIX_DEFAULT
     )
     {
         parent::__construct($storage);
@@ -143,18 +143,19 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      */
     public function clearIdentity()
     {
-        if ($this->hasIdentity()) {
-            $entityManager = Registry::get('EntityManager');
-            $session = $entityManager->getRepository($this->_entityName)->findOneById(
-                $this->getIdentity()
-            );
+        if (!$this->hasIdentity())
+            return;
 
-            if (null !== $session) {
-                $session->deactivate();
+        $entityManager = Registry::get('EntityManager');
+        $session = $entityManager->getRepository($this->_entityName)->findOneById(
+            $this->getIdentity()
+        );
 
-                $entityManager->persist($session);
-                $entityManager->flush();
-            }
+        if (null !== $session) {
+            $session->deactivate();
+
+            $entityManager->persist($session);
+            $entityManager->flush();
         }
 
         $this->getStorage()->clear();
