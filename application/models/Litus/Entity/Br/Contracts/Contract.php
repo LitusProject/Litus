@@ -17,10 +17,10 @@ use \InvalidArgumentException;
  * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractRepository")
  * @Table(name="br.contract")
  */
-class Contract {
-
+class Contract
+{
     /**
-     * @var int A generated ID.
+     * @var int A generated ID
      *
      * @Id
      * @Column(type="bigint")
@@ -29,21 +29,21 @@ class Contract {
     private $id;
 
     /**
-     * @var array The sections this contract contains.
+     * @var array The sections this contract contains
      *
      * @OneToMany(targetEntity="Litus\Entity\Br\Contracts\ContractComposition", mappedBy="contract")
      */
     private $sections;
 
     /**
-     * @var \DateTime The date and time when this contract was written.
+     * @var \DateTime The date and time when this contract was written
      *
      * @Column(type="datetime")
      */
     private $date;
 
     /**
-     * @var Person The author of this contract.
+     * @var Person The author of this contract
      *
      * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="LAZY")
      * @JoinColumn(name="author", referencedColumnName="id", nullable="false")
@@ -51,7 +51,7 @@ class Contract {
     private $author;
 
     /**
-     * @var Company The company for which this contract is meant.
+     * @var Company The company for which this contract is meant
      *
      * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company", fetch="LAZY")
      * @JoinColumn(name="company", referencedColumnName="id", nullable="false")
@@ -75,7 +75,7 @@ class Contract {
     }
 
     /**
-     * Adds the given part at the given order to this Contract.
+     * Adds the given part at the given order to this contract
      *
      * @param Section $section
      * @param int $order
@@ -101,7 +101,7 @@ class Contract {
      */
     public function setAuthor(Person $author)
     {
-        if($author === null)
+        if ($author === null)
             throw new InvalidArgumentException('Author cannot be null.');
         $this->author = $author;
     }
@@ -121,7 +121,7 @@ class Contract {
      */
     public function setCompany(Company $company)
     {
-        if($company === null)
+        if ($company === null)
             throw new InvalidArgumentException('Company cannot be null.');
         $this->company = $company;
     }
@@ -140,7 +140,7 @@ class Contract {
      */
     public function setDate(\DateTime $date = null)
     {
-        if($date === null)
+        if ($date === null)
             $this->date = new \DateTime();
         else
             $this->date = $date;

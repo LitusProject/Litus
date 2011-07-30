@@ -2,13 +2,16 @@
 
 namespace Litus\Entity\Users;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
+use \Litus\Entity\Acl\Role;
 use \Litus\Entity\Users\Credential;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Users\Person")
  * @Table(
  *      name="users.people",
- *      uniqueConstraints={@UniqueConstraint(name="unique_username", columns={"username"})}
+ *      uniqueConstraints={@UniqueConstraint(name="person_unique_username", columns={"username"})}
  * )
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
@@ -43,6 +46,17 @@ abstract class Person
     private $credential;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection;
+     *
+     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
+     * @JoinTable(name="users.people_roles",
+     *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     * )
+     */
+    private $roles;
+
+    /**
      * @Column(name="first_name", type="string", length=20)
      */
     private $firstName;
@@ -53,34 +67,37 @@ abstract class Person
     private $lastName;
 
     /**
-     * @Column(type="text")
-     */
-    private $address;
-
-    /**
-     * @Column(type="string", length=15)
-     */
-    private $telephone;
-
-    /**
      * @Column(type="string", length=100)
      */
     private $email;
 
     /**
+     * @Column(type="text", nullable=true)
+     */
+    private $address;
+
+    /**
+     * @Column(type="string", length=15, nullable=true)
+     */
+    private $telephone;
+
+    /**
      * @param string $username The user's username
      * @param \Litus\Entity\Users\Credential $credential The user's credential
+     * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
      * @param string $email  The user's e-mail address
      */
-    public function __construct($username, Credential $credential, $firstName, $lastName, $email)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email)
     {
         $this->username = $username;
         $this->credential = $credential;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+
+        $this->roles = new ArrayCollection($roles);
     }
 
     /**
@@ -130,6 +147,14 @@ abstract class Person
     }
 
     /**
+     * @return string
+     */
+    public function getCredential()
+    {
+        return $this->credential->getCredential();
+    }
+
+    /**
      * Checks whether or not the given credential is valid.
      *
      * @param string $credential The credential that should be checked
@@ -138,6 +163,26 @@ abstract class Person
     public function validateCredential($credential)
     {
         return $this->credential->validateCredential($credential);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+
+    /**
+     * Add the specified roles to the user
+     *
+     * @param array $roles An array containing the roles that should be added
+     * @return \Litus\Entity\Users\Person
+     */
+    public function addRoles(array $roles)
+    {
+        $this->roles->add($roles);
+        return $this;
     }
 
     /**
@@ -177,6 +222,24 @@ abstract class Person
     }
 
     /**
+     * @param string $email
+     * @return \Litus\Entity\Users\Person
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
      * @param string $address
      * @return \Litus\Entity\Users\Person
      */
@@ -210,23 +273,5 @@ abstract class Person
     public function getTelephone()
     {
         return $this->telephone;
-    }
-
-    /**
-     * @param string $email
-     * @return \Litus\Entity\Users\Person
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 }

@@ -3,15 +3,16 @@ namespace Litus\Authentication\Adapter;
 
 use \Doctrine\ORM\QueryBuilder;
 
-use \Litus\Authentication\Result;
-use \Litus\Authentication\Result\Doctrine as DoctrineResult;
+use \Litus\Authentication\Result\Doctrine as Result;
 
-class Doctrine implements \Litus\Authentication\Adapter
+use \Zend\Registry;
+
+class Doctrine implements \Zend\Authentication\Adapter
 {
     /**
-     * @var string The name of the class in the model that has the authentication information
+     * @var string The name of the entity that holds the authentication information
      */
-    private $_modelName = '';
+    private $_entityName = '';
 
     /**
      * @var string The name of the column that holds the identity
@@ -21,15 +22,15 @@ class Doctrine implements \Litus\Authentication\Adapter
     /**
      * @var bool Whether or not the username check is case-sensitive
      */
-    private $_strict = false;
+    private $_caseSensitive = false;
 
     /**
-     * @var string The identity that was provided
+     * @var string The identity value that should be checked
      */
     private $_identity = '';
 
     /**
-     * @var string The credential that was provided
+     * @var string The credential value that should be checked
      */
     private $_credential = '';
 
@@ -44,31 +45,26 @@ class Doctrine implements \Litus\Authentication\Adapter
     private $_personObject = null;
 
     /**
-     * @var array Additional conditions for the DQL query
-     */
-    private $_dqlConditions = array();
-
-    /**
-     * Creating our new Doctrine adapter.
-     *
-     * @param string $modelName The name of the class in the model that has the authentication information
+     * @param string $entityName The name of the class in the model that has the authentication information
      * @param string $identityColumn The name of the column that holds the identity
-     * @param bool $strict Whether or not the username check is case-sensitive
-     * @param array $dqlConditions
+     * @param bool $caseSensitive Whether or not the username check is case-sensitive
      */
-    public function __construct($modelName, $identityColumn, $strict = false, array $dqlConditions = array())
+    public function __construct($entityName, $identityColumn, $caseSensitive = false)
     {
-        $this->_modelName = $modelName;
+        if ('\\' == substr($entityName, 0, 1)) {
+            throw new \Litus\Authentication\Adapter\Exception\InvalidArgumentException(
+                'The entity name cannot have a leading backslash'
+            );
+        }
+        $this->_entityName = $entityName;
+        
         $this->_identityColumn = $identityColumn;
-        $this->_strict = $strict;
-        $this->_dqlConditions = $dqlConditions;
+        $this->_caseSensitive = $caseSensitive;
     }
 
     /**
-     * Set the provided identity.
-     *
-     * @param string $identity The identity that was provided
-     * @return \Litus\Authentication\Adapter\DoctrineAdapter
+     * @param string $identity
+     * @return \Litus\Authentication\Adapter\Doctrine
      */
     public function setIdentity($identity)
     {
@@ -77,20 +73,8 @@ class Doctrine implements \Litus\Authentication\Adapter
     }
 
     /**
-     * Returns true if the identity is set.
-     *
-     * @return bool
-     */
-    public function hasIdentity()
-    {
-        return $this->_identity != '';
-    }
-
-    /**
-     * Set the provided credential.
-     *
-     * @param string $credential The credential that was provided
-     * @return \Litus\Authentication\Adapter\DoctrineAdapter
+     * @param string $credential
+     * @return \Litus\Authentication\Adapter\Doctrine
      */
     public function setCredential($credential)
     {
@@ -106,7 +90,9 @@ class Doctrine implements \Litus\Authentication\Adapter
     public function authenticate()
     {
         $this->_setupResult();
-        $this->_executeQuery($this->_createQuery());
+        $this->_executeQuery(
+            $this->_createQuery()
+        );
 
         return $this->_createResult();
     }
@@ -119,39 +105,9 @@ class Doctrine implements \Litus\Authentication\Adapter
         $this->_authenticationResult = array(
             'code' => Result::FAILURE,
             'identity' => '',
-            'credential' => '',
             'messages' => array(),
             'personObject' => null
         );
-    }
-
-    /**
-     * Create the Doctrine query.
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    private function _createQuery()
-    {
-        $alias = 'u';
-
-        $query = new \Doctrine\ORM\QueryBuilder(\Zend\Registry::get('EntityManager'));
-        $query->from($this->_modelName, $alias);
-        $query->select($alias);
-
-        if ($this->_strict) {
-            $query->where($alias . '.' . $this->_identityColumn . ' = ?1');
-            $query->setParameter(1, $this->_identity);
-        } else {
-            $query->where('TRIM(LOWER(' . $alias . '.' . $this->_identityColumn . ')) = :identity');
-            $query->setParameter('identity', trim(strtolower($this->_identity)));
-        }
-
-        foreach ($this->_dqlConditions as $key => $value) {
-            $query->andWhere($alias . '.' . $key . ' ' . $value['operator'] . ' :' . $key);
-            $query->setParameter($key, $value['value']);
-        }
-
-        return $query;
     }
 
     /**
@@ -175,6 +131,28 @@ class Doctrine implements \Litus\Authentication\Adapter
     }
 
     /**
+     * Create the Doctrine query.
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function _createQuery()
+    {
+        $query = new QueryBuilder(Registry::get('EntityManager'));
+        $query->from($this->_entityName, 'u');
+        $query->select('u');
+
+        if ($this->_caseSensitive) {
+            $query->where('u.' . $this->_identityColumn . ' = :identity');
+            $query->setParameter('identity', $this->_identity);
+        } else {
+            $query->where('TRIM(LOWER(u.' . $this->_identityColumn . ')) = :identity');
+            $query->setParameter('identity', trim(strtolower($this->_identity)));
+        }
+
+        return $query;
+    }
+
+    /**
      * Validate the query result: check the number of results.
      *
      * @param array $resultSet The result set of the DQL query
@@ -184,10 +162,10 @@ class Doctrine implements \Litus\Authentication\Adapter
     {
         if (count($resultSet) < 1) {
             $this->_authenticationResult['code'] = Result::FAILURE_IDENTITY_NOT_FOUND;
-            $this->_authenticationResult['messages'][] = 'A record with the supplied identity could not be found.';
+            $this->_authenticationResult['messages'][] = 'A record with the supplied identity could not be found';
         } elseif (count($resultSet) > 1) {
             $this->_authenticationResult['code'] = Result::FAILURE_IDENTITY_AMBIGUOUS;
-            $this->_authenticationResult['messages'][] = 'More than one record matches the supplied identity.';
+            $this->_authenticationResult['messages'][] = 'More than one record matches the supplied identity';
         } else {
             $this->_personObject = $resultSet[0];
             $this->_authenticate();
@@ -203,13 +181,13 @@ class Doctrine implements \Litus\Authentication\Adapter
     {
         if (!$this->_personObject->validateCredential($this->_credential)) {
             $this->_authenticationResult['code'] = Result::FAILURE_CREDENTIAL_INVALID;
-            $this->_authenticationResult['messages'][] = 'Supplied credential is invalid.';
+            $this->_authenticationResult['messages'][] = 'Supplied credential is invalid';
         } else {
             $this->_authenticationResult['code'] = Result::SUCCESS;
-            $this->_authenticationResult['messages'][] = 'Authentication successful.';
+            $this->_authenticationResult['messages'][] = 'Authentication successful';
 
+            $this->_authenticationResult['identity'] = $this->_identity;
             $this->_authenticationResult['personObject'] = $this->_personObject;
-            $this->_authenticationResult['credential'] = $this->_personObject->getCredential();
         }
     }
 
@@ -220,7 +198,7 @@ class Doctrine implements \Litus\Authentication\Adapter
      */
     private function _createResult()
     {
-        return new DoctrineResult(
+        return new Result(
             $this->_authenticationResult['code'],
             $this->_authenticationResult['identity'],
             $this->_authenticationResult['messages'],

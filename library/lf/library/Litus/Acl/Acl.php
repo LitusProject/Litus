@@ -116,7 +116,7 @@ class Acl
             
             $this->_acl->addRole(
                 $role->getName(),
-                $role->getParents()->isEmpty() ? null : $parents
+                (0 == count($role->getParents())) ? null : $parents
             );
 
             foreach ($role->getActions() as $action) {

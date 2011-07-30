@@ -53,7 +53,7 @@ class Role
      * @param string $name The name of the role
      * @param array $parents The role's parents
      */
-    public function __construct($name, array $parents)
+    public function __construct($name, array $parents = array())
     {
         $this->name = $name;
 

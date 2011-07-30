@@ -13,12 +13,14 @@ ul {list-style: none;}
 
 input, select {height: 20px; background: #fff url(../img/i.png) repeat-x; border: 1px solid #d7d4d4; color: #7f7c7c;}
 input {padding-left: 3px;}
-input[type=submit] {margin-top: 7px; padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
+input[type=submit] {height: 16px; margin-top: 7px; padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
 select[multiple=multiple] {min-width: 100px; height: 64px;}
 
 .dashboard {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 0;}
 .groups {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -16px;}
 .groups_add {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -32px;}
+.users {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -80px;}
+.users_add {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -96px;}
 
 body {background: #fff url(../img/bg.png) 50% 0 repeat-x; font-family: Tahoma, Arial, serif; font-size: 11px; color: #7f7c7c;}
 
@@ -75,13 +77,16 @@ body {background: #fff url(../img/bg.png) 50% 0 repeat-x; font-family: Tahoma, A
                 .form .errors li {color: #ff6633;}
             .form .required:after {content:"*";}
 
-        .success {margin-top: 20px; color: #03af29;}
+        .success_message {margin-top: 20px; color: #03af29;}
+        .error_message {margin-top: 20px; color: #ff6633;}
 
 #footer_push {height: 40px; display: block; clear: both;}
 
 footer {position: relative; width: 1088px; height: 40px; margin: 0 auto; line-height: 40px; text-indent: 10px; color: #7f7c7c; font-size: 10px; background: url(../img/h.gif) repeat-x 0 0;}
     footer a {text-decoration: underline; color: #666}
     footer a:hover {text-decoration: none; color: inherit}
+
+    footer .development_information {float: right; margin-right: 10px;}
 
 /**
  * Print Style

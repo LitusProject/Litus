@@ -14,13 +14,14 @@ class Doctrine extends \Litus\Authentication\Result {
      * Overwriting the standard constructor to allow for some specific fields.
      *
      * @param int $code The result code
-     * @param string $identity The identity that has been authenticated
+     * @param string $identity The authenticated user's identity
      * @param array $messages The result messages
      * @param \Litus\Entity\Users\Person $personObject The user object given by the DQL query
      */
 	public function __construct($code, $identity, array $messages = array(), Person $personObject = null)
 	{
 		parent::__construct($code, $identity, $messages);
+        
 		$this->_personObject = $personObject;
 	}
 
@@ -33,14 +34,4 @@ class Doctrine extends \Litus\Authentication\Result {
 	{
 		return $this->_personObject;
 	}
-
-	/**
-	 * Return the credential for the given user.
-	 *
-	 * @return string
-	 */
-	public function getCredential()
-    {
-        return $this->_personObject->getCredential();
-    }
 }

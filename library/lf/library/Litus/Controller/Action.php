@@ -7,7 +7,7 @@ use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Authentication\Action as AuthenticationAction;
 use \Litus\Authentication\Adapter\Doctrine as DoctrineAdapter;
 use \Litus\Authentication\Authentication;
-use \Litus\Authentication\Service\SessionCookie as SessionCookieService;
+use \Litus\Authentication\Service\Doctrine as DoctrineService;
 use \Zend\Layout\Layout;
 
 use \Zend\Controller\Request\AbstractRequest as Request;
@@ -33,8 +33,11 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     public function preDispatch()
     {
+        $this->view->startExecutionTime = microtime(true);
+
+        $this->getAuthentication()->authenticate();
+
         $authenticatedUser = 'Guest';
-        /**
         if ($this->hasAccess()) {
             if ($this->getAuthentication()->isAuthenticated())
                 $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
@@ -48,7 +51,6 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
                 );
             }
         }
-        **/
         $this->view->authenticatedUser = $authenticatedUser;
     }
 
@@ -59,6 +61,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     public function postDispatch()
     {
+        $this->view->doctrineUnitOfWork = $this->getEntityManager()->getUnitOfWork()->size();
+
         $this->getEntityManager()->flush();
     }
 
@@ -85,8 +89,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         if (null === self::$_authentication) {
             self::$_authentication = new Authentication(
-                new DoctrineAdapter('\Litus\Entity\Users\Person', 'username'),
-                new SessionCookieService('litus')
+                new DoctrineAdapter('Litus\Entity\Users\Person', 'username'),
+                new DoctrineService('Litus\Entity\Users\Session', 2678400)
             );
         }
         return self::$_authentication;
@@ -103,11 +107,25 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         $acl = new Acl();
         $request = $this->getRequest();
 
-        return $acl->getAcl()->isAllowed(
-            $this->getAuthentication()->isAuthenticated() ?
-                    $this->getAuthentication()->getPersonObject()->getRole()->getName() : 'guest',
-            $request->getModuleName() . '.' . $request->getControllerName(),
-            $request->getActionName()
-        );
+        if ($this->getAuthentication()->isAuthenticated()) {
+            foreach ($this->getAuthentication()->getPersonObject()->getRoles() as $role) {
+                if ($acl->getAcl()->isAllowed(
+                    $role->getName(),
+                    $request->getModuleName() . '.' . $request->getControllerName(),
+                    $request->getActionName()
+                )
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        } else {
+            return $acl->getAcl()->isAllowed(
+                'guest',
+                $request->getModuleName() . '.' . $request->getControllerName(),
+                $request->getActionName()
+            );
+        }
     }
 }

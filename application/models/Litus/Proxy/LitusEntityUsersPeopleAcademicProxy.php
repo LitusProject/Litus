@@ -36,16 +36,82 @@ class LitusEntityUsersPeopleAcademicProxy extends \Litus\Entity\Users\People\Aca
     }
     
     
-    public function canHaveUnionStatus()
+    public function setPersonalEmail($personalEmail)
     {
         $this->__load();
-        return parent::canHaveUnionStatus();
+        return parent::setPersonalEmail($personalEmail);
     }
 
-    public function canHaveUniversityStatus()
+    public function getPersonalEmail()
     {
         $this->__load();
-        return parent::canHaveUniversityStatus();
+        return parent::getPersonalEmail();
+    }
+
+    public function setPrimaryEmail($primaryEmail)
+    {
+        $this->__load();
+        return parent::setPrimaryEmail($primaryEmail);
+    }
+
+    public function getPrimaryEmail()
+    {
+        $this->__load();
+        return parent::getPrimaryEmail();
+    }
+
+    public function setUniversityIdentification($universityIdentification)
+    {
+        $this->__load();
+        return parent::setUniversityIdentification($universityIdentification);
+    }
+
+    public function getUniversityIdentification()
+    {
+        $this->__load();
+        return parent::getUniversityIdentification();
+    }
+
+    public function setPhotoPath($photoPath)
+    {
+        $this->__load();
+        return parent::setPhotoPath($photoPath);
+    }
+
+    public function getPhotoPath()
+    {
+        $this->__load();
+        return parent::getPhotoPath();
+    }
+
+    public function setId($id)
+    {
+        $this->__load();
+        return parent::setId($id);
+    }
+
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setUsername($username)
+    {
+        $this->__load();
+        return parent::setUsername($username);
+    }
+
+    public function getUsername()
+    {
+        $this->__load();
+        return parent::getUsername();
+    }
+
+    public function setCredential(\Litus\Entity\Users\Credential $credential)
+    {
+        $this->__load();
+        return parent::setCredential($credential);
     }
 
     public function getCredential()
@@ -60,10 +126,82 @@ class LitusEntityUsersPeopleAcademicProxy extends \Litus\Entity\Users\People\Aca
         return parent::validateCredential($credential);
     }
 
+    public function getRoles()
+    {
+        $this->__load();
+        return parent::getRoles();
+    }
+
+    public function addRoles(array $roles)
+    {
+        $this->__load();
+        return parent::addRoles($roles);
+    }
+
+    public function setFirstName($firstName)
+    {
+        $this->__load();
+        return parent::setFirstName($firstName);
+    }
+
+    public function getFirstName()
+    {
+        $this->__load();
+        return parent::getFirstName();
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->__load();
+        return parent::setLastName($lastName);
+    }
+
+    public function getLastName()
+    {
+        $this->__load();
+        return parent::getLastName();
+    }
+
+    public function setEmail($email)
+    {
+        $this->__load();
+        return parent::setEmail($email);
+    }
+
+    public function getEmail()
+    {
+        $this->__load();
+        return parent::getEmail();
+    }
+
+    public function setAddress($address)
+    {
+        $this->__load();
+        return parent::setAddress($address);
+    }
+
+    public function getAddress()
+    {
+        $this->__load();
+        return parent::getAddress();
+    }
+
+    public function setTelephone($telephone)
+    {
+        $this->__load();
+        return parent::setTelephone($telephone);
+    }
+
+    public function getTelephone()
+    {
+        $this->__load();
+        return parent::getTelephone();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'firstName', 'lastName', 'address', 'telephone', 'email', 'universityStatuses', 'unionStatuses', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath', 'universityStatuses', 'unionStatuses');
     }
 
     public function __clone()
