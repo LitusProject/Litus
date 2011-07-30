@@ -61,6 +61,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     public function postDispatch()
     {
+        $this->view->doctrineUnitOfWork = $this->getEntityManager()->getUnitOfWork()->size();
+
         $this->getEntityManager()->flush();
     }
 
