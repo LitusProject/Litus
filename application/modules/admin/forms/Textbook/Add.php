@@ -4,7 +4,7 @@ namespace Admin\Form\Textbook;
 
 use Zend\Form\SubForm;
 
-use Litus\Validator\PriceValidator;
+use Litus\Validator\Price as PriceValidator;
 
 use Litus\Form\Decorator\FieldDecorator;
 
@@ -63,14 +63,14 @@ class Add extends \Litus\Form\Form
     	->setDecorators(array(new FieldDecorator()))
     	->addValidator(new PriceValidator());
     	$this->addElement($purchaseprice);
-    	
+
     	$sellprice = new Text('sellpricenomember');
     	$sellprice->setLabel('Sell price')
     	->setRequired()
     	->setDecorators(array(new FieldDecorator()))
     	->addValidator(new PriceValidator());
     	$this->addElement($sellprice);
-    	
+
     	$sellpricemember = new Text('sellpricemember');
     	$sellpricemember->setLabel('Sell price (member)')
     		->setRequired()

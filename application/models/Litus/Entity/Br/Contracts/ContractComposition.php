@@ -9,7 +9,13 @@ use \InvalidArgumentException;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractCompositionRepository")
- * @Table(name="br.contract_composition", uniqueConstraints={@UniqueConstraint(name="contract_order_unique", columns={"contract", "order_no"}), @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})})
+ * @Table(
+ *      name="br.contract_composition",
+ *      uniqueConstraints={
+ *          @UniqueConstraint(name="contract_order_unique", columns={"contract", "order_no"}),
+ *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
+ *      }
+ * )
  */
 class ContractComposition {
 
@@ -44,7 +50,6 @@ class ContractComposition {
      *
      * @Column(name="order_no", type="integer", nullable="false")
      */
-    // order is a reserved name in postgres
     private $order;
 
     /**

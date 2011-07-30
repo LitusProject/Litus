@@ -30,7 +30,11 @@ class AuthController extends \Litus\Controller\Action
 
     public function loginAction()
     {
-        $this->view->form = new LoginForm();
+        $this->view->isAuthenticated = $this->getAuthentication()->isAuthenticated();
+        
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->view->form = new LoginForm();
+        }
     }
 
     public function dologinAction()
@@ -48,15 +52,19 @@ class AuthController extends \Litus\Controller\Action
 
         $this->getAuthentication()->authenticate($formData['username'], $formData['password']);
         if ($this->getAuthentication()->isAuthenticated()) {
-            if($this->hasAccess($this->getAuthentication()->getPersonObject())) {
-                $authResult['result'] = true;
-            } else {
-                $authResult['reason'] = 'PERMISSIONS';
-            }
+            $authResult['result'] = true;
         } else {
             $authResult['reason'] = 'USERNAME_PASSWORD';
         }
 
         echo $this->_json->encode($authResult);
+    }
+
+    public function logoutAction()
+    {
+        $this->broker('viewRenderer')->setNoRender();
+        $this->getAuthentication()->forget();
+
+        $this->_forward('login');
     }
 }
