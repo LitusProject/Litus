@@ -23,15 +23,16 @@ class Company extends \Litus\Entity\Users\Person
     /**
      * @param string $username The company's username
      * @param \Litus\Entity\Users\Credential $credential The company's credential
+     * @param array $roles The user's roles
      * @param string $firstName The company's first name
      * @param string $lastName The company's last name
      * @param string $email  The user's e-mail address
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      */
-    public function __construct($username, Credential $credential, $firstName, $lastName, $email, $name, $vatNumber)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $name, $vatNumber)
     {
-        parent::__construct($username, $credential, $firstName, $lastName, $email);
+        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email);
 
         $this->name = $name;
         $this->vatNumber = $vatNumber;

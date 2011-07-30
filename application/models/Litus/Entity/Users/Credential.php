@@ -10,7 +10,7 @@ use \InvalidArgumentException;
 class Credential
 {
     /**
-     * @var int The ID of this Credential
+     * @var int The ID of this credential
      *
      * @Id
      * @GeneratedValue
@@ -52,7 +52,7 @@ class Credential
             throw new InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
         $this->algorithm = $algorithm;
         $this->salt = md5(uniqid(rand(), true));
-        $this->hash = hash($algorithm, $credential);
+        $this->hash = hash_hmac($algorithm, $credential, $this->salt);
     }
 
     /**
@@ -63,6 +63,6 @@ class Credential
      */
     public function validateCredential($credential)
     {
-        return $credential == $this->hash;
+        return hash_hmac($this->algorithm, $credential, $this->salt) == $this->hash;
     }
 }

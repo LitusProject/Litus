@@ -3,9 +3,9 @@
 namespace Litus\Authentication;
 
 use \Litus\Authentication\Action;
-use \Litus\Authentication\Adapter;
-use \Litus\Authentication\Result;
+use \Litus\Authentication\Result\Doctrine;
 
+use \Zend\Authentication\Adapter;
 use \Zend\Authentication\AuthenticationService;
 
 class Authentication
@@ -28,11 +28,10 @@ class Authentication
     /**
      * Construct a new Authentication object.
      *
-     * @param \Litus\Authentication\Adapter $adapter The authentication adapter that should be used
+     * @param \Zend\Authentication\Adapter $adapter The authentication adapter that should be used
      * @param \Zend\Authentication\AuthenticationService $service The service that should be used
-     * @param null $namespace The namespace that should be used in the service
      */
-	public function __construct(Adapter $adapter, AuthenticationService $service, $namespace = null)
+	public function __construct(Adapter $adapter, AuthenticationService $service)
 	{
 		$this->_adapter = $adapter;
 		$this->_service = $service;
@@ -42,14 +41,13 @@ class Authentication
 	 * Authenticate the user.
 	 *
 	 * @param string $identity The provided identity
-	 * @param string $credential The provided credential
+     * @param string $credential The provided credential
      * @return void
 	 */
-	public function authenticate($identity = null, $credential = null)
+	public function authenticate($identity = '', $credential = '')
 	{
-		if ($identity !== null && $credential !== null) {
-			$this->_adapter->setIdentity($identity);
-			$this->_adapter->setCredential($credential);
+		if (('' != $identity) && ('' != $credential)) {
+			$this->_adapter->setIdentity($identity)->setCredential($credential);
 		}
 		$this->_result = $this->_service->authenticate($this->_adapter);
 	}
@@ -62,8 +60,7 @@ class Authentication
 	public function forget()
 	{
 		$this->_service->clearIdentity();
-		$this->_service->clearCredential();
-		$this->_result = null;
+		unset($this->_result);
 	}
 	
     /**
@@ -79,7 +76,7 @@ class Authentication
 	}
 	
 	/**
-	 * Return the Doctrine user object.
+	 * Return the Doctrine person object.
 	 *
 	 * @return mixed
 	 */
@@ -87,6 +84,6 @@ class Authentication
 	{
 		if (!isset($this->_result))
 			return null;
-		return $this->_result->getUserObject();
+		return $this->_result->getPersonObject();
 	}
 }

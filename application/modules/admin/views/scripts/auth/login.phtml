@@ -99,14 +99,20 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
     <header><span>Litus Admin</span>/Login</header>
 
     <section>
-        <div id="form_container">
-            <?= $this->form; ?>
-            <div id="icon"></div>
-        </div>
+        <? if(!$this->isAuthenticated): ?>
+            <div id="form_container">
+                <?= $this->form; ?>
+                <div id="icon"></div>
+            </div>
 
-        <div id="error_container" style="display: none;">
-            <p id="error_message">ERROR_MESSAGE</p>
-        </div>
+            <div id="error_container" style="display: none;">
+                <p id="error_message">ERROR_MESSAGE</p>
+            </div>
+        <? else: ?>
+            <div id="error_container">
+                <p id="error_message">You are already logged in.</p>
+            </div>
+        <? endif; ?>
     </section>
 </div>
 
@@ -117,13 +123,13 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
         $.post('/admin/auth/dologin?format=json', {formData: $('#login').serialize()}, function(data) {
             if (!data.result) {
                 if ('USERNAME_PASSWORD' == data.reason) {
-                    $('#error_message').html('Er is een fout opgetreden tijdens het aanmelden. Probeer het nog eens.');
-                } else if ('PERMISSIONS' == data.reason) {
-                    $('#error_message').html('Je hebt onvoldoende rechten om toegang te krijgen tot dit onderdeel van de site.');
+                    $('#error_message').html(
+                            'The combination of your username and password was not correct. Please try again.'
+                    );
                 }
 
                 $('#form_container').fadeOut(function() {
-                    $('#error_container').fadeIn().delay(2500).fadeOut(function() {
+                    $('#error_container').fadeIn().delay(3000).fadeOut(function() {
                         $('#password').val('');
                         $('#form_container').fadeIn();
                     });

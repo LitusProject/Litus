@@ -66,32 +66,63 @@ class AclController extends \Litus\Controller\Action
 
     public function loadAction()
     {
+        $this->broker('viewRenderer')->setNoRender();
+
         $adminResource = new Resource('admin');
         $this->getEntityManager()->persist($adminResource);
-        $this->getEntityManager()->flush();
 
+        $indexResource = new Resource('admin.index',
+            $adminResource
+        );
+        $this->getEntityManager()->persist($indexResource);
         $aclResource = new Resource('admin.acl',
-            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin')
+            $adminResource
         );
         $this->getEntityManager()->persist($aclResource);
         $authResource = new Resource('admin.auth',
-            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin')
+            $adminResource
         );
         $this->getEntityManager()->persist($authResource);
-        $this->getEntityManager()->flush();
+        $usersResource = new Resource('admin.users',
+            $adminResource
+        );
+        $this->getEntityManager()->persist($usersResource);
 
-        $addAction = new AclAction('add',
-            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.acl')
+        $indexIndexAction = new AclAction('index',
+            $indexResource
         );
-        $this->getEntityManager()->persist($addAction);
-        $manageAction = new AclAction('manage',
-            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.acl')
+        $this->getEntityManager()->persist($indexIndexAction);
+        $aclIndexAction = new AclAction('index',
+            $aclResource
         );
-        $this->getEntityManager()->persist($manageAction);
+        $this->getEntityManager()->persist($aclIndexAction);
+        $aclAddAction = new AclAction('add',
+            $aclResource
+        );
+        $this->getEntityManager()->persist($aclAddAction);
         $loginAction = new AclAction('login',
-            $this->getEntityManager()->getRepository('Litus\Entity\Acl\Resource')->findOneByName('admin.auth')
+            $authResource
         );
         $this->getEntityManager()->persist($loginAction);
-        $this->getEntityManager()->flush();
+        $dologinAction = new AclAction('dologin',
+            $authResource
+        );
+        $this->getEntityManager()->persist($dologinAction);
+        $logoutAction = new AclAction('logout',
+            $authResource
+        );
+        $this->getEntityManager()->persist($logoutAction);
+        $usersIndexAction = new AclAction('index',
+            $usersResource
+        );
+        $this->getEntityManager()->persist($usersIndexAction);
+        $usersAddAction = new AclAction('add',
+            $usersResource
+        );
+        $this->getEntityManager()->persist($usersAddAction);
+
+        $guestRole = new Role('guest');
+        $guestRole->allow($loginAction);
+        $this->getEntityManager()->persist($guestRole);
     }
 }
