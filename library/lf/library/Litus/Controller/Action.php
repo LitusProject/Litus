@@ -35,20 +35,22 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         $this->view->startExecutionTime = microtime(true);
 
-        $this->getAuthentication()->authenticate();
-
         $authenticatedUser = 'Guest';
-        if ($this->hasAccess()) {
-            if ($this->getAuthentication()->isAuthenticated())
-                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
-        } else {
-            if (!$this->getAuthentication()->isAuthenticated()) {
-                if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
-                    $this->_redirect('/admin/auth/login');
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $this->getAuthentication()->authenticate();
+
+            if ($this->hasAccess()) {
+                if ($this->getAuthentication()->isAuthenticated())
+                    $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
             } else {
-                throw new Exception\HasNoAccessException(
-                    'You do not have sufficient permissions to access this resource'
-                );
+                if (!$this->getAuthentication()->isAuthenticated()) {
+                    if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
+                        $this->_redirect('/admin/auth/login');
+                } else {
+                    throw new Exception\HasNoAccessException(
+                        'You do not have sufficient permissions to access this resource'
+                    );
+                }
             }
         }
         $this->view->authenticatedUser = $authenticatedUser;
