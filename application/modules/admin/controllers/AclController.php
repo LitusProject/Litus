@@ -83,10 +83,10 @@ class AclController extends \Litus\Controller\Action
             $adminResource
         );
         $this->getEntityManager()->persist($authResource);
-        $usersResource = new Resource('admin.users',
+        $userResource = new Resource('admin.user',
             $adminResource
         );
-        $this->getEntityManager()->persist($usersResource);
+        $this->getEntityManager()->persist($userResource);
 
         $indexIndexAction = new AclAction('index',
             $indexResource
@@ -113,11 +113,11 @@ class AclController extends \Litus\Controller\Action
         );
         $this->getEntityManager()->persist($logoutAction);
         $usersIndexAction = new AclAction('index',
-            $usersResource
+            $userResource
         );
         $this->getEntityManager()->persist($usersIndexAction);
         $usersAddAction = new AclAction('add',
-            $usersResource
+            $userResource
         );
         $this->getEntityManager()->persist($usersAddAction);
 

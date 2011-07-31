@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Form\Users;
+namespace Admin\Form\User;
 
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
@@ -65,11 +65,11 @@ class Add extends \Litus\Form\Form
                 ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $submit = new Submit('submit');
-        $submit->setLabel('Add')
+        $field = new Submit('submit');
+        $field->setLabel('Add')
                 ->setAttrib('class', 'users_add')
                 ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($submit);
+        $this->addElement($field);
     }
 
     private function _generateRoles()
