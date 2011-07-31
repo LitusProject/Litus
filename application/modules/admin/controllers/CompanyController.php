@@ -2,12 +2,12 @@
 
 namespace Admin;
 
-use \Admin\Form\Users\Add as AddForm;
+use \Admin\Form\Company\Add as AddForm;
 
 use \Litus\Entity\Users\Credential;
-use \Litus\Entity\Users\People\Academic;
+use \Litus\Entity\Users\People\Company;
 
-class UsersController extends \Litus\Controller\Action
+class CompanyController extends \Litus\Controller\Action
 {
     public function init()
     {
@@ -24,7 +24,7 @@ class UsersController extends \Litus\Controller\Action
         $form = new AddForm();
 
         $this->view->form = $form;
-        $this->view->userCreated = false;
+        $this->view->companyCreated = false;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -32,12 +32,7 @@ class UsersController extends \Litus\Controller\Action
             if ($form->isValid($formData)) {
                 $roles = array();
 
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                            ->getRepository('Litus\Entity\Acl\Role')
-                            ->findOneByName($role);
-                }
+                $formData['roles'][] = 'company';
 
                 $newCredential = new Credential(
                     'sha512',
@@ -45,17 +40,19 @@ class UsersController extends \Litus\Controller\Action
                 );
                 $this->getEntityManager()->persist($newCredential);
 
-                $newUser = new Academic(
+                $newUser = new Company(
                     $formData['username'],
                     $newCredential,
                     $roles,
                     $formData['first_name'],
                     $formData['last_name'],
-                    $formData['email']
+                    $formData['email'],
+                    $formData['company_name'],
+                    $formData['vat_number']
                 );
                 $this->getEntityManager()->persist($newUser);
 
-                $this->view->userCreated = true;
+                $this->view->companyCreated = true;
             }
         }
     }
