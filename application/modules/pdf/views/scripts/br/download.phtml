@@ -1,0 +1,12 @@
+<!-- TODO clean this up -->
+
+<?php
+
+header('Content-Type: application/pdf',true);
+header('Content-Disposition: inline; filename=filename.pdf');
+header('Cache-Control: private, max-age=0, must-revalidate');
+header('Pragma: public');
+
+echo $this->body;
+
+die();
