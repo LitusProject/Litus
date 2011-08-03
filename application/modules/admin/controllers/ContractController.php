@@ -5,6 +5,8 @@ namespace Admin;
 use \Admin\Form\Contract\Index;
 use \Admin\Form\Contract\View;
 
+use \Zend\Registry;
+
 class ContractController extends \Litus\Controller\Action
 {
 
@@ -48,9 +50,14 @@ class ContractController extends \Litus\Controller\Action
         return $result;
     }
 
+    private function _getRootDirectory()
+    {
+        return Registry::get('litus.resourcesDirectory') . '/pdf/br';
+    }
+
     public function indexAction()
     {
-        $ids = scandir('/litus/resources/pdf/br');
+        $ids = scandir($this->_getRootDirectory());
         if(!$ids)
             throw new \RuntimeExceptin();
 
@@ -61,7 +68,7 @@ class ContractController extends \Litus\Controller\Action
     {
         $this->_init();
 
-        $types = scandir('/litus/resources/pdf/br/' . $this->_id);
+        $types = scandir($this->_getRootDirectory() . '/' . $this->_id);
         if(!$types) {
             throw new \RuntimeException("An unexpected error occurred.");
         } else {
@@ -73,7 +80,7 @@ class ContractController extends \Litus\Controller\Action
     {
         $this->_init();
 
-        $this->view->body = file_get_contents('/litus/resources/pdf/br/' . $this->_id . '/' . $this->_type);
+        $this->view->body = file_get_contents($this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_type);
 
         $this->view->filename = $this->_type;
     }
