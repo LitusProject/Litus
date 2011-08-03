@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<contract location="Heverlee" date="31 augustus 2011">
+
+    <title>Contract Jobforum</title>
+
+    <our_union short_name="VTK" contact_person="Tom Aertgeerts">
+        <name><p><center><i>Vlaams Technische Kring<br/>Bedrijvenrelaties</i></center></p></name>
+        <logo>../images/logo/logo.jpg</logo>
+    </our_union>
+
+    <company contact_person="J&#x00E9;su The Gardener">
+        <name>Lunch Garden bvba</name>
+        <address>Vlak naast de dichtstbijzijnde GB<br/>Belgi&#x00EB;</address>
+    </company>
+
+    <union_address>
+        <name>VTK Ondersteuning vzw</name>
+        <address>Studentenwoonwijk Arenberg 6/1<br/>3001 Heverlee<br/>Belgi&#x00EB;</address>
+    </union_address>
+
+    <entries>
+        <entry>Het bedrijf zal deelnemen aan het VTK Jobforum, zoals omschreven in de informatiebrochure.</entry>
+        <entry>VTK garandeert geen minimum aantal studenten, maar zal zich volledig inspannen om de activiteit voldoende naambekendheid te geven en de studenten van het vierde en vijfde ingenieursjaar van haar faculteit uit te nodigen.</entry>
+        <entry>Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:<br/><euro/>1000 (excl. 21% BTW) te betalen uiterlijk 30 dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer 745-0175900-11 van VTK Ondersteuning vzw met vermelding van het factuurnummer, <single_quote>Jobforum</single_quote> en duidelijk <company_name/>.</entry>
+        <entry>Nadat aan de betalingsvoorwaarden is voldaan zal VTK voor het bedrijf definitief een plaats voorbehouden worden op het VTK Jobforum.</entry>
+        <entry>Contract opgemaakt in tweevoud te <location/> op <date/>.</entry>
+    </entries>
+
+    <sub_entries>Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden op <a href="http://br.vtk.be/1011/verkoopsvoorwaarden.html">http://br.vtk.be/1011/verkoopsvoorwaarden.html</a></sub_entries>
+
+    <footer>Vlaamse Technische Kring<br/>Faculteitskring van de burgerlijk ingenieurs aan de K.U.Leuven<br padding-after="5px"/>Studentenwijk Arenberg 6 bus 0, B-3001 Heverlee  -  KBC 745-0175900-11<br/>tel: +32-16-20.00.97   fax: +32-16-20.65.29   http://www.vtk.be/br   e-mail: br@vtk.be</footer>
+
+</contract>
