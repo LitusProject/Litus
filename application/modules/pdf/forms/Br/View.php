@@ -1,12 +1,43 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: bram
- * Date: 8/3/11
- * Time: 6:14 PM
- * To change this template use File | Settings | File Templates.
- */
- 
-class View {
 
+namespace Pdf\Form\Br;
+
+use \Litus\Form\Decorator\ButtonDecorator;
+use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Form;
+
+use \Zend\Form\Element\Select;
+use \Zend\Form\Element\Submit;
+use \Zend\Form\Element\Hidden;
+use \Zend\Registry;
+
+class View extends Form{
+
+    public function __construct($id, $types, $options = null)
+    {
+        parent::__construct($options);
+
+        $this->setAction('/pdf/br/download');
+        $this->setMethod('post');
+
+        $field = new Hidden('id');
+        $field->setValue($id);
+        $this->addElement($field);
+
+        $options = array();
+        foreach ($types as $type)
+            $options[$type] = $type;
+
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->setMultiOptions($options);
+        $this->addElement($field);
+
+        $field = new Submit('submit');
+        $field->setLabel('Download')
+            ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
+    }
 }

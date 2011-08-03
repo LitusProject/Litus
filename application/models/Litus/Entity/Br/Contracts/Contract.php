@@ -11,6 +11,7 @@ use \Litus\Entity\Users\Person;
 use \Litus\Entity\Users\People\Company;
 
 use \InvalidArgumentException;
+use \DateTime;
 
 /**
  *
@@ -36,7 +37,7 @@ class Contract
     private $sections;
 
     /**
-     * @var \DateTime The date and time when this contract was written
+     * @var DateTime The date and time when this contract was written
      *
      * @Column(type="datetime")
      */
@@ -115,7 +116,7 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @param \Litus\Entity\Users\People\Company $company
      * @return void
      */
@@ -127,7 +128,7 @@ class Contract
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
