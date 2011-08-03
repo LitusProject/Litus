@@ -1,6 +1,6 @@
 <?php
 
-namespace Pdf\Form\Br;
+namespace Admin\Form\Contract;
 
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
@@ -17,7 +17,7 @@ class View extends Form{
     {
         parent::__construct($options);
 
-        $this->setAction('/pdf/br/download');
+        $this->setAction('/admin/contract/download');
         $this->setMethod('post');
 
         $field = new Hidden('id');
