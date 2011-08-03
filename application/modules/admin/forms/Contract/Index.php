@@ -1,6 +1,6 @@
 <?php
 
-namespace Pdf\Form\Br;
+namespace Admin\Form\Contract;
 
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
@@ -16,7 +16,7 @@ class Index extends Form
     {
         parent::__construct($options);
 
-        $this->setAction('/pdf/br/view');
+        $this->setAction('/admin/contract/view');
         $this->setMethod('post');
 
         $options = array();

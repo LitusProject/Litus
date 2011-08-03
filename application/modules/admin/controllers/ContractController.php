@@ -1,11 +1,11 @@
 <?php
 
-namespace Pdf;
+namespace Admin;
 
-use \Pdf\Form\Br\Index;
-use \Pdf\Form\Br\View;
+use \Admin\Form\Contract\Index;
+use \Admin\Form\Contract\View;
 
-class BrController extends \Litus\Controller\Action
+class ContractController extends \Litus\Controller\Action
 {
 
     public function init()
@@ -74,5 +74,7 @@ class BrController extends \Litus\Controller\Action
         $this->_init();
 
         $this->view->body = file_get_contents('/litus/resources/pdf/br/' . $this->_id . '/' . $this->_type);
+
+        $this->view->filename = $this->_type;
     }
 }
