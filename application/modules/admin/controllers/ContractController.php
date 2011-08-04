@@ -2,6 +2,8 @@
 
 namespace Admin;
 
+use \Litus\Util\File as FileUtil;
+
 use \Admin\Form\Contract\Index as IndexForm;
 use \Admin\Form\Contract\ListForm;
 
@@ -67,6 +69,8 @@ class ContractController extends \Litus\Controller\Action
 
     private function _getDirectoryIterator($location)
     {
+        $location = FileUtil::getRealFilename($location);
+        
         if(!is_readable($location))
             throw new RuntimeException($location . ' is not readable by the server.');
         if(!is_dir($location))
@@ -105,6 +109,7 @@ class ContractController extends \Litus\Controller\Action
             throw new \InvalidArgumentException('need a valid contract id');
 
         $file = $this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_file;
+        $file = FileUtil::getRealFilename($file);
 
         $this->getResponse()->setHeader('Content-Length', filesize($file));
 
