@@ -16,7 +16,7 @@ class Index extends Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/contract/view');
+        $this->setAction('/admin/contract/list');
         $this->setMethod('post');
 
         $options = array();

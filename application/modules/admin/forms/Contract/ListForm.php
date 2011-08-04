@@ -11,7 +11,8 @@ use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Hidden;
 use \Zend\Registry;
 
-class View extends Form{
+// can't use List :-/
+class ListForm extends Form{
 
     public function __construct($id, $types, $options = null)
     {
@@ -35,8 +36,9 @@ class View extends Form{
             ->setMultiOptions($options);
         $this->addElement($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('download');
         $field->setLabel('Download')
+            ->setValue('download')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
