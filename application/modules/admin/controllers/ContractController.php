@@ -2,26 +2,27 @@
 
 namespace Admin;
 
-use \Admin\Form\Contract\Index;
-use \Admin\Form\Contract\View;
+use \Admin\Form\Contract\Index as IndexForm;
+use \Admin\Form\Contract\ListForm;
+
+use \RuntimeException;
+use \DirectoryIterator;
 
 use \Zend\Registry;
 
 class ContractController extends \Litus\Controller\Action
 {
+    private $_id;
+
+    private $_file;
+
 
     public function init()
     {
         parent::init();
-    }
 
-    private $_id;
-
-    private $_type;
-
-    private function _init()
-    {
         $this->_id = '0';
+        $this->_file = '';
         if($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost();
 
@@ -29,25 +30,49 @@ class ContractController extends \Litus\Controller\Action
                 $this->_id = $postData['id'];
 
             if(isset($postData['type']))
-                $this->_type = $postData['type'];
+                $this->_file = $postData['type'];
         } else {
             $this->_id = $this->getRequest()->getParam('id','0');
-            $this->_type = $this->getRequest()->getParam('type','contract');
+            $this->_file = $this->getRequest()->getParam('type','contract');
         }
-
-        if($this->_id == '0')
-            throw new \InvalidArgumentException("Need to give a pdf id to download.");
-
         $this->view->pdfId = $this->_id;
+
+        /** @var $contextSwitch \Zend\Controller\Action\Helper\ContextSwitch */
+        $contextSwitch = $this->broker('contextSwitch');
+        $contextSwitch ->setContext('pdf', array(
+                                      'headers' => array(
+                                          'Content-type' => 'application/pdf',
+                                          'Pragma' => 'public',
+                                          'Cache-Control' => 'private, max-age=0, must-revalidate',
+                                          'Content-Disposition' => 'inline; filename="' . $this->_file . '"',
+                                      ),
+                                    ))
+                ->setActionContext('download', 'pdf')
+                ->setAutoDisableLayout('true')
+                ->initContext('pdf');
     }
 
-    private function _filterArray($input)
+    private function _filterArray(DirectoryIterator $input, $fileType)
     {
         $result = array();
-        foreach ($input as $i)
-            if(($i != '.') && ($i != '..'))
-                $result[] = $i;
+        for (;$input->valid();$input->next()) {
+            if(!$input->isDot()) {
+                if ((($fileType == 'file') && $input->isFile())
+                        || (($fileType == 'dir') && $input->isDir()))
+                    $result[] = $input->getFilename();
+            }
+        }
         return $result;
+    }
+
+    private function _getDirectoryIterator($location)
+    {
+        if(!is_readable($location))
+            throw new RuntimeException($location . ' is not readable by the server.');
+        if(!is_dir($location))
+            throw new RuntimeException('Permanent error: ' . $location . ' is not a directory.');
+
+        return new DirectoryIterator($location);
     }
 
     private function _getRootDirectory()
@@ -57,31 +82,32 @@ class ContractController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $ids = scandir($this->_getRootDirectory());
-        if(!$ids)
-            throw new \RuntimeExceptin();
+        $ids = $this->_getDirectoryIterator($this->_getRootDirectory());
 
-        $this->view->form = new Index($this->_filterArray($ids));
+        $this->view->form = new IndexForm($this->_filterArray($ids, 'dir'));
     }
 
-    public function viewAction()
+    public function listAction()
     {
-        $this->_init();
+        if($this->_id == '0')
+            throw new \InvalidArgumentException('need a valid contract id');
 
-        $types = scandir($this->_getRootDirectory() . '/' . $this->_id);
-        if(!$types) {
-            throw new \RuntimeException("An unexpected error occurred.");
-        } else {
-            $this->view->form = new View($this->_id, $this->_filterArray($types));
-        }
+        $types = $this->_getDirectoryIterator($this->_getRootDirectory() . '/' . $this->_id);
+
+        $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
     }
 
     public function downloadAction()
     {
-        $this->_init();
+        $this->broker('viewRenderer')->setNoRender();
 
-        $this->view->body = file_get_contents($this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_type);
+        if($this->_id == '0')
+            throw new \InvalidArgumentException('need a valid contract id');
 
-        $this->view->filename = $this->_type;
+        $file = $this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_file;
+
+        $this->getResponse()->setHeader('Content-Length', filesize($file));
+
+        readfile($file);
     }
 }
