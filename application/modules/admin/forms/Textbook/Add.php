@@ -6,6 +6,7 @@ use Zend\Form\SubForm;
 
 use Litus\Validator\Price as PriceValidator;
 
+use \Litus\Form\Decorator\ButtonDecorator;
 use Litus\Form\Decorator\FieldDecorator;
 
 use Zend\Form\Form;
@@ -28,14 +29,14 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAttrib('id', 'add')
-        ->addDecorator('HtmlTag', array('tag' => 'div', 'id' => 'form'));
+        $this->setAction('/admin/textbook/add');
+        $this->setMethod('post');
          
         // Create text fields that will contain information for the new course
         $title = new Text('title');
         $title->setLabel('Title')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($title);
          
         $author = new Text('author');
@@ -102,7 +103,6 @@ class Add extends \Litus\Form\Form
         $this->addElement($internal);
          
         // TODO: barcode: see zend barcode validator?
-        // TODO: internal articles
 
         // Create the subform for internal articles
         $this->internal_form = new AddInternal();
@@ -110,10 +110,9 @@ class Add extends \Litus\Form\Form
 
         // Create the button
         $submit = new Submit('submit');
-        $submit->setLabel('Add');
-        $submit->setDecorators(array(
-    		'ViewHelper'
-        ));
+        $submit->setLabel('Add')
+                ->setAttrib('class', 'textbook_add')
+                ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($submit);
 
     }
