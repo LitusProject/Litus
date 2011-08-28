@@ -14,6 +14,7 @@ ul {list-style: none;}
 input, select {height: 20px; background: #fff url(../img/i.png) repeat-x; border: 1px solid #d7d4d4; color: #7f7c7c;}
 input {padding-left: 3px;}
 input[type=submit] {height: 16px; margin-top: 7px; padding: 0 4px 6px 4px; text-indent: 16px; border: none; font-weight: bold;}
+input[type=checkbox] {height: 13px;}
 select[multiple=multiple] {min-width: 100px; height: 64px;}
 
 .dashboard {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 0;}
@@ -23,6 +24,12 @@ select[multiple=multiple] {min-width: 100px; height: 64px;}
 .users_add {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -96px;}
 .companies {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -144px;}
 .companies_add {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -160px;}
+
+/* TODO: new icon for textbooks */
+.textbook {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -144px;}
+.textbook_add {padding-left: 20px; background: url(../img/icons.png) no-repeat 0 -160px;}
+
+
 
 body {background: #fff url(../img/bg.png) 50% 0 repeat-x; font-family: Tahoma, Arial, serif; font-size: 11px; color: #7f7c7c;}
 
