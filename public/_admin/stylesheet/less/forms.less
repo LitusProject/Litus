@@ -1,0 +1,34 @@
+/**
+ * Forms
+ *
+ * Copyright 2011 Litus
+ * Licensed under the
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ */
+
+input, select {
+    height: 20px;
+    background: @cWhite url(@iFormsBackground) repeat-x;
+    border: 1px solid @cBorder;
+    color: @cText;
+}
+
+input {
+    padding-left: 3px;
+}
+
+input[type=submit] {
+    height: @iconHeight;
+    margin-top: 7px;
+    padding: 0 4px 6px 4px;
+    text-indent: @iconWidth;
+    border: none;
+    font-weight: bold;
+}
+
+select[multiple=multiple] {
+    min-width: 100px;
+    height: 64px;
+}
