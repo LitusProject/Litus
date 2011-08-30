@@ -2,6 +2,8 @@
 
 namespace Admin;
 
+use Doctrine\ORM\EntityManager;
+
 use \Admin\Form\Textbook\Add;
 use \Admin\Form\Textbook\AddInternal;
 
@@ -112,5 +114,12 @@ class TextbookController extends \Litus\Controller\Action
             }
 
         }
+    }
+    
+    public function manageAction() {
+        
+        $em = $this->getEntityManager();
+        $this->view->articles = $em->getRepository('Litus\Entity\Cudi\Article')->findAll();
+        
     }
 }
