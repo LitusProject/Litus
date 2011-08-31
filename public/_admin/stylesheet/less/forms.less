@@ -16,7 +16,7 @@ input, select {
 }
 
 input {
-    padding-left: 3px;
+    padding-left: @inputIndent;
 }
 
 input[type=submit] {
@@ -34,6 +34,6 @@ input[type=checkbox] {
 }
 
 select[multiple=multiple] {
-    min-width: 100px;
-    height: 64px;
+    min-width: @multipleSelectWidth;
+    height: @multipleSelectHeight;
 }

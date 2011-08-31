@@ -1,0 +1,19 @@
+<?= $this->broker('partial')->direct('role/partials/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+    <table class="zebra-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <? foreach ($this->paginator as $role): ?>
+                <tr>
+                    <td><?= $role->getName(); ?></td>
+                </tr>
+            <? endforeach; ?>
+        </tbody>
+    </table>
+</div>
