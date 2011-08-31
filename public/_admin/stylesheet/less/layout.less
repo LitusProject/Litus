@@ -8,71 +8,345 @@
  * Author: Pieter Maene <pieter.maene@litus.cc>
  */
 
-html, body {height: 100%;}
+// Base
+html, body {
+    height: 100%;
+}
 
-body {background: #fff url(../../img/bg.png) 50% 0 repeat-x; font-family: Tahoma, Arial, serif; font-size: 11px; color: #7f7c7c;}
+body {
+    background: @cWhite url(@iBaseBackground) 50% 0 repeat-x;
+    font-family: Tahoma, Arial, serif;
+    font-size: @tSize;
+    color: @cText;
+}
 
-#layout {display: block; position: relative; width: 1100px; min-height: 100%; height: auto !important; height: 100%; margin: 0 auto -40px auto; background: #efefef;}
-#content:after {content: "."; height: 0; clear: both; visibility: hidden;}
+#layout {
+    display: block;
+    position: relative;
+    width: @layoutWidth;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -@footerHeight auto;
+    background: @cBase;
+}
 
-#content_header {height: 106px; margin-bottom: 5px; background: url(../../img/bg.png) 50% 0 repeat-x;}
-    #content_header a {position: absolute; width: 139px; height: 36px; margin: 43px 0 0 26px; display: block; background: url(../../img/litus.png) no-repeat;}
-    #content_header p {position: absolute; right: 0; top: 56px; font-size: 10px;}
-        #content_header p time {color: #fff; text-transform: uppercase;}
-    #content_header #tag {color: #ffae00; margin-top: 13px;}
+// Content
+#content:after {
+    .clearfix
+}
 
-#content_nav {float: left; width: 191px; color: #7f7c7c;}
-    .topmenu, .submenu {display: block;}
-    .topmenu {margin-bottom: 5px;}
+// Header
+#content_header {
+    height: 106px;
+    margin-bottom: @defaultSpacing;
+    background: url(@iBaseBackground) 50% 0 repeat-x;
 
-	.topmenu .title {display: block; height: 28px; margin-bottom: 5px; line-height: 28px; text-indent: 9px; font-weight: bold; background: url(../../img/m.gif); color: #161616;}
-    .topmenu li {text-indent: 9px;}
-        .topmenu li a {display: block; line-height: 19px; text-decoration: none; color: inherit;}
-            .topmenu li a:hover {color: #000;}
-            .topmenu li a:before {content: "- ";}
-            .topmenu li a:hover:before {content: "- "; color: #ffae00;}
+    a {
+        position: absolute;
+        width: 139px;
+        height: 36px;
+        margin: 43px 0 0 26px;
+        display: block;
+        background: url(@iHeaderLogo) no-repeat;
+    }
 
-	.submenu .title {display: block; height: 28px; line-height: 28px; text-indent: 9px; background: #0f0f0f; color: #ffae00; font-weight: bold; cursor: pointer;}
-  	.submenu .subtitle {display: block; height: 37px; padding-left: 9px; background: url(../../img/m.gif) 0 -28px; cursor: pointer;}
-  	    .submenu .subtitle b {color: #000;}
-  	    .submenu .subtitle p {display: block; height: 37px; padding-top: 5px; font-weight: normal;}
-  	.submenu ul {display: none; padding: 5px 0;}
-  	    .submenu ul li {display: block; padding-left: 9px; line-height: 19px;}
-  	    .submenu li a {display: block; line-height: 19px; text-decoration: none; color: inherit;}
-            .submenu li a:hover {color: #000;}
-            .submenu li a:hover:before {color: #ffae00;}
+    p {
+        position: absolute;
+        right: 0;
+        top: 56px;
+        font-size: @tSizeSmall;
 
-#content_controller {float: right; width: 898px; min-height: 300px; height: auto !important; height: 300px; padding-bottom: 5px;}
-    #controller_header {height: 28px; margin: 0 5px 5px 0; line-height: 28px; background: url(../../img/h.gif) repeat-x bottom;}
-        #controller_header .title {display: block; float: left;}
+        time {
+            color: @cWhite;
+            text-transform: uppercase;
+        }
+    }
 
-        #controller_header #controller_nav {display: block; float: right;}
-            #controller_nav li {display: inline;}
-            #controller_nav li:after {content: "|"; color: #d7d4d4;}
-            #controller_nav li:last-child:after {content: none;}
-                #controller_nav li .active {font-weight: bold;}
+    #tag {
+        margin-top: @tSizeSmall + 3;
+        color: @cAccent;
+    }
+}
 
-                #controller_nav li a {padding: 0 5px 0 1px; text-decoration: none; color: inherit;}
-                #controller_nav li:last-child a {padding-right: 0;}
-                #controller_nav li a:hover {color: #000;}
+// Navigation
+#content_nav {
+    float: left;
+    width: @leftSidebarWidth;
+    color: @cText;
 
-        .form {padding: 0;}
-            .form .row {clear: both; padding-top: 10px; width: 500px;}
-                .form .row .label {float: left; width: 150px; margin-top: 2px; height: 0px; text-align: right;}
-                .form .row .field {float: right; width: 340px; text-align: left;}
+    .topmenu, .submenu {
+        display: block;
+    }
 
-            .form .errors {clear: both; margin-left: 170px; padding-top: 2px;}
-                .form .errors li {color: #ff6633;}
-            .form .required:after {content:"*";}
+    .topmenu {
+        margin-bottom: @defaultSpacing;
 
-        .success_message {margin-top: 20px; color: #03af29;}
-        .error_message {margin-top: 20px; color: #ff6633;}
+        .title {
+            display: block;
+            height: @menuTitleHeight;
+            margin-bottom: @defaultSpacing;
+            line-height: @menuTitleHeight;
+            text-indent: @tIndent;
+            font-weight: bold;
+            color: @cTopmenuTitle;
+            background: url(@iMenuBackground);
+        }
 
-#footer_push {height: 40px; display: block; clear: both;}
+        li {
+            text-indent: @tIndent;
 
-footer {position: relative; width: 1088px; height: 40px; margin: 0 auto; line-height: 40px; text-indent: 10px; color: #7f7c7c; font-size: 10px; background: url(../../img/h.gif) repeat-x 0 0;}
-    footer a {text-decoration: underline; color: #666}
-    footer a:hover {text-decoration: none; color: inherit}
+            a {
+                display: block;
+                line-height: @menuItemHeight;
+                text-decoration: none;
+                color: inherit;
+            }
 
-    footer .development_information {float: right; margin-right: 10px;}
-    
+            a:hover {
+                color: @cBlack;
+            }
+
+            a:before {
+                content: @topMenuItem;
+            }
+
+            a:hover:before {
+                content: @topMenuItem;
+                color: @cAccent;
+            }
+        }
+    }
+
+    .submenu {
+        .title {
+            display: block;
+            height: @menuTitleHeight;
+            line-height: @menuTitleHeight;
+            text-indent: @tIndent;
+            font-weight: bold;
+            color: @cAccent;
+            cursor: pointer;
+            background: @cSubmenuBackground;
+        }
+
+        .subtitle {
+            display: block;
+            height: @menuSubtitleHeight;
+            padding-left: @tIndent;
+            background: url(@iMenuBackground) 0 -@menuTitleHeight;
+            cursor: pointer;
+
+            b {
+                color: @cBlack;
+            }
+
+            p {
+                display: block;
+                height: @menuSubtitleHeight;
+                padding-top: @defaultSpacing;
+                font-weight: normal;
+            }
+        }
+
+        ul {
+            display: none;
+            padding: @defaultSpacing 0;
+
+            li {
+                display: block;
+                padding-left: @tIndent;
+                line-height: @menuItemHeight;
+
+                a {
+                    display: block;
+                    line-height: @menuItemHeight;
+                    text-decoration: none;
+                    color: inherit;
+                }
+
+                a:hover {
+                    color: @cBlack;
+                }
+
+                a:hover:before {
+                    color: @cAccent;
+                }
+            }
+        }
+    }
+}
+
+// Controller Content
+#content_controller {
+    float: right;
+    width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing);
+    min-height: @contentHeight;
+    height: auto !important;
+    height: @contentHeight;
+    padding-bottom: @defaultSpacing;
+
+    #controller_header {
+        height: @contentHeaderHeight;
+        margin: 0 @defaultSpacing @defaultSpacing 0;
+        line-height: @contentHeaderHeight;
+        background: url(@iBorder) repeat-x bottom;
+
+        .title {
+            display: block;
+            float: left;
+        }
+
+        #controller_nav {
+            display: block;
+            float: right;
+
+            li {
+                display: inline;
+
+                .active {
+                    font-weight: bold;
+                }
+
+                a {
+                    padding: 0 @defaultSpacing 0 1px;
+                    text-decoration: none;
+                    color: inherit;
+                }
+
+                a:hover {
+                    color: @cBlack;
+                }
+            }
+
+            li:after {
+                content: @contentHeaderMenuItem;
+                color: @cBorder;
+            }
+
+            li:last-child {
+                a {
+                    padding-right: 0;
+                }
+            }
+
+            li:last-child:after {
+                content: none;
+            }
+        }
+    }
+
+    #controller_action {
+        float: left;
+
+        .form {
+            padding: 0;
+
+            .row {
+                clear: both;
+                padding-top: 2 * @defaultSpacing;
+                width: @formWidth;
+
+                .label {
+                    float: left;
+                    width: @formLabelWidth;
+                    margin-top: @formSpacing;
+                    height: 0px;
+                    text-align: right;
+                }
+
+                .field {
+                    float: right;
+                    width: @formWidth - (@formLabelWidth + 2 * @defaultSpacing);
+                    text-align: left;
+                }
+            }
+
+            .errors {
+                clear: both;
+                margin-left: @formLabelWidth + 2 * @defaultSpacing;
+                padding-top: @formSpacing;
+
+                li {
+                    color: @cError;
+                }
+            }
+
+            .required:after {
+                content: @formRequired;
+            }
+        }
+
+        // Needs to be Redone -- PSD
+        .success_message {
+            margin-top: 4 * @defaultSpacing;
+            color: @cSuccess;
+        }
+
+        .error_message {
+            margin-top: 4 * @defaultSpacing;
+            color: @cError;
+        }
+    }
+
+    aside {
+        float: right;
+        width: @sideboxWidth;
+
+        .sidebox {
+            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+            .title {
+                display: block;
+                height: @sideboxTitleHeight;
+                line-height: @sideboxTitleHeight;
+                text-indent: @tIndent;
+                text-transform: uppercase;
+                font-size: @tSizeSmall;
+                font-weight: bold;
+                color: @cWhite;
+                background: url(@iSideboxBackground) repeat-x 0 0;
+            }
+
+            .content {
+                padding: @defaultSpacing;
+                color: @cWhite;
+                background: @cSideboxBackground url(@iSideboxBackground) repeat-x 0 -@sideboxTitleHeight;
+            }
+        }
+    }
+}
+
+// Footer
+#footer_push {
+    height: @footerHeight;
+    display: block;
+    clear: both;
+}
+
+footer {
+    position: relative;
+    width: @layoutWidth - 4 * @defaultSpacing;
+    height: @footerHeight;
+    margin: 0 auto;
+    line-height: @footerHeight;
+    text-indent: 2 * @defaultSpacing;
+    color: @cText;
+    font-size: @tSizeSmall;
+    background: url(@iBorder) repeat-x 0 0;
+
+    a {
+        text-decoration: underline;
+        color: @cFooterLink;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .development_information {
+        float: right;
+        margin-right: 2 * @defaultSpacing;
+     }
+}
