@@ -4,6 +4,7 @@ ul{list-style:none;}
 input,select{height:20px;background:#ffffff url("/_admin/img/i.png") repeat-x;border:1px solid #d7d4d4;color:#7f7c7c;}
 input{padding-left:3px;}
 input[type=submit]{height:16px;margin-top:7px;padding:0 4px 6px 4px;text-indent:16px;border:none;font-weight:bold;}
+input[type=checkbox]{height:14px;margin-top:3px;}
 select[multiple=multiple]{min-width:100px;height:64px;}
 .dashboard{padding-left:20px;background:url("/_admin/img/icons.png") no-repeat 0 0;}
 .groups{padding-left:20px;background:url("/_admin/img/icons.png") no-repeat 0 -16px;}

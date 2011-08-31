@@ -28,6 +28,11 @@ input[type=submit] {
     font-weight: bold;
 }
 
+input[type=checkbox] {
+    height: @checkboxHeight;
+    margin-top: (@inputHeight - @checkboxHeight) / 2;
+}
+
 select[multiple=multiple] {
     min-width: 100px;
     height: 64px;
