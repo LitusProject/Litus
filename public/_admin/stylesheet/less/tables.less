@@ -1,0 +1,44 @@
+/**
+ * Litus
+ *
+ * Copyright 2011 Litus
+ * Licensed under the
+ *
+ * Source: Twitter Bootstrap (https://twitter.github.com/bootstrap)
+ *
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ */
+
+table {
+    width: 100%;
+    margin-bottom: @defaultSpacing;
+    padding: 0;
+    border-collapse: separate;
+    font-size: @tSize;
+
+    th, td {
+        padding: @defaultSpacing @defaultSpacing (@defaultSpacing - 1);
+        line-height: @tableHeaderHeight;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid @cBorder;
+    }
+
+    th {
+        padding-top: @defaultSpacing - 1;
+        font-weight: bold;
+        border-bottom-width: 2px;
+    }
+}
+
+.zebra-striped {
+    tbody {
+        tr:nth-child(odd) td {
+            background-color: @cTableZebra;
+        }
+
+        tr:hover td {
+            background-color: @cTableHover;
+        }
+    }
+}

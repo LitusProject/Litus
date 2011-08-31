@@ -1,9 +1,0 @@
-<?= $this->broker('partial')->direct('acl/partials/navigation.phtml', array('currentAction' => 'manage')); ?>
-
-<div id="controller_action">
-    <p>
-        <? foreach ($this->paginator as $role): ?>
-        <?= $role->getName(); ?><br />
-        <? endforeach; ?>
-    </p>
-</div>

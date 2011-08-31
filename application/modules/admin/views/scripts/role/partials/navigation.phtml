@@ -1,0 +1,10 @@
+<header id="controller_header">
+    <div class="title"><span class="groups">Groups</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/role/manage">Manage</a></li>
+            <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/role/add">Add</a></li>
+        </ul>
+    </nav>
+</header>
