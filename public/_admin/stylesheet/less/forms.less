@@ -8,6 +8,17 @@
  * Author: Pieter Maene <pieter.maene@litus.cc>
  */
 
+fieldset {
+    width: @formWidth - 2 * @defaultSpacing;
+    margin-top: 2 * @defaultSpacing;
+    border-top: 1px solid @cBorder;
+
+    legend {
+        padding: 0 @defaultSpacing 0 @fieldsetLegendPosition;
+        font-weight: bold;
+    }
+}
+
 input, select {
     height: @inputHeight;
     background: @cWhite url(@iFormsBackground) repeat-x;
@@ -38,13 +49,11 @@ select[multiple=multiple] {
     height: @multipleSelectHeight;
 }
 
-fieldset {
-    width: @formWidth - 2 * @defaultSpacing;
-    margin-top: 2 * @defaultSpacing;
-    border-top: 1px solid @cBorder;
-
-    legend {
-        padding: 0 @defaultSpacing 0 @fieldsetLegendPosition;
-        font-weight: bold;
-    }
+textarea {
+    width: @textareaWidth;
+    height: @textareaHeight;
+    padding: @inputIndent;
+    background: @cWhite url(@iFormsBackground) repeat-x;
+    border: 1px solid @cBorder;
+    color: @cText;
 }

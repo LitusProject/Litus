@@ -59,7 +59,9 @@ class RoleController extends \Litus\Controller\Action
 
     public function manageAction()
     {
-        $paginator = new Paginator(new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll()));
+        $paginator = new Paginator(
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll())
+        );
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
     }

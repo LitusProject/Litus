@@ -1,0 +1,25 @@
+<?= $this->broker('partial')->direct('section/partials/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+    <table class="zebra-striped">
+        <thead>
+            <tr>
+                <th width="100px">Name</th>
+                <th width="100px">Author</th>
+                <th width="75px">Year</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <? foreach ($this->paginator as $section): ?>
+                <tr>
+                    <td><?= $section->getName(); ?></td>
+                    <td><?= $section->getAuthor()->getFirstName(); ?> <?= $section->getAuthor()->getLastName(); ?></td>
+                    <td><?= $section->getYear(); ?></td>
+                    <td>Edit Delete</td>
+                </tr>
+            <? endforeach; ?>
+        </tbody>
+    </table>
+</div>

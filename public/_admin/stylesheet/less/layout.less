@@ -192,6 +192,7 @@ body {
         line-height: @contentHeaderHeight;
         background: url(@iBorder) repeat-x bottom;
 
+        // TODO: Fix Icon Height
         .title {
             display: block;
             float: left;
@@ -312,6 +313,14 @@ body {
                 padding: @defaultSpacing;
                 color: @cWhite;
                 background: @cSideboxBackground url(@iSideboxBackground) repeat-x 0 -@sideboxTitleHeight;
+
+                p {
+                    margin-top: 2 * @defaultSpacing;
+                }
+
+                p:first-child {
+                    margin-top: 0;
+                }
             }
         }
     }
