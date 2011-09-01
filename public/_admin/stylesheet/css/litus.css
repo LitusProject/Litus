@@ -16,6 +16,7 @@ input{padding-left:3px;}
 input[type=submit]{height:16px;margin-top:7px;padding:0 4px 6px 4px;text-indent:16px;border:none;font-weight:bold;}
 input[type=checkbox]{height:14px;margin-top:3px;}
 select[multiple=multiple]{min-width:100px;height:129px;}
+fieldset{width:490px;margin-top:10px;border-top:1px solid #d7d4d4;}fieldset legend{padding:0 5px 0 20px;font-weight:bold;}
 table{width:100%;margin-bottom:5px;padding:0;border-collapse:separate;font-size:11px;}table th,table td{padding:5px 5px 4px;line-height:15px;text-align:left;vertical-align:middle;border-bottom:1px solid #d7d4d4;}
 table th{padding-top:4px;font-weight:bold;border-bottom-width:2px;}
 .zebra-striped tbody tr:nth-child(odd) td{background-color:#ffffff;}
