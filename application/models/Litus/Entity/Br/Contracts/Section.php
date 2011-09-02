@@ -61,16 +61,16 @@ class Section {
         $this->name = $name;
     }
 
-    public function getText()
+    public function getContent()
     {
-        return $this->text;
+        return $this->content;
     }
 
-    public function setText($text)
+    public function setContent($text)
     {
         if($text === null)
             throw new InvalidArgumentException('Can\'t have a null text');
-        $this->text = $text;
+        $this->content = $text;
     }
 
     public function setAuthor(Person $author)
