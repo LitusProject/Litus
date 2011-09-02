@@ -111,7 +111,7 @@ class Add extends \Litus\Form\Form
         // Create the button
         $submit = new Submit('submit');
         $submit->setLabel('Add')
-                ->setAttrib('class', 'textbook_add')
+                ->setAttrib('class', 'textbooks_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($submit);
 

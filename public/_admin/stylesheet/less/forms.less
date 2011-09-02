@@ -8,6 +8,17 @@
  * Author: Pieter Maene <pieter.maene@litus.cc>
  */
 
+fieldset {
+    width: @formWidth - 2 * @defaultSpacing;
+    margin-top: 2 * @defaultSpacing;
+    border-top: 1px solid @cBorder;
+
+    legend {
+        padding: 0 @defaultSpacing 0 @fieldsetLegendPosition;
+        font-weight: bold;
+    }
+}
+
 input, select {
     height: @inputHeight;
     background: @cWhite url(@iFormsBackground) repeat-x;
@@ -36,4 +47,13 @@ input[type=checkbox] {
 select[multiple=multiple] {
     min-width: @multipleSelectWidth;
     height: @multipleSelectHeight;
+}
+
+textarea {
+    width: @textareaWidth;
+    height: @textareaHeight;
+    padding: @inputIndent;
+    background: @cWhite url(@iFormsBackground) repeat-x;
+    border: 1px solid @cBorder;
+    color: @cText;
 }
