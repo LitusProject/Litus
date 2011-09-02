@@ -1,0 +1,24 @@
+<?= $this->broker('partial')->direct('section/partials/navigation.phtml', array('currentAction' => 'add')); ?>
+
+<div id="controller_action">
+    <? if (!$this->sectionCreated): ?>
+        <?= $this->form; ?>
+    <? else: ?>
+        <span class="success_message">The section was successfully created!</span>
+    <? endif; ?>
+</div>
+
+<aside>
+    <div class="sidebox">
+        <div class="title">Variables</div>
+        <div class="content">
+            <p>
+                <i>These variables may be used in the text and will be substituted with their appropiate values.</i>
+            </p>
+
+            <p>
+                {COMPANY_NAME}
+            </p>
+        </div>
+    </div>
+</aside>
