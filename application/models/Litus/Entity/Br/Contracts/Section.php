@@ -77,18 +77,6 @@ class Section
         return $this;
     }
 
-<<<<<<< HEAD
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    public function setContent($text)
-    {
-        if($text === null)
-            throw new InvalidArgumentException('Can\'t have a null text');
-        $this->content = $text;
-=======
     /**
      * @return \Litus\Entity\Users\Person
      */
@@ -105,7 +93,6 @@ class Section
     {
         $this->author = $author;
         return $this;
->>>>>>> 662167eaa5df7d5fc692f7bc5952f9eab9905fa1
     }
 
     /**
