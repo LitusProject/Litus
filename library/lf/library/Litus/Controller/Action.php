@@ -36,21 +36,18 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         $this->view->startExecutionTime = microtime(true);
 
         $authenticatedUser = 'Guest';
-        if ('development' != getenv('APPLICATION_ENV')) {
-            $this->getAuthentication()->authenticate();
-
-            if ($this->hasAccess()) {
-                if ($this->getAuthentication()->isAuthenticated())
-                    $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+        $this->getAuthentication()->authenticate();
+        if ($this->hasAccess()) {
+            if ($this->getAuthentication()->isAuthenticated())
+                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+        } else {
+            if (!$this->getAuthentication()->isAuthenticated()) {
+                if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
+                    $this->_redirect('/admin/auth/login');
             } else {
-                if (!$this->getAuthentication()->isAuthenticated()) {
-                    if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
-                        $this->_redirect('/admin/auth/login');
-                } else {
-                    throw new Exception\HasNoAccessException(
-                        'You do not have sufficient permissions to access this resource'
-                    );
-                }
+                throw new Exception\HasNoAccessException(
+                    'You do not have sufficient permissions to access this resource'
+                );
             }
         }
         $this->view->authenticatedUser = $authenticatedUser;
@@ -106,6 +103,10 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     public function hasAccess()
     {
+        // Making it easier to develop new actions and controllers, without all the ACL hassle
+        if ('development' == getenv('APPLICATION_ENV'))
+            return true;
+
         $acl = new Acl();
         $request = $this->getRequest();
 

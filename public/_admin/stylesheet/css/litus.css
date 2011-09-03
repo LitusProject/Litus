@@ -54,8 +54,12 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content_controller #controller_action .form .row .field{float:right;width:340px;text-align:left;}
 #content_controller #controller_action .form .errors{clear:both;margin-left:160px;padding-top:2px;}#content_controller #controller_action .form .errors li{color:#ff6633;}
 #content_controller #controller_action .form .required:after{content:"*";}
-#content_controller #controller_action .success_message{margin-top:20px;color:#03af29;}
-#content_controller #controller_action .error_message{margin-top:20px;color:#ff6633;}
+#content_controller #controller_action .success_message{width:598px;margin:0 5px 10px 0;}#content_controller #controller_action .success_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#218621;}
+#content_controller #controller_action .success_message .content{padding:5px;color:#ffffff;background:#007400;}#content_controller #controller_action .success_message .content p{margin-top:10px;}
+#content_controller #controller_action .success_message .content p:first-child{margin-top:0;}
+#content_controller #controller_action .error_message{width:598px;margin:0 5px 10px 0;}#content_controller #controller_action .error_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#ff0000;}
+#content_controller #controller_action .error_message .content{padding:5px;color:#ffffff;background:#df0000;}#content_controller #controller_action .error_message .content p{margin-top:10px;}
+#content_controller #controller_action .error_message .content p:first-child{margin-top:0;}
 #content_controller aside{float:right;width:191px;}#content_controller aside .sidebox{margin:0 5px 10px 0;}#content_controller aside .sidebox .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:url("/_admin/img/s.gif") repeat-x 0 0;}
 #content_controller aside .sidebox .content{padding:5px;color:#ffffff;background:#fdc346 url("/_admin/img/s.gif") repeat-x 0 -20px;}#content_controller aside .sidebox .content p{margin-top:10px;}
 #content_controller aside .sidebox .content p:first-child{margin-top:0;}

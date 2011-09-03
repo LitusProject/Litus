@@ -280,13 +280,65 @@ body {
 
         // Needs to be Redone -- PSD
         .success_message {
-            margin-top: 4 * @defaultSpacing;
-            color: @cSuccess;
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+            .title {
+                display: block;
+                height: @sideboxTitleHeight;
+                line-height: @sideboxTitleHeight;
+                text-indent: @tIndent;
+                text-transform: uppercase;
+                font-size: @tSizeSmall;
+                font-weight: bold;
+                color: @cWhite;
+                background: @cSuccessTitleBackground;
+            }
+
+            .content {
+                padding: @defaultSpacing;
+                color: @cWhite;
+                background: @cSuccessBackground;
+
+                p {
+                    margin-top: 2 * @defaultSpacing;
+                }
+
+                p:first-child {
+                    margin-top: 0;
+                }
+            }
         }
 
         .error_message {
-            margin-top: 4 * @defaultSpacing;
-            color: @cError;
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+            .title {
+                display: block;
+                height: @sideboxTitleHeight;
+                line-height: @sideboxTitleHeight;
+                text-indent: @tIndent;
+                text-transform: uppercase;
+                font-size: @tSizeSmall;
+                font-weight: bold;
+                color: @cWhite;
+                background: @cErrorTitleBackground;
+            }
+
+            .content {
+                padding: @defaultSpacing;
+                color: @cWhite;
+                background: @cErrorBackground;
+
+                p {
+                    margin-top: 2 * @defaultSpacing;
+                }
+
+                p:first-child {
+                    margin-top: 0;
+                }
+            }
         }
     }
 
