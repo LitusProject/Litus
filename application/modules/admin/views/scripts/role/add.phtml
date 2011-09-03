@@ -1,11 +1,16 @@
 <?= $this->broker('partial')->direct('role/partials/navigation.phtml', array('currentAction' => 'add')); ?>
 
 <div id="controller_action">
-    <? if (!$this->roleCreated): ?>
-        <?= $this->form; ?>
-    <? else: ?>
-        <span class="success_message">The role was successfully created!</span>
+    <? if ($this->roleCreated): ?>
+        <div class="success_message">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The role was successfully created!</p>
+            </div>
+        </div>
     <? endif; ?>
+
+    <?= $this->form; ?>
 </div>
 
 <aside>
