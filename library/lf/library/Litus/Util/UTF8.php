@@ -12,6 +12,11 @@ class UTF8
      */
     public static function utf8toHtml($utf8, $encodeTags)
     {
+        if($utf8 === null)
+            return null;
+        if(!is_string($utf8))
+            throw new \InvalidArgumentException('UTF8::utf8toHtml expects a string as first parameter, not ' . gettype($utf8));
+
         $result = '';
         for ($i = 0; $i < strlen($utf8); $i++) {
             $char = $utf8[$i];

@@ -3,12 +3,15 @@
 namespace Admin;
 
 use \Litus\Util\File as FileUtil;
+use \Litus\Br\ContractGenerator;
 
 use \Admin\Form\Contract\Index as IndexForm;
 use \Admin\Form\Contract\ListForm;
 
 use \RuntimeException;
 use \DirectoryIterator;
+
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
 use \Zend\Registry;
 
@@ -37,7 +40,6 @@ class ContractController extends \Litus\Controller\Action
             $this->_id = $this->getRequest()->getParam('id','0');
             $this->_file = $this->getRequest()->getParam('type','contract');
         }
-        $this->view->pdfId = $this->_id;
 
         /** @var $contextSwitch \Zend\Controller\Action\Helper\ContextSwitch */
         $contextSwitch = $this->broker('contextSwitch');
@@ -81,7 +83,7 @@ class ContractController extends \Litus\Controller\Action
 
     private function _getRootDirectory()
     {
-        return Registry::get('litus.resourcesDirectory') . '/pdf/br';
+        return Registry::get('litus.resourceDirectory') . '/pdf/br';
     }
 
     public function indexAction()
@@ -114,5 +116,25 @@ class ContractController extends \Litus\Controller\Action
         $this->getResponse()->setHeader('Content-Length', filesize($file));
 
         readfile($file);
+    }
+
+    public function generateAction()
+    {
+        if($this->_id == '0')
+            throw new \InvalidArgumentException('need a valid contract id');
+
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = Registry::get(DoctrineResource::REGISTRY_KEY);
+        /** @var $contractRepository \Litus\Repository\Br\Contracts\Contract */
+        $contractRepository = $em->getRepository('\Litus\Entity\Br\Contracts\Contract');
+        /** @var $contract \Litus\Entity\Br\Contracts\Contract */
+        $contract = $contractRepository->find($this->_id);
+        if($contract === null)
+            throw new \InvalidArgumentException('No contract found with id ' . $this->_id . '.');
+
+        $generator = new ContractGenerator($contract);
+        $generator->generate();
+
+        $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));
     }
 }
