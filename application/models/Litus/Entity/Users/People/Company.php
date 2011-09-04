@@ -29,10 +29,13 @@ class Company extends \Litus\Entity\Users\Person
      * @param string $email  The user's e-mail address
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
+     * @param $sex string the sex of the contact person ('m' or 'f')
+     * @return \Litus\Entity\Users\People\Company
+     *
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $name, $vatNumber)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $name, $vatNumber, $sex)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email);
+        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $sex);
 
         $this->name = $name;
         $this->vatNumber = $vatNumber;

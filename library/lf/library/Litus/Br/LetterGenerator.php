@@ -50,6 +50,8 @@ class LetterGenerator extends DocumentGenerator {
         $ourContactPerson = $this->_contract->getAuthor();
         $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
 
+        $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
+
         // generate the xml
         $xml->append(new XmlObject('letter', null,
                  array(
@@ -67,10 +69,11 @@ class LetterGenerator extends DocumentGenerator {
 
                      new XmlObject('company', null,
                          array(
+                             // children of <company>
                              new XmlObject('name', null, $companyName),
                              new XmlObject('contact_person', null,
                                 array(
-                                    new XmlObject('title', null, 'mevr.'), // TODO
+                                    new XmlObject('title', null, $title),
                                     new XmlObject('first_name', null, $company->getFirstName()),
                                     new XmlObject('last_name', null, $company->getLastName())
                                 )
