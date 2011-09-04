@@ -1,5 +1,5 @@
 <!--
-  XSL stylsheet for contracts
+  XSL stylsheet for letters
 
   @author    bgotink
 -->

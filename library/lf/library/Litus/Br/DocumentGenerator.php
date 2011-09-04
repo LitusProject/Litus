@@ -29,6 +29,11 @@ abstract class DocumentGenerator
         return self::$_configs;
     }
 
+    /**
+     * @static
+     * @param $address string
+     * @return string
+     */
     protected static function _formatAddress($address)
     {
         return str_replace(',', '<br/>', $address);

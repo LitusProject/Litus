@@ -128,7 +128,7 @@ class Contract
     }
 
     /**
-     * @return Company
+     * @return \Litus\Entity\Users\People\Company
      */
     public function getCompany()
     {

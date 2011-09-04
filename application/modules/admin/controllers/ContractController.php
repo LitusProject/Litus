@@ -4,6 +4,7 @@ namespace Admin;
 
 use \Litus\Util\File as FileUtil;
 use \Litus\Br\ContractGenerator;
+use \Litus\Br\LetterGenerator;
 
 use \Admin\Form\Contract\Index as IndexForm;
 use \Admin\Form\Contract\ListForm;
@@ -132,7 +133,11 @@ class ContractController extends \Litus\Controller\Action
         if($contract === null)
             throw new \InvalidArgumentException('No contract found with id ' . $this->_id . '.');
 
+        /** @var $generator \Litus\Br\DocumentGenerator */
         $generator = new ContractGenerator($contract);
+        $generator->generate();
+
+        $generator = new LetterGenerator($contract);
         $generator->generate();
 
         $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));
