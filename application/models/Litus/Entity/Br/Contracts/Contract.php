@@ -67,10 +67,18 @@ class Contract
      */
     private $title;
 
+    /**
+     * @var int The discount the company gets, in %.
+     *
+     * @Column(type="integer")
+     */
+    private $discount;
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
         $this->setDate();
+        $this->setDiscount(0);
     }
 
     public function getTitle()
@@ -173,5 +181,27 @@ class Contract
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @throws \InvalidArgumentException if $discount is invalid
+     * @param int $discount the discount, $discount >= 0 && $discount <= 100
+     * @return \Litus\Entity\Br\Contracts\Contract
+     */
+    public function setDiscount($discount)
+    {
+        if(!is_integer($discount) || ($discount < 0) || ($discount > 100))
+            throw new InvalidArgumentException('Invalid discount: ' . $discount . '%.');
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 }

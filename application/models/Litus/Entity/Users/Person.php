@@ -23,7 +23,7 @@ use \Litus\Entity\Users\Credential;
 abstract class Person
 {
     /**
-     * @var int The person's unique identifier
+     * @var int The persons unique identifier
      *
      * @Id
      * @GeneratedValue
@@ -32,7 +32,7 @@ abstract class Person
     private $id;
 
     /**
-     * @var string The person's username
+     * @var string The persons username
      *
      * @Column(type="string", length=50)
      */
@@ -57,29 +57,46 @@ abstract class Person
     private $roles;
 
     /**
+     * @var string The persons first name
+     *
      * @Column(name="first_name", type="string", length=20)
      */
     private $firstName;
 
     /**
+     * @var string The persons last name
+     *
      * @Column(name="last_name", type="string", length=30)
      */
     private $lastName;
 
     /**
+     * @var string The users email address.
+     *
      * @Column(type="string", length=100)
      */
     private $email;
 
     /**
+     * @var string The users address
+     *
      * @Column(type="text", nullable=true)
      */
     private $address;
 
     /**
+     * @var string The persons telephone number
+     *
      * @Column(type="string", length=15, nullable=true)
      */
     private $telephone;
+
+    /**
+     * @var string The persons sex ('m' or 'f')
+     *
+     * @Column(type="string", length=1, nullable=false)
+     */
+    private $sex;
 
     /**
      * @param string $username The user's username
@@ -88,14 +105,18 @@ abstract class Person
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
      * @param string $email  The user's e-mail address
+     * @param $sex string The users sex ('m' or 'f')
+     * @return \Litus\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
     {
         $this->username = $username;
         $this->credential = $credential;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->setSex($sex);
 
         $this->roles = new ArrayCollection($roles);
     }
@@ -273,5 +294,25 @@ abstract class Person
     public function getTelephone()
     {
         return $this->telephone;
+    }
+
+    /**
+     * @throws \InvalidArgumentException if $sex is not 'm' and not 'f'
+     * @param $sex string 'm' or 'f'
+     * @return void
+     */
+    public function setSex($sex)
+    {
+        if(($sex !== 'm') && ($sex !== 'f'))
+            throw new \InvalidArgumentException('Invalid sex: ' . $sex);
+        $this->sex = $sex;
+    }
+
+    /**
+     * @return string 'm' or 'f'
+     */
+    public function getSex()
+    {
+        return $this->sex;
     }
 }

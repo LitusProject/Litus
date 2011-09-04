@@ -20,7 +20,7 @@ class Config {
     /**
      * @var string
      *
-     * @Column(type="string", nullable="false")
+     * @Column(type="text", nullable="false")
      */
     private $value;
 

@@ -11,21 +11,6 @@ class TmpFile {
 
     const REGISTRY_KEY = 'litus.tmpDirectory';
 
-    private static function _getRandomString()
-    {
-        $ret = '';
-
-        $pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $poolLen   = strlen($pool);
-
-        for ($i = 0; $i < 20; $i ++) {
-            $pos = (rand() % $poolLen);
-            $ret .= $pool{$pos};
-        }
-
-        return $ret;
-    }
-
     /**
      * @var string
      */
@@ -40,7 +25,7 @@ class TmpFile {
     {
         $file = '';
         do{
-            $file = '/.' . self::_getRandomString();
+            $file = '/.' . uniqid();
         } while (file_exists($this->_getTmpDir() . $file));
 
         $this->_filename = FileUtil::getRealFilename($this->_getTmpDir() . $file);

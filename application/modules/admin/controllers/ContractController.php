@@ -5,6 +5,7 @@ namespace Admin;
 use \Litus\Util\File as FileUtil;
 use \Litus\Br\ContractGenerator;
 use \Litus\Br\LetterGenerator;
+use \Litus\Br\InvoiceGenerator;
 
 use \Admin\Form\Contract\Index as IndexForm;
 use \Admin\Form\Contract\ListForm;
@@ -138,6 +139,9 @@ class ContractController extends \Litus\Controller\Action
         $generator->generate();
 
         $generator = new LetterGenerator($contract);
+        $generator->generate();
+
+        $generator = new InvoiceGenerator($contract);
         $generator->generate();
 
         $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));

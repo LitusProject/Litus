@@ -49,10 +49,13 @@ class Academic extends \Litus\Entity\Users\Person
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
      * @param string $email  The user's e-mail address
+     * @param $sex string The users sex
+     * @return \Litus\Entity\Users\People\Academic
+     *
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email);
+        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $sex);
 
         $this->unionStatuses = new ArrayCollection();
         $this->universityStatuses = new ArrayCollection();
