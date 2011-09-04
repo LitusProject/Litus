@@ -198,16 +198,16 @@
     </fo:block>
 </xsl:template>
 
-<xsl:template name="date_and_location" match="date_and_location">
-    <xsl:call-template name="location"/><xsl:text>, </xsl:text><xsl:call-template name="date"/>
-</xsl:template>
-
 <xsl:template name="date" match="date">
     <xsl:value-of select="/contract/@date"/>
 </xsl:template>
 
 <xsl:template name="location" match="location">
     <xsl:value-of select="/contract/@location"/>
+</xsl:template>
+
+<xsl:template name="date_and_location" match="date_and_location">
+    <xsl:call-template name="location"/><xsl:text>, </xsl:text><xsl:call-template name="date"/>
 </xsl:template>
 
 <xsl:template match="footer">

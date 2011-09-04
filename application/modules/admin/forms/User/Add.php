@@ -19,7 +19,7 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/users/add');
+        $this->setAction('/admin/user/add');
         $this->setMethod('post');
 
         $field = new Text('username');

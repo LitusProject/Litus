@@ -11,6 +11,21 @@ class TmpFile {
 
     const REGISTRY_KEY = 'litus.tmpDirectory';
 
+    private static function _getRandomString()
+    {
+        $ret = '';
+
+        $pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $poolLen   = strlen($pool);
+
+        for ($i = 0; $i < 20; $i ++) {
+            $pos = (rand() % $poolLen);
+            $ret .= $pool{$pos};
+        }
+
+        return $ret;
+    }
+
     /**
      * @var string
      */
@@ -25,11 +40,14 @@ class TmpFile {
     {
         $file = '';
         do{
-            $file = '/.' . randomString();
+            $file = '/.' . self::_getRandomString();
         } while (file_exists($this->_getTmpDir() . $file));
 
         $this->_filename = FileUtil::getRealFilename($this->_getTmpDir() . $file);
-        $this->_file = fopen($this->_filename, 'bw+');
+        $this->_file = fopen($this->_filename, 'w+b');
+
+        if(!$this->_file)
+            throw new \RuntimeException('failed to open file ' . $this->_filename);
     }
 
     public function __destruct()

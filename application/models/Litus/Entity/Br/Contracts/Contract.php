@@ -33,6 +33,7 @@ class Contract
      * @var array The sections this contract contains
      *
      * @OneToMany(targetEntity="Litus\Entity\Br\Contracts\ContractComposition", mappedBy="contract")
+     * @OrderBy({"order" = "ASC"})
      */
     private $sections;
 
@@ -59,10 +60,29 @@ class Contract
      */
     private $company;
 
+    /**
+     * @var string The title of the contract
+     *
+     * @Column(type="string", nullable="false")
+     */
+    private $title;
+
     public function __construct()
     {
-        $this->parts = new ArrayCollection();
-        setDate();
+        $this->sections = new ArrayCollection();
+        $this->setDate();
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($title)
+    {
+        if(($title === null) || !is_string($title))
+            throw new \InvalidArgumentException('Invalid title');
+        $this->title = $title;
     }
 
     /**
@@ -72,7 +92,7 @@ class Contract
      */
     public function getParts()
     {
-        return $this->parts->toArray();
+        return $this->sections->toArray();
     }
 
     /**
@@ -84,7 +104,7 @@ class Contract
      */
     public function addSection(Section $section, $order)
     {
-        $this->parts->add(new ContractComposition($this, $section, $order));
+        $this->sections->add(new ContractComposition($this, $section, $order));
     }
 
     /**
@@ -128,7 +148,7 @@ class Contract
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -145,5 +165,13 @@ class Contract
             $this->date = new \DateTime();
         else
             $this->date = $date;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
