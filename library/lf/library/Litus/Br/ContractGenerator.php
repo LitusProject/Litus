@@ -6,13 +6,9 @@ use \Zend\Registry;
 
 use \Litus\Entity\Br\Contracts\Contract;
 
-use \Litus\Util\File as FileUtil;
 use \Litus\Util\TmpFile;
 use \Litus\Util\Xml\XmlGenerator;
 use \Litus\Util\Xml\XmlObject;
-
-use \Litus\Repository\Config\Config as ConfigRepository;
-use \Litus\Entity\Config\Config as ConfigEntry;
  
 class ContractGenerator extends DocumentGenerator {
 
