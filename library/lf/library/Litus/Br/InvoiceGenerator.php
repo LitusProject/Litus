@@ -38,8 +38,9 @@ class InvoiceGenerator extends DocumentGenerator {
         $totalVat = 0;
 
         // get the content
-        $invoiceDate = $this->_contract->getDate();
-        $dueDate = $invoiceDate->add(new \DateInterval('P1M'));
+        $contractDate = $this->_contract->getDate();
+        $invoiceDate = $contractDate->format('j/m/Y');
+        $dueDate = $contractDate->add(new \DateInterval('P1M'))->format('j/m/Y');
         $clientVat = $this->_contract->getCompany()->getVatNumber();
         $reference = '/'; // TODO?
         $invoiceNb = '22xxx'; // TODO
@@ -112,8 +113,8 @@ class InvoiceGenerator extends DocumentGenerator {
                     array(
                         // children of <title>
                         new XmlObject('invoice_number', null, $invoiceNb),
-                        new XmlObject('invoice_date', null, $invoiceDate->format('j/M/Y')),
-                        new XmlObject('expiration_date', null, $dueDate->format('j/M/Y')),
+                        new XmlObject('invoice_date', null, $invoiceDate),
+                        new XmlObject('expiration_date', null, $dueDate),
                         new XmlObject('vat_client', null, $clientVat),
                         new XmlObject('reference', null, $reference)
                     )
