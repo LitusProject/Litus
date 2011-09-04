@@ -40,6 +40,7 @@ class SectionController extends \Litus\Controller\Action
                 );
                 $this->getEntityManager()->persist($newSection);
 
+                $this->view->form = new AddForm();
                 $this->view->sectionCreated = true;
             }
         }

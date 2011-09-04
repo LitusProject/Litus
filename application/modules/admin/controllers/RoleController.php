@@ -2,7 +2,7 @@
 
 namespace Admin;
 
-use \Admin\Form\Acl\Add as AddForm;
+use \Admin\Form\Role\Add as AddForm;
 
 use \Litus\Entity\Acl\Action as AclAction;
 use \Litus\Entity\Acl\Role;
@@ -52,7 +52,11 @@ class RoleController extends \Litus\Controller\Action
                 }
                 $this->getEntityManager()->persist($newRole);
 
+                // Flushing the EM so that new role shows up in the forms
+                $this->getEntityManager()->flush();
+
                 $this->view->roleCreated = true;
+                $this->view->form = new AddForm();
             }
         }
     }
