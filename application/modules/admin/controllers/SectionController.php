@@ -36,7 +36,9 @@ class SectionController extends \Litus\Controller\Action
                 $newSection = new Section(
                     $formData['name'],
                     $formData['content'],
-                    $this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject(),
+					$formData['price'],
+					$formData['vat_type']
                 );
                 $this->getEntityManager()->persist($newSection);
 

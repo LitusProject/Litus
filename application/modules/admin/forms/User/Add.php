@@ -9,6 +9,7 @@ use \Litus\Validator\IdenticalField as IdenticalFieldValidator;
 use \Zend\Form\Form;
 use \Zend\Form\Element\Multiselect;
 use \Zend\Form\Element\Password;
+use \Zend\Form\Element\Select;
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
 use \Zend\Registry;
@@ -64,6 +65,18 @@ class Add extends \Litus\Form\Form
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
+
+		$field = new Select('sex');
+		$field->setLabel('Sex')
+				->setRequired()
+				->setMultiOptions(
+						array(
+							'm' => 'M',
+							'f' => 'F'
+						)
+					)
+				->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')

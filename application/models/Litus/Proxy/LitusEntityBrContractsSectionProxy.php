@@ -48,16 +48,10 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
         return parent::setName($name);
     }
 
-    public function getText()
+    public function getAuthor()
     {
         $this->__load();
-        return parent::getText();
-    }
-
-    public function setText($text)
-    {
-        $this->__load();
-        return parent::setText($text);
+        return parent::getAuthor();
     }
 
     public function setAuthor(\Litus\Entity\Users\Person $author)
@@ -66,10 +60,16 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
         return parent::setAuthor($author);
     }
 
-    public function getAuthor()
+    public function getContent()
     {
         $this->__load();
-        return parent::getAuthor();
+        return parent::getContent();
+    }
+
+    public function setContent($content)
+    {
+        $this->__load();
+        return parent::setContent($content);
     }
 
     public function getYear()
@@ -78,10 +78,40 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
         return parent::getYear();
     }
 
+    public function setVatType($vatType)
+    {
+        $this->__load();
+        return parent::setVatType($vatType);
+    }
+
+    public function getVatType()
+    {
+        $this->__load();
+        return parent::getVatType();
+    }
+
+    public function getVat()
+    {
+        $this->__load();
+        return parent::getVat();
+    }
+
+    public function setPrice($price)
+    {
+        $this->__load();
+        return parent::setPrice($price);
+    }
+
+    public function getPrice()
+    {
+        $this->__load();
+        return parent::getPrice();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'name', 'content', 'author', 'year');
+        return array('__isInitialized__', 'name', 'content', 'author', 'year', 'price', 'vatType');
     }
 
     public function __clone()

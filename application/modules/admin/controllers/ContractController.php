@@ -23,7 +23,6 @@ class ContractController extends \Litus\Controller\Action
 
     private $_file;
 
-
     public function init()
     {
         parent::init();
@@ -45,17 +44,20 @@ class ContractController extends \Litus\Controller\Action
 
         /** @var $contextSwitch \Zend\Controller\Action\Helper\ContextSwitch */
         $contextSwitch = $this->broker('contextSwitch');
-        $contextSwitch ->setContext('pdf', array(
-                                      'headers' => array(
-                                          'Content-type' => 'application/pdf',
-                                          'Pragma' => 'public',
-                                          'Cache-Control' => 'private, max-age=0, must-revalidate',
-                                          'Content-Disposition' => 'inline; filename="' . $this->_file . '"',
-                                      ),
-                                    ))
-                ->setActionContext('download', 'pdf')
-                ->setAutoDisableLayout('true')
-                ->initContext('pdf');
+        $contextSwitch->setContext(
+				'pdf',
+				array(
+                 	'headers' => array(
+                    	'Content-type' => 'application/pdf',
+                        'Pragma' => 'public',
+                        'Cache-Control' => 'private, max-age=0, must-revalidate',
+                        'Content-Disposition' => 'inline; filename="' . $this->_file . '"'
+                	)
+				)
+			)
+			->setActionContext('download', 'pdf')
+            ->setAutoDisableLayout('true')
+            ->initContext('pdf');
     }
 
     private function _filterArray(DirectoryIterator $input, $fileType)

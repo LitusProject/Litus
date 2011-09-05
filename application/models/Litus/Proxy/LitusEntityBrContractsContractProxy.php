@@ -36,6 +36,18 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
     }
     
     
+    public function getTitle()
+    {
+        $this->__load();
+        return parent::getTitle();
+    }
+
+    public function setTitle($title)
+    {
+        $this->__load();
+        return parent::setTitle($title);
+    }
+
     public function getParts()
     {
         $this->__load();
@@ -84,10 +96,28 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::setDate($date);
     }
 
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setDiscount($discount)
+    {
+        $this->__load();
+        return parent::setDiscount($discount);
+    }
+
+    public function getDiscount()
+    {
+        $this->__load();
+        return parent::getDiscount();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'sections', 'date', 'author', 'company', 'title');
+        return array('__isInitialized__', 'id', 'sections', 'date', 'author', 'company', 'title', 'discount');
     }
 
     public function __clone()
