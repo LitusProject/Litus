@@ -198,10 +198,22 @@ class LitusEntityUsersPeopleAcademicProxy extends \Litus\Entity\Users\People\Aca
         return parent::getTelephone();
     }
 
+    public function setSex($sex)
+    {
+        $this->__load();
+        return parent::setSex($sex);
+    }
+
+    public function getSex()
+    {
+        $this->__load();
+        return parent::getSex();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath', 'universityStatuses', 'unionStatuses');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath', 'universityStatuses', 'unionStatuses');
     }
 
     public function __clone()

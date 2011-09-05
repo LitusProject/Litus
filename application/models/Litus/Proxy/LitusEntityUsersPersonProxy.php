@@ -150,10 +150,22 @@ class LitusEntityUsersPersonProxy extends \Litus\Entity\Users\Person implements 
         return parent::getTelephone();
     }
 
+    public function setSex($sex)
+    {
+        $this->__load();
+        return parent::setSex($sex);
+    }
+
+    public function getSex()
+    {
+        $this->__load();
+        return parent::getSex();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex');
     }
 
     public function __clone()
