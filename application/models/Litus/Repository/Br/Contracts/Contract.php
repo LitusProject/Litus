@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class Contract extends EntityRepository
 {
+
+    public function getAllContractIds()
+    {
+        $result =  $this->_em->createQuery('SELECT c.id FROM Litus\Entity\Br\Contracts\Contract c')->getResult();
+        $return = array();
+
+        foreach ($result as $entry)
+            $return[] = $entry['id'];
+
+        return $return;
+    }
+
 }
