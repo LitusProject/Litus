@@ -51,7 +51,8 @@ class UserController extends \Litus\Controller\Action
                     $roles,
                     $formData['first_name'],
                     $formData['last_name'],
-                    $formData['email']
+                    $formData['email'],
+					$formData['sex']
                 );
                 $this->getEntityManager()->persist($newUser);
 

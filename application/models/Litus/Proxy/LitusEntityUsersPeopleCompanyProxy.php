@@ -174,10 +174,22 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
         return parent::getTelephone();
     }
 
+    public function setSex($sex)
+    {
+        $this->__load();
+        return parent::setSex($sex);
+    }
+
+    public function getSex()
+    {
+        $this->__load();
+        return parent::getSex();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'name', 'vatNumber');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex', 'name', 'vatNumber');
     }
 
     public function __clone()

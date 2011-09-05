@@ -116,6 +116,7 @@ abstract class Person
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+
         $this->setSex($sex);
 
         $this->roles = new ArrayCollection($roles);
