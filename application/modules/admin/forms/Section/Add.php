@@ -4,6 +4,8 @@ namespace Admin\Form\Section;
 
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+use \Litus\Entity\Br\Contracts\Section;
 
 use \Zend\Form\Form;
 use \Zend\Form\Element\Select;
@@ -31,6 +33,7 @@ class Add extends \Litus\Form\Form
 		$field = new Text('price');
         $field->setLabel('Price')
                 ->setRequired()
+                ->setValue('0')
                 ->setDecorators(array(new FieldDecorator()))
 				->addValidator(new FloatValidator(
 						array('locale' => Registry::get('litus.shortLocale'))
@@ -40,7 +43,7 @@ class Add extends \Litus\Form\Form
 		$field = new Select('vat_type');
 		$field->setLabel('VAT Type')
 				->setRequired()
-				->setOptions($this->_getVatTypes())
+				->setMultiOptions($this->_getVatTypes())
 				->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -59,6 +62,13 @@ class Add extends \Litus\Form\Form
 
 	private function _getVatTypes()
 	{
-		
+        $return =  Registry::get(DoctrineResource::REGISTRY_KEY)
+                ->getRepository('Litus\Entity\Config\Config')
+                ->getAllByPrefix(Section::VAT_CONFIG_PREFIX);
+
+        foreach ($return as $key => $value)
+            $return[$key] .= '%';
+
+        return $return;
 	}
 }

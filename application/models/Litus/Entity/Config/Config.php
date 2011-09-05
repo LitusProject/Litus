@@ -63,7 +63,7 @@ class Config {
     public function setDescription($description = null)
     {
         if(($description !== null) && !is_string($description))
-            throw new InvalidArgumentException('Description must be a string or null');
+            throw new \InvalidArgumentException('Description must be a string or null');
         $this->description = $description;
     }
 }

@@ -8,7 +8,7 @@ use \Litus\Entity\Br\Contracts\Section;
 use \InvalidArgumentException;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractCompositionRepository")
+ * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractComposition")
  * @Table(
  *      name="br.contract_composition",
  *      uniqueConstraints={
