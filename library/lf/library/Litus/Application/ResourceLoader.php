@@ -26,6 +26,7 @@ class ResourceLoader extends \Zend\Application\ResourceLoader
         
         'doctrine'                  => 'Litus\Application\Resource\Doctrine',
 
-        'litus'                     => 'Litus\Application\Resource\Litus'
+        'litus'                     => 'Litus\Application\Resource\Litus',
+        'locale'                    => 'Litus\Application\Resource\Locale'
     );
 }
