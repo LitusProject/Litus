@@ -5,6 +5,7 @@ namespace Admin\Form\User;
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
 use \Litus\Validator\IdenticalField as IdenticalFieldValidator;
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
 use \Zend\Form\Form;
 use \Zend\Form\Element\Multiselect;
@@ -87,7 +88,7 @@ class Add extends \Litus\Form\Form
 
     private function _generateRoles()
     {
-        $roles = Registry::get('EntityManager')->getRepository('Litus\Entity\Acl\Role')->findAll();
+        $roles = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Acl\Role')->findAll();
         $parents = array();
         foreach ($roles as $role) {
             if ('guest' == $role->getName()) {

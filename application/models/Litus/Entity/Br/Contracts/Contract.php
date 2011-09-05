@@ -15,7 +15,7 @@ use \DateTime;
 
 /**
  *
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractRepository")
+ * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Contract")
  * @Table(name="br.contract")
  */
 class Contract

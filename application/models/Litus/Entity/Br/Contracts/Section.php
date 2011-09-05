@@ -13,12 +13,12 @@ use \Litus\Application\Resource\Doctrine as DoctrineResource;
 /**
  * A section represents a part of a Contract.
  *
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\SectionRepository")
+ * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Section")
  * @Table(name="br.contract_section")
  */
 class Section
 {
-    const VAT_CONFIG_PREFIX = 'br.invoice.vat.';
+    const VAT_CONFIG_PREFIX = 'br.invoice.vat';
 
     /**
      * @var string The name of this section
@@ -148,7 +148,7 @@ class Section
 
     /**
      * @param string $vatType The VAT type (example: in Belgium: 6%, 12%, 21% ...). The values are 'A','B' ... A value is valid if the configuration entry 'br.invoice.vat.<value>' exists.
-	 * @throws \InvalidArgumentException If $vatType is invalid
+     * @throws \InvalidArgumentException If $vatType is invalid
      * @return void
      */
     public function setVatType($vatType)
@@ -156,7 +156,7 @@ class Section
         try {
             Registry::get(DoctrineResource::REGISTRY_KEY)
             	->getRepository('Litus\Entity\Config\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . $vatType);
+                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $vatType);
         } catch (\InvalidArgumentException $e) {
             throw new InvalidArgumentException($vatType . ' is not a valid VAT type.');
         }
@@ -179,7 +179,7 @@ class Section
         return intval(
 			Registry::get(DoctrineResource::REGISTRY_KEY)
             	->getRepository('Litus\Entity\Config\Config')
-                ->getConfigValue(self::VAT_CONFIG_PREFIX . $this->getVatType())
+                ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $this->getVatType())
 		);
     }
 
