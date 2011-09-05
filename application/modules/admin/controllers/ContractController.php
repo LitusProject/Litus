@@ -92,9 +92,9 @@ class ContractController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $ids = $this->_getDirectoryIterator($this->_getRootDirectory());
-
-        $this->view->form = new IndexForm($this->_filterArray($ids, 'dir'));
+        $this->view->form = new IndexForm($this->getEntityManager()
+                    ->getRepository('Litus\Entity\Br\Contracts\Contract')
+                    ->getAllContractIds());
     }
 
     public function listAction()
@@ -102,9 +102,14 @@ class ContractController extends \Litus\Controller\Action
         if($this->_id == '0')
             $this->_forward('index');
         else {
-            $types = $this->_getDirectoryIterator($this->_getRootDirectory() . '/' . $this->_id);
+            $directory = $this->_getRootDirectory() . '/' . $this->_id;
 
-            $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
+            if(file_exists($directory)) {
+                $types = $this->_getDirectoryIterator($directory);
+                $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
+            } else {
+                $this->_forward('generate', null, null, array('id' => $this->_id));
+            }
         }
     }
 
@@ -113,7 +118,7 @@ class ContractController extends \Litus\Controller\Action
         if($this->_id == '0')
             $this->_forward('index');
         elseif($this->_file === null)
-            $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));
+            $this->_forward('list', null, null, array('id' => $this->_id));
         else {
             $this->broker('viewRenderer')->setNoRender();
 
@@ -148,6 +153,6 @@ class ContractController extends \Litus\Controller\Action
         $generator = new InvoiceGenerator($contract);
         $generator->generate();
 
-        $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));
+        $this->_forward('list', null, null, array('id' => $this->_id));
     }
 }
