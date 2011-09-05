@@ -29,7 +29,7 @@ class ContractController extends \Litus\Controller\Action
         parent::init();
 
         $this->_id = '0';
-        $this->_file = '';
+        $this->_file = null;
         if($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost();
 
@@ -40,7 +40,7 @@ class ContractController extends \Litus\Controller\Action
                 $this->_file = $postData['type'];
         } else {
             $this->_id = $this->getRequest()->getParam('id','0');
-            $this->_file = $this->getRequest()->getParam('type','contract');
+            $this->_file = $this->getRequest()->getParam('type');
         }
 
         /** @var $contextSwitch \Zend\Controller\Action\Helper\ContextSwitch */
@@ -98,26 +98,30 @@ class ContractController extends \Litus\Controller\Action
     public function listAction()
     {
         if($this->_id == '0')
-            throw new \InvalidArgumentException('need a valid contract id');
+            $this->_forward('index');
+        else {
+            $types = $this->_getDirectoryIterator($this->_getRootDirectory() . '/' . $this->_id);
 
-        $types = $this->_getDirectoryIterator($this->_getRootDirectory() . '/' . $this->_id);
-
-        $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
+            $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
+        }
     }
 
     public function downloadAction()
     {
-        $this->broker('viewRenderer')->setNoRender();
-
         if($this->_id == '0')
-            throw new \InvalidArgumentException('need a valid contract id');
+            $this->_forward('index');
+        elseif($this->_file === null)
+            $this->_forward('list', 'contract', 'admin', array('id' => $this->_id));
+        else {
+            $this->broker('viewRenderer')->setNoRender();
 
-        $file = $this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_file;
-        $file = FileUtil::getRealFilename($file);
+            $file = $this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_file;
+            $file = FileUtil::getRealFilename($file);
 
-        $this->getResponse()->setHeader('Content-Length', filesize($file));
+            $this->getResponse()->setHeader('Content-Length', filesize($file));
 
-        readfile($file);
+            readfile($file);
+        }
     }
 
     public function generateAction()
@@ -125,10 +129,8 @@ class ContractController extends \Litus\Controller\Action
         if($this->_id == '0')
             throw new \InvalidArgumentException('need a valid contract id');
 
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = Registry::get(DoctrineResource::REGISTRY_KEY);
         /** @var $contractRepository \Litus\Repository\Br\Contracts\Contract */
-        $contractRepository = $em->getRepository('\Litus\Entity\Br\Contracts\Contract');
+        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contracts\Contract');
         /** @var $contract \Litus\Entity\Br\Contracts\Contract */
         $contract = $contractRepository->find($this->_id);
         if($contract === null)
