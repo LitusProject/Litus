@@ -3,6 +3,7 @@
 namespace Admin;
 
 use \Admin\Form\Section\Add as AddForm;
+use \Admin\Form\Section\Edit as EditForm;
 
 use \Litus\Entity\Br\Contracts\Section;
 
@@ -44,6 +45,30 @@ class SectionController extends \Litus\Controller\Action
 
                 $this->view->form = new AddForm();
                 $this->view->sectionCreated = true;
+            }
+        }
+    }
+
+    public function editAction()
+    {
+        $section = $this->getEntityManager()
+                    ->getRepository('Litus\Entity\Br\Contracts\Section')
+                    ->find($this->getRequest()->getParam('id'));
+
+        $form = new EditForm($section);
+        $this->view->form = $form;
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if($form->isValid($formData)) {
+                $section->setName($formData['name'])
+                    ->setContent($formData['content'])
+                    ->setPrice($formData['price'])
+                    ->setVatType($formData['vat_type']);
+                $this->getEntityManager()->persist($section);
+
+                $this->_redirect('/admin/section/manage');
             }
         }
     }

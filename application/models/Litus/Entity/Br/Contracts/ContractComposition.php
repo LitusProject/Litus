@@ -40,7 +40,7 @@ class ContractComposition {
      * @var \Litus\Entity\Br\Contracts\Section The section described in this object.
      *
      * @ManyToOne(targetEntity="Litus\Entity\Br\Contracts\Section", fetch="EAGER")
-     * @JoinColumn(name="section", referencedColumnName="name", onDelete="CASCADE", nullable="false")
+     * @JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE", nullable="false")
      */
     // ManyToOne without a corresponding OneToMany requires a JoinColumn
     private $section;

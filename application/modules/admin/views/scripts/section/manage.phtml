@@ -17,7 +17,7 @@
                     <td><?= $section->getName(); ?></td>
                     <td><?= $section->getAuthor()->getFirstName(); ?> <?= $section->getAuthor()->getLastName(); ?></td>
                     <td><?= $section->getYear(); ?></td>
-                    <td>Edit Delete</td>
+                    <td><a href="/admin/section/edit/id/<?= $section->getId(); ?>">Edit</a> Delete</td>
                 </tr>
             <? endforeach; ?>
         </tbody>

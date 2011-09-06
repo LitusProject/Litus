@@ -14,12 +14,15 @@ use \Zend\Form\Element\Text;
 use \Zend\Form\Element\Textarea;
 use \Zend\Registry;
 use \Zend\Validator\Float as FloatValidator;
+use \Zend\Validator\Int as IntValidator;
 
 class Add extends \Litus\Form\Form
 {
     public function __construct($options = null)
     {
         parent::__construct($options);
+
+        $locale = Registry::get('litus.shortLocale');
 
         $this->setAction('/admin/section/add');
         $this->setMethod('post');
@@ -34,10 +37,10 @@ class Add extends \Litus\Form\Form
         $field->setLabel('Price')
                 ->setRequired()
                 ->setValue('0')
-                ->setDecorators(array(new FieldDecorator()))
-				->addValidator(new FloatValidator(
-						array('locale' => Registry::get('litus.shortLocale'))
-					));
+                ->setDecorators(array(new FieldDecorator()));
+//				->addValidator(new FloatValidator(
+//                       array('locale' => $locale)
+//					));
         $this->addElement($field);
 
 		$field = new Select('vat_type');

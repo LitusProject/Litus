@@ -21,10 +21,17 @@ class Section
     const VAT_CONFIG_PREFIX = 'br.invoice.vat';
 
     /**
-     * @var string The name of this section
+     * @var int The identifier of this section
      *
      * @Id
-     * @Column(type="string")
+     * @Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @var string The name of this section
+     *
+     * @Column(type="string", unique=true)
      */
     private $name;
 
@@ -149,7 +156,7 @@ class Section
     /**
      * @param string $vatType The VAT type (example: in Belgium: 6%, 12%, 21% ...). The values are 'A','B' ... A value is valid if the configuration entry 'br.invoice.vat.<value>' exists.
      * @throws \InvalidArgumentException If $vatType is invalid
-     * @return void
+     * @return \Litus\Entity\Br\Contracts\Section
      */
     public function setVatType($vatType)
     {
@@ -161,6 +168,7 @@ class Section
             throw new InvalidArgumentException($vatType . ' is not a valid VAT type.');
         }
         $this->vatType = $vatType;
+        return $this;
     }
 
     /**
@@ -185,11 +193,12 @@ class Section
 
     /**
      * @param int $price
-     * @return void
+     * @return \Litus\Entity\Br\Contracts\Section
      */
     public function setPrice($price)
     {
         $this->price = $price;
+        return $this;
     }
 
     /**
@@ -198,5 +207,13 @@ class Section
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

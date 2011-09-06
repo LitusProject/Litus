@@ -66,6 +66,19 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     }
 
     /**
+     * Flushes the entity manager and then redirects to the given url.
+     *
+     * @param $url
+     * @param array $options
+     * @return void
+     */
+    protected function _redirect($url, array $options = array())
+    {
+        $this->getEntityManager()->flush();
+        parent::_redirect($url, $options);
+    }
+
+    /**
      * Singleton implementation for the Entity Manager, retrieved
      * from the Zend Registry.
      *
