@@ -14,13 +14,15 @@ class Config extends \Zend\Application\Resource\AbstractResource {
         $options = $this->getOptions();
 
         if(!array_key_exists('config', $options))
-            throw new InitializationException('resources.litus.config not defined in application.ini');
+            throw new InitializationException(
+                'The configuration is incomplete; please define resources.litus.config in application.ini'
+            );
 
-        $env = APPLICATION_ENV;
+        $environment = APPLICATION_ENV;
         if(array_key_exists('environment', $options))
-            $env = $options['environment'];
+            $environment = $options['environment'];
 
-        $options = new ConfigFile($options['config'], $env);
+        $options = new ConfigFile($options['config'], $environment);
         $options = $options->toArray();
 
         foreach ($options as $key => $value) {
