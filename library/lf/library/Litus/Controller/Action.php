@@ -74,8 +74,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     protected function _redirect($url, array $options = array())
     {
-        $this->getEntityManager()->flush();
-        parent::_redirect($url, $options);
+        if ($this->_flush())
+            parent::_redirect($url, $options);
     }
 
     /**
@@ -90,6 +90,24 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
             self::$_entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
         }
         return self::$_entityManager;
+    }
+
+    /**
+     * Flushes the entity manager and catches ORM exceptions, which is then stored in a view variable.
+     *
+     * @return bool
+     */
+    protected function _flush()
+    {
+        try {
+            $this->getEntityManager()->flush();
+        }
+        catch(\Doctrine\ORM\ORMException $e) {
+            $this->view->ormException = $e;
+            return false;
+        }
+
+        return true;
     }
 
     /**

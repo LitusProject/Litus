@@ -92,9 +92,12 @@ class ContractController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->view->form = new IndexForm($this->getEntityManager()
-                    ->getRepository('Litus\Entity\Br\Contracts\Contract')
-                    ->getAllContractIds());
+        $this->_forward('add');
+    }
+
+    public function addAction()
+    {
+        
     }
 
     public function listAction()

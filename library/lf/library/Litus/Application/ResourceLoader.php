@@ -23,10 +23,8 @@ class ResourceLoader extends \Zend\Application\ResourceLoader
         'session'                   => 'Zend\Application\Resource\Session',
         'translate'                 => 'Zend\Application\Resource\Translate',
         'view'                      => 'Zend\Application\Resource\View',
-        
-        'doctrine'                  => 'Litus\Application\Resource\Doctrine',
 
-        'litus'                     => 'Litus\Application\Resource\Litus',
-        'locale'                    => 'Litus\Application\Resource\Locale'
+        'config'                    => 'Litus\Application\Resource\Config',
+        'doctrine'                  => 'Litus\Application\Resource\Doctrine'
     );
 }

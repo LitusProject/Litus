@@ -7,9 +7,7 @@ use \Zend\Config\Ini as ConfigFile;
 
 use \Zend\Application\Resource\Exception\InitializationException;
 
-use \Zend\Application\Resource\AbstractResource;
-
-class Litus extends AbstractResource {
+class Config extends \Zend\Application\Resource\AbstractResource {
 
     public function init()
     {
