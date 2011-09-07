@@ -22,8 +22,6 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $locale = Registry::get('litus.shortLocale');
-
         $this->setAction('/admin/section/add');
         $this->setMethod('post');
 
@@ -38,9 +36,6 @@ class Add extends \Litus\Form\Form
                 ->setRequired()
                 ->setValue('0')
                 ->setDecorators(array(new FieldDecorator()));
-//				->addValidator(new FloatValidator(
-//                       array('locale' => $locale)
-//					));
         $this->addElement($field);
 
 		$field = new Select('vat_type');
