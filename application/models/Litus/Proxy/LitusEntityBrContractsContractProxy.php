@@ -54,10 +54,10 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::getParts();
     }
 
-    public function addSection(\Litus\Entity\Br\Contracts\Section $section, $order)
+    public function addSection(\Litus\Entity\Br\Contracts\Section $section, $position)
     {
         $this->__load();
-        return parent::addSection($section, $order);
+        return parent::addSection($section, $position);
     }
 
     public function getAuthor()
