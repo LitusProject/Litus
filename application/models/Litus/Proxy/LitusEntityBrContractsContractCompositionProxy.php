@@ -81,7 +81,7 @@ class LitusEntityBrContractsContractCompositionProxy extends \Litus\Entity\Br\Co
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'contract', 'section', 'order');
+        return array('__isInitialized__', 'contract', 'section', 'order');
     }
 
     public function __clone()

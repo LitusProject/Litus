@@ -246,7 +246,7 @@ body {
             .row {
                 clear: both;
                 padding-top: 2 * @defaultSpacing;
-                width: @formWidth;
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
 
                 .label {
                     float: left;
@@ -258,7 +258,7 @@ body {
 
                 .field {
                     float: right;
-                    width: @formWidth - (@formLabelWidth + 2 * @defaultSpacing);
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
                     text-align: left;
                 }
             }
@@ -278,7 +278,6 @@ body {
             }
         }
 
-        // Needs to be Redone -- PSD
         .success_message {
             width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
             margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
@@ -337,6 +336,24 @@ body {
 
                 p:first-child {
                     margin-top: 0;
+                }
+            }
+        }
+
+        .sortable {
+            ul {
+                margin: 2 * @defaultSpacing;
+                width: @sortableListWidth;
+
+                li {
+                    margin: @defaultSpacing / 2 0;
+                    padding: @defaultSpacing inherit;
+
+                    .disableSelect
+                }
+
+                li:hover {
+                    cursor: n-resize;
                 }
             }
         }

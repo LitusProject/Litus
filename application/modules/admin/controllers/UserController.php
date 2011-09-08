@@ -35,8 +35,8 @@ class UserController extends \Litus\Controller\Action
                 $formData['roles'][] = 'guest';
                 foreach ($formData['roles'] as $role) {
                     $roles[] = $this->getEntityManager()
-                            ->getRepository('Litus\Entity\Acl\Role')
-                            ->findOneByName($role);
+                        ->getRepository('Litus\Entity\Acl\Role')
+                        ->findOneByName($role);
                 }
 
                 $newCredential = new Credential(
@@ -57,6 +57,7 @@ class UserController extends \Litus\Controller\Action
                 $this->getEntityManager()->persist($newUser);
 
                 $this->view->userCreated = true;
+                $this->view->form = new AddForm();
             }
         }
     }

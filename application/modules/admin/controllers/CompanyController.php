@@ -33,6 +33,11 @@ class CompanyController extends \Litus\Controller\Action
                 $roles = array();
 
                 $formData['roles'][] = 'company';
+                foreach ($formData['roles'] as $role) {
+                    $roles[] = $this->getEntityManager()
+                        ->getRepository('Litus\Entity\Acl\Role')
+                        ->findOneByName($role);
+                }
 
                 $newCredential = new Credential(
                     'sha512',
@@ -48,11 +53,13 @@ class CompanyController extends \Litus\Controller\Action
                     $formData['last_name'],
                     $formData['email'],
                     $formData['company_name'],
-                    $formData['vat_number']
+                    $formData['vat_number'],
+                    $formData['sex']
                 );
                 $this->getEntityManager()->persist($newUser);
 
                 $this->view->companyCreated = true;
+                $this->view->form = new AddForm();
             }
         }
     }

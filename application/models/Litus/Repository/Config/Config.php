@@ -28,7 +28,7 @@ class Config extends EntityRepository
      * @param string $prefix the prefix, example: 'litus.application'. No ending '.'!
      * @return array
      */
-    public function getAllByPrefix($prefix)
+    public function findAllByPrefix($prefix)
     {
         $configs = $this->_em->createQuery('SELECT c FROM Litus\Entity\Config\Config c WHERE c.key LIKE \'' . $prefix . '.%\'')
                         ->getResult();

@@ -20,8 +20,10 @@ class LetterGenerator extends DocumentGenerator {
 
     public function __construct(Contract $contract)
     {
-        parent::__construct(Registry::get('litus.resourceDirectory') . '/pdf_generators/letter.xsl',
-                            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/letter.pdf');
+        parent::__construct(
+            Registry::get('litus.resourceDirectory') . '/pdf_generators/letter.xsl',
+            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/letter.pdf'
+        );
         $this->_contract = $contract;
     }
 
@@ -33,7 +35,7 @@ class LetterGenerator extends DocumentGenerator {
         /** @var $configs \Litus\Repository\Config\Config */
         $configs = self::_getConfigRepository();
 
-        // get the content
+        // Get the content
         $ourUnionName = $configs->getConfigValue('br.letter.union_name');
         $ourUnionAddress = self::_formatAddress($configs->getConfigValue('br.letter.union_address'));
         $ourUnionLogo = $configs->getConfigValue('br.letter.logo');
@@ -52,7 +54,8 @@ class LetterGenerator extends DocumentGenerator {
 
         $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
 
-        // generate the xml
+        // Generate the xml
+        
         $xml->append(new XmlObject('letter', null,
                  array(
                      // children of <letter>
@@ -86,7 +89,8 @@ class LetterGenerator extends DocumentGenerator {
 
                      new XmlObject('footer', null, $footer)
                  )
-             ));
+             )
+        );
     }
 
 }

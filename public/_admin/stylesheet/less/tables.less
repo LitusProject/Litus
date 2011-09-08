@@ -10,35 +10,48 @@
  */
 
 table {
-    width: 100%;
+    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
     margin-bottom: @defaultSpacing;
     padding: 0;
     border-collapse: separate;
     font-size: @tSize;
 
-    th, td {
-        padding: @defaultSpacing @defaultSpacing (@defaultSpacing - 1);
+    th {
+        padding-right: 2 * @defaultSpacing;
+        height: @tableHeaderHeight;
         line-height: @tableHeaderHeight;
+        text-indent: @tIndent;
+        text-transform: uppercase;
+        font-size: @tSizeSmall;
+        font-weight: bold;
         text-align: left;
         vertical-align: middle;
-        border-bottom: 1px solid @cBorder;
+        background: @cTableHeader url(@iTableBackground) no-repeat right 0;
     }
 
-    th {
-        padding-top: @defaultSpacing - 1;
-        font-weight: bold;
-        border-bottom-width: 2px;
+    tr {
+        height: @tableRowHeight;
+        line-height: @tableRowHeight;
+
+        td {
+            padding-right: 2 * @defaultSpacing;
+            text-indent: @tIndent;
+            text-align: left;
+            vertical-align: middle;
+            background: @cTableBackground url(@iTableBackground) no-repeat right -@tableHeaderHeight;
+
+            a {
+                text-decoration: none;
+                color: @cText;
+            }
+
+            a:hover {
+                color: @cBlack;
+            }
+        }
     }
-}
 
-.zebra-striped {
-    tbody {
-        tr:nth-child(odd) td {
-            background-color: @cTableZebra;
-        }
-
-        tr:hover td {
-            background-color: @cTableHover;
-        }
+    th:last-child, td:last-child, {
+        background-image: none;
     }
 }

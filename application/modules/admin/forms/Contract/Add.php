@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Form\Section;
+namespace Admin\Form\Contract;
 
 use \Litus\Form\Decorator\ButtonDecorator;
 use \Litus\Form\Decorator\FieldDecorator;
@@ -26,39 +26,46 @@ class Add extends \Litus\Form\Form
 
         $field = new Select('company');
         $field->setLabel('Company')
-                ->setRequired()
-                ->setMultiOptions($this->_getCompanies())
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setMultiOptions($this->_getCompanies())
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+        $field = new Text('discount');
+        $field->setLabel('Discount Percentage')
+            ->setRequired()
+            ->setValue('0')
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('title');
-        $field->setLabel('Title')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+        $field->setLabel('Contract Title')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Multiselect('sections');
         $field->setLabel('Sections')
-                ->setRequired()
-                ->setMultiOptions($this->_getSections())
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setMultiOptions($this->_getSections())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'contract_add')
-                ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'contracts_add')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
 
     private function _getCompanies()
     {
-        $result = Registry::get(DoctrineResource::REGISTRY_KEY)
-                ->getRepository('Litus\Entity\Users\People\Company')
-                ->findAll();
+        $companies = Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\Users\People\Company')
+            ->findAll();
 
         $companiesArray = array();
-        foreach ($result as $company)
+        foreach ($companies as $company)
             $companiesArray[$company->getId()] = $company->getName();
 
         return $companiesArray;
@@ -66,13 +73,13 @@ class Add extends \Litus\Form\Form
 
     private function _getSections()
     {
-        $result = Registry::get(DoctrineResource::REGISTRY_KEY)
-                ->getRepository('Litus\Entity\Config\Config')
-                ->getAllByPrefix(Section::VAT_CONFIG_PREFIX);
+        $sections = Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\Br\Contracts\Section')
+            ->findAll();
 
         $sectionsArray = array();
-        foreach ($result as $key => $value)
-            $sectionsArray[$key] .= '%';
+        foreach ($sections as $section)
+            $sectionsArray[$section->getId()] = $section->getName();
 
         return $sectionsArray;
     }

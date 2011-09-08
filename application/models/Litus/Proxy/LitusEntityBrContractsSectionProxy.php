@@ -36,6 +36,12 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
     public function getName()
     {
         $this->__load();
@@ -111,7 +117,7 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'name', 'content', 'author', 'year', 'price', 'vatType');
+        return array('__isInitialized__', 'id', 'name', 'content', 'author', 'year', 'price', 'vatType');
     }
 
     public function __clone()

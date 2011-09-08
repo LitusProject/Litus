@@ -21,10 +21,11 @@ class Section
     const VAT_CONFIG_PREFIX = 'br.invoice.vat';
 
     /**
-     * @var int The identifier of this section
+     * @var int A generated ID
      *
      * @Id
-     * @Column(type="integer")
+     * @Column(type="bigint")
+     * @GeneratedValue
      */
     private $id;
 
@@ -89,6 +90,14 @@ class Section
         $this->setVatType($vatType);
 
         $this->year = AcademicYear::getAcademicYear();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -207,13 +216,5 @@ class Section
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }

@@ -3,6 +3,7 @@
 namespace Admin;
 
 use \Admin\Form\Auth\Login as LoginForm;
+
 use \Zend\Json\Json;
 
 class AuthController extends \Litus\Controller\Action
@@ -14,10 +15,10 @@ class AuthController extends \Litus\Controller\Action
         parent::init();
 
         $this->broker('contextSwitch')
-                ->addActionContext('dologin', 'json')
-                ->setAutoDisableLayout(false)
-                ->setAutoJsonSerialization(false)
-                ->initContext();
+            ->addActionContext('dologin', 'json')
+            ->setAutoDisableLayout(false)
+            ->setAutoJsonSerialization(false)
+            ->initContext();
         $this->broker('layout')->disableLayout();
 
         $this->_json = new Json();
@@ -39,9 +40,7 @@ class AuthController extends \Litus\Controller\Action
 
     public function dologinAction()
     {
-        if (!$this->getRequest()->isXmlHttpRequest())
-            throw new \Litus\Controller\Request\Exception\NoXmlHttpRequestException();
-        $this->broker('viewRenderer')->setNoRender();
+        $this->_initAjax();
 
         $postData = $this->getRequest()->getPost();
         parse_str($postData['formData'], $formData);
