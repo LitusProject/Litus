@@ -52,7 +52,7 @@ class RoleController extends \Litus\Controller\Action
                 }
                 $this->getEntityManager()->persist($newRole);
 
-                // Flushing the EM so that new role shows up in the forms
+                // Flushing the EM so that new role is displayed
                 $this->getEntityManager()->flush();
 
                 $this->view->roleCreated = true;

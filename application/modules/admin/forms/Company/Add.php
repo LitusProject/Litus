@@ -27,7 +27,8 @@ class Add extends \Admin\Form\User\Add
                 'verify_credential',
                 'first_name',
                 'last_name',
-                'email'
+                'email',
+                'sex'
             ),
             'contact_information'
         );
@@ -38,14 +39,14 @@ class Add extends \Admin\Form\User\Add
 
         $field = new Text('company_name');
         $field->setLabel('Company Name')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('vat_number');
         $field->setLabel('VAT Number')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $this->addDisplayGroup(
@@ -62,8 +63,8 @@ class Add extends \Admin\Form\User\Add
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'companies_add')
-                ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'companies_add')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
 }

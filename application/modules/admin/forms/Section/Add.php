@@ -13,8 +13,6 @@ use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
 use \Zend\Form\Element\Textarea;
 use \Zend\Registry;
-use \Zend\Validator\Float as FloatValidator;
-use \Zend\Validator\Int as IntValidator;
 
 class Add extends \Litus\Form\Form
 {
@@ -27,46 +25,47 @@ class Add extends \Litus\Form\Form
 
         $field = new Text('name');
         $field->setLabel('Name')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
 		$field = new Text('price');
         $field->setLabel('Price')
-                ->setRequired()
-                ->setValue('0')
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setValue('0')
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
 		$field = new Select('vat_type');
 		$field->setLabel('VAT Type')
-				->setRequired()
-				->setMultiOptions($this->_getVatTypes())
-				->setDecorators(array(new FieldDecorator()));
+		    ->setRequired()
+			->setMultiOptions($this->_getVatTypes())
+			->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Textarea('content');
         $field->setLabel('Content')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'sections_add')
-                ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'contracts_add')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
 
 	private function _getVatTypes()
 	{
-        $return =  Registry::get(DoctrineResource::REGISTRY_KEY)
-                ->getRepository('Litus\Entity\Config\Config')
-                ->getAllByPrefix(Section::VAT_CONFIG_PREFIX);
+        $types =  Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\Config\Config')
+            ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
 
-        foreach ($return as $key => $value)
-            $return[$key] .= '%';
+        $typesArray = array();
+        foreach ($types as $type => $value)
+            $typesArray[$type] = $value . '%';
 
-        return $return;
+        return $typesArray;
 	}
 }

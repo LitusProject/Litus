@@ -1,9 +1,9 @@
 <header id="controller_header">
-    <div class="title"><span class="sections">Contracts</span></div>
+    <div class="title"><span class="contracts">Contracts</span></div>
 
     <nav id="controller_nav">
         <ul>
-            <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/contract/">Download</a></li>
+            <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/contract/add">Add</a></li>
         </ul>
     </nav>
 </header>

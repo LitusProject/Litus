@@ -61,8 +61,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     public function postDispatch()
     {
         $this->view->doctrineUnitOfWork = $this->getEntityManager()->getUnitOfWork()->size();
-
-        $this->getEntityManager()->flush();
+        $this->view->flushResult = $this->_flush();
     }
 
     /**
@@ -74,6 +73,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     protected function _redirect($url, array $options = array())
     {
+        $this->view->flushResult = $this->_flush();
+
         if ($this->_flush())
             parent::_redirect($url, $options);
     }
@@ -99,15 +100,29 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     protected function _flush()
     {
+        if ('development' == getenv('APPLICATION_ENV'))
+            $this->getEntityManager()->flush();
+        
         try {
             $this->getEntityManager()->flush();
         }
-        catch(\Doctrine\ORM\ORMException $e) {
-            $this->view->ormException = $e;
+        catch (\PDOException $e) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Does some initialization work for asynchronously requested actions.
+     *
+     * @return void
+     */
+    protected function _initAjax()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest())
+            throw new \Litus\Controller\Request\Exception\NoXmlHttpRequestException();
+        $this->broker('viewRenderer')->setNoRender();
     }
 
     /**

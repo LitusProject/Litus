@@ -36,28 +36,22 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
     }
     
     
-    public function getTitle()
+    public function getId()
     {
         $this->__load();
-        return parent::getTitle();
+        return parent::getId();
     }
 
-    public function setTitle($title)
+    public function getDate()
     {
         $this->__load();
-        return parent::setTitle($title);
+        return parent::getDate();
     }
 
-    public function getParts()
+    public function setDate()
     {
         $this->__load();
-        return parent::getParts();
-    }
-
-    public function addSection(\Litus\Entity\Br\Contracts\Section $section, $position)
-    {
-        $this->__load();
-        return parent::addSection($section, $position);
+        return parent::setDate();
     }
 
     public function getAuthor()
@@ -84,22 +78,28 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::setCompany($company);
     }
 
-    public function getDate()
+    public function getParts()
     {
         $this->__load();
-        return parent::getDate();
+        return parent::getParts();
     }
 
-    public function setDate(\DateTime $date = NULL)
+    public function addSection(\Litus\Entity\Br\Contracts\Section $section, $position)
     {
         $this->__load();
-        return parent::setDate($date);
+        return parent::addSection($section, $position);
     }
 
-    public function getId()
+    public function addSections(array $sections)
     {
         $this->__load();
-        return parent::getId();
+        return parent::addSections($sections);
+    }
+
+    public function updateSections(array $sections)
+    {
+        $this->__load();
+        return parent::updateSections($sections);
     }
 
     public function setDiscount($discount)
@@ -114,10 +114,22 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::getDiscount();
     }
 
+    public function getTitle()
+    {
+        $this->__load();
+        return parent::getTitle();
+    }
+
+    public function setTitle($title)
+    {
+        $this->__load();
+        return parent::setTitle($title);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'sections', 'date', 'author', 'company', 'title', 'discount');
+        return array('__isInitialized__', 'id', 'date', 'author', 'company', 'sections', 'discount', 'title');
     }
 
     public function __clone()

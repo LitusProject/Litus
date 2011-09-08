@@ -12,7 +12,7 @@ use \Zend\Form\Element\Hidden;
 use \Zend\Registry;
 
 // can't use List :-/
-class ListForm extends Form{
+class ListForm extends Form {
 
     public function __construct($id, $types, $options = null)
     {

@@ -34,7 +34,7 @@ class Contract
      * @var \Litus\Entity\Users\Person The author of this contract
      *
      * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="LAZY")
-     * @JoinColumn(name="author", referencedColumnName="id", nullable="false")
+     * @JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
 
@@ -42,14 +42,19 @@ class Contract
      * @var \Litus\Entity\Users\People\Company The company for which this contract is meant
      *
      * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company", fetch="LAZY")
-     * @JoinColumn(name="company", referencedColumnName="id", nullable="false")
+     * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 
     /**
      * @var \Litus\Entity\Br\Contracts\ContractComposition The sections this contract contains
      *
-     * @OneToMany(targetEntity="Litus\Entity\Br\Contracts\ContractComposition", mappedBy="contract")
+     * @OneToMany(
+     *      targetEntity="Litus\Entity\Br\Contracts\ContractComposition",
+     *      mappedBy="contract",
+     *      cascade={"all"},
+     *      orphanRemoval=true
+     * )
      * @OrderBy({"order" = "ASC"})
      */
     private $composition;
@@ -82,7 +87,7 @@ class Contract
         $this->setDiscount($discount);
         $this->setTitle($title);
 
-        $this->sections = new ArrayCollection();
+        $this->composition = new ArrayCollection();
     }
 
     /**
@@ -159,9 +164,20 @@ class Contract
     /**
      * @return array
      */
-    public function getParts()
+    public function getComposition()
     {
-        return $this->sections->toArray();
+        return $this->composition->toArray();
+    }
+
+    /**
+     * @return \Litus\Entity\Br\Contracts\Contract
+     */
+    public function resetComposition()
+    {
+        foreach ($this->composition as $compositionElement)
+            $this->composition->removeElement($compositionElement);
+
+        return $this;
     }
 
     /**
@@ -171,7 +187,7 @@ class Contract
      */
     public function addSection(Section $section, $position)
     {
-        $this->sections->add(
+        $this->composition->add(
             new ContractComposition($this, $section, $position)
         );
 
@@ -198,7 +214,7 @@ class Contract
      */
     public function setDiscount($discount)
     {
-        if (!is_integer($discount) || ($discount < 0) || ($discount > 100))
+        if (($discount < 0) || ($discount > 100))
             throw new \InvalidArgumentException('Invalid discount');
         $this->discount = $discount;
 

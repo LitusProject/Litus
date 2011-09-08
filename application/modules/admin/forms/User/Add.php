@@ -88,12 +88,20 @@ class Add extends \Litus\Form\Form
 
     private function _generateRoles()
     {
-        $roles = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Acl\Role')->findAll();
+        $hiddenRoles = array(
+            'guest',
+            'company'
+        );
+
+        $roles = Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\Acl\Role')
+            ->findAll();
+
         $parents = array();
         foreach ($roles as $role) {
-            if ('guest' == $role->getName()) {
+            if (in_array($role->getName(), $hiddenRoles))
                 continue;
-            }
+            
             $parents[$role->getName()] = $role->getName();
         }
         return $parents;

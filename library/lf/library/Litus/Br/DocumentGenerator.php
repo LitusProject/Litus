@@ -2,11 +2,10 @@
 
 namespace Litus\Br;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Util\TmpFile;
 
 use \Zend\Registry;
-
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
 abstract class DocumentGenerator
 {

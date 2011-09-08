@@ -2,14 +2,14 @@
 
 namespace Litus\Br;
 
-use \Zend\Registry;
-
 use \Litus\Entity\Br\Contracts\Contract;
 
 use \Litus\Util\TmpFile;
 use \Litus\Util\Xml\XmlGenerator;
 use \Litus\Util\Xml\XmlObject;
- 
+
+use \Zend\Registry;
+
 class ContractGenerator extends DocumentGenerator {
 
     /**
@@ -19,8 +19,10 @@ class ContractGenerator extends DocumentGenerator {
 
     public function __construct(Contract $contract)
     {
-        parent::__construct(Registry::get('litus.resourceDirectory') . '/pdf_generators/contract.xsl',
-                            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/contract.pdf');
+        parent::__construct(
+            Registry::get('litus.resourceDirectory') . '/pdf_generators/contract.xsl',
+            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/contract.pdf'
+        );
         $this->_contract = $contract;
     }
 
@@ -29,7 +31,7 @@ class ContractGenerator extends DocumentGenerator {
         /** @var \Litus\Util\Xml\XmlGenerator $xml */
         $xml = new XmlGenerator($tmpFile);
 
-        // get the content
+        // Get the content
 
         /** @var \Litus\Repository\Config\Config $configs  */
         $configs = self::_getConfigRepository();
@@ -54,67 +56,64 @@ class ContractGenerator extends DocumentGenerator {
         $sub_entries = $configs->getConfigValue('br.contract.sub_entries');
         $footer = $configs->getConfigValue('br.contract.footer');
 
-        // generate the xml
+        // Generate the xml
 
-        // <entry>s
         $entry_s = array();
         foreach($entries as $entry) {
             $entry_s[] = new XmlObject('entry', null, $entry->getSection()->getContent());
         }
 
         $xml->append(new XmlObject('contract',
-            // params of contract
-            array('location' => $location,
-                'date' => $date),
-            // children of contract
+            // params of <contract>
             array(
-                // contract title
+                'location' => $location,
+                'date' => $date
+            ),
+
+            // children of <contract>
+            array(
                 new XmlObject('title',null,$title),
 
-                // our_union
-                new XmlObject('our_union',
-                    // our_union parameters
+                new XmlObject(
+                    'our_union',
+
+                    // params of <our_union>
                     array(
                          'short_name' => $unionNameShort,
                          'contact_person' => $ourContactPerson
                     ),
 
-                    // our_union children
+                    // children of <our_union>
                     array(
                         new XmlObject('name', null, $brName),
                         new XmlObject('logo', null, $logo)
                     )
                 ),
 
-                // company
                 new XmlObject('company',
-                    // company parameters
+                    // params of <company>
                     array('contact_person' => $company->getFirstName() . ' ' . $company->getLastName()),
 
-                    // company children
+                    // children of <company>
                     array(
                         new XmlObject('name', null, $company->getName()),
                         new XmlObject('address', null, self::_formatAddress($company->getAddress()))
                     )
                 ),
 
-                // union_address
                 new XmlObject('union_address', null, array(
-                        // union_address children
+
+                        // children of <union_address>
                         new XmlObject('name', null, $unionName),
                         new XmlObject('address', null, self::_formatAddress($unionAddress))
                 )),
 
-                // entries
                 new XmlObject('entries', null, $entry_s),
 
-                // sub_entries
                 new XmlObject('sub_entries', null, $sub_entries),
 
-                // footer
                 new XmlObject('footer', null, $footer)
             )
         ));
     }
-    
 }

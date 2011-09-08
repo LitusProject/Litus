@@ -37,7 +37,8 @@ class InvoiceGenerator extends DocumentGenerator {
         $totalExclusive = 0;
         $totalVat = 0;
 
-        // get the content
+        // Get the content
+
         $contractDate = $this->_contract->getDate();
         $invoiceDate = $contractDate->format('j/m/Y');
         $dueDate = $contractDate->add(new \DateInterval('P1M'))->format('j/m/Y');
@@ -86,7 +87,7 @@ class InvoiceGenerator extends DocumentGenerator {
             $count++;
         }
 
-        // append two more empty lines
+        // Append two more empty lines
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
