@@ -41,7 +41,7 @@ class InvoiceGenerator extends DocumentGenerator {
 
         $contractDate = $this->_contract->getDate();
         $invoiceDate = $contractDate->format('j/m/Y');
-        $dueDate = $contractDate->add(new \DateInterval('P1M'))->format('j/m/Y');
+        $dueDate = $contractDate->add(new \DateInterval('P30D'))->format('j/m/Y');
         $clientVat = $this->_contract->getCompany()->getVatNumber();
         $reference = '/'; // TODO?
         $invoiceNb = '22xxx'; // TODO
@@ -62,7 +62,7 @@ class InvoiceGenerator extends DocumentGenerator {
 
         $count = 0;
         $entries = array();
-        foreach ($this->_contract->getParts() as $part) {
+        foreach ($this->_contract->getComposition() as $part) {
             /** @var $section \Litus\Entity\Br\Contracts\Section */
             $section = $part->getSection();
             $price = $section->getPrice();

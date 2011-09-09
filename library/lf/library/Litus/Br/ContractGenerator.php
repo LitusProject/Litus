@@ -42,7 +42,7 @@ class ContractGenerator extends DocumentGenerator {
         $date = $this->_contract->getDate()->format('j F Y');
         $ourContactPerson = $this->_contract->getAuthor();
         $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
-        $entries = $this->_contract->getParts();
+        $entries = $this->_contract->getComposition();
 
         $unionName = $configs->getConfigValue('br.contract.union_name');
         $unionNameShort = $configs->getConfigValue('br.contract.union_name_short');

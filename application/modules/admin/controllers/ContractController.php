@@ -187,9 +187,11 @@ class ContractController extends \Litus\Controller\Action
 
     public function listAction()
     {
-        if ($this->_id == '0')
-            $this->_forward('index');
-        else {
+        if ($this->_id == '0') {
+            $this->view->form = new IndexForm($this->getEntityManager()
+                    ->getRepository('Litus\Entity\Br\Contracts\Contract')
+                    ->getAllContractIds());
+        } else {
             $directory = $this->_getRootDirectory() . '/' . $this->_id;
 
             if (file_exists($directory)) {
@@ -204,7 +206,7 @@ class ContractController extends \Litus\Controller\Action
     public function downloadAction()
     {
         if ($this->_id == '0')
-            $this->_forward('index');
+            $this->_forward('list');
         elseif ($this->_file === null)
             $this->_forward('list', null, null, array('id' => $this->_id));
         else {

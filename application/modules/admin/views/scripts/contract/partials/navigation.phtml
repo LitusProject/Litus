@@ -4,6 +4,7 @@
     <nav id="controller_nav">
         <ul>
             <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/contract/add">Add</a></li>
+            <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="/admin/contract/list">Download</a></li>
         </ul>
     </nav>
 </header>
