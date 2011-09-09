@@ -66,16 +66,16 @@ class LitusEntityBrContractsContractCompositionProxy extends \Litus\Entity\Br\Co
         return parent::setSection($section);
     }
 
-    public function getOrder()
+    public function getPosition()
     {
         $this->__load();
-        return parent::getOrder();
+        return parent::getPosition();
     }
 
-    public function setOrder($order)
+    public function setPosition($position)
     {
         $this->__load();
-        return parent::setOrder($order);
+        return parent::setPosition($position);
     }
 
 

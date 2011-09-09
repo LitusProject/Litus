@@ -10,7 +10,7 @@ use \Litus\Entity\Br\Contracts\Section;
  * @Table(
  *      name="br.contract_composition",
  *      uniqueConstraints={
- *          @UniqueConstraint(name="contract_order_unique", columns={"contract", "order_no"}),
+ *          @UniqueConstraint(name="contract_position_unique", columns={"contract", "position"}),
  *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
  *      }
  * )
@@ -38,23 +38,23 @@ class ContractComposition
     private $section;
 
     /**
-     * @var int The order number of the section in the contract
+     * @var int The position number of the section in the contract
      *
      * @Id
-     * @Column(name="order_no", type="integer")
+     * @Column(type="integer")
      */
-    private $order;
+    private $position;
 
     /**
      * @param \Litus\Entity\Br\Contracts\Contract $contract The contract this object is a part of
      * @param \Litus\Entity\Br\Contracts\Section $section The section described in this object
-     * @param int $order The order number of the section in the contract
+     * @param int $position The position number of the section in the contract
      */
-    public function __construct(Contract $contract, Section $section, $order)
+    public function __construct(Contract $contract, Section $section, $position)
     {
         $this->setContract($contract);
         $this->setSection($section);
-        $this->setOrder($order);
+        $this->setPosition($position);
     }
 
     /**
@@ -112,23 +112,23 @@ class ContractComposition
     /**
      * @return int
      */
-    public function getOrder()
+    public function getPosition()
     {
-        return $this->order;
+        return $this->position;
     }
 
     /**
-     * Sets the order to the given value.
+     * Sets the position to the given value.
      *
-     * @throws \InvalidArgumentException if $order is not a positive integer
-     * @param $order int
+     * @throws \InvalidArgumentException if $position is not a positive integer
+     * @param $position int
      * @return \Litus\Entity\Br\Contracts\ContractComposition
      */
-    public function setOrder($order)
+    public function setPosition($position)
     {
-        if($order < 0)
-            throw new \InvalidArgumentException("Order must be a positive number");
-        $this->order = round($order);
+        if($position < 0)
+            throw new \InvalidArgumentException("Position must be a positive number");
+        $this->position = round($position);
 
         return $this;
     }
