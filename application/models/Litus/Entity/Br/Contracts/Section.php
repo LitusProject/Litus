@@ -73,6 +73,13 @@ class Section
     private $vatType;
 
     /**
+     * @var string The short description of this Section shown in invoices
+     *
+     * @Column(name="invoice_description", type="string", nullable=true)
+     */
+    private $invoiceDescription;
+
+    /**
      * @param string $name The name of this section
      * @param string $content The content of this section
      * @param \Litus\Entity\Users\Person $author The author of this section
@@ -88,6 +95,8 @@ class Section
         $this->author = $author;
         $this->price = $price;
         $this->setVatType($vatType);
+
+        $this->setInvoiceDescription();
 
         $this->year = AcademicYear::getAcademicYear();
     }
@@ -216,5 +225,23 @@ class Section
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceDescription()
+    {
+        return $this->invoiceDescription;
+    }
+
+    /**
+     * @param string|null $description
+     * @return \Litus\Entity\Br\Contracts\Section
+     */
+    public function setInvoiceDescription($description = null)
+    {
+        $this->invoiceDescription = $description;
+        return $this;
     }
 }

@@ -43,6 +43,12 @@ class Add extends \Litus\Form\Form
 			->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
+        $field = new Text('invoice_description');
+        $field->setLabel('Description on invoice')
+            ->setRequired(false)
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
         $field = new Textarea('content');
         $field->setLabel('Content')
             ->setRequired()

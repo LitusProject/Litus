@@ -41,6 +41,12 @@ class SectionController extends \Litus\Controller\Action
 					$formData['price'],
 					$formData['vat_type']
                 );
+
+                if($formData['invoice_description'] == '')
+                    $newSection->setInvoiceDescription(null);
+                else
+                    $newSection->setInvoiceDescription($formData['invoice_description']);
+                
                 $this->getEntityManager()->persist($newSection);
 
                 $this->view->form = new AddForm();
@@ -66,6 +72,12 @@ class SectionController extends \Litus\Controller\Action
                     ->setContent($formData['content'])
                     ->setPrice($formData['price'])
                     ->setVatType($formData['vat_type']);
+
+                if($formData['invoice_description'] == '')
+                    $section->setInvoiceDescription(null);
+                else
+                    $section->setInvoiceDescription($formData['invoice_description']);
+
                 $this->getEntityManager()->persist($section);
 
                 $this->_redirect('/admin/section/manage');

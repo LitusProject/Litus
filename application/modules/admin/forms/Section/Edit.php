@@ -29,7 +29,8 @@ class Edit extends Add
                 'name'      => $section->getName(),
                 'price'     => $section->getPrice(),
                 'vat_type'  => $section->getVatType(),
-                'content'   => $section->getContent()
+                'content'   => $section->getContent(),
+                'invoice_description'   => $section->getInvoiceDescription() 
             )
         );
     }
