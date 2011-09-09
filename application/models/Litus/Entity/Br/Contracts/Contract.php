@@ -69,9 +69,23 @@ class Contract
     /**
      * @var string The title of the contract
      *
-     * @Column(type="string", nullable="false")
+     * @Column(type="string", nullable=false)
      */
     private $title;
+
+    /**
+     * @var int The invoice number. -1 indicates that the contract hasn't been signed yet.
+     *
+     * @Column(name="invoice_nb",type="integer")
+     */
+    private $invoiceNb;
+
+    /**
+     * @var bool True if the contract has been updated but the updated version has not been generated yet.
+     *
+     * @Column(type="boolean")
+     */
+    private $dirty;
 
     /**
      * @param \Litus\Entity\Users\Person $author The author of this contract
@@ -86,6 +100,9 @@ class Contract
         $this->setCompany($company);
         $this->setDiscount($discount);
         $this->setTitle($title);
+
+        $this->setDirty();
+        $this->setInvoiceNb();
 
         $this->composition = new ArrayCollection();
     }
@@ -247,6 +264,48 @@ class Contract
         if (($title === null) || !is_string($title))
             throw new \InvalidArgumentException('Invalid title');
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDirty()
+    {
+        return $this->dirty;
+    }
+
+    /**
+     * @param bool $dirty
+     * @return \Litus\Entity\Br\Contracts\Contract
+     */
+    public function setDirty($dirty = true)
+    {
+        $this->dirty = ($dirty ? true : false);
+        return $this;
+    }
+
+    public function isSigned()
+    {
+        return $this->getInvoiceNb() != -1;
+    }
+
+    public function getInvoiceNb()
+    {
+        return $this->invoiceNb;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     * @param int $invoiceNb
+     * @return \Litus\Entity\Br\Contracts\Contract
+     */
+    public function setInvoiceNb($invoiceNb = -1)
+    {
+        if (($invoiceNb === null) || !is_numeric($invoiceNb))
+            throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
+        $this->invoiceNb = $invoiceNb;
 
         return $this;
     }

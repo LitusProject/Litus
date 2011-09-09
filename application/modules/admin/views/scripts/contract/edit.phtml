@@ -1,11 +1,11 @@
-<?= $this->broker('partial')->direct('contract/partials/navigation.phtml', array('currentAction' => 'add')); ?>
+<?= $this->broker('partial')->direct('contract/partials/navigation.phtml', array('currentAction' => 'null')); ?>
 
 <div id="controller_action">
-    <? if ($this->flushResult && $this->contractCreated): ?>
+    <? if ($this->flushResult && $this->contractUpdated): ?>
         <div class="success_message">
             <div class="title">Success</div>
             <div class="content">
-                <p>The contract was successfully created!</p>
+                <p>The contract was successfully updated!</p>
             </div>
         </div>
 
@@ -36,7 +36,7 @@
     <? endif; ?>
 </div>
 
-<? if ($this->contractCreated): ?>
+<? if ($this->contractUpdated): ?>
     <script type="text/javascript">
     $(document).ready(function() {
         $('#contractComposition').sortable({

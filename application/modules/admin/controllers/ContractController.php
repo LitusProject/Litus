@@ -5,6 +5,7 @@ namespace Admin;
 use \Admin\Form\Contract\Add as AddForm;
 use \Admin\Form\Contract\Index as IndexForm;
 use \Admin\Form\Contract\ListForm;
+use \Admin\Form\Contract\Edit as EditForm;
 
 use \Litus\Util\File as FileUtil;
 use \Litus\Br\ContractGenerator;
@@ -18,6 +19,8 @@ use \DirectoryIterator;
 
 use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
+use \Zend\Paginator\Paginator;
+use \Zend\Paginator\Adapter\ArrayAdapter;
 use \Zend\Json\Json;
 use \Zend\Registry;
 
@@ -150,6 +153,58 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
+    public function editAction()
+    {
+        if($this->_id == '0') {
+            $this->_redirect('/admin/contract/manage');
+        } else {
+            $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract');
+            $contract = $contractRepository->find($this->_id);
+
+            $form = new EditForm($contract);
+
+            $this->view->form = $form;
+            $this->view->contractUpdated = false;
+
+            if ($this->getRequest()->isPost()) {
+                $formData = $this->getRequest()->getPost();
+
+                if($form->isValid($formData)) {
+                    $company = $this->getEntityManager()
+                            ->getRepository('Litus\Entity\Users\People\Company')
+                            ->findOneById($formData['company']);
+
+                    $contract->setCompany($company)
+                        ->setDiscount($formData['discount'])
+                        ->setTitle($formData['title']);
+
+                    $contractComposition = array();
+                    foreach ($formData['sections'] as $id) {
+                        $section = $this->getEntityManager()
+                                ->getRepository('Litus\Entity\Br\Contracts\Section')
+                                ->findOneById($id);
+
+                        $contractComposition[] = $section;
+                    }
+
+                    $this->getEntityManager()->persist(
+                        $contract->resetComposition()
+                            ->setDirty()
+                    );
+                    $this->_flush();
+
+                    $this->getEntityManager()->persist(
+                        $contract->addSections($contractComposition)
+                    );
+
+                    $this->view->contractId = $contract->getId();
+                    $this->view->sections = $contractComposition;
+                    $this->view->contractUpdated = true;
+                }
+            }
+        }
+    }
+
     public function updatecompositionAction()
     {
         $this->_initAjax();
@@ -174,6 +229,7 @@ class ContractController extends \Litus\Controller\Action
         // Avoiding duplicate key violations
         $this->getEntityManager()->persist(
             $contract->resetComposition()
+                ->setDirty()
         );
         $this->getEntityManager()->flush();
 
@@ -190,7 +246,7 @@ class ContractController extends \Litus\Controller\Action
         if ($this->_id == '0') {
             $this->view->form = new IndexForm($this->getEntityManager()
                     ->getRepository('Litus\Entity\Br\Contracts\Contract')
-                    ->getAllContractIds());
+                    ->findAllContractIds());
         } else {
             $directory = $this->_getRootDirectory() . '/' . $this->_id;
 
@@ -221,7 +277,31 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
-    public function generateAction()
+    public function signAction()
+    {
+        if ($this->_id == '0')
+            throw new \InvalidArgumentException('need a valid contract id');
+
+        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contracts\Contract');
+        $contract = $contractRepository->find($this->_id);
+
+        if($contract->isSigned())
+            throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed.');
+
+        $dirty = $contract->isDirty();
+
+        $contract->setDirty()
+                ->setInvoiceNb($contractRepository->findNextInvoiceNb());
+
+        $this->getEntityManager()->persist($contract);
+
+        // flush here, otherwise we might create two contracts with the same invoiceNb.
+        $this->_flush();
+
+        $this->generateAction(!$dirty);
+    }
+
+    public function generateAction($invoiceOnly = false)
     {
         if ($this->_id == '0')
             throw new \InvalidArgumentException('need a valid contract id');
@@ -233,16 +313,34 @@ class ContractController extends \Litus\Controller\Action
         if ($contract === null)
             throw new \InvalidArgumentException('No contract found with id ' . $this->_id . '.');
 
-        /** @var $generator \Litus\Br\DocumentGenerator */
-        $generator = new ContractGenerator($contract);
-        $generator->generate();
+        if ($contract->isDirty()) {
+            if(!$invoiceOnly) {
+                /** @var $generator \Litus\Br\DocumentGenerator */
+                $generator = new ContractGenerator($contract);
+                $generator->generate();
 
-        $generator = new LetterGenerator($contract);
-        $generator->generate();
+                $generator = new LetterGenerator($contract);
+                $generator->generate();
+            }
 
-        $generator = new InvoiceGenerator($contract);
-        $generator->generate();
+            if($contract->getInvoiceNb() != -1) {
+                $generator = new InvoiceGenerator($contract);
+                $generator->generate();
+            }
 
-        $this->_redirect('/admin/contract/list/id/' . $this->_id);
+            $contract->setDirty(false);
+            $this->getEntityManager()->persist($contract);
+        }
+
+        $this->_forward('list', null, null, array('id' => $this->_id));
+    }
+
+    public function manageAction()
+    {
+        $paginator = new Paginator(
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+        );
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+        $this->view->paginator = $paginator;
     }
 }

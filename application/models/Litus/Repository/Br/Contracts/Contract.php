@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class Contract extends EntityRepository
 {
 
-    public function getAllContractIds()
+    public function findAllContractIds()
     {
         $result =  $this->_em->createQuery('SELECT c.id FROM Litus\Entity\Br\Contracts\Contract c')->getResult();
         $return = array();
@@ -22,6 +22,17 @@ class Contract extends EntityRepository
             $return[] = $entry['id'];
 
         return $return;
+    }
+
+    public function findNextInvoiceNb()
+    {
+        $highestInvoiceNb = $this->_em
+                ->createQuery('SELECT MAX(c.invoiceNb) AS highest FROM Litus\Entity\Br\Contracts\Contract c')
+                ->getResult();
+
+        $highestInvoiceNb = $highestInvoiceNb[0]['highest'];
+
+        return (+$highestInvoiceNb) + 1;
     }
 
 }
