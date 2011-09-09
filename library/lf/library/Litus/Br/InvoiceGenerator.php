@@ -66,10 +66,15 @@ class InvoiceGenerator extends DocumentGenerator {
             /** @var $section \Litus\Entity\Br\Contracts\Section */
             $section = $part->getSection();
             $price = $section->getPrice();
-            if($price > 0) {
+            if (($price > 0) ||
+                    (($section->getInvoiceDescription() !== null) && ($section->getInvoiceDescription() != ''))) {
                 $entries[] = new XmlObject('entry', null,
                     array(
-                        new XmlObject('description', null, $section->getName()),
+                        new XmlObject('description', null,
+                            (($section->getInvoiceDescription() === null) || ($section->getInvoiceDescription() == ''))
+                                    ? $section->getName()
+                                    : $section->getInvoiceDescription()
+                        ),
                         new XmlObject('price', null, $price . ' <euro/>'),
                         new XmlObject('vat_type', null, $section->getVatType())
                     )
