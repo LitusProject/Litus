@@ -44,7 +44,7 @@ class Add extends \Litus\Form\Form
         $this->addElement($field);
 
         $field = new Text('invoice_description');
-        $field->setLabel('Description on invoice')
+        $field->setLabel('Description on Invoice')
             ->setRequired(false)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);

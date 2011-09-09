@@ -54,4 +54,16 @@ table {
     th:last-child, td:last-child, {
         background-image: none;
     }
+
+    tbody {
+        tr:last-child {
+            td {
+                background: @cTableBackground url(@iTableBackground) no-repeat right -2 * @tableHeaderHeight;
+            }
+
+            td:last-child {
+                background-image: none;
+            }
+        }
+    }
 }
