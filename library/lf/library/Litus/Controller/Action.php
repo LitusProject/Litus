@@ -75,7 +75,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         $this->view->flushResult = $this->_flush();
 
-        if ($this->_flush())
+        if ($this->view->flushResult)
             parent::_redirect($url, $options);
     }
 
@@ -102,12 +102,13 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         if ('development' == getenv('APPLICATION_ENV'))
             $this->getEntityManager()->flush();
-        
-        try {
-            $this->getEntityManager()->flush();
-        }
-        catch (\PDOException $e) {
-            return false;
+        else {
+            try {
+                $this->getEntityManager()->flush();
+            }
+            catch (\PDOException $e) {
+                return false;
+            }
         }
 
         return true;

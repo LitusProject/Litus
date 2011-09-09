@@ -8,6 +8,7 @@ use \Litus\Form\Decorator\FieldDecorator;
 use \Zend\Form\Form;
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
+use \Zend\Form\Element\Textarea;
 
 class Add extends \Admin\Form\User\Add
 {
@@ -49,10 +50,17 @@ class Add extends \Admin\Form\User\Add
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
+        $field = new Textarea('company_address');
+        $field->setLabel('Company address')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
         $this->addDisplayGroup(
             array(
                 'company_name',
                 'vat_number',
+                'company_address',
             ),
             'company_information'
         );
