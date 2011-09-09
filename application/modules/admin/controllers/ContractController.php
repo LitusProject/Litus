@@ -206,9 +206,9 @@ class ContractController extends \Litus\Controller\Action
     public function downloadAction()
     {
         if ($this->_id == '0')
-            $this->_forward('list');
+            $this->_redirect('/admin/contract/list');
         elseif ($this->_file === null)
-            $this->_forward('list', null, null, array('id' => $this->_id));
+            $this->_redirect('/admin/contract/list/id/' . $this->_id);
         else {
             $this->broker('viewRenderer')->setNoRender();
 
@@ -243,6 +243,6 @@ class ContractController extends \Litus\Controller\Action
         $generator = new InvoiceGenerator($contract);
         $generator->generate();
 
-        $this->_forward('list', null, null, array('id' => $this->_id));
+        $this->_redirect('/admin/contract/list/id/' . $this->_id);
     }
 }
