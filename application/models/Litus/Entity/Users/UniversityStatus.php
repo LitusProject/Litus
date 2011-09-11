@@ -42,7 +42,7 @@ class UniversityStatus
      *
      * @Column(name="person")
      * @ManyToOne(
-     *      targetEntity="Litus\Entity\Users\Academic", cascade={"all"}, fetch="LAZY", inversedBy="universityStatuses"
+     *      targetEntity="Litus\Entity\Users\Academic", inversedBy="universityStatuses"
      * )
      */
     private $person;

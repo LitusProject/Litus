@@ -35,7 +35,7 @@ class BookingStatus
      * @var Booking
      *
      * @Column(name="booking")
-     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Sales\Booking", cascade={"all"}, fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Sales\Booking")
      */
     private $booking;
 

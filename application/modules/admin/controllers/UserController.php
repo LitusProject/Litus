@@ -44,7 +44,6 @@ class UserController extends \Litus\Controller\Action
                     'sha512',
                     $formData['credential']
                 );
-                $this->getEntityManager()->persist($newCredential);
 
                 $newUser = new Academic(
                     $formData['username'],
@@ -91,16 +90,15 @@ class UserController extends \Litus\Controller\Action
                         ->getRepository('Litus\Entity\Acl\Role')
                         ->findOneByName($role);
                 }
+
+                $user->setFirstName($formData['first_name'])
+                    ->setLastName($formData['last_name'])
+                    ->setEmail($formData['email'])
+                    ->setSex($formData['sex'])
+                    ->updateRoles($roles);
+                
+                $this->view->userEdited = true;
             }
-
-            $user->updateRoles($roles)
-                ->setFirstName($formData['first_name'])
-                ->setLastName($formData['last_name'])
-                ->setEmail($formData['email'])
-                ->setSex($formData['sex']);
-            $this->getEntityManager()->persist($user);
-
-            $this->view->userEdited = true;
         }
     }
 

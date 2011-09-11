@@ -46,7 +46,7 @@ class Section
     /**
      * @var \Litus\Entity\Users\Person The author of this section
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Users\Person")
      * @JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
