@@ -26,7 +26,7 @@ class Role
     /**
      * @var Litus\Entity\Acl\Role $parents The parents of this role
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role", cascade={"all"}, fetch="LAZY")
+     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
      * @JoinTable(
      *      name="acl.roles_inheritance",
      *      joinColumns={@JoinColumn(name="parent", referencedColumnName="name")},
@@ -38,7 +38,7 @@ class Role
     /**
      * @var \Litus\Entity\Acl\Role $actions The actions that this role can execute
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Action", cascade={"all"}, fetch="LAZY")
+     * @ManyToMany(targetEntity="Litus\Entity\Acl\Action")
      * @JoinTable(
      *      name="acl.roles_actions",
      *      joinColumns={@JoinColumn(name="role", referencedColumnName="name")},

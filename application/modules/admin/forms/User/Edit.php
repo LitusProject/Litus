@@ -37,8 +37,16 @@ class Edit extends Add
 
     private function _createRolesArray(array $roles)
     {
+        $hiddenRoles = array(
+            'guest',
+            'company'
+        );
+
         $rolesArray = array();
         foreach ($roles as $role) {
+            if (in_array($role->getName(), $hiddenRoles))
+                continue;
+
             $rolesArray[$role->getName()] = $role->getName();
         }
         return $rolesArray;

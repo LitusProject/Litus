@@ -27,7 +27,7 @@ class Action
     /**
      * @var \Litus\Entity\Acl\Resource The name of the resource
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Acl\Resource", cascade={"all"}, fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Acl\Resource")
      * @JoinColumn(name="resource", referencedColumnName="name")
      */
     private $resource;

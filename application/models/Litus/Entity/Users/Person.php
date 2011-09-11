@@ -41,14 +41,14 @@ abstract class Person
     /**
      * @var \Litus\Entity\Users\Credential The person's credential
      *
-     * @OneToOne(targetEntity="Litus\Entity\Users\Credential", cascade={"all"}, fetch="LAZY")
+     * @OneToOne(targetEntity="Litus\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
      */
     private $credential;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role", cascade={"all"}, fetch="LAZY")
+     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
      * @JoinTable(name="users.people_roles",
      *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
@@ -215,8 +215,15 @@ abstract class Person
      */
     public function updateRoles(array $roles)
     {
-        $this->roles = new ArrayCollection();
-        $this->addRoles($roles);
+        foreach ($this->roles as $currentRole) {
+            if (!in_array($currentRole, $roles))
+                $this->roles->removeElement($currentRole);
+        }
+
+        foreach ($roles as $newRole) {
+            if (!$this->roles->contains($newRole))
+                $this->roles->add($newRole);
+        }
 
         return $this;
     }
@@ -312,19 +319,21 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException if $sex is not 'm' and not 'f'
-     * @param $sex string 'm' or 'f'
-     * @return void
+     * @throws \InvalidArgumentException If $sex is not 'm' and not 'f'
+     * @param $sex string The person's sex
+     * @return \Litus\Entity\Users\Person
      */
     public function setSex($sex)
     {
         if(($sex !== 'm') && ($sex !== 'f'))
             throw new \InvalidArgumentException('Invalid sex: ' . $sex);
         $this->sex = $sex;
+
+        return $this;
     }
 
     /**
-     * @return string 'm' or 'f'
+     * @return string
      */
     public function getSex()
     {

@@ -33,7 +33,7 @@ class Contract
     /**
      * @var \Litus\Entity\Users\Person The author of this contract
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Users\Person")
      * @JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
@@ -41,7 +41,7 @@ class Contract
     /**
      * @var \Litus\Entity\Users\People\Company The company for which this contract is meant
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company", fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company")
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
@@ -191,8 +191,7 @@ class Contract
      */
     public function resetComposition()
     {
-        foreach ($this->composition as $compositionElement)
-            $this->composition->removeElement($compositionElement);
+        $this->composition->clear();
 
         return $this;
     }

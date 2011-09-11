@@ -33,7 +33,7 @@ class Session
     /**
      * @var \Litus\Entity\Users\Person The person associated with this session
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", cascade={"all"}, fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="EAGER")
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
