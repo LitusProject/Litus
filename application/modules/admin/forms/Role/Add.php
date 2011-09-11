@@ -20,9 +20,6 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/role/add');
-        $this->setMethod('post');
-
         $field = new Text('name');
         $field->setLabel('Name')
             ->setRequired()
@@ -31,14 +28,14 @@ class Add extends \Litus\Form\Form
 
         $field = new Multiselect('parents');
         $field->setLabel('Parents')
-            ->setMultiOptions($this->_generateParents())
+            ->setMultiOptions($this->_createParentsArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Multiselect('actions');
         $field->setLabel('Allowed Actions')
             ->setRequired()
-            ->setMultiOptions($this->_generateActions())
+            ->setMultiOptions($this->_createActionsArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -49,7 +46,7 @@ class Add extends \Litus\Form\Form
         $this->addElement($field);
     }
 
-    private function _generateParents()
+    private function _createParentsArray()
     {
         $roles = Registry::get('EntityManager')
             ->getRepository('Litus\Entity\Acl\Role')
@@ -62,7 +59,7 @@ class Add extends \Litus\Form\Form
         return $parents;
     }
 
-    private function _generateActions()
+    private function _createActionsArray()
     {
         $query = new QueryBuilder(Registry::get(DoctrineResource::REGISTRY_KEY));
         $query->select('r')

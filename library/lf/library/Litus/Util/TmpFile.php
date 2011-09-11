@@ -5,7 +5,7 @@ namespace Litus\Util;
 use \Zend\Registry;
 
 use \Litus\Util\File as FileUtil;
-use \Litus\Util\TmpFileClosedException;
+use \Litus\Util\Exception\TmpFileClosedException;
  
 class TmpFile {
 

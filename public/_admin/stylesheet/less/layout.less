@@ -357,6 +357,33 @@ body {
                 }
             }
         }
+
+        .pagination {
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+
+            tr {
+                td {
+                    height: @paginationHeight;
+                    text-align: center;
+                    background: none;
+                }
+
+                td:first-child, td:last-child {
+                    width: @paginationSideWidth;
+                }
+
+                td:first-child {
+                    padding-left: @defaultSpacing;
+                    text-indent: 0;
+                    text-align: left;
+                }
+
+                td:last-child {
+                    padding-right: @defaultSpacing;
+                    text-align: right;
+                }
+            }
+        }
     }
 
     aside {

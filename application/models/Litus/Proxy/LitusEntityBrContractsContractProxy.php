@@ -78,10 +78,16 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::setCompany($company);
     }
 
-    public function getParts()
+    public function getComposition()
     {
         $this->__load();
-        return parent::getParts();
+        return parent::getComposition();
+    }
+
+    public function resetComposition()
+    {
+        $this->__load();
+        return parent::resetComposition();
     }
 
     public function addSection(\Litus\Entity\Br\Contracts\Section $section, $position)
@@ -94,12 +100,6 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
     {
         $this->__load();
         return parent::addSections($sections);
-    }
-
-    public function updateSections(array $sections)
-    {
-        $this->__load();
-        return parent::updateSections($sections);
     }
 
     public function setDiscount($discount)
@@ -126,10 +126,40 @@ class LitusEntityBrContractsContractProxy extends \Litus\Entity\Br\Contracts\Con
         return parent::setTitle($title);
     }
 
+    public function isDirty()
+    {
+        $this->__load();
+        return parent::isDirty();
+    }
+
+    public function setDirty($dirty = true)
+    {
+        $this->__load();
+        return parent::setDirty($dirty);
+    }
+
+    public function isSigned()
+    {
+        $this->__load();
+        return parent::isSigned();
+    }
+
+    public function getInvoiceNb()
+    {
+        $this->__load();
+        return parent::getInvoiceNb();
+    }
+
+    public function setInvoiceNb($invoiceNb = -1)
+    {
+        $this->__load();
+        return parent::setInvoiceNb($invoiceNb);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'date', 'author', 'company', 'sections', 'discount', 'title');
+        return array('__isInitialized__', 'id', 'date', 'author', 'company', 'composition', 'discount', 'title', 'invoiceNb', 'dirty');
     }
 
     public function __clone()

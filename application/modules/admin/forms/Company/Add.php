@@ -16,8 +16,6 @@ class Add extends \Admin\Form\User\Add
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/company/add');
-
         $this->removeElement('roles');
         $this->removeElement('submit');
 
@@ -51,7 +49,7 @@ class Add extends \Admin\Form\User\Add
         $this->addElement($field);
 
         $field = new Textarea('company_address');
-        $field->setLabel('Company address')
+        $field->setLabel('Company Address')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);

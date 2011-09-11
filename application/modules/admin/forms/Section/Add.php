@@ -20,9 +20,6 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/section/add');
-        $this->setMethod('post');
-
         $field = new Text('name');
         $field->setLabel('Name')
             ->setRequired()

@@ -138,6 +138,12 @@ class LitusEntityUsersPeopleAcademicProxy extends \Litus\Entity\Users\People\Aca
         return parent::addRoles($roles);
     }
 
+    public function updateRoles(array $roles)
+    {
+        $this->__load();
+        return parent::updateRoles($roles);
+    }
+
     public function setFirstName($firstName)
     {
         $this->__load();

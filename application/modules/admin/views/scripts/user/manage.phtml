@@ -1,0 +1,30 @@
+<?= $this->broker('partial')->direct('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th width="150px">Name</th>
+                <th width="175px">E-mail</th>
+                <th width="120px">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <? foreach ($this->paginator as $user): ?>
+                <tr>
+                    <td><?= $user->getUsername() ?></td>
+                    <td><?= $user->getFirstName(); ?> <?= $user->getLastName(); ?></td>
+                    <td><?= $user->getEmail(); ?></td>
+                    <td>
+                        <a href="<?= $this->broker('url')->direct(array('action' => 'edit', 'id' => $user->getId())); ?>" class="edit">Edit</a>
+                        <a href="<?= $this->broker('url')->direct(array('action' => 'delete', 'id' => $user->getId())); ?>" class="delete">Delete</a>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+        </tbody>
+    </table>
+
+    <?= $this->broker('paginationControl')->direct($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+</div>

@@ -41,14 +41,14 @@ abstract class Person
     /**
      * @var \Litus\Entity\Users\Credential The person's credential
      *
-     * @OneToOne(targetEntity="\Litus\Entity\Users\Credential", cascade={"ALL"}, fetch="LAZY")
+     * @OneToOne(targetEntity="Litus\Entity\Users\Credential", cascade={"all"}, fetch="LAZY")
      */
     private $credential;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
+     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role", cascade={"all"}, fetch="LAZY")
      * @JoinTable(name="users.people_roles",
      *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
@@ -196,7 +196,7 @@ abstract class Person
     }
 
     /**
-     * Add the specified roles to the user
+     * Add the specified roles to the user.
      *
      * @param array $roles An array containing the roles that should be added
      * @return \Litus\Entity\Users\Person
@@ -204,6 +204,20 @@ abstract class Person
     public function addRoles(array $roles)
     {
         $this->roles->add($roles);
+        return $this;
+    }
+
+    /**
+     * Removes all the old rules and adds the given roles.
+     *
+     * @param array $roles An array containing the roles that should be added
+     * @return \Litus\Entity\Users\Person
+     */
+    public function updateRoles(array $roles)
+    {
+        $this->roles = new ArrayCollection();
+        $this->addRoles($roles);
+
         return $this;
     }
 

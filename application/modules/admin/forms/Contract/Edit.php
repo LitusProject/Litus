@@ -14,8 +14,6 @@ class Edit extends Add {
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/contract/edit');
-
         $this->removeElement('submit');
 
         $field = new Hidden('id');

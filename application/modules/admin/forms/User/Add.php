@@ -21,9 +21,6 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/user/add');
-        $this->setMethod('post');
-
         $field = new Text('username');
         $field->setLabel('Username')
                 ->setRequired()
@@ -45,7 +42,7 @@ class Add extends \Litus\Form\Form
 
         $field = new Multiselect('roles');
         $field->setLabel('Groups')
-                ->setMultiOptions($this->_generateRoles())
+                ->setMultiOptions($this->_createRolesArray())
                 ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -86,7 +83,7 @@ class Add extends \Litus\Form\Form
         $this->addElement($field);
     }
 
-    private function _generateRoles()
+    private function _createRolesArray()
     {
         $hiddenRoles = array(
             'guest',
@@ -97,13 +94,13 @@ class Add extends \Litus\Form\Form
             ->getRepository('Litus\Entity\Acl\Role')
             ->findAll();
 
-        $parents = array();
+        $rolesArray = array();
         foreach ($roles as $role) {
             if (in_array($role->getName(), $hiddenRoles))
                 continue;
             
-            $parents[$role->getName()] = $role->getName();
+            $rolesArray[$role->getName()] = $role->getName();
         }
-        return $parents;
+        return $rolesArray;
     }
 }

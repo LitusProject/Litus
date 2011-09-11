@@ -11,7 +11,6 @@
 
 table {
     width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-    margin-bottom: @defaultSpacing;
     padding: 0;
     border-collapse: separate;
     font-size: @tSize;
@@ -41,6 +40,7 @@ table {
             background: @cTableBackground url(@iTableBackground) no-repeat right -@tableHeaderHeight;
 
             a {
+                padding-right: @defaultSpacing;
                 text-decoration: none;
                 color: @cText;
             }

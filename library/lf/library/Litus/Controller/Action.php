@@ -8,10 +8,15 @@ use \Litus\Authentication\Action as AuthenticationAction;
 use \Litus\Authentication\Adapter\Doctrine as DoctrineAdapter;
 use \Litus\Authentication\Authentication;
 use \Litus\Authentication\Service\Doctrine as DoctrineService;
-use \Zend\Layout\Layout;
+use \Litus\Util\File;
 
+use \Zend\Controller\Front;
 use \Zend\Controller\Request\AbstractRequest as Request;
+use \Zend\Layout\Layout;
+use \Zend\Paginator\Paginator;
+use \Zend\Paginator\Adapter\ArrayAdapter;
 use \Zend\Registry;
+use \Zend\View\Helper\PaginationControl;
 
 class Action extends \Zend\Controller\Action implements AuthenticationAware, DoctrineAware
 {
@@ -24,6 +29,20 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      * @var \Litus\Authentication\Authentication The Authentication instance
      */
     private static $_authentication = null;
+
+    /**
+     * This method will initialize our action.
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->view->resolver()->addPath(
+            File::getRealFilename(
+                Front::getInstance()->getModuleDirectory($this->getRequest()->getModuleName()) . '/views'
+            )
+        );
+    }
 
     /**
      * Called before an action is dispatched by Zend\Controller\Dispatcher.
@@ -124,6 +143,25 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         if (!$this->getRequest()->isXmlHttpRequest())
             throw new \Litus\Controller\Request\Exception\NoXmlHttpRequestException();
         $this->broker('viewRenderer')->setNoRender();
+    }
+
+    /**
+     * Create a paginator for a given entity.
+     *
+     * @param string $entity The name of the entity that should be paginated
+     * @return \Zend\Paginator\Paginator
+     */
+    protected function _createPaginator($entity)
+    {
+        $paginator = new Paginator(
+            new ArrayAdapter(
+                $this->getEntityManager()->getRepository($entity)->findAll()
+            )
+        );
+        $paginator->setItemCountPerPage(25);
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+
+        return $paginator;
     }
 
     /**

@@ -33,12 +33,12 @@ class Academic extends \Litus\Entity\Users\Person
     private $photoPath;
 
     /**
-     * @OneToMany(targetEntity="Litus\Entity\Users\UniversityStatus", mappedBy="person", cascade={"ALL"}, fetch="LAZY")
+     * @OneToMany(targetEntity="Litus\Entity\Users\UniversityStatus", mappedBy="person", cascade={"all"}, fetch="LAZY")
      */
     private $universityStatuses;
 
     /**
-     * @OneToMany(targetEntity="Litus\Entity\Users\UnionStatus", mappedBy="person", cascade={"ALL"}, fetch="LAZY")
+     * @OneToMany(targetEntity="Litus\Entity\Users\UnionStatus", mappedBy="person", cascade={"all"}, fetch="LAZY")
      */
     private $unionStatuses;
 

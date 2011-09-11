@@ -1,4 +1,4 @@
-<?= $this->broker('partial')->direct('contract/partials/navigation.phtml', array('currentAction' => 'add')); ?>
+<?= $this->broker('partial')->direct('partials/contract/navigation.phtml', array('currentAction' => 'add')); ?>
 
 <div id="controller_action">
     <? if ($this->flushResult && $this->contractCreated): ?>
@@ -18,9 +18,6 @@
                     <li id="contractComposition_<?= $section->getId(); ?>" class="sections"><?= $section->getName(); ?></li>
                 <? endforeach; ?>
             </ul>
-        </div>
-        <div>
-            <a href="/admin/contract/generate/id/<?= $this->contractId; ?>">Generate</a>
         </div>
     <? else: ?>
         <? if (!$this->flushResult): ?>
@@ -42,7 +39,7 @@
         $('#contractComposition').sortable({
             update : function () {
                 $.post(
-                    '/admin/contract/updatecomposition?format=json',
+                    '<?= $this->broker('url')->direct(array('action' => 'compose')); ?>?format=json',
                     {
                         contractId: $('#contractId').text(), sections: $('#contractComposition').sortable('serialize')
                     },

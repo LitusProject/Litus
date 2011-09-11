@@ -1,11 +1,11 @@
-<?= $this->broker('partial')->direct('role/partials/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->broker('partial')->direct('partials/role/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th width="80px">Action</th>
+                <th width="115px">Action</th>
             </tr>
         </thead>
 
@@ -13,9 +13,14 @@
             <? foreach ($this->paginator as $role): ?>
                 <tr>
                     <td><?= $role->getName(); ?></td>
-                    <td>Edit Delete</td>
+                    <td>
+                        <a href="<?= $this->broker('url')->direct(array('action' => 'edit', 'name' => $role->getName())); ?>" class="edit">Edit</a>
+                        <a href="<?= $this->broker('url')->direct(array('action' => 'delete', 'name' => $role->getName())); ?>" class="delete">Delete</a>
+                    </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
+
+    <?= $this->broker('paginationControl')->direct($this->paginator, 'all', 'partials/pagination.phtml'); ?>
 </div>
