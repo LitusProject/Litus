@@ -80,7 +80,7 @@ class SectionController extends \Litus\Controller\Action
 
                 $this->getEntityManager()->persist($section);
 
-                $this->_redirect('/admin/section/manage');
+                $this->_redirect('manage');
             }
         }
     }

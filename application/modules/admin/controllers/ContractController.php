@@ -155,8 +155,8 @@ class ContractController extends \Litus\Controller\Action
 
     public function editAction()
     {
-        if($this->_id == '0') {
-            $this->_redirect('/admin/contract/manage');
+        if ($this->_id == '0') {
+            $this->_redirect('manage');
         } else {
             $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract');
             $contract = $contractRepository->find($this->_id);
@@ -262,9 +262,9 @@ class ContractController extends \Litus\Controller\Action
     public function downloadAction()
     {
         if ($this->_id == '0')
-            $this->_redirect('/admin/contract/list');
+            $this->_redirect('list');
         elseif ($this->_file === null)
-            $this->_redirect('/admin/contract/list/id/' . $this->_id);
+            $this->_redirect('list', array('id' => $this->_id));
         else {
             $this->broker('viewRenderer')->setNoRender();
 
