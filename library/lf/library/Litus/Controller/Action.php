@@ -84,18 +84,25 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     }
 
     /**
-     * Flushes the entity manager and then redirects to the given url.
+     * Flushes the entity manager and then redirects to the given url, not requiring any absolute URI's.
      *
-     * @param $url
-     * @param array $options
+     * @param string $action The action we want to redirect to
+     * @param string $controller The controller we want to redirect to
+     * @param string $module The module we want to redirect to
+     * @param array $params Any additional params that should be passed
      * @return void
      */
-    protected function _redirect($url, array $options = array())
+    protected function _redirect($action, $controller = '', $module = '', array $params = array())
     {
         $this->view->flushResult = $this->_flush();
 
         if ($this->view->flushResult)
-            parent::_redirect($url, $options);
+            $this->broker('redirector')->gotoSimple(
+                $action,
+                '' == $controller ? $this->getRequest()->getControllerName() : $controller,
+                '' == $module ? $this->getRequest()->getModuleName() : $module,
+                $params
+            );
     }
 
     /**
