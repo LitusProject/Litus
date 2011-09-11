@@ -114,10 +114,22 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
         return parent::getPrice();
     }
 
+    public function getInvoiceDescription()
+    {
+        $this->__load();
+        return parent::getInvoiceDescription();
+    }
+
+    public function setInvoiceDescription($description = NULL)
+    {
+        $this->__load();
+        return parent::setInvoiceDescription($description);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'name', 'content', 'author', 'year', 'price', 'vatType');
+        return array('__isInitialized__', 'id', 'name', 'content', 'author', 'year', 'price', 'vatType', 'invoiceDescription');
     }
 
     public function __clone()

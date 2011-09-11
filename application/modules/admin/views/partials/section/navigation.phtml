@@ -1,0 +1,10 @@
+<header id="controller_header">
+    <div class="title"><span class="sections">Sections</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'add')); ?>">Add</a></li>
+            <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
+        </ul>
+    </nav>
+</header>

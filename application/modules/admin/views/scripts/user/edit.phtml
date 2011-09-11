@@ -1,11 +1,11 @@
-<?= $this->broker('partial')->direct('partials/user/navigation.phtml', array('currentAction' => 'add')); ?>
+<?= $this->broker('partial')->direct('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <? if ($this->userCreated): ?>
+    <? if ($this->userEdited): ?>
         <div class="success_message">
             <div class="title">Success</div>
             <div class="content">
-                <p>The user was successfully created!</p>
+                <p>The changes were succesfully saved!</p>
             </div>
         </div>
     <? endif; ?>

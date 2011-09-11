@@ -28,7 +28,7 @@ class Booking
 	private $stockArticle;
 	
 	/**
-	 * @ManyToOne(targetEntity="Litus\Entity\Cudi\Sales\BookingStatus", cascade={"ALL"}, fetch="LAZY")
+	 * @ManyToOne(targetEntity="Litus\Entity\Cudi\Sales\BookingStatus", cascade={"all"}, fetch="LAZY")
 	 */
 	private $status;
 	

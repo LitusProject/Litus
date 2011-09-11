@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Util;
+namespace Litus\Util\Exception;
 
 use \Litus\Util\TmpFile;
 

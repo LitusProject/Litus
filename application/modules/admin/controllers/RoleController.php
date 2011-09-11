@@ -8,10 +8,6 @@ use \Litus\Entity\Acl\Action as AclAction;
 use \Litus\Entity\Acl\Role;
 use \Litus\Entity\Acl\Resource;
 
-use \Zend\Paginator\Paginator;
-use \Zend\Paginator\Adapter\ArrayAdapter;
-use \Zend\Registry;
-
 class RoleController extends \Litus\Controller\Action
 {
     public function init()
@@ -63,11 +59,7 @@ class RoleController extends \Litus\Controller\Action
 
     public function manageAction()
     {
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Acl\Role')->findAll())
-        );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
+        $this->view->paginator = $this->_createPaginator('Litus\Entity\Acl\Role');
     }
 
     public function loadAction()

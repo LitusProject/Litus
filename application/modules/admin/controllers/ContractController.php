@@ -205,7 +205,7 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
-    public function updatecompositionAction()
+    public function composeAction()
     {
         $this->_initAjax();
 

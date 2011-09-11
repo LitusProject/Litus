@@ -13,8 +13,6 @@ class Edit extends Add
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/section/edit/id/' . $section->getId());
-
         $this->removeElement('submit');
 
         $field = new Submit('submit');

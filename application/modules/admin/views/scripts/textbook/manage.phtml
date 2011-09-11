@@ -1,19 +1,4 @@
-<?= $this->broker('partial')->direct('textbook/partials/navigation.phtml', array('currentAction' => 'manage')); ?>
- 
- 
-<head>
-
-    <style type="text/css" >
-    
-        th {
-            text-align: left;
-            font-weight: bold;
-            width: 80px;
-        }
-    
-    </style>
-
-</head>
+<?= $this->broker('partial')->direct('partials/textbook/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <table>
@@ -25,7 +10,7 @@
             <th>Year</th>
         </tr>
         
-        <? foreach ($this->articles as $article) { ?>
+        <? foreach ($this->articles as $article): ?>
 
             <tr>
                 <td><?= $article->getTitle(); ?></td>
@@ -34,6 +19,6 @@
                 <td><?= $article->getMetaInfo()->getYearPublished(); ?></td>
             </tr>
     
-        <? } ?>
+        <? endforeach; ?>
     </table>
 </div>

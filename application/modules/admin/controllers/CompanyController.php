@@ -64,4 +64,27 @@ class CompanyController extends \Litus\Controller\Action
             }
         }
     }
+
+    public function manageAction()
+    {
+        $paginator = new Paginator(
+            new ArrayAdapter(
+                $this->getEntityManager()->getRepository('Litus\Entity\Users\People\Company')->findAll()
+            )
+        );
+        $paginator->setItemCountPerPage(25);
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+
+        $this->view->paginator = $paginator;
+    }
+
+    public function editAction()
+    {
+        
+    }
+
+    public function deleteAction()
+    {
+        
+    }
 }

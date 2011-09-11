@@ -27,7 +27,7 @@ class Resource
     /**
      * @var \Litus\Entity\Acl\Resource The parent of this resource
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Acl\Resource", cascade={"ALL"}, fetch="LAZY")
+     * @ManyToOne(targetEntity="Litus\Entity\Acl\Resource", cascade={"all"}, fetch="LAZY")
      * @JoinColumn(name="parent", referencedColumnName="name")
      */
     private $parent;

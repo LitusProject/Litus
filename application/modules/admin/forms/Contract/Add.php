@@ -21,9 +21,6 @@ class Add extends \Litus\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAction('/admin/contract/add');
-        $this->setMethod('post');
-
         $field = new Select('company');
         $field->setLabel('Company')
             ->setRequired()

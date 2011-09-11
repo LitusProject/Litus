@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="contracts">Contracts</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'add')); ?>">Add</a></li>
+            <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
+            <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'list')); ?>">Download</a></li>
+        </ul>
+    </nav>
+</header>

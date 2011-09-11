@@ -1,0 +1,33 @@
+<? if (0 != $this->vars('pageCount')): ?>
+    <table class="pagination">
+        <tr>
+            <td>
+                <? if (null !== $this->vars('previous')): ?>
+                    <a href="<?= $this->broker('url')->direct(array('page' => $this->first)); ?>">First</a>
+                <? else: ?>
+                    First
+                <? endif; ?>
+
+                <? if (null !== $this->vars('previous')): ?>
+                    <a href="<?= $this->broker('url')->direct(array('page' => $this->previous)); ?>">Previous</a>
+                <? endif; ?>
+            </td>
+
+            <td>
+                <?= $this->vars('current'); ?>/<?= $this->vars('pageCount'); ?>
+            </td>
+
+            <td>
+                <? if (null !== $this->vars('next')): ?>
+                    <a href="<?= $this->broker('url')->direct(array('page' => $this->next)); ?>">Next</a>
+                <? endif; ?>
+
+                <? if (null !== $this->vars('next')): ?>
+                    <a href="<?= $this->broker('url')->direct(array('page' => $this->last)); ?>">Last</a>
+                <? else: ?>
+                    Last
+                <? endif; ?>
+            </td>
+        </tr>
+    </table>
+<? endif; ?>
