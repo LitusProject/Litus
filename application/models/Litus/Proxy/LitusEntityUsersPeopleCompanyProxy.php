@@ -60,12 +60,6 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
         return parent::getVatNumber();
     }
 
-    public function setId($id)
-    {
-        $this->__load();
-        return parent::setId($id);
-    }
-
     public function getId()
     {
         $this->__load();
@@ -192,10 +186,22 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
         return parent::getSex();
     }
 
+    public function canLogin()
+    {
+        $this->__load();
+        return parent::canLogin();
+    }
+
+    public function disableLogin()
+    {
+        $this->__load();
+        return parent::disableLogin();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex', 'name', 'vatNumber');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex', 'canLogin', 'name', 'vatNumber');
     }
 
     public function __clone()

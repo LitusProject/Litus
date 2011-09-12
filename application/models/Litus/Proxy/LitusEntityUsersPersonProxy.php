@@ -36,12 +36,6 @@ class LitusEntityUsersPersonProxy extends \Litus\Entity\Users\Person implements 
     }
     
     
-    public function setId($id)
-    {
-        $this->__load();
-        return parent::setId($id);
-    }
-
     public function getId()
     {
         $this->__load();
@@ -168,10 +162,22 @@ class LitusEntityUsersPersonProxy extends \Litus\Entity\Users\Person implements 
         return parent::getSex();
     }
 
+    public function canLogin()
+    {
+        $this->__load();
+        return parent::canLogin();
+    }
+
+    public function disableLogin()
+    {
+        $this->__load();
+        return parent::disableLogin();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex');
+        return array('__isInitialized__', 'id', 'username', 'credential', 'roles', 'firstName', 'lastName', 'email', 'address', 'telephone', 'sex', 'canLogin');
     }
 
     public function __clone()

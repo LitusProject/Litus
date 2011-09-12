@@ -64,7 +64,12 @@ class UserController extends \Litus\Controller\Action
 
     public function manageAction()
     {
-        $this->view->paginator = $this->_createPaginator('Litus\Entity\Users\People\Academic');
+        $this->view->paginator = $this->_createPaginator(
+            'Litus\Entity\Users\People\Academic',
+            array(
+                'canLogin' => true
+            )
+        );
     }
 
     public function editAction()
@@ -114,7 +119,14 @@ class UserController extends \Litus\Controller\Action
             $this->view->user = $user;
         } else {
             if (1 == $this->getRequest()->getParam('confirm')) {
-                $this->getEntityManager()->remove($user);
+                $sessions = $this->getEntityManager()
+                    ->getRepository('Litus\Entity\Users\Session')
+                    ->findByPerson($this->getRequest()->getParam('id'));
+                
+                foreach ($sessions as $session) {
+                    $session->deactivate();
+                }
+                $user->disableLogin();
 
                 $this->view->userDeleted = true;
             } else {

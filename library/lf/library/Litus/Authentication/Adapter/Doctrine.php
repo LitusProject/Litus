@@ -3,6 +3,7 @@ namespace Litus\Authentication\Adapter;
 
 use \Doctrine\ORM\QueryBuilder;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Authentication\Result\Doctrine as Result;
 
 use \Zend\Registry;
@@ -137,7 +138,7 @@ class Doctrine implements \Zend\Authentication\Adapter
      */
     private function _createQuery()
     {
-        $query = new QueryBuilder(Registry::get('EntityManager'));
+        $query = new QueryBuilder(Registry::get(DoctrineResource::REGISTRY_KEY));
         $query->from($this->_entityName, 'u');
         $query->select('u');
 
@@ -182,6 +183,10 @@ class Doctrine implements \Zend\Authentication\Adapter
         if (!$this->_personObject->validateCredential($this->_credential)) {
             $this->_authenticationResult['code'] = Result::FAILURE_CREDENTIAL_INVALID;
             $this->_authenticationResult['messages'][] = 'Supplied credential is invalid';
+        }
+        else if (!$this->_personObject->canLogin()) {
+            $this->_authenticationResult['code'] = Result::FAILURE;
+            $this->_authenticationResult['messages'][] = 'The given identity cannot login';
         } else {
             $this->_authenticationResult['code'] = Result::SUCCESS;
             $this->_authenticationResult['messages'][] = 'Authentication successful';

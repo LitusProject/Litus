@@ -4,6 +4,7 @@ namespace Litus\Authentication\Service;
 
 use \Litus\Authentication\Action;
 use \Litus\Authentication\Result\Doctrine as Result;
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Entity\Users\Session;
 
 use \Zend\Authentication\Adapter;
@@ -77,7 +78,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      */
     public function authenticate(Adapter $adapter)
     {
-        $entityManager = Registry::get('EntityManager');
+        $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
 
         $result = null;
         if ('' == $this->getIdentity()) {

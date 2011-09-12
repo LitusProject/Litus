@@ -64,6 +64,6 @@ class AuthController extends \Litus\Controller\Action
         $this->broker('viewRenderer')->setNoRender();
         $this->getAuthentication()->forget();
 
-        $this->_forward('login');
+        $this->_redirect('login');
     }
 }
