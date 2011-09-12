@@ -71,7 +71,7 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content_controller #controller_header #controller_nav li:last-child:after{content:none;}
 #content_controller #controller_action{float:left;}#content_controller #controller_action .form{padding:0;}#content_controller #controller_action .form .row{clear:both;padding-top:10px;width:598px;}#content_controller #controller_action .form .row .label{float:left;width:150px;margin-top:2px;height:0px;text-align:right;}
 #content_controller #controller_action .form .row .field{float:right;width:438px;text-align:left;}
-#content_controller #controller_action .form .errors{clear:both;margin-left:160px;padding-top:2px;}#content_controller #controller_action .form .errors li{color:#ff6633;}
+#content_controller #controller_action .form .errors{clear:both;margin-left:170px;padding-top:2px;}#content_controller #controller_action .form .errors li{color:#ff6633;}
 #content_controller #controller_action .form .required:after{content:"*";}
 #content_controller #controller_action .success_message{width:598px;margin:0 5px 10px 0;}#content_controller #controller_action .success_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#218621;}
 #content_controller #controller_action .success_message .content{padding:5px;color:#ffffff;background:#007400;}#content_controller #controller_action .success_message .content p{margin-top:10px;}

@@ -62,12 +62,16 @@ class Academic extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $personalEmail
      * @return \Litus\Entity\Users\People\Academic
      */
     public function setPersonalEmail($personalEmail)
     {
+        if (($personalEmail === null) || !filter_var($personalEmail, FILTER_VALIDATE_EMAIL))
+            throw new \InvalidArgumentException('Invalid personal e-mail');
         $this->personalEmail = $personalEmail;
+        
         return $this;
     }
 
@@ -80,12 +84,16 @@ class Academic extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $primaryEmail
      * @return \Litus\Entity\Users\People\Academic
      */
     public function setPrimaryEmail($primaryEmail)
     {
+        if (($primaryEmail === null) || !filter_var($primaryEmail, FILTER_VALIDATE_EMAIL))
+            throw new \InvalidArgumentException('Invalid primary e-mail');
         $this->primaryEmail = $primaryEmail;
+
         return $this;
     }
 
@@ -98,12 +106,16 @@ class Academic extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $universityIdentification
      * @return \Litus\Entity\Users\People\Academic
      */
     public function setUniversityIdentification($universityIdentification)
     {
+        if (($universityIdentification === null) || !is_string($universityIdentification))
+            throw new \InvalidArgumentException('Invalid university identification');
         $this->universityIdentification = $universityIdentification;
+
         return $this;
     }
 
@@ -116,12 +128,16 @@ class Academic extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $photoPath
      * @return \Litus\Entity\Users\People\Academic
      */
     public function setPhotoPath($photoPath)
     {
+        if (($photoPath === null) || !is_string($photoPath))
+            throw new \InvalidArgumentException('Invalid photo path');
         $this->photoPath = $photoPath;
+        
         return $this;
     }
 

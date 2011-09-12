@@ -153,7 +153,7 @@ class Session
      * @param string $ip The IP address that should be checked
      * @return bool
      */
-    public function isValid($ip)
+    public function validateSession($ip)
     {
         if ($ip != $this->ip) {
             return false;

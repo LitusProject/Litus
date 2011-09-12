@@ -2,9 +2,8 @@
 
 namespace Litus\Entity\Users;
 
-use Litus\Entity\Users\Person;
-use Litus\Util\AcademicYear;
-use \InvalidArgumentException;
+use \Litus\Entity\Users\Person;
+use \Litus\Util\AcademicYear;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Users\UnionStatus")
@@ -13,16 +12,12 @@ use \InvalidArgumentException;
 class UnionStatus
 {
     /**
-     * All the possible status values allowed.
-     *
-     * @var array
+     * @var array All the possible status values allowed
      */
     private static $POSSIBLE_STATUSES = array('member', 'non member', 'honorary member', 'supportive member', 'praesidium');
 
 	/**
-     * The ID of this UnionStatus.
-     *
-     * @var int
+     * @var int The ID of this union status
      *
 	 * @Id
 	 * @GeneratedValue
@@ -31,9 +26,7 @@ class UnionStatus
 	private $id;
 
     /**
-     * The Person this UnionStatus describes.
-     *
-     * @var Person
+     * @var \Litus\Entity\Users\Person The person this union status describes
      *
      * @Column(name="person")
      * @ManyToOne(targetEntity="Litus\Entity\Users\Academic", inversedBy="unionStatuses")
@@ -41,37 +34,36 @@ class UnionStatus
     private $person;
 
     /**
-     * The actual status value.
-     *
-     * @var string
+     * @var string The actual status value
      *
      * @Column(type="string")
      */
     private $status;
 
     /**
-     * The academic year this status was valid in. The format is yyzz (i.e. 0910, 1112).
-     *
-     * @var string
+     * @var string The academic year this status was valid in; the format is yyzz (i.e. 0910, 1112)
      *
      * @Column(type="string", length="4")
      */
     private $year;
 
+    /**
+     * @throws \InvalidArgumentException
+     * @param \Litus\Entity\Users\Person $person The person this union status describes
+     * @param string $status The actual status value
+     */
     public function __construct(Person $person, $status)
     {
-        if(UnionStatus::isValidPerson($person))
-            $this->person = $person;
-        else
-            throw new InvalidArgumentException('Invalid person: ' . $person);
+        if(!UnionStatus::isValidPerson($person))
+            throw new \InvalidArgumentException('Invalid person');
+        $this->person = $person;
+        
         $this->setStatus($status);
         $this->year = AcademicYear::getShortAcademicYear();
     }
 
     /**
-     * Returns the unique ID of this UnionStatus.
-     *
-     * @return int the ID
+     * @return int
      */
     public function getId()
     {
@@ -79,9 +71,7 @@ class UnionStatus
     }
 
     /**
-     * Returns the Person.
-     *
-     * @return Person the person this UnionStatus belongs to.
+     * @return \Litus\Entity\Users\Person
      */
     public function getPerson()
     {
@@ -92,7 +82,7 @@ class UnionStatus
      * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param Person $person the person to check
+     * @param \Litus\Entity\Users\Person $person The person to check
      * @return bool
      */
     public static function isValidPerson(Person $person)
@@ -101,8 +91,6 @@ class UnionStatus
     }
 
     /**
-     * Returns the actual value.
-     *
      * @return string
      */
     public function getStatus()
@@ -111,34 +99,30 @@ class UnionStatus
     }
 
     /**
-     * Sets the status to the given value if valid.
-     *
-     * @see isValidStatus($status)
-     * @param $status string the status to set
-     * @return void doesn't return anything
+     * @param $status
+     * @return Litus\Entity\Users\UnionStatus
      */
     public function setStatus($status)
     {
-        if($this->isValidStatus($status))
+        if(self::isValidStatus($status))
             $this->status = $status;
+
+        return $this;
     }
 
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string a status
+     * @param $status string A status
      * @return bool
      */
-    public function isValidStatus($status)
+    public static function isValidStatus($status)
     {
-        return (array_search($status, UnionStatus::$POSSIBLE_STATUSES, true) != false);
+        return in_array($status, UnionStatus::$POSSIBLE_STATUSES);
     }
 
     /**
-     * Returns the academic year of this UnionStatus.
-     *
      * @return string
-     * @see \Litus\Util\AcademicYear::getShortAcademicYear(new DateTime('now'))
      */
     public function getYear()
     {

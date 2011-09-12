@@ -106,7 +106,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             );
 
             if (null !== $session) {
-                if ($session->isValid($_SERVER['REMOTE_ADDR'])) {
+                if ($session->validateSession($_SERVER['REMOTE_ADDR'])) {
                     $result = new Result(
                         Result::SUCCESS,
                         $session->getPerson()->getUsername(),

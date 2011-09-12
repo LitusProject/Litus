@@ -42,11 +42,14 @@ class Company extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param $name
      * @return Litus\Entity\Users\People\Company
      */
     public function setName($name)
     {
+        if (($name === null) || !is_string($name))
+            throw new \InvalidArgumentException('Invalid name');
         $this->name = $name;
         return $this;
     }
@@ -60,11 +63,14 @@ class Company extends \Litus\Entity\Users\Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param $vatNumber
      * @return Litus\Entity\Users\People\Company
      */
     public function setVatNumber($vatNumber)
     {
+        if (($vatNumber === null) || !is_string($vatNumber))
+            throw new \InvalidArgumentException('Invalid VAT number');
         $this->vatNumber = $vatNumber;
         return $this;
     }

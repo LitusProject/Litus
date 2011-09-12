@@ -92,17 +92,12 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      * @param array $params Any additional params that should be passed
      * @return void
      */
-    protected function _redirect($action, $controller = '', $module = '', array $params = array())
+    protected function _redirect($action, $controller = null, $module = null, array $params = array())
     {
         $this->view->flushResult = $this->_flush();
 
         if ($this->view->flushResult)
-            $this->broker('redirector')->gotoSimple(
-                $action,
-                '' == $controller ? $this->getRequest()->getControllerName() : $controller,
-                '' == $module ? $this->getRequest()->getModuleName() : $module,
-                $params
-            );
+            $this->broker('redirector')->gotoSimple($action, $controller, $module, $params);
     }
 
     /**

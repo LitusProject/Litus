@@ -149,7 +149,7 @@ class Contract
     public function setAuthor(Person $author)
     {
         if ($author === null)
-            throw new \InvalidArgumentException('Author cannot be null.');
+            throw new \InvalidArgumentException('Author cannot be null');
         $this->author = $author;
 
         return $this;
@@ -171,7 +171,7 @@ class Contract
     public function setCompany(Company $company)
     {
         if ($company === null)
-            throw new \InvalidArgumentException('Company cannot be null.');
+            throw new \InvalidArgumentException('Company cannot be null');
         $this->company = $company;
 
         return $this;
@@ -224,7 +224,7 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException if $discount is invalid
+     * @throws \InvalidArgumentException
      * @param int $discount the discount, $discount >= 0 && $discount <= 100
      * @return \Litus\Entity\Br\Contracts\Contract
      */
