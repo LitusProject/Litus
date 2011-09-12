@@ -60,12 +60,6 @@ class LitusEntityUsersUniversityStatusProxy extends \Litus\Entity\Users\Universi
         return parent::setStatus($status);
     }
 
-    public function isValidStatus($status)
-    {
-        $this->__load();
-        return parent::isValidStatus($status);
-    }
-
     public function getYear()
     {
         $this->__load();

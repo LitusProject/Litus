@@ -153,11 +153,13 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      * @param string $entity The name of the entity that should be paginated
      * @return \Zend\Paginator\Paginator
      */
-    protected function _createPaginator($entity)
+    protected function _createPaginator($entity, array $conditions = array())
     {
         $paginator = new Paginator(
             new ArrayAdapter(
-                $this->getEntityManager()->getRepository($entity)->findAll()
+                (0 == count($conditions)) ?
+                    $this->getEntityManager()->getRepository($entity)->findAll() :
+                    $this->getEntityManager()->getRepository($entity)->findBy($conditions)
             )
         );
         $paginator->setItemCountPerPage(25);
@@ -175,7 +177,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         if (null === self::$_authentication) {
             self::$_authentication = new Authentication(
-                new DoctrineAdapter('Litus\Entity\Users\Person', 'username'),
+                new DoctrineAdapter('Litus\Entity\Users\Person', 'username', 'can_login'),
                 new DoctrineService('Litus\Entity\Users\Session', 2678400)
             );
         }

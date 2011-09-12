@@ -94,9 +94,16 @@ abstract class Person
     /**
      * @var string The persons sex ('m' or 'f')
      *
-     * @Column(type="string", length=1, nullable=false)
+     * @Column(type="string", length=1)
      */
     private $sex;
+
+    /**
+     * @var bool Whether or not this can login
+     *
+     * @Column(name="can_login", type="boolean")
+     */
+    private $canLogin;
 
     /**
      * @param string $username The user's username
@@ -120,6 +127,7 @@ abstract class Person
         $this->setSex($sex);
 
         $this->roles = new ArrayCollection($roles);
+        $this->canLogin = true;
     }
 
     /**
@@ -356,5 +364,22 @@ abstract class Person
     public function getSex()
     {
         return $this->sex;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canLogin()
+    {
+        return $this->canLogin;
+    }
+
+    /**
+     * @return \Litus\Entity\Users\Person
+     */
+    public function disableLogin()
+    {
+        $this->canLogin = false;
+        return $this;
     }
 }
