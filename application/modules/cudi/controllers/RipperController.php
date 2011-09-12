@@ -9,20 +9,28 @@
  *
  */
 namespace Cudi;
+/**
+ * 
+ * Enter description here ...
+ * @author Philippe Blondeel s0201761
+ *
+ */
 
 class RipperController extends \Litus\Controller\Action
 {
 
 	private $opleidingFile ;
 	private $alleFaculteiten;
-	private $faculteit ="Faculteit bew";
+	/**
+	 * $faculteit is de variabele de veranderd moet worden in functie van de kring die 
+	 * het programma wilt gebruiken.
+	 * Men hoeft niet eens de hele faculteit naam uit te schrijven. Alleen de eerste paar letters zijn voldoende.
+	 * Voor de naam van alle faculteiten ga naar :http://onderwijsaanbod.kuleuven.be/opleidingen/n/
+	 * 
+	 */
+	private $faculteit ="faculteit let";
 	private $mainFile="http://onderwijsaanbod.kuleuven.be/opleidingen/n/nodes.js";
 	private $departementFile;
-
-	public function init()
-	{
-		/* Initialize action controller here */
-	}
 
 	/**
 	 * This is the main method
@@ -36,10 +44,11 @@ class RipperController extends \Litus\Controller\Action
 		$this->parseDepartementsAction(str_replace(".htm",".js",$this->getAdresFromStringAction($this->alleFaculteiten,$this->faculteit)),"'Bachelor of","tm");
 		$this->parseDepartementsAction(str_replace(".htm",".js",$this->getAdresFromStringAction($this->alleFaculteiten,$this->faculteit)),"'Master of","tm");
 		$this->parseDepartementsAction(str_replace(".htm",".js",$this->getAdresFromStringAction($this->alleFaculteiten,$this->faculteit)),"'Voorbereidingsprogramma:","tm");
-
+		
 		//echo $this->departementFile;
 
 		$this->locateAllCoursesAction();
+		
 		//echo $this->getAdresFromStringAction("Master of Science in Biomedical Engineering: http://onderwijsaanbod.kuleuven.be/opleidingen/e/CQ_51360389.htm","Master");
 
 	}
@@ -130,9 +139,13 @@ class RipperController extends \Litus\Controller\Action
 				$solution=$solution."<br />".$string;
 			}
 		}
+		
+		
 		$solution=str_replace("','../../",": http://onderwijsaanbod.kuleuven.be/",$solution);
 		$solution=str_replace(".h",".htm",$solution);
 		$this->departementFile="$this->departementFile"."$solution";
+		
+		
 	}
 
 
@@ -175,9 +188,11 @@ class RipperController extends \Litus\Controller\Action
 			
 			
 			$iterate++;						
-			echo $this->retrieveAdresWhereCoursesAreLocatedAction($adres)."<br />";
-			
+			//echo $this->retrieveAdresWhereCoursesAreLocatedAction($adres)."<br />";
+			$this->retrieveCourseAction($this->retrieveAdresWhereCoursesAreLocatedAction($adres));
+		
 		}
+		//$this->retrieveCourseAction("http://onderwijsaanbod.kuleuven.be/opleidingen/n/SC_51360430.htm");
 	}
 	
 	/**
@@ -195,6 +210,106 @@ class RipperController extends \Litus\Controller\Action
 
 	}
 
+	private function retrieveCourseAction($link)
+	{
+		
+		$end=strrpos($link,"htm");
+		$link=substr($link,0,$end+3); 
+		
+		$file=@file_get_contents($link,"r");
+		
+		if($file==false)
+		{
+			$link=str_replace("/n/","/e/",$link);
+			$file=file_get_contents($link,"r");
+		}
+		
+		$counter=0;
+		$numberOfCourses=substr_count($file,"</a></td>");
+		$newPosNum=0;
+		$newPosSem=0;
+		$newPosName=0;
+		$newPosFase=0;
+		
+		while($counter<$numberOfCourses)
+		{
+			
+		
+		$posNum= strpos($file,"</a></td>",$newPosNum+1);
+		
+		echo substr($file,($posNum)-6,6)."<br/>";
+		
+		$posFase=strpos($file,"<img src=\"http://onderwijsaanbod.kuleuven.be/img/vk_c",$newPosFase+1);
+		
+		$fase =substr($file,$posFase,55);
+        echo "Fase nummer ";
+        
+		if(strstr($fase,"1"))
+		{
+			echo "1"."<br/>";
+		}
+		else if(strstr($fase,"2"))
+		{
+			echo "2"."<br/>";
+		}
+		else if(strstr($fase,"3"))
+		{
+			echo "3"."<br/>";
+		}
+		else {
+			echo "Missing information"."<br/>";
+		}
+		
+		$posSem=strpos($file,"<img src=\"http://onderwijsaanbod.kuleuven.be/img/trim",$newPosSem+1);
+		$semester=substr($file,$posSem,55);
+		echo "Semester nummer ";
+		
+		if(strstr($semester,"1"))
+		{
+			echo"1"."<br/>";
+		}
+		else if(strstr($semester,"2"))
+		{
+			echo"2"."<br/>";	
+		}
+		else if(strstr($semester,"3"))
+		{
+			echo"1 en 2"."<br/>";
+		}
+		
+		else {
+			echo "Geen informatie"."<br/>";
+		}
+		
+		$posNaam=strpos($file,"<td class=\"txt\" width=\"40%\">",$newPosName+1);
+		$posNaamEnd=strpos($file,"</td>",$posNaam+1);
+		echo substr($file,$posNaam,($posNaamEnd-$posNaam));
+		echo "<br/>";
+		echo "<br/>";
+		
+		$newPosFase=$posFase;
+		$newPosName=$posNaam;
+		$newPosNum=$posNum;
+		$newPosSem=$posSem;
+		
+		$counter++;
+		}
+		
+	
+		/**
+		 * Write parse function here
+		 * For the moment the information of the course will be written to a file
+		 */
+		
+		
+	}
+	
+	private function testFunt()
+	{
+		$handle = fopen("../../test.txt","w+");
+		//fwrite($handle, "test");
+		
+	}
 
 
 
