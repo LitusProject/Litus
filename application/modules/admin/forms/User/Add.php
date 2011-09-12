@@ -14,6 +14,9 @@ use \Zend\Form\Element\Select;
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
 use \Zend\Registry;
+use \Zend\Validator\Alnum as AlnumValidator;
+use \Zend\Validator\Alpha as AlphaValidator;
+use \Zend\Validator\EmailAddress as EmailAddressValidator;
 
 class Add extends \Litus\Form\Form
 {
@@ -24,7 +27,8 @@ class Add extends \Litus\Form\Form
         $field = new Text('username');
         $field->setLabel('Username')
                 ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+                ->setDecorators(array(new FieldDecorator()))
+                ->addValidator(new AlnumValidator());
         $this->addElement($field);
 
         $field = new Password('credential');
@@ -49,19 +53,22 @@ class Add extends \Litus\Form\Form
         $field = new Text('first_name');
         $field->setLabel('First Name')
                 ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+                ->setDecorators(array(new FieldDecorator()))
+                ->addValidator(new AlphaValidator());
         $this->addElement($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
                 ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+                ->setDecorators(array(new FieldDecorator()))
+                ->addValidator(new AlphaValidator());
         $this->addElement($field);
 
         $field = new Text('email');
         $field->setLabel('E-mail')
                 ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+                ->setDecorators(array(new FieldDecorator()))
+                ->addValidator(new EmailAddressValidator());
         $this->addElement($field);
 
 		$field = new Select('sex');

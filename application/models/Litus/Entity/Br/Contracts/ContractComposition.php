@@ -74,7 +74,7 @@ class ContractComposition
     }
 
     /**
-     * @throws InvalidArgumentException if $contract is null
+     * @throws \InvalidArgumentException
      * @param \Litus\Entity\Br\Contracts\Contract $contract
      * @return \Litus\Entity\Br\Contracts\ContractComposition
      */
@@ -96,7 +96,7 @@ class ContractComposition
     }
 
     /**
-     * @throws InvalidArgumentException if $section is null
+     * @throws \InvalidArgumentException
      * @param \Litus\Entity\Br\Contracts\Section $section
      * @return \Litus\Entity\Br\Contracts\ContractComposition
      */
@@ -120,7 +120,7 @@ class ContractComposition
     /**
      * Sets the position to the given value.
      *
-     * @throws \InvalidArgumentException if $position is not a positive integer
+     * @throws \InvalidArgumentException
      * @param $position int
      * @return \Litus\Entity\Br\Contracts\ContractComposition
      */

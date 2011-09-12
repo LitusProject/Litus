@@ -19,7 +19,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::MISSING_FIELD_NAME => 'No field name was provided to check against',
         self::INVALID_FIELD_NAME => 'The field "%fieldName%" was not provided to match against',
-        self::NOT_MATCH => 'The entered values do not match'
+        self::NOT_MATCH => 'The entered values did not match'
     );
 
     /**

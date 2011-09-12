@@ -111,25 +111,15 @@ abstract class Person
      */
     public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
     {
-        $this->username = $username;
-        $this->credential = $credential;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
+        $this->setUsername($username);
+        $this->setCredential($credential);
+        $this->setFirstName($firstName);
+        $this->setLastName($lastName);
+        $this->setEmail($email);
 
         $this->setSex($sex);
 
         $this->roles = new ArrayCollection($roles);
-    }
-
-    /**
-     * @param int $id
-     * @return \Litus\Entity\Users\Person
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -141,12 +131,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $username
      * @return \Litus\Entity\Users\Person
      */
     public function setUsername($username)
     {
+        if (($username === null) || !is_string($username))
+            throw new \InvalidArgumentException('Invalid username');
         $this->username = $username;
+
         return $this;
     }
 
@@ -159,12 +153,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param \Litus\Entity\Users\Credential $credential
      * @return \Litus\Entity\Users\Person
      */
     public function setCredential(Credential $credential)
     {
+        if ($credential === null)
+            throw new \InvalidArgumentException('Credential cannot be null');
         $this->credential = $credential;
+
         return $this;
     }
 
@@ -229,12 +227,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $firstName
      * @return \Litus\Entity\Users\Person
      */
     public function setFirstName($firstName)
     {
+        if (($firstName === null) || !is_string($firstName))
+            throw new \InvalidArgumentException('Invalid first name');
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -247,12 +249,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $lastName
      * @return \Litus\Entity\Users\Person
      */
     public function setLastName($lastName)
     {
+        if (($lastName === null) || !is_string($lastName))
+            throw new \InvalidArgumentException('Invalid last name');
         $this->lastName = $lastName;
+        
         return $this;
     }
 
@@ -265,12 +271,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $email
      * @return \Litus\Entity\Users\Person
      */
     public function setEmail($email)
     {
+        if (($email === null) || !filter_var($email, FILTER_VALIDATE_EMAIL))
+            throw new \InvalidArgumentException('Invalid e-mail');
         $this->email = $email;
+
         return $this;
     }
 
@@ -283,12 +293,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $address
      * @return \Litus\Entity\Users\Person
      */
     public function setAddress($address)
     {
+        if (($address === null) || !is_string($address))
+            throw new \InvalidArgumentException('Invalid address');
         $this->address = $address;
+        
         return $this;
     }
 
@@ -301,12 +315,16 @@ abstract class Person
     }
 
     /**
+     * @throws \InvalidArgumentException
      * @param string $telephone
      * @return \Litus\Entity\Users\Person
      */
     public function setTelephone($telephone)
     {
+        if (($telephone === null) || !filter_var($telephone, FILTER_VALIDATE_INT))
+            throw new \InvalidArgumentException('Invalid address');
         $this->telephone = $telephone;
+        
         return $this;
     }
 
@@ -319,7 +337,7 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException If $sex is not 'm' and not 'f'
+     * @throws \InvalidArgumentException
      * @param $sex string The person's sex
      * @return \Litus\Entity\Users\Person
      */

@@ -5,8 +5,6 @@ namespace Litus\Entity\Br\Contracts;
 use \Litus\Entity\Users\Person;
 use \Litus\Util\AcademicYear;
 
-use \InvalidArgumentException;
-
 use \Zend\Registry;
 use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
@@ -172,8 +170,9 @@ class Section
     }
 
     /**
-     * @param string $vatType The VAT type (example: in Belgium: 6%, 12%, 21% ...). The values are 'A','B' ... A value is valid if the configuration entry 'br.invoice.vat.<value>' exists.
-     * @throws \InvalidArgumentException If $vatType is invalid
+     * @param string $vatType The VAT type (example: in Belgium: 6%, 12%, 21% ...). The values are 'A', 'B'...
+     *                        A value is valid if the configuration entry 'br.invoice.vat.<value>' exists.
+     * @throws \InvalidArgumentException
      * @return \Litus\Entity\Br\Contracts\Section
      */
     public function setVatType($vatType)
@@ -183,9 +182,10 @@ class Section
             	->getRepository('Litus\Entity\Config\Config')
                 ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $vatType);
         } catch (\InvalidArgumentException $e) {
-            throw new InvalidArgumentException($vatType . ' is not a valid VAT type.');
+            throw new \InvalidArgumentException($vatType . ' is not a valid VAT type.');
         }
         $this->vatType = $vatType;
+        
         return $this;
     }
 

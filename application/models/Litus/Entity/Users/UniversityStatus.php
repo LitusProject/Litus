@@ -4,7 +4,6 @@ namespace Litus\Entity\Users;
 
 use \Litus\Entity\Users\Person;
 use \Litus\Util\AcademicYear;
-use \InvalidArgumentException;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Users\UniversityStatus")
@@ -68,16 +67,16 @@ class UniversityStatus
     /**
      * Constructing a new status.
      *
-     * @throws \InvalidArgumentException If the given person is invalid
+     * @throws \InvalidArgumentException
      * @param Person $person The person that should be given the status
      * @param string $status The status that should be given to the person
      */
     public function __construct(Person $person, $status)
     {
-        if (UniversityStatus::isValidPerson($person))
-            $this->person = $person;
-        else
-            throw new InvalidArgumentException('Invalid person: ' . $person);
+        if (!UniversityStatus::isValidPerson($person))
+            throw new \InvalidArgumentException('Invalid person');
+        $this->person = $person;
+        
         $this->setStatus($status);
         $this->year = AcademicYear::getShortAcademicYear();
     }
@@ -133,7 +132,7 @@ class UniversityStatus
      */
     public function setStatus($status)
     {
-        if ($this->isValidStatus($status))
+        if (self::isValidStatus($status))
             $this->status = $status;
     }
 
@@ -143,7 +142,7 @@ class UniversityStatus
      * @param $status string a status
      * @return bool
      */
-    public function isValidStatus($status)
+    public static function isValidStatus($status)
     {
         return (array_search($status, UniversityStatus::$POSSIBLE_STATUSES, true) != false);
     }
