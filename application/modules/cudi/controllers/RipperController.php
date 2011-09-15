@@ -31,7 +31,7 @@ class RipperController extends \Litus\Controller\Action
 	 * Voor de naam van alle faculteiten ga naar :http://onderwijsaanbod.kuleuven.be/opleidingen/n/
 	 *
 	 */
-	private $faculteit ="faculteit let";
+	private $faculteit ="faculteit in";
 	private $mainFile="http://onderwijsaanbod.kuleuven.be/opleidingen/n/nodes.js";
 	private $departementFile;
 
