@@ -1,22 +1,22 @@
 <?php
-$this->broker('headMeta')
+$this->plugin('headMeta')
     ->setCharset('utf-8');
-$this->broker('headTitle')
+$this->plugin('headTitle')
     ->direct('Litus Admin', 'PREPEND')
     ->setSeparator('-');
 
-$this->broker('headLink')
-    ->appendStylesheet($this->broker('baseurl')->direct('/_admin/stylesheet/css/litus.css'));
-$this->broker('headScript')
-    ->appendFile($this->broker('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'))
+$this->plugin('headLink')
+    ->appendStylesheet($this->plugin('baseurl')->direct('/_admin/stylesheet/css/litus.css'));
+$this->plugin('headScript')
+    ->appendFile($this->plugin('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'))
     ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
 
-$this->broker('inlineScript')
-    ->appendFile($this->broker('baseurl')->direct('/_admin/js/jquery-ui-1.8.16.custom.min.js'))
-    ->appendFile($this->broker('baseurl')->direct('/_admin/js/functions.js'));
+$this->plugin('inlineScript')
+    ->appendFile($this->plugin('baseurl')->direct('/_admin/js/jquery-ui-1.8.16.custom.min.js'))
+    ->appendFile($this->plugin('baseurl')->direct('/_admin/js/functions.js'));
 ?>
 
-<?= $this->broker('doctype'); ?>
+<?= $this->plugin('doctype'); ?>
 
 <!--[if lt IE 7 ]> 	   <html class="ie ie6 no-js" lang="en"> <![endif]-->
 <!--[if IE 7 ]>    	   <html class="ie ie7 no-js" lang="en"> <![endif]-->
@@ -26,13 +26,13 @@ $this->broker('inlineScript')
 
 <head id="litus" data-template-set="html5-reset">
 
-    <?= $this->broker('headMeta'); ?>
-	<?= $this->broker('headTitle'); ?>
-	<?= $this->broker('headLink'); ?>
-    <?= $this->broker('headScript'); ?>
+    <?= $this->plugin('headMeta'); ?>
+	<?= $this->plugin('headTitle'); ?>
+	<?= $this->plugin('headLink'); ?>
+    <?= $this->plugin('headScript'); ?>
 
     <script>
-        window.jQuery || document.write("<script src='<?= $this->broker('baseurl')->direct('/_admin/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")
+        window.jQuery || document.write("<script src='<?= $this->plugin('baseurl')->direct('/_admin/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")
     </script>
 
 </head>
@@ -52,35 +52,66 @@ $this->broker('inlineScript')
             <div class="topmenu">
                 <div class="title">Admin</div>
 
-				<ul>
-                	<li><a href="/admin">Dashboard</a></li>
-                	<li><a href="#">Settings</a></li>
-                	<li><a href="/admin/user">Users</a></li>
-                    <li><a href="/admin/role">Groups</a></li>
-				</ul>
+                <ul>
+                    <? if ($this->plugin('hasaccess')->direct('admin', 'index', 'index')): ?>
+                        <li><a href="/admin">Dashboard</a></li>
+                    <? endif; ?>
+                    <? if ($this->plugin('hasaccess')->direct('admin', 'setting', 'index')): ?>
+                        <li><a href="#">Settings</a></li>
+                    <? endif; ?>
+                    <? if ($this->plugin('hasaccess')->direct('admin', 'user', 'index')): ?>
+                        <li><a href="/admin/user">Users</a></li>
+                    <? endif; ?>
+                    <? if ($this->plugin('hasaccess')->direct('admin', 'role', 'index')): ?>
+                        <li><a href="/admin/role">Groups</a></li>
+                    <? endif; ?>
+                </ul>
             </div>
 
             <div class="submenu">
-				<div class="title">Divisions</div>
+                <div class="title">Divisions</div>
 
-                <div class="subtitle"><p id="toggleCursusdienst"><b>CuDi</b><br />Textbooks, Stock &amp; Financial</p></div>
-                <ul id="submenu_cursusdienst">
-					<li><a href ="/admin/textbook">Textbooks</a></li>
-					<li><a href ="/admin/syllabus">Syllabus</a></li>
-					<li>Stock</li>
-                    <li>Financial</li>
-                </ul>
-				<div class="subtitle"><p id="toggleBedrijvenrelaties"><b>Company Relations</b><br />Companies &amp; Contracts</p></div>
-                <ul id="submenu_bedrijvenrelaties">
-					<li><a href="/admin/company">Companies</a></li>
-                    <li><a href="/admin/section">Sections</a></li>
-					<li><a href="/admin/contract/">Contracts</a></li>
-                </ul>
+                <?
+                if (
+                    $this->plugin('hasaccess')->direct('admin', 'textbook', 'index') ||
+                    $this->plugin('hasaccess')->direct('admin', 'syllabus', 'index')
+                ):
+                ?>
+                    <div class="subtitle"><p id="toggleCursusdienst"><b>CuDi</b><br />Textbooks, Stock &amp; Financial</p></div>
+                    <ul id="submenu_cursusdienst">
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                            <li><a href ="/admin/textbook">Textbooks</a></li>
+                        <? endif; ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'syllabus', 'index')): ?>
+                            <li><a href ="/admin/syllabus">Syllabus</a></li>
+                        <? endif; ?>
+                    </ul>
+                <? endif; ?>
+
+                <?
+                if (
+                    $this->plugin('hasaccess')->direct('admin', 'textbook', 'index') ||
+                    $this->plugin('hasaccess')->direct('admin', 'syllabus', 'index')
+                ):
+                ?>
+                    <div class="subtitle"><p id="toggleBedrijvenrelaties"><b>Company Relations</b><br />Companies &amp; Contracts</p></div>
+                    <ul id="submenu_bedrijvenrelaties">
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                            <li><a href="/admin/company">Companies</a></li>
+                        <? endif; ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                            <li><a href="/admin/section">Sections</a></li>
+                        <? endif; ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                            <li><a href="/admin/contract/">Contracts</a></li>
+                        <? endif; ?>
+                    </ul>
+                <? endif; ?>
             </div>
         </nav>
 
 		<div id="content_controller">
-            <?= $this->broker('layout')->direct()->content; ?>
+            <?= $this->plugin('layout')->direct()->content; ?>
         </div>
 	</div>
 
@@ -98,7 +129,7 @@ $this->broker('inlineScript')
     <? endif; ?>
 </footer>
 
-<?= $this->broker('inlineScript'); ?>
+<?= $this->plugin('inlineScript'); ?>
 
 </body>
 </html>

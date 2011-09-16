@@ -201,11 +201,12 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
 
         if ($this->getAuthentication()->isAuthenticated()) {
             foreach ($this->getAuthentication()->getPersonObject()->getRoles() as $role) {
-                if ($acl->getAcl()->isAllowed(
-                    $role->getName(),
-                    $request->getModuleName() . '.' . $request->getControllerName(),
-                    $request->getActionName()
-                )
+                if (
+                    $acl->getAcl()->isAllowed(
+                        $role->getName(),
+                        $request->getModuleName() . '.' . $request->getControllerName(),
+                        $request->getActionName()
+                    )
                 ) {
                     return true;
                 }

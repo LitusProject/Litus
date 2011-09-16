@@ -3,13 +3,13 @@
         <tr>
             <td>
                 <? if (null !== $this->vars('previous')): ?>
-                    <a href="<?= $this->broker('url')->direct(array('page' => $this->first)); ?>">First</a>
+                    <a href="<?= $this->plugin('url')->direct(array('page' => $this->first)); ?>">First</a>
                 <? else: ?>
                     First
                 <? endif; ?>
 
                 <? if (null !== $this->vars('previous')): ?>
-                    <a href="<?= $this->broker('url')->direct(array('page' => $this->previous)); ?>">Previous</a>
+                    <a href="<?= $this->plugin('url')->direct(array('page' => $this->previous)); ?>">Previous</a>
                 <? endif; ?>
             </td>
 
@@ -19,11 +19,11 @@
 
             <td>
                 <? if (null !== $this->vars('next')): ?>
-                    <a href="<?= $this->broker('url')->direct(array('page' => $this->next)); ?>">Next</a>
+                    <a href="<?= $this->plugin('url')->direct(array('page' => $this->next)); ?>">Next</a>
                 <? endif; ?>
 
                 <? if (null !== $this->vars('next')): ?>
-                    <a href="<?= $this->broker('url')->direct(array('page' => $this->last)); ?>">Last</a>
+                    <a href="<?= $this->plugin('url')->direct(array('page' => $this->last)); ?>">Last</a>
                 <? else: ?>
                     Last
                 <? endif; ?>

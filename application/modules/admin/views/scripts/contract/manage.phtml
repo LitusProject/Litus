@@ -1,4 +1,4 @@
-<?= $this->broker('partial')->direct('partials/contract/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->plugin('partial')->direct('partials/contract/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <table>
@@ -18,14 +18,14 @@
                     <td><?= $contract->getAuthor()->getFirstName(); ?> <?= $contract->getAuthor()->getLastName(); ?></td>
                     <td><?= $contract->getDate()->format('j/m/Y'); ?></td>
                     <td>
-                        <a href="<?= $this->broker('url')->direct(array('action' => 'edit', 'id' => $contract->getId())); ?>" class="edit">Edit</a>
-                        <a href="<?= $this->broker('url')->direct(array('action' => 'delete', 'id' => $contract->getId())); ?>" class="delete">Delete</a>
-                        <? if (!$contract->isSigned()): ?><a href="<?= $this->broker('url')->direct(array('action' => 'sign', 'id' => $contract->getId())); ?>">Sign</a><? endif ?>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'edit', 'id' => $contract->getId())); ?>" class="edit">Edit</a>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $contract->getId())); ?>" class="delete">Delete</a>
+                        <? if (!$contract->isSigned()): ?><a href="<?= $this->plugin('url')->direct(array('action' => 'sign', 'id' => $contract->getId())); ?>">Sign</a><? endif ?>
                     </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
 
-    <?= $this->broker('paginationControl')->direct($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+    <?= $this->plugin('paginationControl')->direct($this->paginator, 'all', 'partials/pagination.phtml'); ?>
 </div>

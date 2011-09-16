@@ -56,7 +56,7 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content_nav .topmenu li a:hover{color:#000000;}
 #content_nav .topmenu li a:before{content:"- ";}
 #content_nav .topmenu li a:hover:before{content:"- ";color:#ffae00;}
-#content_nav .submenu .title{display:block;height:28px;line-height:28px;text-indent:9px;font-weight:bold;color:#ffae00;cursor:pointer;background:#0f0f0f;}
+#content_nav .submenu .title{display:block;height:28px;line-height:28px;text-indent:9px;font-weight:bold;color:#ffae00;background:#0f0f0f;}
 #content_nav .submenu .subtitle{display:block;height:37px;padding-left:9px;background:url("/_admin/img/m.gif") 0 -28px;cursor:pointer;}#content_nav .submenu .subtitle b{color:#000000;}
 #content_nav .submenu .subtitle p{display:block;height:37px;padding-top:5px;font-weight:normal;}
 #content_nav .submenu ul{display:none;padding:5px 0;}#content_nav .submenu ul li{display:block;padding-left:9px;line-height:19px;}#content_nav .submenu ul li a{display:block;line-height:19px;text-decoration:none;color:inherit;}
