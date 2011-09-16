@@ -21,7 +21,7 @@ class TextbookController extends \Litus\Controller\Action
 {
     public function init()
     {
-
+        parent::init();
     }
 
     public function indexAction()

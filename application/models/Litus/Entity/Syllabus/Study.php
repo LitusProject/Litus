@@ -8,6 +8,19 @@ namespace Litus\Entity\Syllabus;
  */
 class Study
 {
+	public function __construct($id,$title,$phase,$type,$acronym,$active,$url)
+	{
+		$this->id=$id;
+		$this->title=$title;
+		$this->phase=$phase;
+		$this->type=$type;
+		$this->acronym=$acronym;
+		$this->active=$active;
+		$this->url=$url;
+		
+	}
+	
+	
 	/**
 	 * @Id
 	 * @GeneratedValue
