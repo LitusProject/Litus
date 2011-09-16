@@ -1,7 +1,10 @@
 /**
- * This file is a part of the Eleutheria framework, which aims to make the life of webdevelopers easier.
+ * Litus
  *
- * 
+ * Copyright 2011 Litus
+ * Licensed under the
+ *
+ * Author: Pieter Maene <pieter.maene@litus.cc>
  */
 
 // Remap jQuery to $

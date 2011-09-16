@@ -1,18 +1,18 @@
-<?= $this->broker('doctype'); ?>
+<?= $this->plugin('doctype'); ?>
 <html>
 <head>
-	<?= $this->broker('headTitle')->direct('Litus Core', 'PREPEND'); ?>
-	<?= $this->broker('headLink'); ?>
-	<?= $this->broker('headMeta'); ?>
-	<?= $this->broker('headScript'); ?>
-	<?= $this->broker('headStyle'); ?>
+	<?= $this->plugin('headTitle')->direct('Litus Core', 'PREPEND'); ?>
+	<?= $this->plugin('headLink'); ?>
+	<?= $this->plugin('headMeta'); ?>
+	<?= $this->plugin('headScript'); ?>
+	<?= $this->plugin('headStyle'); ?>
 </head>
 <body>
 	<header>
 		<h1>Litus Core</h1>
 	</header>
 	<section id="content">
-		<?= $this->broker('layout')->direct()->content; ?>
+		<?= $this->plugin('layout')->direct()->content; ?>
 	</section>
 </body>
 </html>

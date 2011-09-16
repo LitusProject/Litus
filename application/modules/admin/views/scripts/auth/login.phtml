@@ -1,19 +1,19 @@
 <?php
-$this->broker('headMeta')       ->setCharset('utf-8');
-$this->broker('headTitle')      ->direct('Litus Admin', 'PREPEND')
+$this->plugin('headMeta')       ->setCharset('utf-8');
+$this->plugin('headTitle')      ->direct('Litus Admin', 'PREPEND')
                                 ->setSeparator('-');
-$this->broker('headScript')     ->appendFile($this->broker('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
+$this->plugin('headScript')     ->appendFile($this->plugin('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
 
-$this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+$this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
 ?>
 
-<?= $this->broker('doctype'); ?>
+<?= $this->plugin('doctype'); ?>
 
 <head>
 
-    <?= $this->broker('headMeta'); ?>
-    <?= $this->broker('headTitle'); ?>
-    <?= $this->broker('headScript'); ?>
+    <?= $this->plugin('headMeta'); ?>
+    <?= $this->plugin('headTitle'); ?>
+    <?= $this->plugin('headScript'); ?>
 
     <style type="text/css">
         * {
@@ -116,7 +116,7 @@ $this->broker('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
     </section>
 </div>
 
-<?= $this->broker('inlineScript'); ?>
+<?= $this->plugin('inlineScript'); ?>
 
 <script type="text/javascript">
     function doLogin() {

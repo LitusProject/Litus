@@ -3,9 +3,15 @@
 
     <nav id="controller_nav">
         <ul>
-            <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'add')); ?>">Add</a></li>
-            <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
-            <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->broker('url')->direct(array('action' => 'list')); ?>">Download</a></li>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'add')): ?>
+                <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'add')); ?>">Add</a></li>
+            <? endif; ?>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'manage')): ?>
+                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
+            <? endif; ?>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'list')): ?>
+                <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'list')); ?>">Download</a></li>
+            <? endif; ?>
         </ul>
     </nav>
 </header>
