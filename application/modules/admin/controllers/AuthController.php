@@ -15,7 +15,7 @@ class AuthController extends \Litus\Controller\Action
         parent::init();
 
         $this->broker('contextSwitch')
-            ->addActionContext('dologin', 'json')
+            ->addActionContext('authenticate', 'json')
             ->setAutoDisableLayout(false)
             ->setAutoJsonSerialization(false)
             ->initContext();
@@ -38,7 +38,15 @@ class AuthController extends \Litus\Controller\Action
         }
     }
 
-    public function dologinAction()
+    public function logoutAction()
+    {
+        $this->broker('viewRenderer')->setNoRender();
+        $this->getAuthentication()->forget();
+
+        $this->_redirect('login');
+    }
+
+	public function authenticateAction()
     {
         $this->_initAjax();
 
@@ -57,13 +65,5 @@ class AuthController extends \Litus\Controller\Action
         }
 
         echo $this->_json->encode($authResult);
-    }
-
-    public function logoutAction()
-    {
-        $this->broker('viewRenderer')->setNoRender();
-        $this->getAuthentication()->forget();
-
-        $this->_redirect('login');
     }
 }

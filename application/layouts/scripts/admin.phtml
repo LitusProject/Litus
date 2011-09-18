@@ -18,12 +18,7 @@ $this->plugin('inlineScript')
 
 <?= $this->plugin('doctype'); ?>
 
-<!--[if lt IE 7 ]> 	   <html class="ie ie6 no-js" lang="en"> <![endif]-->
-<!--[if IE 7 ]>    	   <html class="ie ie7 no-js" lang="en"> <![endif]-->
-<!--[if IE 8 ]>    	   <html class="ie ie8 no-js" lang="en"> <![endif]-->
-<!--[if IE 9 ]>    	   <html class="ie ie9 no-js" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> 		 <!--<![endif]-->
-
+<html lang="en">
 <head id="litus" data-template-set="html5-reset">
 
     <?= $this->plugin('headMeta'); ?>
@@ -56,9 +51,6 @@ $this->plugin('inlineScript')
                     <? if ($this->plugin('hasaccess')->direct('admin', 'index', 'index')): ?>
                         <li><a href="/admin">Dashboard</a></li>
                     <? endif; ?>
-                    <? if ($this->plugin('hasaccess')->direct('admin', 'setting', 'index')): ?>
-                        <li><a href="#">Settings</a></li>
-                    <? endif; ?>
                     <? if ($this->plugin('hasaccess')->direct('admin', 'user', 'index')): ?>
                         <li><a href="/admin/user">Users</a></li>
                     <? endif; ?>
@@ -90,19 +82,20 @@ $this->plugin('inlineScript')
 
                 <?
                 if (
-                    $this->plugin('hasaccess')->direct('admin', 'textbook', 'index') ||
-                    $this->plugin('hasaccess')->direct('admin', 'syllabus', 'index')
+                    $this->plugin('hasaccess')->direct('admin', 'company', 'index') ||
+                    $this->plugin('hasaccess')->direct('admin', 'section', 'index') ||
+					$this->plugin('hasaccess')->direct('admin', 'contract', 'index')
                 ):
                 ?>
                     <div class="subtitle"><p id="toggleBedrijvenrelaties"><b>Company Relations</b><br />Companies &amp; Contracts</p></div>
                     <ul id="submenu_bedrijvenrelaties">
-                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'company', 'index')): ?>
                             <li><a href="/admin/company">Companies</a></li>
                         <? endif; ?>
-                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'section', 'index')): ?>
                             <li><a href="/admin/section">Sections</a></li>
                         <? endif; ?>
-                        <? if ($this->plugin('hasaccess')->direct('admin', 'textbook', 'index')): ?>
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'index')): ?>
                             <li><a href="/admin/contract/">Contracts</a></li>
                         <? endif; ?>
                     </ul>

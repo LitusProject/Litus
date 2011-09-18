@@ -36,6 +36,7 @@ class Add extends \Litus\Form\Form
         $field->setLabel('Allowed Actions')
             ->setRequired()
             ->setMultiOptions($this->_createActionsArray())
+			->setAttrib('style', 'height: 300px;')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

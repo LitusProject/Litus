@@ -120,7 +120,7 @@ $this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 
 <script type="text/javascript">
     function doLogin() {
-        $.post('/admin/auth/dologin?format=json', {formData: $('#login').serialize()}, function(data) {
+        $.post('/admin/auth/authenticate?format=json', {formData: $('#login').serialize()}, function(data) {
             if (!data.result) {
                 if ('USERNAME_PASSWORD' == data.reason) {
                     $('#error_message').html(

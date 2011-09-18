@@ -62,65 +62,114 @@ class RoleController extends \Litus\Controller\Action
         $this->view->paginator = $this->_createPaginator('Litus\Entity\Acl\Role');
     }
 
+	public function editAction()
+	{
+		
+	}
+	
+	public function deleteAction()
+	{
+		
+	}
+
     public function loadAction()
     {
-        $this->broker('viewRenderer')->setNoRender();
-
-        $adminResource = new Resource('admin');
-        $this->getEntityManager()->persist($adminResource);
-
-        $indexResource = new Resource('admin.index',
-            $adminResource
-        );
-        $this->getEntityManager()->persist($indexResource);
-        $aclResource = new Resource('admin.acl',
-            $adminResource
-        );
-        $this->getEntityManager()->persist($aclResource);
-        $authResource = new Resource('admin.auth',
-            $adminResource
-        );
-        $this->getEntityManager()->persist($authResource);
-        $userResource = new Resource('admin.user',
-            $adminResource
-        );
-        $this->getEntityManager()->persist($userResource);
-
-        $indexIndexAction = new AclAction('index',
-            $indexResource
-        );
-        $this->getEntityManager()->persist($indexIndexAction);
-        $aclIndexAction = new AclAction('index',
-            $aclResource
-        );
-        $this->getEntityManager()->persist($aclIndexAction);
-        $aclAddAction = new AclAction('add',
-            $aclResource
-        );
-        $this->getEntityManager()->persist($aclAddAction);
-        $loginAction = new AclAction('login',
-            $authResource
-        );
-        $this->getEntityManager()->persist($loginAction);
-        $dologinAction = new AclAction('dologin',
-            $authResource
-        );
-        $this->getEntityManager()->persist($dologinAction);
-        $logoutAction = new AclAction('logout',
-            $authResource
-        );
-        $this->getEntityManager()->persist($logoutAction);
-        $usersIndexAction = new AclAction('index',
-            $userResource
-        );
-        $this->getEntityManager()->persist($usersIndexAction);
-        $usersAddAction = new AclAction('add',
-            $userResource
-        );
-        $this->getEntityManager()->persist($usersAddAction);
-
-        $guestRole = new Role('guest');
-        $guestRole->allow($loginAction);
-        $this->getEntityManager()->persist($guestRole);
-    }
+		$modules = array(
+			'admin' => array(
+				'auth' => array(
+					'login', 'logout', 'authenticate'
+				),
+				'company' => array(
+					'index', 'add', 'manage', 'edit', 'delete'
+				),
+				'contract' => array(
+					'index', 'add', 'manage', 'edit', 'delete', 'download', 'compose'
+				),
+				'index' => array(
+					'index'
+				),
+				'role' => array(
+					'index', 'add', 'manage', 'edit', 'delete'
+				),
+				'section' => array(
+					'index', 'add', 'manage', 'edit', 'delete'
+				),
+				'user' => array(
+					'index', 'add', 'manage', 'edit', 'delete'
+				)
+			)
+		);
+		
+		foreach ($modules as $module => $controllers) {
+			$repositoryCheck = $this->getEntityManager()
+				->getRepository('Litus\Entity\Acl\Resource')
+				->findOneByName('admin');
+	
+			if (null === $repositoryCheck) {
+				$moduleResource = new Resource($module);
+				$this->getEntityManager()->persist($moduleResource);
+			}
+			
+			foreach ($controllers as $controller => $actions) {
+				$repositoryCheck = $this->getEntityManager()
+					->getRepository('Litus\Entity\Acl\Resource')
+					->findOneBy(array('name' => $module . '.' . $controller, 'parent' => $module));
+	
+				if (null === $repositoryCheck) {
+					$controllerResource = new Resource(
+						$module . '.' . $controller,
+						$moduleResource
+					);
+					$this->getEntityManager()->persist($controllerResource);
+				}
+				
+				foreach ($actions as $action) {
+					$repositoryCheck = $this->getEntityManager()
+						->getRepository('Litus\Entity\Acl\Action')
+						->findOneBy(array('name' => $action, 'resource' => $module . '.' . $controller));
+					
+					if (null === $repositoryCheck) {
+						$actionResource = new AclAction(
+							$action,
+							$controllerResource
+						);
+						$this->getEntityManager()->persist($actionResource);
+					}
+				}
+			}
+		}
+		
+		$repositoryCheck = $this->getEntityManager()
+			->getRepository('Litus\Entity\Acl\Role')
+			->findOneByName('guest');
+		
+		if (null === $repositoryCheck) {
+        	$guestRole = new Role('guest');
+        	$guestRole->allow(
+				$this->getEntityManager()
+            		->getRepository('Litus\Entity\Acl\Action')
+                	->findOneBy(array('name' => 'login', 'resource' => 'admin.auth'))
+			);
+			$guestRole->allow(
+				$this->getEntityManager()
+            		->getRepository('Litus\Entity\Acl\Action')
+                	->findOneBy(array('name' => 'authenticate', 'resource' => 'admin.auth'))
+			);
+        	$this->getEntityManager()->persist($guestRole);
+		}
+		
+		$repositoryCheck = $this->getEntityManager()
+			->getRepository('Litus\Entity\Acl\Role')
+			->findOneByName('company');
+		
+		if (null === $repositoryCheck) {
+			$companyRole = new Role(
+				'company',
+				array(
+					$guestRole
+				)
+			);
+			$this->getEntityManager()->persist($companyRole);
+    	}
+	}
 }

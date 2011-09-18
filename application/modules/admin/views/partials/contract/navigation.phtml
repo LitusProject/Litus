@@ -9,8 +9,8 @@
             <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'manage')): ?>
                 <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
             <? endif; ?>
-            <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'list')): ?>
-                <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'list')); ?>">Download</a></li>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'download')): ?>
+                <li><a <? if('download' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'download')); ?>">Download</a></li>
             <? endif; ?>
         </ul>
     </nav>
