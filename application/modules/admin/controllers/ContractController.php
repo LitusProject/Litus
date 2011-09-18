@@ -211,6 +211,7 @@ class ContractController extends \Litus\Controller\Action
     public function downloadAction()
     {
 		if ('pdf' == $this->getRequest()->getParam('format')) {
+            $this->broker('viewRenderer')->setNoRender();
 			$this->_generateFiles($this->getRequest()->getParam('id'));
 			
 			$file = FileUtil::getRealFilename(
