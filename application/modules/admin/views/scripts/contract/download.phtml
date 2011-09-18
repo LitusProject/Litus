@@ -19,8 +19,8 @@
                     <td><?= $contract->getDate()->format('j/m/Y'); ?></td>
                     <td>
                         <a href="<?= $this->plugin('url')->direct(array('action' => 'download', 'id' => $contract->getId(), 'type' => 'contract')); ?>?format=pdf">Contract</a>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $contract->getId(), 'type' => 'letter')); ?>?format=pdf">Letter</a>
-                        <? if (!$contract->isSigned()): ?><a href="<?= $this->plugin('url')->direct(array('action' => 'sign', 'id' => $contract->getId(), 'type' => 'invoice')); ?>?format=pdf">Invoice</a><? endif ?>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'download', 'id' => $contract->getId(), 'type' => 'letter')); ?>?format=pdf">Letter</a>
+                        <? if ($contract->isSigned()): ?><a href="<?= $this->plugin('url')->direct(array('action' => 'download', 'id' => $contract->getId(), 'type' => 'invoice')); ?>?format=pdf">Invoice</a><? endif ?>
                     </td>
                 </tr>
             <? endforeach; ?>
