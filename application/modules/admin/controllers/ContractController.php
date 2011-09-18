@@ -3,8 +3,6 @@
 namespace Admin;
 
 use \Admin\Form\Contract\Add as AddForm;
-use \Admin\Form\Contract\Index as IndexForm;
-use \Admin\Form\Contract\ListForm;
 use \Admin\Form\Contract\Edit as EditForm;
 
 use \Litus\Util\File as FileUtil;
@@ -28,29 +26,10 @@ class ContractController extends \Litus\Controller\Action
 {
     private $_json = null;
 
-    private $_id = '';
-    private $_file = '';
-
     public function init()
     {
         parent::init();
 
-        $this->_id = '0';
-        $this->_file = null;
-        if ($this->getRequest()->isPost()) {
-            $postData = $this->getRequest()->getPost();
-
-            if (isset($postData['id']))
-                $this->_id = $postData['id'];
-
-            if (isset($postData['type']))
-                $this->_file = $postData['type'];
-        } else {
-            $this->_id = $this->getRequest()->getParam('id', '0');
-            $this->_file = $this->getRequest()->getParam('type');
-        }
-
-        /** @var $contextSwitch \Zend\Controller\Action\Helper\ContextSwitch */
         $contextSwitch = $this->broker('contextSwitch');
         $contextSwitch->setContext(
             'pdf',
@@ -58,54 +37,47 @@ class ContractController extends \Litus\Controller\Action
                  'headers' => array(
                      'Content-type' => 'application/pdf',
                      'Pragma' => 'public',
-                     'Cache-Control' => 'private, max-age=0, must-revalidate',
-                     'Content-Disposition' => 'inline; filename="' . $this->_file . '"'
+                     'Cache-Control' => 'private, max-age=0, must-revalidate'
                  )
             )
         );
 
         $contextSwitch->setActionContext('download', 'pdf')
-            ->setAutoDisableLayout('true')
             ->initContext();
 
-
         $this->broker('contextSwitch')
-            ->addActionContext('updatecomposition', 'json')
+            ->addActionContext('compose', 'json')
             ->setAutoJsonSerialization(false)
             ->initContext();
 
         $this->_json = new Json();
     }
 
-    private function _filterArray(DirectoryIterator $input, $fileType)
+    public function _generateFiles($id, $invoiceOnly = false)
     {
-        $result = array();
-        for (; $input->valid(); $input->next()) {
-            if (!$input->isDot()) {
-                if ((($fileType == 'file') && $input->isFile())
-                    || (($fileType == 'dir') && $input->isDir())
-                )
-                    $result[] = $input->getFilename();
+        $contract = $this->getEntityManager()
+			->getRepository('Litus\Entity\Br\Contracts\Contract')
+			->find($id);
+			
+        if (null === $contract)
+            throw new \InvalidArgumentException('No contract found with the given id');
+
+        if ($contract->isDirty()) {
+            if (!$invoiceOnly) {
+                $generator = new ContractGenerator($contract);
+                $generator->generate();
+
+                $generator = new LetterGenerator($contract);
+                $generator->generate();
             }
+
+            if (-1 != $contract->getInvoiceNb()) {
+                $generator = new InvoiceGenerator($contract);
+                $generator->generate();
+            }
+
+            $contract->setDirty(false);
         }
-        return $result;
-    }
-
-    private function _getDirectoryIterator($location)
-    {
-        $location = FileUtil::getRealFilename($location);
-
-        if (!is_readable($location))
-            throw new RuntimeException($location . ' is not readable by the server.');
-        if (!is_dir($location))
-            throw new RuntimeException('Permanent error: ' . $location . ' is not a directory.');
-
-        return new DirectoryIterator($location);
-    }
-
-    private function _getRootDirectory()
-    {
-        return Registry::get('litus.resourceDirectory') . '/pdf/br';
     }
 
     public function indexAction()
@@ -165,83 +137,50 @@ class ContractController extends \Litus\Controller\Action
 
     public function editAction()
     {
-        if ($this->_id == '0') {
-            $this->_redirect('manage');
-        } else {
-            $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract');
-            $contract = $contractRepository->find($this->_id);
+        $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract');
+        $contract = $contractRepository->findOneById($this->getRequest()->getParam('id'));
 
-            $form = new EditForm($contract);
+        $form = new EditForm($contract);
 
-            $this->view->form = $form;
-            $this->view->contractUpdated = false;
+        $this->view->form = $form;
+        $this->view->contractUpdated = false;
 
-            if ($this->getRequest()->isPost()) {
-                $formData = $this->getRequest()->getPost();
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
 
-                if($form->isValid($formData)) {
-                    $company = $this->getEntityManager()
-                            ->getRepository('Litus\Entity\Users\People\Company')
-                            ->findOneById($formData['company']);
+            if($form->isValid($formData)) {
+                $company = $this->getEntityManager()
+                	->getRepository('Litus\Entity\Users\People\Company')
+                    ->findOneById($formData['company']);
 
-                    $contract->setCompany($company)
-                        ->setDiscount($formData['discount'])
-                        ->setTitle($formData['title']);
+                $contract->setCompany($company)
+                    ->setDiscount($formData['discount'])
+                    ->setTitle($formData['title']);
 
-                    $contractComposition = array();
-                    foreach ($formData['sections'] as $id) {
-                        $section = $this->getEntityManager()
-                                ->getRepository('Litus\Entity\Br\Contracts\Section')
-                                ->findOneById($id);
+                $contractComposition = array();
+                foreach ($formData['sections'] as $id) {
+                    $section = $this->getEntityManager()
+                    	->getRepository('Litus\Entity\Br\Contracts\Section')
+                        ->findOneById($id);
 
-                        $contractComposition[] = $section;
-                    }
-
-                    $this->getEntityManager()->persist(
-                        $contract->resetComposition()
-                            ->setDirty()
-                    );
-                    $this->_flush();
-
-                    $this->getEntityManager()->persist(
-                        $contract->addSections($contractComposition)
-                    );
-
-                    $this->view->contractId = $contract->getId();
-                    $this->view->sections = $contractComposition;
-                    $this->view->contractUpdated = true;
+                    $contractComposition[] = $section;
                 }
+
+                $this->getEntityManager()->persist(
+                    $contract->resetComposition()
+                        ->setDirty()
+                );
+                $this->_flush();
+
+                $this->getEntityManager()->persist(
+                    $contract->addSections($contractComposition)
+                );
+
+                $this->view->contractId = $contract->getId();
+                $this->view->sections = $contractComposition;
+                $this->view->contractUpdated = true;
             }
         }
-    }
-
-    public function listAction()
-    {
-        if ($this->_id == '0') {
-            $this->view->form = new IndexForm($this->getEntityManager()
-                    ->getRepository('Litus\Entity\Br\Contracts\Contract')
-                    ->findAllContractIds());
-        } else {
-            $directory = $this->_getRootDirectory() . '/' . $this->_id;
-
-            if (file_exists($directory)) {
-                $types = $this->_getDirectoryIterator($directory);
-                $this->view->form = new ListForm($this->_id, $this->_filterArray($types, 'file'));
-            } else {
-                $this->_forward('generate', null, null, array('id' => $this->_id));
-            }
-        }
-    }
-
-    public function downloadAction()
-    {
-		
-	
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
-        );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
     }
 
     public function signAction()
@@ -253,7 +192,7 @@ class ContractController extends \Litus\Controller\Action
         $contract = $contractRepository->find($this->_id);
 
         if($contract->isSigned())
-            throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed.');
+            throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed');
 
         $dirty = $contract->isDirty();
 
@@ -268,38 +207,32 @@ class ContractController extends \Litus\Controller\Action
         $this->generateAction(!$dirty);
     }
 
-    public function generateAction($invoiceOnly = false)
+    public function downloadAction()
     {
-        if ($this->_id == '0')
-            throw new \InvalidArgumentException('need a valid contract id');
-
-        /** @var $contractRepository \Litus\Repository\Br\Contracts\Contract */
-        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contracts\Contract');
-        /** @var $contract \Litus\Entity\Br\Contracts\Contract */
-        $contract = $contractRepository->find($this->_id);
-        if ($contract === null)
-            throw new \InvalidArgumentException('No contract found with id ' . $this->_id . '.');
-
-        if ($contract->isDirty()) {
-            if(!$invoiceOnly) {
-                /** @var $generator \Litus\Br\DocumentGenerator */
-                $generator = new ContractGenerator($contract);
-                $generator->generate();
-
-                $generator = new LetterGenerator($contract);
-                $generator->generate();
-            }
-
-            if($contract->getInvoiceNb() != -1) {
-                $generator = new InvoiceGenerator($contract);
-                $generator->generate();
-            }
-
-            $contract->setDirty(false);
-            $this->getEntityManager()->persist($contract);
-        }
-
-        $this->_forward('list', null, null, array('id' => $this->_id));
+		if ('pdf' == $this->getRequest()->getParam('format')) {
+			$this->_generateFiles($this->getRequest()->getParam('id'));
+			
+			$file = FileUtil::getRealFilename(
+				Registry::get('litus.resourceDirectory') . '/pdf/br/'
+					. $this->getRequest()->getParam('id') . '/'
+					. $this->getRequest()->getParam('type') .
+					'.pdf'
+			);
+			
+			$this->getResponse()->setHeader(
+				'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
+			);
+			$this->getResponse()->setHeader('Content-Length', filesize($file));
+			
+			readfile($file);			
+		} else {
+			$paginator = new Paginator(
+				new ArrayAdapter(
+					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+				);
+			$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+			$this->view->paginator = $paginator;
+		}
     }
 
 	public function composeAction()

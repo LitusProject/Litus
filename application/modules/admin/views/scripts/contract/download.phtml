@@ -5,7 +5,7 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th width="100px">Author</th>
+                <th width="125px">Author</th>
                 <th width="75px">Date</th>
                 <th width="170px">Type</th>
             </tr>
@@ -18,8 +18,8 @@
                     <td><?= $contract->getAuthor()->getFirstName(); ?> <?= $contract->getAuthor()->getLastName(); ?></td>
                     <td><?= $contract->getDate()->format('j/m/Y'); ?></td>
                     <td>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'download', 'id' => $contract->getId(), 'type' => 'contract')); ?>?format=pdf" class="edit">Contract</a>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $contract->getId(), 'type' => 'letter')); ?>?format=pdf" class="delete">Letter</a>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'download', 'id' => $contract->getId(), 'type' => 'contract')); ?>?format=pdf">Contract</a>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $contract->getId(), 'type' => 'letter')); ?>?format=pdf">Letter</a>
                         <? if (!$contract->isSigned()): ?><a href="<?= $this->plugin('url')->direct(array('action' => 'sign', 'id' => $contract->getId(), 'type' => 'invoice')); ?>?format=pdf">Invoice</a><? endif ?>
                     </td>
                 </tr>

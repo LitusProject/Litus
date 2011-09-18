@@ -138,6 +138,7 @@ class RoleController extends \Litus\Controller\Action
 				}
 			}
 		}
+		$this->getEntityManager()->flush();
 		
 		$repositoryCheck = $this->getEntityManager()
 			->getRepository('Litus\Entity\Acl\Role')
