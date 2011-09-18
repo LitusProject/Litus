@@ -43,7 +43,6 @@ class ContractController extends \Litus\Controller\Action
         );
 
         $contextSwitch->setActionContext('download', 'pdf')
-			->setAutoDisableLayout('true')
             ->initContext();
 
         $this->broker('contextSwitch')
