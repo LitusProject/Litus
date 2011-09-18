@@ -43,6 +43,7 @@ class ContractController extends \Litus\Controller\Action
         );
 
         $contextSwitch->setActionContext('download', 'pdf')
+			->setAutoDisableLayout('true')
             ->initContext();
 
         $this->broker('contextSwitch')
@@ -228,8 +229,9 @@ class ContractController extends \Litus\Controller\Action
 		} else {
 			$paginator = new Paginator(
 				new ArrayAdapter(
-					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
-				);
+					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll()
+				)
+			);
 			$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
 			$this->view->paginator = $paginator;
 		}
