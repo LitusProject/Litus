@@ -55,6 +55,15 @@ class SectionController extends \Litus\Controller\Action
         }
     }
 
+    public function manageAction()
+    {
+        $paginator = new Paginator(
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Section')->findAll())
+        );
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+        $this->view->paginator = $paginator;
+    }
+
     public function editAction()
     {
         $section = $this->getEntityManager()
@@ -85,12 +94,8 @@ class SectionController extends \Litus\Controller\Action
         }
     }
 
-    public function manageAction()
-    {
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Section')->findAll())
-        );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
-    }
+	public function deleteAction()
+	{
+		
+	}
 }

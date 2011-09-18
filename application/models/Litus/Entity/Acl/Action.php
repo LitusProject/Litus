@@ -3,7 +3,7 @@
 namespace Litus\Entity\Acl;
 
 /**
- * Class that represents an Action that can be executed on a certain {@see \Litus\Entity\Acl\Resource}.
+ * Class that represents an action that can be executed on a certain {@see \Litus\Entity\Acl\Resource}.
  *
  * Example, DELETE a forum post, COOK a contact form
  *
@@ -25,19 +25,19 @@ class Action
     private $id;
 
     /**
+     * @var string $name The name of the action
+     *
+     * @Column(type="string")
+     */
+    private $name;
+
+	/**
      * @var \Litus\Entity\Acl\Resource The name of the resource
      *
      * @ManyToOne(targetEntity="Litus\Entity\Acl\Resource")
      * @JoinColumn(name="resource", referencedColumnName="name")
      */
     private $resource;
-
-    /**
-     * @var string $name The name of the action
-     *
-     * @Column(type="string")
-     */
-    private $name;
 
     /**
      * @param string $name The name of the action
@@ -50,11 +50,11 @@ class Action
     }
 
     /**
-     * @return \Litus\Entity\Acl\Resource
+     * @return int
      */
-    public function getResource()
+    public function getId()
     {
-        return $this->resource;
+        return $this->id;
     }
 
     /**
@@ -66,10 +66,10 @@ class Action
     }
 
     /**
-     * @return int
+     * @return \Litus\Entity\Acl\Resource
      */
-    public function getId()
+    public function getResource()
     {
-        return $this->id;
+        return $this->resource;
     }
 }

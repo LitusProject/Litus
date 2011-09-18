@@ -63,9 +63,10 @@ class ContractController extends \Litus\Controller\Action
                  )
             )
         );
+
         $contextSwitch->setActionContext('download', 'pdf')
             ->setAutoDisableLayout('true')
-            ->initContext('pdf');
+            ->initContext();
 
 
         $this->broker('contextSwitch')
@@ -153,6 +154,15 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
+	public function manageAction()
+    {
+        $paginator = new Paginator(
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+        );
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+        $this->view->paginator = $paginator;
+    }
+
     public function editAction()
     {
         if ($this->_id == '0') {
@@ -205,42 +215,6 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
-    public function composeAction()
-    {
-        $this->_initAjax();
-
-        $postData = $this->getRequest()->getPost();
-        parse_str($postData['sections'], $sections);
-        $updateCompositionResult = array(
-            'result' => true
-        );
-
-        $contract = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Br\Contracts\Contract')
-            ->findOneById($postData['contractId']);
-
-        $contractComposition = array();
-        foreach ($sections['contractComposition'] as $position => $id) {
-            $contractComposition[$position] = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Br\Contracts\Section')
-                ->findOneById($id);
-        }
-
-        // Avoiding duplicate key violations
-        $this->getEntityManager()->persist(
-            $contract->resetComposition()
-                ->setDirty()
-        );
-        $this->getEntityManager()->flush();
-
-        // Saving the new contract composition
-        $this->getEntityManager()->persist(
-            $contract->addSections($contractComposition)
-        );
-        
-        echo $this->_json->encode($updateCompositionResult);
-    }
-
     public function listAction()
     {
         if ($this->_id == '0') {
@@ -261,20 +235,13 @@ class ContractController extends \Litus\Controller\Action
 
     public function downloadAction()
     {
-        if ($this->_id == '0')
-            $this->_redirect('list');
-        elseif ($this->_file === null)
-            $this->_redirect('list', array('id' => $this->_id));
-        else {
-            $this->broker('viewRenderer')->setNoRender();
-
-            $file = $this->_getRootDirectory() . '/' . $this->_id . '/' . $this->_file;
-            $file = FileUtil::getRealFilename($file);
-
-            $this->getResponse()->setHeader('Content-Length', filesize($file));
-
-            readfile($file);
-        }
+		
+	
+        $paginator = new Paginator(
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+        );
+        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+        $this->view->paginator = $paginator;
     }
 
     public function signAction()
@@ -335,12 +302,39 @@ class ContractController extends \Litus\Controller\Action
         $this->_forward('list', null, null, array('id' => $this->_id));
     }
 
-    public function manageAction()
+	public function composeAction()
     {
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+        $this->_initAjax();
+
+        $postData = $this->getRequest()->getPost();
+        parse_str($postData['sections'], $sections);
+        $updateCompositionResult = array(
+            'result' => true
         );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
+
+        $contract = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Br\Contracts\Contract')
+            ->findOneById($postData['contractId']);
+
+        $contractComposition = array();
+        foreach ($sections['contractComposition'] as $position => $id) {
+            $contractComposition[$position] = $this->getEntityManager()
+                ->getRepository('Litus\Entity\Br\Contracts\Section')
+                ->findOneById($id);
+        }
+
+        // Avoiding duplicate key violations
+        $this->getEntityManager()->persist(
+            $contract->resetComposition()
+                ->setDirty()
+        );
+        $this->getEntityManager()->flush();
+
+        // Saving the new contract composition
+        $this->getEntityManager()->persist(
+            $contract->addSections($contractComposition)
+        );
+        
+        echo $this->_json->encode($updateCompositionResult);
     }
 }
