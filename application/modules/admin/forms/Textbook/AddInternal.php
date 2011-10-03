@@ -4,7 +4,7 @@ namespace Admin\Form\Textbook;
 
 use Zend\Form\Decorator\HtmlTag;
 
-use Litus\Form\Decorator\FieldDecorator;
+use Litus\Form\Admin\Decorator\FieldDecorator;
 
 use \Zend\Form\SubForm;
 use \Zend\Form\Element\Text;

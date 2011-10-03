@@ -2,7 +2,7 @@
 
 namespace Admin\Form\User;
 
-use \Litus\Form\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use \Litus\Entity\Users\Person;
 
 use \Zend\Form\Element\Submit;

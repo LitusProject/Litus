@@ -1,0 +1,62 @@
+<?php
+$this->plugin('headMeta')
+    ->setCharset('utf-8');
+$this->plugin('headTitle')
+    ->direct('24h-Run', 'PREPEND')
+    ->setSeparator('-');
+
+$this->plugin('headLink')
+    ->appendStylesheet($this->plugin('baseurl')->direct('/_bootstrap/bootstrap.min.css'))
+    ->appendStylesheet($this->plugin('baseurl')->direct('/_run/stylesheet/css/run.css'));
+$this->plugin('headScript')
+    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+    ->appendFile($this->plugin('baseurl')->direct('/_bootstrap/js/bootstrap-alerts.js'));
+?>
+
+<?= $this->plugin('doctype'); ?>
+
+<html lang="en">
+<head>
+
+    <?= $this->plugin('headMeta'); ?>
+	<?= $this->plugin('headTitle'); ?>
+	<?= $this->plugin('headLink'); ?>
+    <?= $this->plugin('headScript'); ?>
+
+    <script>
+        window.jQuery || document.write("<script src='<?= $this->plugin('baseurl')->direct('/_run/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")    </script>
+
+</head>
+
+<body id="bootstrap-js">
+
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <h3><a href="#">24h-Run</a></h3>
+          <ul>
+            <li><a href="#overview">Group of Friends</a></li>
+            <li><a href="#modal">Queue</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <header class="jumbotron subhead" id="overview">
+        <div class="inner">
+            <div class="container">
+                <h1>24h-Run</h1>
+                <p class="lead">
+                    {NEED_TEXT_FROM_SPORT}
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <?= $this->plugin('layout')->direct()->content; ?>
+    </div>
+
+</body>
+
+</html>

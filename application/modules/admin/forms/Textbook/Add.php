@@ -6,8 +6,8 @@ use Zend\Form\SubForm;
 
 use Litus\Validator\Price as PriceValidator;
 
-use \Litus\Form\Decorator\ButtonDecorator;
-use Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
+use Litus\Form\Admin\Decorator\FieldDecorator;
 
 use Zend\Form\Form;
 use Zend\Form\Element\Submit;
@@ -15,7 +15,7 @@ use Zend\Form\Element\Text;
 use Zend\Form\Element\Checkbox;
 
 
-class Add extends \Litus\Form\Form
+class Add extends \Litus\Form\Admin\Form
 {
 
     /**

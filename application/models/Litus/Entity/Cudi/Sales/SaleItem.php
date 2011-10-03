@@ -45,7 +45,7 @@ class SaleItem
 	
 	/**
 	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\Booking")
-	 * @JoinColumn(name="booking_id", referencedColumnName="id")
+	 * @JoinColumn(name="booking", referencedColumnName="id")
 	 */
 	private $booking;
 	

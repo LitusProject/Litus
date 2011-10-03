@@ -6,7 +6,7 @@ $this->plugin('headTitle')
     ->setSeparator('-');
 
 $this->plugin('headLink')
-    ->appendStylesheet($this->plugin('baseurl')->direct('/_admin/stylesheet/css/litus.css'));
+    ->appendStylesheet($this->plugin('baseurl')->direct('/_admin/stylesheet/css/admin.css'));
 $this->plugin('headScript')
     ->appendFile($this->plugin('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'))
     ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
@@ -19,7 +19,7 @@ $this->plugin('inlineScript')
 <?= $this->plugin('doctype'); ?>
 
 <html lang="en">
-<head id="litus" data-template-set="html5-reset">
+<head>
 
     <?= $this->plugin('headMeta'); ?>
 	<?= $this->plugin('headTitle'); ?>
@@ -97,6 +97,19 @@ $this->plugin('inlineScript')
                         <? endif; ?>
                         <? if ($this->plugin('hasaccess')->direct('admin', 'contract', 'index')): ?>
                             <li><a href="/admin/contract/">Contracts</a></li>
+                        <? endif; ?>
+                    </ul>
+                <? endif; ?>
+
+				<?
+                if (
+                    $this->plugin('hasaccess')->direct('admin', 'run', 'index')
+                ):
+                ?>
+                    <div class="subtitle"><p id="toggleSport"><b>Sport</b><br />Twenty Four</p></div>
+                    <ul id="submenu_sport">
+                        <? if ($this->plugin('hasaccess')->direct('admin', 'run', 'index')): ?>
+                            <li><a href="/admin/run">24h-Run</a></li>
                         <? endif; ?>
                     </ul>
                 <? endif; ?>

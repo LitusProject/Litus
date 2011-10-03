@@ -191,15 +191,19 @@ body {
         line-height: @contentHeaderHeight;
         background: url(@iBorder) repeat-x bottom;
 
-        // TODO: Fix Icon Height
         .title {
-            display: block;
             float: left;
+            margin-top: @iconHeight / 2;
+            
+            span {
+                padding-left: @iconWidth + 4;
+            }
         }
 
         #controller_nav {
             display: block;
             float: right;
+            margin-top: @iconHeight / 4 - 2;
 
             li {
                 display: inline;
@@ -422,6 +426,16 @@ body {
 
                 p {
                     margin-top: 2 * @defaultSpacing;
+
+                    a {
+                        padding-left: @defaultSpacing;
+                        text-decoration: none;
+                        color: @cWhite;
+                    }
+
+                    a:hover {
+                        font-weight: bold;
+                    }
                 }
 
                 p:first-child {

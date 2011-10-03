@@ -5,8 +5,8 @@ namespace Admin\Form\Role;
 use \Doctrine\ORM\QueryBuilder;
 
 use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Litus\Form\Decorator\ButtonDecorator;
-use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\FieldDecorator;
 
 use \Zend\Form\Form;
 use \Zend\Form\Element\Multiselect;
@@ -14,7 +14,7 @@ use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
 use \Zend\Registry;
 
-class Add extends \Litus\Form\Form
+class Add extends \Litus\Form\Admin\Form
 {
     public function __construct($options = null)
     {

@@ -1,0 +1,91 @@
+<?= $this->plugin('partial')->direct('partials/run/navigation.phtml', array('currentAction' => 'queue')); ?>
+
+<div id="controller_action">
+    <? if (null === $this->nextLap): ?>
+        <div class="error_message">
+            <div class="title">Warning</div>
+            <div class="content">
+                <p>There is no next runner queued; go and find one, fast!</p>
+            </div>
+        </div>
+    <? endif; ?>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Runner</th>
+                <th width="150px">Registration Time</th>
+                <th width="150px">Start Time</th>
+                <th width="80px">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <? foreach ($this->previousLaps as $previousLap): ?>
+                <tr>
+                    <td><?= $previousLap->getRunner()->getFirstName(); ?> <?= $previousLap->getRunner()->getLastName(); ?></td>
+                    <td><?= $previousLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td><?= $previousLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $previousLap->getId())); ?>" class="delete">Delete</a>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+
+            <? if (null !== $this->currentLap): ?>
+                <tr>
+                    <td>&raquo; <?= $this->currentLap->getRunner()->getFirstName(); ?> <?= $this->currentLap->getRunner()->getLastName(); ?></td>
+                    <td><?= $this->currentLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td><?= $this->currentLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $this->currentLap->getId())); ?>" class="delete">Delete</a>
+                    </td>
+                </tr>
+            <? endif; ?>
+
+            <? foreach ($this->nextLaps as $nextLap): ?>
+                <tr>
+                    <td><?= $nextLap->getRunner()->getFirstName(); ?> <?= $nextLap->getRunner()->getLastName(); ?></td>
+                    <td><?= $nextLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td><i>Queued</i></td>
+                    <td>
+                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $nextLap->getId())); ?>" class="delete">Delete</a>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">New Round</div>
+        <div class="content">
+            <p>
+                <i>Please hit the link below to start timing a new lap!</i>
+            </p>
+            <p>
+                <? if (null !== $this->nextLap): ?>
+                    <a href="<?= $this->plugin('url')->direct(array('action' => 'start')); ?>">&rarr; New Lap</a>
+                <? else: ?>
+                    &rarr; New Lap
+                <? endif; ?>
+            </p>
+        </div>
+    </div>
+</aside>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">Total Laps</div>
+        <div class="content">
+            <p>
+                According to our own counter, we have run <b><?= $this->nbLaps; ?></b> laps right now.
+            </p>
+
+            <p>
+                The official count currently is <b><?= $this->nbOfficialLaps; ?></b>.
+            </p>
+        </div>
+    </div>
+</aside>

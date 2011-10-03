@@ -33,7 +33,7 @@ abstract class Article
 
     /**
      * @OneToOne(targetEntity="Litus\Entity\Cudi\Articles\MetaInfo")
-     * @JoinColumn(name="metainfo_id", referencedColumnName="id")
+     * @JoinColumn(name="metainfo", referencedColumnName="id")
      */
     private $metaInfo;
 
