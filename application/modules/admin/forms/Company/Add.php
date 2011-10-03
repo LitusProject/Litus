@@ -2,8 +2,8 @@
 
 namespace Admin\Form\Company;
 
-use \Litus\Form\Decorator\ButtonDecorator;
-use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\FieldDecorator;
 
 use \Zend\Form\Form;
 use \Zend\Form\Element\Submit;

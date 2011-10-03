@@ -1,0 +1,23 @@
+<?= $this->plugin('partial')->direct('partials/run/navigation.phtml', array('currentAction' => 'queue')); ?>
+
+<div id="controller_action">
+    <div class="error_message">
+        <div class="title">Warning</div>
+        <div class="content">
+            <? if ($this->lapDeleted): ?>
+                <p>The lap was successfully deleted.</p>
+            <? else: ?>
+                <p>
+                    You are about to delete the following lap: <b><?= $this->lap->getRunner()->getFirstName(); ?> <?= $this->lap->getRunner()->getLastName(); ?></b>?
+                    Please note that this operation cannot be undone!
+                </p>
+
+                <p>
+                    Are you sure you want to continue?<br />
+                    <a href="<?= $this->plugin('url')->direct(array('confirm' => '1')); ?>">Yes</a>
+                    <a href="<?= $this->plugin('url')->direct(array('confirm' => '0')); ?>">No</a>
+                </p>
+            <? endif; ?>
+        </div>
+    </div>
+</div>

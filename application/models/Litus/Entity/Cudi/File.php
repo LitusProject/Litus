@@ -27,7 +27,7 @@ class File
 	
 	/**
 	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Articles\StockArticles\Internal")
-     * @JoinColumn(name="internal_article_id", referencedColumnName="id")
+     * @JoinColumn(name="internal_article", referencedColumnName="id")
 	 */
 	private $internalArticleId;
 }

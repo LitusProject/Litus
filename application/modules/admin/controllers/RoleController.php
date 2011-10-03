@@ -76,6 +76,9 @@ class RoleController extends \Litus\Controller\Action
     {
 		$modules = array(
 			'admin' => array(
+                'run' => array(
+                    'index', 'queue', 'groups'
+                ),
 				'auth' => array(
 					'login', 'logout', 'authenticate'
 				),
@@ -103,12 +106,14 @@ class RoleController extends \Litus\Controller\Action
 		foreach ($modules as $module => $controllers) {
 			$repositoryCheck = $this->getEntityManager()
 				->getRepository('Litus\Entity\Acl\Resource')
-				->findOneByName('admin');
+				->findOneByName($module);
 	
 			if (null === $repositoryCheck) {
 				$moduleResource = new Resource($module);
 				$this->getEntityManager()->persist($moduleResource);
-			}
+			} else {
+                $moduleResource = $repositoryCheck;
+            }
 			
 			foreach ($controllers as $controller => $actions) {
 				$repositoryCheck = $this->getEntityManager()
@@ -121,7 +126,9 @@ class RoleController extends \Litus\Controller\Action
 						$moduleResource
 					);
 					$this->getEntityManager()->persist($controllerResource);
-				}
+				} else {
+                    $controllerResource = $repositoryCheck;
+                }
 				
 				foreach ($actions as $action) {
 					$repositoryCheck = $this->getEntityManager()

@@ -17,13 +17,13 @@ class StudySubjectMap
 
     /**
 	 * @OneToOne(targetEntity="Litus\Entity\Syllabus\Study")
-	 * @JoinColumn(name="study_id", referencedColumnName="id")
+	 * @JoinColumn(name="study", referencedColumnName="id")
 	 */
 	private $study;
 
 	/**
 	 * @OneToOne(targetEntity="Litus\Entity\Syllabus\Subject")
-	 * @JoinColumn(name="subject_id", referencedColumnName="id")
+	 * @JoinColumn(name="subject", referencedColumnName="id")
 	 */
 	private $subject;
 

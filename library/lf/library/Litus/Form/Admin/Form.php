@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Form;
+namespace Litus\Form\Admin;
 
 class Form extends \Zend\Form\Form
 {

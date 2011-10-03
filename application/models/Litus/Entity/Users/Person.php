@@ -42,6 +42,7 @@ abstract class Person
      * @var \Litus\Entity\Users\Credential The person's credential
      *
      * @OneToOne(targetEntity="Litus\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
+     * @JoinColumn(name="credential", referencedColumnName="id")
      */
     private $credential;
 

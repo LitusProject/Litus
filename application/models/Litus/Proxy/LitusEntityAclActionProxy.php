@@ -36,10 +36,10 @@ class LitusEntityAclActionProxy extends \Litus\Entity\Acl\Action implements \Doc
     }
     
     
-    public function getResource()
+    public function getId()
     {
         $this->__load();
-        return parent::getResource();
+        return parent::getId();
     }
 
     public function getName()
@@ -48,16 +48,16 @@ class LitusEntityAclActionProxy extends \Litus\Entity\Acl\Action implements \Doc
         return parent::getName();
     }
 
-    public function getId()
+    public function getResource()
     {
         $this->__load();
-        return parent::getId();
+        return parent::getResource();
     }
 
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'resource', 'name');
+        return array('__isInitialized__', 'id', 'name', 'resource');
     }
 
     public function __clone()

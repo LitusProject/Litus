@@ -2,7 +2,7 @@
 
 namespace Admin\Form\Section;
 
-use \Litus\Form\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use \Litus\Entity\Br\Contracts\Section;
 
 use \Zend\Form\Element\Submit;

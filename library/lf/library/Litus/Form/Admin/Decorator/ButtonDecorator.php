@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Form\Decorator;
+namespace Litus\Form\Admin\Decorator;
 
 use \Zend\Form\Decorator\ViewHelper;
 

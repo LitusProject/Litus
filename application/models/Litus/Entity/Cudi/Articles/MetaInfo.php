@@ -19,7 +19,7 @@ class MetaInfo
 	
 	/**
 	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article")
-	 * @JoinColumn(name="article_id", referencedColumnName="id")
+	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	

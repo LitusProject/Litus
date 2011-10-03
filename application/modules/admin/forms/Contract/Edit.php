@@ -2,7 +2,7 @@
 
 namespace Admin\Form\Contract;
 
-use \Litus\Form\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use \Litus\Entity\Br\Contracts\Contract;
 
 use \Zend\Form\Element\Submit;

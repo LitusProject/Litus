@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="companies">24h-Run</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'run', 'queue')): ?>
+                <li><a <? if('queue' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'queue')); ?>">Queue</a></li>
+            <? endif; ?>
+            <? if ($this->plugin('hasaccess')->direct('admin', 'run', 'groups')): ?>
+                <li><a <? if('groups' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'groups')); ?>">Groups</a></li>
+            <? endif; ?>
+        </ul>
+    </nav>
+</header>

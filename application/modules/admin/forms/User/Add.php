@@ -2,8 +2,8 @@
 
 namespace Admin\Form\User;
 
-use \Litus\Form\Decorator\ButtonDecorator;
-use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\FieldDecorator;
 use \Litus\Validator\IdenticalField as IdenticalFieldValidator;
 use \Litus\Application\Resource\Doctrine as DoctrineResource;
 
@@ -18,7 +18,7 @@ use \Zend\Validator\Alnum as AlnumValidator;
 use \Zend\Validator\Alpha as AlphaValidator;
 use \Zend\Validator\EmailAddress as EmailAddressValidator;
 
-class Add extends \Litus\Form\Form
+class Add extends \Litus\Form\Admin\Form
 {
     public function __construct($options = null)
     {

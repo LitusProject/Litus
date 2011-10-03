@@ -2,8 +2,8 @@
 
 namespace Admin\Form\Contract;
 
-use \Litus\Form\Decorator\ButtonDecorator;
-use \Litus\Form\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\ButtonDecorator;
+use \Litus\Form\Admin\Decorator\FieldDecorator;
 use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Entity\Br\Contracts\Section;
 
@@ -15,7 +15,7 @@ use \Zend\Form\Element\Text;
 use \Zend\Registry;
 use \Zend\Validator\Float as FloatValidator;
 
-class Add extends \Litus\Form\Form
+class Add extends \Litus\Form\Admin\Form
 {
     public function __construct($options = null)
     {
