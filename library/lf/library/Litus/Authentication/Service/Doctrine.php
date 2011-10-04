@@ -85,7 +85,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             $adapterResult = $adapter->authenticate();
 
             if ($adapterResult->isValid()) {
-                $sessionEntity = '\\' . $this->_entityName;
+                $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
                     $this->_expire,
                     $adapterResult->getPersonObject(),
