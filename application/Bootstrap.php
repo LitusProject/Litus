@@ -8,7 +8,9 @@ class Bootstrap extends \Zend\Application\Bootstrap
     {
         $this->_bootstrap('layout');
 
-        $view = \Zend\Layout\Layout::getMvcInstance()->getView();
-        $view->getBroker()->getClassLoader()->registerPlugin('hasaccess', '\Litus\View\Helper\HasAccess');
+        $view = Layout::getMvcInstance()->getView();
+        $view->getBroker()
+            ->getClassLoader()
+            ->registerPlugin('hasaccess', '\Litus\View\Helper\HasAccess');
     }
 }
