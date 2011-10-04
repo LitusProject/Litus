@@ -1,19 +1,16 @@
 <?php
-$this->plugin('headMeta')       ->setCharset('utf-8');
-$this->plugin('headTitle')      ->direct('Litus Core', 'PREPEND')
-                                ->setSeparator('-');
-$this->plugin('headScript')     ->appendFile($this->plugin('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
-
-$this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+$this->headMeta()
+    ->setCharset('utf-8');
+$this->headTitle('Litus Core', 'PREPEND')
+    ->setSeparator('-');
 ?>
 
-<?= $this->plugin('doctype'); ?>
+<?= $this->docType(); ?>
 
 <head>
 
-    <?= $this->plugin('headMeta'); ?>
-    <?= $this->plugin('headTitle'); ?>
-    <?= $this->plugin('headScript'); ?>
+    <?= $this->headMeta(); ?>
+    <?= $this->headTitle(); ?>
 
     <style type="text/css">
         * {
@@ -81,6 +78,7 @@ $this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 </head>
 
 <body>
+
 <div id="layout">
     <header><span>Litus Core</span>/Error</header>
 
@@ -126,11 +124,6 @@ $this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
 
         <?php endif ?>
     </section>
-</div>
-
-<?= $this->plugin('inlineScript'); ?>
-
-
 </div>
 
 </body>

@@ -1,4 +1,4 @@
-<?= $this->plugin('partial')->direct('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->partial('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <table>
@@ -18,13 +18,13 @@
                     <td><?= $user->getFirstName(); ?> <?= $user->getLastName(); ?></td>
                     <td><?= $user->getEmail(); ?></td>
                     <td>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'edit', 'id' => $user->getId())); ?>" class="edit">Edit</a>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $user->getId())); ?>" class="delete">Delete</a>
+                        <a href="<?= $this->url(array('action' => 'edit', 'id' => $user->getId())); ?>" class="edit">Edit</a>
+                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $user->getId())); ?>" class="delete">Delete</a>
                     </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
 
-    <?= $this->plugin('paginationControl')->direct($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>
 </div>

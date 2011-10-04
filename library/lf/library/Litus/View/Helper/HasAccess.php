@@ -10,7 +10,7 @@ use \Litus\Authentication\Service\Doctrine as DoctrineService;
 class HasAccess extends \Zend\View\Helper\AbstractHelper
 {
 
-    public function direct($module, $controller, $action)
+    public function __invoke($module, $controller, $action)
     {
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))

@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            <? if ($this->plugin('hasaccess')->direct('admin', 'role', 'add')): ?>
-                <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'add')); ?>">Add</a></li>
+            <? if ($this->hasAccess('admin', 'role', 'add')): ?>
+                <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'add')); ?>">Add</a></li>
             <? endif; ?>
-            <? if ($this->plugin('hasaccess')->direct('admin', 'role', 'manage')): ?>
-                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->plugin('url')->direct(array('action' => 'manage')); ?>">Manage</a></li>
+            <? if ($this->hasAccess('admin', 'role', 'manage')): ?>
+                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'manage')); ?>">Manage</a></li>
             <? endif; ?>
         </ul>
     </nav>

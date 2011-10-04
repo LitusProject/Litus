@@ -1,4 +1,4 @@
-<?= $this->plugin('partial')->direct('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->partial('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <div class="error_message">
@@ -14,8 +14,8 @@
 
                 <p>
                     Are you sure you want to continue?<br />
-                    <a href="<?= $this->plugin('url')->direct(array('confirm' => '1')); ?>">Yes</a>
-                    <a href="<?= $this->plugin('url')->direct(array('confirm' => '0')); ?>">No</a>
+                    <a href="<?= $this->url(array('confirm' => '1')); ?>">Yes</a>
+                    <a href="<?= $this->url(array('confirm' => '0')); ?>">No</a>
                 </p>
             <? endif; ?>
         </div>

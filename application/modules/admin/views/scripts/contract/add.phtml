@@ -1,4 +1,4 @@
-<?= $this->plugin('partial')->direct('partials/contract/navigation.phtml', array('currentAction' => 'add')); ?>
+<?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'add')); ?>
 
 <div id="controller_action">
     <? if ($this->flushResult && $this->contractCreated): ?>
@@ -39,7 +39,7 @@
         $('#contractComposition').sortable({
             update : function () {
                 $.post(
-                    '<?= $this->plugin('url')->direct(array('action' => 'compose')); ?>?format=json',
+                    '<?= $this->url(array('action' => 'compose')); ?>?format=json',
                     {
                         contractId: $('#contractId').text(), sections: $('#contractComposition').sortable('serialize')
                     },

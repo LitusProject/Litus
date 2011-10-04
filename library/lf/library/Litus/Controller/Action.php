@@ -62,7 +62,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
-                    $this->_redirect('/admin/auth/login');
+                    $this->_redirect('login', 'auth', 'admin');
             } else {
                 throw new Exception\HasNoAccessException(
                     'You do not have sufficient permissions to access this resource'

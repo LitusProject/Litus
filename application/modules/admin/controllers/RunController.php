@@ -39,7 +39,7 @@ class RunController extends \Litus\Controller\Action
             ->findPrevious(5);
         $this->view->nextLaps = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
-            ->findNext(10);
+            ->findNext(15);
 
         $this->view->nbLaps = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')

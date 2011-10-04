@@ -36,7 +36,7 @@ class Lap extends EntityRepository
         if (1 == $nbResults)
             return $resultSet[0];
 
-        return $resultSet;
+        return array_reverse($resultSet);
     }
 
     public function findCurrent()

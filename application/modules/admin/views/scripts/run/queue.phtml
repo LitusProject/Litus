@@ -1,4 +1,4 @@
-<?= $this->plugin('partial')->direct('partials/run/navigation.phtml', array('currentAction' => 'queue')); ?>
+<?= $this->partial('partials/run/navigation.phtml', array('currentAction' => 'queue')); ?>
 
 <div id="controller_action">
     <? if (null === $this->nextLap): ?>
@@ -27,7 +27,7 @@
                     <td><?= $previousLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
                     <td><?= $previousLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
                     <td>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $previousLap->getId())); ?>" class="delete">Delete</a>
+                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $previousLap->getId())); ?>" class="delete">Delete</a>
                     </td>
                 </tr>
             <? endforeach; ?>
@@ -38,7 +38,7 @@
                     <td><?= $this->currentLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
                     <td><?= $this->currentLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
                     <td>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $this->currentLap->getId())); ?>" class="delete">Delete</a>
+                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $this->currentLap->getId())); ?>" class="delete">Delete</a>
                     </td>
                 </tr>
             <? endif; ?>
@@ -49,7 +49,7 @@
                     <td><?= $nextLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
                     <td><i>Queued</i></td>
                     <td>
-                        <a href="<?= $this->plugin('url')->direct(array('action' => 'delete', 'id' => $nextLap->getId())); ?>" class="delete">Delete</a>
+                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $nextLap->getId())); ?>" class="delete">Delete</a>
                     </td>
                 </tr>
             <? endforeach; ?>
@@ -66,7 +66,7 @@
             </p>
             <p>
                 <? if (null !== $this->nextLap): ?>
-                    <a href="<?= $this->plugin('url')->direct(array('action' => 'start')); ?>">&rarr; New Lap</a>
+                    <a href="<?= $this->url(array('action' => 'start')); ?>">&rarr; New Lap</a>
                 <? else: ?>
                     &rarr; New Lap
                 <? endif; ?>
