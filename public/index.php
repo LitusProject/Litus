@@ -18,9 +18,9 @@ set_include_path(implode(PATH_SEPARATOR, array(
 require_once 'Zend/Application/Application.php';
 
 // Create application, bootstrap, and run
-$application = new Zend\Application\Application (
+$application = new \Zend\Application\Application (
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
 $application->bootstrap()
-            ->run();
+    ->run();

@@ -84,37 +84,6 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     }
 
     /**
-     * Flushes the entity manager and then redirects to the given url, not requiring any absolute URI's.
-     *
-     * @param string $action The action we want to redirect to
-     * @param string $controller The controller we want to redirect to
-     * @param string $module The module we want to redirect to
-     * @param array $params Any additional params that should be passed
-     * @return void
-     */
-    protected function _redirect($action, $controller = null, $module = null, array $params = array())
-    {
-        $this->view->flushResult = $this->_flush();
-
-        if ($this->view->flushResult)
-            $this->broker('redirector')->gotoSimple($action, $controller, $module, $params);
-    }
-
-    /**
-     * Singleton implementation for the Entity Manager, retrieved
-     * from the Zend Registry.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        if (null === self::$_entityManager) {
-            self::$_entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
-        }
-        return self::$_entityManager;
-    }
-
-    /**
      * Flushes the entity manager and catches ORM exceptions, which is then stored in a view variable.
      *
      * @return bool
@@ -145,6 +114,23 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         if (!$this->getRequest()->isXmlHttpRequest())
             throw new \Litus\Controller\Request\Exception\NoXmlHttpRequestException();
         $this->broker('viewRenderer')->setNoRender();
+    }
+
+    /**
+     * Flushes the entity manager and then redirects to the given url, not requiring any absolute URI's.
+     *
+     * @param string $action The action we want to redirect to
+     * @param string $controller The controller we want to redirect to
+     * @param string $module The module we want to redirect to
+     * @param array $params Any additional params that should be passed
+     * @return void
+     */
+    protected function _redirect($action, $controller = null, $module = null, array $params = array())
+    {
+        $this->view->flushResult = $this->_flush();
+
+        if ($this->view->flushResult)
+            $this->broker('redirector')->gotoSimple($action, $controller, $module, $params);
     }
 
     /**
@@ -182,6 +168,20 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
             );
         }
         return self::$_authentication;
+    }
+
+    /**
+     * Singleton implementation for the Entity Manager, retrieved
+     * from the Zend Registry.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        if (null === self::$_entityManager) {
+            self::$_entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
+        }
+        return self::$_entityManager;
     }
 
     /**
