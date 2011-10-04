@@ -97,6 +97,9 @@ class RoleController extends \Litus\Controller\Action
 				'section' => array(
 					'index', 'add', 'manage', 'edit', 'delete'
 				),
+                'textbook' => array(
+					'index', 'add', 'manage', 'edit', 'delete'
+				),
 				'user' => array(
 					'index', 'add', 'manage', 'edit', 'delete'
 				)

@@ -64,17 +64,13 @@ $this->inlineScript()
 
                 <?
                 if (
-                    $this->hasAccess('admin', 'textbook', 'index') ||
-                    $this->hasAccess('admin', 'syllabus', 'index')
+                    $this->hasAccess('admin', 'textbook', 'index')
                 ):
                 ?>
                     <div class="subtitle"><p id="toggleCursusdienst"><b>CuDi</b><br />Textbooks, Stock &amp; Financial</p></div>
                     <ul id="submenu_cursusdienst">
                         <? if ($this->hasAccess('admin', 'textbook', 'index')): ?>
                             <li><a href ="/admin/textbook">Textbooks</a></li>
-                        <? endif; ?>
-                        <? if ($this->hasAccess('admin', 'syllabus', 'index')): ?>
-                            <li><a href ="/admin/syllabus">Syllabus</a></li>
                         <? endif; ?>
                     </ul>
                 <? endif; ?>
