@@ -1,30 +1,29 @@
 <?php
-$this->plugin('headMeta')
+$this->headMeta()
     ->setCharset('utf-8');
-$this->plugin('headTitle')
-    ->direct('24h-Run', 'PREPEND')
+$this->headTitle('24h-Run', 'PREPEND')
     ->setSeparator('-');
 
-$this->plugin('headLink')
-    ->appendStylesheet($this->plugin('baseurl')->direct('/_bootstrap/bootstrap.min.css'))
-    ->appendStylesheet($this->plugin('baseurl')->direct('/_run/stylesheet/css/run.css'));
-$this->plugin('headScript')
+$this->headLink()
+    ->appendStylesheet($this->baseUrl('/_bootstrap/bootstrap.min.css'))
+    ->appendStylesheet($this->baseUrl('/_run/stylesheet/css/run.css'));
+$this->headScript()
     ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
-    ->appendFile($this->plugin('baseurl')->direct('/_bootstrap/js/bootstrap-alerts.js'));
+    ->appendFile($this->baseUrl('/_bootstrap/js/bootstrap-alerts.js'));
 ?>
 
-<?= $this->plugin('doctype'); ?>
+<?= $this->docType(); ?>
 
 <html lang="en">
 <head>
 
-    <?= $this->plugin('headMeta'); ?>
-	<?= $this->plugin('headTitle'); ?>
-	<?= $this->plugin('headLink'); ?>
-    <?= $this->plugin('headScript'); ?>
+    <?= $this->headLink(); ?>
+	<?= $this->headMeta(); ?>
+	<?= $this->headScript(); ?>
+	<?= $this->headStyle(); ?>
 
     <script>
-        window.jQuery || document.write("<script src='<?= $this->plugin('baseurl')->direct('/_run/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")    </script>
+        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_run/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")    </script>
 
 </head>
 
@@ -54,7 +53,7 @@ $this->plugin('headScript')
     </header>
 
     <div class="container">
-        <?= $this->plugin('layout')->direct()->content; ?>
+        <?= $this->layout()->content; ?>
     </div>
 
 </body>

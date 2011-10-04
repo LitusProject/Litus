@@ -1,18 +1,18 @@
-<?= $this->plugin('doctype'); ?>
+<?= $this->docType(); ?>
 <html>
 <head>
-	<?= $this->plugin('headTitle')->direct('Litus CuDi', 'PREPEND'); ?>
-	<?= $this->plugin('headLink'); ?>
-	<?= $this->plugin('headMeta'); ?>
-	<?= $this->plugin('headScript'); ?>
-	<?= $this->plugin('headStyle'); ?>
+	<?= $this->headTitle('Litus CuDi', 'PREPEND'); ?>
+	<?= $this->headLink(); ?>
+	<?= $this->headMeta(); ?>
+	<?= $this->headScript(); ?>
+	<?= $this->headStyle(); ?>
 </head>
 <body>
 	<header>
 		<h1>Litus Cudi</h1>
 	</header>
 	<section id="content">
-		<?= $this->plugin('layout')->direct()->content; ?>
+		<?= $this->layout()->content; ?>
 	</section>
 </body>
 </html>

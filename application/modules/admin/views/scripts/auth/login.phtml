@@ -1,19 +1,21 @@
 <?php
-$this->plugin('headMeta')       ->setCharset('utf-8');
-$this->plugin('headTitle')      ->direct('Litus Admin', 'PREPEND')
-                                ->setSeparator('-');
-$this->plugin('headScript')     ->appendFile($this->plugin('baseurl')->direct('/_admin/js/modernizr-1.7.min.js'));
+$this->headMeta()
+    ->setCharset('utf-8');
+$this->headTitle('Litus Admin', 'PREPEND')
+    ->setSeparator('-');
 
-$this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+$this->headScript()
+    ->appendFile($this->baseUrl('/_admin/js/modernizr-1.7.min.js'))
+    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
 ?>
 
-<?= $this->plugin('doctype'); ?>
+<?= $this->docType(); ?>
 
 <head>
 
-    <?= $this->plugin('headMeta'); ?>
-    <?= $this->plugin('headTitle'); ?>
-    <?= $this->plugin('headScript'); ?>
+    <?= $this->headMeta(); ?>
+	<?= $this->headTitle(); ?>
+    <?= $this->headScript(); ?>
 
     <style type="text/css">
         * {
@@ -92,6 +94,10 @@ $this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
         }
     </style>
 
+    <script>
+        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_admin/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")
+    </script>
+
 </head>
 
 <body>
@@ -115,8 +121,6 @@ $this->plugin('inlineScript')   ->appendFile('http://ajax.googleapis.com/ajax/li
         <? endif; ?>
     </section>
 </div>
-
-<?= $this->plugin('inlineScript'); ?>
 
 <script type="text/javascript">
     function doLogin() {
