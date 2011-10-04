@@ -47,7 +47,7 @@ class RunController extends \Litus\Controller\Action
 
         $teamNumber = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
-            ->findOneByKey('sport.24h_team_number')
+            ->findOneByKey('sport.run_team_number')
             ->getValue();
 
         $domQuery = new Query(

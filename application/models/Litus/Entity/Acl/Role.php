@@ -4,6 +4,8 @@ namespace Litus\Entity\Acl;
 
 use \Doctrine\Common\Collections\ArrayCollection;
 
+use \Litus\Acl\Acl;
+
 /**
  * Represents a group of users and is capable of determining which rights those users have.
  *
@@ -92,5 +94,34 @@ class Role
     public function allow(Action $action)
     {
         $this->actions->add($action);
+    }
+
+
+    /**
+     * Checks whether or not this role has sufficient permissions to access
+     * the specified action.
+     *
+     * @param string $resource The resource the action belongs to
+     * @param string $action The action that should be verified
+     * @return bool
+     */
+    public function isAllowed($resource, $action)
+    {
+        $acl = new Acl();
+
+        if (
+            $acl->getAcl()->isAllowed(
+                $this->getName(), $resource, $action
+            )
+        ) {
+            return true;
+        }
+
+        foreach ($this->getParents() as $parent) {
+            if ($parent->isAllowed($resource, $action))
+                return true;
+        }
+
+        return false;
     }
 }

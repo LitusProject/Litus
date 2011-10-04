@@ -26,8 +26,7 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
         if ($authentication->isAuthenticated()) {
             foreach ($authentication->getPersonObject()->getRoles() as $role) {
                 if (
-                    $acl->getAcl()->isAllowed(
-                        $role->getName(),
+                    $role->isAllowed(
                         $module . '.' . $controller,
                         $action
                     )
