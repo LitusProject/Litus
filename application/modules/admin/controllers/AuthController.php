@@ -57,7 +57,9 @@ class AuthController extends \Litus\Controller\Action
             'reason' => ''
         );
 
-        $this->getAuthentication()->authenticate($formData['username'], $formData['password']);
+        $this->getAuthentication()
+            ->authenticate($formData['username'], $formData['password']);
+        
         if ($this->getAuthentication()->isAuthenticated()) {
             $authResult['result'] = true;
         } else {

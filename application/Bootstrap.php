@@ -11,6 +11,6 @@ class Bootstrap extends \Zend\Application\Bootstrap
         $view = Layout::getMvcInstance()->getView();
         $view->getBroker()
             ->getClassLoader()
-            ->registerPlugin('hasaccess', '\Litus\View\Helper\HasAccess');
+            ->registerPlugin('hasaccess', 'Litus\View\Helper\HasAccess');
     }
 }
