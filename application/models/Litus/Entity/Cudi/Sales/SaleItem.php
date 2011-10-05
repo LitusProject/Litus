@@ -16,10 +16,10 @@ class SaleItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\SalePeriod")
-	 * @JoinColumn(name="saleperiod_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\SaleSession")
+	 * @JoinColumn(name="salesession_id", referencedColumnName="id")
 	 */
-	private $salePeriod;
+	private $saleSession;
 	
 	/**
 	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\StockItem")
@@ -50,7 +50,8 @@ class SaleItem
 	private $booking;
 	
 	/**
-	 * @TODO
+	 * @ManyToOne(targetEntity="\Litus\Repository\Cudi\Sales\ServingQueueItem")
+	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
 	 */
 	private $servingQueueItem;
 }

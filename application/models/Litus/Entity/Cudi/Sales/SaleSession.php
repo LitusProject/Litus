@@ -41,6 +41,22 @@ class SaleSession
 	private $closeAmount;
 	
 	/**
+	 * @Column(type="datetime")
+	 */
+	private $registerStart;
+	
+	/**
+	 * @Column(type="datetime")
+	 */
+	private $registerEnd;
+	
+	/**
+	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @JoinColumn(name="manager_id", referencedColumnName="id")
+	 */
+	private $manager;
+	
+	/**
 	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
 	 */
 	private $union;
