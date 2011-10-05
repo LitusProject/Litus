@@ -42,30 +42,6 @@ class LitusEntitySportLapProxy extends \Litus\Entity\Sport\Lap implements \Doctr
         return parent::getId();
     }
 
-    public function setPrevious(\Litus\Entity\Sport\Lap $previous)
-    {
-        $this->__load();
-        return parent::setPrevious($previous);
-    }
-
-    public function getPrevious()
-    {
-        $this->__load();
-        return parent::getPrevious();
-    }
-
-    public function setNext(\Litus\Entity\Sport\Lap $next)
-    {
-        $this->__load();
-        return parent::setNext($next);
-    }
-
-    public function getNext()
-    {
-        $this->__load();
-        return parent::getNext();
-    }
-
     public function setRunner(\Litus\Entity\Sport\Runner $runner)
     {
         $this->__load();
@@ -99,7 +75,7 @@ class LitusEntitySportLapProxy extends \Litus\Entity\Sport\Lap implements \Doctr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'previous', 'next', 'runner', 'registrationTime', 'startTime');
+        return array('__isInitialized__', 'id', 'runner', 'registrationTime', 'startTime');
     }
 
     public function __clone()
