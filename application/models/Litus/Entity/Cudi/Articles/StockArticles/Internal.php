@@ -19,7 +19,8 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	private $nbColored;
 	
 	/**
-	 * @TODO Column(type="")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Articles\StockArticles\Binding")
+	 * @JoinColumn(name="binding", referencedColumnName="id")
 	 */
 	private $binding;
 	
@@ -34,7 +35,8 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	private $rectoVerso;
 	
 	/**
-	 * @TODO Column(name="front_page_color", type="")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Articles\StockArticles\Color")
+	 * @JoinColumn(name="front_page_color", referencedColumnName="id")
 	 */
 	private $frontPageColor;
 	
@@ -46,6 +48,5 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 		$this->nbColored = $nrcolorpages;
 		$this->official = $official;
 		$this->rectoVerso = $rectoverso;
-		
 	}
 }
