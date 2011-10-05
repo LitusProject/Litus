@@ -60,6 +60,12 @@ class LitusEntityAclRoleProxy extends \Litus\Entity\Acl\Role implements \Doctrin
         return parent::allow($action);
     }
 
+    public function isAllowed($resource, $action)
+    {
+        $this->__load();
+        return parent::isAllowed($resource, $action);
+    }
+
 
     public function __sleep()
     {
