@@ -1,10 +1,10 @@
 <?php
 
-namespace Litus\Entity\Cudi;
+namespace Litus\Entity\Cudi\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\SaleSession")
- * @Table(name="cudi.sale_session")
+ * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\SaleSession")
+ * @Table(name="cudi.sales_sale_session")
  */
 class SaleSession
 {
