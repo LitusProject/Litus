@@ -16,8 +16,9 @@ class Order
 	private $id;
 	
 	/**
-	 * @TODO OneToOne(targetEntity="Litus\Entity\Cudi\Supplier")
-	 */
+     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+     * @JoinColumn(name="supplier", referencedColumnName="id")
+     */
 	private $supplier;
 	
 	/**

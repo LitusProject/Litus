@@ -38,7 +38,8 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
     private $unbookable;
 
     /**
-     * @TODO OneToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+     * @JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 
