@@ -2,11 +2,11 @@
 
 namespace Litus\Entity\Br\Contracts;
 
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 use \Litus\Entity\Br\Contracts\Section;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\ContractComposition")
+ * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Composition")
  * @Table(
  *      name="br.contract_composition",
  *      uniqueConstraints={
@@ -15,13 +15,13 @@ use \Litus\Entity\Br\Contracts\Section;
  *      }
  * )
  */
-class ContractComposition
+class Composition
 {
     /**
-     * @var \Litus\Entity\Br\Contracts\Contract The contract this object is a part of
+     * @var \Litus\Entity\Br\Contract The contract this object is a part of
      *
      * @ManyToOne(
-     *      targetEntity="Litus\Entity\Br\Contracts\Contract", inversedBy="composition", fetch="EAGER"
+     *      targetEntity="Litus\Entity\Br\Contract", inversedBy="composition", fetch="EAGER"
      * )
      * @JoinColumn(name="contract", referencedColumnName="id", onDelete="CASCADE")
      *
@@ -46,7 +46,7 @@ class ContractComposition
     private $position;
 
     /**
-     * @param \Litus\Entity\Br\Contracts\Contract $contract The contract this object is a part of
+     * @param \Litus\Entity\Br\Contract $contract The contract this object is a part of
      * @param \Litus\Entity\Br\Contracts\Section $section The section described in this object
      * @param int $position The position number of the section in the contract
      */
@@ -66,7 +66,7 @@ class ContractComposition
     }
 
     /**
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function getContract()
     {
@@ -75,8 +75,8 @@ class ContractComposition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Br\Contracts\Contract $contract
-     * @return \Litus\Entity\Br\Contracts\ContractComposition
+     * @param \Litus\Entity\Br\Contract $contract
+     * @return \Litus\Entity\Br\Contracts\Composition
      */
     public function setContract(Contract $contract)
     {
@@ -98,7 +98,7 @@ class ContractComposition
     /**
      * @throws \InvalidArgumentException
      * @param \Litus\Entity\Br\Contracts\Section $section
-     * @return \Litus\Entity\Br\Contracts\ContractComposition
+     * @return \Litus\Entity\Br\Contracts\Composition
      */
     public function setSection(Section $section)
     {
@@ -122,7 +122,7 @@ class ContractComposition
      *
      * @throws \InvalidArgumentException
      * @param $position int
-     * @return \Litus\Entity\Br\Contracts\ContractComposition
+     * @return \Litus\Entity\Br\Contracts\Composition
      */
     public function setPosition($position)
     {

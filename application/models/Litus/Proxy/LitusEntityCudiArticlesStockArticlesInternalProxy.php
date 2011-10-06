@@ -63,7 +63,7 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
     }
 
     public function __clone()

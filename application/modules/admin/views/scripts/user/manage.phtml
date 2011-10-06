@@ -1,13 +1,13 @@
 <?= $this->partial('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <table>
+    <table class="full_width">
         <thead>
             <tr>
                 <th>Username</th>
                 <th width="150px">Name</th>
                 <th width="175px">E-mail</th>
-                <th width="120px">Action</th>
+                <th width="80px">Action</th>
             </tr>
         </thead>
 
@@ -18,13 +18,15 @@
                     <td><?= $user->getFirstName(); ?> <?= $user->getLastName(); ?></td>
                     <td><?= $user->getEmail(); ?></td>
                     <td>
-                        <a href="<?= $this->url(array('action' => 'edit', 'id' => $user->getId())); ?>" class="edit">Edit</a>
-                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $user->getId())); ?>" class="delete">Delete</a>
+                        <ul>
+                            <li><a href="<?= $this->url(array('action' => 'edit', 'id' => $user->getId())); ?>" class="edit">Edit</a></li>
+                            <li><a href="<?= $this->url(array('action' => 'delete', 'id' => $user->getId())); ?>" class="delete">Delete</a></li>
+                        </ul>
                     </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
 
-    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

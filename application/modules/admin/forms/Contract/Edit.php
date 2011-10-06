@@ -3,7 +3,7 @@
 namespace Admin\Form\Contract;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Hidden;

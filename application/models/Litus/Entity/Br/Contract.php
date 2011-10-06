@@ -1,15 +1,17 @@
 <?php
 
-namespace Litus\Entity\Br\Contracts;
+namespace Litus\Entity\Br;
 
 use \Doctrine\Common\Collections\ArrayCollection;
 
+use \Litus\Entity\Br\Contracts\Composition;
+use \Litus\Entity\Br\Contracts\Section;
 use \Litus\Entity\Users\Person;
 use \Litus\Entity\Users\People\Company;
 
 /**
  *
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Contract")
+ * @Entity(repositoryClass="Litus\Repository\Br\Contract")
  * @Table(name="br.contract")
  */
 class Contract
@@ -47,15 +49,15 @@ class Contract
     private $company;
 
     /**
-     * @var \Litus\Entity\Br\Contracts\ContractComposition The sections this contract contains
+     * @var \Litus\Entity\Br\Contracts\Composition The sections this contract contains
      *
      * @OneToMany(
-     *      targetEntity="Litus\Entity\Br\Contracts\ContractComposition",
+     *      targetEntity="Litus\Entity\Br\Contracts\Composition",
      *      mappedBy="contract",
      *      cascade={"all"},
      *      orphanRemoval=true
      * )
-     * @OrderBy({"order" = "ASC"})
+     * @OrderBy({"position" = "ASC"})
      */
     private $composition;
 
@@ -69,14 +71,14 @@ class Contract
     /**
      * @var string The title of the contract
      *
-     * @Column(type="string", nullable=false)
+     * @Column(type="string")
      */
     private $title;
 
     /**
      * @var int The invoice number. -1 indicates that the contract hasn't been signed yet.
      *
-     * @Column(name="invoice_nb",type="integer")
+     * @Column(name="invoice_nb", type="integer")
      */
     private $invoiceNb;
 
@@ -124,7 +126,7 @@ class Contract
     }
 
     /**
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setDate()
     {
@@ -144,7 +146,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param \Litus\Entity\Users\Person $author
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setAuthor(Person $author)
     {
@@ -166,7 +168,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param \Litus\Entity\Users\People\Company $company
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setCompany(Company $company)
     {
@@ -187,7 +189,7 @@ class Contract
     }
 
     /**
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function resetComposition()
     {
@@ -199,12 +201,12 @@ class Contract
     /**
      * @param \Litus\Entity\Br\Contracts\Section $section The section that should be added
      * @param int $position The position of this section
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function addSection(Section $section, $position)
     {
         $this->composition->add(
-            new ContractComposition($this, $section, $position)
+            new Composition($this, $section, $position)
         );
 
         return $this;
@@ -213,7 +215,7 @@ class Contract
     /**
      * @param array $sections The array containing all sections that should be added.
      *                        The array keys will be used as the position.
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function addSections(array $sections)
     {
@@ -226,7 +228,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param int $discount the discount, $discount >= 0 && $discount <= 100
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setDiscount($discount)
     {
@@ -256,7 +258,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param string $title The title of the contract
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setTitle($title)
     {
@@ -277,7 +279,7 @@ class Contract
 
     /**
      * @param bool $dirty
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setDirty($dirty = true)
     {
@@ -298,7 +300,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param int $invoiceNb
-     * @return \Litus\Entity\Br\Contracts\Contract
+     * @return \Litus\Entity\Br\Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
