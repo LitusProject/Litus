@@ -9,8 +9,8 @@ use \Litus\Util\File as FileUtil;
 use \Litus\Br\ContractGenerator;
 use \Litus\Br\LetterGenerator;
 use \Litus\Br\InvoiceGenerator;
-use \Litus\Entity\Br\Contracts\Contract;
-use \Litus\Entity\Br\Contracts\ContractComposition;
+use \Litus\Entity\Br\Contract;
+use \Litus\Entity\Br\Contracts\Composition;
 
 use \RuntimeException;
 use \DirectoryIterator;
@@ -56,7 +56,7 @@ class ContractController extends \Litus\Controller\Action
     public function _generateFiles($id, $invoiceOnly = false)
     {
         $contract = $this->getEntityManager()
-			->getRepository('Litus\Entity\Br\Contracts\Contract')
+			->getRepository('Litus\Entity\Br\Contract')
 			->find($id);
 			
         if (null === $contract)
@@ -129,7 +129,7 @@ class ContractController extends \Litus\Controller\Action
 	public function manageAction()
     {
         $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll())
+            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contract')->findAll())
         );
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
@@ -137,7 +137,7 @@ class ContractController extends \Litus\Controller\Action
 
     public function editAction()
     {
-        $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract');
+        $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contract');
         $contract = $contractRepository->findOneById($this->getRequest()->getParam('id'));
 
         $form = new EditForm($contract);
@@ -183,12 +183,17 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
+    public function deleteAction()
+    {
+        
+    }
+
     public function signAction()
     {
         if ($this->_id == '0')
             throw new \InvalidArgumentException('need a valid contract id');
 
-        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contracts\Contract');
+        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contract');
         $contract = $contractRepository->find($this->_id);
 
         if($contract->isSigned())
@@ -229,7 +234,7 @@ class ContractController extends \Litus\Controller\Action
 		} else {
 			$paginator = new Paginator(
 				new ArrayAdapter(
-					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Contract')->findAll()
+					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contract')->findAll()
 				)
 			);
 			$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
@@ -248,7 +253,7 @@ class ContractController extends \Litus\Controller\Action
         );
 
         $contract = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Br\Contracts\Contract')
+            ->getRepository('Litus\Entity\Br\Contract')
             ->findOneById($postData['contractId']);
 
         $contractComposition = array();
