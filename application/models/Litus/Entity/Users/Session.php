@@ -155,7 +155,7 @@ class Session
      *
      * @param string $userAgent The user agent that should be checked
      * @param string $ip The IP currently used to connect to the site
-     * @return bool
+     * @return bool|string
      */
     public function validateSession($userAgent, $ip)
     {
@@ -171,13 +171,15 @@ class Session
         if ($ip != $this->ip) {
             $newSession = new Session(
                 $this->expirationTime,
+                $this->person,
                 $this->userAgent,
-                $ip,
-                $this->person
+                $ip
             );
 
             $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
             $entityManager->persist($newSession);
+
+            return $newSession->getId();
         }
 
         return true;
