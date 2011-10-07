@@ -222,8 +222,6 @@ class ContractController extends \Litus\Controller\Action
         $contract->setDirty()
             ->setInvoiceNb($contractRepository->findNextInvoiceNb());
 
-        $this->getEntityManager()->persist($contract);
-
         // Flush here, otherwise we might create two contracts with the same invoiceNb
         $this->_flush();
 
