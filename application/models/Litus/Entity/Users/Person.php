@@ -280,6 +280,14 @@ abstract class Person
     }
 
     /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
      * @throws \InvalidArgumentException
      * @param string $email
      * @return \Litus\Entity\Users\Person

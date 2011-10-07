@@ -1,14 +1,19 @@
-<?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->partial('partials/section/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <div class="error_message full_width">
         <div class="title">Warning</div>
         <div class="content">
-            <? if ($this->contractDeleted): ?>
-                <p>The contract was successfully deleted.</p>
+            <? if ($this->sectionDeleted): ?>
+                <p>The section was successfully deleted.</p>
             <? else: ?>
                 <p>
-                    You are about to delete the <b><?= $this->contract->getTitle(); ?></b> contract for <b><?= $this->contract->getCompany()->getName(); ?></b>.
+                    You are about to delete the following section: <b><?= $this->section->getName(); ?></b>;
+                    this section was created by <b><?= $this->section->getAuthor()->getFullName(); ?></b>.
+                    When you delete a section, this section will also be removed from all contracts it was assigned to.
+                </p>
+
+                <p>
                     Please note that this operation cannot be undone!
                 </p>
 

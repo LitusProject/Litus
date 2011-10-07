@@ -3,15 +3,15 @@
         <tr>
             <td>
                 <? if (null !== $this->vars('previous')): ?>
-                    <a href="<?= $this->url(array('page' => $this->first)); ?>">First</a>
+                    <a href="<?= $this->url(array('page' => $this->first)); ?>">&larr; First</a>
                 <? else: ?>
-                    <? if (1 != $this->vars('pageCount')): ?>
-                        First
+                    <? if (1 != $this->vars('pageCount') && 1 != $this->vars('current')): ?>
+                        &larr; First
                     <? endif; ?>
                 <? endif; ?>
 
                 <? if (null !== $this->vars('previous')): ?>
-                    <a href="<?= $this->url(array('page' => $this->previous)); ?>">Previous</a>
+                    <a href="<?= $this->url(array('page' => $this->previous)); ?>">&laquo; Previous</a>
                 <? endif; ?>
             </td>
 
@@ -21,14 +21,14 @@
 
             <td>
                 <? if (null !== $this->vars('next')): ?>
-                    <a href="<?= $this->url(array('page' => $this->next)); ?>">Next</a>
+                    <a href="<?= $this->url(array('page' => $this->next)); ?>">Next &raquo;</a>
                 <? endif; ?>
 
                 <? if (null !== $this->vars('next')): ?>
-                    <a href="<?= $this->url(array('page' => $this->last)); ?>">Last</a>
+                    <a href="<?= $this->url(array('page' => $this->last)); ?>">Last &rarr;</a>
                 <? else: ?>
-                    <? if (1 != $this->vars('pageCount')): ?>
-                        Last
+                    <? if (1 != $this->vars('pageCount') && $this->vars('pageCount') != $this->vars('current')): ?>
+                        Last &rarr;
                     <? endif; ?>
                 <? endif; ?>
             </td>

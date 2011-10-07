@@ -2,7 +2,7 @@
 
 namespace Litus\Br;
 
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 
 use \Litus\Util\TmpFile;
 use \Litus\Util\Xml\XmlGenerator;
@@ -13,7 +13,7 @@ use \Zend\Registry;
 class ContractGenerator extends DocumentGenerator {
 
     /**
-     * @var \Litus\Entity\Br\Contracts\Contract
+     * @var \Litus\Entity\Br\Contractt
      */
     private $_contract;
 

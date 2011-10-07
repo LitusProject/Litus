@@ -7,14 +7,14 @@ use \Litus\Util\TmpFile;
 use \Litus\Util\Xml\XmlObject;
 use \Litus\Util\Xml\XmlGenerator;
 
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 
 use \Zend\Registry;
 
 class LetterGenerator extends DocumentGenerator {
 
     /**
-     * @var \Litus\Entity\Br\Contracts\Contract
+     * @var \Litus\Entity\Br\Contractt
      */
     private $_contract;
 

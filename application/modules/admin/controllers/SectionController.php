@@ -57,11 +57,7 @@ class SectionController extends \Litus\Controller\Action
 
     public function manageAction()
     {
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contracts\Section')->findAll())
-        );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
+        $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contracts\Section');
     }
 
     public function editAction()
@@ -71,7 +67,9 @@ class SectionController extends \Litus\Controller\Action
                     ->find($this->getRequest()->getParam('id'));
 
         $form = new EditForm($section);
+        
         $this->view->form = $form;
+        $this->view->sectionEdited = false;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -80,22 +78,35 @@ class SectionController extends \Litus\Controller\Action
                 $section->setName($formData['name'])
                     ->setContent($formData['content'])
                     ->setPrice($formData['price'])
-                    ->setVatType($formData['vat_type']);
+                    ->setVatType($formData['vat_type'])
+                    ->setInvoiceDescription('' == $formData['invoice_description'] ? null : $formData['invoice_description']);
 
-                if($formData['invoice_description'] == '')
-                    $section->setInvoiceDescription(null);
-                else
-                    $section->setInvoiceDescription($formData['invoice_description']);
-
-                $this->getEntityManager()->persist($section);
-
-                $this->_redirect('manage');
+                $this->view->sectionEdited = true;
             }
         }
     }
 
 	public function deleteAction()
 	{
-		
+		if (null !== $this->getRequest()->getParam('id')) {
+            $section = $this->getEntityManager()
+                ->getRepository('Litus\Entity\Br\Contracts\Section')
+                ->findOneById($this->getRequest()->getParam('id'));
+        } else {
+            $section = null;
+        }
+
+        $this->view->sectionDeleted = false;
+
+        if (null === $this->getRequest()->getParam('confirm')) {
+            $this->view->section = $section;
+        } else {
+            if (1 == $this->getRequest()->getParam('confirm')) {
+                $this->getEntityManager()->remove($section);
+                $this->view->sectionDeleted = true;
+            } else {
+                $this->_redirect('manage');
+            }
+        }
 	}
 }
