@@ -138,6 +138,12 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
         return parent::getLastName();
     }
 
+    public function getFullName()
+    {
+        $this->__load();
+        return parent::getFullName();
+    }
+
     public function setEmail($email)
     {
         $this->__load();

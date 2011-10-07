@@ -121,6 +121,7 @@ class ContractController extends \Litus\Controller\Action
 
                 $this->view->contractId = $newContract->getId();
                 $this->view->sections = $contractComposition;
+                
                 $this->view->contractCreated = true;
             }
         }
@@ -128,11 +129,7 @@ class ContractController extends \Litus\Controller\Action
 
 	public function manageAction()
     {
-        $paginator = new Paginator(
-            new ArrayAdapter($this->getEntityManager()->getRepository('Litus\Entity\Br\Contract')->findAll())
-        );
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-        $this->view->paginator = $paginator;
+        $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
     }
 
     public function editAction()
@@ -143,7 +140,7 @@ class ContractController extends \Litus\Controller\Action
         $form = new EditForm($contract);
 
         $this->view->form = $form;
-        $this->view->contractUpdated = false;
+        $this->view->contractEdited = false;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -166,18 +163,16 @@ class ContractController extends \Litus\Controller\Action
                     $contractComposition[] = $section;
                 }
 
-                $this->getEntityManager()->persist(
-                    $contract->resetComposition()
-                        ->setDirty()
-                );
+                $contract->resetComposition()
+                    ->setDirty();
+                
                 $this->_flush();
 
-                $this->getEntityManager()->persist(
-                    $contract->addSections($contractComposition)
-                );
+                $contract->addSections($contractComposition);
 
                 $this->view->contractId = $contract->getId();
                 $this->view->sections = $contractComposition;
+                
                 $this->view->contractUpdated = true;
             }
         }
@@ -185,16 +180,39 @@ class ContractController extends \Litus\Controller\Action
 
     public function deleteAction()
     {
-        
+        if (null !== $this->getRequest()->getParam('id')) {
+            $contract = $this->getEntityManager()
+                ->getRepository('Litus\Entity\Br\Contract')
+                ->findOneById($this->getRequest()->getParam('id'));
+        } else {
+            $contract = null;
+        }
+
+        $this->view->contractDeleted = false;
+
+        if (null === $this->getRequest()->getParam('confirm')) {
+            $this->view->contract = $contract;
+        } else {
+            if (1 == $this->getRequest()->getParam('confirm')) {
+                $this->getEntityManager()->remove($contract);
+                $this->view->contractDeleted = true;
+            } else {
+                $this->_redirect('manage');
+            }
+        }
     }
 
     public function signAction()
     {
-        if ($this->_id == '0')
+        if (0 == $this->getRequest()->getParam('id'))
             throw new \InvalidArgumentException('need a valid contract id');
 
-        $contractRepository = $this->getEntityManager()->getRepository('\Litus\Entity\Br\Contract');
-        $contract = $contractRepository->find($this->_id);
+        $contractRepository = $this->getEntityManager()
+            ->getRepository('\Litus\Entity\Br\Contract');
+        
+        $contract = $contractRepository->find(
+            $this->getRequest()->getParam('id')
+        );
 
         if($contract->isSigned())
             throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed');
@@ -202,14 +220,18 @@ class ContractController extends \Litus\Controller\Action
         $dirty = $contract->isDirty();
 
         $contract->setDirty()
-                ->setInvoiceNb($contractRepository->findNextInvoiceNb());
+            ->setInvoiceNb($contractRepository->findNextInvoiceNb());
 
         $this->getEntityManager()->persist($contract);
 
-        // flush here, otherwise we might create two contracts with the same invoiceNb.
+        // Flush here, otherwise we might create two contracts with the same invoiceNb
         $this->_flush();
 
-        $this->generateAction(!$dirty);
+        $this->_generateFiles(
+            $this->getRequest()->getParam('id'), !$dirty
+        );
+
+        $this->_forward('manage');
     }
 
     public function downloadAction()
@@ -232,13 +254,7 @@ class ContractController extends \Litus\Controller\Action
 			
 			readfile($file);			
 		} else {
-			$paginator = new Paginator(
-				new ArrayAdapter(
-					$this->getEntityManager()->getRepository('Litus\Entity\Br\Contract')->findAll()
-				)
-			);
-			$paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-			$this->view->paginator = $paginator;
+			$this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
 		}
     }
 
@@ -263,18 +279,15 @@ class ContractController extends \Litus\Controller\Action
                 ->findOneById($id);
         }
 
+        $contract->resetComposition()
+            ->setDirty();
+
         // Avoiding duplicate key violations
-        $this->getEntityManager()->persist(
-            $contract->resetComposition()
-                ->setDirty()
-        );
         $this->getEntityManager()->flush();
 
         // Saving the new contract composition
-        $this->getEntityManager()->persist(
-            $contract->addSections($contractComposition)
-        );
-        
+        $contract->addSections($contractComposition);
+                
         echo $this->_json->encode($updateCompositionResult);
     }
 }

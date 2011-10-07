@@ -47,8 +47,7 @@ class RunController extends \Litus\Controller\Action
 
         $teamNumber = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
-            ->findOneByKey('sport.run_team_number')
-            ->getValue();
+            ->getConfigValue('sport.run_team_number');
 
         $domQuery = new Query(
             file_get_contents('http://media.24u.ulyssis.org/live/tussenstand.html')
@@ -60,6 +59,16 @@ class RunController extends \Litus\Controller\Action
             ->item(0)
             ->wholeText;
 	}
+
+    public function startAction()
+    {
+        $this->broker('viewRenderer')->setNoRender();
+
+        if (null !== $this->nextLap)
+            $this->nextLap->start();
+
+        $this->_redirect('queue');
+    }
 
     public function deleteAction()
     {
@@ -79,16 +88,6 @@ class RunController extends \Litus\Controller\Action
                 $this->_redirect('queue');
             }
         }
-    }
-
-    public function startAction()
-    {
-        $this->broker('viewRenderer')->setNoRender();
-
-        if (null !== $this->nextLap)
-            $this->nextLap->start();
-        
-        $this->_redirect('queue');
     }
 
     public function groupsAction()

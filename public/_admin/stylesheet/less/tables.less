@@ -40,6 +40,7 @@ table {
             background: @cTableBackground url(@iTableBackground) no-repeat right -@tableHeaderHeight;
 
             a {
+                margin-top: @defaultSpacing / 2;
                 padding-right: @defaultSpacing;
                 text-decoration: none;
                 color: @cText;
@@ -66,8 +67,4 @@ table {
             }
         }
     }
-}
-
-.full_width {
-    width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
 }
