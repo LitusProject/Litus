@@ -227,10 +227,6 @@ class ContractController extends \Litus\Controller\Action
         // Flush here, otherwise we might create two contracts with the same invoiceNb
         $this->_flush();
 
-        $this->_generateFiles(
-            $this->getRequest()->getParam('id'), !$dirty
-        );
-
         $this->_forward('manage');
     }
 
@@ -238,7 +234,9 @@ class ContractController extends \Litus\Controller\Action
     {
 		if ('pdf' == $this->getRequest()->getParam('format')) {
             $this->broker('viewRenderer')->setNoRender();
-			$this->_generateFiles($this->getRequest()->getParam('id'));
+			$this->_generateFiles(
+                $this->getRequest()->getParam('id')
+            );
 			
 			$file = FileUtil::getRealFilename(
 				Registry::get('litus.resourceDirectory') . '/pdf/br/'

@@ -86,7 +86,7 @@ class RoleController extends \Litus\Controller\Action
 					'index', 'add', 'manage', 'edit', 'delete'
 				),
 				'contract' => array(
-					'index', 'add', 'manage', 'edit', 'delete', 'download', 'compose'
+					'index', 'add', 'manage', 'edit', 'delete', 'sign', 'download', 'compose'
 				),
 				'index' => array(
 					'index'
