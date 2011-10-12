@@ -22,7 +22,8 @@ class ServingQueueItem
 	private $person;
 	
 	/**
-	 * @TODO
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\ServingQueueStatus")
+	 * @JoinColumn(name="status", referencedColumnName="id")
 	 */
 	private $status;
 	
