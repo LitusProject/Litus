@@ -1,13 +1,13 @@
 <?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <table>
+    <table class="full_width">
         <thead>
             <tr>
                 <th>Title</th>
-                <th width="125px">Author</th>
+                <th width="150px">Author</th>
                 <th width="75px">Date</th>
-                <th width="170px">Action</th>
+                <th width="200px">Action</th>
             </tr>
         </thead>
 
@@ -20,12 +20,12 @@
                     <td>
                         <a href="<?= $this->url(array('action' => 'edit', 'id' => $contract->getId())); ?>" class="edit">Edit</a>
                         <a href="<?= $this->url(array('action' => 'delete', 'id' => $contract->getId())); ?>" class="delete">Delete</a>
-                        <? if (!$contract->isSigned()): ?><a href="<?= $this->url(array('action' => 'sign', 'id' => $contract->getId())); ?>">Sign</a><? endif ?>
+                        <? if (!$contract->isSigned()): ?><a href="<?= $this->url(array('action' => 'sign', 'id' => $contract->getId())); ?>" class="sign">Sign</a><? endif ?>
                     </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
 
-    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

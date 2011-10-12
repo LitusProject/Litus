@@ -39,7 +39,7 @@ class LitusEntityCudiStockOrderProxy extends \Litus\Entity\Cudi\Stock\Order impl
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'date', 'price');
+        return array('__isInitialized__', 'id', 'supplier', 'date', 'price');
     }
 
     public function __clone()

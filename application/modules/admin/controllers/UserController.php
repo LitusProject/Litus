@@ -109,9 +109,13 @@ class UserController extends \Litus\Controller\Action
 
     public function deleteAction()
     {
-        $user = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Users\People\Academic')
-            ->findOneById($this->getRequest()->getParam('id'));
+        if (null !== $this->getRequest()->getParam('id')) {
+            $user = $this->getEntityManager()
+                ->getRepository('Litus\Entity\Users\People\Academic')
+                ->findOneById($this->getRequest()->getParam('id'));
+        } else {
+            $user = null;
+        }
 
         $this->view->userDeleted = false;
 

@@ -107,7 +107,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             );
 
             if (null !== $session) {
-                if ($session->validateSession($_SERVER['REMOTE_ADDR'])) {
+                $sessionValidation = $session->validateSession(
+                    $_SERVER['HTTP_USER_AGENT'],
+                    $_SERVER['REMOTE_ADDR']
+                );
+
+                if (is_bool($sessionValidation) && (true === $sessionValidation)) {
                     $result = new Result(
                         Result::SUCCESS,
                         $session->getPerson()->getUsername(),
@@ -115,6 +120,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                              'Authentication successful'
                         ),
                         $session->getPerson()
+                    );
+                } else {
+                    $this->getStorage()->write($sessionValidation);
+                    setcookie(
+                        $this->_namespace . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire
                     );
                 }
             } else {

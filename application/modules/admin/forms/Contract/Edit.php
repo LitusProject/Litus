@@ -3,7 +3,7 @@
 namespace Admin\Form\Contract;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Hidden;
@@ -20,8 +20,8 @@ class Edit extends Add {
         $field->setValue($contract->getId());
         $this->addElement($field);
 
-        $field = new Submit('submit');
-        $field->setValue('Save changes')
+        $field = new Submit('Save');
+        $field->setValue('Save')
             ->setAttrib('class', 'contracts_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);

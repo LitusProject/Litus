@@ -2,6 +2,9 @@
 
 namespace Litus\Entity\Users;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+use \Zend\Registry;
+
 /**
  * @Entity(repositoryClass="Litus\Repository\Users\Session")
  * @Table(name="users.sessions")
@@ -150,18 +153,33 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param string $ip The IP address that should be checked
-     * @return bool
+     * @param string $userAgent The user agent that should be checked
+     * @param string $ip The IP currently used to connect to the site
+     * @return bool|string
      */
-    public function validateSession($ip)
+    public function validateSession($userAgent, $ip)
     {
-        if ($ip != $this->ip) {
+        if ($userAgent != $this->userAgent) {
             return false;
         }
 
         $now = new \Datetime();
-        if ($this->getExpirationTime() < $now) {
+        if ($this->expirationTime < $now) {
             return false;
+        }
+
+        if ($ip != $this->ip) {
+            $newSession = new Session(
+                $this->expirationTime,
+                $this->person,
+                $this->userAgent,
+                $ip
+            );
+
+            $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
+            $entityManager->persist($newSession);
+
+            return $newSession->getId();
         }
 
         return true;

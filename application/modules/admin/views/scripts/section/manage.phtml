@@ -1,13 +1,13 @@
 <?= $this->partial('partials/section/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <table class="zebra-striped">
+    <table class="full_width">
         <thead>
             <tr>
                 <th>Name</th>
-                <th width="100px">Author</th>
+                <th width="150px">Author</th>
                 <th width="75px">Year</th>
-                <th width="80px">Action</th>
+                <th width="120px">Action</th>
             </tr>
         </thead>
 
@@ -15,11 +15,16 @@
             <? foreach ($this->paginator as $section): ?>
                 <tr>
                     <td><?= $section->getName(); ?></td>
-                    <td><?= $section->getAuthor()->getFirstName(); ?> <?= $section->getAuthor()->getLastName(); ?></td>
+                    <td><?= $section->getAuthor()->getFullName(); ?></td>
                     <td><?= $section->getYear(); ?></td>
-                    <td><a href="/admin/section/edit/id/<?= $section->getId(); ?>">Edit</a> Delete</td>
+                    <td>
+                        <a href="<?= $this->url(array('action' => 'edit', 'id' => $section->getId())); ?>" class="edit">Edit</a>
+                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $section->getId())); ?>" class="delete">Delete</a>
+                    </td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
+
+    <?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

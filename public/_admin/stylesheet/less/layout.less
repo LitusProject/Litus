@@ -358,17 +358,16 @@ body {
         .sortable {
             ul {
                 margin: 2 * @defaultSpacing;
-                width: @sortableListWidth;
 
                 li {
                     margin: @defaultSpacing / 2 0;
-                    padding: @defaultSpacing inherit;
+                    padding-left: @iconWidth + 4;
 
                     .disableSelect
                 }
 
                 li:hover {
-                    cursor: n-resize;
+                    cursor: move;
                 }
             }
         }
@@ -398,6 +397,10 @@ body {
                     text-align: right;
                 }
             }
+        }
+
+        .full_width {
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
         }
     }
 

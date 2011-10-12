@@ -2,12 +2,8 @@
 
 namespace Litus\Repository\Sport;
 
-use Litus\Application\Resource\Doctrine;
-
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-
-use Zend\Registry;
 
 /**
  * Lap
@@ -17,10 +13,11 @@ use Zend\Registry;
  */
 class Lap extends EntityRepository
 {
+    
     public function findPrevious($nbResults = 1)
     {
         $queryBuilder = new QueryBuilder(
-            Registry::get(Doctrine::REGISTRY_KEY)
+            $this->_em
         );
 
         $queryBuilder->select('l')
@@ -42,7 +39,7 @@ class Lap extends EntityRepository
     public function findCurrent()
     {
         $queryBuilder = new QueryBuilder(
-            Registry::get(Doctrine::REGISTRY_KEY)
+            $this->_em
         );
 
         $queryBuilder->select('l')
@@ -53,13 +50,16 @@ class Lap extends EntityRepository
         $resultSet = $queryBuilder->getQuery()
             ->getResult();
 
-        return $resultSet[0];
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
 
     public function findNext($nbResults = 1)
     {
         $queryBuilder = new QueryBuilder(
-            Registry::get(Doctrine::REGISTRY_KEY)
+            $this->_em
         );
 
         $queryBuilder->select('l')
@@ -79,7 +79,7 @@ class Lap extends EntityRepository
     public function countAll()
     {
         $queryBuilder = new QueryBuilder(
-            Registry::get(Doctrine::REGISTRY_KEY)
+            $this->_em
         );
 
         $queryBuilder->select('l')
