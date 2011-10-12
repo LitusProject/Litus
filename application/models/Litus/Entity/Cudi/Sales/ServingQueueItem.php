@@ -16,10 +16,10 @@ class ServingQueueItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Repository\Users\Person")
-	 * @JoinColumn(name="user", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @JoinColumn(name="person", referencedColumnName="id")
 	 */
-	private $user;
+	private $person;
 	
 	/**
 	 * @TODO
@@ -27,13 +27,13 @@ class ServingQueueItem
 	private $status;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Repository\Cudi\Sales\PayDesk")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\PayDesk")
 	 * @JoinColumn(name="pay_desk", referencedColumnName="id")
 	 */
 	private $payDesk;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Repository\Cudi\Sales\SaleSession")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\SaleSession")
 	 * @JoinColumn(name="sale_session", referencedColumnName="id")
 	 */
 	private $saleSession;

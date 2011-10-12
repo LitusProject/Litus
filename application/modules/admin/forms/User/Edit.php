@@ -19,7 +19,7 @@ class Edit extends Add
         $this->removeElement('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save Changes')
+        $field->setLabel('Save')
             ->setAttrib('class', 'users_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);

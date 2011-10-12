@@ -1,14 +1,14 @@
-<?= $this->partial('partials/user/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
     <div class="error_message full_width">
         <div class="title">Warning</div>
         <div class="content">
-            <? if ($this->userDeleted): ?>
-                <p>The user was successfully deleted.</p>
+            <? if ($this->contractDeleted): ?>
+                <p>The contract was successfully deleted.</p>
             <? else: ?>
                 <p>
-                    You are about to delete the following user: <b><?= $this->user->getUsername(); ?></b> (<?= $this->user->getFullName(); ?>)?
+                    You are about to delete the <b><?= $this->contract->getTitle(); ?></b> contract for <b><?= $this->contract->getCompany()->getName(); ?></b>.
                     Please note that this operation cannot be undone!
                 </p>
 

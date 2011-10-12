@@ -8,14 +8,14 @@ use \Litus\Util\Xml\XmlObject;
 use \Litus\Util\TmpFile;
 
 use \Litus\Br\DocumentGenerator;
-use \Litus\Entity\Br\Contracts\Contract;
+use \Litus\Entity\Br\Contract;
 
 use \Zend\Registry;
 
 class InvoiceGenerator extends DocumentGenerator {
 
     /**
-     * @var \Litus\Entity\Br\Contracts\Contract
+     * @var \Litus\Entity\Br\Contractt
      */
     private $_contract;
 

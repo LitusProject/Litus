@@ -50,7 +50,7 @@ class SaleItem
 	private $booking;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Repository\Cudi\Sales\ServingQueueItem")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\ServingQueueItem")
 	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
 	 */
 	private $servingQueueItem;

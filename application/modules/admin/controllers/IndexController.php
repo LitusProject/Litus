@@ -7,12 +7,12 @@ class IndexController extends \Litus\Controller\Action
 
     public function init()
     {
-        // initialize action controller here
+        parent::init();
     }
 
     public function indexAction()
     {
-        // action body
+        
     }
 
 }
