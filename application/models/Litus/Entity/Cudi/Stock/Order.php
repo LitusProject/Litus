@@ -16,7 +16,7 @@ class Order
 	private $id;
 	
 	/**
-	 * @TODO OneToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Supplier")
 	 */
 	private $supplier;
 	
