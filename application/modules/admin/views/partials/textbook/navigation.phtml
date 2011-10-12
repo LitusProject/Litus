@@ -3,7 +3,7 @@
 
     <nav id="controller_nav">
         <ul>
-            <? if ($this->hasAccess('admin', 'textbook', 'add')): ?>
+            <? if ($this->hasAccess('admin', 'textbook', 'new')): ?>
                 <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'add')); ?>">Add</a></li>
             <? endif; ?>
             <? if ($this->hasAccess('admin', 'textbook', 'manage')): ?>
