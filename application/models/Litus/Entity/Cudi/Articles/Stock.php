@@ -52,10 +52,9 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
      * @param smallint $barcode This article's barcode.
      * @param boolean $bookable Indicates whether the article can be booked.
      * @param boolean $unbookable Indicates whether the article can be unbooked.
-     *
-     * @TODO supplier when db is ready
+     * @param Litus\Entity\Cudi\Supplier $supplier The supplier of the stock item.
      */
-    public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable)
+    public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier)
     {
         parent::__construct($title, $metaInfo);
 
@@ -65,5 +64,6 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
         $this->barcode = $barcode;
         $this->bookable = $bookable;
         $this->unbookable = $unbookable;
+		$this->supplier = $supplier;
     }
 }
