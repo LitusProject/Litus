@@ -16,9 +16,9 @@ class AuthController extends \Litus\Controller\Action
 
         $this->broker('contextSwitch')
             ->addActionContext('authenticate', 'json')
-            ->setAutoDisableLayout(false)
             ->setAutoJsonSerialization(false)
             ->initContext();
+        
         $this->broker('layout')->disableLayout();
 
         $this->_json = new Json();

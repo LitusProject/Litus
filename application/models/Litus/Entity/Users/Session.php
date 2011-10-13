@@ -169,6 +169,8 @@ class Session
         }
 
         if ($ip != $this->ip) {
+            $this->deactivate();
+
             $newSession = new Session(
                 $this->expirationTime,
                 $this->person,

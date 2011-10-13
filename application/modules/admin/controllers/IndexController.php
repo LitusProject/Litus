@@ -12,7 +12,7 @@ class IndexController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        
+
     }
 
 }

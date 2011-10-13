@@ -4,6 +4,7 @@ use \Zend\Layout\Layout;
 
 class Bootstrap extends \Zend\Application\Bootstrap
 {
+    
     protected function _initViewHelper()
     {
         $this->_bootstrap('layout');
@@ -11,6 +12,7 @@ class Bootstrap extends \Zend\Application\Bootstrap
         $view = Layout::getMvcInstance()->getView();
         $view->getBroker()
             ->getClassLoader()
-            ->registerPlugin('hasaccess', 'Litus\View\Helper\HasAccess');
+            ->registerPlugin('hasaccess', 'Litus\View\Helper\HasAccess')
+            ->registerPlugin('request', 'Litus\View\Helper\Request');
     }
 }

@@ -55,7 +55,8 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content:after{content:".";height:0;clear:both;visibility:hidden;}
 #content_header{height:106px;margin-bottom:5px;background:url("/_admin/img/bg.png") 50% 0 repeat-x;}#content_header a{position:absolute;width:139px;height:36px;margin:43px 0 0 26px;display:block;background:url("/_admin/img/litus.png") no-repeat;}
 #content_header p{position:absolute;right:0;top:56px;font-size:10px;}#content_header p time{color:#ffffff;text-transform:uppercase;}
-#content_header #tag{margin-top:13px;color:#ffae00;}
+#content_header #tag{margin-top:13px;color:#ffae00;}#content_header #tag a{position:relative;display:inline;margin:0;text-decoration:none;color:inherit;background:none;}
+#content_header #tag a:hover{text-decoration:underline;}
 #content_nav{float:left;width:191px;color:#7f7c7c;}#content_nav .topmenu,#content_nav .submenu{display:block;}
 #content_nav .topmenu{margin-bottom:5px;}#content_nav .topmenu .title{display:block;height:28px;margin-bottom:5px;line-height:28px;text-indent:9px;font-weight:bold;color:#161616;background:url("/_admin/img/m.gif");}
 #content_nav .topmenu li{text-indent:9px;}#content_nav .topmenu li a{display:block;line-height:19px;text-decoration:none;color:inherit;}

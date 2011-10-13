@@ -22,16 +22,11 @@ class Lap extends EntityRepository
 
         $queryBuilder->select('l')
             ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is not null')
+            ->where('l.startTime is not null AND l.endTime is not null')
             ->orderBy('l.registrationTime', 'DESC')
-            ->setMaxResults($nbResults + 1);
+            ->setMaxResults($nbResults);
         $resultSet = $queryBuilder->getQuery()
             ->getResult();
-
-        unset($resultSet[0]);
-
-        if (1 == $nbResults)
-            return $resultSet[0];
 
         return array_reverse($resultSet);
     }
@@ -44,7 +39,7 @@ class Lap extends EntityRepository
 
         $queryBuilder->select('l')
             ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is not null')
+            ->where('l.startTime is not null AND l.endTime is null')
             ->orderBy('l.registrationTime', 'DESC')
             ->setMaxResults(1);
         $resultSet = $queryBuilder->getQuery()
@@ -64,7 +59,7 @@ class Lap extends EntityRepository
 
         $queryBuilder->select('l')
             ->from('Litus\Entity\Sport\Lap', 'l')
-            ->where('l.startTime is null')
+            ->where('l.startTime is null AND l.endTime is null')
             ->orderBy('l.registrationTime', 'ASC')
             ->setMaxResults($nbResults);
         $resultSet = $queryBuilder->getQuery()
@@ -85,7 +80,23 @@ class Lap extends EntityRepository
         $queryBuilder->select('l')
             ->from('Litus\Entity\Sport\Lap', 'l')
             ->select($queryBuilder->expr()->count('l.id'))
-            ->where('l.startTime is not null');
+            ->where('l.startTime is not null AND l.endTime is not null');
+
+        $resultSet = $queryBuilder->getQuery()
+            ->getResult();
+
+        return $resultSet[0][1];
+    }
+
+    public function countRunners()
+    {
+        $queryBuilder = new QueryBuilder(
+            $this->_em
+        );
+
+        $queryBuilder->select('l')
+            ->from('Litus\Entity\Sport\Lap', 'l')
+            ->select($queryBuilder->expr()->count('DISTINCT l.runner'));
 
         $resultSet = $queryBuilder->getQuery()
             ->getResult();
