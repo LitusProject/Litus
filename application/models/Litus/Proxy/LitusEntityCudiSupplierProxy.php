@@ -36,6 +36,18 @@ class LitusEntityCudiSupplierProxy extends \Litus\Entity\Cudi\Supplier implement
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
 
     public function __sleep()
     {

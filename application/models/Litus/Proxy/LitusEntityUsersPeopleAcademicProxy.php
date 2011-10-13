@@ -162,6 +162,12 @@ class LitusEntityUsersPeopleAcademicProxy extends \Litus\Entity\Users\People\Aca
         return parent::getLastName();
     }
 
+    public function getFullName()
+    {
+        $this->__load();
+        return parent::getFullName();
+    }
+
     public function setEmail($email)
     {
         $this->__load();

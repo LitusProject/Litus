@@ -43,6 +43,11 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
      */
     private $supplier;
 
+	/**
+	 * @Column(type="boolean")
+	 */
+	private $canExpire;
+
     /**
      * @param string $title The title of the article
      * @param Litus\Entity\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
@@ -54,16 +59,27 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
      * @param boolean $unbookable Indicates whether the article can be unbooked.
      * @param Litus\Entity\Cudi\Supplier $supplier The supplier of the stock item.
      */
-    public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier)
+    public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire)
     {
         parent::__construct($title, $metaInfo);
 
-        $this->purchasePrice = $purchase_price;
-        $this->sellPrice = $sellPrice;
-        $this->sellPriceMembers = $sellPriceMembers;
+        $this->purchasePrice = $purchase_price*100;
+        $this->sellPrice = $sellPrice*100;
+        $this->sellPriceMembers = $sellPriceMembers*100;
         $this->barcode = $barcode;
         $this->bookable = $bookable;
         $this->unbookable = $unbookable;
 		$this->supplier = $supplier;
+		$this->canExpire = $canExpire;
     }
+
+	public function canExpire()
+	{
+		return $this->canExpire;
+	}
+	
+	public function isBookable()
+	{
+		return $this->bookable;
+	}
 }
