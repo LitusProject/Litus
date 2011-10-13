@@ -15,17 +15,17 @@
             <tr>
                 <th>Runner</th>
                 <th width="150px">Registration Time</th>
-                <th width="150px">Start Time</th>
-                <th width="80px">Action</th>
+                <th width="150px">Duration</th>
+                <th width="70px">Action</th>
             </tr>
         </thead>
 
         <tbody>
             <? foreach ($this->previousLaps as $previousLap): ?>
                 <tr>
-                    <td><?= $previousLap->getRunner()->getFirstName(); ?> <?= $previousLap->getRunner()->getLastName(); ?></td>
-                    <td><?= $previousLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
-                    <td><?= $previousLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td><?= $previousLap->getRunner()->getFullName(); ?></td>
+                    <td><?= $previousLap->getRegistrationTime()->format('H:i:s'); ?></td>
+                    <td><?= $previousLap->getLapTime()->format('%i:%S'); ?></td>
                     <td>
                         <a href="<?= $this->url(array('action' => 'delete', 'id' => $previousLap->getId())); ?>" class="delete">Delete</a>
                     </td>
@@ -34,9 +34,9 @@
 
             <? if (null !== $this->currentLap): ?>
                 <tr>
-                    <td>&raquo; <?= $this->currentLap->getRunner()->getFirstName(); ?> <?= $this->currentLap->getRunner()->getLastName(); ?></td>
+                    <td>&raquo; <?= $this->currentLap->getRunner()->getFullName(); ?></td>
                     <td><?= $this->currentLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
-                    <td><?= $this->currentLap->getStartTime()->format('d/m/Y H:i:s'); ?></td>
+                    <td><i>Running</i></td>
                     <td>
                         <a href="<?= $this->url(array('action' => 'delete', 'id' => $this->currentLap->getId())); ?>" class="delete">Delete</a>
                     </td>
@@ -45,7 +45,7 @@
 
             <? foreach ($this->nextLaps as $nextLap): ?>
                 <tr>
-                    <td><?= $nextLap->getRunner()->getFirstName(); ?> <?= $nextLap->getRunner()->getLastName(); ?></td>
+                    <td><?= $nextLap->getRunner()->getFullName(); ?></td>
                     <td><?= $nextLap->getRegistrationTime()->format('d/m/Y H:i:s'); ?></td>
                     <td><i>Queued</i></td>
                     <td>
@@ -66,9 +66,13 @@
             </p>
             <p>
                 <? if (null !== $this->nextLap): ?>
-                    <a href="<?= $this->url(array('action' => 'start')); ?>">&rarr; New Lap</a>
+                    <a href="<?= $this->url(array('action' => 'start')); ?>">&rarr; Next Lap</a>
                 <? else: ?>
-                    &rarr; New Lap
+                    <? if (null !== $this->currentLap): ?>
+                        <a href="<?= $this->url(array('action' => 'stop')); ?>">&rarr; Stop</a>
+                    <? else: ?>
+                        &rarr; Stop
+                    <? endif; ?>
                 <? endif; ?>
             </p>
         </div>
@@ -87,3 +91,8 @@
         </div>
     </div>
 </aside>
+
+<?
+foreach ($this->previousLaps as $previousLap)
+    $previousLap->getId();
+?>

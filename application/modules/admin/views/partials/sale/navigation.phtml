@@ -1,0 +1,15 @@
+<header id="controller_header">
+    <div class="title"><span class="sale">Sales</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <? if ($this->hasAccess('admin', 'sale', 'new')): ?>
+                <li><a <? if('new' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'new')); ?>">New</a></li>
+            <? endif; ?>
+            <? if ($this->hasAccess('admin', 'sale', 'manage')): ?>
+                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'manage')); ?>">Manage</a></li>
+            <? endif; ?>
+        </ul>
+    </nav>
+</header>
+

@@ -112,7 +112,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
 
-                if (is_bool($sessionValidation) && (true === $sessionValidation)) {
+                if (true === $sessionValidation) {
                     $result = new Result(
                         Result::SUCCESS,
                         $session->getPerson()->getUsername(),
@@ -164,9 +164,6 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
         if (null !== $session) {
             $session->deactivate();
-
-            $entityManager->persist($session);
-            $entityManager->flush();
         }
 
         $this->getStorage()->clear();
