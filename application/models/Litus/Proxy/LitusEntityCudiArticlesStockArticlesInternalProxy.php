@@ -36,6 +36,18 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
     }
     
     
+    public function canExpire()
+    {
+        $this->__load();
+        return parent::canExpire();
+    }
+
+    public function isBookable()
+    {
+        $this->__load();
+        return parent::isBookable();
+    }
+
     public function getId()
     {
         $this->__load();
@@ -63,7 +75,7 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
     }
 
     public function __clone()

@@ -23,6 +23,8 @@ table{border-collapse:collapse;border-spacing:0;}
 .textbooks_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -256px;}
 .textbooks_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -272px;}
 .textbooks_delete{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -288px;}
+.bookings{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -304px;}
+.bookings_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -320px;}
 .sections{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -304px;}
 .sections_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -320px;}
 .sections_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -336px;}

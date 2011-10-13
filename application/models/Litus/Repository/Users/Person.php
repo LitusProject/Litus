@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class Person extends EntityRepository
 {
+	public function findOneByUsername($username)
+    {
+        $resultSet = $this->_em
+            ->createQuery('SELECT p FROM Litus\Entity\Users\Person p WHERE p.username = \'' . $username . '\'')
+			->setMaxResults(1)
+            ->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

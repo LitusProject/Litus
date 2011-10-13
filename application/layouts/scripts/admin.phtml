@@ -72,6 +72,9 @@ $this->inlineScript()
                         <? if ($this->hasAccess('admin', 'textbook', 'index')): ?>
                             <li><a href ="/admin/textbook">Textbooks</a></li>
                         <? endif; ?>
+						<? if ($this->hasAccess('admin', 'booking', 'index')): ?>
+                            <li><a href ="/admin/booking">Bookings</a></li>
+                        <? endif; ?>
                     </ul>
                 <? endif; ?>
 

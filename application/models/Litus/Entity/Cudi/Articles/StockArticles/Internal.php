@@ -40,9 +40,11 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	 */
 	private $frontPageColor;
 	
-	public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, 
-			$barcode, $bookable, $unbookable, $nrbwpages, $nrcolorpages, $official, $rectoverso) {
-		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable);
+	public function __construct(
+		$title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, 
+		$barcode, $bookable, $unbookable, $supplier, $canExpire, $nrbwpages, $nrcolorpages, $official, $rectoverso
+	) {
+		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
 		$this->nbBlackAndWhite = $nrbwpages;
 		$this->nbColored = $nrcolorpages;

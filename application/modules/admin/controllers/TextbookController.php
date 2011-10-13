@@ -35,6 +35,7 @@ class TextbookController extends \Litus\Controller\Action
         $internal_form = $form->getInternalForm();
 
         $this->view->form = $form;
+        $this->view->textbookCreated = false;
          
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -71,14 +72,18 @@ class TextbookController extends \Litus\Controller\Action
                 $purchase_price = $formData['purchaseprice'];
                 $sellPrice = $formData['sellpricenomember'];
                 $sellPriceMembers = $formData['sellpricemember'];
-                $barcode = 0; // TODO barcode
+                $barcode = $formData['barcode'];
                 $bookable = $formData['bookable'];
                 $unbookable = $formData['unbookable'];
-                 
+                $supplier = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Supplier')
+					->findOneById($formData['supplier']);
+                $canExpire = $formData['canExpire'];
+                				
                 if (!$formData['internal']) {
                     $article = new External(
                         $title, $metaInfo, $purchase_price, $sellPrice,
-                        $sellPriceMembers, $barcode, $bookable, $unbookable
+                        $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire
                     );
 
                 } else {
@@ -91,14 +96,14 @@ class TextbookController extends \Litus\Controller\Action
 
                     $article = new Internal(
                         $title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode,
-                        $bookable, $unbookable, $nrbwpages, $nrcolorpages, $official, $rectoverso
+                        $bookable, $unbookable, $supplier, $canExpire, $nrbwpages, $nrcolorpages, $official, $rectoverso
                     );
 
                 }
                  
                 $this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
-                 
+                $this->view->textbookCreated = true;
                  
             }
             	
@@ -116,10 +121,9 @@ class TextbookController extends \Litus\Controller\Action
         }
     }
     
-    public function manageAction() {
-        
+    public function manageAction()
+	{
         $em = $this->getEntityManager();
         $this->view->articles = $em->getRepository('Litus\Entity\Cudi\Article')->findAll();
-        
     }
 }
