@@ -12,7 +12,7 @@ class IndexController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->_forward('index', 'queue');
+        $this->_forward('index', 'group');
     }
 }
 
