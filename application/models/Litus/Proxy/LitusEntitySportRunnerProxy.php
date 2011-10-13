@@ -54,10 +54,28 @@ class LitusEntitySportRunnerProxy extends \Litus\Entity\Sport\Runner implements 
         return parent::getLastName();
     }
 
+    public function getFullName()
+    {
+        $this->__load();
+        return parent::getFullName();
+    }
+
+    public function getGroup()
+    {
+        $this->__load();
+        return parent::getGroup();
+    }
+
+    public function setGroup(\Litus\Entity\Sport\Group $group)
+    {
+        $this->__load();
+        return parent::setGroup($group);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'universityIdentification', 'firstName', 'lastName');
+        return array('__isInitialized__', 'universityIdentification', 'firstName', 'lastName', 'group');
     }
 
     public function __clone()

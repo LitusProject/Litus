@@ -124,7 +124,7 @@ $this->headScript()
 
 <script type="text/javascript">
     function doLogin() {
-        $.post('/admin/auth/authenticate?format=json', {formData: $('#login').serialize()}, function(data) {
+        $.post('<?= $this->url(array('action' => 'authenticate')); ?>?format=json', {formData: $('#login').serialize()}, function(data) {
             if (!data.result) {
                 if ('USERNAME_PASSWORD' == data.reason) {
                     $('#error_message').html(

@@ -2,6 +2,8 @@
 
 namespace Litus\Entity\Sport;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity(repositoryClass="Litus\Repository\Sport\Group")
  * @Table(name="sport.groups")
@@ -18,19 +20,39 @@ class Group
 	private $id;
 
     /**
+     * @var string The name of this group
+     *
+     * @Column(type="string", length=50)
+     */
+    private $name;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Sport\Runner")
-     * @JoinColumn(name="member", referencedColumnName="university_identification")
+     * @OneToMany(targetEntity="Litus\Entity\Sport\Runner", mappedBy="group", cascade={"persist"})
      */
     private $members;
 
     /**
-     * @param array $members An array containing the members of this group
+     * @var array
+     *
+     * @Column(name="happy_hours", type="string")
      */
-    public function __construct(array $members)
+    private $happyHours;
+
+    /**
+     * @param string $name The name of this group
+     * @param array $happyHours An array containing the happy hours of this group
+     */
+
+    /**
+     * @param string $name The name of this group
+     * @param array $happyHours An array containing the happy hours of this group
+     */
+    public function __construct($name, array $happyHours)
     {
-        $this->members = new ArrayCollection($members);
+        $this->name = $name;
+        $this->happyHours = serialize($happyHours);
     }
 
     /**
@@ -42,10 +64,36 @@ class Group
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param array $members
+     * @return \Litus\Entity\Sport\Group
+     */
+    public function setMembers(array $members)
+    {
+        $this->members = new ArrayCollection($members);
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getMembers()
     {
         return $this->members->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getHappyHours()
+    {
+        return unserialize($this->happyHours);
     }
 }

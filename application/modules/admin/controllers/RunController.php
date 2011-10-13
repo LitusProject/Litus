@@ -5,7 +5,6 @@ namespace Admin;
 use \Admin\Form\Auth\Login as LoginForm;
 
 use \Zend\Dom\Query;
-use \Zend\Json\Json;
 
 class RunController extends \Litus\Controller\Action
 {
@@ -45,27 +44,54 @@ class RunController extends \Litus\Controller\Action
             ->getRepository('Litus\Entity\Sport\Lap')
             ->countAll();
 
-        $teamNumber = $this->getEntityManager()
+        $resultPage = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
-            ->getConfigValue('sport.run_team_number');
+            ->getConfigValue('sport.run_result_page');
 
-        $domQuery = new Query(
-            file_get_contents('http://media.24u.ulyssis.org/live/tussenstand.html')
-        );
+        $queryContents = @file_get_contents($resultPage);
 
-        $this->view->nbOfficialLaps = $domQuery->execute('#team' . $teamNumber . ' .teamlaps')
-            ->current()
-            ->childNodes
-            ->item(0)
-            ->wholeText;
+        if (false !== $queryContents) {
+            $teamName = $this->getEntityManager()
+                ->getRepository('Litus\Entity\Config\Config')
+                ->getConfigValue('sport.run_team_name');
+
+            $domQuery = new Query($queryContents);
+            $childNodes = $this->view->nbOfficialLaps = $domQuery->execute('tr');
+
+            foreach ($childNodes as $childNode) {
+                if (0 == $childNode->getElementsByTagName('td')->length)
+                    continue;
+
+                $nodeTeamName = $childNode->getElementsByTagName('td')->item(2)->textContent;
+
+                if (null !== $nodeTeamName && $nodeTeamName == $teamName) {
+                    $this->view->nbOfficialLaps = $childNode->getElementsByTagName('td')->item(3)->textContent;
+                }
+            }
+        } else {
+            $this->view->nbOfficialLaps = false;
+        }
 	}
 
     public function startAction()
     {
         $this->broker('viewRenderer')->setNoRender();
 
+        if (null !== $this->currentLap)
+            $this->currentLap->stop();
+
         if (null !== $this->nextLap)
             $this->nextLap->start();
+
+        $this->_redirect('queue');
+    }
+
+    public function stopAction()
+    {
+        $this->broker('viewRenderer')->setNoRender();
+
+        if (null !== $this->currentLap)
+            $this->currentLap->stop();
 
         $this->_redirect('queue');
     }
