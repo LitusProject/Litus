@@ -1,0 +1,33 @@
+<section>
+    <div class="page-header">
+        <h1>Queue <small>run a lap</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="span4 columns">
+            <p>When you want to run a lap, you should first fill out this form and you will then be added to the runner queue.</p>
+        </div>
+        <div class="span12 columns">
+            <? if($this->queueCreated): ?>
+                <div id="successMessage" class="alert-message success">
+                    <p>You have been queued!</p>
+                </div>
+            <? endif; ?>
+
+            <?= $this->form; ?>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $('#university_identification').keyup(function() {
+        $.getJSON('<?= $this->url(array('action' => 'runner')); ?>?format=json', {university_identification: $('#university_identification').val()}, function(data) {
+            $('#first_name').val(data.firstName).attr('class', 'xlarge span3 uneditable-input');
+            $('#last_name').val(data.lastName).attr('class', 'xlarge span3 uneditable-input');
+        })
+    });
+
+    <? if($this->queueCreated): ?>
+        $('#successMessage').delay(2000).fadeOut('slow');
+    <? endif; ?>
+</script>
