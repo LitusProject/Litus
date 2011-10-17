@@ -26,9 +26,7 @@
                     <td><?= $previousLap->getRunner()->getFullName(); ?></td>
                     <td><?= $previousLap->getRegistrationTime()->format('H:i:s'); ?></td>
                     <td><?= $previousLap->getLapTime()->format('%i:%S'); ?></td>
-                    <td>
-                        <a href="<?= $this->url(array('action' => 'delete', 'id' => $previousLap->getId())); ?>" class="delete">Delete</a>
-                    </td>
+                    <td></td>
                 </tr>
             <? endforeach; ?>
 
@@ -64,7 +62,7 @@
             <p>
                 <i>Please hit the link below to start timing a new lap!</i>
             </p>
-            <p style="font-size: 17px;">
+            <p>
                 <? if (null !== $this->nextLap): ?>
                     <a href="<?= $this->url(array('action' => 'start')); ?>">&rarr; Next Lap</a>
                 <? else: ?>
@@ -92,7 +90,37 @@
     </div>
 </aside>
 
-<?
-foreach ($this->previousLaps as $previousLap)
-    $previousLap->getId();
-?>
+<script type="text/javascript">
+    function startShortKey(e) {
+        if (e.keyCode == 32) {
+            $(document).unbind('keypress.space');
+
+            $(document).bind('keypress.s', function(e) {
+                if (e.keyCode == 115) {
+                    <? if (null !== $this->nextLap): ?>
+                        window.location.href = "<?= $this->url(array('action' => 'start')); ?>";
+                    <? else: ?>
+                        <? if (null !== $this->currentLap): ?>
+                            window.location.href = "<?= $this->url(array('action' => 'stop')); ?>";
+                        <? else: ?>
+                            window.location.reload();
+                        <? endif; ?>
+                    <? endif; ?>
+
+                    $(document).unbind('keypress.s').bind('keypress.space', startShortKey);
+                }
+            });
+        }
+    }
+
+    function loadShortKey(e) {
+        if (e.keyCode == 108) {
+            window.location.reload();
+        }
+    }
+
+    $(document).ready(function () {
+        $(document).bind('keypress.space', startShortKey);
+        $(document).bind('keypress.l', loadShortKey);
+    });
+</script>

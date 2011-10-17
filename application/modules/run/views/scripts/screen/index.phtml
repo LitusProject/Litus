@@ -76,10 +76,41 @@ $this->headScript()
                     <div class="row">
                         <div class="span6">
                             <h3>Previous Runners</h3>
+
+                            <table class="zebra-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">#</th>
+                                        <th width="60%">Runner</th>
+                                        <th width="30%">Lap Time</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="previous_runners">
+                                    <tr>
+                                        <td colspan="3"><i>There are no previous runners!</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="span6">
                             <h3>Next Runners</h3>
+
+                            <table class="zebra-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">#</th>
+                                        <th width="90%">Runner</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="next_runners">
+                                    <tr>
+                                        <td colspan="3"><i>There are no next runners!</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -89,17 +120,33 @@ $this->headScript()
 
     <script type="text/javascript">
         setInterval(function() {
-                $.getJSON('<?= $this->url(array('action' => 'currentlap')); ?>?format=json', function(data) {
-                    if (false != data) {
+                $.getJSON('<?= $this->url(array('action' => 'update')); ?>?format=json', function(data) {
+                    if (false != data.currentLap) {
                         $('#noCurrentLap').fadeOut('slow', function() {
                             $('#currentLap').fadeIn('slow');
                         });
 
-                        $('#currentLapRunnerName').text(data.runnerName);
-                        $('#currentLapTime').text(data.time);
+                        $('#currentLapRunnerName').text(data.currentLap.runnerName);
+                        $('#currentLapTime').text(data.currentLap.time);
                     } else {
                         $('#currentLap').fadeOut('slow', function() {
                             $('#noCurrentLap').fadeIn('slow');
+                        });
+                    }
+
+                    if (0 != data.previousLaps.length) {
+                        $('#previous_runners').empty();
+
+                        $.each(data.previousLaps, function(lapNb, previousLap) {
+                            $('#previous_runners').append('<tr><td>' + previousLap.id + '</td><td>' + previousLap.runner + '</td><td>' + previousLap.time + '</td></tr>')
+                        });
+                    }
+
+                    if (0 != data.nextLaps.length) {
+                        $('#next_runners').empty();
+
+                        $.each(data.nextLaps, function(lapNb, nextLap) {
+                            $('#next_runners').append('<tr><td>' + nextLap.id + '</td><td>' + nextLap.runner + '</td></tr>')
                         });
                     }
                 })
