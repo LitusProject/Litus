@@ -34,10 +34,8 @@ class ScreenController extends \Litus\Controller\Action
             ->findCurrent();
     }
 
-    public function indexAction()
+    private function _getNbOfficialLaps()
     {
-        $this->view->currentLap = $this->currentLap;
-
         $resultPage = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
             ->getConfigValue('sport.run_result_page');
@@ -50,7 +48,7 @@ class ScreenController extends \Litus\Controller\Action
                 ->getConfigValue('sport.run_team_name');
 
             $domQuery = new Query($queryContents);
-            $childNodes = $this->view->nbOfficialLaps = $domQuery->execute('tr');
+            $childNodes = $domQuery->execute('tr');
 
             foreach ($childNodes as $childNode) {
                 if (0 == $childNode->getElementsByTagName('td')->length)
@@ -59,33 +57,70 @@ class ScreenController extends \Litus\Controller\Action
                 $nodeTeamName = $childNode->getElementsByTagName('td')->item(2)->textContent;
 
                 if (null !== $nodeTeamName && $nodeTeamName == $teamName) {
-                    $this->view->nbOfficialLaps = $childNode->getElementsByTagName('td')->item(3)->textContent;
+                    return $childNode->getElementsByTagName('td')->item(3)->textContent;
                 }
             }
         } else {
-            $this->view->nbOfficialLaps = false;
+            return false;
         }
+    }
+
+    public function indexAction()
+    {
+        $this->view->currentLap = $this->currentLap;
+
+        $this->view->nbOfficialLaps = $this->_getNbOfficialLaps();
 
         $this->view->uniqueRunners = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
             ->countRunners();
     }
 
-    public function currentlapAction()
+    public function updateAction()
     {
         $this->_initAjax();
+
+        $return = array();
 
         if (null !== $this->currentLap) {
             $now = new \DateTime();
 
-            $return = array(
+            $return['currentLap'] = array(
                 'runnerName' => $this->currentLap->getRunner()->getFullName(),
                 'time' => $this->currentLap->getLapTime()->format('%i:%S')
             );
         } else {
-            $return = false;
+            $return['currentLap'] = false;
         }
+
+        $previousLaps = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Lap')
+            ->findPrevious(5);
+
+        $return['previousLaps'] = array();
+        foreach ($previousLaps as $previousLap) {
+            $return['previousLaps'][] = array(
+                'id' => $previousLap->getId(),
+                'runner' => $previousLap->getRunner()->getFullName(),
+                'time' => $previousLap->getLapTime()->format('%i:%S')
+            );
+        }
+
+        $nextLaps = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Lap')
+            ->findNext(5);
+
+        $return['nextLaps'] = array();
+        foreach ($nextLaps as $nextLap) {
+            $return['nextLaps'][] = array(
+                'id' => $nextLap->getId(),
+                'runner' => $nextLap->getRunner()->getFullName()
+            );
+        }
+
+        $return['nbOfficialLaps'] = $this->_getNbOfficialLaps();
         
+
         echo $this->_json->encode($return);
     }
 }
