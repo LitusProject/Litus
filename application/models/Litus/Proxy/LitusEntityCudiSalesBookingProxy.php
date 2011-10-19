@@ -36,12 +36,6 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
     }
     
     
-    public function canHaveBookingStatus()
-    {
-        $this->__load();
-        return parent::canHaveBookingStatus();
-    }
-
 
     public function __sleep()
     {

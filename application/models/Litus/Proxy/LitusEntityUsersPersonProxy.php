@@ -114,6 +114,12 @@ class LitusEntityUsersPersonProxy extends \Litus\Entity\Users\Person implements 
         return parent::getLastName();
     }
 
+    public function getFullName()
+    {
+        $this->__load();
+        return parent::getFullName();
+    }
+
     public function setEmail($email)
     {
         $this->__load();

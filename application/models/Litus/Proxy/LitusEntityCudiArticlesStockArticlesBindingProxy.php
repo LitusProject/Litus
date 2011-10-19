@@ -36,6 +36,18 @@ class LitusEntityCudiArticlesStockArticlesBindingProxy extends \Litus\Entity\Cud
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
 
     public function __sleep()
     {
