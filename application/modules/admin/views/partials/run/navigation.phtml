@@ -6,9 +6,6 @@
             <? if ($this->hasAccess('admin', 'run', 'queue')): ?>
                 <li><a <? if('queue' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'queue')); ?>">Queue</a></li>
             <? endif; ?>
-            <? if ($this->hasAccess('admin', 'run', 'groups')): ?>
-                <li><a <? if('groups' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'groups')); ?>">Groups</a></li>
-            <? endif; ?>
         </ul>
     </nav>
 </header>

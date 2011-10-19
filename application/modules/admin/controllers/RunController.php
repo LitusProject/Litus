@@ -115,9 +115,4 @@ class RunController extends \Litus\Controller\Action
             }
         }
     }
-
-    public function groupsAction()
-    {
-
-    }
 }
