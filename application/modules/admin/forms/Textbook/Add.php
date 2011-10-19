@@ -82,7 +82,13 @@ class Add extends \Litus\Form\Admin\Form
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new PriceValidator());
         $this->addElement($sellpricemember);
-        
+		
+		$barcode = new Text('barcode');
+        $barcode->setLabel('Barcode')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($barcode);
+
 		$suppliers = Registry::get('EntityManager')
             ->getRepository('Litus\Entity\Cudi\Supplier')
 			->findAll();
@@ -90,12 +96,6 @@ class Add extends \Litus\Form\Admin\Form
 		foreach($suppliers as $item) {
 			$supplierOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
 		}
-		
-		$barcode = new Text('barcode');
-        $barcode->setLabel('Barcode')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($barcode);
 		
         $supplier = new Select('supplier');
         $supplier->setLabel('Supplier')
