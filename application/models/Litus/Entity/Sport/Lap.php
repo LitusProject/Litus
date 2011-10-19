@@ -124,6 +124,14 @@ class Lap
 	}
 
     /**
+     * @return \DateTime
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
      * @return \DateInterval
      */
     public function getLapTime()
