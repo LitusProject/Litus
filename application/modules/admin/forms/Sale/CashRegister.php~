@@ -25,74 +25,74 @@ class CashRegister extends \Litus\Form\Admin\Form
         $this->addElement($field);
 
         $field = new Text('500');
-        $field->setLabel('500p')
+        $field->setLabel('500')
             ->setRequired()
-            ->setValue($initialValues['500p'])
+            ->setValue($initialValues['500'])
        //     ->addValidator('regex', false, array('/^[0-9]+$/'))
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('200');
-        $field->setLabel('200p')
+        $field->setLabel('200')
             ->setRequired()
-            ->setValue($initialValues['200p'])
+            ->setValue($initialValues['200'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('100');
-        $field->setLabel('100p')
+        $field->setLabel('100')
             ->setRequired()
-            ->setValue($initialValues['100p'])
+            ->setValue($initialValues['100'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('50');
-        $field->setLabel('50p')
+        $field->setLabel('50')
             ->setRequired()
-            ->setValue($initialValues['50p'])
+            ->setValue($initialValues['50'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('20');
-        $field->setLabel('20p')
+        $field->setLabel('20')
             ->setRequired()
-            ->setValue($initialValues['20p'])
+            ->setValue($initialValues['20'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('10');
-        $field->setLabel('10p')
+        $field->setLabel('10')
             ->setRequired()
-            ->setValue($initialValues['10p'])
+            ->setValue($initialValues['10'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('5');
-        $field->setLabel('5p')
+        $field->setLabel('5')
             ->setRequired()
-            ->setValue($initialValues['5p'])
+            ->setValue($initialValues['5'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('2');
-        $field->setLabel('2p')
+        $field->setLabel('2')
             ->setRequired()
-            ->setValue($initialValues['2p'])
+            ->setValue($initialValues['2'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('1');
-        $field->setLabel('1p')
+        $field->setLabel('1')
             ->setRequired()
-            ->setValue($initialValues['1p'])
+            ->setValue($initialValues['1'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);

@@ -57,8 +57,6 @@ class SaleController extends \Litus\Controller\Action
                 $saleSession->setOpenDate( date_create( date('Y-m-d H:i:s', time() ) ) ); // now
                 $saleSession->setCloseDate( date_create( date('Y-m-d H:i:s', 0 ) ) ); // 1 jan 1970
 
-		$saleSession->setCloseAmount( 0 );
-
                 $am = 0;
             //    $am += $formData['500'] * 50000;
             //    $am += $formData['200'] * 20000;
