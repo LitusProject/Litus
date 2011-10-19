@@ -63,7 +63,7 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed');
     }
 
     public function __clone()

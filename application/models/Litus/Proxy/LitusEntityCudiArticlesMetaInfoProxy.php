@@ -60,16 +60,34 @@ class LitusEntityCudiArticlesMetaInfoProxy extends \Litus\Entity\Cudi\Articles\M
         return parent::getAuthors();
     }
 
+    public function setAuthors($authors)
+    {
+        $this->__load();
+        return parent::setAuthors($authors);
+    }
+
     public function getPublishers()
     {
         $this->__load();
         return parent::getPublishers();
     }
 
+    public function setPublishers($publishers)
+    {
+        $this->__load();
+        return parent::setPublishers($publishers);
+    }
+
     public function getYearPublished()
     {
         $this->__load();
         return parent::getYearPublished();
+    }
+
+    public function setYearPublished($yearPublished)
+    {
+        $this->__load();
+        return parent::setYearPublished($yearPublished);
     }
 
 

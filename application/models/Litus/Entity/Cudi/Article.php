@@ -42,6 +42,11 @@ abstract class Article
      */
     private $timestamp;
 
+	/**
+	 * @Column(type="boolean")
+	 */
+	private $removed = false;
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -75,8 +80,19 @@ abstract class Article
         return $this->title;
     }
 
+	/**
+     * @param string $title
+	 *
+     * @return \Litus\Entity\Cudi\Article
+     */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+		return $this;
+	}
+
     /**
-     * @return MetaInfo
+     * @return \Litus\Entity\Cudi\Articles\MetaInfo
      */
     public function getMetaInfo()
     {
@@ -90,4 +106,15 @@ abstract class Article
     {
         return $this->timestamp;
     }
+	
+	/**
+     * @param boolean $removed Whether this item is removed or not
+	 *
+	 * @return \Litus\Entity\Cudi\Article
+     */
+	public function setRemoved($removed)
+	{
+		$this->removed = $removed;
+		return $this;
+	}
 }

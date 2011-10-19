@@ -42,6 +42,12 @@ class LitusEntitySportGroupProxy extends \Litus\Entity\Sport\Group implements \D
         return parent::getId();
     }
 
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
     public function setMembers(array $members)
     {
         $this->__load();
@@ -63,7 +69,7 @@ class LitusEntitySportGroupProxy extends \Litus\Entity\Sport\Group implements \D
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'members', 'happyHours');
+        return array('__isInitialized__', 'id', 'name', 'members', 'happyHours');
     }
 
     public function __clone()

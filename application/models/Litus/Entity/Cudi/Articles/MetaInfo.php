@@ -77,6 +77,17 @@ class MetaInfo
 	}
 	
 	/**
+     * @param string $authors
+	 *
+     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     */
+	public function setAuthors($authors)
+	{
+		$this->authors = $authors;
+		return $this;
+	}
+	
+	/**
 	 * @return string
 	 */
 	public function getPublishers()
@@ -85,10 +96,32 @@ class MetaInfo
 	}
 	
 	/**
+     * @param string $publishers
+	 *
+     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     */
+	public function setPublishers($publishers)
+	{
+		$this->publishers = $publishers;
+		return $this;
+	}
+	
+	/**
 	 * @return integer
 	 */
 	public function getYearPublished()
 	{
 		return $this->yearPublished;
+	}
+	
+	/**
+     * @param string $yearPublished
+	 *
+     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     */
+	public function setYearPublished($yearPublished)
+	{
+		$this->yearPublished = $yearPublished;
+		return $this;
 	}
 }
