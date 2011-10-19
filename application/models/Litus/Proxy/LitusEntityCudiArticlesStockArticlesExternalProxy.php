@@ -75,7 +75,7 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
     }
 
     public function __clone()
