@@ -36,6 +36,18 @@ class LitusEntityCudiArticlesStockArticlesColorProxy extends \Litus\Entity\Cudi\
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
 
     public function __sleep()
     {

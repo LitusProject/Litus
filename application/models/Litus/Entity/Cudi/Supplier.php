@@ -34,4 +34,20 @@ class Supplier
 	 * @Column(type="string")
 	 */
 	private $VAT_number;
+	
+	/**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

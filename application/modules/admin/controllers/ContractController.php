@@ -53,7 +53,7 @@ class ContractController extends \Litus\Controller\Action
         $this->_json = new Json();
     }
 
-    public function _generateFiles($id, $invoiceOnly = false)
+    private function _generateFiles($id, $invoiceOnly = false)
     {
         $contract = $this->getEntityManager()
 			->getRepository('Litus\Entity\Br\Contract')

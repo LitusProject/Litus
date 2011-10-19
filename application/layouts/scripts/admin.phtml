@@ -39,7 +39,10 @@ $this->inlineScript()
 			<a href="#" title="Litus Manager"></a>
             
 			<p><time datetime="<?= date('c', time()); ?>"><?= date('l, F j Y, H:i', time()); ?></time></p>
-			<p id="tag">Welcome, <?= $this->authenticatedUser; ?></p>
+			<p id="tag">
+                Welcome, <?= $this->authenticatedUser; ?> |
+                <a href="<?= $this->url(array('controller' => 'auth', 'action' => 'logout')); ?>">Logout</a>
+            </p>
 		</header>
 
 		<nav id="content_nav">
@@ -48,13 +51,13 @@ $this->inlineScript()
 
                 <ul>
                     <? if ($this->hasAccess('admin', 'index', 'index')): ?>
-                        <li><a href="/admin">Dashboard</a></li>
+                        <li><a href="<?= $this->url(array('controller' => 'index', 'action' => 'index')); ?>">Dashboard</a></li>
                     <? endif; ?>
                     <? if ($this->hasAccess('admin', 'user', 'index')): ?>
-                        <li><a href="/admin/user">Users</a></li>
+                        <li><a href="<?= $this->url(array('controller' => 'user', 'action' => 'index')); ?>">Users</a></li>
                     <? endif; ?>
                     <? if ($this->hasAccess('admin', 'role', 'index')): ?>
-                        <li><a href="/admin/role">Groups</a></li>
+                        <li><a href="<?= $this->url(array('controller' => 'role', 'action' => 'index')); ?>">Groups</a></li>
                     <? endif; ?>
                 </ul>
             </div>
@@ -70,7 +73,10 @@ $this->inlineScript()
                     <div class="subtitle"><p id="toggleCursusdienst"><b>Cudi</b><br />Textbooks, Stock &amp; Financial</p></div>
                     <ul id="submenu_cursusdienst">
                         <? if ($this->hasAccess('admin', 'textbook', 'index')): ?>
-                            <li><a href ="/admin/textbook">Textbooks</a></li>
+                            <li><a href="<?= $this->url(array('controller' => 'textbook', 'action' => 'index')); ?>">Textbooks</a></li>
+                        <? endif; ?>
+						<? if ($this->hasAccess('admin', 'booking', 'index')): ?>
+                            <li><a href ="/admin/booking">Bookings</a></li>
                         <? endif; ?>
                         <? if ($this->hasAccess('admin', 'sale', 'index')): ?>
                             <li><a href ="/admin/sale">Sale</a></li>
@@ -88,13 +94,13 @@ $this->inlineScript()
                     <div class="subtitle"><p id="toggleBusiness"><b>Business Relations</b><br />Companies &amp; Contracts</p></div>
                     <ul id="submenu_business">
                         <? if ($this->hasAccess('admin', 'company', 'index')): ?>
-                            <li><a href="/admin/company">Companies</a></li>
+                            <li><a href="<?= $this->url(array('controller' => 'company', 'action' => 'index')); ?>">Companies</a></li>
                         <? endif; ?>
                         <? if ($this->hasAccess('admin', 'section', 'index')): ?>
-                            <li><a href="/admin/section">Sections</a></li>
+                            <li><a href="<?= $this->url(array('controller' => 'section', 'action' => 'index')); ?>">Sections</a></li>
                         <? endif; ?>
                         <? if ($this->hasAccess('admin', 'contract', 'index')): ?>
-                            <li><a href="/admin/contract/">Contracts</a></li>
+                            <li><a href="<?= $this->url(array('controller' => 'contract', 'action' => 'index')); ?>">Contracts</a></li>
                         <? endif; ?>
                     </ul>
                 <? endif; ?>
@@ -107,7 +113,7 @@ $this->inlineScript()
                     <div class="subtitle"><p id="toggleSport"><b>Sport</b><br />Twenty Four</p></div>
                     <ul id="submenu_sport">
                         <? if ($this->hasAccess('admin', 'run', 'index')): ?>
-                            <li><a href="/admin/run">24h-Run</a></li>
+                            <li><a href="<?= $this->url(array('controller' => 'run', 'action' => 'index')); ?>">24h-Run</a></li>
                         <? endif; ?>
                     </ul>
                 <? endif; ?>

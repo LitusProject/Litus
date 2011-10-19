@@ -5,6 +5,7 @@ namespace Admin\Form\Textbook;
 use Zend\Form\SubForm;
 
 use Litus\Validator\Price as PriceValidator;
+use Litus\Validator\Year as YearValidator;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use Litus\Form\Admin\Decorator\FieldDecorator;
@@ -12,8 +13,10 @@ use Litus\Form\Admin\Decorator\FieldDecorator;
 use Zend\Form\Form;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Checkbox;
 
+use Zend\Registry;
 
 class Add extends \Litus\Form\Admin\Form
 {
@@ -41,64 +44,84 @@ class Add extends \Litus\Form\Admin\Form
          
         $author = new Text('author');
         $author->setLabel('Author')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()));
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($author);
          
         $publisher = new Text('publisher');
         $publisher->setLabel('Publisher')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()));
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($publisher);
          
         $year = new Text('year_published');
         $year->setLabel('Year published')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()))
-        ->addValidator('int');
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+			->addValidator('int')
+        	->addValidator(new YearValidator());
         $this->addElement($year);
          
         $purchaseprice = new Text('purchaseprice');
         $purchaseprice->setLabel('Purchase price')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()))
-        ->addValidator(new PriceValidator());
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator(new PriceValidator());
         $this->addElement($purchaseprice);
          
         $sellprice = new Text('sellpricenomember');
         $sellprice->setLabel('Sell price')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()))
-        ->addValidator(new PriceValidator());
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator(new PriceValidator());
         $this->addElement($sellprice);
          
         $sellpricemember = new Text('sellpricemember');
         $sellpricemember->setLabel('Sell price (member)')
-        ->setRequired()
-        ->setDecorators(array(new FieldDecorator()))
-        ->addValidator(new PriceValidator());
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator(new PriceValidator());
         $this->addElement($sellpricemember);
-         
-        // TODO: supplier when db is ready for it
-        //     	$supplier = new Text('supplier');
-        //     	$supplier->setLabel('Supplier')
-        //     		->setRequired()
-        //     		->setDecorators(array(new FieldDecorator()));
-        //     	$form->addElement($supplier);
+		
+		$barcode = new Text('barcode');
+        $barcode->setLabel('Barcode')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($barcode);
+
+		$suppliers = Registry::get('EntityManager')
+            ->getRepository('Litus\Entity\Cudi\Supplier')
+			->findAll();
+		$supplierOptions = array();
+		foreach($suppliers as $item) {
+			$supplierOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
+		}
+		
+        $supplier = new Select('supplier');
+        $supplier->setLabel('Supplier')
+        	->setRequired()
+			->setMultiOptions($supplierOptions)
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($supplier);
          
         $bookable = new Checkbox('bookable');
         $bookable->setLabel('Bookable')
-        ->setDecorators(array(new FieldDecorator()));
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($bookable);
          
         $unbookable = new Checkbox('unbookable');
         $unbookable->setLabel('Unbookable')
-        ->setDecorators(array(new FieldDecorator()));
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($unbookable);
+
+		$canExpire = new Checkbox('canExpire');
+        $canExpire->setLabel('Can Expire')
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($canExpire);
          
         $internal = new Checkbox('internal');
         $internal->setLabel('Internal article')
-        ->setDecorators(array(new FieldDecorator()));
+        	->setDecorators(array(new FieldDecorator()));
         $internal->setAttrib('onclick', "toggle_visibility()");
         $this->addElement($internal);
          

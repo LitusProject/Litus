@@ -57,8 +57,12 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
         $authenticatedUser = 'Guest';
         $this->getAuthentication()->authenticate();
         if ($this->hasAccess()) {
-            if ($this->getAuthentication()->isAuthenticated())
+            if ($this->getAuthentication()->isAuthenticated()) {
                 $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+
+                if ('auth' == $this->getRequest()->getControllerName() && 'login' == $this->getRequest()->getActionName())
+                    $this->_redirect('index', 'index', 'admin');
+            }
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())

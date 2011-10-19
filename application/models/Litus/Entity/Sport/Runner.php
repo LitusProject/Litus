@@ -31,6 +31,14 @@ class Runner
     private $lastName;
 
     /**
+     * @var \Litus\Entity\Sport\Group The runner's group
+     *
+     * @ManyToOne(targetEntity="Litus\Entity\Sport\Group", inversedBy="members")
+     * @JoinColumn(name="group_of_friends", referencedColumnName="id")
+     */
+    private $group;
+
+    /**
      * @param string $universityIdentification The runner's university identification
      * @param string $firstName The runner's first name
      * @param string $lastName The runner's last name
@@ -64,5 +72,34 @@ class Runner
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return \Litus\Entity\Sport\Group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     * @param \Litus\Entity\Sport\Group $group The runner's group
+     * @return \Litus\Entity\Sport\Runner
+     */
+    public function setGroup(Group $group) {
+        if (null === $group)
+            throw new \InvalidArgumentException('The group cannot be null');
+        $this->group = $group;
+
+        return $this;
     }
 }

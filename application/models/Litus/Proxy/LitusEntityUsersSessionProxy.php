@@ -84,10 +84,10 @@ class LitusEntityUsersSessionProxy extends \Litus\Entity\Users\Session implement
         return parent::deactivate();
     }
 
-    public function validateSession($ip)
+    public function validateSession($userAgent, $ip)
     {
         $this->__load();
-        return parent::validateSession($ip);
+        return parent::validateSession($userAgent, $ip);
     }
 
 

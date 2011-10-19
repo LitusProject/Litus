@@ -35,6 +35,7 @@ class TextbookController extends \Litus\Controller\Action
         $internal_form = $form->getInternalForm();
 
         $this->view->form = $form;
+        $this->view->textbookCreated = false;
          
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -56,55 +57,51 @@ class TextbookController extends \Litus\Controller\Action
             }
 
             if($form->isValid($formData)) {
-                 
-                // Add the new article to the database
-                 
-                // Insert common information (between internal and external) in variables
-                 
-                $authors = $formData['author'];
-                $publishers = $formData['publisher'];
-                $yearPublished = $formData['year_published'];
-                 
-                $metaInfo = new MetaInfo($authors, $publishers, $yearPublished);
+                $metaInfo = new MetaInfo($formData['author'], $formData['publisher'], $formData['year_published']);
                  
                 $title = $formData['title'];
                 $purchase_price = $formData['purchaseprice'];
                 $sellPrice = $formData['sellpricenomember'];
                 $sellPriceMembers = $formData['sellpricemember'];
-                $barcode = 0; // TODO barcode
+                $barcode = $formData['barcode'];
                 $bookable = $formData['bookable'];
                 $unbookable = $formData['unbookable'];
-                 
+
+                $supplier = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Supplier')
+					->findOneById($formData['supplier']);
+                $canExpire = $formData['canExpire'];
+                				
                 if (!$formData['internal']) {
                     $article = new External(
-                        $title, $metaInfo, $purchase_price, $sellPrice,
-                        $sellPriceMembers, $barcode, $bookable, $unbookable
+                        $title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode,
+                        $bookable, $unbookable, $supplier, $canExpire
                     );
 
                 } else {
-
-                    // Insert additional information needed for internal textbooks in variables
-                    $nrbwpages = $formData['nrbwpages'];
-                    $nrcolorpages = $formData['nrcolorpages'];
-                    $official = $formData['official'];
-                    $rectoverso = $formData['rectoverso'];
-
-                    $article = new Internal(
+					$binding = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+						->findOneById($formData['binding']);
+						
+					$frontColor = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+						->findOneById($formData['frontcolor']);
+		
+                   	$article = new Internal(
                         $title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode,
-                        $bookable, $unbookable, $nrbwpages, $nrcolorpages, $official, $rectoverso
+                        $bookable, $unbookable, $supplier, $canExpire, $formData['nbBlackAndWhite'],
+						$formData['nbColored'], $binding, $formData['official'], $formData['rectoverso'], $frontColor
                     );
-
                 }
                  
                 $this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
-                 
+                $this->view->textbookCreated = true;
                  
             }
             	
             // Make sure the validators and required flags are added again.
             if (!$formData['internal']) {
-
                 foreach ($internal_form->getElements() as $formelement) {
                     if (array_key_exists ($formelement->getName(), $validators))
                         $formelement->setValidators($validators[$formelement->getName()]);
@@ -116,10 +113,9 @@ class TextbookController extends \Litus\Controller\Action
         }
     }
     
-    public function manageAction() {
-        
+    public function manageAction()
+	{
         $em = $this->getEntityManager();
         $this->view->articles = $em->getRepository('Litus\Entity\Cudi\Article')->findAll();
-        
     }
 }

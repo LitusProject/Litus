@@ -8,7 +8,10 @@ use Litus\Form\Admin\Decorator\FieldDecorator;
 
 use \Zend\Form\SubForm;
 use \Zend\Form\Element\Text;
-use Zend\Form\Element\Checkbox;
+use Zend\Form\Element\Select;
+use \Zend\Form\Element\Checkbox;
+
+use Zend\Registry;
 
 
 class AddInternal extends \Zend\Form\SubForm
@@ -21,26 +24,34 @@ class AddInternal extends \Zend\Form\SubForm
         // Make sure the attributes belonging to internal articles aren't seperated when posting
         $this->setIsArray(false);
 
-        $nrbwpages = new Text('nrbwpages');
+        $nrbwpages = new Text('nbBlackAndWhite');
         $nrbwpages->setLabel('Number of black and white pages')
         ->setRequired()
         ->addValidator('int')
         ->setDecorators(array(new FieldDecorator()));
         $this->addElement($nrbwpages);
 
-        $nrcolorpages = new Text('nrcolorpages');
+        $nrcolorpages = new Text('nbColored');
         $nrcolorpages->setLabel('Number of colored pages')
         ->setRequired()
         ->addValidator('int')
         ->setDecorators(array(new FieldDecorator()));
         $this->addElement($nrcolorpages);
-         
-        // TODO: binding when db is ready for it
-        //     	$binding = new Text('binding');
-        //     	$binding->setLabel('Binding')
-        //     		->setRequired()
-        //     		->setDecorators(array(new FieldDecorator()));
-        //     	$this->addElement($binding);
+        
+		$bindings = Registry::get('EntityManager')
+            ->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+			->findAll();
+		$bindingOptions = array();
+		foreach($bindings as $item) {
+			$bindingOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
+		}
+		
+		$binding = new Select('binding');
+        $binding->setLabel('Binding')
+        	->setRequired()
+			->setMultiOptions($bindingOptions)
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($binding);
          
         $official = new Checkbox('official');
         $official->setLabel('Official')
@@ -51,14 +62,20 @@ class AddInternal extends \Zend\Form\SubForm
         $rectoverso->setLabel('Recto verso')
         ->setDecorators(array(new FieldDecorator()));
         $this->addElement($rectoverso);
-         
-        // TODO: frontcolor when db is ready for it
-        //     	$frontcolor = new Text('frontcolor');
-        //     	$frontcolor->setLabel('Front page color')
-        //     		->setRequired()
-        //     		->setDecorators(array(new FieldDecorator()));
-        //     	$this->addElement($frontcolor);
 
-
+		$colors = Registry::get('EntityManager')
+            ->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+			->findAll();
+		$colorOptions = array();
+		foreach($colors as $item) {
+			$colorOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
+		}
+		
+		$color = new Select('frontcolor');
+        $color->setLabel('Front page color')
+        	->setRequired()
+			->setMultiOptions($colorOptions)
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($color);
     }
 }

@@ -62,7 +62,9 @@ class Add extends \Litus\Form\Admin\Form
 
     private function _createActionsArray()
     {
-        $query = new QueryBuilder(Registry::get(DoctrineResource::REGISTRY_KEY));
+        $query = new QueryBuilder(
+            Registry::get(DoctrineResource::REGISTRY_KEY)
+        );
         $query->select('r')
             ->from('Litus\Entity\Acl\Resource', 'r')
             ->where('r.parent IS NULL');

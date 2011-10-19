@@ -38,6 +38,13 @@ class Lap
 	 * @Column(name="start_time", type="datetime", nullable=true)
 	 */
 	private $startTime;
+
+    /**
+	 * @var \DateTime The time this runner ended his lap
+	 *
+	 * @Column(name="end_time", type="datetime", nullable=true)
+	 */
+	private $endTime;
 	
 	/**
 	 * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
@@ -97,6 +104,17 @@ class Lap
         return $this;
     }
 
+    /**
+     * Ends this lap
+     *
+     * @return \Litus\Entity\Sport\Lap
+     */
+    public function stop()
+    {
+        $this->endTime = new \DateTime();
+        return $this;
+    }
+
 	/**
 	 * @return \DateTime
 	 */
@@ -104,4 +122,20 @@ class Lap
 	{
 		return $this->startTime;
 	}
+
+    /**
+     * @return \DateInterval
+     */
+    public function getLapTime()
+    {
+        if (null !== $this->endTime) {
+            $lapTime = $this->endTime->diff($this->startTime);
+        } else {
+            $now = new \DateTime();
+            
+            $lapTime = $now->diff($this->startTime);
+        }
+        
+        return $lapTime;
+    }
 }

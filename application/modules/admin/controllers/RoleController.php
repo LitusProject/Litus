@@ -75,9 +75,14 @@ class RoleController extends \Litus\Controller\Action
     public function loadAction()
     {
 		$modules = array(
+            'application' => array(
+                'index' => array(
+                    'index'
+                )
+            ),
 			'admin' => array(
                 'run' => array(
-                    'index', 'queue', 'groups'
+                    'index', 'queue', 'start', 'stop', 'delete', 'groups'
                 ),
 				'auth' => array(
 					'login', 'logout', 'authenticate'
@@ -103,7 +108,21 @@ class RoleController extends \Litus\Controller\Action
 				'user' => array(
 					'index', 'add', 'manage', 'edit', 'delete'
 				)
-			)
+			),
+            'run' => array(
+                'index' => array(
+                    'index'
+                ),
+                'group' => array(
+                    'index', 'add'
+                ),
+                'queue' => array(
+                    'index', 'add', 'runner'
+                ),
+                'screen' => array(
+                    'index', 'currentlap'
+                )
+            )
 		);
 		
 		foreach ($modules as $module => $controllers) {
