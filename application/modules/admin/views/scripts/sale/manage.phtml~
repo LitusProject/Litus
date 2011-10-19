@@ -16,7 +16,7 @@
 
             <tr>
                 <td><?= $session->getManager(); ?></td>
-                <td><? if( $session->getCloseDate() < $session->getOpenDate() )
+                <td><? if( $session->getCloseDate() > $session->getOpenDate() )
 			{
 				echo "yes";
 				$open = true;
