@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="textbooks">Articles</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <? if ($this->hasAccess('admin', 'article', 'new')): ?>
+                <li><a <? if('add' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'add')); ?>">Add</a></li>
+            <? endif; ?>
+            <? if ($this->hasAccess('admin', 'article', 'manage')): ?>
+                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'manage')); ?>">Manage</a></li>
+            <? endif; ?>
+        </ul>
+    </nav>
+</header>

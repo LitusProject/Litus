@@ -1,0 +1,24 @@
+<?= $this->partial('partials/booking/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+    <table>
+    
+        <tr>
+            <th>Person</th>
+            <th>Article</th>
+            <th>Book date</th>
+            <th>Status</th>
+        </tr>
+        
+        <? foreach ($this->bookings as $booking): ?>
+
+            <tr>
+                <td><?= $booking->getPerson()->getFullName(); ?></td>
+                <td><?= $booking->getArticle()->getTitle(); ?></td>
+                <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
+                <td><?= $booking->getStatus(); ?></td>
+            </tr>
+    
+        <? endforeach; ?>
+    </table>
+</div>
