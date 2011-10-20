@@ -27,7 +27,7 @@ class ArticleController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->_forward('add');
+        $this->_forward('manage');
     }
 
     public function addAction()
@@ -80,7 +80,7 @@ class ArticleController extends \Litus\Controller\Action
 					
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully created."));
+                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully created!"));
 				$this->_redirect('manage');
 			}
 			
@@ -114,7 +114,7 @@ class ArticleController extends \Litus\Controller\Action
 		if (null !== $this->getRequest()->getParam('confirm')) {
             if (1 == $this->getRequest()->getParam('confirm')) {
 				$article->setRemoved(true);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully removed."));
+                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully removed!"));
             }
             $this->_redirect('manage');
         }
@@ -182,7 +182,7 @@ class ArticleController extends \Litus\Controller\Action
 						->setIsRectoVerso($formData['rectoverso'])
 						->setFrontColor($frontColor);
 				}
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully updated."));
+                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully updated!"));
 				$this->_redirect('manage');
 			}
 			

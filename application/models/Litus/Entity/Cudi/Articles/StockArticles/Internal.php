@@ -46,12 +46,12 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	) {
 		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
-		$this->nbBlackAndWhite = $nbBlackAndWhite;
-		$this->nbColored = $nbColored;
-		$this->binding = $binding;
-		$this->official = $official;
-		$this->rectoVerso = $rectoverso;
-		$this->frontPageColor = $frontPageColor;
+		$this->setNbBlackAndWhite($nbBlackAndWhite)
+			->setNbColored($nbColored)
+			->setBinding($binding)
+			->setIsOfficial($official)
+			->setIsRectoVerso($rectoverso)
+			->setFrontColor($frontPageColor);
 	}
 	
 	/**
