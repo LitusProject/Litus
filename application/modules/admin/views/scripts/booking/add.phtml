@@ -1,0 +1,13 @@
+<?= $this->partial('partials/booking/navigation.phtml', array('currentAction' => 'add')); ?>
+
+<div id="controller_action">
+	<? if ($this->bookingCreated): ?>
+       	<div class="success_message full_width">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The booking was successfully created!</p>
+            </div>
+        </div>
+   	<? endif; ?>
+	<?= $this->form; ?>
+</div>

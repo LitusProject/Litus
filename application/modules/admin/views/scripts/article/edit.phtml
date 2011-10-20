@@ -1,0 +1,22 @@
+<?= $this->partial('partials/article/navigation.phtml', array('currentAction' => 'edit')); ?>
+
+<div id="controller_action">
+    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+
+    <?= $this->form; ?>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#internal').click(toggle)
+			.parent().parent().hide();
+		toggle();
+	});
+	
+	function toggle() {
+		if ($('#internal').is(':checked'))
+			$('#internal_form').show();
+		else
+			$('#internal_form').hide();
+	}
+</script>
