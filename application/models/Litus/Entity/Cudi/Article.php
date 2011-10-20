@@ -56,9 +56,9 @@ abstract class Article
     public function __construct($title, $metaInfo)
     {
         if ($metaInfo->getArticle() != null)
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('The meta info is not valid.');
 
-        $this->title = $title;
+        $this->setTitle($title);
         $this->metaInfo = $metaInfo;
         $metaInfo->setArticle($this);
         $this->timestamp = new DateTime();
@@ -87,6 +87,11 @@ abstract class Article
      */
 	public function setTitle($title)
 	{
+		$title = trim($title);
+		
+		if (strlen($title) == 0)
+            throw new \InvalidArgumentException('The article title is not valid.');
+
 		$this->title = $title;
 		return $this;
 	}

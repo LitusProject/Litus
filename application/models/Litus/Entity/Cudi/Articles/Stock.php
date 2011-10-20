@@ -63,14 +63,14 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
     {
         parent::__construct($title, $metaInfo);
 
-        $this->purchasePrice = $purchase_price*100;
-        $this->sellPrice = $sellPrice*100;
-        $this->sellPriceMembers = $sellPriceMembers*100;
-        $this->barcode = $barcode;
-        $this->bookable = $bookable;
-        $this->unbookable = $unbookable;
-		$this->supplier = $supplier;
-		$this->canExpire = $canExpire;
+        $this->setPurchasePrice($purchase_price)
+			->setSellPrice($sellPrice)
+			->setSellPriceMembers($sellPriceMembers)
+			->setBarcode($barcode)
+			->setSupplier($supplier)
+			->setIsBookable($bookable)
+			->setIsUnbookable($unbookable)
+			->setCanExpire($canExpire);
     }
 
 	/**

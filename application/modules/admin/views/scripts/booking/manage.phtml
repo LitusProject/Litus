@@ -1,6 +1,8 @@
 <?= $this->partial('partials/booking/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
+    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+
     <table>
     
         <tr>

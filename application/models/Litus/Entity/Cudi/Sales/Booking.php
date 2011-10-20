@@ -89,7 +89,9 @@ class Booking
 			$expireTime = Registry::get(DoctrineResource::REGISTRY_KEY)
 	            ->getRepository('Litus\Entity\Config\Config')
 	            ->getConfigValue('cudi.reservation_expire_time');
-			$this->expirationDate = $this->bookDate->add(new \DateInterval($expireTime));
+	
+			$now = new \DateTime();
+			$this->expirationDate = $now->add(new \DateInterval($expireTime));
 			
 		}
 	}
