@@ -43,7 +43,7 @@ $this->headScript()
                         <h2>Laps</h2>
 
                         <p>
-                            Up till now, we have run <span id="nbOfficialLaps" class="label important" style="font-size: 16px;"><?= $this->nbOfficialLaps; ?></span> <span id="nbOfficialLapsText"><?= $this->nbOfficialLaps == 1 ? 'lap' : 'laps'; ?></span>.
+                            We have run <span id="nbOfficialLaps" class="label important" style="font-size: 16px;"><?= $this->officialResults['nbLaps']; ?></span> <span id="nbOfficialLapsText"><?= $this->nbOfficialLaps == 1 ? 'lap' : 'laps'; ?></span>.
                         </p>
                     </span>
 
@@ -85,8 +85,10 @@ $this->headScript()
                             </span>
                         </p>
 
-                        <p id="currentLapTime">
-                            <?= null !== $this->currentLap ? $this->currentLap->getLapTime()->format('%i:%S') : '00:00'; ?>
+                        <p>
+                            <span id="currentLapTime"><?= null !== $this->currentLap ? $this->currentLap->getLapTime()->format('%i:%S') : '00:00'; ?></span>,
+                            <span id="officialPosition"><?= round($this->officialResults['position'] * 100); ?></span>%,
+                            <span id="officialSpeed"><?= $this->officialResults['speed']; ?></span> km/h
                         </p>
                     </div>
 
@@ -136,6 +138,17 @@ $this->headScript()
                             </table>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="span12">
+                            <h3>Tombola</h3>
+
+                            <p>
+                                 Tombola prices will be given away on October 27 at 23u00. <br />
+                                 <b>Attendance is Obligatory</b>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -173,11 +186,14 @@ $this->headScript()
                         });
                     }
 
-                    if (false != data.nbOfficialLaps) {
-                        $('#nbOfficialLaps').html(data.nbOfficialLaps);
+                    if (false != data.officialResults) {
+                        $('#nbOfficialLaps').html(data.officialResults.nbLaps);
 
-                        nbOfficiallapsText = data.nbOfficialLaps == 1 ? 'lap' : 'laps';
+                        nbOfficiallapsText = data.officialResults.nbLaps == 1 ? 'lap' : 'laps';
                         $('#nbOfficialLapsText').html(nbOfficiallapsText);
+
+                        $('#officialPosition').html(Math.round(data.officialResults.position * 100, 2));
+                        $('#officialSpeed').html(data.officialResults.speed);
                     } else {
                         $('#nbOfficialLapsContainer').fadeOut('slow');
                     }

@@ -48,6 +48,12 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
         return parent::getTitle();
     }
 
+    public function setTitle($title)
+    {
+        $this->__load();
+        return parent::setTitle($title);
+    }
+
     public function getMetaInfo()
     {
         $this->__load();
@@ -58,6 +64,12 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
     {
         $this->__load();
         return parent::getTimestamp();
+    }
+
+    public function setRemoved($removed)
+    {
+        $this->__load();
+        return parent::setRemoved($removed);
     }
 
 
