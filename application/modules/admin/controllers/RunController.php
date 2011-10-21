@@ -4,8 +4,6 @@ namespace Admin;
 
 use \Admin\Form\Auth\Login as LoginForm;
 
-use \Zend\Dom\Query;
-
 class RunController extends \Litus\Controller\Action
 {
 	private $currentLap = null;
@@ -43,31 +41,21 @@ class RunController extends \Litus\Controller\Action
         $this->view->nbLaps = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
             ->countAll();
-
+        
         $resultPage = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
             ->getConfigValue('sport.run_result_page');
 
-        $queryContents = @file_get_contents($resultPage);
-
-        if (false !== $queryContents) {
-            $teamName = $this->getEntityManager()
+        $resultPageContent = simplexml_load_file($resultPage);
+        
+        if (false !== $resultPageContent) {
+            $teamId = $this->getEntityManager()
                 ->getRepository('Litus\Entity\Config\Config')
-                ->getConfigValue('sport.run_team_name');
+                ->getConfigValue('sport.run_team_id');
+            
+            $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');
 
-            $domQuery = new Query($queryContents);
-            $childNodes = $this->view->nbOfficialLaps = $domQuery->execute('tr');
-
-            foreach ($childNodes as $childNode) {
-                if (0 == $childNode->getElementsByTagName('td')->length)
-                    continue;
-
-                $nodeTeamName = $childNode->getElementsByTagName('td')->item(2)->textContent;
-
-                if (null !== $nodeTeamName && $nodeTeamName == $teamName) {
-                    $this->view->nbOfficialLaps = $childNode->getElementsByTagName('td')->item(3)->textContent;
-                }
-            }
+            $this->view->nbOfficialLaps = $teamData[0]->rounds->__toString();
         } else {
             $this->view->nbOfficialLaps = false;
         }
