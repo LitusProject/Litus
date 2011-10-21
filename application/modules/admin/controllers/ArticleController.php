@@ -10,7 +10,6 @@ use \Admin\Form\Article\Edit;
 use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
 use \Litus\Entity\Cudi\Articles\MetaInfo;
 use \Litus\Entity\Cudi\Articles\StockArticles\External;
-
 use \Litus\FlashMessenger\FlashMessage;
 
 /**
@@ -42,16 +41,21 @@ class ArticleController extends \Litus\Controller\Action
 			if (!$formData['internal']) {
 				$validators = array();
 				$required = array();
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formelement) {
-					$validators[$formelement->getName()] = $formelement->getValidators();
-					$required[$formelement->getName()] = $formelement->isRequired();
-					$formelement->clearValidators();
-					$formelement->setRequired(false);
+                
+				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
+					$validators[$formElement->getName()] = $formElement->getValidators();
+					$required[$formElement->getName()] = $formElement->isRequired();
+					$formElement->clearValidators();
+					$formElement->setRequired(false);
 				}
 			}
 			
 			if ($form->isValid($formData)) {
-				$metaInfo = new MetaInfo($formData['author'], $formData['publisher'], $formData['year_published']);
+				$metaInfo = new MetaInfo(
+                    $formData['author'],
+                    $formData['publisher'],
+                    $formData['year_published']
+                );
 				
 				$supplier = $this->getEntityManager()
 					->getRepository('Litus\Entity\Cudi\Supplier')
@@ -67,29 +71,58 @@ class ArticleController extends \Litus\Controller\Action
 						->findOneById($formData['frontcolor']);
 
 	                $article = new Internal(
-	                	$formData['title'], $metaInfo, $formData['purchaseprice'], $formData['sellpricenomember'], $formData['sellpricemember'],
-	 					$formData['barcode'], $formData['bookable'], $formData['unbookable'], $supplier, $formData['canExpire'],
-						$formData['nbBlackAndWhite'], $formData['nbColored'], $binding, $formData['official'], $formData['rectoverso'], $frontColor
+	                	$formData['title'],
+                        $metaInfo,
+                        $formData['purchaseprice'],
+                        $formData['sellprice_nomember'],
+                        $formData['sellprice_member'],
+	 					$formData['barcode'],
+                        $formData['bookable'],
+                        $formData['unbookable'],
+                        $supplier,
+                        $formData['can_expire'],
+						$formData['nb_black_and_white'],
+                        $formData['nb_colored'],
+                        $binding,
+                        $formData['official'],
+                        $formData['rectoverso'],
+                        $frontColor
 	                );
 				} else {
 					$article = new External(
-	                	$formData['title'], $metaInfo, $formData['purchaseprice'], $formData['sellpricenomember'], $formData['sellpricemember'],
-						$formData['barcode'], $formData['bookable'], $formData['unbookable'], $supplier, $formData['canExpire']
+	                	$formData['title'],
+                        $metaInfo,
+                        $formData['purchase_price'],
+                        $formData['sellprice_nomember'],
+                        $formData['sellprice_member'],
+						$formData['barcode'],
+                        $formData['bookable'],
+                        $formData['unbookable'],
+                        $supplier,
+                        $formData['can_expire']
 	           		);
 				}
 					
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully created!"));
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully created!'
+                    )
+                );
+                
 				$this->_redirect('manage');
 			}
 			
 			if (!$formData['internal']) {
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formelement) {
-					if (array_key_exists ($formelement->getName(), $validators))
-			 			$formelement->setValidators($validators[$formelement->getName()]);
-					if (array_key_exists ($formelement->getName(), $required))
-						$formelement->setRequired($required[$formelement->getName()]);
+				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
+					if (array_key_exists ($formElement->getName(), $validators))
+			 			$formElement->setValidators($validators[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $required))
+						$formElement->setRequired($required[$formElement->getName()]);
 				}
 			}
         }
@@ -97,14 +130,15 @@ class ArticleController extends \Litus\Controller\Action
     
     public function manageAction()
 	{
-        $em = $this->getEntityManager();
-        $this->view->articles = $em->getRepository('Litus\Entity\Cudi\Article')->findAll();
+        $this->view->articles = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')->findAll();
     }
 
 	public function deleteAction()
 	{
-        $em = $this->getEntityManager();
-		$article = $em->getRepository('Litus\Entity\Cudi\Article')->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')
+            ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $article)
 			throw new Zend\Controller\Action\Exception("Page not found", 404);
@@ -114,19 +148,28 @@ class ArticleController extends \Litus\Controller\Action
 		if (null !== $this->getRequest()->getParam('confirm')) {
             if (1 == $this->getRequest()->getParam('confirm')) {
 				$article->setRemoved(true);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully removed!"));
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully removed!'
+                    )
+                );
             }
+            
             $this->_redirect('manage');
         }
 	}
 
 	public function editAction()
 	{
-		$em = $this->getEntityManager();
-		$article = $em->getRepository('Litus\Entity\Cudi\Article')->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')
+            ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $article)
-			throw new Zend\Controller\Action\Exception("Page not found", 404);
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
 		$form = new Edit();
 		$form->populate($article);
@@ -139,11 +182,12 @@ class ArticleController extends \Litus\Controller\Action
 			if (!$formData['internal']) {
 				$validators = array();
 				$required = array();
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formelement) {
-					$validators[$formelement->getName()] = $formelement->getValidators();
-					$required[$formelement->getName()] = $formelement->isRequired();
-					$formelement->clearValidators();
-					$formelement->setRequired(false);
+
+				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
+					$validators[$formElement->getName()] = $formElement->getValidators();
+					$required[$formElement->getName()] = $formElement->isRequired();
+					$formElement->clearValidators();
+					$formElement->setRequired(false);
 				}
 			}
 			
@@ -182,16 +226,24 @@ class ArticleController extends \Litus\Controller\Action
 						->setIsRectoVerso($formData['rectoverso'])
 						->setFrontColor($frontColor);
 				}
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The article was successfully updated!"));
-				$this->_redirect('manage');
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully updated!'
+                    )
+                );
+
+                $this->_redirect('manage');
 			}
 			
 			if (!$formData['internal']) {
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formelement) {
-					if (array_key_exists ($formelement->getName(), $validators))
-			 			$formelement->setValidators($validators[$formelement->getName()]);
-					if (array_key_exists ($formelement->getName(), $required))
-						$formelement->setRequired($required[$formelement->getName()]);
+				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
+					if (array_key_exists ($formElement->getName(), $validators))
+			 			$formElement->setValidators($validators[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $required))
+						$formElement->setRequired($required[$formElement->getName()]);
 				}
 			}
         }

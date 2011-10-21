@@ -2,21 +2,20 @@
 
 namespace Admin\Form\Article;
 
-use Zend\Form\SubForm;
-
-use Litus\Validator\Price as PriceValidator;
-use Litus\Validator\Year as YearValidator;
+use \Litus\Validator\Price as PriceValidator;
+use \Litus\Validator\Year as YearValidator;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use Litus\Form\Admin\Decorator\FieldDecorator;
+use \Litus\Form\Admin\Decorator\FieldDecorator;
 
-use Zend\Form\Form;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Checkbox;
+use \Zend\Form\Form;
+use \Zend\Form\Element\Submit;
+use \Zend\Form\Element\Text;
+use \Zend\Form\Element\Select;
+use \Zend\Form\Element\Checkbox;
+use \Zend\Form\SubForm;
 
-use Zend\Registry;
+use \Zend\Registry;
 
 class Add extends \Litus\Form\Admin\Form
 {
@@ -49,29 +48,29 @@ class Add extends \Litus\Form\Admin\Form
         $this->addElement($field);
          
         $field = new Text('year_published');
-        $field->setLabel('Year published')
+        $field->setLabel('Year Published')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
 			->addValidator('int')
         	->addValidator(new YearValidator());
         $this->addElement($field);
          
-        $field = new Text('purchaseprice');
-        $field->setLabel('Purchase price')
+        $field = new Text('purchase_price');
+        $field->setLabel('Purchase Price')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new PriceValidator());
         $this->addElement($field);
          
-        $field = new Text('sellpricenomember');
-        $field->setLabel('Sell price')
+        $field = new Text('sellprice_nomember');
+        $field->setLabel('Sell Price')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new PriceValidator());
         $this->addElement($field);
          
-        $field = new Text('sellpricemember');
-        $field->setLabel('Sell price (member)')
+        $field = new Text('sellprice_member');
+        $field->setLabel('Sell Price (Member)')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new PriceValidator());
@@ -100,13 +99,13 @@ class Add extends \Litus\Form\Admin\Form
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Checkbox('canExpire');
+		$field = new Checkbox('can_expire');
         $field->setLabel('Can Expire')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
          
         $field = new Checkbox('internal');
-        $field->setLabel('Internal article')
+        $field->setLabel('Internal Article')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -116,14 +115,14 @@ class Add extends \Litus\Form\Admin\Form
 		        'author',
 		        'publisher',
 				'year_published',
-				'purchaseprice',
-				'sellpricenomember',
-				'sellpricemember',
+				'purchase_price',
+				'sellprice_nomember',
+				'sellprice_member',
 				'barcode',
 				'supplier',
 				'bookable',
 				'unbookable',
-				'canExpire',
+				'can_expire',
 				'internal'
 		    ),
 		    'article_form'
@@ -133,15 +132,15 @@ class Add extends \Litus\Form\Admin\Form
 		    ->setAttrib('id', 'article_form')
 		    ->removeDecorator('DtDdWrapper');
 
-		$field = new Text('nbBlackAndWhite');
-	    $field->setLabel('Number of black and white pages')
+		$field = new Text('nb_black_and_white');
+	    $field->setLabel('Number of B/W Pages')
 	        ->setRequired()
 	        ->addValidator('int')
 	        ->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 
-	    $field = new Text('nbColored');
-	    $field->setLabel('Number of colored pages')
+	    $field = new Text('nb_colored');
+	    $field->setLabel('Number of Colored Pages')
 	        ->setRequired()
 	        ->addValidator('int')
 	        ->setDecorators(array(new FieldDecorator()));
@@ -164,7 +163,7 @@ class Add extends \Litus\Form\Admin\Form
 	        ->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 
-		$field = new Select('frontcolor');
+		$field = new Select('front_color');
 	    $field->setLabel('Front page color')
 	      	->setRequired()
 			->setMultiOptions($this->_getColors())
@@ -173,12 +172,12 @@ class Add extends \Litus\Form\Admin\Form
 		
 		$this->addDisplayGroup(
 		            array(
-		                'nbBlackAndWhite',
-		                'nbColored',
+		                'nb_black_and_white',
+		                'nb_colored',
 		                'binding',
 						'official',
 						'rectoverso',
-						'frontcolor'
+						'front_color'
 		            ),
 		            'internal_form'
 		        );
@@ -200,9 +199,8 @@ class Add extends \Litus\Form\Admin\Form
             ->getRepository('Litus\Entity\Cudi\Supplier')
 			->findAll();
 		$supplierOptions = array();
-		foreach($suppliers as $item) {
-			$supplierOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
-		}
+		foreach($suppliers as $item)
+			$supplierOptions[$item->getId()] = $item->getName();
 		
 		return $supplierOptions;
 	}
@@ -213,9 +211,8 @@ class Add extends \Litus\Form\Admin\Form
 	    	->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
 			->findAll();
 		$bindingOptions = array();
-		foreach($bindings as $item) {
-			$bindingOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
-		}
+		foreach($bindings as $item)
+			$bindingOptions[$item->getId()] = $item->getName();
 		
 		return $bindingOptions;
 	}
@@ -226,9 +223,8 @@ class Add extends \Litus\Form\Admin\Form
 	  		->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
 			->findAll();
 		$colorOptions = array();
-		foreach($colors as $item) {
-			$colorOptions[] = array('key' => $item->getId(), 'value' => $item->getName());
-		}
+		foreach($colors as $item)
+			$colorOptions[$item->getId()] = $item->getName();
 		
 		return $colorOptions;
 	}
