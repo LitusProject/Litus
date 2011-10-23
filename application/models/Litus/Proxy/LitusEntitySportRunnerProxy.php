@@ -72,6 +72,12 @@ class LitusEntitySportRunnerProxy extends \Litus\Entity\Sport\Runner implements 
         return parent::setGroup($group);
     }
 
+    public function getLaps()
+    {
+        $this->__load();
+        return parent::getLaps();
+    }
+
 
     public function __sleep()
     {

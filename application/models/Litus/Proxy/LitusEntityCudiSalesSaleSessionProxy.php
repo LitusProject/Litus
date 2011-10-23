@@ -36,10 +36,82 @@ class LitusEntityCudiSalesSaleSessionProxy extends \Litus\Entity\Cudi\Sales\Sale
     }
     
     
+    public function setId($id_)
+    {
+        $this->__load();
+        return parent::setId($id_);
+    }
+
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setOpenDate($openDate_)
+    {
+        $this->__load();
+        return parent::setOpenDate($openDate_);
+    }
+
+    public function getOpenDate()
+    {
+        $this->__load();
+        return parent::getOpenDate();
+    }
+
+    public function setCloseDate($closeDate_)
+    {
+        $this->__load();
+        return parent::setCloseDate($closeDate_);
+    }
+
+    public function getCloseDate()
+    {
+        $this->__load();
+        return parent::getCloseDate();
+    }
+
+    public function setOpenAmount($openAmount_)
+    {
+        $this->__load();
+        return parent::setOpenAmount($openAmount_);
+    }
+
+    public function getOpenAmount()
+    {
+        $this->__load();
+        return parent::getOpenAmount();
+    }
+
+    public function setCloseAmount($closeAmount_)
+    {
+        $this->__load();
+        return parent::setCloseAmount($closeAmount_);
+    }
+
+    public function getCloseAmount()
+    {
+        $this->__load();
+        return parent::getCloseAmount();
+    }
+
+    public function setManager($manager_)
+    {
+        $this->__load();
+        return parent::setManager($manager_);
+    }
+
+    public function getManager()
+    {
+        $this->__load();
+        return parent::getManager();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'openDate', 'closeDate', 'confirmDate', 'openAmount', 'closeAmount', 'registerStart', 'registerEnd', 'manager');
+        return array('__isInitialized__', 'id', 'openDate', 'closeDate', 'openAmount', 'closeAmount', 'manager');
     }
 
     public function __clone()

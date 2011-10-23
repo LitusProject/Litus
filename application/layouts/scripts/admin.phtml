@@ -70,10 +70,10 @@ $this->inlineScript()
                     $this->hasAccess('admin', 'textbook', 'index')
                 ):
                 ?>
-                    <div class="subtitle"><p id="toggleCursusdienst"><b>Cudi</b><br />Textbooks, Stock &amp; Financial</p></div>
+                    <div class="subtitle"><p id="toggleCursusdienst"><b>CuDi</b><br />Articles, Stock &amp; Financial</p></div>
                     <ul id="submenu_cursusdienst">
-                        <? if ($this->hasAccess('admin', 'textbook', 'index')): ?>
-                            <li><a href="<?= $this->url(array('controller' => 'textbook', 'action' => 'index')); ?>">Textbooks</a></li>
+                        <? if ($this->hasAccess('admin', 'article', 'index')): ?>
+                            <li><a href="<?= $this->url(array('controller' => 'article', 'action' => 'index')); ?>">Articles</a></li>
                         <? endif; ?>
 						<? if ($this->hasAccess('admin', 'booking', 'index')): ?>
                             <li><a href ="/admin/booking">Bookings</a></li>

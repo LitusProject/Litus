@@ -368,6 +368,90 @@ body {
             }
         }
 
+		.warning_message {
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+            .title {
+                display: block;
+                height: @sideboxTitleHeight;
+                line-height: @sideboxTitleHeight;
+                text-indent: @tIndent;
+                text-transform: uppercase;
+                font-size: @tSizeSmall;
+                font-weight: bold;
+                color: @cWhite;
+                background: @cWarningTitleBackground;
+            }
+
+            .content {
+                padding: @defaultSpacing;
+                color: @cWhite;
+                background: @cWarningBackground;
+
+                p {
+                    margin-top: 2 * @defaultSpacing;
+
+                    a {
+                        margin-right: @defaultSpacing;
+                        text-decoration: none;
+                        font-weight: bold;
+                        color: inherit;
+                    }
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                p:first-child {
+                    margin-top: 0;
+                }
+            }
+        }
+
+		.notice_message {
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+            .title {
+                display: block;
+                height: @sideboxTitleHeight;
+                line-height: @sideboxTitleHeight;
+                text-indent: @tIndent;
+                text-transform: uppercase;
+                font-size: @tSizeSmall;
+                font-weight: bold;
+                color: @cWhite;
+                background: @cNoticeTitleBackground;
+            }
+
+            .content {
+                padding: @defaultSpacing;
+                color: @cWhite;
+                background: @cNoticeBackground;
+
+                p {
+                    margin-top: 2 * @defaultSpacing;
+
+                    a {
+                        margin-right: @defaultSpacing;
+                        text-decoration: none;
+                        font-weight: bold;
+                        color: inherit;
+                    }
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                p:first-child {
+                    margin-top: 0;
+                }
+            }
+        }
+
         .sortable {
             ul {
                 margin: 2 * @defaultSpacing;

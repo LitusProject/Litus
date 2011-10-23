@@ -36,16 +36,178 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
     }
     
     
+    public function isInternal()
+    {
+        $this->__load();
+        return parent::isInternal();
+    }
+
+    public function getNbBlackAndWhite()
+    {
+        $this->__load();
+        return parent::getNbBlackAndWhite();
+    }
+
+    public function setNbBlackAndWhite($nbBlackAndWhite)
+    {
+        $this->__load();
+        return parent::setNbBlackAndWhite($nbBlackAndWhite);
+    }
+
+    public function getNbColored()
+    {
+        $this->__load();
+        return parent::getNbColored();
+    }
+
+    public function setNbColored($nbColored)
+    {
+        $this->__load();
+        return parent::setNbColored($nbColored);
+    }
+
+    public function getBinding()
+    {
+        $this->__load();
+        return parent::getBinding();
+    }
+
+    public function setBinding($binding)
+    {
+        $this->__load();
+        return parent::setBinding($binding);
+    }
+
+    public function isOfficial()
+    {
+        $this->__load();
+        return parent::isOfficial();
+    }
+
+    public function setIsOfficial($official)
+    {
+        $this->__load();
+        return parent::setIsOfficial($official);
+    }
+
+    public function isRectoVerso()
+    {
+        $this->__load();
+        return parent::isRectoVerso();
+    }
+
+    public function setIsRectoVerso($rectoVerso)
+    {
+        $this->__load();
+        return parent::setIsRectoVerso($rectoVerso);
+    }
+
+    public function getFrontColor()
+    {
+        $this->__load();
+        return parent::getFrontColor();
+    }
+
+    public function setFrontColor($frontPageColor)
+    {
+        $this->__load();
+        return parent::setFrontColor($frontPageColor);
+    }
+
+    public function getPurchasePrice()
+    {
+        $this->__load();
+        return parent::getPurchasePrice();
+    }
+
+    public function setPurchasePrice($purchasePrice)
+    {
+        $this->__load();
+        return parent::setPurchasePrice($purchasePrice);
+    }
+
+    public function getSellPrice()
+    {
+        $this->__load();
+        return parent::getSellPrice();
+    }
+
+    public function setSellPrice($sellPrice)
+    {
+        $this->__load();
+        return parent::setSellPrice($sellPrice);
+    }
+
+    public function getSellPriceMembers()
+    {
+        $this->__load();
+        return parent::getSellPriceMembers();
+    }
+
+    public function setSellPriceMembers($sellPriceMembers)
+    {
+        $this->__load();
+        return parent::setSellPriceMembers($sellPriceMembers);
+    }
+
+    public function getBarcode()
+    {
+        $this->__load();
+        return parent::getBarcode();
+    }
+
+    public function setBarcode($barcode)
+    {
+        $this->__load();
+        return parent::setBarcode($barcode);
+    }
+
+    public function getSupplier()
+    {
+        $this->__load();
+        return parent::getSupplier();
+    }
+
+    public function setSupplier($supplier)
+    {
+        $this->__load();
+        return parent::setSupplier($supplier);
+    }
+
     public function canExpire()
     {
         $this->__load();
         return parent::canExpire();
     }
 
+    public function setCanExpire($canExpire)
+    {
+        $this->__load();
+        return parent::setCanExpire($canExpire);
+    }
+
     public function isBookable()
     {
         $this->__load();
         return parent::isBookable();
+    }
+
+    public function setIsBookable($bookable)
+    {
+        $this->__load();
+        return parent::setIsBookable($bookable);
+    }
+
+    public function isUnbookable()
+    {
+        $this->__load();
+        return parent::isUnbookable();
+    }
+
+    public function setIsUnbookable($unbookable)
+    {
+        $this->__load();
+        return parent::setIsUnbookable($unbookable);
     }
 
     public function getId()
@@ -60,6 +222,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::getTitle();
     }
 
+    public function setTitle($title)
+    {
+        $this->__load();
+        return parent::setTitle($title);
+    }
+
     public function getMetaInfo()
     {
         $this->__load();
@@ -72,10 +240,16 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::getTimestamp();
     }
 
+    public function setRemoved($removed)
+    {
+        $this->__load();
+        return parent::setRemoved($removed);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
     }
 
     public function __clone()

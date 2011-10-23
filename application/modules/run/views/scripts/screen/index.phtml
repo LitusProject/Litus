@@ -39,17 +39,40 @@ $this->headScript()
 
             <div class="row">
                 <div class="span4">
-                    <h2>Laps</h2>
+                    <span id="nbOfficialLapsContainer">
+                        <h2>Laps</h2>
 
-                    <p>
-                        Up till now, we have run <span class="label important" style="font-size: 16px;"><?= $this->nbOfficialLaps; ?></span> laps.
-                    </p>
+                        <p>
+                            We have run <span id="nbOfficialLaps" class="label important" style="font-size: 16px;"><?= $this->officialResults['nbLaps']; ?></span> <span id="nbOfficialLapsText"><?= $this->nbOfficialLaps == 1 ? 'lap' : 'laps'; ?></span>.
+                        </p>
+                    </span>
 
                     <h2>Runners</h2>
 
                     <p>
-                        There have been <span class="label success" style="font-size: 16px;"><?= $this->uniqueRunners; ?></span> unique runners.
+                        There <?= $this->uniqueRunners == 1 ? 'has' : 'have'; ?> been <span id="uniqueRunners" class="label success" style="font-size: 16px;"><?= $this->uniqueRunners; ?></span> unique <span id="uniqueRunnersText"><?= $this->uniqueRunners == 1 ? 'runner' : 'runners'; ?></span>.
                     </p>
+
+                    <h2>Groups of Friends</h2>
+
+                    <p>
+                        The current groups ranking of the groups of friends.
+                    </p>
+
+                    <table class="zebra-striped">
+                        <thead>
+                            <tr>
+                                <th width="80%">Name</th>
+                                <th width="20%">Points</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="groups_of_friends">
+                            <tr>
+                                <td colspan="3"><i>There are no groups of friends!</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="span12">
                     <h2>Current Runner</h2>
@@ -62,14 +85,16 @@ $this->headScript()
                             </span>
                         </p>
 
-                        <p id="currentLapTime">
-                            <?= null !== $this->currentLap ? $this->currentLap->getLapTime()->format('%i:%S') : '00:00'; ?>
+                        <p>
+                            <span id="currentLapTime"><?= null !== $this->currentLap ? $this->currentLap->getLapTime()->format('%i:%S') : '00:00'; ?></span>,
+                            <span id="officialPosition"><?= round($this->officialResults['position'] * 100); ?></span>%,
+                            <span id="officialSpeed"><?= $this->officialResults['speed']; ?></span> km/h
                         </p>
                     </div>
 
                     <div id="noCurrentLap" class="alert-message error" style="display: none;">
                         <p>
-                            <span style="font-size: 18px;">There is no next runner!</span>
+                            <span style="font-size: 18px;">There is nobody running!</span>
                         </p>
                     </div>
 
@@ -113,6 +138,17 @@ $this->headScript()
                             </table>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="span12">
+                            <h3>Tombola</h3>
+
+                            <p>
+                                 Tombola prices will be given away on October 27 at 23u00. <br />
+                                 <b>Attendance is Obligatory</b>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -147,6 +183,30 @@ $this->headScript()
 
                         $.each(data.nextLaps, function(lapNb, nextLap) {
                             $('#next_runners').append('<tr><td>' + nextLap.id + '</td><td>' + nextLap.runner + '</td></tr>')
+                        });
+                    }
+
+                    if (false != data.officialResults) {
+                        $('#nbOfficialLaps').html(data.officialResults.nbLaps);
+
+                        nbOfficiallapsText = data.officialResults.nbLaps == 1 ? 'lap' : 'laps';
+                        $('#nbOfficialLapsText').html(nbOfficiallapsText);
+
+                        $('#officialPosition').html(Math.round(data.officialResults.position * 100, 2));
+                        $('#officialSpeed').html(data.officialResults.speed);
+                    } else {
+                        $('#nbOfficialLapsContainer').fadeOut('slow');
+                    }
+
+                    $('#uniqueRunners').html(data.uniqueRunners);
+                    uniqueRunnersText = data.uniqueRunners == 1 ? 'runner' : 'runners';
+                    $('#uniqueRunnersText').html(uniqueRunnersText);
+
+                    if (0 != data.groupsOfFriends.length) {
+                        $('#groups_of_friends').empty();
+
+                        $.each(data.groupsOfFriends, function(groupNb, group) {
+                            $('#groups_of_friends').append('<tr><td>' + group.name + '</td><td>' + group.points + '</td></tr>')
                         });
                     }
                 })

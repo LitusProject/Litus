@@ -36,10 +36,34 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
     }
     
     
+    public function getPerson()
+    {
+        $this->__load();
+        return parent::getPerson();
+    }
+
+    public function getArticle()
+    {
+        $this->__load();
+        return parent::getArticle();
+    }
+
+    public function getBookDate()
+    {
+        $this->__load();
+        return parent::getBookDate();
+    }
+
+    public function getStatus()
+    {
+        $this->__load();
+        return parent::getStatus();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'person', 'stockArticle', 'status', 'expirationDate', 'assignmentDate', 'bookDate', 'saleDate', 'cancelationDate');
+        return array('__isInitialized__', 'id', 'person', 'article', 'status', 'expirationDate', 'assignmentDate', 'bookDate', 'saleDate', 'cancelationDate');
     }
 
     public function __clone()

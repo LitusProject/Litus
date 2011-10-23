@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class Article extends EntityRepository
 {
+	public function findAll()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('Litus\Entity\Cudi\Article', 'a')
+			->where($query->expr()->eq('a.removed', 'false'))
+			->getQuery()
+			->getResult();
+
+        return $resultSet;
+	}
+	
 }

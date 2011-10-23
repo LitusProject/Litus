@@ -46,11 +46,133 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	) {
 		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
+		$this->setNbBlackAndWhite($nbBlackAndWhite)
+			->setNbColored($nbColored)
+			->setBinding($binding)
+			->setIsOfficial($official)
+			->setIsRectoVerso($rectoverso)
+			->setFrontColor($frontPageColor);
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isInternal()
+	{
+		return true;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getNbBlackAndWhite()
+	{
+		return $this->nbBlackAndWhite;
+	}
+	
+	/**
+	 * @param int $nbBlackAndWhite
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setNbBlackAndWhite($nbBlackAndWhite)
+	{
 		$this->nbBlackAndWhite = $nbBlackAndWhite;
+		return $this;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getNbColored()
+	{
+		return $this->nbColored;
+	}
+	
+	/**
+	 * @param int $nbColored
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setNbColored($nbColored)
+	{
 		$this->nbColored = $nbColored;
+		return $this;
+	}
+	
+	/**
+	 * @return Litus\Entity\Cudi\Articles\StockArticle\Binding
+	 */
+	public function getBinding()
+	{
+		return $this->binding;
+	}
+	
+	/**
+	 * @param \Litus\Entity\Cudi\Articles\StockArticles\Binding $binding
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setBinding($binding)
+	{
 		$this->binding = $binding;
+		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isOfficial()
+	{
+		return $this->official;
+	}
+	
+	/**
+	 * @param boolean $official
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setIsOfficial($official)
+	{
 		$this->official = $official;
-		$this->rectoVerso = $rectoverso;
+		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isRectoVerso()
+	{
+		return $this->rectoVerso;
+	}
+	
+	/**
+	 * @param boolean $rectoVerso
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setIsRectoVerso($rectoVerso)
+	{
+		$this->rectoVerso = $rectoVerso;
+		return $this;
+	}
+	
+	/**
+	 * @return Litus\Entity\Cudi\Articles\StockArticle\Color
+	 */
+	public function getFrontColor()
+	{
+		return $this->frontPageColor;
+	}
+	
+	/**
+	 * @param \Litus\Entity\Cudi\Articles\StockArticles\Color $frontPageColor
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setFrontColor($frontPageColor)
+	{
 		$this->frontPageColor = $frontPageColor;
+		return $this;
 	}
 }

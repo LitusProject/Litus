@@ -2,6 +2,10 @@
 
 namespace Litus\Entity\Sport;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+
+use \Zend\Registry;
+
 /**
  * @Entity(repositoryClass="Litus\Repository\Sport\Runner")
  * @Table(name="sport.runners")
@@ -101,5 +105,15 @@ class Runner
         $this->group = $group;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLaps() {
+        $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
+
+        return $entityManager->getRepository('Litus\Entity\Sport\Lap')
+            ->findByRunner($this->universityIdentification);
     }
 }
