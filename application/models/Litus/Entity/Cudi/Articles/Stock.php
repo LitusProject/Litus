@@ -23,7 +23,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
     private $sellPriceMembers;
 
     /**
-     * @Column(type="smallint")
+     * @Column(type="integer")
      */
     private $barcode;
 
@@ -63,23 +63,170 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
     {
         parent::__construct($title, $metaInfo);
 
-        $this->purchasePrice = $purchase_price*100;
-        $this->sellPrice = $sellPrice*100;
-        $this->sellPriceMembers = $sellPriceMembers*100;
-        $this->barcode = $barcode;
-        $this->bookable = $bookable;
-        $this->unbookable = $unbookable;
-		$this->supplier = $supplier;
-		$this->canExpire = $canExpire;
+        $this->setPurchasePrice($purchase_price)
+			->setSellPrice($sellPrice)
+			->setSellPriceMembers($sellPriceMembers)
+			->setBarcode($barcode)
+			->setSupplier($supplier)
+			->setIsBookable($bookable)
+			->setIsUnbookable($unbookable)
+			->setCanExpire($canExpire);
     }
 
+	/**
+	 * @return float
+	 */
+	public function getPurchasePrice()
+	{
+		return $this->purchasePrice/100;
+	}
+	
+	/**
+     * @param float $purchasePrice
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setPurchasePrice($purchasePrice)
+	{
+		$this->purchasePrice = $purchasePrice*100;
+		return $this;
+	}
+	
+	/**
+	 * @return float
+	 */
+	public function getSellPrice()
+	{
+		return $this->sellPrice/100;
+	}
+	
+	/**
+     * @param float $sellPrice
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setSellPrice($sellPrice)
+	{
+		$this->sellPrice = $sellPrice*100;
+		return $this;
+	}
+	
+	/**
+	 * @return float
+	 */
+	public function getSellPriceMembers()
+	{
+		return $this->sellPriceMembers/100;
+	}
+	
+	/**
+     * @param float $sellPriceMembers
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setSellPriceMembers($sellPriceMembers)
+	{
+		$this->sellPriceMembers = $sellPriceMembers*100;
+		return $this;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getBarcode()
+	{
+		return $this->barcode;
+	}
+	
+	/**
+     * @param int $barcode
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setBarcode($barcode)
+	{
+		$this->barcode = $barcode;
+		return $this;
+	}
+	
+	/**
+	 * @return \Litus\Entity\Cudi\Suppplier
+	 */
+	public function getSupplier()
+	{
+		return $this->supplier;
+	}
+	
+	/**
+     * @param \Litus\Entity\Cudi\Supplier $supplier
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setSupplier($supplier)
+	{
+		$this->supplier = $supplier;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
 	public function canExpire()
 	{
 		return $this->canExpire;
 	}
 	
+	/**
+     * @param boolean $canExpire
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setCanExpire($canExpire)
+	{
+		$this->canExpire = $canExpire;
+		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
 	public function isBookable()
 	{
 		return $this->bookable;
 	}
+	
+	/**
+     * @param boolean $bookable
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setIsBookable($bookable)
+	{
+		$this->bookable = $bookable;
+		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isUnbookable()
+	{
+		return $this->unbookable;
+	}
+	
+	/**
+     * @param boolean $unbookable
+	 *
+     * @return \Litus\Entity\Cudi\Articles\Stock
+     */
+	public function setIsUnbookable($unbookable)
+	{
+		$this->unbookable = $unbookable;
+		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isInternal();
 }

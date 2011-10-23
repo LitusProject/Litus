@@ -34,42 +34,69 @@ class ScreenController extends \Litus\Controller\Action
             ->findCurrent();
     }
 
-    private function _getNbOfficialLaps()
+    private function _getOfficialResults()
     {
         $resultPage = $this->getEntityManager()
             ->getRepository('Litus\Entity\Config\Config')
             ->getConfigValue('sport.run_result_page');
 
-        $queryContents = @file_get_contents($resultPage);
+        $resultPageContent = simplexml_load_file($resultPage);
 
-        if (false !== $queryContents) {
-            $teamName = $this->getEntityManager()
+        if (false !== $resultPageContent) {
+            $teamId = $this->getEntityManager()
                 ->getRepository('Litus\Entity\Config\Config')
-                ->getConfigValue('sport.run_team_name');
+                ->getConfigValue('sport.run_team_id');
 
-            $domQuery = new Query($queryContents);
-            $childNodes = $domQuery->execute('tr');
+            $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');
 
-            foreach ($childNodes as $childNode) {
-                if (0 == $childNode->getElementsByTagName('td')->length)
-                    continue;
-
-                $nodeTeamName = $childNode->getElementsByTagName('td')->item(2)->textContent;
-
-                if (null !== $nodeTeamName && $nodeTeamName == $teamName) {
-                    return $childNode->getElementsByTagName('td')->item(3)->textContent;
-                }
-            }
+            return array(
+                'nbLaps' => $teamData[0]->rounds->__toString(),
+                'position' => $teamData[0]->position->__toString(),
+                'speed' => $teamData[0]->speed_kmh->__toString()
+            );
         } else {
             return false;
         }
+    }
+
+    private function _getGroupsOfFriends()
+    {
+        $groups = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Group')
+            ->findAll();
+
+        $returnArray = array();
+        foreach ($groups as $group) {
+            $returnArray[$group->getId()]['name'] = $group->getName();
+            $returnArray[$group->getId()]['points'] = 0;
+
+            $happyHours = $group->getHappyHours();
+
+            foreach ($group->getMembers() as $member) {
+                foreach ($member->getLaps() as $lap) {
+                    if (null === $lap->getEndTime())
+                        continue;
+                    
+                    $startTime = $lap->getStartTime()->format('H');
+                    $endTime = $lap->getEndTime()->format('H');
+
+                    $returnArray[$group->getId()]['points'] += 1;
+
+                    for ($i = 0; isset($happyHours[$i]); $i++) {
+                        if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                            $returnArray[$group->getId()]['points'] += 1;
+                    }
+                }
+            }
+        }
+        return $returnArray;
     }
 
     public function indexAction()
     {
         $this->view->currentLap = $this->currentLap;
 
-        $this->view->nbOfficialLaps = $this->_getNbOfficialLaps();
+        $this->view->officialResults = $this->_getOfficialResults();
 
         $this->view->uniqueRunners = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
@@ -80,26 +107,26 @@ class ScreenController extends \Litus\Controller\Action
     {
         $this->_initAjax();
 
-        $return = array();
+        $returnArray = array();
 
         if (null !== $this->currentLap) {
             $now = new \DateTime();
 
-            $return['currentLap'] = array(
+            $returnArray['currentLap'] = array(
                 'runnerName' => $this->currentLap->getRunner()->getFullName(),
                 'time' => $this->currentLap->getLapTime()->format('%i:%S')
             );
         } else {
-            $return['currentLap'] = false;
+            $returnArray['currentLap'] = false;
         }
 
         $previousLaps = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
             ->findPrevious(5);
 
-        $return['previousLaps'] = array();
+        $returnArray['previousLaps'] = array();
         foreach ($previousLaps as $previousLap) {
-            $return['previousLaps'][] = array(
+            $returnArray['previousLaps'][] = array(
                 'id' => $previousLap->getId(),
                 'runner' => $previousLap->getRunner()->getFullName(),
                 'time' => $previousLap->getLapTime()->format('%i:%S')
@@ -110,17 +137,22 @@ class ScreenController extends \Litus\Controller\Action
             ->getRepository('Litus\Entity\Sport\Lap')
             ->findNext(5);
 
-        $return['nextLaps'] = array();
+        $returnArray['nextLaps'] = array();
         foreach ($nextLaps as $nextLap) {
-            $return['nextLaps'][] = array(
+            $returnArray['nextLaps'][] = array(
                 'id' => $nextLap->getId(),
                 'runner' => $nextLap->getRunner()->getFullName()
             );
         }
 
-        $return['nbOfficialLaps'] = $this->_getNbOfficialLaps();
-        
+        $returnArray['officialResults'] = $this->_getOfficialResults();
 
-        echo $this->_json->encode($return);
+        $returnArray['uniqueRunners'] = $this->view->uniqueRunners = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Sport\Lap')
+            ->countRunners();
+
+        $returnArray['groupsOfFriends'] = $this->_getGroupsOfFriends();
+
+        echo $this->_json->encode($returnArray);
     }
 }

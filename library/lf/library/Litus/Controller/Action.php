@@ -30,6 +30,11 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     private static $_authentication = null;
 
+	/**
+	 * @var mixed The flashmessages
+	 */
+	private $_flashMessages = null;
+
     /**
      * This method will initialize our action.
      *
@@ -74,6 +79,8 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
             }
         }
         $this->view->authenticatedUser = $authenticatedUser;
+		
+		$this->_flashMessages = $this->broker('flashmessenger')->getMessages();
     }
 
     /**
@@ -85,6 +92,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     {
         $this->view->doctrineUnitOfWork = $this->getEntityManager()->getUnitOfWork()->size();
         $this->view->flushResult = $this->_flush();
+		$this->view->flashMessages = $this->_flashMessages;
     }
 
     /**
@@ -157,6 +165,16 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
 
         return $paginator;
     }
+
+	/**
+	 * Add a flashmessage that will be displayed on the current page.
+	 *
+	 * @param \Litus\FlashMessenger\FlashMessage $message The message
+	 */
+	protected function _addDirectFlashMessage($message)
+	{
+		$this->_flashMessages[] = $message;
+	}
 
     /**
      * Returns the Authentication instance

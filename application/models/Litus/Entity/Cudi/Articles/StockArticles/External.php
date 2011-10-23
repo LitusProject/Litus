@@ -8,5 +8,11 @@ namespace Litus\Entity\Cudi\Articles\StockArticles;
  */
 class External extends \Litus\Entity\Cudi\Articles\Stock
 {
-
+	/**
+	 * @return boolean
+	 */
+	public function isInternal()
+	{
+		return false;
+	}
 }

@@ -1,6 +1,8 @@
-<?= $this->partial('partials/textbook/navigation.phtml', array('currentAction' => 'manage')); ?>
+<?= $this->partial('partials/article/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
+    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+
     <table>
     
         <tr>
@@ -8,6 +10,7 @@
             <th>Author</th>
             <th>Publisher</th>
             <th>Year</th>
+            <th width="130px">Action</th>
         </tr>
         
         <? foreach ($this->articles as $article): ?>
@@ -17,6 +20,10 @@
                 <td><?= $article->getMetaInfo()->getAuthors(); ?></td>
                 <td><?= $article->getMetaInfo()->getPublishers(); ?></td>
                 <td><?= $article->getMetaInfo()->getYearPublished(); ?></td>
+				<td>
+                    <a href="<?= $this->url(array('action' => 'edit', 'id' => $article->getId())); ?>" class="edit">Edit</a>
+                    <a href="<?= $this->url(array('action' => 'delete', 'id' => $article->getId())); ?>" class="delete">Delete</a>
+                </td>
             </tr>
     
         <? endforeach; ?>

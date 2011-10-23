@@ -48,6 +48,12 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
         return parent::getTitle();
     }
 
+    public function setTitle($title)
+    {
+        $this->__load();
+        return parent::setTitle($title);
+    }
+
     public function getMetaInfo()
     {
         $this->__load();
@@ -60,10 +66,16 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
         return parent::getTimestamp();
     }
 
+    public function setRemoved($removed)
+    {
+        $this->__load();
+        return parent::setRemoved($removed);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed');
     }
 
     public function __clone()

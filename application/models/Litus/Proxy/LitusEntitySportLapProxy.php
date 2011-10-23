@@ -66,16 +66,34 @@ class LitusEntitySportLapProxy extends \Litus\Entity\Sport\Lap implements \Doctr
         return parent::start();
     }
 
+    public function stop()
+    {
+        $this->__load();
+        return parent::stop();
+    }
+
     public function getStartTime()
     {
         $this->__load();
         return parent::getStartTime();
     }
 
+    public function getEndTime()
+    {
+        $this->__load();
+        return parent::getEndTime();
+    }
+
+    public function getLapTime()
+    {
+        $this->__load();
+        return parent::getLapTime();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'runner', 'registrationTime', 'startTime');
+        return array('__isInitialized__', 'id', 'runner', 'registrationTime', 'startTime', 'endTime');
     }
 
     public function __clone()

@@ -87,6 +87,14 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content_controller #controller_action .error_message .content{padding:5px;color:#ffffff;background:#df0000;}#content_controller #controller_action .error_message .content p{margin-top:10px;}#content_controller #controller_action .error_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
 #content_controller #controller_action .error_message .content p a:hover{text-decoration:underline;}
 #content_controller #controller_action .error_message .content p:first-child{margin-top:0;}
+#content_controller #controller_action .warning_message{width:598px;margin:0 5px 10px 0;}#content_controller #controller_action .warning_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#ffa800;}
+#content_controller #controller_action .warning_message .content{padding:5px;color:#ffffff;background:#f89406;}#content_controller #controller_action .warning_message .content p{margin-top:10px;}#content_controller #controller_action .warning_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
+#content_controller #controller_action .warning_message .content p a:hover{text-decoration:underline;}
+#content_controller #controller_action .warning_message .content p:first-child{margin-top:0;}
+#content_controller #controller_action .notice_message{width:598px;margin:0 5px 10px 0;}#content_controller #controller_action .notice_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#94defc;}
+#content_controller #controller_action .notice_message .content{padding:5px;color:#ffffff;background:#62cffc;}#content_controller #controller_action .notice_message .content p{margin-top:10px;}#content_controller #controller_action .notice_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
+#content_controller #controller_action .notice_message .content p a:hover{text-decoration:underline;}
+#content_controller #controller_action .notice_message .content p:first-child{margin-top:0;}
 #content_controller #controller_action .sortable ul{margin:10px;}#content_controller #controller_action .sortable ul li{margin:2.5px 0;padding-left:20px;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;}
 #content_controller #controller_action .sortable ul li:hover{cursor:move;}
 #content_controller #controller_action .pagination{width:598px;}#content_controller #controller_action .pagination tr td{height:20px;text-align:center;background:none;}
