@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use \Admin\Form\Sale;
 
 use \Litus\Entity\Cudi\Sales\SaleSession;
+use \Litus\Entity\Cudi\Sales\CashRegister;
 
 /**
  *
@@ -29,7 +30,9 @@ class SaleController extends \Litus\Controller\Action
     public function manageAction() {
         
         $em = $this->getEntityManager();
+	// $em->getRepository('Litus\Entity\Cudi\Sales\CashRegister');
         $this->view->sessions = $em->getRepository('Litus\Entity\Cudi\Sales\SaleSession')->findAll();
+//	var_dump( $this->view->sessions );
         
     }
 
@@ -57,32 +60,16 @@ class SaleController extends \Litus\Controller\Action
                 $saleSession->setOpenDate( date_create( date('Y-m-d H:i:s', time() ) ) ); // now
                 $saleSession->setCloseDate( date_create( date('Y-m-d H:i:s', 0 ) ) ); // 1 jan 1970
 
-		$saleSession->setCloseAmount( 0 );
+            //    $saleSession->setCloseAmount( null );
 
-                $am = 0;
-            //    $am += $formData['500'] * 50000;
-            //    $am += $formData['200'] * 20000;
-            //    $am += $formData['100'] * 10000;
-            //    $am += $formData['50'] * 5000;
-            //    $am += $formData['20'] * 2000;
-            //    $am += $formData['10'] * 1000;
-            //    $am += $formData['5'] * 500;
-            //    $am += $formData['2'] * 200;
-            //    $am += $formData['1'] * 100;
-            //    $am += $formData['0p5'] * 50;
-            //    $am += $formData['0p2'] * 20;
-            //    $am += $formData['0p1'] * 10;
-            //    $am += $formData['0p05'] * 5;
-            //    $am += $formData['0p02'] * 2;
-            //    $am += $formData['0p01'] * 1;
-            //    $am += $formData['Bank_Device_1'] * 100;
-            //    $am += $formData['Bank_Device_2'] * 100;
-
+                $am = new CashRegister( $formData );
                 $saleSession->setOpenAmount( $am );
 
 
                 // persist object into database
+                $em->persist( $am );
                 $em->persist( $saleSession );
+		$em->flush();
 
                 // bounce to sale interface
 		$this->_forward('manage');

@@ -48,14 +48,10 @@ class SaleSession
 	public function getCloseDate() {
 		return $this->closeDate;
 	}
-	
+
 	/**
-	 * @Column(name="confirm_date", type="datetime")
-	 */
-//	private $confirmDate;
-	
-	/**
-	 * @Column(name="open_amount", type="integer")
+	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
+	 * @JoinColumn(name="openAmount", referencedColumnName="id")
 	 */
 	private $openAmount;
 
@@ -66,9 +62,10 @@ class SaleSession
 	public function getOpenAmount() {
 		return $this->openAmount;
 	}
-	
+
 	/**
-	 * @Column(name="close_amount", type="integer")
+	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
+	 * @JoinColumn(name="closeAmount", referencedColumnName="id")
 	 */
 	private $closeAmount;
 
@@ -81,12 +78,12 @@ class SaleSession
 	}
 	
 	/**
-	 * @Column(type="datetime")
+	 * @ Column(type="datetime")
 	 */
 //	private $registerStart;
 	
 	/**
-	 * @Column(type="datetime")
+	 * @ Column(type="datetime")
 	 */
 //	private $registerEnd;
 	
