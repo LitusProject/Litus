@@ -8,7 +8,7 @@ $this->headLink()
     ->appendStylesheet($this->baseUrl('/_bootstrap/bootstrap.min.css'))
     ->appendStylesheet($this->baseUrl('/_run/stylesheet/css/run.css'));
 $this->headScript()
-    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
     ->appendFile($this->baseUrl('/_bootstrap/js/bootstrap-alerts.js'));
 ?>
 
@@ -24,7 +24,7 @@ $this->headScript()
 	<?= $this->headStyle(); ?>
 
     <script>
-        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_run/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")
+        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_run/js/jquery-1.6.4.min.js'); ?>'>\x3C/script>")
     </script>
 
 </head>

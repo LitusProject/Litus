@@ -6,7 +6,7 @@ $this->headTitle('Litus Admin', 'PREPEND')
 
 $this->headScript()
     ->appendFile($this->baseUrl('/_admin/js/modernizr-1.7.min.js'))
-    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
+    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
 ?>
 
 <?= $this->docType(); ?>
@@ -95,7 +95,7 @@ $this->headScript()
     </style>
 
     <script>
-        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_admin/js/jquery-1.6.2.min.js'); ?>'>\x3C/script>")
+        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_admin/js/jquery-1.6.4.min.js'); ?>'>\x3C/script>")
     </script>
 
 </head>
