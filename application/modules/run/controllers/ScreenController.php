@@ -40,7 +40,7 @@ class ScreenController extends \Litus\Controller\Action
             ->getRepository('Litus\Entity\Config\Config')
             ->getConfigValue('sport.run_result_page');
 
-        $resultPageContent = simplexml_load_file($resultPage);
+        $resultPageContent = @simplexml_load_file($resultPage);
 
         if (false !== $resultPageContent) {
             $teamId = $this->getEntityManager()

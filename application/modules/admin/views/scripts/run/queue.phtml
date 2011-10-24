@@ -84,7 +84,7 @@
             </p>
 
             <p>
-                The official count currently is <b><?= $this->nbOfficialLaps; ?></b>.
+                The official count currently is <b><?= false === $this->nbOfficialLaps ? 'N/A' : $this->nbOfficialLaps; ?></b>.
             </p>
         </div>
     </div>

@@ -19,6 +19,7 @@ class Add extends \Litus\Form\Admin\Form
         $field->setLabel('Student Number')
             ->setRequired()
             ->setAttrib('class', 'xlarge span2')
+            ->setAttrib('autocomplete', 'off')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -26,6 +27,7 @@ class Add extends \Litus\Form\Admin\Form
         $field->setLabel('First Name')
             ->setRequired()
             ->setAttrib('class', 'xlarge span3')
+            ->setAttrib('autocomplete', 'off')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -33,6 +35,7 @@ class Add extends \Litus\Form\Admin\Form
         $field->setLabel('Last Name')
             ->setRequired()
             ->setAttrib('class', 'xlarge span3')
+            ->setAttrib('autocomplete', 'off')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
