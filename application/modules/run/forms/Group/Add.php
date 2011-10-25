@@ -86,8 +86,21 @@ class Add extends \Litus\Form\Admin\Form
         $groups = $entityManager->getRepository('Litus\Entity\Sport\Group')
             ->findAll();
 
+        $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
+
+        if (0 == count($returnArray)) {
+            $returnArray = $optionsArray;
+            if (0 == count($groups) % 6)
+                $returnArray = $this->_cleanHappyHoursArray($returnArray, $groups);
+        }
+
+        return $returnArray;
+    }
+
+    private function _cleanHappyHoursArray($optionsArray, &$groups)
+    {
         $returnArray = $optionsArray;
-        foreach ($groups as $group) {
+        foreach ($groups as $groupNb => $group) {
             $happyHours = $group->getHappyHours();
 
             if (isset($returnArray[$happyHours[0]]))
@@ -95,10 +108,9 @@ class Add extends \Litus\Form\Admin\Form
 
             if (isset($returnArray[$happyHours[1]]))
                 unset($returnArray[$happyHours[1]]);
-        }
 
-        if (0 == count($returnArray))
-            $returnArray = $optionsArray;
+            unset($groups[$groupNb]);
+        }
 
         return $returnArray;
     }
