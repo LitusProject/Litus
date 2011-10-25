@@ -90,8 +90,8 @@ class Add extends \Litus\Form\Admin\Form
 
         if (0 == count($returnArray)) {
             $returnArray = $optionsArray;
-            if (0 == count($groups) % 6)
-                $returnArray = $this->_cleanHappyHoursArray($returnArray, $groups);
+            if (0 != count($groups))
+                $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
         }
 
         return $returnArray;
@@ -100,8 +100,8 @@ class Add extends \Litus\Form\Admin\Form
     private function _cleanHappyHoursArray($optionsArray, &$groups)
     {
         $returnArray = $optionsArray;
-        foreach ($groups as $groupNb => $group) {
-            $happyHours = $group->getHappyHours();
+        for($i = 0; $i < (count($groups) % 6); $i++) {
+            $happyHours = $groups[$i]->getHappyHours();
 
             if (isset($returnArray[$happyHours[0]]))
                 unset($returnArray[$happyHours[0]]);
@@ -109,8 +109,13 @@ class Add extends \Litus\Form\Admin\Form
             if (isset($returnArray[$happyHours[1]]))
                 unset($returnArray[$happyHours[1]]);
 
-            unset($groups[$groupNb]);
+            unset($groups[$i]);
         }
+
+        $newGroups = array();
+        foreach($groups as $groupNb => $group)
+            $newGroups[$groupNb - 6] = $group;
+        $groups = $newGroups;
 
         return $returnArray;
     }
