@@ -8,87 +8,13 @@ namespace Litus\Entity\Cudi\Sales;
  */
 class CashRegister
 {
-
-    public function __construct( $bill_and_coin_number_array )
-    {
-        $a = $bill_and_coin_number_array;
-        $this->number500 = $a['500p'];
-        $this->number200 = $a['200p'];
-        $this->number100 = $a['100p'];
-        $this->number50 = $a['50p'];
-        $this->number20 = $a['20p'];
-        $this->number10 = $a['10p'];
-        $this->number5 = $a['5p'];
-        $this->number2 = $a['2p'];
-        $this->number1 = $a['1p'];
-        $this->number0p5 = $a['0p5'];
-        $this->number0p2 = $a['0p2'];
-        $this->number0p1 = $a['0p1'];
-        $this->number0p05 = $a['0p05'];
-        $this->number0p02 = $a['0p02'];
-        $this->number0p01 = $a['0p01'];
-        $this->amountBank1 = $a['Bank_Device_1'] * 100;
-        $this->amountBank2 = $a['Bank_Device_2'] * 100;
-    }
-
-    public function getAmountsArray()
-    {
-        $a = array( '500p' => $this->number500,
-                    '200p' => $this->number200,
-                    '100p' => $this->number100,
-                    '50p' => $this->number50,
-                    '20p' => $this->number20,
-                    '10p' => $this->number10,
-                    '5p' => $this->number5,
-                    '2p' => $this->number2,
-                    '1p' => $this->number1,
-                    '0p5' => $this->number0p5,
-                    '0p2' => $this->number0p2,
-                    '0p1' => $this->number0p1,
-                    '0p05' => $this->number0p05,
-                    '0p02' => $this->number0p02,
-                    '0p01' => $this->number0p01,
-                    'Bank_Device_1' => $this->amountBank1 / 100,
-                    'Bank_Device_2' => $this->amountBank2 / 100
-                    );
-	return $a;
-    }
-
-    public function getTotalAmount()
-    {
-        $a = 0;
-        $a += 50000 * $this->number500;
-        $a += 20000 * $this->number200;
-        $a += 10000 * $this->number100;
-        $a += 5000 * $this->number50;
-        $a += 2000 * $this->number20;
-        $a += 1000 * $this->number10;
-        $a += 500 * $this->number5;
-        $a += 200 * $this->number2;
-        $a += 100 * $this->number1;
-        $a += 50 * $this->number0p5;
-        $a += 20 * $this->number0p2;
-        $a += 10 * $this->number0p1;
-        $a += 5 * $this->number0p05;
-        $a += 2 * $this->number0p02;
-        $a += 1 * $this->number0p01;
-        return $a;
-    }
-
+	
     /**
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
     private $id;
-
-    public function setId( $id_ ) {
-        $this->id = $id_;
-    }
-
-    public function getId() {
-        return $this->id;
-    }
 
     /**
      * @Column(name="number_500", type="integer", nullable=true)
@@ -174,7 +100,82 @@ class CashRegister
      * @Column(name="amount_bank2", type="integer", nullable=true)
      */
     private $amountBank2;
+	
+	public function __construct( $bill_and_coin_number_array )
+    {
+        $a = $bill_and_coin_number_array;
+        $this->number500 = $a['500p'];
+        $this->number200 = $a['200p'];
+        $this->number100 = $a['100p'];
+        $this->number50 = $a['50p'];
+        $this->number20 = $a['20p'];
+        $this->number10 = $a['10p'];
+        $this->number5 = $a['5p'];
+        $this->number2 = $a['2p'];
+        $this->number1 = $a['1p'];
+        $this->number0p5 = $a['0p5'];
+        $this->number0p2 = $a['0p2'];
+        $this->number0p1 = $a['0p1'];
+        $this->number0p05 = $a['0p05'];
+        $this->number0p02 = $a['0p02'];
+        $this->number0p01 = $a['0p01'];
+        $this->amountBank1 = $a['Bank_Device_1'] * 100;
+        $this->amountBank2 = $a['Bank_Device_2'] * 100;
+    }
 
+    public function getAmountsArray()
+    {
+        $a = array( '500p' => $this->number500,
+                    '200p' => $this->number200,
+                    '100p' => $this->number100,
+                    '50p' => $this->number50,
+                    '20p' => $this->number20,
+                    '10p' => $this->number10,
+                    '5p' => $this->number5,
+                    '2p' => $this->number2,
+                    '1p' => $this->number1,
+                    '0p5' => $this->number0p5,
+                    '0p2' => $this->number0p2,
+                    '0p1' => $this->number0p1,
+                    '0p05' => $this->number0p05,
+                    '0p02' => $this->number0p02,
+                    '0p01' => $this->number0p01,
+                    'Bank_Device_1' => $this->amountBank1 / 100,
+                    'Bank_Device_2' => $this->amountBank2 / 100
+                    );
+		return $a;
+    }
+
+    public function getTotalAmount()
+    {
+        $a = 0;
+        $a += 50000 * $this->number500;
+        $a += 20000 * $this->number200;
+        $a += 10000 * $this->number100;
+        $a += 5000 * $this->number50;
+        $a += 2000 * $this->number20;
+        $a += 1000 * $this->number10;
+        $a += 500 * $this->number5;
+        $a += 200 * $this->number2;
+        $a += 100 * $this->number1;
+        $a += 50 * $this->number0p5;
+        $a += 20 * $this->number0p2;
+        $a += 10 * $this->number0p1;
+        $a += 5 * $this->number0p05;
+        $a += 2 * $this->number0p02;
+        $a += 1 * $this->number0p01;
+        return $a;
+    }
+	
+	/**
+	 * Get the id of the cashregister
+	 *
+	 * @return integer
+	 */
+    public function getId()
+	{
+        return $this->id;
+    }
 
     /**
      * Set number500

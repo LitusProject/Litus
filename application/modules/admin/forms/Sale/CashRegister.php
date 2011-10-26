@@ -16,7 +16,7 @@ use \Zend\Registry;
 
 class CashRegister extends \Litus\Form\Admin\Form
 {
-    public function __construct( $initialValues, $options = null )
+    public function __construct($options = null )
     {
         parent::__construct($options);
 
@@ -24,139 +24,121 @@ class CashRegister extends \Litus\Form\Admin\Form
         $field->setValue('changeme456789352');
         $this->addElement($field);
 
-        $field = new Text('500');
-        $field->setLabel('500p')
+        $field = new Text('500p');
+        $field->setLabel('€ 500.00')
             ->setRequired()
-            ->setValue($initialValues['500p'])
-       //     ->addValidator('regex', false, array('/^[0-9]+$/'))
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('200');
-        $field->setLabel('200p')
+        $field = new Text('200p');
+        $field->setLabel('€ 200.00')
             ->setRequired()
-            ->setValue($initialValues['200p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('100');
-        $field->setLabel('100p')
+        $field = new Text('100p');
+        $field->setLabel('€ 100.00')
             ->setRequired()
-            ->setValue($initialValues['100p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('50');
-        $field->setLabel('50p')
+        $field = new Text('50p');
+        $field->setLabel('€ 50.00')
             ->setRequired()
-            ->setValue($initialValues['50p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('20');
-        $field->setLabel('20p')
+        $field = new Text('20p');
+        $field->setLabel('€ 20.00')
             ->setRequired()
-            ->setValue($initialValues['20p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('10');
-        $field->setLabel('10p')
+        $field = new Text('10p');
+        $field->setLabel('€ 10.00')
             ->setRequired()
-            ->setValue($initialValues['10p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('5');
-        $field->setLabel('5p')
+        $field = new Text('5p');
+        $field->setLabel('€ 5.00')
             ->setRequired()
-            ->setValue($initialValues['5p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('2');
-        $field->setLabel('2p')
+        $field = new Text('2p');
+        $field->setLabel('€ 2.00')
             ->setRequired()
-            ->setValue($initialValues['2p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('1');
-        $field->setLabel('1p')
+        $field = new Text('1p');
+        $field->setLabel('€ 1.00')
             ->setRequired()
-            ->setValue($initialValues['1p'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.5');
-        $field->setLabel('0p5')
+        $field = new Text('0p5');
+        $field->setLabel('€ 0.50')
             ->setRequired()
-            ->setValue($initialValues['0p5'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.2');
-        $field->setLabel('0p2')
+        $field = new Text('0p2');
+        $field->setLabel('€ 0.20')
             ->setRequired()
-            ->setValue($initialValues['0p2'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.1');
-        $field->setLabel('0p1')
+        $field = new Text('0p1');
+        $field->setLabel('€ 0.10')
             ->setRequired()
-            ->setValue($initialValues['0p1'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.05');
-        $field->setLabel('0p05')
+        $field = new Text('0p05');
+        $field->setLabel('€ 0.05')
             ->setRequired()
-            ->setValue($initialValues['0p05'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.02');
-        $field->setLabel('0p02')
+        $field = new Text('0p02');
+        $field->setLabel('€ 0.02')
             ->setRequired()
-            ->setValue($initialValues['0p02'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('0.01');
-        $field->setLabel('0p01')
+        $field = new Text('0p01');
+        $field->setLabel('€ 0.01')
             ->setRequired()
-            ->setValue($initialValues['0p01'])
             ->addValidator( new \Zend\Validator\Int() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('Bank Device 1');
-        $field->setLabel('Bank_Device_1')
+        $field = new Text('Bank_Device_1');
+        $field->setLabel('Bank Device 1')
             ->setRequired()
-            ->setValue($initialValues['Bank_Device_1'])
             ->addValidator( new \Zend\Validator\Float() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('Bank Device 2');
-        $field->setLabel('Bank_Device_2')
+        $field = new Text('Bank_Device_2');
+        $field->setLabel('Bank Device 2')
             ->setRequired()
-            ->setValue($initialValues['Bank_Device_2'])
             ->addValidator( new \Zend\Validator\Float() )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
@@ -164,7 +146,7 @@ class CashRegister extends \Litus\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setLabel('Submit')
-            ->setAttrib('class', 'cash_register')
+            ->setAttrib('class', 'sale_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
