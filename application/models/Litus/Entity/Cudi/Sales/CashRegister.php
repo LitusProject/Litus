@@ -101,7 +101,12 @@ class CashRegister
      */
     private $amountBank2;
 	
-	public function __construct( $bill_and_coin_number_array )
+    public function __construct( $bill_and_coin_number_array )
+    {
+        setAmountsArray( $bill_and_coin_number_array );
+    }
+	
+    public function setAmountsArray( $bill_and_coin_number_array )
     {
         $a = $bill_and_coin_number_array;
         $this->number500 = $a['500p'];
