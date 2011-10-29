@@ -44,7 +44,6 @@ class SaleController extends \Litus\Controller\Action
 
     public function editregisterAction()
     {
-        $form = new Form\Sale\CashRegister();
         $register = $this->getEntityManager()
 				->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
 				->find($this->_getParam("register_id"));
@@ -63,24 +62,30 @@ class SaleController extends \Litus\Controller\Action
         if( isset( $register ) && !is_null( $register ) && is_object( $register ) )
             $amounts_array = $register->getAmountsArray();
 
+        $session_id = $this->_getParam('session_id');
+        if( isset( $session_id ) && !is_null( $session_id ) ) {
+            $sesstr = "&session_id=$session_id";
+        } else {
+            $sesstr = "";
+        }
+        $form = new Form\Sale\CashRegister();
+        $form = $form->setAction("/admin/sale/edit_register?register_id=".$register->getId().$sesstr)
+                     ->setMethod('post');
+
 	$form->populate( $amounts_array );
         $this->view->form = $form;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if($form->isValid($formData)) {
+            if($form->isValid($formData) && !isset( $formData['comment'] ) ) {
 
                 $register->setAmountsArray( $formData );
 
                 $this->getEntityManager()->persist( $register );
 
-                $session_id = $this->_getParam('session_id');
                 if( isset( $session_id ) && !is_null( $session_id ) ) {
-                 //   $this->_redirect("manage_session?session_id=" . $session_id );
-                //    $this->setRequest( null );
                     $this->_forward('manage_session');
-                    // amounts to: manage_session?session_id=###
                 }
                 else
                     $this->_forward('manage');
@@ -103,6 +108,8 @@ class SaleController extends \Litus\Controller\Action
     	    $this->view->session = $session;
 
             $form = new Form\Sale\SessionComment();
+            $form = $form->setAction("/admin/sale/manage_session?session_id=".$session->getId())
+                         ->setMethod('post');
             $form->populate( array( 'comment' => $session->getComment() ) );
             $this->view->commentForm = $form;
 
