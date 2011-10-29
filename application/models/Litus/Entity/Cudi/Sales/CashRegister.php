@@ -103,7 +103,24 @@ class CashRegister
 	
     public function __construct( $bill_and_coin_number_array )
     {
-        setAmountsArray( $bill_and_coin_number_array );
+        $a = $bill_and_coin_number_array;
+        $this->number500 = $a['500p'];
+        $this->number200 = $a['200p'];
+        $this->number100 = $a['100p'];
+        $this->number50 = $a['50p'];
+        $this->number20 = $a['20p'];
+        $this->number10 = $a['10p'];
+        $this->number5 = $a['5p'];
+        $this->number2 = $a['2p'];
+        $this->number1 = $a['1p'];
+        $this->number0p5 = $a['0p5'];
+        $this->number0p2 = $a['0p2'];
+        $this->number0p1 = $a['0p1'];
+        $this->number0p05 = $a['0p05'];
+        $this->number0p02 = $a['0p02'];
+        $this->number0p01 = $a['0p01'];
+        $this->amountBank1 = $a['Bank_Device_1'] * 100;
+        $this->amountBank2 = $a['Bank_Device_2'] * 100;
     }
 	
     public function setAmountsArray( $bill_and_coin_number_array )
@@ -169,6 +186,8 @@ class CashRegister
         $a += 5 * $this->number0p05;
         $a += 2 * $this->number0p02;
         $a += 1 * $this->number0p01;
+        $a += $this->amountBank1;
+        $a += $this->amountBank2;
         return $a;
     }
 	

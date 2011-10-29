@@ -133,9 +133,9 @@
 	</tr>
 	<tr>
 		<td><div align=right>Bank Device 1:</div></td>
-		<td><?= $session->getOpenAmount()->getAmountBank1(); ?></td>
+		<td><?= $session->getOpenAmount()->getAmountBank1()/100; ?></td>
 		<td><div align=right><? if( $open === false ){ ?>Bank Device 1:<? } ?></div></td>
-		<td><? if( $open === false ){ echo $session->getCloseAmount()->getAmountBank1(); } ?></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getAmountBank1()/100; } ?></td>
 	</tr>
 	<tr>
 		<td><div align=right>Bank Device 2:</div></td>
