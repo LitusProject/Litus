@@ -102,6 +102,19 @@ class SaleSession
 	}
 	
 	/**
+	 * @Column(name="comment", type="string", length="250")
+	 */
+	private $comment;
+
+	public function setComment( $comment_ ) {
+		$this->comment = $comment_;
+	}
+
+	public function getComment() {
+		return $this->comment;
+	}
+	
+	/**
 	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
 	 */
 	//private $union;

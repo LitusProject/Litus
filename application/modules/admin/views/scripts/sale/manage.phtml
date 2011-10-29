@@ -12,11 +12,23 @@
             <th>Register End</th>
         </tr>
         
-        <? foreach ($this->sessions as $session): ?>
+        <?  $zebra = 1;
 
-            <tr>
-                <td><?= $session->getManager(); ?></td>
-                <td><? if( $session->getCloseDate() < $session->getOpenDate() )
+
+            foreach ($this->sessions as $session):
+
+
+            if( $zebra === 1 ) $style = " class=\"odd\"";
+            else $style = " class=\"even\"";
+            $zebra = $zebra * -1;
+
+            $onclick = " onclick=\"parent.location='manage_session?session_id=".$session->getId()."'; window.status='manage sale session ".$session->getId()."';\"";
+
+            ?>
+
+            <tr<?= $style; ?><?= $onclick;?>>
+                <td<?= $style; ?>><?= $session->getManager(); ?></td>
+                <td<?= $style; ?>><? if( $session->getCloseDate() < $session->getOpenDate() )
 			{
 				echo "yes";
 				$open = true;
@@ -26,10 +38,10 @@
 				echo "no";
 				$open = false;
 			} ?></td>
-                <td><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
-                <td><? if( $open == false ) echo $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>
-                <td><?= ($session->getOpenAmount()->getTotalAmount() / 100); ?></td>
-                <td><? if( $open == false ) echo ($session->getCloseAmount()->getTotalAmount() / 100); ?></td>
+                <td<?= $style; ?> valign=center><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
+                <td<?= $style; ?>><? if( $open == false ) echo $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>
+                <td<?= $style; ?>><?= ($session->getOpenAmount()->getTotalAmount() / 100); ?></td>
+                <td<?= $style; ?>><? if( $open == false ) echo ($session->getCloseAmount()->getTotalAmount() / 100); ?></td>
             </tr>
     
         <? endforeach; ?>

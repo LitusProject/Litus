@@ -1,0 +1,157 @@
+<?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+
+<table cols=4>
+	<tr>
+		<td colspan=4><br /><h2 style="font-size: 200%;">Sale Session</h2><br /></td>
+	</tr>
+	<tr>
+		<td>manager:</td>
+		<td><?= $session->getManager(); ?></td>
+		<td></td>
+		<td><a href="sale_application?session_id=<?= $session->getId(); ?>"><u>Sale Application</u></a></td>
+	</tr>
+	<tr>
+		<td>date opened:</td>
+		<td><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
+		<td></td>
+		<td><a href="queue?session_id=<?= $session->getId(); ?>"><u>Queue Sign-in</u></a></td>
+	</tr>
+	<tr>
+		<td>date closed:</td>
+		<td><?  $open = false;
+                        if( $session->getCloseDate() < $session->getOpenDate() )
+			{
+				echo "still open";
+				$open = true;
+			}
+			else
+			{
+				echo $session->getCloseDate()->format('Y-m-d H:i:s');
+				$open = false;
+			} ?></td>
+		<td></td>
+		<td><? if( $open === true ) {
+                           echo ("<a href=close?session_id=".$session->getId().">"."<u>Close</u>"."</a>"); }?></td>
+	</tr>
+	<tr>
+		<td>cash register start:</td>
+		<td><a href='edit_register?register_id=<?= $session->getOpenAmount()->getId();?>&session_id=<?= $session->getId(); ?>'>(edit)</a></td>
+		<td>cash register end:</td>
+		<td><? if( $open === false ){ ?><a href='edit_register?register_id=<?= $session->getCloseAmount()->getId();?>&session_id=<?= $session->getId(); ?>'>(edit)</a><? } else { ?>(none)<? } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>500:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber500(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>500:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber500(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>200:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber200(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>200:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber200(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>100:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber100(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>100:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber100(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>50:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber50(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>50:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber50(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>20:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber20(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>20:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber20(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>10:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber10(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>10:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber10(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>5:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber5(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>5:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber5(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>2:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber2(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>2:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber2(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>1:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber1(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>1:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber1(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.5:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p5(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.5:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p5(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.2:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p2(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.2:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p2(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.1:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p1(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.1:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p1(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.05:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p05(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.05:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p05(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.02:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p02(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.02:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p02(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>0.01:</div></td>
+		<td><?= $session->getOpenAmount()->getNumber0p01(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>0.01:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getNumber0p01(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>Bank Device 1:</div></td>
+		<td><?= $session->getOpenAmount()->getAmountBank1(); ?></td>
+		<td><div align=right><? if( $open === false ){ ?>Bank Device 1:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getAmountBank1(); } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>Bank Device 2:</div></td>
+		<td><?= $session->getOpenAmount()->getAmountBank2()/100; ?></td>
+		<td><div align=right><? if( $open === false ){ ?>Bank Device 2:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getAmountBank2()/100; } ?></td>
+	</tr>
+	<tr>
+		<td><div align=right>TOTAL:</div></td>
+		<td><?= $session->getOpenAmount()->getTotalAmount()/100; ?></td>
+		<td><div align=right><? if( $open === false ){ ?>TOTAL:<? } ?></div></td>
+		<td><? if( $open === false ){ echo $session->getCloseAmount()->getTotalAmount()/100; } ?></td>
+	</tr>
+
+</table>
+
+<?= $commentForm; ?>
+
+</div>
