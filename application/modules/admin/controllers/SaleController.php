@@ -28,6 +28,7 @@ class SaleController extends \Litus\Controller\Action
         $this->_forward('manage');
     }
     
+    // default
     public function manageAction()
     {
         $q = $this->getEntityManager()
