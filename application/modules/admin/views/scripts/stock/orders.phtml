@@ -3,6 +3,9 @@
 <div id="controller_action">
     <?php foreach($this->flashMessages as $message) { echo $message; } ?>
 
+	<div class="table-header">
+		<a href="<?= $this->url(array('action' => 'addorder')); ?>" class="add">Add order</a>
+	</div>
    	<table>
     
         <tr>

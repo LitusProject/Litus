@@ -37,9 +37,9 @@ class Order
 	 */
 	public function __construct($supplier, $price)
 	{
-		$this->supplier = $this->setSupplier($supplier);
+		$this->setSupplier($supplier);
 		$this->date = new \DateTime();
-		$this->price = $this->setPrice($price);
+		$this->setPrice($price);
 	}
 	
 	/**
