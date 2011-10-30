@@ -59,8 +59,8 @@ class CashRegister extends \Litus\Form\Admin\Form
 	public function populate($data)
 	{
 		$array = array(
-			'Bank_Device_1' => $data->getAmountBank1(),
-			'Bank_Device_2' => $data->getAmountBank2()
+			'Bank_Device_1' => $data->getAmountBank1()/100,
+			'Bank_Device_2' => $data->getAmountBank2()/100
 		);
 		foreach($data->getNumberMoneyUnits() as $number)
 			$array['unit_'.$number->getUnit()->getId()] = $number->getNumber();

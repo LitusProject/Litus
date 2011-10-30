@@ -1,7 +1,9 @@
 <?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <table>
+	<?php foreach($this->flashMessages as $message) { echo $message; } ?>
+    
+    <table style="width: 100%">
     
         <tr>
             <th>Manager</th>
@@ -20,7 +22,7 @@
                 <td valign=center><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
                 <td><?= $session->isOpen() ? '' : $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>
                 <td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
-                <td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getTotalAmount()/100; ?></td>
+                <td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getTotalAmount()/100, 2); ?></td>
 				<td><a href="<?= $this->url(array('action' => 'managesession', 'id' => $session->getId())); ?>" class="edit">Edit</a></td>
             </tr>
         <? endforeach; ?>
