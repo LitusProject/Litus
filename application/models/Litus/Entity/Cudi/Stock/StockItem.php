@@ -22,11 +22,6 @@ class StockItem
 	private $article;
 	
 	/**
-	 * @Column(type="integer")
-	 */
-	private $numberInStock;
-	
-	/**
 	 * Return the article
 	 * 
 	 * @return \Litus\Entity\Cudi\Article
@@ -43,6 +38,6 @@ class StockItem
 	 */
 	public function getNumberInStock()
 	{
-		return $this->numberInStock;
+		return 0;
 	}
 }

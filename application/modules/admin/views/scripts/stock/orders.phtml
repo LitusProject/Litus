@@ -1,0 +1,26 @@
+<?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'orders')); ?>
+
+<div id="controller_action">
+    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+
+   	<table>
+    
+        <tr>
+            <th>Supplier</th>
+            <th>Date</th>
+            <th>Price</th>
+			<th>Actions</th>
+        </tr>
+        
+        <? foreach ($this->orders as $order): ?>
+
+            <tr>
+                <td><?= $order->getSupplier()->getName(); ?></td>
+                <td><?= $order->getDate()->format('Y-m-d H:i:s'); ?></td>
+                <td>&euro; <?= number_format($order->getPrice()/100, 2); ?></td>
+				<td></td>
+            </tr>
+    
+        <? endforeach; ?>
+    </table>
+</div>

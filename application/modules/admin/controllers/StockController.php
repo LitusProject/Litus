@@ -24,11 +24,21 @@ class StockController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->_forward('manage');
+        $this->_forward('overview');
     }
     
-    public function manageAction()
+    public function overviewAction()
 	{
         $this->view->stock = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\StockItem')->findAll();        
     }
+
+	public function ordersAction()
+	{
+        $this->view->orders = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\Order')->findAll();        		
+	}
+	
+	public function deliveriesAction()
+	{
+        $this->view->deliveries = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\Delivery')->findAll();        		
+	}
 }
