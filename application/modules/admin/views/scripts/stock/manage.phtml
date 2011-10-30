@@ -1,0 +1,24 @@
+<?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+
+    <table>
+    
+        <tr>
+            <th>Article</th>
+            <th>Number in stock</th>
+            <th>Actions</th>
+        </tr>
+        
+        <? foreach ($this->stock as $item): ?>
+
+            <tr>
+                <td><?= $item->getArticle()->getTitle(); ?></td>
+                <td><?= $item->getNumberInStock(); ?></td>
+				<td></td>
+            </tr>
+    
+        <? endforeach; ?>
+    </table>
+</div>

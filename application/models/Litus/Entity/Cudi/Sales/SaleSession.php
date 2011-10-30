@@ -14,69 +14,40 @@ class SaleSession
 	 * @Column(type="bigint")
 	 */
 	private $id;
-
-	public function setId( $id_ ) {
-		$this->id = $id_;
-	}
-
-	public function getId() {
-		return $this->id;
-	}
 	
 	/**
-	 * @Column(name="open_date", type="datetime")
+	 * @Column(type="datetime")
 	 */
 	private $openDate;
-
-	public function setOpenDate( $openDate_ ) {
-		$this->openDate = $openDate_;
-	}
-
-	public function getOpenDate() {
-		return $this->openDate;
-	}
 	
 	/**
-	 * @Column(name="close_date", type="datetime")
+	 * @Column(type="datetime", nullable=true)
 	 */
 	private $closeDate;
-
-	public function setCloseDate( $closeDate_ ) {
-		$this->closeDate = $closeDate_;
-	}
-
-	public function getCloseDate() {
-		return $this->closeDate;
-	}
-
+	
 	/**
 	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
 	 * @JoinColumn(name="openAmount", referencedColumnName="id")
 	 */
 	private $openAmount;
-
-	public function setOpenAmount( $openAmount_ ) {
-		$this->openAmount = $openAmount_;
-	}
-
-	public function getOpenAmount() {
-		return $this->openAmount;
-	}
-
+	
 	/**
 	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
 	 * @JoinColumn(name="closeAmount", referencedColumnName="id")
 	 */
 	private $closeAmount;
-
-	public function setCloseAmount( $closeAmount_ ) {
-		$this->closeAmount = $closeAmount_;
-	}
-
-	public function getCloseAmount() {
-		return $this->closeAmount;
-	}
 	
+	/**
+	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @JoinColumn(name="manager_id", referencedColumnName="id")
+	 */
+	private $manager;
+	
+	/**
+	 * @Column(type="string")
+	 */
+	private $comment;
+
 	/**
 	 * @ Column(type="datetime")
 	 */
@@ -88,34 +59,77 @@ class SaleSession
 //	private $registerEnd;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
-	 * @JoinColumn(name="manager_id", referencedColumnName="id")
+	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
 	 */
-	private $manager;
+	//private $union;
+	
+	public function __construct($openAmount, $comment)
+	{
+		$this->openDate = new \DateTime();
+		$this->openAmount = $openAmount;
+		$this->comment = $comment;
+	}
 
-	public function setManager( $manager_ ) {
-		$this->manager = $manager_;
+	public function getId() {
+		return $this->id;
+	}
+
+	public function setOpenDate( $openDate ) {
+		$this->openDate = $openDate;
+		return $this;
+	}
+
+	public function getOpenDate() {
+		return $this->openDate;
+	}
+
+	public function setCloseDate( $closeDate ) {
+		$this->closeDate = $closeDate;
+		return $this;
+	}
+
+	public function getCloseDate() {
+		return $this->closeDate;
+	}
+
+	public function setOpenAmount( $openAmount ) {
+		$this->openAmount = $openAmount;
+		return $this;
+	}
+
+	public function getOpenAmount() {
+		return $this->openAmount;
+	}
+
+	public function setCloseAmount( $closeAmount ) {
+		$this->closeAmount = $closeAmount;
+		return $this;
+	}
+
+	public function getCloseAmount() {
+		return $this->closeAmount;
+	}
+
+	public function setManager( $manager ) {
+		$this->manager = $manager;
+		return $this;
 	}
 
 	public function getManager() {
 		return $this->manager;
 	}
-	
-	/**
-	 * @Column(name="comment", type="string", length="250")
-	 */
-	private $comment;
 
-	public function setComment( $comment_ ) {
-		$this->comment = $comment_;
+	public function setComment( $comment ) {
+		$this->comment = $comment;
+		return $this;
 	}
 
 	public function getComment() {
 		return $this->comment;
 	}
 	
-	/**
-	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
-	 */
-	//private $union;
+	public function isOpen()
+	{
+		return $this->getCloseDate() === null;
+	}
 }

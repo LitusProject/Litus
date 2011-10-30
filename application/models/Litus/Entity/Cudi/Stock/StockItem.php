@@ -25,4 +25,24 @@ class StockItem
 	 * @Column(type="integer")
 	 */
 	private $numberInStock;
+	
+	/**
+	 * Return the article
+	 * 
+	 * @return \Litus\Entity\Cudi\Article
+	 */
+	public function getArticle()
+	{
+		return $this->article;
+	}
+	
+	/**
+	 * Return the number in stock
+	 * 
+	 * @return integer
+	 */
+	public function getNumberInStock()
+	{
+		return $this->numberInStock;
+	}
 }
