@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class StockItem extends EntityRepository
 {
+	public function findAll()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 's')
+			->innerJoin('s.article', 'a')
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+
+        return $resultSet;
+	}
 }

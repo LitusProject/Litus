@@ -36,6 +36,18 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
     }
     
     
+    public function getArticle()
+    {
+        $this->__load();
+        return parent::getArticle();
+    }
+
+    public function getNumberInStock()
+    {
+        $this->__load();
+        return parent::getNumberInStock();
+    }
+
 
     public function __sleep()
     {

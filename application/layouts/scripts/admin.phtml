@@ -81,6 +81,9 @@ $this->inlineScript()
                         <? if ($this->hasAccess('admin', 'sale', 'index')): ?>
                             <li><a href ="/admin/sale">Sale</a></li>
                         <? endif; ?>
+						<? if ($this->hasAccess('admin', 'stock', 'index')): ?>
+                            <li><a href ="/admin/stock">Stock</a></li>
+                        <? endif; ?>
                     </ul>
                 <? endif; ?>
 

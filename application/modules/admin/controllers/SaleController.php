@@ -9,6 +9,7 @@ use \Admin\Form\Sale;
 
 use \Litus\Entity\Cudi\Sales\SaleSession;
 use \Litus\Entity\Cudi\Sales\CashRegister;
+use \Litus\Entity\Cudi\Sales\NumberMoneyUnit;
 
 /**
  *
@@ -28,67 +29,32 @@ class SaleController extends \Litus\Controller\Action
         $this->_forward('manage');
     }
     
-    // default
     public function manageAction()
     {
-        $q = $this->getEntityManager()
-          ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
-                  ->createQueryBuilder( "ss" )
-                  ->orderBy('ss.openDate', 'DESC')
-                  ->setFirstResult(0)    // offset
-                  ->setMaxResults(25);   // limit
-
-        $r = $q->getQuery()->getResult();
-        $this->view->sessions = $r; // this, like, you know, totally works!!!
+        $this->view->sessions = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\SaleSession')->findFirstNb(25);
     }
 
     public function editregisterAction()
     {
         $register = $this->getEntityManager()
                 ->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
-                ->find($this->_getParam("register_id"));
+                ->findOneById($this->_getParam("id"));
 
-        // default: all zeros
-        $amounts_array = array(  '500p'=>0, '200p'=>0, '100p'=>0,
-                                 '50p'=>0, '20p'=>0, '10p'=>0,
-                                 '5p'=>0, '2p'=>0, '1p'=>0,
-                                 '0p5'=>0, '0p2'=>0, '0p1'=>0,
-                                 '0p05'=>0, '0p02'=>0, '0p01'=>0,
-                                 'Bank_Device_1'=>'0.0',
-                                 'Bank_Device_2'=>'0.0');
-
-        // but if we can find the amounts in de cash register at the start of the sale session,
-        // use those amounts instead
-        if( isset( $register ) && !is_null( $register ) && is_object( $register ) )
-            $amounts_array = $register->getAmountsArray();
-
-        $session_id = $this->_getParam('session_id');
-        if( isset( $session_id ) && !is_null( $session_id ) ) {
-            $sesstr = "&session_id=$session_id";
-        } else {
-            $sesstr = "";
-        }
         $form = new Form\Sale\CashRegister();
-        $form = $form->setAction("/admin/sale/edit_register?register_id=".$register->getId().$sesstr)
-                     ->setMethod('post');
-
-    $form->populate( $amounts_array );
+		$form->populate($register);
         $this->view->form = $form;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if($form->isValid($formData) && !isset( $formData['comment'] ) ) {
-
-                $register->setAmountsArray( $formData );
-
-                $this->getEntityManager()->persist( $register );
-
-                if( isset( $session_id ) && !is_null( $session_id ) ) {
-                    $this->_forward('manage_session');
-                }
-                else
-                    $this->_forward('manage');
+            if($form->isValid($formData)) {
+				$register->setAmountBank1($formData['Bank_Device_1']);
+				$register->setAmountBank2($formData['Bank_Device_2']);
+				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+				foreach($units as $unit)
+					$register->getNumberForUnit($unit)->setNumber($formData['unit_'.$unit->getId()]);
+				
+               	$this->_redirect('managesession', null, null, array('id' => $this->_getParam("session")));
             }
         }
     }
@@ -97,33 +63,25 @@ class SaleController extends \Litus\Controller\Action
     {
         $session = $this->getEntityManager()
                 ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
-                ->find($this->_getParam("session_id"));
+                ->findOneById($this->_getParam("id"));
 
-        if( !isset($session) || is_null($session) ) {
-                    $this->_forward('manage');
-        }
+        if( !isset($session) )
+        	$this->_forward('manage');
+		
+        $this->view->session = $session;
+		$this->view->units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+		
+		$form = new Form\Sale\SessionComment();
+		$form->populate($session);
+		$this->view->commentForm = $form;
 
-        else {
-
-            $this->view->session = $session;
-
-            $form = new Form\Sale\SessionComment();
-            $form = $form->setAction("/admin/sale/manage_session?session_id=".$session->getId())
-                         ->setMethod('post');
-            $form->populate( array( 'comment' => $session->getComment() ) );
-            $this->view->commentForm = $form;
-
-            if($this->getRequest()->isPost()) {
-                $formData = $this->getRequest()->getPost();
-
-                if(isset($formData['comment']) && $form->isValid($formData)) {
-
-                    $session->setComment( $formData['comment'] );
-
-                    $this->getEntityManager()->persist( $session );
-                }
-            }
-        }
+		if($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			
+			if($form->isValid($formData)) {
+				$session->setComment( $formData['comment'] );
+			}
+		}
     }
 
     public function closeAction()
@@ -177,35 +135,25 @@ class SaleController extends \Litus\Controller\Action
     public function newAction()
     {
         $form = new Form\Sale\CashRegister();
-        $form->populate( array(  '500p'=>0, '200p'=>0, '100p'=>0,
-                                                    '50p'=>0, '20p'=>0, '10p'=>0,
-                                                    '5p'=>0, '2p'=>0, '1p'=>0,
-                                                    '0p5'=>0, '0p2'=>0, '0p1'=>0,
-                                                    '0p05'=>0, '0p02'=>0, '0p01'=>0,
-                                                    'Bank_Device_1'=>'0.0',
-                                                    'Bank_Device_2'=>'0.0'));
         $this->view->form = $form;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             if($form->isValid($formData)) {
-                $saleSession = new SaleSession();
+                $cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
+				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+				foreach($units as $unit) {
+					$numberUnit = new NumberMoneyUnit($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
+					$this->getEntityManager()->persist($numberUnit);
+				}
 
-                $saleSession->setOpenDate( date_create( date('Y-m-d H:i:s', time() ) ) ); // now
-                $saleSession->setCloseDate( date_create( date('Y-m-d H:i:s', 0 ) ) ); // 1 jan 1970
+                $saleSession = new SaleSession($cashRegister, "");
 
-                //$saleSession->setCloseAmount( null );
+                $this->getEntityManager()->persist($cashRegister);
+                $this->getEntityManager()->persist($saleSession);
 
-                $am = new CashRegister( $formData );
-                $saleSession->setOpenAmount( $am );
-
-                $saleSession->setComment( "" );
-
-                $this->getEntityManager()->persist( $am );
-                $this->getEntityManager()->persist( $saleSession );
-
-        $this->_forward('manage');
+        		$this->_redirect('manage');
             }
         }
     }

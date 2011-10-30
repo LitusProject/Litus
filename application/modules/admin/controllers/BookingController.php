@@ -7,7 +7,6 @@ use \Doctrine\ORM\EntityManager;
 use \Admin\Form\Booking\Add;
 
 use \Litus\Entity\Cudi\Sales\Booking;
-
 use \Litus\FlashMessenger\FlashMessage;
 
 /**
@@ -61,7 +60,6 @@ class BookingController extends \Litus\Controller\Action
     
     public function manageAction()
 	{
-        $em = $this->getEntityManager();
-        $this->view->bookings = $em->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAll();        
+        $this->view->bookings = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAll();        
     }
 }

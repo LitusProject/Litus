@@ -7,43 +7,22 @@
             <th>Manager</th>
             <th>Open?</th>
             <th>Start</th>
-	    <th>End</th>
+	    	<th>End</th>
             <th>Register Start</th>
             <th>Register End</th>
+			<th>Action</th>
         </tr>
         
-        <?  $zebra = 1;
-
-
-            foreach ($this->sessions as $session):
-
-
-            if( $zebra === 1 ) $style = " class=\"odd\"";
-            else $style = " class=\"even\"";
-            $zebra = $zebra * -1;
-
-            $onclick = " onclick=\"parent.location='/admin/sale/manage_session?session_id=".$session->getId()."'; window.status='manage sale session ".$session->getId()."';\"";
-
-            ?>
-
-            <tr<?= $style; ?><?= $onclick;?>>
-                <td<?= $style; ?>><?= $session->getManager(); ?></td>
-                <td<?= $style; ?>><? if( $session->getCloseDate() < $session->getOpenDate() )
-			{
-				echo "yes";
-				$open = true;
-			}
-			else
-			{
-				echo "no";
-				$open = false;
-			} ?></td>
-                <td<?= $style; ?> valign=center><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
-                <td<?= $style; ?>><? if( $open == false ) echo $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>
-                <td<?= $style; ?>><?= ($session->getOpenAmount()->getTotalAmount() / 100); ?></td>
-                <td<?= $style; ?>><? if( $open == false ) echo ($session->getCloseAmount()->getTotalAmount() / 100); ?></td>
+        <? foreach ($this->sessions as $session): ?>
+            <tr>
+                <td><?= $session->getManager(); ?></td>
+                <td><?= $session->isOpen() ? 'yes' : 'no'; ?></td>
+                <td valign=center><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
+                <td><?= $session->isOpen() ? '' : $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>
+                <td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
+                <td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getTotalAmount()/100; ?></td>
+				<td><a href="<?= $this->url(array('action' => 'managesession', 'id' => $session->getId())); ?>" class="edit">Edit</a></td>
             </tr>
-    
         <? endforeach; ?>
     </table>
 </div>

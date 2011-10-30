@@ -1,0 +1,65 @@
+<?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
+
+<div id="controller_action">
+
+<table cols=4>
+	<tr>
+		<td colspan=4><h2 style="font-size: 200%;padding: 10px 0">Sale Session</h2></td>
+	</tr>
+	<tr>
+		<td>manager:</td>
+		<td><?= $session->getManager(); ?></td>
+		<td></td>
+		<td><a href="sale_application?session_id=<?= $session->getId(); ?>"><u>Sale Application</u></a></td>
+	</tr>
+	<tr>
+		<td>date opened:</td>
+		<td><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
+		<td></td>
+		<td><a href="queue?session_id=<?= $session->getId(); ?>"><u>Queue Sign-in</u></a></td>
+	</tr>
+	<tr>
+		<td>date closed:</td>
+		<td><?= $session->isOpen() ? 'yes' : 'no'; ?></td>
+		<td></td>
+		<td><?= $session->isOpen() ? '<a href="close?session_id='.$session->getId().'"><u>Close</u></a>' : ''; ?></td>
+	</tr>
+	<tr>
+		<td>cash register start:</td>
+		<td><a href="<?= $this->url(array('action' => 'editregister', 'id' => $session->getOpenAmount()->getId(), 'session' => $session->getId())); ?>">(edit)</a></td>
+		<!--<td><a href='edit_register?register_id=<?= $session->getOpenAmount()->getId();?>&session_id=<?= $session->getId(); ?>'>(edit)</a></td>-->
+		<td>cash register end:</td>
+		<td><?= $session->isOpen() ? '(none)' : '<a href="edit_register?register_id='.$session->getCloseAmount()->getId().'&session_id='.$session->getId().'">(edit)</a>'; ?></td>
+	</tr>
+	<?php foreach($this->units as $unit): ?>
+		<tr>
+			<td style="text-align: right">&euro; <?= number_format($unit->getUnit()/100, 2); ?></td>
+			<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getNumber(); ?></td>
+			<td style="text-align: right"><?= $session->isOpen() ? '' : '&euro; '.number_format($unit->getUnit()/100, 2) ?></td>
+			<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getNumberForUnit($unit)->getNumber(); ?></td>
+		</tr>
+	<?php endforeach; ?>
+	<tr>
+		<td style="text-align: right">Bank Device 1:</td>
+		<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank1()/100, 2); ?></td>
+		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 1'; ?></td>
+		<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getAmountBank1()/100; ?></td>
+	</tr>
+	<tr>
+		<td style="text-align: right">Bank Device 2:</td>
+		<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank2()/100, 2); ?></td>
+		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 2'; ?></td>
+		<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getAmountBank2()/100; ?></td>
+	</tr>
+	<tr>
+		<td style="text-align: right">TOTAL:</td>
+		<td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
+		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Total'; ?></td>
+		<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getTotalAmount()/100; ?></td>
+	</tr>
+
+</table>
+
+<?= $commentForm; ?>
+
+</div>
