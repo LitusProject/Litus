@@ -114,6 +114,12 @@ class LitusEntityCudiSalesSaleSessionProxy extends \Litus\Entity\Cudi\Sales\Sale
         return parent::getComment();
     }
 
+    public function isOpen()
+    {
+        $this->__load();
+        return parent::isOpen();
+    }
+
 
     public function __sleep()
     {

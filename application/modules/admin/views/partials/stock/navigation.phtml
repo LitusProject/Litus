@@ -3,8 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            <? if ($this->hasAccess('admin', 'stock', 'manage')): ?>
-                <li><a <? if('manage' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'manage')); ?>">Manage</a></li>
+            <? if ($this->hasAccess('admin', 'stock', 'orders')): ?>
+                <li><a <? if('orders' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'orders')); ?>">Orders</a></li>
+            <? endif; ?>
+			<? if ($this->hasAccess('admin', 'stock', 'deliveries')): ?>
+                <li><a <? if('deliveries' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'deliveries')); ?>">Deliveries</a></li>
+            <? endif; ?>
+            <? if ($this->hasAccess('admin', 'stock', 'overview')): ?>
+                <li><a <? if('overview' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'overview')); ?>">Overview</a></li>
             <? endif; ?>
         </ul>
     </nav>
