@@ -33,9 +33,10 @@ class SaleController extends \Litus\Controller\Action
     
     public function manageAction()
     {
-		// TODO: order
 		$this->view->sessions = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Session'
+            'Litus\Entity\Cudi\Sales\Session',
+			array(),
+			array('openDate' => 'DESC')
         );
     }
 
@@ -88,7 +89,7 @@ class SaleController extends \Litus\Controller\Action
 		
         $this->view->session = $session;
 		$this->view->units = $this->getEntityManager()
-            ->getRepository('Litus\Entity\General\MoneyUnit')
+            ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
             ->findAll();
 		
 		$form = new Form\Sale\SessionComment();
@@ -99,7 +100,15 @@ class SaleController extends \Litus\Controller\Action
 			$formData = $this->getRequest()->getPost();
 			
 			if($form->isValid($formData)) {
-				$session->setComment( $formData['comment'] );
+				$session->setComment($formData['comment']);
+				
+				$this->_addDirectFlashMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The comment was successfully updated!'
+                    )
+                );
 			}
 		}
     }
@@ -123,7 +132,7 @@ class SaleController extends \Litus\Controller\Action
 			if($form->isValid($formData)) {
 				$cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
 				$units = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\MoneyUnit')
+                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 				foreach($units as $unit) {
 					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
@@ -160,7 +169,7 @@ class SaleController extends \Litus\Controller\Action
 					$this->getEntityManager()->persist($numberUnit);
 				}
 
-                $saleSession = new Session($cashRegister);
+                $saleSession = new Session($cashRegister, $this->getAuthentication()->getPersonObject());
 
                 $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->persist($saleSession);
@@ -169,7 +178,8 @@ class SaleController extends \Litus\Controller\Action
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The session was successfully added!'
+                        'The session was successfully added!',
+						true
                     )
                 );
 

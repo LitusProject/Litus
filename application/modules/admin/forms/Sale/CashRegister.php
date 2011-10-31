@@ -66,8 +66,8 @@ class CashRegister extends \Litus\Form\Admin\Form
 			'Bank_Device_2' => $data->getAmountBank2() / 100
 		);
         
-		foreach($data->getNumberMoneyUnits() as $number)
-			$array['unit_' . $number->getUnit()->getId()] = $number->getNumber();
+		foreach($data->getMoneyUnitAmounts() as $amount)
+			$array['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
 		
 		parent::populate($array);
 	}
