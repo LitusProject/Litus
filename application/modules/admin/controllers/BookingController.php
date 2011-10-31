@@ -52,7 +52,13 @@ class BookingController extends \Litus\Controller\Action
 				$booking = new Booking($person, $article, 'booked');
                  
                 $this->getEntityManager()->persist($booking);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The booking was successfully created!"));
+				$this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The booking was successfully created!'
+                    )
+                );
 				$this->_redirect('manage');
 			}
         }
@@ -60,6 +66,8 @@ class BookingController extends \Litus\Controller\Action
     
     public function manageAction()
 	{
-        $this->view->bookings = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAll();        
+		$this->view->paginator = $this->_createPaginator(
+            'Litus\Entity\Cudi\Sales\Booking'
+        );
     }
 }

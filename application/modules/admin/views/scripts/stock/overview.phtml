@@ -1,9 +1,9 @@
 <?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'overview')); ?>
 
 <div id="controller_action">
-    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
 
-    <table>
+    <table class="full_width">
     
         <tr>
             <th>Article</th>
@@ -21,4 +21,6 @@
     
         <? endforeach; ?>
     </table>
+
+	<?= $this->paginationControl($this->stock, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

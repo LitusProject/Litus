@@ -1,7 +1,7 @@
 <?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'deliveries')); ?>
 
 <div id="controller_action">
-    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
 	
 	<table>
     
@@ -21,4 +21,6 @@
     
         <? endforeach; ?>
     </table>
+
+	<?= $this->paginationControl($this->deliveries, 'all', 'partials/pagination.phtml'); ?>
 </div>
