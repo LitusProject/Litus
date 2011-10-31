@@ -7,6 +7,7 @@ use \Admin\Form\User\Edit as EditForm;
 
 use \Litus\Entity\Users\Credential;
 use \Litus\Entity\Users\People\Academic;
+use \Litus\FlashMessenger\FlashMessage;
 
 class UserController extends \Litus\Controller\Action
 {
@@ -56,7 +57,14 @@ class UserController extends \Litus\Controller\Action
                 );
                 $this->getEntityManager()->persist($newUser);
 
-                $this->view->userCreated = true;
+                $this->_addDirectFlashMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The user was successfully created!'
+                    )
+                );
+                
                 $this->view->form = new AddForm();
             }
         }
@@ -102,7 +110,15 @@ class UserController extends \Litus\Controller\Action
                     ->setSex($formData['sex'])
                     ->updateRoles($roles);
                 
-                $this->view->userEdited = true;
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The user was successfully updated!'
+                    )
+                );
+
+                $this->_redirect('manage');
             }
         }
     }

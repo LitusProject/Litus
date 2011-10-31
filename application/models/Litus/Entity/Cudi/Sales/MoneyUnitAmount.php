@@ -3,10 +3,10 @@
 namespace Litus\Entity\Cudi\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\NumberMoneyUnit")
- * @Table(name="cudi.sales_number_money_unit")
+ * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\MoneyUnitAmount")
+ * @Table(name="cudi.sales_money_unit_amount")
  */
-class NumberMoneyUnit
+class MoneyUnitAmount
 {
 	/**
 	 * @Id
@@ -16,7 +16,7 @@ class NumberMoneyUnit
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister", inversedBy="numberMoneyUnits")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister", inversedBy="moneyUnitAmounts")
 	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
 	 */
 	private $cashRegister;
@@ -30,13 +30,13 @@ class NumberMoneyUnit
 	/**
 	 * @Column(type="integer")
 	 */
-	private $number;
+	private $amount;
 	
-	public function __construct($register, $unit, $number)
+	public function __construct($register, $unit, $amount)
 	{
 		$this->cashRegister = $register;
 		$this->unit = $unit;
-		$this->number = $number;
+		$this->amount = $amount;
 	}
 	
 	public function getUnit()
@@ -44,19 +44,19 @@ class NumberMoneyUnit
 		return $this->unit;
 	}
 	
-	public function getNumber()
+	public function getAmount()
 	{
-		return $this->number;
+		return $this->amount;
 	}
 	
-	public function setNumber($number)
+	public function setAmount($number)
 	{
-		$this->number = $number;
+		$this->amount = $number;
 		return $this;
 	}
 	
 	public function getValue()
 	{
-		return $this->number*$this->unit->getUnit();
+		return $this->amount * $this->unit->getUnit();
 	}
 }

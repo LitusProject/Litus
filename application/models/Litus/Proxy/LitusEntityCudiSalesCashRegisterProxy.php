@@ -42,10 +42,10 @@ class LitusEntityCudiSalesCashRegisterProxy extends \Litus\Entity\Cudi\Sales\Cas
         return parent::getId();
     }
 
-    public function getNumberMoneyUnits()
+    public function getMoneyUnitAmounts()
     {
         $this->__load();
-        return parent::getNumberMoneyUnits();
+        return parent::getMoneyUnitAmounts();
     }
 
     public function setAmountBank1($amountBank1)
@@ -87,7 +87,7 @@ class LitusEntityCudiSalesCashRegisterProxy extends \Litus\Entity\Cudi\Sales\Cas
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'numberMoneyUnits', 'amountBank1', 'amountBank2');
+        return array('__isInitialized__', 'id', 'moneyUnitAmounts', 'amountBank1', 'amountBank2');
     }
 
     public function __clone()

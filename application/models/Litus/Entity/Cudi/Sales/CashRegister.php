@@ -8,7 +8,6 @@ namespace Litus\Entity\Cudi\Sales;
  */
 class CashRegister
 {
-	
     /**
      * @Id
      * @GeneratedValue
@@ -17,9 +16,9 @@ class CashRegister
     private $id;
 
     /**
-	 * @OneToMany(targetEntity="\Litus\Entity\Cudi\Sales\NumberMoneyUnit", mappedBy="cashRegister", cascade={"remove"})
+	 * @OneToMany(targetEntity="\Litus\Entity\Cudi\Sales\MoneyUnitAmount", mappedBy="cashRegister", cascade={"remove"})
 	 */
-	private $numberMoneyUnits;
+	private $moneyUnitAmounts;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -52,9 +51,9 @@ class CashRegister
 	 *
 	 * @return mixed
 	 */
-	public function getNumberMoneyUnits()
+	public function getMoneyUnitAmounts()
 	{
-		return $this->numberMoneyUnits;
+		return $this->moneyUnitAmounts;
 	}
 
     /**
@@ -108,8 +107,8 @@ class CashRegister
     {
         $amount = $this->amountBank1 + $this->amountBank2;
 		
-		foreach($this->numberMoneyUnits as $number)
-			$amount += $number->getNumber()*$number->getUnit()->getUnit();
+		foreach($this->moneyUnitAmounts as $number)
+			$amount += $number->getAmount() * $number->getUnit()->getUnit();
 		
 		return $amount;
     }
@@ -117,11 +116,11 @@ class CashRegister
 	/**
 	 * Get number of a unit
 	 *
-	 * @return \Litus\Entity\Cudi\Sales\NumberMoneyUnit
+	 * @return \MoneyUnitAmount\Entity\Cudi\Sales\NumberMoneyUnit
 	 */
 	public function getNumberForUnit($unit)
 	{
-		foreach($this->numberMoneyUnits as $number) {
+		foreach($this->moneyUnitAmounts as $number) {
 			if ($number->getUnit() == $unit)
 				return $number;
 		}

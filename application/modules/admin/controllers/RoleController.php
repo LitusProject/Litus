@@ -7,6 +7,7 @@ use \Admin\Form\Role\Add as AddForm;
 use \Litus\Entity\Acl\Action as AclAction;
 use \Litus\Entity\Acl\Role;
 use \Litus\Entity\Acl\Resource;
+use \Litus\FlashMessenger\FlashMessage;
 
 class RoleController extends \Litus\Controller\Action
 {
@@ -51,7 +52,14 @@ class RoleController extends \Litus\Controller\Action
                 // Flushing the EM so that new role is displayed
                 $this->getEntityManager()->flush();
 
-                $this->view->roleCreated = true;
+                $this->_addDirectFlashMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The role was successfully created!'
+                    )
+                );
+                
                 $this->view->form = new AddForm();
             }
         }

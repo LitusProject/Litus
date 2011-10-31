@@ -33,9 +33,8 @@ class AuthController extends \Litus\Controller\Action
     {
         $this->view->isAuthenticated = $this->getAuthentication()->isAuthenticated();
         
-        if (!$this->getAuthentication()->isAuthenticated()) {
+        if (!$this->getAuthentication()->isAuthenticated())
             $this->view->form = new LoginForm();
-        }
     }
 
     public function logoutAction()
