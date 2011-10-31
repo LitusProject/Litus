@@ -22,7 +22,7 @@ class CashRegister extends \Litus\Form\Admin\Form
         parent::__construct($options);
 
         $units = Registry::get(DoctrineResource::REGISTRY_KEY)
-            ->getRepository('Litus\Entity\General\MoneyUnit')
+            ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
             ->findAll();
         
 		foreach($units as $unit) {

@@ -8,8 +8,8 @@ use Doctrine\ORM\QueryBuilder;
 use \Admin\Form\Sale\CashRegister as CashRegisterForm;
 
 use \Litus\Entity\Cudi\Sales\Session;
-use \Litus\Entity\Cudi\Sales\CashRegister;
-use \Litus\Entity\Cudi\Sales\MoneyUnitAmount;
+use \Litus\Entity\General\Bank\CashRegister;
+use \Litus\Entity\General\Bank\MoneyUnitAmount;
 use \Litus\FlashMessenger\FlashMessage;
 
 
@@ -42,7 +42,7 @@ class SaleController extends \Litus\Controller\Action
     public function editregisterAction()
     {
         $register = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
+                ->getRepository('Litus\Entity\General\Bank\CashRegister')
                 ->findOneById($this->_getParam("id"));
 
         $form = new CashRegisterForm();
@@ -57,7 +57,7 @@ class SaleController extends \Litus\Controller\Action
 				$register->setAmountBank2($formData['Bank_Device_2']);
 
                 $units = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\MoneyUnit')
+                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 
 				foreach($units as $unit) {
@@ -151,7 +151,9 @@ class SaleController extends \Litus\Controller\Action
 
             if($form->isValid($formData)) {
                 $cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
-				$units = $this->getEntityManager()->getRepository('Litus\Entity\General\MoneyUnit')->findAll();
+				$units = $this->getEntityManager()
+                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+                    ->findAll();
 
 				foreach($units as $unit) {
 					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);

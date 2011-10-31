@@ -4,7 +4,7 @@ namespace Litus\Entity\General\Bank;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\General\Bank\MoneyUnitAmount")
- * @Table(name="bank_money_unit_amountt")
+ * @Table(name="bank_money_unit_amount")
  */
 class MoneyUnitAmount
 {
