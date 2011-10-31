@@ -1,9 +1,9 @@
 <?= $this->partial('partials/booking/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
 
-    <table>
+    <table class="full_width">
     
         <tr>
             <th>Person</th>
@@ -12,7 +12,7 @@
             <th>Status</th>
         </tr>
         
-        <? foreach ($this->bookings as $booking): ?>
+        <? foreach ($this->paginator as $booking): ?>
 
             <tr>
                 <td><?= $booking->getPerson()->getFullName(); ?></td>
@@ -23,4 +23,6 @@
     
         <? endforeach; ?>
     </table>
+
+	<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

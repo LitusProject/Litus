@@ -23,5 +23,4 @@ class Article extends EntityRepository
 
         return $resultSet;
 	}
-	
 }

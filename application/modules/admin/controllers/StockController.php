@@ -28,13 +28,17 @@ class StockController extends \Litus\Controller\Action
     }
     
     public function overviewAction()
-	{
-        $this->view->stock = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\StockItem')->findAll();        
+	{      
+		$this->view->stock = $this->_createPaginator(
+            'Litus\Entity\Cudi\Stock\StockItem'
+        );
     }
 
 	public function ordersAction()
 	{
-        $this->view->orders = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\Order')->findAll();        		
+		$this->view->orders = $this->_createPaginator(
+            'Litus\Entity\Cudi\Stock\Order'
+        );      		
 	}
 	
 	public function addorderAction()
@@ -53,7 +57,13 @@ class StockController extends \Litus\Controller\Action
 				$order = new Order($supplier, $formData['price']);
                  
                 $this->getEntityManager()->persist($order);
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The order was successfully created!"));
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order was successfully created!'
+                    )
+				);
 				$this->_redirect('orders');
 			}
         }
@@ -61,6 +71,8 @@ class StockController extends \Litus\Controller\Action
 	
 	public function deliveriesAction()
 	{
-        $this->view->deliveries = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\Delivery')->findAll();        		
+		$this->view->deliveries = $this->_createPaginator(
+            'Litus\Entity\Cudi\Stock\Delivery'
+        );
 	}
 }
