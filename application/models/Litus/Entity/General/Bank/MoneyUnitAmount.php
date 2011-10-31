@@ -1,10 +1,10 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace Litus\Entity\General\Bank;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\MoneyUnitAmount")
- * @Table(name="cudi.sales_money_unit_amount")
+ * @Entity(repositoryClass="Litus\Repository\General\Bank\MoneyUnitAmount")
+ * @Table(name="bank_money_unit_amountt")
  */
 class MoneyUnitAmount
 {
@@ -16,13 +16,13 @@ class MoneyUnitAmount
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister", inversedBy="moneyUnitAmounts")
+	 * @ManyToOne(targetEntity="\Litus\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
 	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
 	 */
 	private $cashRegister;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\MoneyUnit")
+	 * @ManyToOne(targetEntity="\Litus\Entity\General\Bank\MoneyUnit")
 	 * @JoinColumn(name="unit_id", referencedColumnName="id")
 	 */
 	private $unit;

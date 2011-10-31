@@ -1,10 +1,10 @@
 <?php
 
-namespace Litus\Entity\Config;
+namespace Litus\Entity\General;
 
 /**
  *
- * @Entity(repositoryClass="Litus\Repository\Config\Config")
+ * @Entity(repositoryClass="Litus\Repository\General\Config")
  * @Table(name="config")
  */
 class Config {
