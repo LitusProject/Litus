@@ -16,10 +16,10 @@ class SaleItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\SaleSession")
-	 * @JoinColumn(name="salesession_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\Session")
+	 * @JoinColumn(name="session_id", referencedColumnName="id")
 	 */
-	private $saleSession;
+	private $session;
 	
 	/**
 	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\StockItem")

@@ -7,17 +7,17 @@ use Doctrine\ORM\QueryBuilder;
 
 use \Admin\Form\Sale\CashRegister as CashRegisterForm;
 
-use \Litus\Entity\Cudi\Sales\SaleSession;
+use \Litus\Entity\Cudi\Sales\Session;
 use \Litus\Entity\Cudi\Sales\CashRegister;
 use \Litus\Entity\Cudi\Sales\MoneyUnitAmount;
 use \Litus\FlashMessenger\FlashMessage;
 
 
 /**
+ * This class controls management and adding of sale sessions
  *
- * This class controlls management and adding of sale sessions
- * @author Alan
- *
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ * @author Kristof Mariën <ktistof.marien@litus.cc>
  */
 class SaleController extends \Litus\Controller\Action
 {
@@ -35,7 +35,7 @@ class SaleController extends \Litus\Controller\Action
     {
 		// TODO: order
 		$this->view->sessions = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\SaleSession'
+            'Litus\Entity\Cudi\Sales\Session'
         );
     }
 
@@ -74,7 +74,7 @@ class SaleController extends \Litus\Controller\Action
     public function managesessionAction()
     {
         $session = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
+            ->getRepository('Litus\Entity\Cudi\Sales\Session')
             ->findOneById($this->_getParam("id"));
 
         if( !isset($session) )
@@ -101,7 +101,7 @@ class SaleController extends \Litus\Controller\Action
     public function closeAction()
     {
         $session = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
+                ->getRepository('Litus\Entity\Cudi\Sales\Session')
                 ->findOneById($this->_getParam('id'));
 
         if(!isset($session))
@@ -149,7 +149,7 @@ class SaleController extends \Litus\Controller\Action
 					$this->getEntityManager()->persist($numberUnit);
 				}
 
-                $saleSession = new SaleSession($cashRegister, "");
+                $saleSession = new Session($cashRegister, "");
 
                 $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->persist($saleSession);

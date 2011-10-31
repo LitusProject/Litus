@@ -34,8 +34,8 @@ class ServingQueueItem
 	private $payDesk;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\SaleSession")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\Session")
 	 * @JoinColumn(name="sale_session", referencedColumnName="id")
 	 */
-	private $saleSession;
+	private $session;
 }

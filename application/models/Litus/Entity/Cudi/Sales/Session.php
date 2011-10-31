@@ -3,10 +3,10 @@
 namespace Litus\Entity\Cudi\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\SaleSession")
- * @Table(name="cudi.sales_sale_session")
+ * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\Session")
+ * @Table(name="cudi.sales_session")
  */
-class SaleSession
+class Session
 {
 	/**
 	 * @Id

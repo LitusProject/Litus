@@ -10,10 +10,9 @@ use \Litus\Entity\Cudi\Stock\Order;
 use \Litus\FlashMessenger\FlashMessage;
 
 /**
- *
- * This class controlls management of the stock.
+ * This class controls management of the stock.
+ * 
  * @author Kristof Mariën
- *
  */
 class StockController extends \Litus\Controller\Action
 {
