@@ -62,7 +62,7 @@ class Add extends \Litus\Form\Admin\Form
 	private function _getVatTypes()
 	{
         $types =  Registry::get(DoctrineResource::REGISTRY_KEY)
-            ->getRepository('Litus\Entity\Config\Config')
+            ->getRepository('Litus\Entity\General\Config')
             ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
 
         $typesArray = array();

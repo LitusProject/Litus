@@ -55,9 +55,15 @@ class SaleController extends \Litus\Controller\Action
             if($form->isValid($formData)) {
 				$register->setAmountBank1($formData['Bank_Device_1']);
 				$register->setAmountBank2($formData['Bank_Device_2']);
-				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
-				foreach($units as $unit)
-					$register->getNumberForUnit($unit)->setNumber($formData['unit_'.$unit->getId()]);
+
+                $units = $this->getEntityManager()
+                    ->getRepository('Litus\Entity\General\MoneyUnit')
+                    ->findAll();
+
+				foreach($units as $unit) {
+					$register->getNumberForUnit($unit)
+                        ->setNumber($formData['unit_'.$unit->getId()]);
+                }
 				
                 $this->broker('flashmessenger')->addMessage(
                     new FlashMessage(
@@ -82,7 +88,7 @@ class SaleController extends \Litus\Controller\Action
 		
         $this->view->session = $session;
 		$this->view->units = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')
+            ->getRepository('Litus\Entity\General\MoneyUnit')
             ->findAll();
 		
 		$form = new Form\Sale\SessionComment();
@@ -116,7 +122,9 @@ class SaleController extends \Litus\Controller\Action
 			
 			if($form->isValid($formData)) {
 				$cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
-				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+				$units = $this->getEntityManager()
+                    ->getRepository('Litus\Entity\General\MoneyUnit')
+                    ->findAll();
 				foreach($units as $unit) {
 					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
 					$this->getEntityManager()->persist($numberUnit);
@@ -143,19 +151,27 @@ class SaleController extends \Litus\Controller\Action
 
             if($form->isValid($formData)) {
                 $cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
-				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+				$units = $this->getEntityManager()->getRepository('Litus\Entity\General\MoneyUnit')->findAll();
+
 				foreach($units as $unit) {
 					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
 					$this->getEntityManager()->persist($numberUnit);
 				}
 
-                $saleSession = new Session($cashRegister, "");
+                $saleSession = new Session($cashRegister);
 
                 $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->persist($saleSession);
 
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The session was successfully added!"));
-        		$this->_redirect('manage');
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The session was successfully added!'
+                    )
+                );
+
+                $this->_redirect('manage');
             }
         }
     }

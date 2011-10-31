@@ -1,10 +1,10 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace Litus\Entity\General\Bank;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\CashRegister")
- * @Table(name="cudi.sales_cash_register")
+ * @Entity(repositoryClass="Litus\Repository\General\Bank\CashRegister")
+ * @Table(name="bank_cash_register")
  */
 class CashRegister
 {
@@ -16,7 +16,9 @@ class CashRegister
     private $id;
 
     /**
-	 * @OneToMany(targetEntity="\Litus\Entity\Cudi\Sales\MoneyUnitAmount", mappedBy="cashRegister", cascade={"remove"})
+     * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each money unit
+     *
+	 * @OneToMany(targetEntity="\Litus\Entity\General\Bank\MoneyUnitAmount", mappedBy="cashRegister", cascade={"remove"})
 	 */
 	private $moneyUnitAmounts;
 
@@ -37,8 +39,6 @@ class CashRegister
     }
 	
 	/**
-	 * Get the id of the cashregister
-	 *
 	 * @return integer
 	 */
     public function getId()
@@ -47,18 +47,14 @@ class CashRegister
     }
 
 	/**
-	 * Get the number of money units
-	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function getMoneyUnitAmounts()
 	{
-		return $this->moneyUnitAmounts;
+		return $this->moneyUnitAmounts->toArray();
 	}
 
     /**
-     * Set amountBank1
-     *
      * @param integer $amountBank1
      */
     public function setAmountBank1($amountBank1)
