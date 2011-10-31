@@ -17,7 +17,7 @@
         
         <? foreach ($this->sessions as $session): ?>
             <tr>
-                <td><?= $session->getManager(); ?></td>
+                <td><?= $session->getManager() ? $session->getManager()->getUserName() : 'guest'; ?></td>
                 <td><?= $session->isOpen() ? 'yes' : 'no'; ?></td>
                 <td valign=center><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
                 <td><?= $session->isOpen() ? '' : $session->getCloseDate()->format('Y-m-d H:i:s'); ?></td>

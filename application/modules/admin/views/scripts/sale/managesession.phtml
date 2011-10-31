@@ -2,64 +2,118 @@
 
 <div id="controller_action">
 	<? foreach($this->flashMessages as $message) { echo $message; } ?>
-    
-<table class="full_width">
-	<tr>
-		<td colspan="4"><h2 style="font-size: 200%;padding: 10px 0">Sale Session</h2></td>
-	</tr>
-	<tr>
-		<td>manager:</td>
-		<td><?= $session->getManager(); ?></td>
-		<td></td>
-		<td><a href="sale_application?session_id=<?= $session->getId(); ?>"><u>Sale Application</u></a></td>
-	</tr>
-	<tr>
-		<td>date opened:</td>
-		<td><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></td>
-		<td></td>
-		<td><a href="queue?session_id=<?= $session->getId(); ?>"><u>Queue Sign-in</u></a></td>
-	</tr>
-	<tr>
-		<td>date closed:</td>
-		<td><?= $session->isOpen() ? 'yes' : 'no'; ?></td>
-		<td></td>
-		<td><?= $session->isOpen() ? '<a href="'.$this->url(array('action' => 'close', 'id' => $session->getId())).'"><u>Close</u></a>' : ''; ?></td>
-	</tr>
-	<tr>
-		<td>cash register start:</td>
-		<td><a href="<?= $this->url(array('action' => 'editregister', 'id' => $session->getOpenAmount()->getId(), 'session' => $session->getId())); ?>">(edit)</a></td>
-		<td>cash register end:</td>
-		<td><?= $session->isOpen() ? '(none)' : '<a href="'.$this->url(array('action' => 'editregister', 'id' => $session->getCloseAmount()->getId(), 'session' => $session->getId())).'">(edit)</a>'; ?></td>
-	</tr>
-	<?php foreach($this->units as $unit): ?>
+		
+    <h1>Sale Session</h1>
+
+	<p>Manager: <b><?= $session->getManager() ? $session->getManager()->getUserName() : 'guest'; ?></b></p>
+	<p>Date openend: <b><?= $session->getOpenDate()->format('Y-m-d H:i:s'); ?></b></p>
+	<p>Date closed: <b><?= $session->isOpen() ? '(no)' : $session->getCloseDate()->format('Y-m-d H:i:s'); ?></b></p>
+
+	<table class="half_width">
+	
 		<tr>
-			<td style="text-align: right">&euro; <?= number_format($unit->getUnit()/100, 2); ?></td>
-			<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
-			<td style="text-align: right"><?= $session->isOpen() ? '' : '&euro; '.number_format($unit->getUnit()/100, 2) ?></td>
-			<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getNumberForUnit($unit)->getNumber(); ?></td>
+			<th>Cash register start</th>
+			<th>Amount</th>
 		</tr>
-	<?php endforeach; ?>
-	<tr>
-		<td style="text-align: right">Bank Device 1:</td>
-		<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank1()/100, 2); ?></td>
-		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 1'; ?></td>
-		<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank1()/100, 2); ?></td>
-	</tr>
-	<tr>
-		<td style="text-align: right">Bank Device 2:</td>
-		<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank2()/100, 2); ?></td>
-		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 2'; ?></td>
-		<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank2()/100, 2); ?></td>
-	</tr>
-	<tr>
-		<td style="text-align: right">TOTAL:</td>
-		<td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
-		<td style="text-align: right"><?= $session->isOpen() ? '' : 'Total'; ?></td>
-		<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getTotalAmount()/100, 2); ?></td>
-	</tr>
+	
+		<tr>
+			<td></td>
+			<td><a href="<?= $this->url(array('action' => 'editregister', 'id' => $session->getOpenAmount()->getId(), 'session' => $session->getId())); ?>">(edit)</a></td>
+		</tr>
+		<? foreach($this->units as $unit): ?>
+			<tr>
+				<td style="text-align: right">&euro; <?= number_format($unit->getUnit()/100, 2); ?></td>
+				<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
+			</tr>
+		<? endforeach; ?>
+		<tr>
+			<td style="text-align: right">Bank Device 1:</td>
+			<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank1()/100, 2); ?></td>
+		</tr>
+		<tr>
+			<td style="text-align: right">Bank Device 2:</td>
+			<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank2()/100, 2); ?></td>
+		</tr>
+		<tr>
+			<td style="text-align: right">TOTAL:</td>
+			<td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
+		</tr>
 
-</table>
+	</table>
+	
+	<? if (!$session->isOpen()): ?>
+		<table class="half_width">
+			<tr>
+				<th>Cash register end</th>
+				<th>Amount</th>
+			</tr>
 
-<?= $commentForm; ?>
+			<tr>
+				<td></td>
+				<td><a href="<?= $this->url(array('action' => 'editregister', 'id' => $session->getCloseAmount()->getId(), 'session' => $session->getId())); ?>">(edit)</a></td>
+			</tr>
+			<?php foreach($this->units as $unit): ?>
+				<tr>
+					<td style="text-align: right"><?= $session->isOpen() ? '' : '&euro; '.number_format($unit->getUnit()/100, 2) ?></td>
+					<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
+				</tr>
+			<?php endforeach; ?>
+			<tr>
+				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 1'; ?></td>
+				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank1()/100, 2); ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 2'; ?></td>
+				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank2()/100, 2); ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Total'; ?></td>
+				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getTotalAmount()/100, 2); ?></td>
+			</tr>
+
+		</table>
+	<? endif; ?>
+
+	<?= $commentForm; ?>
 
 </div>
+
+<aside>
+	<? if ($session->isOpen()): ?>
+		<div class="sidebox">
+        	<div class="title">Close Session</div>
+        	<div class="content">
+            	<p>
+                	<i>Please hit the link below to close this sale session!</i>
+            	</p>
+            	<p>
+                	<a href="<?= $this->url(array('action' => 'close', 'id' => $session->getId())); ?>">&rarr; Close</a>
+            	</p>
+        	</div>
+    	</div>
+	<? endif; ?>
+
+	<div class="sidebox">
+        <div class="title">Sale Application</div>
+        <div class="content">
+            <p>
+                <i>Please hit the link below to open the sale application for regular users!</i>
+            </p>
+            <p>
+                <a href="<?= $this->url(array('action' => 'index', 'controller' => 'sale', 'module' => 'application')); ?>">&rarr; Sale Application</a>
+            </p>
+        </div>
+    </div>
+
+	<div class="sidebox">
+        <div class="title">Queue Sign-in</div>
+        <div class="content">
+            <p>
+                <i>Please hit the link below to open queue sign-in page!</i>
+            </p>
+            <p>
+                <a href="<?= $this->url(array('action' => 'queue', 'controller' => 'sale', 'module' => 'application')); ?>">&rarr; Queue Sign-in</a>
+            </p>
+        </div>
+    </div>
+</aside>

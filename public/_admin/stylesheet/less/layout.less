@@ -20,6 +20,11 @@ body {
     color: @cText;
 }
 
+h1 {
+	margin-bottom: @defaultSpacing;
+	font-size: @tSizeHeadingOne;
+}
+
 #layout {
     display: block;
     position: relative;
@@ -498,6 +503,12 @@ body {
 
         .full_width {
             width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
+        }
+
+		.half_width {
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
+			float: left;
+			margin-right: @defaultSpacing;
         }
     }
 

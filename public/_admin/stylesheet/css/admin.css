@@ -58,6 +58,7 @@ table tbody tr:last-child td{background:#dddcdc url("/_admin/img/t.gif") no-repe
 table tbody tr:last-child td:last-child{background-image:none;}
 html,body{height:100%;}
 body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tahoma, Arial, serif;font-size:11px;color:#7f7c7c;}
+h1{margin-bottom:5px;font-size:14px;}
 #layout{display:block;position:relative;width:1000px;min-height:100%;height:auto !important;height:100%;margin:0 auto -40px auto;background:#efefef;}
 #content:after{content:".";height:0;clear:both;visibility:hidden;}
 #content_header{height:106px;margin-bottom:5px;background:url("/_admin/img/bg.png") 50% 0 repeat-x;}#content_header a{position:absolute;width:139px;height:36px;margin:43px 0 0 26px;display:block;background:url("/_admin/img/litus.png") no-repeat;}
@@ -109,6 +110,7 @@ body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tah
 #content_controller #controller_action .pagination tr td:first-child{padding-left:5px;text-indent:0;text-align:left;}
 #content_controller #controller_action .pagination tr td:last-child{padding-right:5px;text-align:right;}
 #content_controller #controller_action .full_width{width:794px !important;}
+#content_controller #controller_action .half_width{width:299px !important;float:left;margin-right:5px;}
 #content_controller aside{float:right;width:191px;}#content_controller aside .sidebox{margin:0 5px 10px 0;}#content_controller aside .sidebox .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:url("/_admin/img/s.gif") repeat-x 0 0;}
 #content_controller aside .sidebox .content{padding:5px;color:#ffffff;background:#fdc346 url("/_admin/img/s.gif") repeat-x 0 -20px;}#content_controller aside .sidebox .content p{margin-top:10px;}#content_controller aside .sidebox .content p a{padding-left:5px;text-decoration:none;color:#ffffff;}
 #content_controller aside .sidebox .content p a:hover{font-weight:bold;}

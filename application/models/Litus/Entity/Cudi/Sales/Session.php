@@ -53,11 +53,12 @@ class Session
 	 */
 	//private $union;
 	
-	public function __construct($openAmount, $comment = '')
+	public function __construct($openAmount, $manager, $comment = '')
 	{
 		$this->openDate = new \DateTime();
 		$this->openAmount = $openAmount;
 		$this->comment = $comment;
+		$this->manager = $manager;
 	}
 
 	public function getId() {
