@@ -36,6 +36,36 @@ class LitusEntityCudiStockDeliveryProxy extends \Litus\Entity\Cudi\Stock\Deliver
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setPrice($price)
+    {
+        $this->__load();
+        return parent::setPrice($price);
+    }
+
+    public function getPrice()
+    {
+        $this->__load();
+        return parent::getPrice();
+    }
+
+    public function setDate($date)
+    {
+        $this->__load();
+        return parent::setDate($date);
+    }
+
+    public function getDate()
+    {
+        $this->__load();
+        return parent::getDate();
+    }
+
 
     public function __sleep()
     {

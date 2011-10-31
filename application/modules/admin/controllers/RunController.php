@@ -43,14 +43,14 @@ class RunController extends \Litus\Controller\Action
             ->countAll();
         
         $resultPage = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Config\Config')
+            ->getRepository('Litus\Entity\General\Config')
             ->getConfigValue('sport.run_result_page');
 
         $resultPageContent = @simplexml_load_file($resultPage);
         
         if (false !== $resultPageContent) {
             $teamId = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Config\Config')
+                ->getRepository('Litus\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
             
             $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');

@@ -36,6 +36,48 @@ class LitusEntityCudiStockOrderProxy extends \Litus\Entity\Cudi\Stock\Order impl
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setSupplier($supplier)
+    {
+        $this->__load();
+        return parent::setSupplier($supplier);
+    }
+
+    public function getSupplier()
+    {
+        $this->__load();
+        return parent::getSupplier();
+    }
+
+    public function setPrice($price)
+    {
+        $this->__load();
+        return parent::setPrice($price);
+    }
+
+    public function getPrice()
+    {
+        $this->__load();
+        return parent::getPrice();
+    }
+
+    public function setDate($date)
+    {
+        $this->__load();
+        return parent::setDate($date);
+    }
+
+    public function getDate()
+    {
+        $this->__load();
+        return parent::getDate();
+    }
+
 
     public function __sleep()
     {
