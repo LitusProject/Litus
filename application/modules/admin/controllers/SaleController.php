@@ -33,17 +33,18 @@ class SaleController extends \Litus\Controller\Action
     
     public function manageAction()
     {
-		// TODO: order
 		$this->view->sessions = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Session'
+            'Litus\Entity\Cudi\Sales\Session',
+			array(),
+			array('openDate' => 'DESC')
         );
     }
 
     public function editregisterAction()
     {
         $register = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
-                ->findOneById($this->_getParam("id"));
+        	->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
+            ->findOneById($this->_getParam("id"));
 
         $form = new CashRegisterForm();
 		$form->populate($register);
@@ -101,8 +102,8 @@ class SaleController extends \Litus\Controller\Action
     public function closeAction()
     {
         $session = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\Session')
-                ->findOneById($this->_getParam('id'));
+        	->getRepository('Litus\Entity\Cudi\Sales\Session')
+            ->findOneById($this->_getParam('id'));
 
         if(!isset($session))
             $this->_forward('manage');
@@ -127,7 +128,13 @@ class SaleController extends \Litus\Controller\Action
 				
 				$this->getEntityManager()->persist($cashRegister);
 				
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The session was successfully closed!"));
+				$this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The session was successfully closed!'
+                    )
+                );
                	$this->_redirect('managesession', null, null, array('id' => $session->getId()));
 			}
 		}
@@ -149,13 +156,19 @@ class SaleController extends \Litus\Controller\Action
 					$this->getEntityManager()->persist($numberUnit);
 				}
 
-                $saleSession = new Session($cashRegister, "");
+                $saleSession = new Session($cashRegister, '');
 
                 $this->getEntityManager()->persist($cashRegister);
                 $this->getEntityManager()->persist($saleSession);
 
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The session was successfully added!"));
-        		$this->_redirect('manage');
+        		$this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The session was successfully added!'
+                    )
+                );
+				$this->_redirect('manage');
             }
         }
     }
