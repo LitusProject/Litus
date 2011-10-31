@@ -16,30 +16,30 @@ class Session
 	private $id;
 	
 	/**
-	 * @Column(type="datetime")
+	 * @Column(name="open_date", type="datetime")
 	 */
 	private $openDate;
 	
 	/**
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(name="close_date", type="datetime", nullable=true)
 	 */
 	private $closeDate;
 	
 	/**
-	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
-	 * @JoinColumn(name="openAmount", referencedColumnName="id")
+	 * @OneToOne(targetEntity="\Litus\Entity\General\Bank\CashRegister")
+	 * @JoinColumn(name="open_amount", referencedColumnName="id")
 	 */
 	private $openAmount;
 	
 	/**
-	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\CashRegister")
-	 * @JoinColumn(name="closeAmount", referencedColumnName="id")
+	 * @OneToOne(targetEntity="\Litus\Entity\General\Bank\CashRegister")
+	 * @JoinColumn(name="close_amount", referencedColumnName="id")
 	 */
 	private $closeAmount;
 	
 	/**
 	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
-	 * @JoinColumn(name="manager_id", referencedColumnName="id")
+	 * @JoinColumn(name="manager", referencedColumnName="id")
 	 */
 	private $manager;
 	
@@ -47,23 +47,13 @@ class Session
 	 * @Column(type="string")
 	 */
 	private $comment;
-
-	/**
-	 * @ Column(type="datetime")
-	 */
-//	private $registerStart;
-	
-	/**
-	 * @ Column(type="datetime")
-	 */
-//	private $registerEnd;
 	
 	/**
 	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
 	 */
 	//private $union;
 	
-	public function __construct($openAmount, $comment)
+	public function __construct($openAmount, $comment = '')
 	{
 		$this->openDate = new \DateTime();
 		$this->openAmount = $openAmount;
@@ -130,6 +120,6 @@ class Session
 	
 	public function isOpen()
 	{
-		return $this->getCloseDate() === null;
+		return null === $this->getCloseDate();
 	}
 }

@@ -12,7 +12,7 @@ use \Zend\Form\Element\Hidden;
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Text;
 use \Zend\Form\Element\Textarea;
-use \Zend\Validator;
+use \Zend\Validator\Int as IntValidator;
 use \Zend\Registry;
 
 class CashRegister extends \Litus\Form\Admin\Form
@@ -21,13 +21,16 @@ class CashRegister extends \Litus\Form\Admin\Form
     {
         parent::__construct($options);
 
-        $units = Registry::get('EntityManager')->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+        $units = Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\General\MoneyUnit')
+            ->findAll();
+        
 		foreach($units as $unit) {
-			$field = new Text('unit_'.$unit->getId());
-	        $field->setLabel('&euro; '.number_format($unit->getUnit()/100, 2))
+			$field = new Text('unit_' . $unit->getId());
+	        $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
 	            ->setRequired()
 				->setValue(0)
-				->addValidator(new \Zend\Validator\Int())
+				->addValidator(new IntValidator())
 	            ->setDecorators(array(new FieldDecorator()));
 	        $this->addElement($field);
 		}
@@ -59,11 +62,12 @@ class CashRegister extends \Litus\Form\Admin\Form
 	public function populate($data)
 	{
 		$array = array(
-			'Bank_Device_1' => $data->getAmountBank1()/100,
-			'Bank_Device_2' => $data->getAmountBank2()/100
+			'Bank_Device_1' => $data->getAmountBank1() / 100,
+			'Bank_Device_2' => $data->getAmountBank2() / 100
 		);
+        
 		foreach($data->getNumberMoneyUnits() as $number)
-			$array['unit_'.$number->getUnit()->getId()] = $number->getNumber();
+			$array['unit_' . $number->getUnit()->getId()] = $number->getNumber();
 		
 		parent::populate($array);
 	}
