@@ -5,11 +5,11 @@ namespace Admin;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
-use \Admin\Form\Sale;
+use \Admin\Form\Sale\CashRegister as CashRegisterForm;
 
 use \Litus\Entity\Cudi\Sales\SaleSession;
 use \Litus\Entity\Cudi\Sales\CashRegister;
-use \Litus\Entity\Cudi\Sales\NumberMoneyUnit;
+use \Litus\Entity\Cudi\Sales\MoneyUnitAmount;
 use \Litus\FlashMessenger\FlashMessage;
 
 
@@ -42,7 +42,7 @@ class SaleController extends \Litus\Controller\Action
                 ->getRepository('Litus\Entity\Cudi\Sales\CashRegister')
                 ->findOneById($this->_getParam("id"));
 
-        $form = new Form\Sale\CashRegister();
+        $form = new CashRegisterForm();
 		$form->populate($register);
         $this->view->form = $form;
 
@@ -56,7 +56,13 @@ class SaleController extends \Litus\Controller\Action
 				foreach($units as $unit)
 					$register->getNumberForUnit($unit)->setNumber($formData['unit_'.$unit->getId()]);
 				
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The cash register was successfully updated!"));
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The cash register was successfully updated!'
+                    )
+                );
                	$this->_redirect('managesession', null, null, array('id' => $this->_getParam("session")));
             }
         }
@@ -65,14 +71,16 @@ class SaleController extends \Litus\Controller\Action
     public function managesessionAction()
     {
         $session = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
-                ->findOneById($this->_getParam("id"));
+            ->getRepository('Litus\Entity\Cudi\Sales\SaleSession')
+            ->findOneById($this->_getParam("id"));
 
         if( !isset($session) )
         	$this->_forward('manage');
 		
         $this->view->session = $session;
-		$this->view->units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
+		$this->view->units = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')
+            ->findAll();
 		
 		$form = new Form\Sale\SessionComment();
 		$form->populate($session);
@@ -96,7 +104,7 @@ class SaleController extends \Litus\Controller\Action
         if(!isset($session))
             $this->_forward('manage');
         
-        $form = new Form\Sale\CashRegister();
+        $form = new CashRegisterForm();
 		$form->populate($session->getOpenAmount());
 		$this->view->form = $form;
 		
@@ -107,7 +115,7 @@ class SaleController extends \Litus\Controller\Action
 				$cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
 				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
 				foreach($units as $unit) {
-					$numberUnit = new NumberMoneyUnit($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
+					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
 					$this->getEntityManager()->persist($numberUnit);
 				}
 				
@@ -124,7 +132,7 @@ class SaleController extends \Litus\Controller\Action
 
     public function newAction()
     {
-        $form = new Form\Sale\CashRegister();
+        $form = new CashRegisterForm();
         $this->view->form = $form;
 
         if($this->getRequest()->isPost()) {
@@ -134,7 +142,7 @@ class SaleController extends \Litus\Controller\Action
                 $cashRegister = new CashRegister($formData['Bank_Device_1'], $formData['Bank_Device_2']);
 				$units = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\MoneyUnit')->findAll();
 				foreach($units as $unit) {
-					$numberUnit = new NumberMoneyUnit($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
+					$numberUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
 					$this->getEntityManager()->persist($numberUnit);
 				}
 

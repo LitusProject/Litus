@@ -31,7 +31,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     private static $_authentication = null;
 
 	/**
-	 * @var mixed The flashmessages
+	 * @var array The flashmessages
 	 */
 	private $_flashMessages = null;
 
@@ -91,8 +91,9 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
     public function postDispatch()
     {
         $this->view->doctrineUnitOfWork = $this->getEntityManager()->getUnitOfWork()->size();
+        $this->view->flashMessages = $this->_flashMessages;
+        
         $this->view->flushResult = $this->_flush();
-		$this->view->flashMessages = $this->_flashMessages;
     }
 
     /**
@@ -149,6 +150,7 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      * Create a paginator for a given entity.
      *
      * @param string $entity The name of the entity that should be paginated
+     * @param array $conditions These conditions will be passed to the Repository call
      * @return \Zend\Paginator\Paginator
      */
     protected function _createPaginator($entity, array $conditions = array())

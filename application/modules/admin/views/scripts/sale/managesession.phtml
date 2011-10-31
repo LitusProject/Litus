@@ -34,7 +34,7 @@
 	<?php foreach($this->units as $unit): ?>
 		<tr>
 			<td style="text-align: right">&euro; <?= number_format($unit->getUnit()/100, 2); ?></td>
-			<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getNumber(); ?></td>
+			<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
 			<td style="text-align: right"><?= $session->isOpen() ? '' : '&euro; '.number_format($unit->getUnit()/100, 2) ?></td>
 			<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getNumberForUnit($unit)->getNumber(); ?></td>
 		</tr>

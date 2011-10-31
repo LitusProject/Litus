@@ -1,6 +1,8 @@
 <?= $this->partial('partials/role/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
+
     <table>
         <thead>
             <tr>

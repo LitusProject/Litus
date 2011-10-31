@@ -134,34 +134,6 @@ class ArticleController extends \Litus\Controller\Action
             ->getRepository('Litus\Entity\Cudi\Article')->findAll();
     }
 
-	public function deleteAction()
-	{
-		$article = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
-		
-		if (null == $article)
-			throw new Zend\Controller\Action\Exception("Page not found", 404);
-			
-		$this->view->article = $article;
-		
-		if (null !== $this->getRequest()->getParam('confirm')) {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-				$article->setRemoved(true);
-
-                $this->broker('flashmessenger')->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully removed!'
-                    )
-                );
-            }
-            
-            $this->_redirect('manage');
-        }
-	}
-
 	public function editAction()
 	{
 		$article = $this->getEntityManager()
@@ -246,6 +218,34 @@ class ArticleController extends \Litus\Controller\Action
 						$formElement->setRequired($required[$formElement->getName()]);
 				}
 			}
+        }
+	}
+
+    public function deleteAction()
+	{
+		$article = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')
+            ->findOneById($this->getRequest()->getParam('id'));
+
+		if (null == $article)
+			throw new Zend\Controller\Action\Exception("Page not found", 404);
+
+		$this->view->article = $article;
+
+		if (null !== $this->getRequest()->getParam('confirm')) {
+            if (1 == $this->getRequest()->getParam('confirm')) {
+				$article->setRemoved(true);
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully removed!'
+                    )
+                );
+            }
+
+            $this->_redirect('manage');
         }
 	}
 }
