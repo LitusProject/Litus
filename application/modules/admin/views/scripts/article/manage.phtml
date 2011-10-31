@@ -1,9 +1,9 @@
 <?= $this->partial('partials/article/navigation.phtml', array('currentAction' => 'manage')); ?>
 
 <div id="controller_action">
-    <?php foreach($this->flashMessages as $message) { echo $message; } ?>
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
 
-    <table>
+    <table class="full_width">
     
         <tr>
             <th>Title</th>
@@ -13,7 +13,7 @@
             <th width="130px">Action</th>
         </tr>
         
-        <? foreach ($this->articles as $article): ?>
+        <? foreach ($this->paginator as $article): ?>
 
             <tr>
                 <td><?= $article->getTitle(); ?></td>
@@ -28,4 +28,6 @@
     
         <? endforeach; ?>
     </table>
+
+	<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
 </div>

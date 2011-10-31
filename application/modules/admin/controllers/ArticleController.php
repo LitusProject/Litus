@@ -130,8 +130,12 @@ class ArticleController extends \Litus\Controller\Action
     
     public function manageAction()
 	{
-        $this->view->articles = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')->findAll();
+		$this->view->paginator = $this->_createPaginator(
+            'Litus\Entity\Cudi\Article',
+            array(
+                'removed' => false
+            )
+        );
     }
 
 	public function deleteAction()

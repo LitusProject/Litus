@@ -33,7 +33,10 @@ class SaleController extends \Litus\Controller\Action
     
     public function manageAction()
     {
-        $this->view->sessions = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Sales\SaleSession')->findFirstNb(25);
+		// TODO: order
+		$this->view->sessions = $this->_createPaginator(
+            'Litus\Entity\Cudi\Sales\SaleSession'
+        );
     }
 
     public function editregisterAction()
