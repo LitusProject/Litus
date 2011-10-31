@@ -153,13 +153,13 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      * @param array $conditions These conditions will be passed to the Repository call
      * @return \Zend\Paginator\Paginator
      */
-    protected function _createPaginator($entity, array $conditions = array())
+    protected function _createPaginator($entity, array $conditions = array(), array $orderBy = null)
     {
         $paginator = new Paginator(
             new ArrayAdapter(
                 (0 == count($conditions)) ?
-                    $this->getEntityManager()->getRepository($entity)->findAll() :
-                    $this->getEntityManager()->getRepository($entity)->findBy($conditions)
+                    $this->getEntityManager()->getRepository($entity)->findBy(array(), $orderBy) :
+                    $this->getEntityManager()->getRepository($entity)->findBy($conditions, $orderBy)
             )
         );
         $paginator->setItemCountPerPage(25);
