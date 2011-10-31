@@ -12,7 +12,8 @@ use \Litus\FlashMessenger\FlashMessage;
 /**
  *
  * This class controlls management and adding of bookings.
- * @author Kristof Mariën
+ *
+ * @author Kristof Mariën <ktistof.marien@litus.cc>
  *
  */
 class BookingController extends \Litus\Controller\Action

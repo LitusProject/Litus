@@ -9,7 +9,7 @@ use \Litus\FlashMessenger\FlashMessage;
  * 
  * @author Kristof Mariën <ktistof.marien@litus.cc>
  */
-class StockController extends \Litus\Controller\Action
+class DeliveryController extends \Litus\Controller\Action
 {
     public function init()
     {
@@ -20,11 +20,11 @@ class StockController extends \Litus\Controller\Action
     {
         $this->_forward('overview');
     }
-    
-    public function overviewAction()
-	{      
-		$this->view->stock = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\StockItem'
+	
+	public function overviewAction()
+	{
+		$this->view->deliveries = $this->_createPaginator(
+            'Litus\Entity\Cudi\Stock\Delivery'
         );
-    }
+	}
 }
