@@ -34,23 +34,20 @@ class CashRegister extends \Litus\Form\Admin\Form
 	            ->setDecorators(array(new FieldDecorator()));
 	        $this->addElement($field);
 		}
-
-        $field = new Text('Bank_Device_1');
-        $field->setLabel('Bank Device 1')
-            ->setRequired()
-			->setValue(0)
-            ->addValidator( new PriceValidator() )
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-        $field = new Text('Bank_Device_2');
-        $field->setLabel('Bank Device 2')
-            ->setRequired()
-			->setValue(0)
-            ->addValidator( new PriceValidator() )
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
+		
+		$devices = Registry::get(DoctrineResource::REGISTRY_KEY)
+            ->getRepository('Litus\Entity\General\Bank\BankDevice')
+            ->findAll();
+        
+		foreach($devices as $device) {
+			$field = new Text('device_' . $device->getId());
+	        $field->setLabel($device->getName())
+	            ->setRequired()
+				->setValue(0)
+				->addValidator(new PriceValidator())
+	            ->setDecorators(array(new FieldDecorator()));
+	        $this->addElement($field);
+		}
 
         $field = new Submit('submit');
         $field->setLabel('Submit')
@@ -61,10 +58,10 @@ class CashRegister extends \Litus\Form\Admin\Form
 
 	public function populate($data)
 	{
-		$array = array(
-			'Bank_Device_1' => $data->getAmountBank1() / 100,
-			'Bank_Device_2' => $data->getAmountBank2() / 100
-		);
+		$array = array();
+		
+		foreach($data->getBankDeviceAmounts() as $amount)
+			$array['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
         
 		foreach($data->getMoneyUnitAmounts() as $amount)
 			$array['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();

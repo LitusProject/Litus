@@ -21,22 +21,13 @@ class CashRegister
 	 * @OneToMany(targetEntity="\Litus\Entity\General\Bank\MoneyUnitAmount", mappedBy="cashRegister", cascade={"remove"})
 	 */
 	private $moneyUnitAmounts;
-
-    /**
-     * @Column(type="integer", nullable=true)
-     */
-    private $amountBank1;
-
-    /**
-     * @Column(type="integer", nullable=true)
-     */
-    private $amountBank2;
 	
-    public function __construct($bank1, $bank2)
-    {
-        $this->setAmountBank1($bank1);
-        $this->setAmountBank2($bank2);
-    }
+	/**
+     * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each bank device
+     *
+	 * @OneToMany(targetEntity="\Litus\Entity\General\Bank\BankDeviceAmount", mappedBy="cashRegister", cascade={"remove"})
+	 */
+	private $bankDeviceAmounts;
 	
 	/**
 	 * @return integer
@@ -54,54 +45,25 @@ class CashRegister
 		return $this->moneyUnitAmounts->toArray();
 	}
 
-    /**
-     * @param integer $amountBank1
-     */
-    public function setAmountBank1($amountBank1)
-    {
-        $this->amountBank1 = $amountBank1 * 100;
-		return $this;
-    }
-
-    /**
-     * Get amountBank1
-     *
-     * @return integer 
-     */
-    public function getAmountBank1()
-    {
-        return $this->amountBank1;
-    }
-
-    /**
-     * Set amountBank2
-     *
-     * @param integer $amountBank2
-     */
-    public function setAmountBank2($amountBank2)
-    {
-        $this->amountBank2 = $amountBank2 * 100;
-		return $this;
-    }
-
-    /**
-     * Get amountBank2
-     *
-     * @return integer 
-     */
-    public function getAmountBank2()
-    {
-        return $this->amountBank2;
-    }
+  	/**
+	 * @return array
+	 */
+	public function getBankDeviceAmounts()
+	{
+		return $this->bankDeviceAmounts->toArray();
+	}
 
 	/**
-	 * Get the total amoun
+	 * Get the total amount
 	 *
 	 * @return integer
 	 */
 	public function getTotalAmount()
     {
-        $amount = $this->amountBank1 + $this->amountBank2;
+        $amount = 0;
+
+		foreach($this->bankDeviceAmounts as $device)
+			$amount += $device->getAmount();
 		
 		foreach($this->moneyUnitAmounts as $number)
 			$amount += $number->getAmount() * $number->getUnit()->getUnit();
@@ -110,15 +72,28 @@ class CashRegister
     }
 
 	/**
-	 * Get number of a unit
+	 * Get amount of a unit
 	 *
-	 * @return \MoneyUnitAmount\Entity\Cudi\Sales\NumberMoneyUnit
+	 * @return \MoneyUnitAmount\Entity\General\Bank\NumberMoneyUnit
 	 */
-	public function getNumberForUnit($unit)
+	public function getAmountForUnit($unit)
 	{
-		foreach($this->moneyUnitAmounts as $number) {
-			if ($number->getUnit() == $unit)
-				return $number;
+		foreach($this->moneyUnitAmounts as $amount) {
+			if ($amount->getUnit() == $unit)
+				return $amount;
+		}
+	}
+	
+	/**
+	 * Get amount of a bank device
+	 *
+	 * @return \MoneyUnitAmount\Entity\General\Bank\BankDeviceAmount
+	 */
+	public function getAmountForDevice($device)
+	{
+		foreach($this->bankDeviceAmounts as $amount) {
+			if ($amount->getDevice() == $device)
+				return $amount;
 		}
 	}
 }
