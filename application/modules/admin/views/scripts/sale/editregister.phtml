@@ -1,7 +1,7 @@
 <?= $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'edit_register')); ?>
 
 <div id="controller_action">
-	<?php foreach($this->flashMessages as $message) { echo $message; } ?>
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
     
     <?= $this->form; ?>
 </div>
