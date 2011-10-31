@@ -22,21 +22,19 @@
 		</tr>
 		<? foreach($this->units as $unit): ?>
 			<tr>
-				<td style="text-align: right">&euro; <?= number_format($unit->getUnit()/100, 2); ?></td>
-				<td><?= $session->getOpenAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
+				<td style="text-align: right">&euro; <?= number_format($unit->getUnit() / 100, 2); ?></td>
+				<td><?= $session->getOpenAmount()->getAmountForUnit($unit)->getAmount(); ?></td>
+			</tr>
+		<? endforeach; ?>
+		<? foreach($this->devices as $device): ?>
+			<tr>
+				<td style="text-align: right"><?= $device->getName(); ?></td>
+				<td>&euro; <?= number_format($session->getOpenAmount()->getAmountForDevice($device)->getAmount() / 100, 2); ?></td>
 			</tr>
 		<? endforeach; ?>
 		<tr>
-			<td style="text-align: right">Bank Device 1:</td>
-			<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank1()/100, 2); ?></td>
-		</tr>
-		<tr>
-			<td style="text-align: right">Bank Device 2:</td>
-			<td>&euro; <?= number_format($session->getOpenAmount()->getAmountBank2()/100, 2); ?></td>
-		</tr>
-		<tr>
 			<td style="text-align: right">TOTAL:</td>
-			<td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount()/100, 2); ?></td>
+			<td>&euro; <?= number_format($session->getOpenAmount()->getTotalAmount() / 100, 2); ?></td>
 		</tr>
 
 	</table>
@@ -54,21 +52,19 @@
 			</tr>
 			<?php foreach($this->units as $unit): ?>
 				<tr>
-					<td style="text-align: right"><?= $session->isOpen() ? '' : '&euro; '.number_format($unit->getUnit()/100, 2) ?></td>
-					<td><?= $session->isOpen() ? '' : $session->getCloseAmount()->getNumberForUnit($unit)->getAmount(); ?></td>
+					<td style="text-align: right">&euro; <?= number_format($unit->getUnit() / 100, 2); ?></td>
+					<td><?= $session->getCloseAmount()->getAmountForUnit($unit)->getAmount(); ?></td>
 				</tr>
 			<?php endforeach; ?>
+			<? foreach($this->devices as $device): ?>
+				<tr>
+					<td style="text-align: right"><?= $device->getName(); ?></td>
+					<td>&euro; <?= number_format($session->getCloseAmount()->getAmountForDevice($device)->getAmount() / 100, 2); ?></td>
+				</tr>
+			<? endforeach; ?>
 			<tr>
-				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 1'; ?></td>
-				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank1()/100, 2); ?></td>
-			</tr>
-			<tr>
-				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Bank Device 2'; ?></td>
-				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getAmountBank2()/100, 2); ?></td>
-			</tr>
-			<tr>
-				<td style="text-align: right"><?= $session->isOpen() ? '' : 'Total'; ?></td>
-				<td><?= $session->isOpen() ? '' : '&euro; '.number_format($session->getCloseAmount()->getTotalAmount()/100, 2); ?></td>
+				<td style="text-align: right">TOTAL:</td>
+				<td>&euro; <?= number_format($session->getCloseAmount()->getTotalAmount() / 100, 2); ?></td>
 			</tr>
 
 		</table>
