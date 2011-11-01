@@ -3,4 +3,37 @@
 <div id="controller_action">
     <? foreach($this->flashMessages as $message) { echo $message; } ?>
 
+	<?= $this->form; ?>
+	
+	<table>
+		
+		<tr>
+			<th>Article</th>
+			<th>Number</th>
+			<th>Actions</th>
+		</tr>
+		
+		<? foreach($this->order->getOrderItems() as $item): ?>
+			<tr>
+				<td><?= $item->getStockItem()->getArticle()->getTitle(); ?></td>
+				<td><?= $item->getNumber(); ?></td>
+				<td></td>
+			</tr>
+		<? endforeach; ?>
+		
+	</table>
 </div>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">New Order Item</div>
+        <div class="content">
+            <p>
+                <i>Please hit the link below to add a new order item!</i>
+            </p>
+            <p>
+                <a href="<?= $this->url(array('action' => 'additem')); ?>">&rarr; Add order item</a>
+            </p>
+        </div>
+    </div>
+</aside>

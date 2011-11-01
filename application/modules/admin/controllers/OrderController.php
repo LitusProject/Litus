@@ -2,7 +2,8 @@
 
 namespace Admin;
 
-use \Admin\Form\Stock\AddOrder;
+use \Admin\Form\Order\Add as AddForm;
+use \Admin\Form\Order\Edit as EditForm;
 
 use \Litus\Entity\Cudi\Stock\Order;
 use \Litus\FlashMessenger\FlashMessage;
@@ -33,7 +34,7 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function addAction()
 	{
-		$form = new AddOrder();
+		$form = new AddForm();
 		$this->view->form = $form;
 		
 		if($this->getRequest()->isPost()) {
@@ -62,6 +63,43 @@ class OrderController extends \Litus\Controller\Action
 	}
 	
 	public function editAction()
+	{
+		$order = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Stock\Order')
+            ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $order)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		
+		$form = new EditForm();
+		$form->populate($order);
+
+        $this->view->form = $form;
+		$this->view->order = $order;
+
+		if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if($form->isValid($formData)) {
+                $supplier = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Supplier')
+					->findOneById($formData['supplier']);
+				
+				$order->setSupplier($supplier)
+					->setPrice($formData['price']);
+                 
+                $this->_addDirectFlashMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order was successfully updated!'
+                    )
+				);
+			}
+        }
+	}
+	
+	public function additemAction()
 	{
 		
 	}

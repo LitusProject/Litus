@@ -48,10 +48,10 @@ class LitusEntityGeneralBankBankDeviceAmountProxy extends \Litus\Entity\General\
         return parent::getAmount();
     }
 
-    public function setAmount($number)
+    public function setAmount($amount)
     {
         $this->__load();
-        return parent::setAmount($number);
+        return parent::setAmount($amount);
     }
 
 

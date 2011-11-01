@@ -32,6 +32,11 @@ class Order
 	private $price;
 	
 	/**
+	 * @OneToMany(targetEntity="Litus\Entity\Cudi\Stock\OrderItem", mappedBy="order")
+	 */
+	private $orderItems;
+	
+	/**
 	 * @param Litus\Entity\Cudi\Supplier $supplier The supplier of this order
 	 * @param float $price The price of this order
 	 */
@@ -113,5 +118,15 @@ class Order
 	public function getDate()
 	{
 		return $this->date;
+	}
+	
+	/**
+	 * Get the order items
+	 *
+	 * @return \Doctrine\Common\Collection\ArrayCollection
+	 */
+	public function getOrderItems()
+	{
+		return $this->orderItems;
 	}
 }
