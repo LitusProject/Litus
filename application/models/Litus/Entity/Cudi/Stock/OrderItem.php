@@ -22,7 +22,7 @@ class OrderItem
 	private $stockItem;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\Order")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\Order", inversedBy="orderItems")
 	 * @JoinColumn(name="order_id", referencedColumnName="id")
 	 */
 	private $order;
@@ -31,4 +31,28 @@ class OrderItem
 	 * @Column(type="integer")
 	 */
 	private $number;
+	
+	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	/**
+	 * @return \Litus\Entity\Cudi\Stock\StockItem
+	 */
+	public function getStockItem()
+	{
+		return $this->stockItem;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumber()
+	{
+		return $this->number;
+	}
 }

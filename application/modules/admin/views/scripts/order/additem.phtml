@@ -1,0 +1,7 @@
+<?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'orders')); ?>
+
+<div id="controller_action">
+    <? foreach($this->flashMessages as $message) { echo $message; } ?>
+
+	<?= $this->form; ?>
+</div>

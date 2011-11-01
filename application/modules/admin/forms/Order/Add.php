@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Form\Stock;
+namespace Admin\Form\Order;
 
 use \Litus\Validator\Price as PriceValidator;
 
@@ -14,7 +14,7 @@ use \Zend\Form\Element\Text;
 
 use \Zend\Registry;
 
-class AddOrder extends \Litus\Form\Admin\Form
+class Add extends \Litus\Form\Admin\Form
 {
 
     public function __construct($options = null)
