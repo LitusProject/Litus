@@ -6,8 +6,8 @@ use Zend\Form\SubForm;
 
 use Litus\Entity\Cudi\Sales\BookingStatus;
 
-use Litus\Validator\Price as PriceValidator;
-use Litus\Validator\Year as YearValidator;
+use Litus\Validator\ArticleBarcode as ArticleBarcodeValidator;
+use Litus\Validator\Username as UsernameValidator;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use Litus\Form\Admin\Decorator\FieldDecorator;
@@ -27,20 +27,20 @@ class Add extends \Litus\Form\Admin\Form
         $this->setAction('/admin/booking/add');
         $this->setMethod('post');
          
-        // Create text fields that will contain information for the new booking
 		$person = new Text('person');
         $person->setLabel('Person')
         	->setRequired()
+			->addValidator(new UsernameValidator())
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($person);
 
 		$stockArticle = new Text('stockArticle');
         $stockArticle->setLabel('Article')
         	->setRequired()
+			->addValidator(new ArticleBarcodeValidator())
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($stockArticle);
 
-        // Create the button
         $submit = new Submit('submit');
         $submit->setLabel('Add')
                 ->setAttrib('class', 'bookings_add')
