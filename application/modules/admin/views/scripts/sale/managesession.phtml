@@ -1,7 +1,9 @@
 <?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
 
-<div id="controller_action">
+<div id="controller_action"><? /* separate div because flash message interferes with helper message otherwise */ ?>
         <? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+<div id="controller_action">
                 
     <h1>Sale Session</h1>
 

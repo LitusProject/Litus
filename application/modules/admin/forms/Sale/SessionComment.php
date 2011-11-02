@@ -30,8 +30,8 @@ class SessionComment extends \Litus\Form\Admin\Form
         $this->addElement($field);
     }
 
-	public function populate($data)
-	{
-		parent::populate(array('comment' => $data->getComment()));
-	}
+    public function populate($data)
+    {
+        parent::populate(array('comment' => $data->getComment()));
+    }
 }
