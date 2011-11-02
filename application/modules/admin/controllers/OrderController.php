@@ -4,8 +4,10 @@ namespace Admin;
 
 use \Admin\Form\Order\Add as AddForm;
 use \Admin\Form\Order\Edit as EditForm;
+use \Admin\Form\Order\AddItem as AddItemForm;
 
 use \Litus\Entity\Cudi\Stock\Order;
+use \Litus\Entity\Cudi\Stock\OrderItem;
 use \Litus\FlashMessenger\FlashMessage;
 
 /**
@@ -101,6 +103,35 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function additemAction()
 	{
+		$order = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $order)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$form = new AddItemForm();
 		
+		$this->view->form = $form;
+		
+		if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if($form->isValid($formData)) {
+				$stockItem = null;
+				$item = new OrderItem($stockItem, $order, $formData['number']);
+                 
+                $this->getEntityManager()->persist($item);
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order item was successfully created!'
+                    )
+				);
+				
+				$this->_redirect('edit', null, null, array('id' => $order->getId()));
+			}
+        }
 	}
 }
