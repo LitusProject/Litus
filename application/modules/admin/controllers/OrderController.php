@@ -57,7 +57,6 @@ class OrderController extends \Litus\Controller\Action
                         'The order was successfully created!'
                     )
 				);
-				$this->getEntityManager()->flush();
 				
 				$this->_redirect('edit', null, null, array('id' => $order->getId()));
 			}
