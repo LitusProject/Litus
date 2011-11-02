@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class ServingQueueItem extends EntityRepository
 {
+
+    public function getQueueNumber( $queueItem ) {
+    
+        $query = $this->createQueryBuilder("qi");
+        $query->select( "COUNT(qi)" )
+              ->where( "qi.session = '".$queueItem->getSession()->getId()."'")
+              ->andWhere( "qi.id < ".$queueItem->getId());
+
+        $result = $query->getQuery()->getResult();
+        $count = $result[0][1];
+
+        return $count + 1;
+    }
+
 }

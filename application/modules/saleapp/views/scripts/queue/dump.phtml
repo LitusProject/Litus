@@ -1,0 +1,10 @@
+<?php
+
+foreach( $queueItems as $queueItem ):
+    echo $queueItem->getId();
+    echo " : " . is_null($queueItem->getPerson())?("guest".$queueItem->getId()):$queueItem->getPerson()->getUsername();
+    echo " : " . is_null($queueItem->getStatus())?("no status defined!"):$queueItem->getStatus()->getName();
+    echo "<br>\n";
+endforeach;
+
+?>

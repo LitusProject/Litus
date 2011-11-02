@@ -101,7 +101,7 @@
                         <i>Please hit the link below to open the sale application for regular users!</i>
                     </p>
                     <p>
-                        <a href="<?= $this->url(array('action' => 'index', 'controller' => 'sale', 'module' => 'application')); ?>">&rarr; Sale Application</a>
+                        <a href="<?= $this->url(array('action' => 'index', 'controller' => 'sale', 'module' => 'saleapp')); ?>">&rarr; Pay Desk Application</a>
                     </p>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                         <i>Please hit the link below to open queue sign-in page!</i>
                     </p>
                     <p>
-                        <a href="<?= $this->url(array('action' => 'queue', 'controller' => 'sale', 'module' => 'application')); ?>">&rarr; Queue Sign-in</a>
+                        <a href="<?= $this->url(array('action' => 'sign-in', 'controller' => 'queue', 'module' => 'saleapp', 'session' => $session->getId())); ?>">&rarr; Queue Sign-in</a>
                     </p>
                 </div>
             </div>
