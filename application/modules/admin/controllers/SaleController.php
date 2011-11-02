@@ -210,7 +210,7 @@ class SaleController extends \Litus\Controller\Action
                     )
                 );
 
-                $this->_redirect('manage');
+               	$this->_redirect('managesession', null, null, array('id' => $saleSession->getId()));
             }
         }
     }
