@@ -78,6 +78,12 @@ class LitusEntityCudiStockOrderProxy extends \Litus\Entity\Cudi\Stock\Order impl
         return parent::getDate();
     }
 
+    public function getOrderItems()
+    {
+        $this->__load();
+        return parent::getOrderItems();
+    }
+
 
     public function __sleep()
     {

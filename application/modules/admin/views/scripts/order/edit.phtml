@@ -15,9 +15,11 @@
 		
 		<? foreach($this->order->getOrderItems() as $item): ?>
 			<tr>
-				<td><?= $item->getStockItem()->getArticle()->getTitle(); ?></td>
+				<td><?= $item->getArticle()->getTitle(); ?></td>
 				<td><?= $item->getNumber(); ?></td>
-				<td></td>
+				<td>
+					<a href="<?= $this->url(array('action' => 'deleteitem', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+				</td>
 			</tr>
 		<? endforeach; ?>
 		
