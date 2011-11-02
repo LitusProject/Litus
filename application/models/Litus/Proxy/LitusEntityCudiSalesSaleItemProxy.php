@@ -39,7 +39,7 @@ class LitusEntityCudiSalesSaleItemProxy extends \Litus\Entity\Cudi\Sales\SaleIte
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'session', 'stockArticle', 'person', 'timestamp', 'price', 'booking', 'servingQueueItem');
+        return array('__isInitialized__', 'id', 'session', 'article', 'person', 'timestamp', 'price', 'booking', 'servingQueueItem');
     }
 
     public function __clone()

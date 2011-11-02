@@ -205,8 +205,7 @@ class SaleController extends \Litus\Controller\Action
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The session was successfully added!',
-						true
+                        'The session was successfully added!'
                     )
                 );
 

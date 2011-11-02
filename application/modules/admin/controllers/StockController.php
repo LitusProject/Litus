@@ -22,9 +22,10 @@ class StockController extends \Litus\Controller\Action
     }
     
     public function overviewAction()
-	{      
+	{
+		// TODO: select only stock articles
 		$this->view->stock = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\StockItem'
+            'Litus\Entity\Cudi\Article'
         );
     }
 }

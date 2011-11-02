@@ -229,4 +229,16 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	 * @return boolean
 	 */
 	abstract public function isInternal();
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberInStock()
+	{
+		$number = 0;
+		
+		
+		
+		return $number;
+	}
 }
