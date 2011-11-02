@@ -118,8 +118,16 @@ class OrderController extends \Litus\Controller\Action
             $formData = $this->getRequest()->getPost();
 
             if($form->isValid($formData)) {
-				$stockItem = null;
-				$item = new OrderItem($stockItem, $order, $formData['number']);
+				$article = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Articles\StockArticles\External')
+					->findOneByBarcode($formData['stockArticle']);
+				if (null == $article) {
+					$article = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Internal')
+						->findOneByBarcode($formData['stockArticle']);
+				}
+				
+				$item = new OrderItem($article, $order, $formData['number']);
                  
                 $this->getEntityManager()->persist($item);
                 $this->broker('flashmessenger')->addMessage(
@@ -132,6 +140,34 @@ class OrderController extends \Litus\Controller\Action
 				
 				$this->_redirect('edit', null, null, array('id' => $order->getId()));
 			}
+        }
+	}
+	
+	public function deleteitemAction()
+	{
+		$item = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $item)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$this->view->item = $item;
+		
+		if (null !== $this->getRequest()->getParam('confirm')) {
+			if (1 == $this->getRequest()->getParam('confirm')) {
+				$this->getEntityManager()->remove($item);
+
+				$this->broker('flashmessenger')->addMessage(
+            		new FlashMessage(
+                		FlashMessage::SUCCESS,
+                    	'SUCCESS',
+                    	'The article was successfully removed!'
+                	)
+            	);
+			};
+            
+			$this->_redirect('edit', null, null, array('id' => $item->getOrder()->getId()));
         }
 	}
 }

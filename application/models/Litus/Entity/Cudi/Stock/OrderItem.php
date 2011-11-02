@@ -16,10 +16,10 @@ class OrderItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\StockItem")
-	 * @JoinColumn(name="stockitem_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
-	private $stockItem;
+	private $article;
 	
 	/**
 	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\Order", inversedBy="orderItems")
@@ -35,13 +35,13 @@ class OrderItem
 	/**
 	 * Create a new order item.
 	 *
-	 * @param \Litus\Entity\Cudi\Stock\StockItem $stockItem The stock Item
+	 * @param \Litus\Entity\Cudi\Article $article The stock Item
 	 * @param \Litus\Entity\Cudi\Stock\Order $order The order
 	 * @param integer $number The number of items
 	 */
-	public function __construct($stockItem, $order, $number)
+	public function __construct($article, $order, $number)
 	{
-		$this->stockItem = $stockItem;
+		$this->article = $article;
 		$this->order = $order;
 		$this->number = $number;
 	}
@@ -55,11 +55,19 @@ class OrderItem
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Stock\StockItem
+	 * @return \Litus\Entity\Cudi\Stock\Order
 	 */
-	public function getStockItem()
+	public function getOrder()
 	{
-		return $this->stockItem;
+		return $this->order;
+	}
+	
+	/**
+	 * @return \Litus\Entity\Cudi\Article
+	 */
+	public function getArticle()
+	{
+		return $this->article;
 	}
 	
 	/**

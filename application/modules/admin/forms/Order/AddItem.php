@@ -2,6 +2,8 @@
 
 namespace Admin\Form\Order;
 
+use Litus\Validator\ArticleBarcode as ArticleBarcodeValidator;
+
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use \Litus\Form\Admin\Decorator\FieldDecorator;
 
@@ -23,9 +25,10 @@ class AddItem extends \Litus\Form\Admin\Form
 
         $this->setMethod('post');
 		
-        $field = new Text('stockItem');
-        $field->setLabel('Stock Item')
+        $field = new Text('stockArticle');
+        $field->setLabel('Stock article')
         	->setRequired()
+			->addValidator(new ArticleBarcodeValidator())
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

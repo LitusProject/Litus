@@ -36,10 +36,28 @@ class LitusEntityCudiStockOrderItemProxy extends \Litus\Entity\Cudi\Stock\OrderI
     }
     
     
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getArticle()
+    {
+        $this->__load();
+        return parent::getArticle();
+    }
+
+    public function getNumber()
+    {
+        $this->__load();
+        return parent::getNumber();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'stockItem', 'order', 'number');
+        return array('__isInitialized__', 'id', 'article', 'order', 'number');
     }
 
     public function __clone()
