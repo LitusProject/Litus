@@ -24,3 +24,17 @@
 
 	<?= $this->paginationControl($this->deliveries, 'all', 'partials/pagination.phtml'); ?>
 </div>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">New Delivery</div>
+        <div class="content">
+            <p>
+                <i>Please hit the link below to add a new delivery!</i>
+            </p>
+            <p>
+                <a href="<?= $this->url(array('action' => 'add')); ?>">&rarr; Add Delivery</a>
+            </p>
+        </div>
+    </div>
+</aside>

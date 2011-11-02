@@ -2,6 +2,8 @@
 
 namespace Admin;
 
+use \Admin\Form\Delivery\Add as AddForm;
+
 use \Litus\FlashMessenger\FlashMessage;
 
 /**
@@ -26,5 +28,19 @@ class DeliveryController extends \Litus\Controller\Action
 		$this->view->deliveries = $this->_createPaginator(
             'Litus\Entity\Cudi\Stock\Delivery'
         );
+	}
+	
+	public function addAction()
+	{
+		$form = new AddForm();
+		$this->view->form = $form;
+		
+		if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if($form->isValid($formData)) {
+                
+			}
+        }
 	}
 }
