@@ -1,0 +1,18 @@
+
+<? if(!is_null($this->flashMessages) && count($this->flashMessages)!=0): ?>
+<div align=center>
+        <? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
+<script type="text/JavaScript">
+setTimeout("window.location = window.location;",3000); // reloads page every 3 seconds
+</script>
+
+<? endif; ?>
+
+<div class="centerscreen">
+
+<h3 class="signin">Student number:</h3>
+<?= $this->form; ?>
+
+</div>
