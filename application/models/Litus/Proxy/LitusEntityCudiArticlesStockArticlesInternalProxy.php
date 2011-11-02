@@ -210,6 +210,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::setIsUnbookable($unbookable);
     }
 
+    public function getNumberInStock()
+    {
+        $this->__load();
+        return parent::getNumberInStock();
+    }
+
     public function getId()
     {
         $this->__load();

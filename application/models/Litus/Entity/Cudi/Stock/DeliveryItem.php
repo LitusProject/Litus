@@ -16,10 +16,10 @@ class DeliveryItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\StockItem")
-	 * @JoinColumn(name="stockitem_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
-	private $stockItem;
+	private $article;
 	
 	/**
 	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\Delivery")
