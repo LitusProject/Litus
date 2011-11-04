@@ -43,7 +43,7 @@ class UnionStatus
     /**
      * @var string The academic year this status was valid in; the format is yyzz (i.e. 0910, 1112)
      *
-     * @Column(type="string", length="4")
+     * @Column(type="string", length=4)
      */
     private $year;
 

@@ -34,10 +34,13 @@ class LitusEntitySportRunnerProxy extends \Litus\Entity\Sport\Runner implements 
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getUniversityIdentification()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["universityIdentification"];
+        }
         $this->__load();
         return parent::getUniversityIdentification();
     }
