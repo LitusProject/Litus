@@ -78,7 +78,7 @@ class LitusEntityCudiArticleProxy extends \Litus\Entity\Cudi\Article implements 
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem');
     }
 
     public function __clone()

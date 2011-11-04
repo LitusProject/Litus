@@ -3,6 +3,7 @@
 namespace Litus\Repository\Cudi\Stock;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * StockItem
@@ -12,4 +13,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class StockItem extends EntityRepository
 {
+	public function findOneByBarcode($barcode)
+    {
+        $article = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Articles\StockArticles\External')
+			->findOneByBarcode($barcode);
+		if (null == $article) {
+			$article = $this->getEntityManager()
+				->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Internal')
+				->findOneByBarcode($barcode);
+		}
+		
+        return $article;
+    }
 }

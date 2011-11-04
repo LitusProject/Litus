@@ -26,24 +26,17 @@ class FlashMessage extends \Zend\Controller\Plugin\AbstractPlugin
 	private $_message = '';
 
     /**
-     * @var bool Whether or not the message should be displayed full width
-     */
-    private $_fullWidth = false;
-
-    /**
      * Create new FlashMessage.
      *
      * @param string $type The FlashMessage's type
      * @param string $title The FlashMessage's title
      * @param string $message The FlashMessage's message
-     * @param bool $fullWidth Whether or not the message should be displayed full width
      */
-	public function __construct($type, $title, $message, $fullWidth = false)
+	public function __construct($type, $title, $message)
 	{
 		$this->_type = $type;
 		$this->_title = $title;
 		$this->_message = $message;
-        $this->_fullWidth = $fullWidth;
 	}
 
     /**
@@ -54,7 +47,7 @@ class FlashMessage extends \Zend\Controller\Plugin\AbstractPlugin
      */
 	public function __toString()
 	{
-		return '<div class="' . $this->_type . (true === $this->_fullWidth ? ' full_width' : '') . '">'
+		return '<div class="' . $this->_type . '">'
 			.'<div class="title">' . $this->_title . '</div>'
 			.'<div class="content"><p>' . $this->_message . '</p></div>'
 			.'</div>';

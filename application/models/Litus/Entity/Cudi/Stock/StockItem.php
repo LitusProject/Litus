@@ -16,7 +16,7 @@ class StockItem
 	private $id;
 	
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article")
+	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article", inversedBy="stockItem")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;

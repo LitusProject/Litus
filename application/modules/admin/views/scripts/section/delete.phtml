@@ -1,5 +1,9 @@
 <?= $this->partial('partials/section/navigation.phtml', array('currentAction' => 'manage')); ?>
 
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
 <div id="controller_action">
     <div class="error_message full_width">
         <div class="title">Warning</div>
