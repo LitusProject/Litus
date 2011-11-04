@@ -34,7 +34,7 @@ class LitusEntityCudiStockDeliveryItemProxy extends \Litus\Entity\Cudi\Stock\Del
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
 
     public function __sleep()

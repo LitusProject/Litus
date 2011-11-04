@@ -14,7 +14,7 @@
         <? foreach ($this->stock as $item): ?>
 
             <tr>
-                <td><?= $item->getTitle(); ?></td>
+                <td><?= $item->getArticle()->getTitle(); ?></td>
                 <td><?= $item->getNumberInStock(); ?></td>
 				<td></td>
             </tr>

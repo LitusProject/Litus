@@ -34,8 +34,71 @@ class LitusEntityCudiSalesServingQueueItemProxy extends \Litus\Entity\Cudi\Sales
             unset($this->_entityPersister, $this->_identifier);
         }
     }
+
     
-    
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setId($id_)
+    {
+        $this->__load();
+        return parent::setId($id_);
+    }
+
+    public function getPerson()
+    {
+        $this->__load();
+        return parent::getPerson();
+    }
+
+    public function setPerson($person_)
+    {
+        $this->__load();
+        return parent::setPerson($person_);
+    }
+
+    public function getStatus()
+    {
+        $this->__load();
+        return parent::getStatus();
+    }
+
+    public function setStatus($status_)
+    {
+        $this->__load();
+        return parent::setStatus($status_);
+    }
+
+    public function getPayDesk()
+    {
+        $this->__load();
+        return parent::getPayDesk();
+    }
+
+    public function setPayDesk($payDesk_)
+    {
+        $this->__load();
+        return parent::setPayDesk($payDesk_);
+    }
+
+    public function getSession()
+    {
+        $this->__load();
+        return parent::getSession();
+    }
+
+    public function setSession($session_)
+    {
+        $this->__load();
+        return parent::setSession($session_);
+    }
+
 
     public function __sleep()
     {

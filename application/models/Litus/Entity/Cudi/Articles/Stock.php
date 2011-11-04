@@ -2,6 +2,12 @@
 
 namespace Litus\Entity\Cudi\Articles;
 
+use \Litus\Entity\Cudi\Stock\StockItem;
+
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+
+use \Zend\Registry;
+
 /**
  * @MappedSuperclass
  */
@@ -71,6 +77,9 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 			->setIsBookable($bookable)
 			->setIsUnbookable($unbookable)
 			->setCanExpire($canExpire);
+			
+		$stockItem = new StockItem($this);
+		Registry::get(DoctrineResource::REGISTRY_KEY)->persist($stockItem);
     }
 
 	/**
@@ -229,16 +238,4 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	 * @return boolean
 	 */
 	abstract public function isInternal();
-	
-	/**
-	 * @return integer
-	 */
-	public function getNumberInStock()
-	{
-		$number = 0;
-		
-		
-		
-		return $number;
-	}
 }

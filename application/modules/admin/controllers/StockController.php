@@ -25,7 +25,7 @@ class StockController extends \Litus\Controller\Action
 	{
 		// TODO: select only stock articles
 		$this->view->stock = $this->_createPaginator(
-            'Litus\Entity\Cudi\Article'
+            'Litus\Entity\Cudi\Stock\StockItem'
         );
     }
 }

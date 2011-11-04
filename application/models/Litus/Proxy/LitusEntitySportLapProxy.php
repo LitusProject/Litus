@@ -34,10 +34,13 @@ class LitusEntitySportLapProxy extends \Litus\Entity\Sport\Lap implements \Doctr
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }

@@ -34,10 +34,13 @@ class LitusEntityGeneralConfigProxy extends \Litus\Entity\General\Config impleme
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getKey()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["key"];
+        }
         $this->__load();
         return parent::getKey();
     }
