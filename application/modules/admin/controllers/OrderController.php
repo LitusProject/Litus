@@ -118,13 +118,8 @@ class OrderController extends \Litus\Controller\Action
 
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Articles\StockArticles\External')
+					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
-				if (null == $article) {
-					$article = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Internal')
-						->findOneByBarcode($formData['stockArticle']);
-				}
 				
 				$item = new OrderItem($article, $order, $formData['number']);
                  

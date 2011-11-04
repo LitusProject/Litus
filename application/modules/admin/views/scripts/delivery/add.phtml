@@ -1,7 +1,9 @@
 <?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'deliveries')); ?>
 
-<div id="controller_action">
-    <? foreach($this->flashMessages as $message) { echo $message; } ?>
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
 
+<div id="controller_action">
 	<?= $this->form; ?>
 </div>

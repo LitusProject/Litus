@@ -1,7 +1,9 @@
 <?= $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'new')); ?>
 
-<div id="controller_action">
+<div id="flashmessenger">
 	<? foreach($this->flashMessages as $message) { echo $message; } ?>
-    
+</div>
+
+<div id="controller_action">
 	<?= $this->form; ?>
 </div>

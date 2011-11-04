@@ -163,7 +163,13 @@ class SaleController extends \Litus\Controller\Action
 				
 				$this->getEntityManager()->persist($cashRegister);
 				
-                $this->broker('flashmessenger')->addMessage(new FlashMessage(FlashMessage::SUCCESS, "SUCCESS", "The session was successfully closed!"));
+                $this->broker('flashmessenger')->addMessage(
+					new FlashMessage(
+						FlashMessage::SUCCESS,
+						"SUCCESS",
+						"The session was successfully closed!"
+					)
+				);
                	$this->_redirect('managesession', null, null, array('id' => $session->getId()));
 			}
 		}

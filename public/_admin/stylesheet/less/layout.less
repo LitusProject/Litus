@@ -259,49 +259,9 @@ h1 {
         }
     }
 
-    #controller_action {
-        float: left;
-
-        .form {
-            padding: 0;
-
-            .row {
-                clear: both;
-                padding-top: 2 * @defaultSpacing;
-                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-
-                .label {
-                    float: left;
-                    width: @formLabelWidth;
-                    margin-top: @formSpacing;
-                    height: 0px;
-                    text-align: right;
-                }
-
-                .field {
-                    float: right;
-                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
-                    text-align: left;
-                }
-            }
-
-            .errors {
-                clear: both;
-                margin-left: @formLabelWidth + 4 * @defaultSpacing;
-                padding-top: @formSpacing;
-
-                li {
-                    color: @cError;
-                }
-            }
-
-            .required:after {
-                content: @formRequired;
-            }
-        }
-
-        .success_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+	#flashmessenger {
+		.success_message {
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
             margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
             .title {
@@ -332,7 +292,7 @@ h1 {
         }
 
         .error_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
             margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
             .title {
@@ -374,7 +334,7 @@ h1 {
         }
 
 		.warning_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
             margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
             .title {
@@ -416,7 +376,7 @@ h1 {
         }
 
 		.notice_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
             margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
             .title {
@@ -454,6 +414,48 @@ h1 {
                 p:first-child {
                     margin-top: 0;
                 }
+            }
+        }
+	}
+
+    #controller_action {
+        float: left;
+
+        .form {
+            padding: 0;
+
+            .row {
+                clear: both;
+                padding-top: 2 * @defaultSpacing;
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+
+                .label {
+                    float: left;
+                    width: @formLabelWidth;
+                    margin-top: @formSpacing;
+                    height: 0px;
+                    text-align: right;
+                }
+
+                .field {
+                    float: right;
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
+                    text-align: left;
+                }
+            }
+
+            .errors {
+                clear: both;
+                margin-left: @formLabelWidth + 4 * @defaultSpacing;
+                padding-top: @formSpacing;
+
+                li {
+                    color: @cError;
+                }
+            }
+
+            .required:after {
+                content: @formRequired;
             }
         }
 

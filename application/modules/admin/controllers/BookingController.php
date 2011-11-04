@@ -42,13 +42,8 @@ class BookingController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Users\Person')
 					->findOneByUsername($formData['person']);
                 $article = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Articles\StockArticles\External')
+					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
-				if (null == $article) {
-					$article = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Internal')
-						->findOneByBarcode($formData['stockArticle']);
-				}
 				
 				$booking = new Booking($person, $article, 'booked');
                  

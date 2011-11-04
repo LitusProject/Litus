@@ -1,12 +1,9 @@
 <?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
 
-<? if(!is_null($this->flashMessages) && count($this->flashMessages)!=0):
- /* separate div because flash message interferes with helper message otherwise */ 
-?>
-<div id="controller_action">
-        <? foreach($this->flashMessages as $message) { echo $message; } ?>
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
 </div>
-<? endif; ?>
+
 <div id="controller_action">
                 
     <h1>Sale Session</h1>
