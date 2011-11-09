@@ -28,7 +28,9 @@ class DeliveryController extends \Litus\Controller\Action
 	public function overviewAction()
 	{
 		$this->view->deliveries = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\DeliveryItem'
+            'Litus\Entity\Cudi\Stock\DeliveryItem',
+			array(),
+			array('date' => 'DESC')
         );
 
 		$form = new AddForm();
@@ -70,6 +72,7 @@ class DeliveryController extends \Litus\Controller\Action
 		
 		if (null !== $this->getRequest()->getParam('confirm')) {
 			if (1 == $this->getRequest()->getParam('confirm')) {
+				$item->getArticle()->getStockItem()->addNumber(-$item->getNumber());
 				$this->getEntityManager()->remove($item);
 
 				$this->broker('flashmessenger')->addMessage(

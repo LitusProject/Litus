@@ -51,7 +51,7 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'article');
+        return array('__isInitialized__', 'id', 'article', 'numberInStock');
     }
 
     public function __clone()
