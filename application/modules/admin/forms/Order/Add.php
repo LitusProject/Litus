@@ -30,13 +30,6 @@ class Add extends \Litus\Form\Admin\Form
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Text('price');
-        $field->setLabel('Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
-        $this->addElement($field);
-
         $field = new Submit('submit');
         $field->setLabel('Add')
                 ->setAttrib('class', 'stock_add')

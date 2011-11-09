@@ -12,4 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderItem extends EntityRepository
 {
+	public function findOneByArticleAndOrder($article, $order)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->where($query->expr()->andX(
+				$query->expr()->eq('i.article', ':article'),
+				$query->expr()->eq('i.order', ':order')
+			))
+			->setParameter('article', $article->getId())
+			->setParameter('order', $order->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+	}
 }

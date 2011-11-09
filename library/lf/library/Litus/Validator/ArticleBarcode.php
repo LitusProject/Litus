@@ -32,9 +32,9 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     {
         $this->_setValue($value);
 
-		$article = $this->getEntityManager()
+		$article = Registry::get(DoctrineResource::REGISTRY_KEY)
 			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
-			->findOneByBarcode($formData['stockArticle']);
+			->findOneByBarcode($value);
 		
         if (null !== $article)
             return true;

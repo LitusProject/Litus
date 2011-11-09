@@ -5,8 +5,6 @@
 </div>
 
 <div id="controller_action">
-	<?= $this->form; ?>
-	
 	<table>
 		
 		<tr>
@@ -20,7 +18,9 @@
 				<td><?= $item->getArticle()->getTitle(); ?></td>
 				<td><?= $item->getNumber(); ?></td>
 				<td>
-					<a href="<?= $this->url(array('action' => 'deleteitem', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+					<? if (!$this->order->isPlaced()): ?>
+						<a href="<?= $this->url(array('action' => 'deleteitem', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+					<? endif; ?>
 				</td>
 			</tr>
 		<? endforeach; ?>
@@ -29,15 +29,40 @@
 </div>
 
 <aside>
-	<div class="sidebox">
-        <div class="title">New Order Item</div>
-        <div class="content">
-            <p>
-                <i>Please hit the link below to add a new order item!</i>
-            </p>
-            <p>
-                <a href="<?= $this->url(array('action' => 'additem')); ?>">&rarr; Add order item</a>
-            </p>
-        </div>
-    </div>
+	<? if (!$this->order->isPlaced()): ?>
+		<div class="sidebox">
+	        <div class="title">Place Order</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to place this order!</i>
+	            </p>
+	            <p>
+	                <a href="<?= $this->url(array('action' => 'place')); ?>">&rarr; Place order</a>
+	            </p>
+	        </div>
+	    </div>
+		<div class="sidebox">
+	        <div class="title">New Order Item</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to add a new order item!</i>
+	            </p>
+	            <p>
+	                <a href="<?= $this->url(array('action' => 'additem')); ?>">&rarr; Add order item</a>
+	            </p>
+	        </div>
+	    </div>
+	<? else: ?>
+		<div class="sidebox">
+	        <div class="title">Print Order</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to print the order for the supplier!</i>
+	            </p>
+	            <p>
+	                <a href="<?= $this->url(array('action' => 'print')); ?>" target="_blank">&rarr; Print order</a>
+	            </p>
+	        </div>
+	    </div>
+	<? endif; ?>
 </aside>

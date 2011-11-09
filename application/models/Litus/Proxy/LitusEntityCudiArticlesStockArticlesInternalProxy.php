@@ -249,6 +249,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::setRemoved($removed);
     }
 
+    public function getStockItem()
+    {
+        $this->__load();
+        return parent::getStockItem();
+    }
+
 
     public function __sleep()
     {

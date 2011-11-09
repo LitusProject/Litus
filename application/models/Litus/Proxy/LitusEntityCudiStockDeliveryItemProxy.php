@@ -36,10 +36,37 @@ class LitusEntityCudiStockDeliveryItemProxy extends \Litus\Entity\Cudi\Stock\Del
     }
 
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getArticle()
+    {
+        $this->__load();
+        return parent::getArticle();
+    }
+
+    public function getDate()
+    {
+        $this->__load();
+        return parent::getDate();
+    }
+
+    public function getNumber()
+    {
+        $this->__load();
+        return parent::getNumber();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'article', 'delivery', 'number');
+        return array('__isInitialized__', 'id', 'article', 'date', 'number');
     }
 
     public function __clone()

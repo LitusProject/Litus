@@ -47,7 +47,7 @@ class FlashMessage extends \Zend\Controller\Plugin\AbstractPlugin
      */
 	public function __toString()
 	{
-		return '<div class="' . $this->_type . '">'
+		return '<div class="' . $this->_type . ' flashmessage">'
 			.'<div class="title">' . $this->_title . '</div>'
 			.'<div class="content"><p>' . $this->_message . '</p></div>'
 			.'</div>';
