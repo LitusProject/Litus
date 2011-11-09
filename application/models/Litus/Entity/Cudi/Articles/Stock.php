@@ -87,7 +87,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	 */
 	public function getPurchasePrice()
 	{
-		return $this->purchasePrice/100;
+		return $this->purchasePrice;
 	}
 	
 	/**
@@ -106,7 +106,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	 */
 	public function getSellPrice()
 	{
-		return $this->sellPrice/100;
+		return $this->sellPrice;
 	}
 	
 	/**
@@ -125,7 +125,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	 */
 	public function getSellPriceMembers()
 	{
-		return $this->sellPriceMembers/100;
+		return $this->sellPriceMembers;
 	}
 	
 	/**

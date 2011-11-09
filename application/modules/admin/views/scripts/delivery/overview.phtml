@@ -5,20 +5,26 @@
 </div>
 
 <div id="controller_action">
-	<table>
+	<?= $this->form; ?>
+	
+	<table class="full_width">
     
         <tr>
             <th>Date</th>
+            <th>Article</th>
             <th>Price</th>
 			<th>Actions</th>
         </tr>
         
-        <? foreach ($this->deliveries as $delivery): ?>
+        <? foreach ($this->deliveries as $item): ?>
 
             <tr>
-                <td><?= $delivery->getDate()->format('Y-m-d H:i:s'); ?></td>
-                <td>&euro; <?= number_format($delivery->getPrice()/100, 2); ?></td>
-				<td></td>
+                <td><?= $item->getDate()->format('Y-m-d H:i:s'); ?></td>
+                <td><?= $item->getArticle()->getTitle(); ?></td>
+                <td>&euro; <?= number_format($item->getPrice()/100, 2); ?></td>
+				<td>
+					<a href="<?= $this->url(array('action' => 'delete', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+				</td>
             </tr>
     
         <? endforeach; ?>
@@ -26,17 +32,3 @@
 
 	<?= $this->paginationControl($this->deliveries, 'all', 'partials/pagination.phtml'); ?>
 </div>
-
-<aside>
-	<div class="sidebox">
-        <div class="title">New Delivery</div>
-        <div class="content">
-            <p>
-                <i>Please hit the link below to add a new delivery!</i>
-            </p>
-            <p>
-                <a href="<?= $this->url(array('action' => 'add')); ?>">&rarr; Add Delivery</a>
-            </p>
-        </div>
-    </div>
-</aside>

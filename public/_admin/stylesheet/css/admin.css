@@ -84,21 +84,18 @@ h1{margin-bottom:5px;font-size:14px;}
 #content_controller #controller_header #controller_nav li:after{content:"|";color:#d7d4d4;}
 #content_controller #controller_header #controller_nav li:last-child a{padding-right:0;}
 #content_controller #controller_header #controller_nav li:last-child:after{content:none;}
-#content_controller #flashmessenger .success_message{width:794px;margin:0 5px 10px 0;}#content_controller #flashmessenger .success_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#218621;}
-#content_controller #flashmessenger .success_message .content{padding:5px;color:#ffffff;background:#007400;}#content_controller #flashmessenger .success_message .content p{margin-top:10px;}
-#content_controller #flashmessenger .success_message .content p:first-child{margin-top:0;}
-#content_controller #flashmessenger .error_message{width:794px;margin:0 5px 10px 0;}#content_controller #flashmessenger .error_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#ff0000;}
-#content_controller #flashmessenger .error_message .content{padding:5px;color:#ffffff;background:#df0000;}#content_controller #flashmessenger .error_message .content p{margin-top:10px;}#content_controller #flashmessenger .error_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
-#content_controller #flashmessenger .error_message .content p a:hover{text-decoration:underline;}
-#content_controller #flashmessenger .error_message .content p:first-child{margin-top:0;}
-#content_controller #flashmessenger .warning_message{width:794px;margin:0 5px 10px 0;}#content_controller #flashmessenger .warning_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#ffa800;}
-#content_controller #flashmessenger .warning_message .content{padding:5px;color:#ffffff;background:#f89406;}#content_controller #flashmessenger .warning_message .content p{margin-top:10px;}#content_controller #flashmessenger .warning_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
-#content_controller #flashmessenger .warning_message .content p a:hover{text-decoration:underline;}
-#content_controller #flashmessenger .warning_message .content p:first-child{margin-top:0;}
-#content_controller #flashmessenger .notice_message{width:794px;margin:0 5px 10px 0;}#content_controller #flashmessenger .notice_message .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;background:#94defc;}
-#content_controller #flashmessenger .notice_message .content{padding:5px;color:#ffffff;background:#62cffc;}#content_controller #flashmessenger .notice_message .content p{margin-top:10px;}#content_controller #flashmessenger .notice_message .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
-#content_controller #flashmessenger .notice_message .content p a:hover{text-decoration:underline;}
-#content_controller #flashmessenger .notice_message .content p:first-child{margin-top:0;}
+#content_controller .flashmessage{width:794px;margin:0 5px 10px 0;}#content_controller .flashmessage .title{display:block;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;color:#ffffff;}
+#content_controller .flashmessage .content{padding:5px;color:#ffffff;}#content_controller .flashmessage .content p{margin-top:10px;}#content_controller .flashmessage .content p a{margin-right:5px;text-decoration:none;font-weight:bold;color:inherit;}
+#content_controller .flashmessage .content p a:hover{text-decoration:underline;}
+#content_controller .flashmessage .content p:first-child{margin-top:0;}
+#content_controller .success_message .title{background:#218621;}
+#content_controller .success_message .content{background:#007400;}
+#content_controller .error_message .title{background:#ff0000;}
+#content_controller .error_message .content{background:#df0000;}
+#content_controller .warning_message .title{background:#ffa800;}
+#content_controller .warning_message .content{background:#f89406;}
+#content_controller .notice_message .title{background:#94defc;}
+#content_controller .notice_message .content{background:#62cffc;}
 #content_controller #controller_action{float:left;}#content_controller #controller_action .form{padding:0;}#content_controller #controller_action .form .row{clear:both;padding-top:10px;width:598px;}#content_controller #controller_action .form .row .label{float:left;width:150px;margin-top:2px;height:0px;text-align:right;}
 #content_controller #controller_action .form .row .field{float:right;width:438px;text-align:left;}
 #content_controller #controller_action .form .errors{clear:both;margin-left:170px;padding-top:2px;}#content_controller #controller_action .form .errors li{color:#ff6633;}

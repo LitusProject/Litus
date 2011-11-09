@@ -10,6 +10,9 @@ use \Litus\Entity\Cudi\Stock\Order;
 use \Litus\Entity\Cudi\Stock\OrderItem;
 use \Litus\FlashMessenger\FlashMessage;
 
+use \Zend\Pdf\PdfDocument;
+use \Zend\Pdf\Page as PdfPage;
+
 /**
  * This class controls management of the stock.
  * 
@@ -47,7 +50,7 @@ class OrderController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Supplier')
 					->findOneById($formData['supplier']);
 				
-				$order = new Order($supplier, $formData['price']);
+				$order = new Order($supplier);
                  
                 $this->getEntityManager()->persist($order);
                 $this->broker('flashmessenger')->addMessage(
@@ -71,11 +74,7 @@ class OrderController extends \Litus\Controller\Action
 		
 		if (null == $order)
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-		
-		$form = new EditForm();
-		$form->populate($order);
 
-        $this->view->form = $form;
 		$this->view->order = $order;
 
 		if($this->getRequest()->isPost()) {
@@ -86,8 +85,7 @@ class OrderController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Supplier')
 					->findOneById($formData['supplier']);
 				
-				$order->setSupplier($supplier)
-					->setPrice($formData['price']);
+				$order->setSupplier($supplier);
                  
                 $this->_addDirectFlashMessage(
                     new FlashMessage(
@@ -106,7 +104,7 @@ class OrderController extends \Litus\Controller\Action
 	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
-		if (null == $order)
+		if (null == $order || $order->isPlaced())
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 			
 		$form = new AddItemForm();
@@ -121,16 +119,30 @@ class OrderController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
-				$item = new OrderItem($article, $order, $formData['number']);
-                 
-                $this->getEntityManager()->persist($item);
-                $this->broker('flashmessenger')->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order item was successfully created!'
-                    )
-				);
+				$item = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+					->findOneByArticleAndOrder($article, $order);
+				
+				if (isset($item)) {
+					$item->setNumber($item->getNumber()+$formData['number']);
+					$this->broker('flashmessenger')->addMessage(
+	                    new FlashMessage(
+	                        FlashMessage::SUCCESS,
+	                        'SUCCESS',
+	                        'The order item was successfully updated!'
+	                    )
+					);
+				} else {
+					$item = new OrderItem($article, $order, $formData['number']);
+	                $this->getEntityManager()->persist($item);
+					$this->broker('flashmessenger')->addMessage(
+	                    new FlashMessage(
+	                        FlashMessage::SUCCESS,
+	                        'SUCCESS',
+	                        'The order item was successfully created!'
+	                    )
+					);
+				}
 				
 				$this->_redirect('edit', null, null, array('id' => $order->getId()));
 			}
@@ -143,7 +155,7 @@ class OrderController extends \Litus\Controller\Action
 	        ->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
-		if (null == $item)
+		if (null == $item || $item->getOrder()->isPlaced())
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 			
 		$this->view->item = $item;
@@ -163,5 +175,40 @@ class OrderController extends \Litus\Controller\Action
             
 			$this->_redirect('edit', null, null, array('id' => $item->getOrder()->getId()));
         }
+	}
+	
+	public function placeAction()
+	{
+		$order = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $order || $order->isPlaced())
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$order->setDate(new \DateTime());
+				
+		$this->_redirect('edit', null, null, array('id' => $order->getId()));
+	}
+	
+	public function printAction()
+	{
+		$order = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $order || !$order->isPlaced())
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		
+		$pdf = new PdfDocument();
+		$page1 = $pdf->newPage(PdfPage::SIZE_A4);
+		$pdf->pages[] = $page1;
+		// TODO: print PDF
+		
+		$this->broker('layout')->disableLayout(); 
+		$this->broker('viewRenderer')->setNoRender();
+		$this->getResponse()
+			->setHeader('Content-Type', 'application/pdf', true)
+			->appendBody($pdf->render());
 	}
 }

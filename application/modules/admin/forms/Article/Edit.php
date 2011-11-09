@@ -29,24 +29,24 @@ class Edit extends \Admin\Form\Article\Add
 			'author' => $article->getMetaInfo()->getAuthors(),
 			'publisher' => $article->getMetaInfo()->getPublishers(),
 			'year_published' => $article->getMetaInfo()->getYearPublished(),
-			'purchaseprice' => number_format($article->getPurchasePrice(), 2),
-			'sellpricenomember' => number_format($article->getSellPrice(), 2),
-			'sellpricemember' => number_format($article->getSellPriceMembers(), 2),
+			'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
+			'sellprice_nomember' => number_format($article->getSellPrice()/100, 2),
+			'sellprice_member' => number_format($article->getSellPriceMembers()/100, 2),
 			'barcode' => $article->getBarcode(),
 			'supplier' => $article->getSupplier()->getId(),
 			'bookable' => $article->isBookable(),
 			'unbookable' => $article->isUnbookable(),
-			'canExpire' => $article->canExpire(),
+			'can_expire' => $article->canExpire(),
 			'internal' => $article->isInternal()
 		);
 		
 		if ($article->isInternal()) {
-			$data['nbBlackAndWhite'] = $article->getNbBlackAndWhite();
-			$data['nbColored'] = $article->getNbColored();
+			$data['nb_black_and_white'] = $article->getNbBlackAndWhite();
+			$data['nb_colored'] = $article->getNbColored();
 			$data['binding'] = $article->getBinding()->getId();
 			$data['official'] = $article->isOfficial();
 			$data['rectoverso'] = $article->isRectoVerso();
-			$data['frontcolor'] = $article->getFrontColor()->getId();
+			$data['front_color'] = $article->getFrontColor()->getId();
 		}
 		
 		parent::populate($data);

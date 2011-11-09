@@ -259,164 +259,85 @@ h1 {
         }
     }
 
-	#flashmessenger {
-		.success_message {
-            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+	.flashmessage {
+		width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
+        margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cSuccessTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cSuccessBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
+        .title {
+            display: block;
+            height: @sideboxTitleHeight;
+            line-height: @sideboxTitleHeight;
+            text-indent: @tIndent;
+            text-transform: uppercase;
+            font-size: @tSizeSmall;
+            font-weight: bold;
+            color: @cWhite;
         }
 
-        .error_message {
-            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+        .content {
+            padding: @defaultSpacing;
+            color: @cWhite;
 
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cErrorTitleBackground;
-            }
+            p {
+                margin-top: 2 * @defaultSpacing;
 
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cErrorBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
+				a {
+                    margin-right: @defaultSpacing;
+                    text-decoration: none;
+                    font-weight: bold;
+                    color: inherit;
                 }
 
-                p:first-child {
-                    margin-top: 0;
+                a:hover {
+                    text-decoration: underline;
                 }
             }
-        }
 
-		.warning_message {
-            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cWarningTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cWarningBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-        }
-
-		.notice_message {
-            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cNoticeTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cNoticeBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
+            p:first-child {
+                margin-top: 0;
             }
         }
 	}
+
+	.success_message {
+        .title {
+            background: @cSuccessTitleBackground;
+        }
+
+        .content {
+            background: @cSuccessBackground;
+        }
+    }
+
+    .error_message {
+        .title {
+            background: @cErrorTitleBackground;
+        }
+
+        .content {
+            background: @cErrorBackground;
+        }
+    }
+
+	.warning_message {
+        .title {
+            background: @cWarningTitleBackground;
+        }
+
+        .content {
+            background: @cWarningBackground;
+        }
+    }
+
+	.notice_message {
+        .title {
+            background: @cNoticeTitleBackground;
+        }
+
+        .content {
+            background: @cNoticeBackground;
+        }
+    }
 
     #controller_action {
         float: left;

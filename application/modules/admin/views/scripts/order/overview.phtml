@@ -18,7 +18,7 @@
 
             <tr>
                 <td><?= $order->getSupplier()->getName(); ?></td>
-                <td><?= $order->getDate()->format('Y-m-d H:i:s'); ?></td>
+                <td><?= $order->getDate() ? $order->getDate()->format('Y-m-d H:i:s') : '(new)'; ?></td>
                 <td>&euro; <?= number_format($order->getPrice()/100, 2); ?></td>
 				<td>
 					<a href="<?= $this->url(array('action' => 'edit', 'id' => $order->getId())); ?>" class="edit">Edit</a>

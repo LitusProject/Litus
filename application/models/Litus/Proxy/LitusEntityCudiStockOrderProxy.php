@@ -57,12 +57,6 @@ class LitusEntityCudiStockOrderProxy extends \Litus\Entity\Cudi\Stock\Order impl
         return parent::getSupplier();
     }
 
-    public function setPrice($price)
-    {
-        $this->__load();
-        return parent::setPrice($price);
-    }
-
     public function getPrice()
     {
         $this->__load();
@@ -87,10 +81,16 @@ class LitusEntityCudiStockOrderProxy extends \Litus\Entity\Cudi\Stock\Order impl
         return parent::getOrderItems();
     }
 
+    public function isPlaced()
+    {
+        $this->__load();
+        return parent::isPlaced();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'supplier', 'date', 'price', 'orderItems');
+        return array('__isInitialized__', 'id', 'supplier', 'date', 'orderItems');
     }
 
     public function __clone()
