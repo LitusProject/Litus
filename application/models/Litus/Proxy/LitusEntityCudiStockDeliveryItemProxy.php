@@ -63,6 +63,12 @@ class LitusEntityCudiStockDeliveryItemProxy extends \Litus\Entity\Cudi\Stock\Del
         return parent::getNumber();
     }
 
+    public function getPrice()
+    {
+        $this->__load();
+        return parent::getPrice();
+    }
+
 
     public function __sleep()
     {

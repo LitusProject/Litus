@@ -37,9 +37,13 @@ class DeliveryItem
 	 */
 	public function __construct($article, $number)
 	{
+		if (null === $article->getStockItem())
+			throw new \InvalidArgumentException('The article is not valid.');
+			
 		$this->article = $article;
 		$this->date = new \DateTime();
 		$this->number = $number;
+		$article->getStockItem()->addNumber($number);
 	}
 	
 	/**
@@ -74,6 +78,9 @@ class DeliveryItem
 		return $this->number;
 	}
 	
+	/**
+	 * @return integer
+	 */
 	public function getPrice()
 	{
 		return $this->article->getPurchasePrice() * $this->number;

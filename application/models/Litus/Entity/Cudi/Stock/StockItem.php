@@ -21,6 +21,11 @@ class StockItem
 	 */
 	private $article;
 	
+	/**
+	 * @Column(type="integer")
+	 */
+	private $numberInStock;
+	
 	public function __construct($article)
 	{
 		$this->article = $article;
@@ -43,6 +48,14 @@ class StockItem
 	 */
 	public function getNumberInStock()
 	{
-		return 0;
+		return $this->numberInStock;
+	}
+	
+	/**
+	 * @param integer $number The number to add
+	 */
+	public function addNumber($number)
+	{
+		$this->numberInStock += $number;
 	}
 }

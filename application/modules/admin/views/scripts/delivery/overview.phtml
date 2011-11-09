@@ -12,6 +12,7 @@
         <tr>
             <th>Date</th>
             <th>Article</th>
+            <th>Number</th>
             <th>Price</th>
 			<th>Actions</th>
         </tr>
@@ -21,6 +22,7 @@
             <tr>
                 <td><?= $item->getDate()->format('Y-m-d H:i:s'); ?></td>
                 <td><?= $item->getArticle()->getTitle(); ?></td>
+                <td><?= $item->getNumber(); ?></td>
                 <td>&euro; <?= number_format($item->getPrice()/100, 2); ?></td>
 				<td>
 					<a href="<?= $this->url(array('action' => 'delete', 'id' => $item->getId())); ?>" class="delete">Delete</a>
