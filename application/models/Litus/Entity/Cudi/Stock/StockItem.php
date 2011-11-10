@@ -1,6 +1,10 @@
 <?php
  
 namespace Litus\Entity\Cudi\Stock;
+
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+
+use \Zend\Registry;
  
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\StockItem")
@@ -32,6 +36,14 @@ class StockItem
 	}
 	
 	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	/**
 	 * Return the article
 	 * 
 	 * @return \Litus\Entity\Cudi\Article
@@ -57,5 +69,26 @@ class StockItem
 	public function addNumber($number)
 	{
 		$this->numberInStock += $number;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberOpenOrder()
+	{
+		$item = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\Order')->findOneOpenByArticle($this->article);
+		
+		if (null === $item)
+			return 0;
+		
+		return $item->getNumber();
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberBooked()
+	{
+		return 0;
 	}
 }

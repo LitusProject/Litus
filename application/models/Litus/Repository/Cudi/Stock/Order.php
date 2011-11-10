@@ -12,4 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class Order extends EntityRepository
 {
+	public function findOneOpenByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$order = $query->select('o')
+			->from('Litus\Entity\Cudi\Stock\Order', 'o')
+			->where($query->expr()->andX(
+					$query->expr()->eq('o.supplier', ':supplier'),
+					$query->expr()->isNull('o.date')
+				)
+			)
+			->setParameter('supplier', $article->getSupplier()->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+
+		if (!isset($order[0]))
+			return null;
+
+		$item = $this->_em
+			->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+			->findOneByArticleAndOrder($article, $order[0]);
+		
+		return $item;
+	}
 }

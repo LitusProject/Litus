@@ -31,7 +31,7 @@ class OrderController extends \Litus\Controller\Action
     }
     
     public function overviewAction()
-	{      
+	{
 		$this->view->orders = $this->_createPaginator(
             'Litus\Entity\Cudi\Stock\Order'
         );
