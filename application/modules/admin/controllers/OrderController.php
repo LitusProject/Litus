@@ -50,9 +50,14 @@ class OrderController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Supplier')
 					->findOneById($formData['supplier']);
 				
-				$order = new Order($supplier);
-                 
-                $this->getEntityManager()->persist($order);
+				$order = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Stock\Order')
+					->findOneOpenBySupplier($supplier);
+				if (null === $order) {
+					$order = new Order($supplier);
+	                $this->getEntityManager()->persist($order);
+				}
+				
                 $this->broker('flashmessenger')->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -121,28 +126,14 @@ class OrderController extends \Litus\Controller\Action
 				
 				$item = $this->getEntityManager()
 					->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
-					->findOneByArticleAndOrder($article, $order);
-				
-				if (isset($item)) {
-					$item->setNumber($item->getNumber()+$formData['number']);
-					$this->broker('flashmessenger')->addMessage(
-	                    new FlashMessage(
-	                        FlashMessage::SUCCESS,
-	                        'SUCCESS',
-	                        'The order item was successfully updated!'
-	                    )
-					);
-				} else {
-					$item = new OrderItem($article, $order, $formData['number']);
-	                $this->getEntityManager()->persist($item);
-					$this->broker('flashmessenger')->addMessage(
-	                    new FlashMessage(
-	                        FlashMessage::SUCCESS,
-	                        'SUCCESS',
-	                        'The order item was successfully created!'
-	                    )
-					);
-				}
+					->addNumberByArticle($article, $formData['number']);
+				$this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The order item was successfully added!'
+                    )
+				);
 				
 				$this->_redirect('edit', null, null, array('id' => $order->getId()));
 			}

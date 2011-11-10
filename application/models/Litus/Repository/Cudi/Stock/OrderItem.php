@@ -3,6 +3,7 @@
 namespace Litus\Repository\Cudi\Stock;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * OrderItem
@@ -31,5 +32,45 @@ class OrderItem extends EntityRepository
             return $resultSet[0];
 
         return null;
+	}
+	
+	public function findOneOpenByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->where($query->expr()->andX(
+				$query->expr()->eq('i.article', ':article')
+			))
+			->innerJoin('i.order', 'o', Join::WITH, $query->expr()->isNull('o.date'))
+			->setParameter('article', $article->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+	}
+	
+	public function addNumberByArticle($article, $number)
+	{
+		$item = $this->findOneOpenByArticle($article);
+		
+		if (isset($item)) {
+			$item->setNumber($item->getNumber()+$number);
+		} else {
+			$order = $this->_em
+				->getRepository('Litus\Entity\Cudi\Stock\Order')
+				->findOneOpenBySupplier($article->getSupplier());
+			if (null === $order) {
+				$order = new Order($article->getSupplier());
+                $this->_em->persist($order);
+			}
+			
+			$item = new \Litus\Entity\Cudi\Stock\OrderItem($article, $order, $number);
+            $this->_em->persist($item);
+		}
 	}
 }

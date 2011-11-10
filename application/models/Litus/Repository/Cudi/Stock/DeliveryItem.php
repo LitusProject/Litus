@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryItem extends EntityRepository
 {
+	public function getTotalByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\DeliveryItem', 'i')
+			->where($query->expr()->eq('i.article', ':article'))
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+			
+		$total = 0;
+		foreach($resultSet as $item)
+			$total += $item->getNumber();
+			
+		return $total;
+	}
 }
