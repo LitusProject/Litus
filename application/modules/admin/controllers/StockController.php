@@ -7,7 +7,7 @@ use \Litus\FlashMessenger\FlashMessage;
 /**
  * This class controls management of the stock.
  * 
- * @author Kristof Mariën <ktistof.marien@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class StockController extends \Litus\Controller\Action
 {
@@ -27,4 +27,9 @@ class StockController extends \Litus\Controller\Action
             'Litus\Entity\Cudi\Stock\StockItem'
         );
     }
+
+	public function editAction()
+	{
+		
+	}
 }

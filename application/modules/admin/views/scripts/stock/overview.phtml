@@ -10,6 +10,8 @@
         <tr>
             <th>Article</th>
             <th>Number in stock</th>
+            <th>Open Order</th>
+            <th>Booked</th>
             <th>Actions</th>
         </tr>
         
@@ -18,7 +20,11 @@
             <tr>
                 <td><?= $item->getArticle()->getTitle(); ?></td>
                 <td><?= $item->getNumberInStock(); ?></td>
-				<td></td>
+                <td><?= $item->getNumberOpenOrder(); ?></td>
+                <td><?= $item->getNumberBooked(); ?></td>
+				<td>
+					<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
+                </td>
             </tr>
     
         <? endforeach; ?>
