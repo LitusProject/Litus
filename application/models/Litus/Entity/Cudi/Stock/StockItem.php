@@ -64,6 +64,14 @@ class StockItem
 	}
 	
 	/**
+	 * @param integer $number The number in stock
+	 */
+	public function setNumberInStock($number)
+	{
+		$this->numberInStock = $number;
+	}
+	
+	/**
 	 * @param integer $number The number to add
 	 */
 	public function addNumber($number)
@@ -74,14 +82,34 @@ class StockItem
 	/**
 	 * @return integer
 	 */
+	public function getTotalOrdered()
+	{
+		$total = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\Order')->getTotalOrdered($this->article);
+		
+		return $total;
+	}
+	
+	/**
+	 * @return integer
+	 */
 	public function getNumberOpenOrder()
 	{
-		$item = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\Order')->findOneOpenByArticle($this->article);
+		$item = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\OrderItem')->findOneOpenByArticle($this->article);
 		
 		if (null === $item)
 			return 0;
 		
 		return $item->getNumber();
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getTotalDelivered()
+	{
+		$total = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')->getTotalByArticle($this->article);
+		
+		return $total;
 	}
 	
 	/**

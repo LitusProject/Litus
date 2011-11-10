@@ -5,5 +5,27 @@
 </div>
 
 <div id="controller_action">
-    
+	<h1>General</h1>
+    <p>Article: <b><?= $this->item->getArticle()->getTitle(); ?></b></p>
+    <p>Barcode: <b><?= $this->item->getArticle()->getBarcode(); ?></b></p>
+	<br style="clear:both" />
+	<h1>Orders</h1>
+    <p>Total: <b><?= $this->item->getTotalOrdered(); ?></b></p>
+    <p>Total open: <b><?= $this->item->getNumberOpenOrder(); ?></b></p>
+    <p>ND: <b>Something, but I don't know what this value would be.</b></p>
+	<?= $this->orderForm; ?>
+	<br style="clear:both" />
+	<h1>Deliveries</h1>
+    <p>Total delivered: <b><?= $this->item->getTotalDelivered(); ?></b></p>
+	<?= $this->deliveryForm; ?>
+	<br style="clear:both" />
+	<h1>Bookings</h1>
+    <p>Number assigned: <b>Needs to be calculated</b></p>
+    <p>Number not assigned: <b>Needs to be calculated</b></p>
+	<br style="clear:both" />
+	<h1>Sales</h1>
+    <p>Total: <b>Needs to be calculated</b></p>
+	<br style="clear:both" />
+	<h1>Stock</h1>
+	<?= $this->stockForm; ?>
 </div>

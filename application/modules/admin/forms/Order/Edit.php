@@ -25,8 +25,7 @@ class Edit extends \Admin\Form\Order\Add
 	public function populate($order)
 	{
 		$data = array(
-			'supplier' => $order->getSupplier()->getId(),
-			'price' => number_format($order->getPrice() / 100, 2)
+			'supplier' => $order->getSupplier()->getId()
 		);
 		
 		parent::populate($data);

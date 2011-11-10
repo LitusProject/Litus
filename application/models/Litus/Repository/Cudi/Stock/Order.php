@@ -3,6 +3,7 @@
 namespace Litus\Repository\Cudi\Stock;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Order
@@ -12,28 +13,44 @@ use Doctrine\ORM\EntityRepository;
  */
 class Order extends EntityRepository
 {
-	public function findOneOpenByArticle($article)
+	public function getTotalOrdered($article)
 	{
 		$query = $this->_em->createQueryBuilder();
-		$order = $query->select('o')
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->innerJoin('i.order', 'o', Join::WITH, $query->expr()->andX(
+					$query->expr()->eq('o.supplier', ':supplier'),
+					$query->expr()->isNotNull('o.date')
+				)
+			)
+			->setParameter('supplier', $article->getSupplier()->getId())
+			->getQuery()
+			->getResult();
+			
+		$total = 0;
+		foreach($resultSet as $item)
+			$total += $item->getNumber();
+			
+		return $total;
+	}
+	
+	public function findOneOpenBySupplier($supplier)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('o')
 			->from('Litus\Entity\Cudi\Stock\Order', 'o')
 			->where($query->expr()->andX(
 					$query->expr()->eq('o.supplier', ':supplier'),
 					$query->expr()->isNull('o.date')
 				)
 			)
-			->setParameter('supplier', $article->getSupplier()->getId())
-			->setMaxResults(1)
+			->setParameter('supplier', $supplier->getId())
 			->getQuery()
 			->getResult();
+			
+		if (isset($resultSet[0]))
+            return $resultSet[0];
 
-		if (!isset($order[0]))
-			return null;
-
-		$item = $this->_em
-			->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
-			->findOneByArticleAndOrder($article, $order[0]);
-		
-		return $item;
+        return null;
 	}
 }
