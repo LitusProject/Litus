@@ -65,12 +65,14 @@ class OrderItem extends EntityRepository
 				->getRepository('Litus\Entity\Cudi\Stock\Order')
 				->findOneOpenBySupplier($article->getSupplier());
 			if (null === $order) {
-				$order = new Order($article->getSupplier());
+				$order = new \Litus\Entity\Cudi\Stock\Order($article->getSupplier());
                 $this->_em->persist($order);
 			}
 			
 			$item = new \Litus\Entity\Cudi\Stock\OrderItem($article, $order, $number);
             $this->_em->persist($item);
 		}
+		
+		return $item;
 	}
 }
