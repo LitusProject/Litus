@@ -19,7 +19,7 @@ use \Litus\FlashMessenger\FlashMessage;
  * This class controls management and adding of sale sessions
  *
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
- * @author Kristof Mariën <ktistof.marien@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class SaleController extends \Litus\Controller\Action
 {

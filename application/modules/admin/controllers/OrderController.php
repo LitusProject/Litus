@@ -16,7 +16,7 @@ use \Zend\Pdf\Page as PdfPage;
 /**
  * This class controls management of the stock.
  * 
- * @author Kristof Mariën <ktistof.marien@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class OrderController extends \Litus\Controller\Action
 {

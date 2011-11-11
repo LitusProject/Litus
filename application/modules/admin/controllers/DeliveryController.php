@@ -54,8 +54,8 @@ class DeliveryController extends \Litus\Controller\Action
                         'The delivery was successfully added!'
                     )
 				);
+				$this->_redirect('overview');
 			}
-			$this->_redirect('overview');
         }
 	}
 	

@@ -77,6 +77,8 @@ class StockItem
 	public function addNumber($number)
 	{
 		$this->numberInStock += $number;
+		if ($this->numberInStock < 0)
+			$this->numberInStock = 0;
 	}
 	
 	/**
