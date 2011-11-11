@@ -8,39 +8,17 @@
 	<table>
     
         <tr>
-            <th>Supplier</th>
-            <th>Date</th>
-            <th>Price</th>
+            <th>Name</th>
 			<th>Actions</th>
         </tr>
         
-        <? foreach ($this->orders as $order): ?>
-
+        <? foreach ($this->suppliers as $supplier): ?>
             <tr>
-                <td><?= $order->getSupplier()->getName(); ?></td>
-                <td><?= $order->getDate() ? $order->getDate()->format('Y-m-d H:i:s') : '(new)'; ?></td>
-                <td>&euro; <?= number_format($order->getPrice()/100, 2); ?></td>
+                <td><?= $supplier->getName(); ?></td>
 				<td>
-					<a href="<?= $this->url(array('action' => 'edit', 'id' => $order->getId())); ?>" class="edit">Edit</a>
+					<a href="<?= $this->url(array('action' => 'supplier', 'id' => $supplier->getId())); ?>" class="edit">Edit</a>
 				</td>
             </tr>
-    
         <? endforeach; ?>
     </table>
-
-	<?= $this->paginationControl($this->orders, 'all', 'partials/pagination.phtml'); ?>
 </div>
-
-<aside>
-	<div class="sidebox">
-        <div class="title">New Order</div>
-        <div class="content">
-            <p>
-                <i>Please hit the link below to add a new order!</i>
-            </p>
-            <p>
-                <a href="<?= $this->url(array('action' => 'add')); ?>">&rarr; Add order</a>
-            </p>
-        </div>
-    </div>
-</aside>

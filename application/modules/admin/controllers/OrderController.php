@@ -32,43 +32,24 @@ class OrderController extends \Litus\Controller\Action
     
     public function overviewAction()
 	{
-		$this->view->orders = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\Order'
+		$this->view->suppliers = $this->_createPaginator(
+            'Litus\Entity\Cudi\Supplier'
         );
     }
-	
-	public function addAction()
-	{
-		$form = new AddForm();
-		$this->view->form = $form;
-		
-		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
 
-            if($form->isValid($formData)) {
-                $supplier = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Supplier')
-					->findOneById($formData['supplier']);
-				
-				$order = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\Order')
-					->findOneOpenBySupplier($supplier);
-				if (null === $order) {
-					$order = new Order($supplier);
-	                $this->getEntityManager()->persist($order);
-				}
-				
-                $this->broker('flashmessenger')->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order was successfully created!'
-                    )
-				);
-				
-				$this->_redirect('edit', null, null, array('id' => $order->getId()));
-			}
-        }
+	public function supplierAction()
+	{
+		$supplier = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Supplier')
+            ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $supplier)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$this->view->orders = $this->_createPaginator(
+            'Litus\Entity\Cudi\Stock\Order',
+			array('supplier' => $supplier->getId())
+        );
 	}
 	
 	public function editAction()
@@ -105,13 +86,6 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function additemAction()
 	{
-		$order = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $order || $order->isPlaced())
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
 		$form = new AddItemForm();
 		
 		$this->view->form = $form;
@@ -135,7 +109,7 @@ class OrderController extends \Litus\Controller\Action
                     )
 				);
 				
-				$this->_redirect('edit', null, null, array('id' => $order->getId()));
+				$this->_redirect('edit', null, null, array('id' => $item->getOrder()->getId()));
 			}
         }
 	}
