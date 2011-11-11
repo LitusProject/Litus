@@ -1,0 +1,19 @@
+<script language=javascript>
+function bootstrap()
+{
+var xhReq = new XMLHttpRequest();
+ xhReq.open("GET", "<?= $this->url(array('action' => 'dump', 'session' => $sessionId, 'format' => 'html')); ?>", false);
+ xhReq.send(null);
+ document.getElementById('dumplist').innerHTML = xhReq.responseText;
+}
+
+window.onload=bootstrap;
+</script>
+
+<table border=0 cellspacing=5 width=100% height=100%>
+	<tr>
+		<td id=dumplist>
+		</td>
+	</tr>
+</table>
+

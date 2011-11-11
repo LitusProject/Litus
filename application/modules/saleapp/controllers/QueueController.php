@@ -18,6 +18,13 @@ class QueueController extends \Litus\Controller\Action
     public function init()
     {
         parent::init();
+
+        // The html parameter is the type of Ajax request. You can also use JSON or XML.
+        $context = $this->broker('AjaxContext')
+                ->addActionContext('dump', 'html')
+                ->clearHeaders( 'html' )
+		->setAutoDisableLayout( true )
+                ->initContext();
     }
 
     public function indexAction()
@@ -43,7 +50,7 @@ class QueueController extends \Litus\Controller\Action
                 // create ServingQueueItem object and and persist
                 $status = $this->getEntityManager()
                                ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
-                               ->find(1);
+                               ->findOneBy( array( 'name' => 'signed_in' ) );
                 $session = $this->getEntityManager()
                                 ->getRepository('Litus\Entity\Cudi\Sales\Session')
                                 ->findOneById($this->_getParam("session"));
@@ -71,30 +78,7 @@ class QueueController extends \Litus\Controller\Action
     }
 
     public function overviewAction() {
-        $selling = $this->getEntityManager()
-                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
-                        ->findBy( array( 'name' => 'selling' ) )
-                        ->getId();
-        $collecting = $this->getEntityManager()
-                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
-                        ->findBy( array( 'name' => 'collecting' ) )
-                        ->getId();
-        $signed_in = $this->getEntityManager()
-                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
-                        ->findBy( array( 'name' => 'signed_in' ) )
-                        ->getId();
-        $this->view->selling_items = $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->findBy( array('session' => $this->_getParam("session"),
-                                               'status' => $selling));
-        $this->view->collecting_items = $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->findBy( array('session' => $this->_getParam("session"),
-                                               'status' => $collecting));
-        $this->view->signed_in_items = $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->findBy( array('session' => $this->_getParam("session"),
-                                               'status' => $signed_in));
+    	$this->view->sessionId = $this->_getParam("session");
     }
 
     public function dumpAction() {
