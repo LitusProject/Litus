@@ -58,7 +58,7 @@ table tbody tr:last-child td{background:#dddcdc url("/_admin/img/t.gif") no-repe
 table tbody tr:last-child td:last-child{background-image:none;}
 html,body{height:100%;}
 body{background:#ffffff url("/_admin/img/bg.png") 50% 0 repeat-x;font-family:Tahoma, Arial, serif;font-size:11px;color:#7f7c7c;}
-h1{margin-bottom:5px;font-size:14px;}
+h1{margin-top:10px;margin-bottom:5px;font-size:14px;}
 #layout{display:block;position:relative;width:1000px;min-height:100%;height:auto !important;height:100%;margin:0 auto -40px auto;background:#efefef;}
 #content:after{content:".";height:0;clear:both;visibility:hidden;}
 #content_header{height:106px;margin-bottom:5px;background:url("/_admin/img/bg.png") 50% 0 repeat-x;}#content_header a{position:absolute;width:139px;height:36px;margin:43px 0 0 26px;display:block;background:url("/_admin/img/litus.png") no-repeat;}
