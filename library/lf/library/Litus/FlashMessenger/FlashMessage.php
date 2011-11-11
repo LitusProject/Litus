@@ -15,20 +15,52 @@ class FlashMessage extends \Zend\Controller\Plugin\AbstractPlugin
      */
 	private $_type = '';
 
+        public function getType() {
+            return $this->_type;
+        }
+
+        public function setType( $type ) {
+            $this->_type = $type;
+        }
+
     /**
      * @var string The FlashMessage's title
      */
 	private $_title = '';
+
+        public function getTitle() {
+            return $this->_title;
+        }
+
+        public function setTitle( $title ) {
+            $this->_title = $title;
+        }
 
     /**
      * @var string The FlasMessage's message
      */
 	private $_message = '';
 
+        public function getMessage() {
+            return $this->_message;
+        }
+
+        public function setMessage( $message ) {
+            $this->_message = $message;
+        }
+
     /**
      * @var bool Whether or not the message should be displayed full width
      */
     private $_fullWidth = false;
+
+        public function isFullWidth() {
+            return $this->_fullWidth;
+        }
+
+        public function setFullWidth( $fullWidth ) {
+            $this->_fullWidth = $fullWidth;
+        }
 
     /**
      * Create new FlashMessage.
