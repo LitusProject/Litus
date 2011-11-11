@@ -5,7 +5,8 @@ namespace Admin;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
-use \Admin\Form\Sale\CashRegister as CashRegisterForm;
+use \Admin\Form\Sale\CashRegisterAdd as CashRegisterAddForm;
+use \Admin\Form\Sale\CashRegisterEdit as CashRegisterEditForm;
 
 use \Litus\Entity\Cudi\Sales\Session;
 use \Litus\Entity\General\Bank\CashRegister;
@@ -47,7 +48,7 @@ class SaleController extends \Litus\Controller\Action
                 ->getRepository('Litus\Entity\General\Bank\CashRegister')
                 ->findOneById($this->_getParam("id"));
 
-        $form = new CashRegisterForm();
+        $form = new CashRegisterEditForm();
 		$form->populate($register);
         $this->view->form = $form;
 
@@ -132,7 +133,7 @@ class SaleController extends \Litus\Controller\Action
         if(!isset($session))
             $this->_forward('manage');
         
-        $form = new CashRegisterForm();
+        $form = new CashRegisterEditForm();
 		$form->populate($session->getOpenAmount());
 		$this->view->form = $form;
 		
@@ -177,7 +178,7 @@ class SaleController extends \Litus\Controller\Action
 
     public function newAction()
     {
-        $form = new CashRegisterForm();
+        $form = new CashRegisterAddForm();
         $this->view->form = $form;
 
         if($this->getRequest()->isPost()) {
