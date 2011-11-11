@@ -59,5 +59,12 @@
 	</table>
 	<br style="clear:both" />
 	<h1>Stock</h1>
+	<table class="half_width">
+		<tr>
+			<td>Total</td>
+			<td><?= $this->item->getNumberInStock(); ?></td>
+		</tr>
+	</table>
+	<br style="clear:both" />
 	<?= $this->stockForm; ?>
 </div>
