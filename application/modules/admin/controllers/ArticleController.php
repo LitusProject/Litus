@@ -16,7 +16,7 @@ use \Litus\FlashMessenger\FlashMessage;
  *
  * This class controlls management and adding of articles.
  *
- * @author Kristof Mariën <ktistof.marien@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  *
  */
 class ArticleController extends \Litus\Controller\Action
@@ -179,14 +179,14 @@ class ArticleController extends \Litus\Controller\Action
 					->findOneById($formData['supplier']);
 				
 				$article->setTitle($formData['title'])
-					->setPurchasePrice($formData['purchaseprice'])
-					->setSellPrice($formData['sellpricenomember'])
-					->setSellPriceMembers($formData['sellpricemember'])
+					->setPurchasePrice($formData['purchase_price'])
+					->setSellPrice($formData['sellprice_nomember'])
+					->setSellPriceMembers($formData['sellprice_member'])
 					->setBarcode($formData['barcode'])
 					->setIsBookable($formData['bookable'])
 					->setIsUnbookable($formData['unbookable'])
 					->setSupplier($supplier)
-					->setCanExpire($formData['canExpire']);
+					->setCanExpire($formData['can_expire']);
 				
 				if ($formData['internal']) {
 					$binding = $this->getEntityManager()
@@ -195,10 +195,10 @@ class ArticleController extends \Litus\Controller\Action
 
 					$frontColor = $this->getEntityManager()
 						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
-						->findOneById($formData['frontcolor']);
+						->findOneById($formData['front_color']);
 						
 					$article->setNbBlackAndWhite($formData['nbBlackAndWhite'])
-						->setNbColored($formData['nbColored'])
+						->setNbColored($formData['nb_colored'])
 						->setBinding($binding)
 						->setIsOfficial($formData['official'])
 						->setIsRectoVerso($formData['rectoverso'])

@@ -77,4 +77,23 @@ class OrderItem
 	{
 		return $this->number;
 	}
+	
+	/**
+	 * @param integer $number The number of items.
+	 *
+	 * @return \Litus\Entity\Cudi\Stock\OrderItem
+	 */
+	public function setNumber($number)
+	{
+		$this->number = $number;
+		return $this;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getPrice()
+	{
+		return $this->article->getPurchasePrice() * $this->number;
+	}
 }

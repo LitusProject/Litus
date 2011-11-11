@@ -34,10 +34,13 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }
@@ -72,10 +75,16 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
         return parent::setRemoved($removed);
     }
 
+    public function getStockItem()
+    {
+        $this->__load();
+        return parent::getStockItem();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem');
     }
 
     public function __clone()

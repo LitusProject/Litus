@@ -34,7 +34,7 @@ class LitusEntityCudiFileProxy extends \Litus\Entity\Cudi\File implements \Doctr
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
 
     public function __sleep()

@@ -15,7 +15,7 @@ use \Zend\Form\Element\Textarea;
 use \Zend\Validator\Int as IntValidator;
 use \Zend\Registry;
 
-class CashRegister extends \Litus\Form\Admin\Form
+class CashRegisterAdd extends \Litus\Form\Admin\Form
 {
     public function __construct($options = null )
     {
@@ -50,22 +50,9 @@ class CashRegister extends \Litus\Form\Admin\Form
 		}
 
         $field = new Submit('submit');
-        $field->setLabel('Submit')
+        $field->setLabel('Add')
             ->setAttrib('class', 'sale_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-
-	public function populate($data)
-	{
-		$array = array();
-		
-		foreach($data->getBankDeviceAmounts() as $amount)
-			$array['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
-        
-		foreach($data->getMoneyUnitAmounts() as $amount)
-			$array['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
-		
-		parent::populate($array);
-	}
 }

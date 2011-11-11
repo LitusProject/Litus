@@ -34,7 +34,7 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function isInternal()
     {
@@ -138,14 +138,11 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
         return parent::setIsUnbookable($unbookable);
     }
 
-    public function getNumberInStock()
-    {
-        $this->__load();
-        return parent::getNumberInStock();
-    }
-
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }
@@ -180,10 +177,16 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
         return parent::setRemoved($removed);
     }
 
+    public function getStockItem()
+    {
+        $this->__load();
+        return parent::getStockItem();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
     }
 
     public function __clone()

@@ -1,9 +1,11 @@
 <?  echo $this->partial('partials/sale/navigation.phtml', array('currentAction' => 'manage')); ?>
 
-<div id="controller_action">
+<div id="flashmessenger">
 	<? foreach($this->flashMessages as $message) { echo $message; } ?>
-    
-    <table class="full_width">
+</div>
+
+<div id="controller_action">
+	<table class="full_width">
     
         <tr>
             <th>Manager</th>

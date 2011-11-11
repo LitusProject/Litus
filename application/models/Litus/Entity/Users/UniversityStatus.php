@@ -60,7 +60,7 @@ class UniversityStatus
      *
      * @var string
      *
-     * @Column(type="string", length="4")
+     * @Column(type="string", length=4)
      */
     private $year;
 

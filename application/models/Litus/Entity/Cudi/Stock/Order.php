@@ -22,14 +22,9 @@ class Order
 	private $supplier;
 	
 	/**
-	 * @Column(type="datetime")
+	 * @Column(type="datetime", nullable=true)
 	 */
 	private $date;
-	
-	/**
-	 * @Column(type="integer")
-	 */
-	private $price;
 	
 	/**
 	 * @OneToMany(targetEntity="Litus\Entity\Cudi\Stock\OrderItem", mappedBy="order")
@@ -38,13 +33,10 @@ class Order
 	
 	/**
 	 * @param Litus\Entity\Cudi\Supplier $supplier The supplier of this order
-	 * @param float $price The price of this order
 	 */
-	public function __construct($supplier, $price)
+	public function __construct($supplier)
 	{
 		$this->setSupplier($supplier);
-		$this->date = new \DateTime();
-		$this->setPrice($price);
 	}
 	
 	/**
@@ -79,24 +71,16 @@ class Order
 	}
 	
 	/**
-	 * Set the price of this order
-	 *
-	 * @param float $price The price of this order
-	 */
-	public function setPrice($price)
-	{
-		$this->price = $price * 100;
-		return $this;
-	}
-	
-	/**
 	 * Get the price of this order
 	 *
 	 * @return integer
 	 */
 	public function getPrice()
 	{
-		return $this->price;
+		$price = 0;
+		foreach($this->orderItems as $item)
+			$price += $item->getPrice();
+		return $price;
 	}
 	
 	/**
@@ -128,5 +112,13 @@ class Order
 	public function getOrderItems()
 	{
 		return $this->orderItems;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isPlaced()
+	{
+		return null !== $this->date;
 	}
 }

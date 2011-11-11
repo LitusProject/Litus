@@ -34,10 +34,13 @@ class LitusEntityCudiStockOrderItemProxy extends \Litus\Entity\Cudi\Stock\OrderI
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }
@@ -58,6 +61,18 @@ class LitusEntityCudiStockOrderItemProxy extends \Litus\Entity\Cudi\Stock\OrderI
     {
         $this->__load();
         return parent::getNumber();
+    }
+
+    public function setNumber($number)
+    {
+        $this->__load();
+        return parent::setNumber($number);
+    }
+
+    public function getPrice()
+    {
+        $this->__load();
+        return parent::getPrice();
     }
 
 

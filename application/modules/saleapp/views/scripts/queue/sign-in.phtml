@@ -1,18 +1,33 @@
-
 <? if(!is_null($this->flashMessages) && count($this->flashMessages)!=0): ?>
-<div align=center>
-        <? foreach($this->flashMessages as $message) { echo $message; } ?>
+<div class=container>
+<div class=content>
+
+<div id=flashmessagecontainer style="margin-top: 5%; position: absolute;">
+<div class="row show-grid">
+<div class="span5 offset5">
+        <? foreach($this->flashMessages as $message):
+		echo Litus\FlashMessenger\BootstrapFlashMessage::layout( $message );
+	endforeach; ?>
+</div>
 </div>
 
 <script type="text/JavaScript">
-setTimeout("window.location = window.location;",3000); // reloads page every 3 seconds
+setTimeout("document.getElementById('flashmessagecontainer').innerHTML = '';",4000); // after 4 seconds, remove flash messages
 </script>
 
+</div>
+
+</div>
+</div>
 <? endif; ?>
 
-<div class="centerscreen">
+<div class="container">
+<div class="content">
 
-<h3 class="signin">Student number:</h3>
-<?= $this->form; ?>
-
+  <div class="row show-grid" style="margin-top: 25%; position: absolute;">
+    <div class="offset5 span5">
+<h3>Student number:</h3>
+<?= $this->form; ?></div>
+  </div><!-- /row -->
+</div>
 </div>

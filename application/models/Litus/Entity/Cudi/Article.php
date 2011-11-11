@@ -46,6 +46,11 @@ abstract class Article
 	 * @Column(type="boolean")
 	 */
 	private $removed = false;
+	
+	/**
+	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Stock\StockItem", mappedBy="article")
+	 */
+	private $stockItem;
 
     /**
      * @throws \InvalidArgumentException
@@ -121,5 +126,13 @@ abstract class Article
 	{
 		$this->removed = $removed;
 		return $this;
+	}
+	
+	/**
+	 * @return \Litus\Entity\Cudi\Stock\StockItem
+	 */
+	public function getStockItem()
+	{
+		return $this->stockItem;
 	}
 }

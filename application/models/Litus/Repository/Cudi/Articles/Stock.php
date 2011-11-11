@@ -14,10 +14,14 @@ class Stock extends EntityRepository
 {
 	public function findOneByBarcode($barcode)
     {
-        $resultSet = $this->_em
-            ->createQuery('SELECT s FROM Litus\Entity\Cudi\Articles\Stock s WHERE s.barcode = \'' . $barcode . '\'')
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('Litus\Entity\Cudi\Articles\Stock', 's')
+			->where($query->expr()->eq('s.barcode', ':barcode'))
+			->setParameter('barcode', $barcode)
 			->setMaxResults(1)
-            ->getResult();
+			->getQuery()
+			->getResult();
 		
 		if (isset($resultSet[0]))
             return $resultSet[0];
