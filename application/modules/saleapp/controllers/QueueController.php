@@ -10,6 +10,7 @@ use \Litus\Entity\Users\Person;
 use \Litus\Entity\Cudi\Sales\ServingQueueStatus;
 use \Litus\Entity\Cudi\Sales\PayDesk;
 use \Litus\FlashMessenger\FlashMessage;
+use \Litus\FlashMessenger\BootstrapFlashMessage; // this line should perhaps be in the view
 
 class QueueController extends \Litus\Controller\Action
 {
@@ -57,9 +58,9 @@ class QueueController extends \Litus\Controller\Action
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        "Queue number:" . $this->getEntityManager()
+                        "Queue number: <strong>" . $this->getEntityManager()
                                ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->getQueueNumber( $queueItem )
+                               ->getQueueNumber( $queueItem ) . "</strong>"
                     )
                 );
 
@@ -67,6 +68,33 @@ class QueueController extends \Litus\Controller\Action
                 $this->view->form->populate("");
             }
         }
+    }
+
+    public function overviewAction() {
+        $selling = $this->getEntityManager()
+                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
+                        ->findBy( array( 'name' => 'selling' ) )
+                        ->getId();
+        $collecting = $this->getEntityManager()
+                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
+                        ->findBy( array( 'name' => 'collecting' ) )
+                        ->getId();
+        $signed_in = $this->getEntityManager()
+                        ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
+                        ->findBy( array( 'name' => 'signed_in' ) )
+                        ->getId();
+        $this->view->selling_items = $this->getEntityManager()
+                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
+                               ->findBy( array('session' => $this->_getParam("session"),
+                                               'status' => $selling));
+        $this->view->collecting_items = $this->getEntityManager()
+                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
+                               ->findBy( array('session' => $this->_getParam("session"),
+                                               'status' => $collecting));
+        $this->view->signed_in_items = $this->getEntityManager()
+                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
+                               ->findBy( array('session' => $this->_getParam("session"),
+                                               'status' => $signed_in));
     }
 
     public function dumpAction() {
