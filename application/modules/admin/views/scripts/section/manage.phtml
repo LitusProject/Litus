@@ -1,5 +1,9 @@
 <?= $this->partial('partials/section/navigation.phtml', array('currentAction' => 'manage')); ?>
 
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
 <div id="controller_action">
     <table class="full_width">
         <thead>

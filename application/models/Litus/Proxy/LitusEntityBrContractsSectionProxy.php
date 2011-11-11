@@ -34,10 +34,13 @@ class LitusEntityBrContractsSectionProxy extends \Litus\Entity\Br\Contracts\Sect
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }

@@ -21,6 +21,7 @@ body {
 }
 
 h1 {
+	margin-top: 2*@defaultSpacing;
 	margin-bottom: @defaultSpacing;
 	font-size: @tSizeHeadingOne;
 }
@@ -259,6 +260,86 @@ h1 {
         }
     }
 
+	.flashmessage {
+		width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing);
+        margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+        .title {
+            display: block;
+            height: @sideboxTitleHeight;
+            line-height: @sideboxTitleHeight;
+            text-indent: @tIndent;
+            text-transform: uppercase;
+            font-size: @tSizeSmall;
+            font-weight: bold;
+            color: @cWhite;
+        }
+
+        .content {
+            padding: @defaultSpacing;
+            color: @cWhite;
+
+            p {
+                margin-top: 2 * @defaultSpacing;
+
+				a {
+                    margin-right: @defaultSpacing;
+                    text-decoration: none;
+                    font-weight: bold;
+                    color: inherit;
+                }
+
+                a:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            p:first-child {
+                margin-top: 0;
+            }
+        }
+	}
+
+	.success_message {
+        .title {
+            background: @cSuccessTitleBackground;
+        }
+
+        .content {
+            background: @cSuccessBackground;
+        }
+    }
+
+    .error_message {
+        .title {
+            background: @cErrorTitleBackground;
+        }
+
+        .content {
+            background: @cErrorBackground;
+        }
+    }
+
+	.warning_message {
+        .title {
+            background: @cWarningTitleBackground;
+        }
+
+        .content {
+            background: @cWarningBackground;
+        }
+    }
+
+	.notice_message {
+        .title {
+            background: @cNoticeTitleBackground;
+        }
+
+        .content {
+            background: @cNoticeBackground;
+        }
+    }
+
     #controller_action {
         float: left;
 
@@ -297,163 +378,6 @@ h1 {
 
             .required:after {
                 content: @formRequired;
-            }
-        }
-
-        .success_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cSuccessTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cSuccessBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-        }
-
-        .error_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cErrorTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cErrorBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-        }
-
-		.warning_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cWarningTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cWarningBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-        }
-
-		.notice_message {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cNoticeTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                background: @cNoticeBackground;
-
-                p {
-                    margin-top: 2 * @defaultSpacing;
-
-                    a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
             }
         }
 

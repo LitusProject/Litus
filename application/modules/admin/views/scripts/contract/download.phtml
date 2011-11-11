@@ -1,5 +1,9 @@
 <?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'download')); ?>
 
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
 <div id="controller_action">
     <table class="full_width">
         <thead>

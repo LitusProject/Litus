@@ -34,7 +34,7 @@ class LitusEntitySyllabusStudyProxy extends \Litus\Entity\Syllabus\Study impleme
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
 
     public function __sleep()

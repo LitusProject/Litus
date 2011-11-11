@@ -24,18 +24,18 @@ class AddItem extends \Litus\Form\Admin\Form
         parent::__construct($options);
 
         $this->setMethod('post');
-		
-        $field = new Text('stockArticle');
-        $field->setLabel('Stock article')
-        	->setRequired()
-			->addValidator(new ArticleBarcodeValidator())
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
 
 		$field = new Text('number');
         $field->setLabel('Number')
         	->setRequired()
 			->addValidator(new IntValidator())
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+        $field = new Text('stockArticle');
+        $field->setLabel('Stock article')
+        	->setRequired()
+			->addValidator(new ArticleBarcodeValidator())
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

@@ -1,22 +1,30 @@
 <?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'overview')); ?>
 
-<div id="controller_action">
-    <? foreach($this->flashMessages as $message) { echo $message; } ?>
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
 
+<div id="controller_action">
     <table class="full_width">
     
         <tr>
             <th>Article</th>
             <th>Number in stock</th>
+            <th>Open Order</th>
+            <th>Booked</th>
             <th>Actions</th>
         </tr>
         
         <? foreach ($this->stock as $item): ?>
 
             <tr>
-                <td><?= $item->getTitle(); ?></td>
+                <td><?= $item->getArticle()->getTitle(); ?></td>
                 <td><?= $item->getNumberInStock(); ?></td>
-				<td></td>
+                <td><?= $item->getNumberOpenOrder(); ?></td>
+                <td><?= $item->getNumberBooked(); ?></td>
+				<td>
+					<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
+                </td>
             </tr>
     
         <? endforeach; ?>

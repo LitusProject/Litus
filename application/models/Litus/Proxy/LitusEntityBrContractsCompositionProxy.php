@@ -34,7 +34,7 @@ class LitusEntityBrContractsCompositionProxy extends \Litus\Entity\Br\Contracts\
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
@@ -68,6 +68,9 @@ class LitusEntityBrContractsCompositionProxy extends \Litus\Entity\Br\Contracts\
 
     public function getPosition()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["position"];
+        }
         $this->__load();
         return parent::getPosition();
     }

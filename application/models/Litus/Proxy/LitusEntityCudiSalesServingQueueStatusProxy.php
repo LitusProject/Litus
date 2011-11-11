@@ -34,8 +34,35 @@ class LitusEntityCudiSalesServingQueueStatusProxy extends \Litus\Entity\Cudi\Sal
             unset($this->_entityPersister, $this->_identifier);
         }
     }
+
     
-    
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function setId($id_)
+    {
+        $this->__load();
+        return parent::setId($id_);
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
+    public function setName($name_)
+    {
+        $this->__load();
+        return parent::setName($name_);
+    }
+
 
     public function __sleep()
     {

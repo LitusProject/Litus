@@ -1,7 +1,11 @@
 <?= $this->partial('partials/article/navigation.phtml', array('currentAction' => 'delete')); ?>
 
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
 <div id="controller_action">
-    <div class="error_message full_width">
+    <div class="error_message flashmessage">
         <div class="title">Warning</div>
         <div class="content">
 			<p>

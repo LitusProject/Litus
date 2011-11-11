@@ -1,0 +1,70 @@
+<?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'overview')); ?>
+
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
+<div id="controller_action">
+	<h1>General</h1>
+    <p>Article: <b><?= $this->item->getArticle()->getTitle(); ?></b></p>
+    <p>Barcode: <b><?= $this->item->getArticle()->getBarcode(); ?></b></p>
+	<p>Supplier: <b><?= $this->item->getArticle()->getSupplier()->getName(); ?></b></p>
+	<br style="clear:both" />
+	<h1>Orders</h1>
+	<table class="half_width">
+		<tr>
+			<td>Total</td>
+			<td><?= $this->item->getTotalOrdered(); ?></td>
+		</tr>
+		<tr>
+			<td>Total open</td>
+			<td><?= $this->item->getNumberOpenOrder(); ?></td>
+		</tr>
+		<tr>
+			<td>ND</td>
+			<td>Something.</td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+	<?= $this->orderForm; ?>
+	<br style="clear:both" />
+	<h1>Deliveries</h1>
+	<table class="half_width">
+		<tr>
+			<td>Total</td>
+			<td><?= $this->item->getTotalDelivered(); ?></td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+	<?= $this->deliveryForm; ?>
+	<br style="clear:both" />
+	<h1>Bookings</h1>
+	<table class="half_width">
+		<tr>
+			<td>Number assigned</td>
+			<td>Needs to be calculated</td>
+		</tr>
+		<tr>
+			<td>Number not assigned</td>
+			<td>Needs to be calculated</td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+	<h1>Sales</h1>
+	<table class="half_width">
+		<tr>
+			<td>Total</td>
+			<td>Needs to be calculated</td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+	<h1>Stock</h1>
+	<table class="half_width">
+		<tr>
+			<td>Total</td>
+			<td><?= $this->item->getNumberInStock(); ?></td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+	<?= $this->stockForm; ?>
+</div>
