@@ -29,6 +29,8 @@
     
         <? endforeach; ?>
     </table>
+
+	<?= $this->paginationControl($this->deliveries, 'all', 'partials/pagination.phtml'); ?>
 </div>
 
 <aside>

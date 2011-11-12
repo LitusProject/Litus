@@ -155,12 +155,22 @@ class Action extends \Zend\Controller\Action implements AuthenticationAware, Doc
      */
     protected function _createPaginator($entity, array $conditions = array(), array $orderBy = null)
     {
+		return $this->_createPaginatorArray((0 == count($conditions)) ?
+            $this->getEntityManager()->getRepository($entity)->findBy(array(), $orderBy) :
+            $this->getEntityManager()->getRepository($entity)->findBy($conditions, $orderBy));
+    }
+
+	/**
+     * Create a paginator for a given entity.
+     *
+     * @param string $entity The name of the entity that should be paginated
+     * @param array $conditions These conditions will be passed to the Repository call
+     * @return \Zend\Paginator\Paginator
+     */
+    protected function _createPaginatorArray(array $records)
+    {
         $paginator = new Paginator(
-            new ArrayAdapter(
-                (0 == count($conditions)) ?
-                    $this->getEntityManager()->getRepository($entity)->findBy(array(), $orderBy) :
-                    $this->getEntityManager()->getRepository($entity)->findBy($conditions, $orderBy)
-            )
+            new ArrayAdapter($records)
         );
         $paginator->setItemCountPerPage(25);
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
