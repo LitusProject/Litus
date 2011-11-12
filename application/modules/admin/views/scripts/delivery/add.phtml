@@ -1,0 +1,48 @@
+<?= $this->partial('partials/stock/navigation.phtml', array('currentAction' => 'deliveries')); ?>
+
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
+<div id="controller_action">
+	<?= $this->form; ?>
+	
+	<table>
+    
+        <tr>
+            <th>Date</th>
+            <th>Article</th>
+            <th>Number</th>
+            <th>Price</th>
+			<th>Actions</th>
+        </tr>
+        
+        <? foreach ($this->deliveries as $item): ?>
+
+            <tr>
+                <td><?= $item->getDate()->format('Y-m-d H:i:s'); ?></td>
+                <td><?= $item->getArticle()->getTitle(); ?></td>
+                <td><?= $item->getNumber(); ?></td>
+                <td>&euro; <?= number_format($item->getPrice()/100, 2); ?></td>
+				<td>
+					<a href="<?= $this->url(array('action' => 'delete', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+				</td>
+            </tr>
+    
+        <? endforeach; ?>
+    </table>
+</div>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">Overview deliveries</div>
+       	<div class="content">
+	    	<p>
+	        	<i>Please hit the link below to view all deliveries!</i>
+	        </p>
+	        <p>
+	           	<a href="<?= $this->url(array('action' => 'overview')); ?>">&rarr; Overview deliveries</a>
+	        </p>
+	    </div>
+	</div>
+</aside>

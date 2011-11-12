@@ -32,9 +32,9 @@ class OrderController extends \Litus\Controller\Action
     
     public function overviewAction()
 	{
-		$this->view->suppliers = $this->_createPaginator(
-            'Litus\Entity\Cudi\Supplier'
-        );
+		$this->view->suppliers = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Supplier')
+			->findAll();
     }
 
 	public function supplierAction()
