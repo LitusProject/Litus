@@ -33,6 +33,7 @@ class StockItem
 	public function __construct($article)
 	{
 		$this->article = $article;
+		$this->numberInStock = 0;
 	}
 	
 	/**
@@ -94,7 +95,15 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getNumberOpenOrder()
+	public function getNumberNotDelivered()
+	{
+		return $this->getTotalOrdered() - $this->getTotalDelivered();
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberQueueOrder()
 	{
 		$item = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\OrderItem')->findOneOpenByArticle($this->article);
 		
@@ -119,6 +128,7 @@ class StockItem
 	 */
 	public function getNumberBooked()
 	{
+		// TODO
 		return 0;
 	}
 }

@@ -10,7 +10,8 @@
         <tr>
             <th>Article</th>
             <th>Number in stock</th>
-            <th>Open Order</th>
+            <th>Wait delivery</th>
+            <th>Queue order</th>
             <th>Booked</th>
             <th>Actions</th>
         </tr>
@@ -20,7 +21,8 @@
             <tr>
                 <td><?= $item->getArticle()->getTitle(); ?></td>
                 <td><?= $item->getNumberInStock(); ?></td>
-                <td><?= $item->getNumberOpenOrder(); ?></td>
+                <td><?= $item->getNumberNotDelivered(); ?></td>
+                <td><?= $item->getNumberQueueOrder(); ?></td>
                 <td><?= $item->getNumberBooked(); ?></td>
 				<td>
 					<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
