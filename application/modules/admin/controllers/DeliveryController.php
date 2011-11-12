@@ -22,16 +22,14 @@ class DeliveryController extends \Litus\Controller\Action
 
     public function indexAction()
     {
-        $this->_forward('overview');
+        $this->_forward('add');
     }
 	
-	public function overviewAction()
+	public function addAction()
 	{
-		$this->view->deliveries = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\DeliveryItem',
-			array(),
-			array('date' => 'DESC')
-        );
+		$this->view->deliveries = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
+			->findLastNb(25);
 
 		$form = new AddForm();
 		$this->view->form = $form;
@@ -54,7 +52,7 @@ class DeliveryController extends \Litus\Controller\Action
                         'The delivery was successfully added!'
                     )
 				);
-				$this->_redirect('overview');
+				$this->_redirect('index');
 			}
         }
 	}
@@ -87,4 +85,24 @@ class DeliveryController extends \Litus\Controller\Action
 			$this->_redirect('overview', null, null, array('id' => null));
         }
 	}
+
+	public function overviewAction()
+	{
+		$this->view->suppliers = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Supplier')
+			->findAll();
+	}
+	
+	public function supplierAction()
+	{
+		$supplier = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Supplier')
+            ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $supplier)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$this->view->deliveries = array();
+	}
+	
 }

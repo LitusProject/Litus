@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class Supplier extends EntityRepository
 {
+	public function findAll()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('Litus\Entity\Cudi\Supplier', 's')
+			->orderBy('s.name', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
 }

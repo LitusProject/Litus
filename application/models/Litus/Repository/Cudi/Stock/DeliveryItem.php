@@ -28,4 +28,17 @@ class DeliveryItem extends EntityRepository
 			
 		return $total;
 	}
+	
+	public function findLastNb($number)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\DeliveryItem', 'i')
+			->orderBy('i.date', 'DESC')
+			->setMaxResults($number)
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
 }

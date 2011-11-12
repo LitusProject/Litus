@@ -8,6 +8,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -16px;}
 .add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -608px;}
 .delete{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -32px;}
+.view{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -624px;}
 .groups{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -48px;}
 .groups_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -64px;}
 .groups_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -80px;}
