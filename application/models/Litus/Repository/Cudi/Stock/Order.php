@@ -19,10 +19,12 @@ class Order extends EntityRepository
 		$resultSet = $query->select('i')
 			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
 			->innerJoin('i.order', 'o', Join::WITH, $query->expr()->andX(
+					$query->expr()->eq('i.article', ':article'),
 					$query->expr()->eq('o.supplier', ':supplier'),
 					$query->expr()->isNotNull('o.date')
 				)
 			)
+			->setParameter('article', $article->getId())
 			->setParameter('supplier', $article->getSupplier()->getId())
 			->getQuery()
 			->getResult();

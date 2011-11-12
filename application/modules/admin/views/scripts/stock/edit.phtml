@@ -17,12 +17,12 @@
 			<td><?= $this->item->getTotalOrdered(); ?></td>
 		</tr>
 		<tr>
-			<td>Total open</td>
-			<td><?= $this->item->getNumberOpenOrder(); ?></td>
+			<td>Not delivered</td>
+			<td><?= $this->item->getNumberNotDelivered(); ?></td>
 		</tr>
 		<tr>
-			<td>ND</td>
-			<td>Something.</td>
+			<td>Queue</td>
+			<td><?= $this->item->getNumberQueueOrder(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />

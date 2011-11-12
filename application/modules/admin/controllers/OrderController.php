@@ -84,7 +84,7 @@ class OrderController extends \Litus\Controller\Action
         }
 	}
 	
-	public function additemAction()
+	public function addAction()
 	{
 		$form = new AddItemForm();
 		
