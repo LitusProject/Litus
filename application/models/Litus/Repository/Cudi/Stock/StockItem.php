@@ -26,4 +26,96 @@ class StockItem extends EntityRepository
 		
         return $article;
     }
+
+	public function findAllByArticleTitle($title)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->innerJoin('i.article', 'a', Join::WITH, $query->expr()->like($query->expr()->lower('a.title'), ':title'))
+			->setParameter('title', '%'.strtolower($title).'%')
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllByArticleBarcode($barcode)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$internal = $query->select('a.id')
+			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
+			->where($query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'))
+			->setParameter('barcode', $barcode.'%')
+			->getQuery()
+			->getResult();
+			
+		$query = $this->_em->createQueryBuilder();
+		$external = $query->select('a.id')
+			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
+			->where($query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'))
+			->setParameter('barcode', $barcode.'%')
+			->getQuery()
+			->getResult();
+			
+		$ids = array();
+		foreach($external as $article)
+			$ids[] = $article['id'];
+		foreach($internal as $article)
+			$ids[] = $article['id'];
+
+		if (sizeof($ids) === 0)
+			return array();
+
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->innerJoin('i.article', 'a')
+			->where($query->expr()->in('a.id', $ids))
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllByArticleSupplier($supplier)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$internal = $query->select('a.id')
+			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
+			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
+			->setParameter('supplier', '%'.strtolower($supplier).'%')
+			->getQuery()
+			->getResult();
+			
+		$query = $this->_em->createQueryBuilder();
+		$external = $query->select('a.id')
+			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
+			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
+			->setParameter('supplier', '%'.strtolower($supplier).'%')
+			->getQuery()
+			->getResult();
+			
+		$ids = array();
+		foreach($external as $article)
+			$ids[] = $article['id'];
+		foreach($internal as $article)
+			$ids[] = $article['id'];
+
+		if (sizeof($ids) === 0)
+			return array();
+
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->innerJoin('i.article', 'a')
+			->where($query->expr()->in('a.id', $ids))
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
 }

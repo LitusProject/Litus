@@ -66,6 +66,9 @@ class DeliveryItem extends EntityRepository
 			$ids[] = $article['id'];
 		foreach($internal as $article)
 			$ids[] = $article['id'];
+			
+		if (sizeof($ids) === 0)
+			return array();
 
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
