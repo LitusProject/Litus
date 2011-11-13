@@ -10,6 +10,8 @@ use \Admin\Form\Delivery\AddDirect as DeliveryForm;
 
 use \Litus\Entity\Cudi\Stock\DeliveryItem;
 
+use \Zend\Json\Json;
+
 /**
  * This class controls management of the stock.
  * 
@@ -102,5 +104,49 @@ class StockController extends \Litus\Controller\Action
 				}
 			}
 		}
+	}
+
+	public function searchAction()
+	{
+		$this->broker('contextSwitch')
+            ->addActionContext('search', 'json')
+            ->setAutoJsonSerialization(false)
+            ->initContext();
+        
+        $this->broker('layout')->disableLayout();
+
+        $json = new Json();
+
+		$this->_initAjax();
+		
+		switch($this->getRequest()->getParam('field')) {
+			case 'title':
+				$stock = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->findAllByArticleTitle($this->getRequest()->getParam('string'));
+				break;
+			case 'barcode':
+				$stock = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->findAllByArticleBarcode($this->getRequest()->getParam('string'));
+				break;
+			case 'supplier':
+				$stock = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->findAllByArticleSupplier($this->getRequest()->getParam('string'));
+				break;
+		}
+		$result = array();
+		foreach($stock as $stockItem) {
+			$item = (object) array();
+			$item->id = $stockItem->getId();
+			$item->title = $stockItem->getArticle()->getTitle();
+			$item->numberInStock = $stockItem->getNumberInStock();
+			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
+			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
+			$item->numberBooked = $stockItem->getNumberBooked();
+			$result[] = $item;
+		}
+		echo $json->encode($result);
 	}
 }

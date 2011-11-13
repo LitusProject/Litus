@@ -5,32 +5,108 @@
 </div>
 
 <div id="controller_action">
-    <table class="full_width">
+	<div id="stock_search" style="display:none;">
+		<div style="padding:4px;text-align:right">
+			Search: 
+			<select id="searchField">
+				<option value="title">Title</option>
+				<option value="barcode">Barcode</option>
+				<option value="supplier">Supplier</option>
+			</select>
+			is
+			<input type="text" id="searchString" />
+		</div>
+		
+		<table class="full_width">
     
-        <tr>
-            <th>Article</th>
-            <th>Number in stock</th>
-            <th>Wait delivery</th>
-            <th>Queue order</th>
-            <th>Booked</th>
-            <th>Actions</th>
-        </tr>
-        
-        <? foreach ($this->stock as $item): ?>
-
-            <tr>
-                <td><?= $item->getArticle()->getTitle(); ?></td>
-                <td><?= $item->getNumberInStock(); ?></td>
-                <td><?= $item->getNumberNotDelivered(); ?></td>
-                <td><?= $item->getNumberQueueOrder(); ?></td>
-                <td><?= $item->getNumberBooked(); ?></td>
-				<td>
-					<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
-                </td>
-            </tr>
+        	<tr>
+            	<th>Article</th>
+            	<th>Number in stock</th>
+            	<th>Wait delivery</th>
+            	<th>Queue order</th>
+            	<th>Booked</th>
+            	<th>Actions</th>
+			</tr>
+			
+		</table>
+	</div>
+	
+	<div id="defaultPage">
+    	<table class="full_width">
     
-        <? endforeach; ?>
-    </table>
+        	<tr>
+            	<th>Article</th>
+            	<th>Number in stock</th>
+            	<th>Wait delivery</th>
+            	<th>Queue order</th>
+            	<th>Booked</th>
+            	<th>Actions</th>
+			</tr>
 
-	<?= $this->paginationControl($this->stock, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
+	        <? foreach ($this->stock as $item): ?>
+
+	            <tr>
+	                <td><?= $item->getArticle()->getTitle(); ?></td>
+	                <td><?= $item->getNumberInStock(); ?></td>
+	                <td><?= $item->getNumberNotDelivered(); ?></td>
+	                <td><?= $item->getNumberQueueOrder(); ?></td>
+	                <td><?= $item->getNumberBooked(); ?></td>
+					<td>
+						<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
+	                </td>
+	            </tr>
+
+	        <? endforeach; ?>
+	    </table>
+
+		<?= $this->paginationControl($this->stock, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
+	</div>
 </div>
+
+<script language="javascript">
+	$(document).keypress(function (e) {
+		if (102 == e.keyCode && e.metaKey) {
+			if ($('#stock_search').is(':visible')) {
+				$('#stock_search').hide();
+				$('#defaultPage').show();
+			} else {
+				$('#stock_search').show();
+				$('#defaultPage').hide();
+				$('#searchString').focus();
+			}
+			return false;
+		}
+	})
+	.keyup(function (e) {
+		if (27 == e.keyCode) {
+			$('#stock_search').hide();
+			$('#defaultPage').show();
+		}
+	})
+	.ready(function () {
+		$('#searchString, #searchField').bind('change click keyup', function () {
+			var table = $('#stock_search table');
+			if ($('#searchString').val() == '') {
+				table.find('tr.item').remove();
+				return;
+			}
+			$.ajax({
+				url: '<?= $this->url(array('action' => 'search')); ?>'+'/field/'+$('#searchField').val()+'/string/'+$('#searchString').val(),
+				method: 'get',
+				dataType: 'json',
+				success: function (data) {
+					table.find('tr.item').remove();
+					$(data).each(function () {
+						table.append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>'+this.title+'</td>')
+							.append('<td>'+this.numberInStock+'</td>')
+							.append('<td>'+this.numberNotDelivered+'</td>')
+							.append('<td>'+this.numberQueueOrder+'</td>')
+							.append('<td>'+this.numberBooked+'</td>')
+							.append('<td><a href="<?= $this->url(array('action' => 'edit')); ?>/id/'+this.id+'" class="edit">Edit</a></td>');
+					});
+				}
+			});
+		});
+	});
+</script>
