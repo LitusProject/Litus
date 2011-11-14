@@ -21,6 +21,7 @@
     
         	<tr>
             	<th>Article</th>
+            	<th>Supplier</th>
             	<th>Number in stock</th>
             	<th>Wait delivery</th>
             	<th>Queue order</th>
@@ -36,6 +37,7 @@
     
         	<tr>
             	<th>Article</th>
+            	<th>Supplier</th>
             	<th>Number in stock</th>
             	<th>Wait delivery</th>
             	<th>Queue order</th>
@@ -47,6 +49,7 @@
 
 	            <tr>
 	                <td><?= $item->getArticle()->getTitle(); ?></td>
+	                <td><?= $item->getArticle()->getSupplier()->getName(); ?></td>
 	                <td><?= $item->getNumberInStock(); ?></td>
 	                <td><?= $item->getNumberNotDelivered(); ?></td>
 	                <td><?= $item->getNumberQueueOrder(); ?></td>
@@ -76,34 +79,33 @@
 			}
 			return false;
 		}
-	})
-	.keyup(function (e) {
+	}).keyup(function (e) {
 		if (27 == e.keyCode) {
 			$('#stock_search').hide();
 			$('#defaultPage').show();
 		}
-	})
-	.ready(function () {
+	}).ready(function () {
 		$('#searchString, #searchField').bind('change click keyup', function () {
 			var table = $('#stock_search table');
-			if ($('#searchString').val() == '') {
+			if ('' == $('#searchString').val()) {
 				table.find('tr.item').remove();
 				return;
 			}
 			$.ajax({
-				url: '<?= $this->url(array('action' => 'search')); ?>'+'/field/'+$('#searchField').val()+'/string/'+$('#searchString').val(),
+				url: '<?= $this->url(array('action' => 'search')); ?>' + '/field/' + $('#searchField').val() + '/string/' + $('#searchString').val(),
 				method: 'get',
 				dataType: 'json',
 				success: function (data) {
 					table.find('tr.item').remove();
 					$(data).each(function () {
 						table.append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>'+this.title+'</td>')
-							.append('<td>'+this.numberInStock+'</td>')
-							.append('<td>'+this.numberNotDelivered+'</td>')
-							.append('<td>'+this.numberQueueOrder+'</td>')
-							.append('<td>'+this.numberBooked+'</td>')
-							.append('<td><a href="<?= $this->url(array('action' => 'edit')); ?>/id/'+this.id+'" class="edit">Edit</a></td>');
+						row.append('<td>' + this.title + '</td>')
+							.append('<td>' + this.supplier + '</td>')
+							.append('<td>' + this.numberInStock + '</td>')
+							.append('<td>' + this.numberNotDelivered + '</td>')
+							.append('<td>' + this.numberQueueOrder + '</td>')
+							.append('<td>' + this.numberBooked + '</td>')
+							.append('<td><a href="<?= $this->url(array('action' => 'edit')); ?>/id/' + this.id + '" class="edit">Edit</a></td>');
 					});
 				}
 			});

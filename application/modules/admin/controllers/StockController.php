@@ -141,6 +141,7 @@ class StockController extends \Litus\Controller\Action
 			$item = (object) array();
 			$item->id = $stockItem->getId();
 			$item->title = $stockItem->getArticle()->getTitle();
+			$item->supplier = $stockItem->getArticle()->getSupplier()->getName();
 			$item->numberInStock = $stockItem->getNumberInStock();
 			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
 			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
