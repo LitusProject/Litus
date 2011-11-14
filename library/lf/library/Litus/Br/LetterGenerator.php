@@ -32,7 +32,7 @@ class LetterGenerator extends DocumentGenerator {
         /** @var $xml \Litus\Util\Xml\XmlGenerator */
         $xml = new XmlGenerator($file);
 
-        /** @var $configs \Litus\Repository\Config\Config */
+        /** @var $configs \Litus\Repository\General\Config */
         $configs = self::_getConfigRepository();
 
         // Get the content
@@ -55,7 +55,7 @@ class LetterGenerator extends DocumentGenerator {
         $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
 
         // Generate the xml
-        
+
         $xml->append(new XmlObject('letter', null,
                  array(
                      // children of <letter>

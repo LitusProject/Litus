@@ -16,14 +16,14 @@ abstract class DocumentGenerator
 
     /**
      * @static
-     * @return Litus\Repository\Config\Config
+     * @return Litus\Repository\General\Config
      */
     protected static function _getConfigRepository()
     {
         if(self::$_configs === null) {
             /** @var \Doctrine\ORM\EntityManager $_em  */
             $_em = Registry::get(DoctrineResource::REGISTRY_KEY);
-            self::$_configs = $_em->getRepository('Litus\Entity\Config\Config');
+            self::$_configs = $_em->getRepository('Litus\Entity\General\Config');
         }
         return self::$_configs;
     }
