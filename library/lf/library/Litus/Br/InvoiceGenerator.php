@@ -44,7 +44,7 @@ class InvoiceGenerator extends DocumentGenerator {
         $dueDate = $contractDate->add(new \DateInterval('P30D'))->format('j/m/Y');
         $clientVat = $this->_contract->getCompany()->getVatNumber();
         $reference = '/'; // TODO?
-        $invoiceNb = '22xxx'; // TODO
+        $invoiceNb = $this->_contract->getInvoiceNb();
 
         $unionName = $configs->getConfigValue('br.invoice.union_name');
         $unionAddress = self::_formatAddress($configs->getConfigValue('br.invoice.union_address'));

@@ -83,6 +83,13 @@ class Contract
     private $invoiceNb;
 
     /**
+     * @var int The contract number. A form of identification that means something to the human users.
+     *
+     * @Column(name="contract_nb", type="integer", unique=true)
+     */
+    private $contractNb;
+
+    /**
      * @var bool True if the contract has been updated but the updated version has not been generated yet.
      *
      * @Column(type="boolean")
@@ -287,11 +294,17 @@ class Contract
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isSigned()
     {
         return $this->getInvoiceNb() != -1;
     }
 
+    /**
+     * @return int
+     */
     public function getInvoiceNb()
     {
         return $this->invoiceNb;
@@ -307,6 +320,27 @@ class Contract
         if (($invoiceNb === null) || !is_numeric($invoiceNb))
             throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
         $this->invoiceNb = $invoiceNb;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getContractNb()
+    {
+        return $this->contractNb;
+    }
+
+    /**
+     * @param int $contractNb
+     * @return \Litus\Entity\Br\Contract
+     */
+    public function setContractNb($contractNb)
+    {
+        if(($contractNb === null) || !is_numeric($contractNb))
+            throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
+        $this->contractNb = $contractNb;
 
         return $this;
     }

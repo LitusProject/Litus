@@ -7,6 +7,7 @@ use \Litus\Entity\Br\Contract;
 
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Hidden;
+use \Zend\Form\Element\Text;
 
 class Edit extends Add {
 
@@ -20,6 +21,20 @@ class Edit extends Add {
         $field->setValue($contract->getId());
         $this->addElement($field);
 
+        $field = new Text('contract_nb');
+        $field->setLabel('Contract number')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+        $field = new Text('invoice_nb');
+        $field->setLabel('Invoice number')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        if(!$contract->isSigned())
+            $field->setAttrib('disabled', 'disabled');
+        $this->addElement($field);
+
         $field = new Submit('Save');
         $field->setValue('Save')
             ->setAttrib('class', 'contracts_edit')
@@ -28,10 +43,12 @@ class Edit extends Add {
 
         $this->populate(
             array(
-                'company'   => $contract->getCompany()->getId(),
-                'discount'  => $contract->getDiscount(),
-                'title'     => $contract->getTitle(),
-                'sections'  => $this->_getActiveSections($contract)
+                'company'       => $contract->getCompany()->getId(),
+                'discount'      => $contract->getDiscount(),
+                'title'         => $contract->getTitle(),
+                'sections'      => $this->_getActiveSections($contract),
+                'contract_nb'   => $contract->getContractNb(),
+                'invoice_nb'    => $contract->getInvoiceNb()
             )
         );
     }

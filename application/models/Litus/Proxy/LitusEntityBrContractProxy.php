@@ -34,13 +34,10 @@ class LitusEntityBrContractProxy extends \Litus\Entity\Br\Contract implements \D
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getId()
     {
-        if ($this->__isInitialized__ === false) {
-            return $this->_identifier["id"];
-        }
         $this->__load();
         return parent::getId();
     }
@@ -159,10 +156,22 @@ class LitusEntityBrContractProxy extends \Litus\Entity\Br\Contract implements \D
         return parent::setInvoiceNb($invoiceNb);
     }
 
+    public function getContractNb()
+    {
+        $this->__load();
+        return parent::getContractNb();
+    }
+
+    public function setContractNb($contractNb)
+    {
+        $this->__load();
+        return parent::setContractNb($contractNb);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'date', 'author', 'company', 'composition', 'discount', 'title', 'invoiceNb', 'dirty');
+        return array('__isInitialized__', 'id', 'date', 'author', 'company', 'composition', 'discount', 'title', 'invoiceNb', 'contractNb', 'dirty');
     }
 
     public function __clone()
