@@ -28,13 +28,15 @@ class Edit extends Add {
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Text('invoice_nb');
-        $field->setLabel('Invoice number')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        if(!$contract->isSigned())
-            $field->setAttrib('disabled', 'disabled');
-        $this->addElement($field);
+        if($contract->isSigned()) {
+            $field = new Text('invoice_nb');
+            $field->setLabel('Invoice number')
+                ->setRequired()
+                ->setValue($contract->getInvoiceNb())
+                ->setDecorators(array(new FieldDecorator()))
+                ->setAttrib('disabled', 'disabled');
+            $this->addElement($field);
+        }
 
         $field = new Submit('Save');
         $field->setValue('Save')
@@ -48,8 +50,7 @@ class Edit extends Add {
                 'discount'      => $contract->getDiscount(),
                 'title'         => $contract->getTitle(),
                 'sections'      => $this->_getActiveSections($contract),
-                'contract_nb'   => $contract->getContractNb(),
-                'invoice_nb'    => $contract->getInvoiceNb()
+                'contract_nb'   => $contract->getContractNb()
             )
         );
     }
