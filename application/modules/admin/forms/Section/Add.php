@@ -49,6 +49,7 @@ class Add extends \Litus\Form\Admin\Form
         $field = new Textarea('content');
         $field->setLabel('Content')
             ->setRequired()
+            ->setValue('<entry></entry>')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
