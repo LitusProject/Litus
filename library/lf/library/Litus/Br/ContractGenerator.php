@@ -33,7 +33,7 @@ class ContractGenerator extends DocumentGenerator {
 
         // Get the content
 
-        /** @var \Litus\Repository\Config\Config $configs  */
+        /** @var \Litus\Repository\General\Config $configs  */
         $configs = self::_getConfigRepository();
 
         $title = $this->_contract->getTitle();

@@ -15,7 +15,7 @@ use \Zend\Registry;
 class InvoiceGenerator extends DocumentGenerator {
 
     /**
-     * @var \Litus\Entity\Br\Contractt
+     * @var \Litus\Entity\Br\Contract
      */
     private $_contract;
 
@@ -31,7 +31,7 @@ class InvoiceGenerator extends DocumentGenerator {
     {
         $xml = new XmlGenerator($file);
 
-        /** @var $configs \Litus\Repository\Config\Config */
+        /** @var $configs \Litus\Repository\General\Config */
         $configs = self::_getConfigRepository();
 
         $totalExclusive = 0;
