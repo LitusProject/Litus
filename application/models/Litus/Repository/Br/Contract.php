@@ -35,4 +35,15 @@ class Contract extends EntityRepository
 
         return (+$highestInvoiceNb) + 1;
     }
+
+    public function findNextContractNb()
+    {
+        $highestContractNb = $this->_em
+            ->createQuery('SELECT MAX(c.contractNb) AS highest FROM Litus\Entity\Br\Contract c')
+            ->getResult();
+
+        $highestContractNb = $highestContractNb[0]['highest'];
+
+        return (+$highestContractNb) + 1;
+    }
 }

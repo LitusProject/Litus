@@ -58,7 +58,7 @@ class ContractController extends \Litus\Controller\Action
         $contract = $this->getEntityManager()
 			->getRepository('Litus\Entity\Br\Contract')
 			->find($id);
-			
+
         if (null === $contract)
             throw new \InvalidArgumentException('No contract found with the given id');
 
@@ -106,7 +106,13 @@ class ContractController extends \Litus\Controller\Action
                     $formData['discount'],
                     $formData['title']
                 );
-                
+
+                $newContract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('Litus\Entity\Br\Contract')
+                        ->findNextContractNb()
+                );
+
                 $contractComposition = array();
                 foreach ($formData['sections'] as $id) {
                     $section = $this->getEntityManager()
@@ -121,7 +127,7 @@ class ContractController extends \Litus\Controller\Action
 
                 $this->view->contractId = $newContract->getId();
                 $this->view->sections = $contractComposition;
-                
+
                 $this->view->contractCreated = true;
             }
         }
@@ -152,7 +158,11 @@ class ContractController extends \Litus\Controller\Action
 
                 $contract->setCompany($company)
                     ->setDiscount($formData['discount'])
-                    ->setTitle($formData['title']);
+                    ->setTitle($formData['title'])
+                    ->setContractNb($formData['contract_nb']);
+
+                if($contract->isSigned())
+                    $contract->setInvoiceNb($formData['invoice_nb']);
 
                 $contractComposition = array();
                 foreach ($formData['sections'] as $id) {
@@ -165,14 +175,14 @@ class ContractController extends \Litus\Controller\Action
 
                 $contract->resetComposition()
                     ->setDirty();
-                
+
                 $this->_flush();
 
                 $contract->addSections($contractComposition);
 
                 $this->view->contractId = $contract->getId();
                 $this->view->sections = $contractComposition;
-                
+
                 $this->view->contractUpdated = true;
             }
         }
@@ -209,7 +219,7 @@ class ContractController extends \Litus\Controller\Action
 
         $contractRepository = $this->getEntityManager()
             ->getRepository('\Litus\Entity\Br\Contract');
-        
+
         $contract = $contractRepository->find(
             $this->getRequest()->getParam('id')
         );
@@ -235,20 +245,20 @@ class ContractController extends \Litus\Controller\Action
 			$this->_generateFiles(
                 $this->getRequest()->getParam('id')
             );
-			
+
 			$file = FileUtil::getRealFilename(
 				Registry::get('litus.resourceDirectory') . '/pdf/br/'
 					. $this->getRequest()->getParam('id') . '/'
 					. $this->getRequest()->getParam('type') .
 					'.pdf'
 			);
-			
+
 			$this->getResponse()->setHeader(
 				'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
 			);
 			$this->getResponse()->setHeader('Content-Length', filesize($file));
-			
-			readfile($file);			
+
+			readfile($file);
 		} else {
 			$this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
 		}
@@ -283,7 +293,7 @@ class ContractController extends \Litus\Controller\Action
 
         // Saving the new contract composition
         $contract->addSections($contractComposition);
-                
+
         echo $this->_json->encode($updateCompositionResult);
     }
 }
