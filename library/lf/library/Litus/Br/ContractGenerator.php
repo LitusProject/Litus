@@ -58,6 +58,11 @@ class ContractGenerator extends DocumentGenerator {
 
         // Generate the xml
 
+        $entry_s = array();
+        foreach($entries as $entry) {
+            $entry_s[] = $entry->getSection()->getContent();
+        }
+
         $xml->append(new XmlObject('contract',
             // params of <contract>
             array(
@@ -103,7 +108,7 @@ class ContractGenerator extends DocumentGenerator {
                         new XmlObject('address', null, self::_formatAddress($unionAddress))
                 )),
 
-                new XmlObject('entries', null, $entries),
+                new XmlObject('entries', null, $entry_s),
 
                 new XmlObject('sub_entries', null, $sub_entries),
 
