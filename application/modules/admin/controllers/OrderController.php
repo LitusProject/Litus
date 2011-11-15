@@ -6,6 +6,7 @@ use \Admin\Form\Order\Add as AddForm;
 use \Admin\Form\Order\Edit as EditForm;
 use \Admin\Form\Order\AddItem as AddItemForm;
 
+use \Litus\Cudi\OrderGenerator;
 use \Litus\Entity\Cudi\Stock\Order;
 use \Litus\Entity\Cudi\Stock\OrderItem;
 use \Litus\FlashMessenger\FlashMessage;
@@ -158,6 +159,9 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function printAction()
 	{
+		$this->broker('layout')->disableLayout(); 
+		$this->broker('viewRenderer')->setNoRender();
+		
 		$order = $this->getEntityManager()
 	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
 	    	->findOneById($this->getRequest()->getParam('id'));
@@ -165,15 +169,13 @@ class OrderController extends \Litus\Controller\Action
 		if (null == $order || !$order->isPlaced())
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
-		$pdf = new PdfDocument();
-		$page1 = $pdf->newPage(PdfPage::SIZE_A4);
-		$pdf->pages[] = $page1;
-		// TODO: print PDF
-		
-		$this->broker('layout')->disableLayout(); 
-		$this->broker('viewRenderer')->setNoRender();
+		$document = new OrderGenerator($order);
+		$document->generate();
+
+		$now = new \DateTime();
 		$this->getResponse()
 			->setHeader('Content-Type', 'application/pdf', true)
-			->appendBody($pdf->render());
+			->setHeader('Content-Disposition', 'inline; filename="order_'.$now->format('Ymd').'.pdf"')
+			->appendBody($document->render());
 	}
 }
