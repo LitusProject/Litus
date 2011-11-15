@@ -20,7 +20,11 @@
                 <td><?= $order->getDate() ? $order->getDate()->format('Y-m-d H:i:s') : '(new)'; ?></td>
                 <td>&euro; <?= number_format($order->getPrice()/100, 2); ?></td>
 				<td>
+					<? if ($order->isPlaced()): ?>
+						<a href="<?= $this->url(array('action' => 'edit', 'id' => $order->getId())); ?>" class="view">View</a>
+					<? else: ?>
 					<a href="<?= $this->url(array('action' => 'edit', 'id' => $order->getId())); ?>" class="edit">Edit</a>
+					<? endif; ?>
 				</td>
             </tr>
         <? endforeach; ?>
