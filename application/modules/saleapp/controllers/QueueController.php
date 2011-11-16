@@ -58,6 +58,9 @@ class QueueController extends \Litus\Controller\Action
                 $queueItem->setPerson( $person );
                 $queueItem->setStatus( $status );
                 $queueItem->setSession( $session );
+                $queueItem->setQueueNumber( $this->getEntityManager()
+                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
+                               ->getQueueNumber( $session->getId() ) );
 
 		$this->getEntityManager()->persist( $queueItem );
 
@@ -65,9 +68,7 @@ class QueueController extends \Litus\Controller\Action
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        "Queue number: <strong>" . $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->getQueueNumber( $queueItem ) . "</strong>"
+                        "Queue number: <strong>" . $queueItem->getQueueNumber() . "</strong>"
                     )
                 );
 
@@ -82,9 +83,25 @@ class QueueController extends \Litus\Controller\Action
     }
 
     public function dumpAction() {
-        $this->view->queueItems = $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->findBy( array('session' => $this->_getParam("session")));
+        $itemRepo = $this->getEntityManager()
+                                  ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem');
+        $statusRepo = $this->getEntityManager()
+                                   ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus');
+        if( $this->_getParam("status") ) {
+
+                $status = $statusRepo
+                                   ->findOneBy( array( 'name' => $this->_getParam("status") ) );
+                $queueItems = $itemRepo
+                               ->findBy( array('session' => $this->_getParam("session"),
+                                               'status' => $status->getId() ),
+                                         array('queueNumber' => 'DESC') );
+        }
+        else {
+                $queueItems = $itemRepo
+                                  ->findBy( array('session' => $this->_getParam("session") ));
+        }
+
+        $this->view->queueItems = $queueItems;
     }
 }
 

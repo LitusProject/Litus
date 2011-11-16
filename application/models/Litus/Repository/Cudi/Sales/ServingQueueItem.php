@@ -13,15 +13,21 @@ use Doctrine\ORM\EntityRepository;
 class ServingQueueItem extends EntityRepository
 {
 
-    public function getQueueNumber( $queueItem ) {
+    private $_cache;
+
+    public function getQueueNumber( $sessionId ) {
+
+        if( isset( $_cache[$sessionId] ) )
+            return $_cache[$sessionId];
     
         $query = $this->createQueryBuilder("qi");
         $query->select( "COUNT(qi)" )
-              ->where( "qi.session = '".$queueItem->getSession()->getId()."'")
-              ->andWhere( "qi.id < ".$queueItem->getId());
+              ->where( "qi.session = '".$sessionId."'");
 
         $result = $query->getQuery()->getResult();
         $count = $result[0][1];
+
+        $_cache[$sessionId] = $count + 1;
 
         return $count + 1;
     }

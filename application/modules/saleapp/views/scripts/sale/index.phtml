@@ -8,7 +8,6 @@ function bootstrap()
   updateDump( "collecting" );
   updateDump( "collected" );
   updateDump( "selling" );
-  setTimeout( "bootstrap()", 1000 ); // update every 1000 milliseconds
 }
 
 function updateDump( status )
@@ -18,6 +17,63 @@ var xhReq = new XMLHttpRequest();
  xhReq.send(null);
  document.getElementById("dumplist_"+status).innerHTML = xhReq.responseText;
 
+}
+
+function itemClick( item, event )
+{
+  if( selected.length == 1 && selected[0] == item )
+  {
+    toggleSelect( -1, item );
+  }
+  else
+  {
+    if( event.ctrlKey )
+    {
+      toggleSelect( -1, item );
+    }
+    else
+    {
+      deselectAll();
+      toggleSelect( -1, item );
+    }
+  }
+}
+
+function deselectAll()
+{
+  for( var i = 0 ; i < selected.length ; i++ )
+  {
+    selectOff( selected[i] );
+  }
+  selected = [];
+}
+
+function toggleSelect( index, item )
+{
+  if( selected.indexOf( item ) == -1 )
+  {
+    selectOn( item );
+    selected.push( item );
+  }
+  else
+  {
+    selectOff( item );
+    if( index == -1 )
+    {
+      index = selected.indexOf(item);
+    }
+    selected.splice( index, 1 );
+  }
+}
+
+function selectOff( item )
+{
+  document.getElementById(item).innerHTML="<div class=\"selectable_item\">" + document.getElementById(item).innerHTML.slice(22,-6) + "</div>";
+}
+
+function selectOn( item )
+{
+  document.getElementById(item).innerHTML="<div class=\"selected\">" + document.getElementById(item).innerHTML.slice(29,-6) + "</div>";
 }
 
 window.onload=bootstrap;

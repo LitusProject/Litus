@@ -38,6 +38,11 @@ class ServingQueueItem
      * @JoinColumn(name="sale_session", referencedColumnName="id")
      */
     private $session;
+	
+    /**
+     * @Column(type="smallint")
+     */
+    private $queueNumber;
 
     public function __construct() {
     }
@@ -80,5 +85,13 @@ class ServingQueueItem
 
     public function setSession( $session_ ) {
         $this->session = $session_;
+    }
+
+    public function getQueueNumber() {
+        return $this->queueNumber;
+    }
+
+    public function setQueueNumber( $queueNumber_ ) {
+        $this->queueNumber = $queueNumber_;
     }
 }
