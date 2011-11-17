@@ -5,13 +5,15 @@
 </div>
 
 <div id="controller_action">
-	<table class="full_width">
+	<table>
     
         <tr>
             <th>Person</th>
             <th>Article</th>
+            <th>Number</th>
             <th>Book date</th>
             <th>Status</th>
+			<th>Actions</th>
         </tr>
         
         <? foreach ($this->paginator as $booking): ?>
@@ -19,12 +21,30 @@
             <tr>
                 <td><?= $booking->getPerson()->getFullName(); ?></td>
                 <td><?= $booking->getArticle()->getTitle(); ?></td>
+                <td><?= $booking->getNumber(); ?></td>
                 <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
                 <td><?= $booking->getStatus(); ?></td>
+                <td>
+					<a href="<?= $this->url(array('action' => 'delete', 'id' => $booking->getId())); ?>" class="delete">Delete</a>
+				</td>
             </tr>
     
         <? endforeach; ?>
     </table>
 
-	<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml', array('fullWidth' => true)); ?>
+	<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>
 </div>
+
+<aside>
+	<div class="sidebox">
+        <div class="title">Assign bookings</div>
+       	<div class="content">
+	    	<p>
+	        	<i>Please hit the link below to assign bookings!</i>
+	        </p>
+	        <p>
+	           	<a href="<?= $this->url(array('action' => 'assign')); ?>">&rarr; Assign bookings</a>
+	        </p>
+	    </div>
+	</div>
+</aside>

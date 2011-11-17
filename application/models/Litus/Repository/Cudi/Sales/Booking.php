@@ -12,4 +12,54 @@ use Doctrine\ORM\EntityRepository;
  */
 class Booking extends EntityRepository
 {
+	public function findAllBookedByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->where($query->expr()->andX(
+					$query->expr()->eq('b.article', ':article'),
+					$query->expr()->eq('b.status', '\'booked\'')
+				)
+			)
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllAssignedByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->where($query->expr()->andX(
+					$query->expr()->eq('b.article', ':article'),
+					$query->expr()->eq('b.status', '\'assigned\'')
+				)
+			)
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllSoldByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->where($query->expr()->andX(
+					$query->expr()->eq('b.article', ':article'),
+					$query->expr()->eq('b.status', '\'sold\'')
+				)
+			)
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
 }
