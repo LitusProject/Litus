@@ -99,10 +99,22 @@ class LitusEntityCudiSalesServingQueueItemProxy extends \Litus\Entity\Cudi\Sales
         return parent::setSession($session_);
     }
 
+    public function getQueueNumber()
+    {
+        $this->__load();
+        return parent::getQueueNumber();
+    }
+
+    public function setQueueNumber($queueNumber_)
+    {
+        $this->__load();
+        return parent::setQueueNumber($queueNumber_);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'person', 'status', 'payDesk', 'session');
+        return array('__isInitialized__', 'id', 'person', 'status', 'payDesk', 'session', 'queueNumber');
     }
 
     public function __clone()

@@ -33,6 +33,11 @@ class Booking
 	private $article;
 	
 	/**
+	 * @Column(type="smallint")
+	 */
+	private $number;
+	
+	/**
 	 * @Column(type="string", length=50)
 	 */
 	private $status;
@@ -66,7 +71,7 @@ class Booking
 		'booked', 'assigned', 'sold', 'expired'
 	);
 	
-	public function __construct($person, $article, $status)
+	public function __construct($person, $article, $status, $number = 1)
 	{
 		if (!self::isValidBookingStatus($status))
 			throw new \InvalidArgumentException('The BookingStatus is not valid.');
@@ -82,6 +87,7 @@ class Booking
 		
 		$this->person = $person;
 		$this->article = $article;
+		$this->number = $number;
 		$this->status = $status;
 		$this->bookDate = new \DateTime();
 		
@@ -105,6 +111,14 @@ class Booking
 	}
 	
 	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	/**
 	 * @return \Litus\Entity\Users\Person
 	 */
 	public function getPerson()
@@ -118,6 +132,14 @@ class Booking
 	public function getArticle()
 	{
 		return $this->article;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumber()
+	{
+		return $this->number;
 	}
 	
 	/**
