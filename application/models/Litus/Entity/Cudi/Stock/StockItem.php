@@ -162,4 +162,12 @@ class StockItem
 		
 		return $number;
 	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberAvailable()
+	{
+		return $this->numberInStock - $this->getNumberBooked();
+	}
 }

@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class Booking extends EntityRepository
 {
-	public function findAllBookedByArticle($article)
+	public function findAllBookedByArticle($article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -22,6 +22,7 @@ class Booking extends EntityRepository
 					$query->expr()->eq('b.status', '\'booked\'')
 				)
 			)
+			->orderBy('b.bookDate', $order)
 			->setParameter('article', $article->getId())
 			->getQuery()
 			->getResult();
@@ -29,7 +30,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllAssignedByArticle($article)
+	public function findAllAssignedByArticle($article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -39,6 +40,7 @@ class Booking extends EntityRepository
 					$query->expr()->eq('b.status', '\'assigned\'')
 				)
 			)
+			->orderBy('b.bookDate', $order)
 			->setParameter('article', $article->getId())
 			->getQuery()
 			->getResult();
@@ -46,7 +48,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllSoldByArticle($article)
+	public function findAllSoldByArticle($article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -56,6 +58,7 @@ class Booking extends EntityRepository
 					$query->expr()->eq('b.status', '\'sold\'')
 				)
 			)
+			->orderBy('b.bookDate', $order)
 			->setParameter('article', $article->getId())
 			->getQuery()
 			->getResult();

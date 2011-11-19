@@ -27,6 +27,18 @@ class StockItem extends EntityRepository
         return $article;
     }
 
+	public function findAllInStock()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->where($query->expr()->gt('i.numberInStock', 0))
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+
 	public function findAllByArticleTitle($title)
 	{
 		$query = $this->_em->createQueryBuilder();
@@ -117,5 +129,33 @@ class StockItem extends EntityRepository
 			->getResult();
 			
 		return $resultSet;
+	}
+
+	public function assignAll()
+	{
+		$items = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+			->findAllInStock();
+		$counter = 0;
+		
+		foreach($items as $item) {
+			$bookings = $this->getEntityManager()
+				->getRepository('Litus\Entity\Cudi\Sales\Booking')
+				->findAllBookedByArticle($item->getArticle(), 'ASC');
+			
+			foreach($bookings as $booking) {
+				if ($item->getNumberAvailable() <= 0)
+					break;
+				
+				if ($item->getNumberAvailable() < $booking->getNumber())
+					continue;
+				
+				$counter++;
+				$booking->setStatus('assigned');
+				// TODO: send email
+			}
+		}
+		
+		return $counter;
 	}
 }
