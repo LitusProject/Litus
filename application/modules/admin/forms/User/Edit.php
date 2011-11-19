@@ -30,6 +30,7 @@ class Edit extends Add
                 'first_name' => $person->getFirstName(),
                 'last_name' => $person->getLastName(),
                 'email' => $person->getEmail(),
+                'telephone' => $person->getTelephone(),
                 'sex' => $person->getSex()
             )
         );

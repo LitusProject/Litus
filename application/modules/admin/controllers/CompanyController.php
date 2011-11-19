@@ -57,6 +57,7 @@ class CompanyController extends \Litus\Controller\Action
                     $formData['sex']
                 );
                 $newUser->setAddress(str_replace("\r\n", ',' ,$formData['company_address']));
+                $newUser->setTelephone($formData['telephone']);
                 $this->getEntityManager()->persist($newUser);
 
                 $this->view->companyCreated = true;
