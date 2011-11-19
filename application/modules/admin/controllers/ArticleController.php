@@ -12,6 +12,8 @@ use \Litus\Entity\Cudi\Articles\MetaInfo;
 use \Litus\Entity\Cudi\Articles\StockArticles\External;
 use \Litus\FlashMessenger\FlashMessage;
 
+use \Zend\Json\Json;
+
 /**
  *
  * This class controlls management and adding of articles.
@@ -253,5 +255,48 @@ class ArticleController extends \Litus\Controller\Action
 
             $this->_redirect('manage');
         }
+	}
+
+	public function searchAction()
+	{
+		$this->broker('contextSwitch')
+            ->addActionContext('search', 'json')
+            ->setAutoJsonSerialization(false)
+            ->initContext();
+        
+        $this->broker('layout')->disableLayout();
+
+        $json = new Json();
+
+		$this->_initAjax();
+		
+		switch($this->getRequest()->getParam('field')) {
+			case 'title':
+				$articles = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Article')
+					->findAllByTitle($this->getRequest()->getParam('string'));
+				break;
+			case 'author':
+				$articles = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Article')
+					->findAllByAuthor($this->getRequest()->getParam('string'));
+				break;
+			case 'publisher':
+				$articles = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Article')
+					->findAllByPublisher($this->getRequest()->getParam('string'));
+				break;
+		}
+		$result = array();
+		foreach($articles as $article) {
+			$item = (object) array();
+			$item->id = $article->getId();
+			$item->title = $article->getTitle();
+			$item->author = $article->getMetaInfo()->getAuthors();
+			$item->publisher = $article->getMetaInfo()->getPublishers();
+			$item->yearPublished = $article->getMetaInfo()->getYearPublished();
+			$result[] = $item;
+		}
+		echo $json->encode($result);
 	}
 }
