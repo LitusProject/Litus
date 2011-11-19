@@ -72,7 +72,7 @@ class Add extends \Litus\Form\Admin\Form
         $this->addElement($field);
         
         $field = new Text('telephone');
-        $field->setLabel('Phone number');
+        $field->setLabel('Phone number')
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
