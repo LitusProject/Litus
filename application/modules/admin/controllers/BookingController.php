@@ -95,6 +95,34 @@ class BookingController extends \Litus\Controller\Action
         }
 	}
 	
+	public function unassignAction()
+	{
+		$booking = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Sales\Booking')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $booking || 'assigned' != $booking->getStatus())
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$this->view->booking = $booking;
+		
+		if (null !== $this->getRequest()->getParam('confirm')) {
+			if (1 == $this->getRequest()->getParam('confirm')) {
+				$booking->setStatus('booked');
+
+				$this->broker('flashmessenger')->addMessage(
+            		new FlashMessage(
+                		FlashMessage::SUCCESS,
+                    	'SUCCESS',
+                    	'The booking was successfully unassigned!'
+                	)
+            	);
+			};
+            
+			$this->_redirect('manage', null, null, array('id' => null));
+        }
+	}
+	
 	public function assignAction()
 	{
 		$number = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\StockItem')->assignAll();
