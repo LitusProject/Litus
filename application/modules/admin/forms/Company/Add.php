@@ -27,6 +27,7 @@ class Add extends \Admin\Form\User\Add
                 'first_name',
                 'last_name',
                 'email',
+                'telephone',
                 'sex'
             ),
             'contact_information'
