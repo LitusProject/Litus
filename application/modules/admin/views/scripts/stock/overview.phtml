@@ -32,7 +32,7 @@
 		</table>
 	</div>
 	
-	<div id="defaultPage">
+	<div id="default_page">
     	<table class="full_width">
     
         	<tr>
@@ -71,10 +71,10 @@
 		if (102 == e.keyCode && e.metaKey) {
 			if ($('#stock_search').is(':visible')) {
 				$('#stock_search').hide();
-				$('#defaultPage').show();
+				$('#default_page').show();
 			} else {
 				$('#stock_search').show();
-				$('#defaultPage').hide();
+				$('#default_page').hide();
 				$('#searchString').focus();
 			}
 			return false;
@@ -82,7 +82,7 @@
 	}).keyup(function (e) {
 		if (27 == e.keyCode) {
 			$('#stock_search').hide();
-			$('#defaultPage').show();
+			$('#default_page').show();
 		}
 	}).ready(function () {
 		$('#searchString, #searchField').bind('change click keyup', function () {
