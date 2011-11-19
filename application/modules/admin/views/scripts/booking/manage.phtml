@@ -25,7 +25,11 @@
                 <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
                 <td><?= $booking->getStatus(); ?></td>
                 <td>
-					<a href="<?= $this->url(array('action' => 'delete', 'id' => $booking->getId())); ?>" class="delete">Delete</a>
+					<? if ('assigned' == $booking->getStatus()): ?>
+						<a href="<?= $this->url(array('action' => 'unassign', 'id' => $booking->getId())); ?>" class="edit">Unassign</a>
+					<? else: ?>
+						<a href="<?= $this->url(array('action' => 'delete', 'id' => $booking->getId())); ?>" class="delete">Delete</a>
+					<? endif; ?>
 				</td>
             </tr>
     
