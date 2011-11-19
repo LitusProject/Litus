@@ -53,7 +53,7 @@
 	                <td><?= $item->getNumberInStock(); ?></td>
 	                <td><?= $item->getNumberNotDelivered(); ?></td>
 	                <td><?= $item->getNumberQueueOrder(); ?></td>
-	                <td><?= $item->getNumberBooked(); ?></td>
+	                <td><?= $item->getNumberBooked() + $item->getNumberAssigned(); ?></td>
 					<td>
 						<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->getId())); ?>" class="edit">Edit</a>
 	                </td>
@@ -104,7 +104,7 @@
 							.append('<td>' + this.numberInStock + '</td>')
 							.append('<td>' + this.numberNotDelivered + '</td>')
 							.append('<td>' + this.numberQueueOrder + '</td>')
-							.append('<td>' + this.numberBooked + '</td>')
+							.append('<td>' + this.numberBookedAssigned + '</td>')
 							.append('<td><a href="<?= $this->url(array('action' => 'edit')); ?>/id/' + this.id + '" class="edit">Edit</a></td>');
 					});
 				}
