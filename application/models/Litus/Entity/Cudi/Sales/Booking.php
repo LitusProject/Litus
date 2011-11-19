@@ -73,9 +73,6 @@ class Booking
 	
 	public function __construct($person, $article, $status, $number = 1)
 	{
-		if (!self::isValidBookingStatus($status))
-			throw new \InvalidArgumentException('The BookingStatus is not valid.');
-			
 		if (!isset($article))
 			throw new \InvalidArgumentException('The article is not valid.');
 			
@@ -88,7 +85,7 @@ class Booking
 		$this->person = $person;
 		$this->article = $article;
 		$this->number = $number;
-		$this->status = $status;
+		$this->setStatus($status);
 		$this->bookDate = new \DateTime();
 		
 		if ($article->canExpire()) {
@@ -156,5 +153,16 @@ class Booking
 	public function getStatus()
 	{
 		return $this->status;
+	}
+	
+	/**
+	 * @param string $status The new status of this booking.
+	 */
+	public function setStatus($status)
+	{
+		if (!self::isValidBookingStatus($status))
+			throw new \InvalidArgumentException('The BookingStatus is not valid.');
+			
+		$this->status = $status;
 	}
 }

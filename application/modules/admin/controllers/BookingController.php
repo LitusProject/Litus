@@ -94,4 +94,26 @@ class BookingController extends \Litus\Controller\Action
 			$this->_redirect('manage', null, null, array('id' => null));
         }
 	}
+	
+	public function assignAction()
+	{
+		$number = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\StockItem')->assignAll();
+		
+		if (0 == $number)
+			$message = 'No booking could be assigned!';
+		elseif (1 == $number)
+			$message = 'There is <b>one</b> booking assigned!';
+		else
+			$message = 'There are <b>' . $number . '</b> bookings assigned!';
+		
+		$this->broker('flashmessenger')->addMessage(
+    		new FlashMessage(
+        		FlashMessage::SUCCESS,
+            	'SUCCESS',
+            	$message
+        	)
+    	);
+
+		$this->_redirect('manage');
+	}
 }
