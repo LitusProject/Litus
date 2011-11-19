@@ -237,5 +237,8 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
 	 * @return boolean
 	 */
-	abstract public function isInternal();
+	public function isStock()
+	{
+		return true;
+	}
 }

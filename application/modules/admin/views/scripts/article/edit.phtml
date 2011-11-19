@@ -10,15 +10,28 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#internal').click(toggle)
+		$('#internal').click(toggleInternal)
 			.parent().parent().hide();
-		toggle();
+		$('#stock').click(toggleStock)
+			.parent().parent().hide();
+		toggleInternal();
+		toggleStock();
 	});
 	
-	function toggle() {
+	function toggleInternal() {
 		if ($('#internal').is(':checked'))
 			$('#internal_form').show();
 		else
 			$('#internal_form').hide();
+	}
+	
+	function toggleStock() {
+		if ($('#stock').is(':checked')) {
+			$('#stock_form').show();
+			toggleInternal();
+		} else {
+			$('#stock_form, #internal_form').hide();
+			$('#internal').removeAttr("checked");
+		}
 	}
 </script>

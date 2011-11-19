@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use \Admin\Form\Article\Add;
 use \Admin\Form\Article\Edit;
 
+use \Litus\Entity\Cudi\Articles\Stub;
 use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
 use \Litus\Entity\Cudi\Articles\MetaInfo;
 use \Litus\Entity\Cudi\Articles\StockArticles\External;
@@ -42,13 +43,25 @@ class ArticleController extends \Litus\Controller\Action
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 			
+			if (!$formData['stock']) {
+				$validatorsStock = array();
+				$requiredStock = array();
+                
+				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
+					$validatorsStock[$formElement->getName()] = $formElement->getValidators();
+					$requiredStock[$formElement->getName()] = $formElement->isRequired();
+					$formElement->clearValidators();
+					$formElement->setRequired(false);
+				}
+			}
+			
 			if (!$formData['internal']) {
-				$validators = array();
-				$required = array();
+				$validatorsInternal = array();
+				$requiredInternal = array();
                 
 				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					$validators[$formElement->getName()] = $formElement->getValidators();
-					$required[$formElement->getName()] = $formElement->isRequired();
+					$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
+					$requiredInternal[$formElement->getName()] = $formElement->isRequired();
 					$formElement->clearValidators();
 					$formElement->setRequired(false);
 				}
@@ -65,45 +78,52 @@ class ArticleController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Supplier')
 					->findOneById($formData['supplier']);
 				
-				if ($formData['internal']) {
-					$binding = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
-						->findOneById($formData['binding']);
+				if ($formData['stock']) {
+					if ($formData['internal']) {
+						$binding = $this->getEntityManager()
+							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+							->findOneById($formData['binding']);
 
-					$frontColor = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
-						->findOneById($formData['frontcolor']);
+						$frontColor = $this->getEntityManager()
+							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+							->findOneById($formData['front_color']);
 
-	                $article = new Internal(
-	                	$formData['title'],
-                        $metaInfo,
-                        $formData['purchaseprice'],
-                        $formData['sellprice_nomember'],
-                        $formData['sellprice_member'],
-	 					$formData['barcode'],
-                        $formData['bookable'],
-                        $formData['unbookable'],
-                        $supplier,
-                        $formData['can_expire'],
-						$formData['nb_black_and_white'],
-                        $formData['nb_colored'],
-                        $binding,
-                        $formData['official'],
-                        $formData['rectoverso'],
-                        $frontColor
-	                );
+		                $article = new Internal(
+		                	$formData['title'],
+	                        $metaInfo,
+	                        $formData['purchaseprice'],
+	                        $formData['sellprice_nomember'],
+	                        $formData['sellprice_member'],
+		 					$formData['barcode'],
+	                        $formData['bookable'],
+	                        $formData['unbookable'],
+	                        $supplier,
+	                        $formData['can_expire'],
+							$formData['nb_black_and_white'],
+	                        $formData['nb_colored'],
+	                        $binding,
+	                        $formData['official'],
+	                        $formData['rectoverso'],
+	                        $frontColor
+		                );
+					} else {
+						$article = new External(
+		                	$formData['title'],
+	                        $metaInfo,
+	                        $formData['purchase_price'],
+	                        $formData['sellprice_nomember'],
+	                        $formData['sellprice_member'],
+							$formData['barcode'],
+	                        $formData['bookable'],
+	                        $formData['unbookable'],
+	                        $supplier,
+	                        $formData['can_expire']
+		           		);
+					}
 				} else {
-					$article = new External(
+					$article = new Stub(
 	                	$formData['title'],
-                        $metaInfo,
-                        $formData['purchase_price'],
-                        $formData['sellprice_nomember'],
-                        $formData['sellprice_member'],
-						$formData['barcode'],
-                        $formData['bookable'],
-                        $formData['unbookable'],
-                        $supplier,
-                        $formData['can_expire']
+                        $metaInfo
 	           		);
 				}
 					
@@ -121,12 +141,21 @@ class ArticleController extends \Litus\Controller\Action
 				$this->_redirect('manage');
 			}
 			
+			if (!$formData['stock']) {
+				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
+					if (array_key_exists ($formElement->getName(), $validatorsStock))
+			 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $requiredStock))
+						$formElement->setRequired($requiredStock[$formElement->getName()]);
+				}
+			}
+			
 			if (!$formData['internal']) {
 				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validators))
-			 			$formElement->setValidators($validators[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $required))
-						$formElement->setRequired($required[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $validatorsInternal))
+			 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $requiredInternal))
+						$formElement->setRequired($requiredInternal[$formElement->getName()]);
 				}
 			}
         }
@@ -159,13 +188,25 @@ class ArticleController extends \Litus\Controller\Action
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 			
+			if (!$formData['stock']) {
+				$validatorsStock = array();
+				$requiredStock = array();
+                
+				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
+					$validatorsStock[$formElement->getName()] = $formElement->getValidators();
+					$requiredStock[$formElement->getName()] = $formElement->isRequired();
+					$formElement->clearValidators();
+					$formElement->setRequired(false);
+				}
+			}
+			
 			if (!$formData['internal']) {
-				$validators = array();
-				$required = array();
-
+				$validatorsInternal = array();
+				$requiredInternal = array();
+                
 				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					$validators[$formElement->getName()] = $formElement->getValidators();
-					$required[$formElement->getName()] = $formElement->isRequired();
+					$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
+					$requiredInternal[$formElement->getName()] = $formElement->isRequired();
 					$formElement->clearValidators();
 					$formElement->setRequired(false);
 				}
@@ -176,19 +217,22 @@ class ArticleController extends \Litus\Controller\Action
 					->setPublishers($formData['publisher'])
 					->setYearPublished($formData['year_published']);
 				
-				$supplier = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Supplier')
-					->findOneById($formData['supplier']);
+				$article->setTitle($formData['title']);
 				
-				$article->setTitle($formData['title'])
-					->setPurchasePrice($formData['purchase_price'])
-					->setSellPrice($formData['sellprice_nomember'])
-					->setSellPriceMembers($formData['sellprice_member'])
-					->setBarcode($formData['barcode'])
-					->setIsBookable($formData['bookable'])
-					->setIsUnbookable($formData['unbookable'])
-					->setSupplier($supplier)
-					->setCanExpire($formData['can_expire']);
+				if ($formData['stock']) {
+					$supplier = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Supplier')
+						->findOneById($formData['supplier']);
+						
+					$article->setPurchasePrice($formData['purchase_price'])
+						->setSellPrice($formData['sellprice_nomember'])
+						->setSellPriceMembers($formData['sellprice_member'])
+						->setBarcode($formData['barcode'])
+						->setIsBookable($formData['bookable'])
+						->setIsUnbookable($formData['unbookable'])
+						->setSupplier($supplier)
+						->setCanExpire($formData['can_expire']);
+				}
 				
 				if ($formData['internal']) {
 					$binding = $this->getEntityManager()
@@ -199,7 +243,7 @@ class ArticleController extends \Litus\Controller\Action
 						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
 						->findOneById($formData['front_color']);
 						
-					$article->setNbBlackAndWhite($formData['nbBlackAndWhite'])
+					$article->setNbBlackAndWhite($formData['nb_black_and_white'])
 						->setNbColored($formData['nb_colored'])
 						->setBinding($binding)
 						->setIsOfficial($formData['official'])
@@ -218,12 +262,21 @@ class ArticleController extends \Litus\Controller\Action
                 $this->_redirect('manage');
 			}
 			
+			if (!$formData['stock']) {
+				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
+					if (array_key_exists ($formElement->getName(), $validatorsStock))
+			 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $requiredStock))
+						$formElement->setRequired($requiredStock[$formElement->getName()]);
+				}
+			}
+			
 			if (!$formData['internal']) {
 				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validators))
-			 			$formElement->setValidators($validators[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $required))
-						$formElement->setRequired($required[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $validatorsInternal))
+			 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
+					if (array_key_exists ($formElement->getName(), $requiredInternal))
+						$formElement->setRequired($requiredInternal[$formElement->getName()]);
 				}
 			}
         }
@@ -295,6 +348,7 @@ class ArticleController extends \Litus\Controller\Action
 			$item->author = $article->getMetaInfo()->getAuthors();
 			$item->publisher = $article->getMetaInfo()->getPublishers();
 			$item->yearPublished = $article->getMetaInfo()->getYearPublished();
+			$item->isStock = $article->isStock();
 			$result[] = $item;
 		}
 		echo $json->encode($result);
