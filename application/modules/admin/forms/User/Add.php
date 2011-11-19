@@ -70,6 +70,12 @@ class Add extends \Litus\Form\Admin\Form
                 ->setDecorators(array(new FieldDecorator()))
                 ->addValidator(new EmailAddressValidator());
         $this->addElement($field);
+        
+        $field = new Text('telephone');
+        $field->setLabel('Phone number');
+                ->setRequired()
+                ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
 		$field = new Select('sex');
 		$field->setLabel('Sex')
