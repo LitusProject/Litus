@@ -54,6 +54,26 @@ class Add extends \Litus\Form\Admin\Form
 			->addValidator('int')
         	->addValidator(new YearValidator());
         $this->addElement($field);
+
+		$field = new Checkbox('stock');
+        $field->setLabel('Stock Article')
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+		$this->addDisplayGroup(
+			array(
+				'title',
+		        'author',
+		        'publisher',
+				'year_published',
+				'stock'
+		    ),
+		    'article_form'
+		);
+		$this->getDisplayGroup('article_form')
+		   	->setLegend('Article')
+		    ->setAttrib('id', 'article_form')
+		    ->removeDecorator('DtDdWrapper');
          
         $field = new Text('purchase_price');
         $field->setLabel('Purchase Price')
@@ -108,13 +128,9 @@ class Add extends \Litus\Form\Admin\Form
         $field->setLabel('Internal Article')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-
+		
 		$this->addDisplayGroup(
 			array(
-				'title',
-		        'author',
-		        'publisher',
-				'year_published',
 				'purchase_price',
 				'sellprice_nomember',
 				'sellprice_member',
@@ -124,12 +140,12 @@ class Add extends \Litus\Form\Admin\Form
 				'unbookable',
 				'can_expire',
 				'internal'
-		    ),
-		    'article_form'
+			),
+			'stock_form'
 		);
-		$this->getDisplayGroup('article_form')
-		   	->setLegend('Article')
-		    ->setAttrib('id', 'article_form')
+		$this->getDisplayGroup('stock_form')
+		   	->setLegend('Stock Article')
+		    ->setAttrib('id', 'stock_form')
 		    ->removeDecorator('DtDdWrapper');
 
 		$field = new Text('nb_black_and_white');
