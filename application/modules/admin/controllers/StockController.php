@@ -145,7 +145,7 @@ class StockController extends \Litus\Controller\Action
 			$item->numberInStock = $stockItem->getNumberInStock();
 			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
 			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
-			$item->numberBooked = $stockItem->getNumberBooked();
+			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
 			$result[] = $item;
 		}
 		echo $json->encode($result);

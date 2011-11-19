@@ -14,15 +14,15 @@
 	<table class="half_width">
 		<tr>
 			<td>Total</td>
-			<td><?= $this->item->getTotalOrdered(); ?></td>
+			<td style="width:30%"><?= $this->item->getTotalOrdered(); ?></td>
 		</tr>
 		<tr>
 			<td>Not delivered</td>
-			<td><?= $this->item->getNumberNotDelivered(); ?></td>
+			<td style="width:30%"><?= $this->item->getNumberNotDelivered(); ?></td>
 		</tr>
 		<tr>
 			<td>Queue</td>
-			<td><?= $this->item->getNumberQueueOrder(); ?></td>
+			<td style="width:30%"><?= $this->item->getNumberQueueOrder(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />
@@ -32,7 +32,7 @@
 	<table class="half_width">
 		<tr>
 			<td>Total</td>
-			<td><?= $this->item->getTotalDelivered(); ?></td>
+			<td style="width:30%"><?= $this->item->getTotalDelivered(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />
@@ -42,11 +42,11 @@
 	<table class="half_width">
 		<tr>
 			<td>Number assigned</td>
-			<td>Needs to be calculated</td>
+			<td style="width:30%"><?= $this->item->getNumberAssigned(); ?></td>
 		</tr>
 		<tr>
 			<td>Number not assigned</td>
-			<td>Needs to be calculated</td>
+			<td style="width:30%"><?= $this->item->getNumberBooked(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />
@@ -54,7 +54,7 @@
 	<table class="half_width">
 		<tr>
 			<td>Total</td>
-			<td>Needs to be calculated</td>
+			<td style="width:30%"><?= $this->item->getNumberSold(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />
@@ -62,7 +62,7 @@
 	<table class="half_width">
 		<tr>
 			<td>Total</td>
-			<td><?= $this->item->getNumberInStock(); ?></td>
+			<td style="width:30%"><?= $this->item->getNumberInStock(); ?></td>
 		</tr>
 	</table>
 	<br style="clear:both" />

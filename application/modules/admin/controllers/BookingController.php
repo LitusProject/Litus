@@ -28,6 +28,13 @@ class BookingController extends \Litus\Controller\Action
         $this->_forward('manage');
     }
 
+	public function manageAction()
+	{
+		$this->view->paginator = $this->_createPaginator(
+            'Litus\Entity\Cudi\Sales\Booking'
+        );
+    }
+
     public function addAction()
     {
         $form = new Add();
@@ -45,7 +52,7 @@ class BookingController extends \Litus\Controller\Action
 					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
-				$booking = new Booking($person, $article, 'booked');
+				$booking = new Booking($person, $article, 'booked', $formData['number']);
                  
                 $this->getEntityManager()->persist($booking);
 				$this->broker('flashmessenger')->addMessage(
@@ -59,11 +66,32 @@ class BookingController extends \Litus\Controller\Action
 			}
         }
     }
-    
-    public function manageAction()
+
+	public function deleteAction()
 	{
-		$this->view->paginator = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Booking'
-        );
-    }
+		$booking = $this->getEntityManager()
+	        ->getRepository('Litus\Entity\Cudi\Sales\Booking')
+	    	->findOneById($this->getRequest()->getParam('id'));
+	
+		if (null == $booking)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+			
+		$this->view->booking = $booking;
+		
+		if (null !== $this->getRequest()->getParam('confirm')) {
+			if (1 == $this->getRequest()->getParam('confirm')) {
+				$this->getEntityManager()->remove($booking);
+
+				$this->broker('flashmessenger')->addMessage(
+            		new FlashMessage(
+                		FlashMessage::SUCCESS,
+                    	'SUCCESS',
+                    	'The booking was successfully removed!'
+                	)
+            	);
+			};
+            
+			$this->_redirect('manage', null, null, array('id' => null));
+        }
+	}
 }
