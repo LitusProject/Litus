@@ -156,13 +156,34 @@ class Booking
 	}
 	
 	/**
+	 * @return \DateTime
+	 */
+	public function getExpirationDate()
+	{
+		return $this->expirationDate;
+	}
+	
+	/**
 	 * @param string $status The new status of this booking.
 	 */
 	public function setStatus($status)
 	{
 		if (!self::isValidBookingStatus($status))
 			throw new \InvalidArgumentException('The BookingStatus is not valid.');
-			
+		
+		if ($status == 'assigned')
+			$this->assignmentDate = new \DateTime();
+		else
+			$this->assignmentDate = null;
+		
 		$this->status = $status;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isExpired()
+	{
+		return $this->expirationDate < new \DateTime();
 	}
 }
