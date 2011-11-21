@@ -9,6 +9,8 @@ use \Admin\Form\Booking\Add;
 use \Litus\Entity\Cudi\Sales\Booking;
 use \Litus\FlashMessenger\FlashMessage;
 
+use \Zend\Json\Json;
+
 /**
  *
  * This class controlls management and adding of bookings.
@@ -144,4 +146,48 @@ class BookingController extends \Litus\Controller\Action
 
 		$this->_redirect('manage');
 	}
+	
+	public function searchAction()
+		{
+			$this->broker('contextSwitch')
+	            ->addActionContext('search', 'json')
+	            ->setAutoJsonSerialization(false)
+	            ->initContext();
+	        
+	        $this->broker('layout')->disableLayout();
+	
+	        $json = new Json();
+	
+			$this->_initAjax();
+			
+			switch($this->getRequest()->getParam('field')) {
+				case 'person':
+					$bookings = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->findAllByPerson($this->getRequest()->getParam('string'));
+					break;
+				case 'article':
+					$bookings = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->findAllByArticle($this->getRequest()->getParam('string'));
+					break;
+				case 'status':
+					$bookings = $this->getEntityManager()
+						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->findAllByStatus($this->getRequest()->getParam('string'));
+					break;
+			}
+			$result = array();
+			foreach($bookings as $booking) {
+				$item = (object) array();
+				$item->id = $booking->getId();
+				$item->person = $booking->getPerson()->getFullName();
+				$item->article = $booking->getArticle()->getTitle();
+				$item->number = $booking->getNumber();
+				$item->bookDate = $booking->getBookDate()->format('d/m/Y H:i');
+				$item->status = $booking->getStatus();
+				$result[] = $item;
+			}
+			echo $json->encode($result);
+		}
 }

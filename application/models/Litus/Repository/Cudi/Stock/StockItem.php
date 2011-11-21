@@ -138,11 +138,17 @@ class StockItem extends EntityRepository
 			->findAllInStock();
 		$counter = 0;
 		
+		$this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+			->expireBookings();
+		$this->getEntityManager()->flush();
+		
 		foreach($items as $item) {
 			$bookings = $this->getEntityManager()
 				->getRepository('Litus\Entity\Cudi\Sales\Booking')
 				->findAllBookedByArticle($item->getArticle(), 'ASC');
 			
+			$now = new \DateTime();
 			foreach($bookings as $booking) {
 				if ($item->getNumberAvailable() <= 0)
 					break;

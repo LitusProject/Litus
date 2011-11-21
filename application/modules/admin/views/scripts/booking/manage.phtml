@@ -5,38 +5,66 @@
 </div>
 
 <div id="controller_action">
-	<table>
-    
-        <tr>
-            <th>Person</th>
-            <th>Article</th>
-            <th>Number</th>
-            <th>Book date</th>
-            <th>Status</th>
-			<th>Actions</th>
-        </tr>
-        
-        <? foreach ($this->paginator as $booking): ?>
-
-            <tr>
-                <td><?= $booking->getPerson()->getFullName(); ?></td>
-                <td><?= $booking->getArticle()->getTitle(); ?></td>
-                <td><?= $booking->getNumber(); ?></td>
-                <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
-                <td><?= $booking->getStatus(); ?></td>
-                <td>
-					<? if ('assigned' == $booking->getStatus()): ?>
-						<a href="<?= $this->url(array('action' => 'unassign', 'id' => $booking->getId())); ?>" class="edit">Unassign</a>
-					<? else: ?>
-						<a href="<?= $this->url(array('action' => 'delete', 'id' => $booking->getId())); ?>" class="delete">Delete</a>
-					<? endif; ?>
-				</td>
-            </tr>
-    
-        <? endforeach; ?>
-    </table>
-
-	<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>
+	<div id="stock_search" style="display:none;">
+		<div style="padding:4px;text-align:right">
+			Search: 
+			<select id="searchField">
+				<option value="person">Person</option>
+				<option value="article">Article</option>
+				<option value="status">Status</option>
+			</select>
+			is
+			<input type="text" id="searchString" />
+		</div>
+		
+		<table>
+	
+	    	<tr>
+	        	<th>Person</th>
+	        	<th>Article</th>
+	        	<th>Number</th>
+	        	<th>Book date</th>
+	        	<th>Status</th>
+	        	<th>Actions</th>
+			</tr>
+			
+		</table>
+	</div>
+	
+	<div id="default_page">
+		<table>
+	    
+	        <tr>
+	            <th>Person</th>
+	            <th>Article</th>
+	            <th>Number</th>
+	            <th>Book date</th>
+	            <th>Status</th>
+				<th>Actions</th>
+	        </tr>
+	        
+	        <? foreach ($this->paginator as $booking): ?>
+	
+	            <tr>
+	                <td><?= $booking->getPerson()->getFullName(); ?></td>
+	                <td><?= $booking->getArticle()->getTitle(); ?></td>
+	                <td><?= $booking->getNumber(); ?></td>
+	                <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
+	                <td><?= $booking->getStatus(); ?></td>
+	                <td>
+						<? if ('assigned' == $booking->getStatus()): ?>
+							<a href="<?= $this->url(array('action' => 'unassign', 'id' => $booking->getId())); ?>" class="edit">Unassign</a>
+						<? elseif ('booked' == $booking->getStatus()): ?>
+							<a href="<?= $this->url(array('action' => 'delete', 'id' => $booking->getId())); ?>" class="delete">Delete</a>
+						<? endif; ?>
+					</td>
+	            </tr>
+	    
+	        <? endforeach; ?>
+	    </table>
+	
+		<?= $this->paginationControl($this->paginator, 'all', 'partials/pagination.phtml'); ?>	
+	</div>
 </div>
 
 <aside>
@@ -52,3 +80,53 @@
 	    </div>
 	</div>
 </aside>
+
+<script language="javascript">
+	$(document).keypress(function (e) {
+		if (102 == e.keyCode && e.metaKey) {
+			if ($('#stock_search').is(':visible')) {
+				$('#stock_search').hide();
+				$('#default_page').show();
+			} else {
+				$('#stock_search').show();
+				$('#default_page').hide();
+				$('#searchString').focus();
+			}
+			return false;
+		}
+	}).keyup(function (e) {
+		if (27 == e.keyCode) {
+			$('#stock_search').hide();
+			$('#default_page').show();
+		}
+	}).ready(function () {
+		$('#searchString, #searchField').bind('change click keyup', function () {
+			var table = $('#stock_search table');
+			if ('' == $('#searchString').val()) {
+				table.find('tr.item').remove();
+				return;
+			}
+			$.ajax({
+				url: '<?= $this->url(array('action' => 'search')); ?>' + '/field/' + $('#searchField').val() + '/string/' + $('#searchString').val(),
+				method: 'get',
+				dataType: 'json',
+				success: function (data) {
+					table.find('tr.item').remove();
+					$(data).each(function () {
+						table.append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.person + '</td>')
+							.append('<td>' + this.article + '</td>')
+							.append('<td>' + this.number + '</td>')
+							.append('<td>' + this.bookDate + '</td>')
+							.append('<td>' + this.status + '</td>')
+							.append(actions = $('<td>'));
+						if ('assigned' == this.status)
+							actions.append('<a href="<?= $this->url(array('action' => 'unassign')); ?>/id/' + this.id + '" class="edit">Unassign</a>');
+						else if ('booked' == this.status)
+							actions.append('<a href="<?= $this->url(array('action' => 'delete')); ?>/id/' + this.id + '" class="delete">Delete</a>');
+					});
+				}
+			});
+		});
+	});
+</script>
