@@ -31,6 +31,7 @@ class StockController extends \Litus\Controller\Action
     
     public function overviewAction()
 	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->stock = $this->_createPaginator(
             'Litus\Entity\Cudi\Stock\StockItem'
         );

@@ -14,7 +14,7 @@
 				<option value="status">Status</option>
 			</select>
 			is
-			<input type="text" id="searchString" />
+			<input type="text" id="searchString" size="30" />
 		</div>
 		
 		<table>
@@ -82,51 +82,32 @@
 </aside>
 
 <script language="javascript">
-	$(document).keypress(function (e) {
-		if (102 == e.keyCode && e.metaKey) {
-			if ($('#stock_search').is(':visible')) {
-				$('#stock_search').hide();
-				$('#default_page').show();
-			} else {
-				$('#stock_search').show();
-				$('#default_page').hide();
-				$('#searchString').focus();
+	$(document).ready(function () {
+		$.SearchDatabase({
+			defaultPage: $('#default_page'),
+			searchDiv: $('#stock_search'),
+			searchString: $('#searchString'),
+			searchField: $('#searchField'),
+			url: '<?= $this->url(array('action' => 'search')); ?>',
+			display: function (data) {
+				$('#stock_search table').find('tr.item').remove();
+				$(data).each(function () {
+					$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
+					row.append('<td>' + this.person + '</td>')
+						.append('<td>' + this.article + '</td>')
+						.append('<td>' + this.number + '</td>')
+						.append('<td>' + this.bookDate + '</td>')
+						.append('<td>' + this.status + '</td>')
+						.append(actions = $('<td>'));
+					if ('assigned' == this.status)
+						actions.append('<a href="<?= $this->url(array('action' => 'unassign')); ?>/id/' + this.id + '" class="edit">Unassign</a>');
+					else if ('booked' == this.status)
+						actions.append('<a href="<?= $this->url(array('action' => 'delete')); ?>/id/' + this.id + '" class="delete">Delete</a>');
+				});
+			},
+			clear: function () {
+				$('#stock_search table').find('tr.item').remove();
 			}
-			return false;
-		}
-	}).keyup(function (e) {
-		if (27 == e.keyCode) {
-			$('#stock_search').hide();
-			$('#default_page').show();
-		}
-	}).ready(function () {
-		$('#searchString, #searchField').bind('change click keyup', function () {
-			var table = $('#stock_search table');
-			if ('' == $('#searchString').val()) {
-				table.find('tr.item').remove();
-				return;
-			}
-			$.ajax({
-				url: '<?= $this->url(array('action' => 'search')); ?>' + '/field/' + $('#searchField').val() + '/string/' + $('#searchString').val(),
-				method: 'get',
-				dataType: 'json',
-				success: function (data) {
-					table.find('tr.item').remove();
-					$(data).each(function () {
-						table.append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.person + '</td>')
-							.append('<td>' + this.article + '</td>')
-							.append('<td>' + this.number + '</td>')
-							.append('<td>' + this.bookDate + '</td>')
-							.append('<td>' + this.status + '</td>')
-							.append(actions = $('<td>'));
-						if ('assigned' == this.status)
-							actions.append('<a href="<?= $this->url(array('action' => 'unassign')); ?>/id/' + this.id + '" class="edit">Unassign</a>');
-						else if ('booked' == this.status)
-							actions.append('<a href="<?= $this->url(array('action' => 'delete')); ?>/id/' + this.id + '" class="delete">Delete</a>');
-					});
-				}
-			});
 		});
 	});
 </script>
