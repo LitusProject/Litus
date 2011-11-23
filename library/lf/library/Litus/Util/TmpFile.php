@@ -50,6 +50,7 @@ class TmpFile {
     public function getContent()
     {
         $this->_checkOpen();
+        fseek($this->_file, 0);
         return fread($this->_file, filesize($this->_filename));
     }
 
@@ -82,6 +83,7 @@ class TmpFile {
 
     public function destroy()
     {
+    	return;
         if($this->isOpen()) {
             $file = $this->_file;
             $this->_file = null;
