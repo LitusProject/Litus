@@ -163,6 +163,7 @@ class ArticleController extends \Litus\Controller\Action
     
     public function manageAction()
 	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->paginator = $this->_createPaginator(
             'Litus\Entity\Cudi\Article',
             array(

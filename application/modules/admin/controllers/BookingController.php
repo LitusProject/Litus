@@ -32,8 +32,11 @@ class BookingController extends \Litus\Controller\Action
 
 	public function manageAction()
 	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->paginator = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Booking'
+            'Litus\Entity\Cudi\Sales\Booking',
+            array(),
+            array('bookDate' => 'DESC')
         );
     }
 
