@@ -83,7 +83,6 @@ class TmpFile {
 
     public function destroy()
     {
-    	return;
         if($this->isOpen()) {
             $file = $this->_file;
             $this->_file = null;

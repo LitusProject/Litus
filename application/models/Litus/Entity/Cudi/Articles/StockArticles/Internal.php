@@ -175,4 +175,12 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 		$this->frontPageColor = $frontPageColor;
 		return $this;
 	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNbPages()
+	{
+		return $this->getNbBlackAndWhite() + $this->getNbColored();
+	}
 }
