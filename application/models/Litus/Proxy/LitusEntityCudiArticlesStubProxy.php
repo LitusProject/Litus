@@ -36,6 +36,18 @@ class LitusEntityCudiArticlesStubProxy extends \Litus\Entity\Cudi\Articles\Stub 
     }
 
     
+    public function isInternal()
+    {
+        $this->__load();
+        return parent::isInternal();
+    }
+
+    public function isStock()
+    {
+        $this->__load();
+        return parent::isStock();
+    }
+
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

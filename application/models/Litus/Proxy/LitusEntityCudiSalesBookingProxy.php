@@ -75,6 +75,24 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
         return parent::getStatus();
     }
 
+    public function getExpirationDate()
+    {
+        $this->__load();
+        return parent::getExpirationDate();
+    }
+
+    public function setStatus($status)
+    {
+        $this->__load();
+        return parent::setStatus($status);
+    }
+
+    public function isExpired()
+    {
+        $this->__load();
+        return parent::isExpired();
+    }
+
 
     public function __sleep()
     {
