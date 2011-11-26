@@ -81,6 +81,18 @@ class LitusEntityCudiArticleProxy extends \Litus\Entity\Cudi\Article implements 
         return parent::getStockItem();
     }
 
+    public function isInternal()
+    {
+        $this->__load();
+        return parent::isInternal();
+    }
+
+    public function isStock()
+    {
+        $this->__load();
+        return parent::isStock();
+    }
+
 
     public function __sleep()
     {

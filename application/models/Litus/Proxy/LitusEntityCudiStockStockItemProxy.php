@@ -99,6 +99,24 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
         return parent::getNumberBooked();
     }
 
+    public function getNumberAssigned()
+    {
+        $this->__load();
+        return parent::getNumberAssigned();
+    }
+
+    public function getNumberSold()
+    {
+        $this->__load();
+        return parent::getNumberSold();
+    }
+
+    public function getNumberAvailable()
+    {
+        $this->__load();
+        return parent::getNumberAvailable();
+    }
+
 
     public function __sleep()
     {

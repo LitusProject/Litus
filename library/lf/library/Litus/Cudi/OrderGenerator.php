@@ -4,6 +4,7 @@ namespace Litus\Cudi;
 
 use \Litus\Entity\Cudi\Stock\Order;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
 use \Litus\Util\Xml\XmlGenerator;
 use \Litus\Util\Xml\XmlObject;
 use \Litus\Util\TmpFile;
@@ -31,24 +32,28 @@ class OrderGenerator extends \Litus\Br\DocumentGenerator
 
     protected function _generateXml(TmpFile $tmpFile)
     {
+    	$configs = self::_getConfigRepository();
+    	
         $now = new \DateTime();
-        $union_short_name = 'VTK';
-        $union_name = 'VTK VZW';
-        $logo = '../images/logo/logo.jpg';
-        $cudi_name = 'CURSUSDIENST';
-        $cudi_mail = 'cudi@vtk.be';
-        $cudi_phone = '0472/ 24 97 08';
+        $union_short_name = $configs->getConfigValue('cudi.union_short_name');
+        $union_name = $configs->getConfigValue('cudi.union_name');
+        $logo = $configs->getConfigValue('cudi.union_logo');
+        $cudi_name = $configs->getConfigValue('cudi.name');
+        $cudi_mail = $configs->getConfigValue('cudi.mail');
+        $person = Registry::get(DoctrineResource::REGISTRY_KEY)
+        	->getRepository('Litus\Entity\Users\Person')
+        	->findOneById($configs->getConfigValue('cudi.person'));
+
         $delivery_address = array(
-        	'name' => 'VTK Cursusdienst',
-        	'street' => 'Kasteelpark Arenberg 41',
-        	'city' => '3001 Heverlee',
-        	'extra' => '(inrit via Celestijnenlaan)'
+        	'name' => $configs->getConfigValue('cudi.delivery_address_name'),
+        	'street' => $configs->getConfigValue('cudi.delivery_address_street'),
+        	'city' => $configs->getConfigValue('cudi.delivery_address_city'),
+        	'extra' => $configs->getConfigValue('cudi.delivery_address_extra'),
         );
         $billing_address = array(
-        	'name' => 'VTK VZW',
-        	'person' => 'Ruben Dilissen',
-        	'street' => 'Studentenwijk Arenberg 6/0',
-        	'city' => '3001 Heverlee'
+        	'name' => $configs->getConfigValue('cudi.billing_address_name'),
+        	'street' => $configs->getConfigValue('cudi.billing_address_street'),
+        	'city' => $configs->getConfigValue('cudi.billing_address_city'),
         );
         
         $external_items = array();
@@ -127,7 +132,7 @@ class OrderGenerator extends \Litus\Br\DocumentGenerator
         }
         
         $xml = new XmlGenerator($tmpFile);
-        
+
         $xml->append(
         	new XmlObject(
         		'order',
@@ -167,7 +172,7 @@ class OrderGenerator extends \Litus\Br\DocumentGenerator
         					 new XmlObject(
         					 	'phone',
         					 	null,
-        					 	$cudi_phone
+        					 	$person->getTelephone()
         					 ),
         					 new XmlObject(
         					 	'delivery_address',
@@ -207,7 +212,7 @@ class OrderGenerator extends \Litus\Br\DocumentGenerator
         					 		new XmlObject(
         					 			'person',
         					 			null,
-        					 			$billing_address['person']
+        					 			$person->getFullname()
         					 		),
         					 		new XmlObject(
         					 			'street',
