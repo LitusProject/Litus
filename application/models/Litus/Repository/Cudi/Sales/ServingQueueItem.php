@@ -4,6 +4,8 @@ namespace Litus\Repository\Cudi\Sales;
 
 use Doctrine\ORM\EntityRepository;
 
+use Litus\Entity\Cudi\SaleApp\PollingData;
+
 /**
  * ServingQueueItem
  *
@@ -13,12 +15,7 @@ use Doctrine\ORM\EntityRepository;
 class ServingQueueItem extends EntityRepository
 {
 
-    private $_cache;
-
     public function getQueueNumber( $sessionId ) {
-
-        if( isset( $_cache[$sessionId] ) )
-            return $_cache[$sessionId];
     
         $query = $this->createQueryBuilder("qi");
         $query->select( "COUNT(qi)" )
@@ -27,9 +24,30 @@ class ServingQueueItem extends EntityRepository
         $result = $query->getQuery()->getResult();
         $count = $result[0][1];
 
-        $_cache[$sessionId] = $count + 1;
-
         return $count + 1;
+    }
+
+    public function getPollingData() {
+        $pd = $this->getEntityManager()
+                  ->getRepository('\Litus\Entity\Cudi\SaleApp\PollingData')
+                  ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
+        if( is_null($pd) ) {
+           updatePollingData();
+           return getPollingData();
+        }
+        return $pd->getTimestamp()->getTimestamp();
+    }
+
+    public function updatePollingData() {
+        $pd = $this->getEntityManager()
+                  ->getRepository('\Litus\Entity\Cudi\SaleApp\PollingData')
+                  ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
+        if( is_null($pd) ) {
+            $pd = new PollingData();
+            $pd->setName( 'ServingQueueItem' );
+        }
+        $pd->setTimestamp( new \DateTime() );
+        $this->getEntityManager()->persist( $pd );
     }
 
 }

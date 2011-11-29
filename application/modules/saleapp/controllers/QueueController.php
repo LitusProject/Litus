@@ -22,8 +22,7 @@ class QueueController extends \Litus\Controller\Action
         // The html parameter is the type of Ajax request. You can also use JSON or XML.
         $context = $this->broker('AjaxContext')
                 ->addActionContext('dump', 'html')
-                ->clearHeaders( 'html' )
-		->setAutoDisableLayout( true )
+                ->addActionContext('poll', 'html')
                 ->initContext();
     }
 
@@ -63,6 +62,9 @@ class QueueController extends \Litus\Controller\Action
                                ->getQueueNumber( $session->getId() ) );
 
 		$this->getEntityManager()->persist( $queueItem );
+                $this->getEntityManager()
+                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
+                               ->updatePollingData();
 
                 $this->_addDirectFlashMessage(
                     new FlashMessage(
@@ -82,6 +84,12 @@ class QueueController extends \Litus\Controller\Action
     	$this->view->sessionId = $this->_getParam("session");
     }
 
+    public function pollAction() {
+        $itemRepo = $this->getEntityManager()
+                                  ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem');
+        $this->view->pollString = md5( $itemRepo->getPollingData() );
+    }
+
     public function dumpAction() {
         $itemRepo = $this->getEntityManager()
                                   ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem');
@@ -91,6 +99,11 @@ class QueueController extends \Litus\Controller\Action
 
                 $status = $statusRepo
                                    ->findOneBy( array( 'name' => $this->_getParam("status") ) );
+
+             //   if( is_null( $status ) ) {
+             //       throw new Exception( "unrecognized status: " . $this->_getParam("status") );
+             //   }
+
                 $queueItems = $itemRepo
                                ->findBy( array('session' => $this->_getParam("session"),
                                                'status' => $status->getId() ),
