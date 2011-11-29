@@ -27,6 +27,18 @@ class StockItem extends EntityRepository
         return $article;
     }
 
+	public function findAllInStock()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->where($query->expr()->gt('i.numberInStock', 0))
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+
 	public function findAllByArticleTitle($title)
 	{
 		$query = $this->_em->createQueryBuilder();
@@ -117,5 +129,74 @@ class StockItem extends EntityRepository
 			->getResult();
 			
 		return $resultSet;
+	}
+
+	public function assignAll()
+	{
+		$this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+			->expireBookings();
+		$this->getEntityManager()->flush();
+	
+		$items = $this->getEntityManager()
+			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+			->findAllInStock();
+		$counter = 0;
+		
+		$persons = array();
+		
+		foreach($items as $item) {
+			$bookings = $this->getEntityManager()
+				->getRepository('Litus\Entity\Cudi\Sales\Booking')
+				->findAllBookedByArticle($item->getArticle(), 'ASC');
+			
+			$now = new \DateTime();
+			foreach($bookings as $booking) {
+				if ($item->getNumberAvailable() <= 0)
+					break;
+				
+				if ($item->getNumberAvailable() < $booking->getNumber())
+					continue;
+				
+				$counter++;
+				$booking->setStatus('assigned');
+				
+				if (!isset($persons[$booking->getPerson()->getId()]))
+					$persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+				
+				$persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
+			}
+		}
+		
+		$email = $this->_em
+			->getRepository('Litus\Entity\General\Config')
+			->getConfigValue('cudi.booking_assigned_mail');
+			
+		$subject = $this->_em
+			->getRepository('Litus\Entity\General\Config')
+			->getConfigValue('cudi.booking_assigned_mail_subject');
+			
+		$mailaddress = $this->_em
+			->getRepository('Litus\Entity\General\Config')
+			->getConfigValue('cudi.mail');
+			
+		$mailname = $this->_em
+			->getRepository('Litus\Entity\General\Config')
+			->getConfigValue('cudi.mail_name');
+		
+		foreach($persons as $person) {
+			$bookings = '';
+			foreach($person['bookings'] as $booking)
+				$bookings .= '* ' . $booking->getArticle()->getTitle() . "\r\n";
+		
+			$mail = new \Zend\Mail\Mail();
+			$mail->setBodyText(str_replace('{{bookings}}', $bookings, $email))
+				->setFrom($mailaddress, $mailname)
+				->addTo($person['person']->getEmail(), $person['person']->getFullName())
+				->setSubject($subject)
+				->send();
+		}
+		
+		return $counter;
 	}
 }

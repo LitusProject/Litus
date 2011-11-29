@@ -34,7 +34,7 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function isInternal()
     {
@@ -138,8 +138,17 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
         return parent::setIsUnbookable($unbookable);
     }
 
+    public function isStock()
+    {
+        $this->__load();
+        return parent::isStock();
+    }
+
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }

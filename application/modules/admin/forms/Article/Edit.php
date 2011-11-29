@@ -12,7 +12,7 @@ class Edit extends \Admin\Form\Article\Add
     public function __construct($options = null)
     {
         parent::__construct($options);
-		
+
         $this->removeElement('submit');
 
 		$submit = new Submit('submit');
@@ -29,16 +29,20 @@ class Edit extends \Admin\Form\Article\Add
 			'author' => $article->getMetaInfo()->getAuthors(),
 			'publisher' => $article->getMetaInfo()->getPublishers(),
 			'year_published' => $article->getMetaInfo()->getYearPublished(),
-			'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
-			'sellprice_nomember' => number_format($article->getSellPrice()/100, 2),
-			'sellprice_member' => number_format($article->getSellPriceMembers()/100, 2),
-			'barcode' => $article->getBarcode(),
-			'supplier' => $article->getSupplier()->getId(),
-			'bookable' => $article->isBookable(),
-			'unbookable' => $article->isUnbookable(),
-			'can_expire' => $article->canExpire(),
-			'internal' => $article->isInternal()
+			'stock' => $article->isStock()
 		);
+		
+		if ($article->isStock()) {
+			$data['purchase_price'] =  number_format($article->getPurchasePrice()/100, 2);
+			$data['sellprice_nomember'] = number_format($article->getSellPrice()/100, 2);
+			$data['sellprice_member'] = number_format($article->getSellPriceMembers()/100, 2);
+			$data['barcode'] = $article->getBarcode();
+			$data['supplier'] = $article->getSupplier()->getId();
+			$data['bookable'] = $article->isBookable();
+			$data['unbookable'] = $article->isUnbookable();
+			$data['can_expire'] = $article->canExpire();
+			$data['internal'] = $article->isInternal();
+		}
 		
 		if ($article->isInternal()) {
 			$data['nb_black_and_white'] = $article->getNbBlackAndWhite();

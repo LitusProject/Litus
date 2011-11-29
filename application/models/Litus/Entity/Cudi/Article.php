@@ -135,4 +135,14 @@ abstract class Article
 	{
 		return $this->stockItem;
 	}
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isInternal();
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isStock();
 }

@@ -34,10 +34,13 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }
@@ -94,6 +97,24 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
     {
         $this->__load();
         return parent::getNumberBooked();
+    }
+
+    public function getNumberAssigned()
+    {
+        $this->__load();
+        return parent::getNumberAssigned();
+    }
+
+    public function getNumberSold()
+    {
+        $this->__load();
+        return parent::getNumberSold();
+    }
+
+    public function getNumberAvailable()
+    {
+        $this->__load();
+        return parent::getNumberAvailable();
     }
 
 

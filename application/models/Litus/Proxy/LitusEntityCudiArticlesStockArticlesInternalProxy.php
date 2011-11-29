@@ -114,6 +114,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::setFrontColor($frontPageColor);
     }
 
+    public function getNbPages()
+    {
+        $this->__load();
+        return parent::getNbPages();
+    }
+
     public function getPurchasePrice()
     {
         $this->__load();
@@ -208,6 +214,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
     {
         $this->__load();
         return parent::setIsUnbookable($unbookable);
+    }
+
+    public function isStock()
+    {
+        $this->__load();
+        return parent::isStock();
     }
 
     public function getId()

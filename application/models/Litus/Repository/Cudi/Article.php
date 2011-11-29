@@ -3,6 +3,7 @@
 namespace Litus\Repository\Cudi;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Article
@@ -22,5 +23,47 @@ class Article extends EntityRepository
 			->getResult();
 
         return $resultSet;
+	}
+	
+	public function findAllByTitle($title)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('Litus\Entity\Cudi\Article', 'a')
+			->where($query->expr()->like($query->expr()->lower('a.title'), ':title'))
+			->setParameter('title', '%'.strtolower($title).'%')
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllByAuthor($author)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('Litus\Entity\Cudi\Article', 'a')
+			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.authors'), ':author'))
+			->setParameter('author', '%'.strtolower($author).'%')
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllByPublisher($publisher)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('Litus\Entity\Cudi\Article', 'a')
+			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'))
+			->setParameter('publisher', '%'.strtolower($publisher).'%')
+			->orderBy('a.title', 'ASC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
 	}
 }

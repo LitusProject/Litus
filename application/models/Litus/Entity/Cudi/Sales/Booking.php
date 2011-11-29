@@ -33,6 +33,11 @@ class Booking
 	private $article;
 	
 	/**
+	 * @Column(type="smallint")
+	 */
+	private $number;
+	
+	/**
 	 * @Column(type="string", length=50)
 	 */
 	private $status;
@@ -66,11 +71,8 @@ class Booking
 		'booked', 'assigned', 'sold', 'expired'
 	);
 	
-	public function __construct($person, $article, $status)
+	public function __construct($person, $article, $status, $number = 1)
 	{
-		if (!self::isValidBookingStatus($status))
-			throw new \InvalidArgumentException('The BookingStatus is not valid.');
-			
 		if (!isset($article))
 			throw new \InvalidArgumentException('The article is not valid.');
 			
@@ -82,7 +84,8 @@ class Booking
 		
 		$this->person = $person;
 		$this->article = $article;
-		$this->status = $status;
+		$this->number = $number;
+		$this->setStatus($status);
 		$this->bookDate = new \DateTime();
 		
 		if ($article->canExpire()) {
@@ -105,6 +108,14 @@ class Booking
 	}
 	
 	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	/**
 	 * @return \Litus\Entity\Users\Person
 	 */
 	public function getPerson()
@@ -121,6 +132,14 @@ class Booking
 	}
 	
 	/**
+	 * @return integer
+	 */
+	public function getNumber()
+	{
+		return $this->number;
+	}
+	
+	/**
 	 * @return \DateTime
 	 */
 	public function getBookDate()
@@ -134,5 +153,37 @@ class Booking
 	public function getStatus()
 	{
 		return $this->status;
+	}
+	
+	/**
+	 * @return \DateTime
+	 */
+	public function getExpirationDate()
+	{
+		return $this->expirationDate;
+	}
+	
+	/**
+	 * @param string $status The new status of this booking.
+	 */
+	public function setStatus($status)
+	{
+		if (!self::isValidBookingStatus($status))
+			throw new \InvalidArgumentException('The BookingStatus is not valid.');
+		
+		if ($status == 'assigned')
+			$this->assignmentDate = new \DateTime();
+		else
+			$this->assignmentDate = null;
+		
+		$this->status = $status;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isExpired()
+	{
+		return $this->expirationDate < new \DateTime();
 	}
 }
