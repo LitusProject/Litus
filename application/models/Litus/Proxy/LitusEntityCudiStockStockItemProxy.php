@@ -34,8 +34,14 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
     
+    
+    public function getId()
+    {
+        $this->__load();
+        return parent::getId();
+    }
+
     public function getArticle()
     {
         $this->__load();
@@ -46,6 +52,48 @@ class LitusEntityCudiStockStockItemProxy extends \Litus\Entity\Cudi\Stock\StockI
     {
         $this->__load();
         return parent::getNumberInStock();
+    }
+
+    public function setNumberInStock($number)
+    {
+        $this->__load();
+        return parent::setNumberInStock($number);
+    }
+
+    public function addNumber($number)
+    {
+        $this->__load();
+        return parent::addNumber($number);
+    }
+
+    public function getTotalOrdered()
+    {
+        $this->__load();
+        return parent::getTotalOrdered();
+    }
+
+    public function getNumberNotDelivered()
+    {
+        $this->__load();
+        return parent::getNumberNotDelivered();
+    }
+
+    public function getNumberQueueOrder()
+    {
+        $this->__load();
+        return parent::getNumberQueueOrder();
+    }
+
+    public function getTotalDelivered()
+    {
+        $this->__load();
+        return parent::getTotalDelivered();
+    }
+
+    public function getNumberBooked()
+    {
+        $this->__load();
+        return parent::getNumberBooked();
     }
 
 

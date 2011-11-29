@@ -34,7 +34,7 @@ class LitusEntityGeneralBankMoneyUnitAmountProxy extends \Litus\Entity\General\B
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getUnit()
     {

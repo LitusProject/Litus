@@ -34,7 +34,7 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function setName($name)
     {
@@ -62,9 +62,6 @@ class LitusEntityUsersPeopleCompanyProxy extends \Litus\Entity\Users\People\Comp
 
     public function getId()
     {
-        if ($this->__isInitialized__ === false) {
-            return $this->_identifier["id"];
-        }
         $this->__load();
         return parent::getId();
     }

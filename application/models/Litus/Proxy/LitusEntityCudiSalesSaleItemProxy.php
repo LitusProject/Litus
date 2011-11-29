@@ -34,7 +34,7 @@ class LitusEntityCudiSalesSaleItemProxy extends \Litus\Entity\Cudi\Sales\SaleIte
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
 
     public function __sleep()

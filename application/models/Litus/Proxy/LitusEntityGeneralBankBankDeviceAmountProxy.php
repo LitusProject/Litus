@@ -34,7 +34,7 @@ class LitusEntityGeneralBankBankDeviceAmountProxy extends \Litus\Entity\General\
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getDevice()
     {

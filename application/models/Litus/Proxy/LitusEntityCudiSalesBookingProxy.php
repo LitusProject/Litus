@@ -34,7 +34,7 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getPerson()
     {
