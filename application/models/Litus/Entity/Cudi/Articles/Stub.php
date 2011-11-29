@@ -8,5 +8,19 @@ namespace Litus\Entity\Cudi\Articles;
  */
 class Stub extends \Litus\Entity\Cudi\Article
 {
+	/**
+	 * @return boolean
+	 */
+	public function isInternal()
+	{
+		return false;
+	}
 	
+	/**
+	 * @return boolean
+	 */
+	public function isStock()
+	{
+		return false;
+	}
 }

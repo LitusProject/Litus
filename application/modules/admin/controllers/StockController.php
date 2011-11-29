@@ -31,6 +31,7 @@ class StockController extends \Litus\Controller\Action
     
     public function overviewAction()
 	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->stock = $this->_createPaginator(
             'Litus\Entity\Cudi\Stock\StockItem'
         );
@@ -145,7 +146,7 @@ class StockController extends \Litus\Controller\Action
 			$item->numberInStock = $stockItem->getNumberInStock();
 			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
 			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
-			$item->numberBooked = $stockItem->getNumberBooked();
+			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
 			$result[] = $item;
 		}
 		echo $json->encode($result);

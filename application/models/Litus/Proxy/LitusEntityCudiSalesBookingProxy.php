@@ -36,6 +36,15 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
     }
     
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
     public function getPerson()
     {
         $this->__load();
@@ -46,6 +55,12 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
     {
         $this->__load();
         return parent::getArticle();
+    }
+
+    public function getNumber()
+    {
+        $this->__load();
+        return parent::getNumber();
     }
 
     public function getBookDate()
@@ -60,10 +75,28 @@ class LitusEntityCudiSalesBookingProxy extends \Litus\Entity\Cudi\Sales\Booking 
         return parent::getStatus();
     }
 
+    public function getExpirationDate()
+    {
+        $this->__load();
+        return parent::getExpirationDate();
+    }
+
+    public function setStatus($status)
+    {
+        $this->__load();
+        return parent::setStatus($status);
+    }
+
+    public function isExpired()
+    {
+        $this->__load();
+        return parent::isExpired();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'person', 'article', 'status', 'expirationDate', 'assignmentDate', 'bookDate', 'saleDate', 'cancelationDate');
+        return array('__isInitialized__', 'id', 'person', 'article', 'number', 'status', 'expirationDate', 'assignmentDate', 'bookDate', 'saleDate', 'cancelationDate');
     }
 
     public function __clone()

@@ -60,9 +60,20 @@
 	                <i>Please hit the link below to print the order for the supplier!</i>
 	            </p>
 	            <p>
-	                <a href="<?= $this->url(array('action' => 'print')); ?>" target="_blank">&rarr; Print order</a>
+	                <a href="<?= $this->url(array('action' => 'pdf')); ?>" target="_blank">&rarr; Print order</a>
 	            </p>
 	        </div>
 	    </div>
+	    <!--<div class="sidebox">
+	        <div class="title">Export Order</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to export the order to XML for the supplier!</i>
+	            </p>
+	            <p>
+	                <a href="<?= $this->url(array('action' => 'export')); ?>" target="_blank">&rarr; Export order</a>
+	            </p>
+	        </div>
+	    </div>-->
 	<? endif; ?>
 </aside>

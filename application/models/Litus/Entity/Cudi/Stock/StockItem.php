@@ -118,9 +118,7 @@ class StockItem
 	 */
 	public function getTotalDelivered()
 	{
-		$total = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')->getTotalByArticle($this->article);
-		
-		return $total;
+		return Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')->getTotalByArticle($this->article);
 	}
 	
 	/**
@@ -128,7 +126,48 @@ class StockItem
 	 */
 	public function getNumberBooked()
 	{
-		// TODO
-		return 0;
+		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAllBookedByArticle($this->article);
+		
+		$number = 0;
+		foreach($booked as $booking)
+			$number += $booking->getNumber();
+		
+		return $number;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberAssigned()
+	{
+		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAllAssignedByArticle($this->article);
+		
+		$number = 0;
+		foreach($booked as $booking)
+			$number += $booking->getNumber();
+		
+		return $number;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberSold()
+	{
+		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)->getRepository('Litus\Entity\Cudi\Sales\Booking')->findAllSoldByArticle($this->article);
+		
+		$number = 0;
+		foreach($booked as $booking)
+			$number += $booking->getNumber();
+		
+		return $number;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumberAvailable()
+	{
+		return $this->numberInStock - $this->getNumberBooked();
 	}
 }
