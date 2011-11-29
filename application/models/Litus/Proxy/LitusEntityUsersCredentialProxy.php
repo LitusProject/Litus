@@ -34,7 +34,7 @@ class LitusEntityUsersCredentialProxy extends \Litus\Entity\Users\Credential imp
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function validateCredential($credential)
     {

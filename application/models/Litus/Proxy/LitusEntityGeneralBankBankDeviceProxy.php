@@ -34,13 +34,10 @@ class LitusEntityGeneralBankBankDeviceProxy extends \Litus\Entity\General\Bank\B
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getId()
     {
-        if ($this->__isInitialized__ === false) {
-            return $this->_identifier["id"];
-        }
         $this->__load();
         return parent::getId();
     }

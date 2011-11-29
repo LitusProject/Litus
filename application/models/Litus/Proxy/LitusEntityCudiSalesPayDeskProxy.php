@@ -34,7 +34,7 @@ class LitusEntityCudiSalesPayDeskProxy extends \Litus\Entity\Cudi\Sales\PayDesk 
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
 
     public function __sleep()

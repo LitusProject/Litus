@@ -34,7 +34,7 @@ class LitusEntityCudiInventoryMapProxy extends \Litus\Entity\Cudi\InventoryMap i
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
 
     public function __sleep()

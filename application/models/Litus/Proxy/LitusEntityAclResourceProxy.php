@@ -34,13 +34,10 @@ class LitusEntityAclResourceProxy extends \Litus\Entity\Acl\Resource implements 
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
     public function getName()
     {
-        if ($this->__isInitialized__ === false) {
-            return $this->_identifier["name"];
-        }
         $this->__load();
         return parent::getName();
     }

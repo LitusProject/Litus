@@ -34,7 +34,7 @@ class LitusEntityCudiArticleSubjectMapProxy extends \Litus\Entity\Cudi\ArticleSu
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-
+    
     
 
     public function __sleep()
