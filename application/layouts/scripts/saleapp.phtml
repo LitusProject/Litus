@@ -6,7 +6,8 @@
                  ->appendStylesheet($this->baseUrl('/_saleapp/stylesheet/css/twitter-bootstrap.css'))
                  ->appendStylesheet($this->baseUrl('/_saleapp/stylesheet/css/saleapp.css')); ?>
 	<?= $this->headMeta(); ?>
-	<?= $this->headScript(); ?>
+	<?= $this->headScript()
+                 ->appendFile("/_saleapp/js/jquery.min.js"); ?>
 	<?= $this->headStyle(); ?>
 </head>
 <body>

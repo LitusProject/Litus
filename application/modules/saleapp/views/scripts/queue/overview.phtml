@@ -1,26 +1,26 @@
 <script language=javascript>
+var pollstring = "";
 
-var selected = [];
+function pollUpdate() {
+	$.get('<?= $this->url(array( 'controller' => 'queue', 'action' => 'poll' )); ?>', function (data) {
+		// compare poll string
+		if( data != pollstring ) {
+			pollstring = data;
+			$('#dumplist_signed_in').load( '<?= $this->url( array( 	'action' => 'dump',
+									'session' => $sessionId ) ); ?>/status/signed_in' );
+			$('#dumplist_collecting').load( '<?= $this->url( array( 	'action' => 'dump',
+									'session' => $sessionId ) ); ?>/status/collecting' );
+			$('#dumplist_collected').load( '<?= $this->url( array( 	'action' => 'dump',
+									'session' => $sessionId ) ); ?>/status/collected' );
+			$('#dumplist_selling').load( '<?= $this->url( array( 	'action' => 'dump',
+									'session' => $sessionId ) ); ?>/status/selling' );
+		}
+	});
 
-function bootstrap()
-{
-  updateDump( "signed_in" );
-  updateDump( "collecting" );
-  updateDump( "collected" );
-  updateDump( "selling" );
-  setTimeout( "bootstrap()", 1000 ); // update every 1000 milliseconds
+	window.setTimeout( "pollUpdate()", 2000 );
 }
 
-function updateDump( status )
-{
-var xhReq = new XMLHttpRequest();
- xhReq.open("GET", "<?= $this->url(array('action' => 'dump', 'session' => $sessionId, 'format' => 'html' )); ?>/status/"+status, false);
- xhReq.send(null);
- document.getElementById("dumplist_"+status).innerHTML = xhReq.responseText;
-
-}
-
-window.onload=bootstrap;
+$(document).ready( pollUpdate() );
 </script>
 
 <div class=content>
@@ -57,3 +57,4 @@ window.onload=bootstrap;
 </div>
 </div>
 </div>
+

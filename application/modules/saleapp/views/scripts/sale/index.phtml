@@ -4,19 +4,40 @@ var selected = [];
 
 function bootstrap()
 {
-  updateDump( "signed_in" );
-  updateDump( "collecting" );
-  updateDump( "collected" );
-  updateDump( "selling" );
+  if( isTimeToUpdate() )
+  {
+    updateDump( "signed_in" );
+    updateDump( "collecting" );
+    updateDump( "collected" );
+    updateDump( "selling" );
+    updateDump( "hold" );
+    updateDump( "cancelled" );
+  }
+  setTimeout( bootstrap, 1000 );
+}
+
+var pollString = "rawr!"; // very unlikely to be the hash value of the timestamp of the most recent table modification
+
+function isTimeToUpdate()
+{
+  var xhReq = new XMLHttpRequest();
+  xhReq.open("GET", "<?= $this->url(array( 'controller' => 'queue', 'action' => 'poll', 'format' => 'html' )); ?>");
+  xhReq.send(null);
+  if( xhReq.responseText == pollString )
+  {
+    return false;
+  }
+
+  setTimeout( "pollString = xhReq.responseText;", 50 );
+  return true;
 }
 
 function updateDump( status )
 {
 var xhReq = new XMLHttpRequest();
- xhReq.open("GET", "<?= $this->url(array('action' => 'dump', 'session' => $sessionId, 'format' => 'html' )); ?>/status/"+status, false);
+ xhReq.open("GET", "<?= $this->url(array( 'controller' => 'queue', 'action' => 'dump', 'session' => $sessionId, 'format' => 'html' )); ?>/status/"+status, false);
  xhReq.send(null);
  document.getElementById("dumplist_"+status).innerHTML = xhReq.responseText;
-
 }
 
 function itemClick( item, event )
@@ -79,37 +100,18 @@ function selectOn( item )
 window.onload=bootstrap;
 </script>
 
-<div class=content>
-<div class=container>
-<div class=row>
 <div class="span4">
-<div class="queue_item queue_item_header">
-<strong>Signed In</strong>
-</div>
-<div id="dumplist_signed_in">
-</div>
-</div>
-<div class="span4">
-<div class="queue_item queue_item_header">
-<strong>Collecting</strong>
-</div>
-<div id="dumplist_collecting">
-</div>
-</div>
-<div class="span4">
-<div class="queue_item queue_item_header">
-<strong>Collected</strong>
+<div id="dumplist_selling">
 </div>
 <div id="dumplist_collected">
 </div>
+<div id="dumplist_collecting">
 </div>
-<div class="span4">
-<div class="queue_item queue_item_header">
-<strong>Selling</strong>
+<div id="dumplist_signed_in">
 </div>
-<div id="dumplist_selling">
+<div id="dumplist_hold">
 </div>
-</div>
-</div>
+<div id="dumplist_cancelled">
 </div>
 </div>
+
