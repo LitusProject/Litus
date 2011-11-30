@@ -104,7 +104,8 @@ class ArticleController extends \Litus\Controller\Action
 	                        $binding,
 	                        $formData['official'],
 	                        $formData['rectoverso'],
-	                        $frontColor
+	                        $frontColor,
+	                        $formData['front_text_colored']
 		                );
 					} else {
 						$article = new External(
@@ -249,7 +250,8 @@ class ArticleController extends \Litus\Controller\Action
 						->setBinding($binding)
 						->setIsOfficial($formData['official'])
 						->setIsRectoVerso($formData['rectoverso'])
-						->setFrontColor($frontColor);
+						->setFrontColor($frontColor)
+						->setFrontPageTextColored($formData['front_text_colored']);
 				}
 
                 $this->broker('flashmessenger')->addMessage(

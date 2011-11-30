@@ -40,9 +40,14 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	 */
 	private $frontPageColor;
 	
+	/**
+	 * @Column(name="front_page_text_colored", type="boolean")
+	 */
+	private $frontPageTextColored;
+	
 	public function __construct(
 		$title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, 
-		$barcode, $bookable, $unbookable, $supplier, $canExpire, $nbBlackAndWhite, $nbColored, $binding, $official, $rectoverso, $frontPageColor
+		$barcode, $bookable, $unbookable, $supplier, $canExpire, $nbBlackAndWhite, $nbColored, $binding, $official, $rectoverso, $frontPageColor, $frontPageTextColored
 	) {
 		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
@@ -51,7 +56,8 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 			->setBinding($binding)
 			->setIsOfficial($official)
 			->setIsRectoVerso($rectoverso)
-			->setFrontColor($frontPageColor);
+			->setFrontColor($frontPageColor)
+			->setFrontPageTextColored($frontPageTextColored);
 	}
 	
 	/**
@@ -174,6 +180,24 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	{
 		$this->frontPageColor = $frontPageColor;
 		return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function getFrontPageTextColored()
+	{
+		return $this->frontPageTextColored;
+	}
+	
+	/**
+	 * @param boolean $frontPageTextColored
+	 *
+	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 */
+	public function setFrontPageTextColored($frontPageTextColored)
+	{
+		$this->frontPageTextColored = $frontPageTextColored;
 	}
 	
 	/**

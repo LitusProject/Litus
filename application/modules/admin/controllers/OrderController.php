@@ -7,7 +7,8 @@ use \Admin\Form\Order\Edit as EditForm;
 use \Admin\Form\Order\AddItem as AddItemForm;
 
 use \Litus\Util\File as FileUtil;
-use \Litus\Cudi\OrderGenerator;
+use \Litus\Cudi\OrderPdfGenerator;
+use \Litus\Cudi\OrderXmlGenerator;
 use \Litus\Entity\Cudi\Stock\Order;
 use \Litus\Entity\Cudi\Stock\OrderItem;
 use \Litus\FlashMessenger\FlashMessage;
@@ -19,6 +20,7 @@ use \Zend\Registry;
 
 use \Litus\Util\Xml\XmlGenerator;
 use \Litus\Util\Xml\XmlObject;
+use \Litus\Util\TmpFile;
 
 /**
  * This class controls management of the stock.
@@ -41,20 +43,19 @@ class OrderController extends \Litus\Controller\Action
 	                     'Cache-Control' => 'private, max-age=0, must-revalidate'
 	                 )
 	            )
-	        )
-	        ->setContext(
-	            'xml',
-	            array(
-	                 'headers' => array(
-	                     'Content-type' => 'application/xml',
-	                     'Pragma' => 'public',
-	                     'Cache-Control' => 'private, max-age=0, must-revalidate'
-	                 )
-	            )
-	        );
+	        )->setContext(
+                'zip',
+                array(
+                     'headers' => array(
+                         'Content-type' => 'application/zip',
+                         'Pragma' => 'public',
+                         'Cache-Control' => 'private, max-age=0, must-revalidate'
+                     )
+                )
+            );
 
         $contextSwitch->setActionContext('pdf', 'pdf')
-        	->setActionContext('export', 'xml')
+        	->setActionContext('export', 'zip')
             ->initContext();
     }
 
@@ -201,12 +202,16 @@ class OrderController extends \Litus\Controller\Action
 		if (null == $order || !$order->isPlaced())
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
-		$document = new OrderGenerator($order);
+		$document = new OrderPdfGenerator($order);
 		$document->generate();
 
+		// TODO: remove content type (must be in init)
 		$this->getResponse()->setHeader(
 			'Content-Disposition', 'inline; filename="order.pdf"'
+		)->setHeader(
+			'Content-type', 'application/pdf'
 		);
+		
 		$this->getResponse()->setHeader('Content-Length', filesize($file));
 
 		readfile($file);
@@ -214,7 +219,7 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function exportAction()
 	{
-		/*$this->broker('layout')->disableLayout(); 
+		$this->broker('layout')->disableLayout(); 
 		$this->broker('viewRenderer')->setNoRender();
 		
 		$order = $this->getEntityManager()
@@ -224,12 +229,18 @@ class OrderController extends \Litus\Controller\Action
 		if (null == $order || !$order->isPlaced())
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
-		$document = new OrderGenerator($order);
-
+		$document = new OrderXmlGenerator($order);
+		
+		
+		// TODO: remove content type (must be in init)
 		$this->getResponse()->setHeader(
-			'Content-Disposition', 'inline; filename="order.xml"'
+			'Content-Disposition', 'inline; filename="order.zip"'
+		)->setHeader(
+			'Content-type', 'application/zip'
 		);
-
-		print $document->generateXml();*/
+		
+		$archive = new TmpFile();
+		$document->generateArchive($archive);
+		readfile($archive->getFileName());
 	}
 }
