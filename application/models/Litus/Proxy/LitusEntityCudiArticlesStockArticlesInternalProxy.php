@@ -34,7 +34,7 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
     public function isInternal()
     {
@@ -112,6 +112,18 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
     {
         $this->__load();
         return parent::setFrontColor($frontPageColor);
+    }
+
+    public function getFrontPageTextColored()
+    {
+        $this->__load();
+        return parent::getFrontPageTextColored();
+    }
+
+    public function setFrontPageTextColored($frontPageTextColored)
+    {
+        $this->__load();
+        return parent::setFrontPageTextColored($frontPageTextColored);
     }
 
     public function getNbPages()
@@ -224,6 +236,9 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
 
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
         $this->__load();
         return parent::getId();
     }
@@ -267,7 +282,7 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire', 'nbBlackAndWhite', 'nbColored', 'binding', 'official', 'rectoVerso', 'frontPageColor', 'frontPageTextColored');
     }
 
     public function __clone()

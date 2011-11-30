@@ -185,6 +185,11 @@ class Add extends \Litus\Form\Admin\Form
 			->setMultiOptions($this->_getColors())
 	       	->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
+	    
+	    $field = new Checkbox('front_text_colored');
+	    $field->setLabel('Front page text colored')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
 		
 		$this->addDisplayGroup(
 		            array(
@@ -193,7 +198,8 @@ class Add extends \Litus\Form\Admin\Form
 		                'binding',
 						'official',
 						'rectoverso',
-						'front_color'
+						'front_color',
+						'front_text_colored'
 		            ),
 		            'internal_form'
 		        );

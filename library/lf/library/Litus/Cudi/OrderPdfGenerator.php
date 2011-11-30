@@ -11,7 +11,7 @@ use \Litus\Util\TmpFile;
 
 use \Zend\Registry;
 
-class OrderGenerator extends \Litus\Br\DocumentGenerator
+class OrderPdfGenerator extends \Litus\Br\DocumentGenerator
 {
 
 	/**

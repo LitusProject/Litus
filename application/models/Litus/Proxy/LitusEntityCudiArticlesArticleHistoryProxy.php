@@ -34,7 +34,7 @@ class LitusEntityCudiArticlesArticleHistoryProxy extends \Litus\Entity\Cudi\Arti
             unset($this->_entityPersister, $this->_identifier);
         }
     }
-    
+
     
 
     public function __sleep()
