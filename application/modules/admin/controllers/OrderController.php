@@ -88,6 +88,8 @@ class OrderController extends \Litus\Controller\Action
 	
 	public function editAction()
 	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
+		
 		$order = $this->getEntityManager()
             ->getRepository('Litus\Entity\Cudi\Stock\Order')
             ->findOneById($this->getRequest()->getParam('id'));

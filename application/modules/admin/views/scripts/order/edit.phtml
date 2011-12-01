@@ -60,7 +60,7 @@
 	                <i>Please hit the link below to print the order for the supplier!</i>
 	            </p>
 	            <p>
-	                <a href="<?= $this->url(array('action' => 'pdf')); ?>" target="_blank">&rarr; Print order</a>
+	                <a href="#" id="printOrder" target="_blank">&rarr; Print order</a>
 	            </p>
 	        </div>
 	    </div>
@@ -71,9 +71,16 @@
 	                <i>Please hit the link below to export the order to XML for the supplier!</i>
 	            </p>
 	            <p>
-	                <a href="<?= $this->url(array('action' => 'export')); ?>" target="_blank">&rarr; Export order</a>
+	                <a href="#" id="exportOrder">&rarr; Export order</a>
 	            </p>
 	        </div>
 	    </div>
 	<? endif; ?>
 </aside>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#exportOrder').downloadFile('<?= $this->url(array('action' => 'export')); ?>');
+		$('#printOrder').downloadFile('<?= $this->url(array('action' => 'pdf')); ?>');
+	});
+</script>
