@@ -5,6 +5,11 @@
 </div>
 
 <div id="controller_action">
+	<h1>Order</h1>
+	<p>Supplier: <b><?= $this->order->getSupplier()->getName(); ?></b></p>
+	<p>Date: <b><?= $this->order->getDate() ? $this->order->getDate()->format('Y-m-d H:i:s') : '(new)'; ?></b></p>
+	<br />
+	
 	<table>
 		
 		<tr>

@@ -80,6 +80,7 @@ class OrderController extends \Litus\Controller\Action
 		if (null == $supplier)
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 			
+		$this->view->supplier = $supplier;
 		$this->view->orders = $this->_createPaginator(
             'Litus\Entity\Cudi\Stock\Order',
 			array('supplier' => $supplier->getId())
@@ -98,26 +99,6 @@ class OrderController extends \Litus\Controller\Action
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 
 		$this->view->order = $order;
-
-		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
-            if($form->isValid($formData)) {
-                $supplier = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Supplier')
-					->findOneById($formData['supplier']);
-				
-				$order->setSupplier($supplier);
-                 
-                $this->_addDirectFlashMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order was successfully updated!'
-                    )
-				);
-			}
-        }
 	}
 	
 	public function addAction()

@@ -21,10 +21,11 @@ table{border-collapse:collapse;border-spacing:0;}
 .companies_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -192px;}
 .companies_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -208px;}
 .companies_delete{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -224px;}
-.textbooks{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -240px;}
-.textbooks_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -256px;}
-.textbooks_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -272px;}
-.textbooks_delete{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -288px;}
+.article{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -240px;}
+.article_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -256px;}
+.article_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -272px;}
+.article_delete{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -288px;}
+.file_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -640px;}
 .sale{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -480px;}
 .sale_add{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -496px;}
 .sale_edit{display:block;float:left;line-height:16px;margin-left:5px;padding-left:12px;background:url("/_admin/img/icons.png") no-repeat 0 -512px;}
@@ -49,6 +50,7 @@ input,select{height:20px;background:#ffffff url("/_admin/img/i.png") repeat-x;bo
 input{padding-left:3px;}
 input[type=submit]{height:16px;margin-top:7px;padding:0 4px 6px 4px;text-indent:16px;border:none;font-weight:bold;}
 input[type=checkbox]{height:14px;margin-top:3px;}
+input[type=file]{border:none;background:none;}
 select[multiple=multiple]{min-width:100px;height:125px;}
 textarea{width:300px;height:125px;padding:3px;background:#ffffff url("/_admin/img/i.png") repeat-x;border:1px solid #d7d4d4;color:#7f7c7c;}
 table{width:598px;padding:0;border-collapse:separate;font-size:11px;}table th{padding-right:10px;height:20px;line-height:20px;text-indent:9px;text-transform:uppercase;font-size:10px;font-weight:bold;text-align:left;vertical-align:middle;background:#e7e7e7 url("/_admin/img/t.gif") no-repeat right 0;}

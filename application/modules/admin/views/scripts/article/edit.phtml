@@ -8,6 +8,22 @@
     <?= $this->form; ?>
 </div>
 
+<aside>
+	<? if ($this->article->isInternal()): ?>
+		<div class="sidebox">
+	        <div class="title">Manage Files</div>
+	       	<div class="content">
+		    	<p>
+		        	<i>Please hit the link below to manage the files of this article!</i>
+		        </p>
+		        <p>
+		           	<a href="<?= $this->url(array('action' => 'managefiles')); ?>">&rarr; Manage files</a>
+		        </p>
+		    </div>
+		</div>
+	<? endif; ?>
+</aside>
+
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('#internal').click(toggleInternal)

@@ -16,10 +16,10 @@ class Edit extends \Admin\Form\Article\Add
         parent::__construct($options);
 
         $this->removeElement('submit');
-
+        
 		$submit = new Submit('submit');
         $submit->setLabel('Edit')
-                ->setAttrib('class', 'textbooks_edit')
+                ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($submit);
     }
@@ -29,7 +29,7 @@ class Edit extends \Admin\Form\Article\Add
     	$this->getElement('barcode')
     		->clearValidators()
         	->addValidator(new UniqueArticleBarcodeValidator(array($article->getId())));
-    		
+    	
     	parent::populate($article);
     }
 }

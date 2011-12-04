@@ -6,7 +6,9 @@ use Doctrine\ORM\EntityManager;
 
 use \Admin\Form\Article\Add;
 use \Admin\Form\Article\Edit;
+use \Admin\Form\Article\File as FileForm;
 
+use \Litus\Entity\Cudi\File;
 use \Litus\Entity\Cudi\Articles\Stub;
 use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
 use \Litus\Entity\Cudi\Articles\MetaInfo;
@@ -14,6 +16,7 @@ use \Litus\Entity\Cudi\Articles\StockArticles\External;
 use \Litus\FlashMessenger\FlashMessage;
 
 use \Zend\Json\Json;
+use \Zend\File\Transfer\Adapter\Http as FileUpload;
 
 /**
  *
@@ -186,6 +189,7 @@ class ArticleController extends \Litus\Controller\Action
 		$form->populate($article);
 
         $this->view->form = $form;
+        $this->view->article = $article;
 
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -355,5 +359,102 @@ class ArticleController extends \Litus\Controller\Action
 			$result[] = $item;
 		}
 		echo $json->encode($result);
+	}
+	
+	public function managefilesAction()
+	{
+		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
+
+		$article = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')
+            ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $article)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		
+		$form = new FileForm();
+		
+		$this->view->form = $form;
+        $this->view->article = $article;
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+        	
+        	if ($form->isValid($formData)) {
+        		$upload = new FileUpload();
+        		$originalName = $upload->getFileName(null, false);
+        		
+        		$fileName = '';
+        		do{
+        		    $fileName = '/' . uniqid();
+        		} while (file_exists('../resources/files/cudi/' . $fileName));
+        		
+        		$upload->addFilter('Rename', '../resources/files/cudi/' . $fileName);
+        		$upload->receive();
+        		
+        		$file = new File($fileName, $originalName, $formData['description'], $article);
+        		$this->getEntityManager()->persist($file);
+        		
+        		$this->broker('flashmessenger')->addMessage(
+        		    new FlashMessage(
+        		        FlashMessage::SUCCESS,
+        		        'SUCCESS',
+        		        'The file was successfully added!'
+        		    )
+        		);
+        		$this->_redirect('managefiles', null, null, array('id' => $article->getId()));
+        	}
+        }
+	}
+	
+	public function deletefileAction()
+	{
+		$file = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\File')
+            ->findOneById($this->getRequest()->getParam('id'));
+
+		if (null == $file)
+			throw new Zend\Controller\Action\Exception("Page not found", 404);
+		
+		$this->view->articleFile = $file;
+
+		if (null !== $this->getRequest()->getParam('confirm')) {
+            if (1 == $this->getRequest()->getParam('confirm')) {
+            	unlink('../resources/files/cudi/' . $file->getPath());
+            	$this->getEntityManager()->remove($file);
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The file was successfully removed!'
+                    )
+                );
+            }
+
+            $this->_redirect('managefiles', null, null, array('id' => $file->getInternalArticle()->getId()));
+        }
+	}
+	
+	public function downloadfileAction()
+	{
+		$this->broker('layout')->disableLayout(); 
+		$this->broker('viewRenderer')->setNoRender();
+		
+		$file = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\File')
+            ->findOneById($this->getRequest()->getParam('id'));
+
+		if (null == $file)
+			throw new Zend\Controller\Action\Exception("Page not found", 404);
+		
+		// TODO: move this to init function
+		$this->getResponse()->setHeader(
+			'Content-Disposition', 'inline; filename="' . $file->getName() . '"'
+		)->setHeader(
+			'Content-type', 'application/octet-stream'
+		);
+		
+		readfile('../resources/files/cudi/' . $file->getPath());
 	}
 }
