@@ -132,6 +132,12 @@ class LitusEntityCudiArticlesStockArticlesInternalProxy extends \Litus\Entity\Cu
         return parent::getNbPages();
     }
 
+    public function getFiles()
+    {
+        $this->__load();
+        return parent::getFiles();
+    }
+
     public function getPurchasePrice()
     {
         $this->__load();

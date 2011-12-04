@@ -212,7 +212,7 @@ class Add extends \Litus\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'textbooks_add')
+                ->setAttrib('class', 'article_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }

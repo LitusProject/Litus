@@ -101,7 +101,8 @@ class DeliveryController extends \Litus\Controller\Action
 		
 		if (null == $supplier)
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
+		
+		$this->view->supplier = $supplier;
 		$this->view->deliveries = $this->_createPaginatorArray($this->getEntityManager()
 			->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
 			->findAllBySupplier($supplier));

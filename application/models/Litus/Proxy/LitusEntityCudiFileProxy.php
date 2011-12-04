@@ -36,10 +36,67 @@ class LitusEntityCudiFileProxy extends \Litus\Entity\Cudi\File implements \Doctr
     }
 
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getPath()
+    {
+        $this->__load();
+        return parent::getPath();
+    }
+
+    public function setPath($path)
+    {
+        $this->__load();
+        return parent::setPath($path);
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
+    public function setName($name)
+    {
+        $this->__load();
+        return parent::setName($name);
+    }
+
+    public function getDescription()
+    {
+        $this->__load();
+        return parent::getDescription();
+    }
+
+    public function setDescription($description)
+    {
+        $this->__load();
+        return parent::setDescription($description);
+    }
+
+    public function getInternalArticle()
+    {
+        $this->__load();
+        return parent::getInternalArticle();
+    }
+
+    public function setInternalArticle($internalArticle)
+    {
+        $this->__load();
+        return parent::setInternalArticle($internalArticle);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'path', 'name', 'internalArticleId');
+        return array('__isInitialized__', 'id', 'path', 'name', 'description', 'internalArticle');
     }
 
     public function __clone()

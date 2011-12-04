@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class File extends EntityRepository
 {
+	public function findAllByArticle($article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('f')
+			->from('Litus\Entity\Cudi\File', 'f')
+			->where($query->expr()->eq('f.internalArticle', ':article'))
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+
+        return $resultSet;
+	}
 }

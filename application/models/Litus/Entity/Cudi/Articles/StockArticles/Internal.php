@@ -2,6 +2,10 @@
 
 namespace Litus\Entity\Cudi\Articles\StockArticles;
 
+use \Litus\Application\Resource\Doctrine as DoctrineResource;
+
+use \Zend\Registry;
+
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\StockArticles\Internal")
  * @Table(name="cudi.articles_stockarticles_internal")
@@ -206,5 +210,12 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	public function getNbPages()
 	{
 		return $this->getNbBlackAndWhite() + $this->getNbColored();
+	}
+	
+	public function getFiles()
+	{
+		return Registry::get(DoctrineResource::REGISTRY_KEY)
+			->getRepository('Litus\Entity\Cudi\File')
+			->findAllByArticle($this);
 	}
 }
