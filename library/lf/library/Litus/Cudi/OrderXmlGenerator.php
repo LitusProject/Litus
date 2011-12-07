@@ -33,10 +33,13 @@ class OrderXmlGenerator
 				continue;
 			
 			$zip->open($archive->getFileName(), \ZIPARCHIVE::CREATE);
-			$file = new TmpFile();
-			$this->_generateXml($item, $file);
+			$xmlFile = new TmpFile();
+			$this->_generateXml($item, $xmlFile);
 			
-			$zip->addFile($file->getFilename(), $item->getId() . '.xml');
+			$zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
+			foreach($item->getArticle()->getFiles() as $file)
+				$zip->addFile('../resources/files/cudi/' . $file->getPath(), $file->getName());
+			
 			$zip->close();
 		}
 	}
@@ -47,8 +50,20 @@ class OrderXmlGenerator
     		->getRepository('Litus\Entity\General\Config');
         
         $xml = new XmlGenerator($tmpFile);
-
+		
 		$attachments = array();
+		$num = 1;
+		foreach($item->getArticle()->getFiles() as $file) {
+			$attachments[] = new XmlObject(
+				'Attachment',
+				array(
+					'AttachmentKey' => 'File' . $num++,
+					'FileName' => $file->getName()
+				),
+				null
+			);
+		}
+		
 		$itemValues = array(
 			new XmlObject(
 				'ItemValue',

@@ -30,7 +30,11 @@ class Article extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
 			->from('Litus\Entity\Cudi\Article', 'a')
-			->where($query->expr()->like($query->expr()->lower('a.title'), ':title'))
+			->where($query->expr()->andX(
+					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
+					$query->expr()->eq('a.removed', 'false')
+				)
+			)
 			->setParameter('title', '%'.strtolower($title).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()
@@ -45,6 +49,7 @@ class Article extends EntityRepository
 		$resultSet = $query->select('a')
 			->from('Litus\Entity\Cudi\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.authors'), ':author'))
+			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('author', '%'.strtolower($author).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()
@@ -59,6 +64,7 @@ class Article extends EntityRepository
 		$resultSet = $query->select('a')
 			->from('Litus\Entity\Cudi\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'))
+			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('publisher', '%'.strtolower($publisher).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()

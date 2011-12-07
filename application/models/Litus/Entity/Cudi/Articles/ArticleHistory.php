@@ -26,4 +26,10 @@ class ArticleHistory
      * @JoinColumn(name="precursor", referencedColumnName="id")
 	 */
 	private $precursor;
+	
+	public function __construct($article, $precursor)
+	{
+		$this->article = $article;
+		$this->precursor = $precursor;
+	}
 }

@@ -17,11 +17,20 @@ class Edit extends \Admin\Form\Article\Add
 
         $this->removeElement('submit');
         
-		$submit = new Submit('submit');
-        $submit->setLabel('Edit')
+        $this->getElement('purchase_price')
+        	->setAttrib('disabled', 'disabled');
+        $this->getElement('sellprice_nomember')
+        	->setAttrib('disabled', 'disabled');
+        $this->getElement('sellprice_member')
+        	->setAttrib('disabled', 'disabled');
+        $this->getElement('barcode')
+        	->setAttrib('disabled', 'disabled');
+        
+		$field = new Submit('submit');
+        $field->setLabel('Edit')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($submit);
+        $this->addElement($field);
     }
     
     public function populate($article)
