@@ -286,4 +286,53 @@ class Add extends \Litus\Form\Admin\Form
 		
 		parent::populate($data);
 	}
+	
+	public function isValid($data)
+	{
+		if (!$data['stock']) {
+			$validatorsStock = array();
+			$requiredStock = array();
+		    
+			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
+				$validatorsStock[$formElement->getName()] = $formElement->getValidators();
+				$requiredStock[$formElement->getName()] = $formElement->isRequired();
+				$formElement->clearValidators();
+				$formElement->setRequired(false);
+			}
+		}
+		
+		if (!$data['internal']) {
+			$validatorsInternal = array();
+			$requiredInternal = array();
+		    
+			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
+				$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
+				$requiredInternal[$formElement->getName()] = $formElement->isRequired();
+				$formElement->clearValidators();
+				$formElement->setRequired(false);
+			}
+		}
+		
+		$isValid = parent::isValid($data);
+		
+		if (!$data['stock']) {
+			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
+				if (array_key_exists ($formElement->getName(), $validatorsStock))
+		 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
+				if (array_key_exists ($formElement->getName(), $requiredStock))
+					$formElement->setRequired($requiredStock[$formElement->getName()]);
+			}
+		}
+		
+		if (!$data['internal']) {
+			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
+				if (array_key_exists ($formElement->getName(), $validatorsInternal))
+		 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
+				if (array_key_exists ($formElement->getName(), $requiredInternal))
+					$formElement->setRequired($requiredInternal[$formElement->getName()]);
+			}
+		}
+		
+		return $isValid;
+	}
 }

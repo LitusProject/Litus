@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 use \Admin\Form\Article\Add;
 use \Admin\Form\Article\Edit;
+use \Admin\Form\Article\NewVersion;
 use \Admin\Form\Article\File as FileForm;
 
 use \Litus\Entity\Cudi\File;
@@ -13,6 +14,8 @@ use \Litus\Entity\Cudi\Articles\Stub;
 use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
 use \Litus\Entity\Cudi\Articles\MetaInfo;
 use \Litus\Entity\Cudi\Articles\StockArticles\External;
+use \Litus\Entity\Cudi\Articles\ArticleHistory;
+
 use \Litus\FlashMessenger\FlashMessage;
 
 use \Zend\Json\Json;
@@ -45,30 +48,6 @@ class ArticleController extends \Litus\Controller\Action
          
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-			
-			if (!$formData['stock']) {
-				$validatorsStock = array();
-				$requiredStock = array();
-                
-				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
-					$validatorsStock[$formElement->getName()] = $formElement->getValidators();
-					$requiredStock[$formElement->getName()] = $formElement->isRequired();
-					$formElement->clearValidators();
-					$formElement->setRequired(false);
-				}
-			}
-			
-			if (!$formData['internal']) {
-				$validatorsInternal = array();
-				$requiredInternal = array();
-                
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
-					$requiredInternal[$formElement->getName()] = $formElement->isRequired();
-					$formElement->clearValidators();
-					$formElement->setRequired(false);
-				}
-			}
 			
 			if ($form->isValid($formData)) {
 				$metaInfo = new MetaInfo(
@@ -144,24 +123,6 @@ class ArticleController extends \Litus\Controller\Action
                 
 				$this->_redirect('manage');
 			}
-			
-			if (!$formData['stock']) {
-				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validatorsStock))
-			 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $requiredStock))
-						$formElement->setRequired($requiredStock[$formElement->getName()]);
-				}
-			}
-			
-			if (!$formData['internal']) {
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validatorsInternal))
-			 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $requiredInternal))
-						$formElement->setRequired($requiredInternal[$formElement->getName()]);
-				}
-			}
         }
     }
     
@@ -193,30 +154,6 @@ class ArticleController extends \Litus\Controller\Action
 
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-			
-			if (!$formData['stock']) {
-				$validatorsStock = array();
-				$requiredStock = array();
-                
-				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
-					$validatorsStock[$formElement->getName()] = $formElement->getValidators();
-					$requiredStock[$formElement->getName()] = $formElement->isRequired();
-					$formElement->clearValidators();
-					$formElement->setRequired(false);
-				}
-			}
-			
-			if (!$formData['internal']) {
-				$validatorsInternal = array();
-				$requiredInternal = array();
-                
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
-					$requiredInternal[$formElement->getName()] = $formElement->isRequired();
-					$formElement->clearValidators();
-					$formElement->setRequired(false);
-				}
-			}
 			
 			if ($form->isValid($formData)) {
 				$article->getMetaInfo()->setAuthors($formData['author'])
@@ -267,24 +204,6 @@ class ArticleController extends \Litus\Controller\Action
                 );
 
                 $this->_redirect('manage');
-			}
-			
-			if (!$formData['stock']) {
-				foreach ($form->getDisplayGroup('stock_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validatorsStock))
-			 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $requiredStock))
-						$formElement->setRequired($requiredStock[$formElement->getName()]);
-				}
-			}
-			
-			if (!$formData['internal']) {
-				foreach ($form->getDisplayGroup('internal_form')->getElements() as $formElement) {
-					if (array_key_exists ($formElement->getName(), $validatorsInternal))
-			 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
-					if (array_key_exists ($formElement->getName(), $requiredInternal))
-						$formElement->setRequired($requiredInternal[$formElement->getName()]);
-				}
 			}
         }
 	}
@@ -386,7 +305,7 @@ class ArticleController extends \Litus\Controller\Action
         		
         		$fileName = '';
         		do{
-        		    $fileName = '/' . uniqid();
+        		    $fileName = '/' . sha1(uniqid());
         		} while (file_exists('../resources/files/cudi/' . $fileName));
         		
         		$upload->addFilter('Rename', '../resources/files/cudi/' . $fileName);
@@ -457,4 +376,112 @@ class ArticleController extends \Litus\Controller\Action
 		
 		readfile('../resources/files/cudi/' . $file->getPath());
 	}
+	
+	public function newversionAction()
+	{
+		$article = $this->getEntityManager()
+            ->getRepository('Litus\Entity\Cudi\Article')
+            ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $article)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		
+		$form = new NewVersion();
+		$form->populate($article);
+
+        $this->view->form = $form;
+        $this->view->article = $article;
+         
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+			
+			if ($form->isValid($formData)) {
+				$metaInfo = new MetaInfo(
+                    $formData['author'],
+                    $formData['publisher'],
+                    $formData['year_published']
+                );
+				
+				$supplier = $this->getEntityManager()
+					->getRepository('Litus\Entity\Cudi\Supplier')
+					->findOneById($formData['supplier']);
+				
+				if ($formData['stock']) {
+					if ($formData['internal']) {
+						$binding = $this->getEntityManager()
+							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+							->findOneById($formData['binding']);
+
+						$frontColor = $this->getEntityManager()
+							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+							->findOneById($formData['front_color']);
+
+		                $newVersion = new Internal(
+		                	$formData['title'],
+	                        $metaInfo,
+	                        $formData['purchaseprice'],
+	                        $formData['sellprice_nomember'],
+	                        $formData['sellprice_member'],
+		 					$formData['barcode'],
+	                        $formData['bookable'],
+	                        $formData['unbookable'],
+	                        $supplier,
+	                        $formData['can_expire'],
+							$formData['nb_black_and_white'],
+	                        $formData['nb_colored'],
+	                        $binding,
+	                        $formData['official'],
+	                        $formData['rectoverso'],
+	                        $frontColor,
+	                        $formData['front_text_colored']
+		                );
+		                
+		                foreach($article->getFiles() as $file) {
+		                	$fileName = '';
+		                	do{
+		                	    $fileName = '/' . sha1(uniqid());
+		                	} while (file_exists('../resources/files/cudi/' . $fileName));
+		                	copy('../resources/files/cudi/' . $file->getPath(), '../resources/files/cudi/' . $fileName);
+		                	$newFile = new File($fileName, $file->getName(), $file->getDescription(), $newVersion);
+		                	$this->getEntityManager()->persist($newFile);
+		                }
+					} else {
+						$newVersion = new External(
+		                	$formData['title'],
+	                        $metaInfo,
+	                        $formData['purchase_price'],
+	                        $formData['sellprice_nomember'],
+	                        $formData['sellprice_member'],
+							$formData['barcode'],
+	                        $formData['bookable'],
+	                        $formData['unbookable'],
+	                        $supplier,
+	                        $formData['can_expire']
+		           		);
+					}
+				} else {
+					$newVersion = new Stub(
+	                	$formData['title'],
+                        $metaInfo
+	           		);
+				}
+				
+				$history = new ArticleHistory($newVersion, $article);
+					
+				$this->getEntityManager()->persist($metaInfo);
+                $this->getEntityManager()->persist($newVersion);
+                $this->getEntityManager()->persist($history);
+
+                $this->broker('flashmessenger')->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The new version of the article was successfully created!'
+                    )
+                );
+                
+				$this->_redirect('manage');
+			}
+        }
+    }
 }

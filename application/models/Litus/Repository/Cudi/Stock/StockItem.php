@@ -5,6 +5,8 @@ namespace Litus\Repository\Cudi\Stock;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 
+use \Zend\Mail\Mail;
+
 /**
  * StockItem
  *
@@ -13,6 +15,20 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class StockItem extends EntityRepository
 {
+	public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+	{
+		if (sizeof($criteria) == 0) {
+			$query = $this->_em->createQueryBuilder();
+			return $query->select('i')
+				->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+				->innerJoin('i.article', 'a', Join::WITH, $query->expr()->eq('a.removed', 'false'))
+				->getQuery()
+				->getResult();
+			
+		}
+		return parent::findBy($criteria, $orderBy, $limit, $offset);
+	}
+	
 	public function findOneByBarcode($barcode)
     {
         $article = $this->getEntityManager()
@@ -44,7 +60,11 @@ class StockItem extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
 			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
-			->innerJoin('i.article', 'a', Join::WITH, $query->expr()->like($query->expr()->lower('a.title'), ':title'))
+			->innerJoin('i.article', 'a', Join::WITH, $query->expr()->andX(
+					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
+					$query->expr()->eq('a.removed', 'false')
+				)
+			)
 			->setParameter('title', '%'.strtolower($title).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()
@@ -58,7 +78,11 @@ class StockItem extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$internal = $query->select('a.id')
 			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
-			->where($query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'))
+			->where($query->expr()->andX(
+					$query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'),
+					$query->expr()->eq('a.removed', 'false')
+				)
+			)
 			->setParameter('barcode', $barcode.'%')
 			->getQuery()
 			->getResult();
@@ -66,7 +90,11 @@ class StockItem extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$external = $query->select('a.id')
 			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
-			->where($query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'))
+			->where($query->expr()->andX(
+					$query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'),
+					$query->expr()->eq('a.removed', 'false')
+				)
+			)
 			->setParameter('barcode', $barcode.'%')
 			->getQuery()
 			->getResult();
@@ -98,6 +126,7 @@ class StockItem extends EntityRepository
 		$internal = $query->select('a.id')
 			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
 			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
+			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('supplier', '%'.strtolower($supplier).'%')
 			->getQuery()
 			->getResult();
@@ -106,6 +135,7 @@ class StockItem extends EntityRepository
 		$external = $query->select('a.id')
 			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
 			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
+			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('supplier', '%'.strtolower($supplier).'%')
 			->getQuery()
 			->getResult();
@@ -189,7 +219,7 @@ class StockItem extends EntityRepository
 			foreach($person['bookings'] as $booking)
 				$bookings .= '* ' . $booking->getArticle()->getTitle() . "\r\n";
 		
-			$mail = new \Zend\Mail\Mail();
+			$mail = new Mail();
 			$mail->setBodyText(str_replace('{{bookings}}', $bookings, $email))
 				->setFrom($mailaddress, $mailname)
 				->addTo($person['person']->getEmail(), $person['person']->getFullName())
