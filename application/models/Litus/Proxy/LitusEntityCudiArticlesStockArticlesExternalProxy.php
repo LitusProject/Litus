@@ -189,10 +189,22 @@ class LitusEntityCudiArticlesStockArticlesExternalProxy extends \Litus\Entity\Cu
         return parent::getStockItem();
     }
 
+    public function setVersionNumber($versionNumber)
+    {
+        $this->__load();
+        return parent::setVersionNumber($versionNumber);
+    }
+
+    public function getVersionNumber()
+    {
+        $this->__load();
+        return parent::getVersionNumber();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'versionNumber', 'purchasePrice', 'sellPrice', 'sellPriceMembers', 'barcode', 'bookable', 'unbookable', 'supplier', 'canExpire');
     }
 
     public function __clone()

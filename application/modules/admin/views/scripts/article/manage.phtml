@@ -46,7 +46,7 @@
 	        <? foreach ($this->paginator as $article): ?>
 
 	            <tr>
-	                <td><?= $article->getTitle(); ?></td>
+	                <td><?= $article->getTitle() . ($article->getVersionNumber() != 1 ? ' (v' . $article->getVersionNumber() . ')' : ''); ?></td>
 	                <td><?= $article->getMetaInfo()->getAuthors(); ?></td>
 	                <td><?= $article->getMetaInfo()->getPublishers(); ?></td>
 	                <td><?= $article->getMetaInfo()->getYearPublished(); ?></td>
@@ -76,7 +76,7 @@
 				$('#stock_search table').find('tr.item').remove();
 				$(data).each(function () {
 					$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
-					row.append('<td>' + this.title + '</td>')
+					row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 						.append('<td>' + this.author + '</td>')
 						.append('<td>' + this.publisher + '</td>')
 						.append('<td>' + this.yearPublished + '</td>')

@@ -48,7 +48,7 @@
 	        <? foreach ($this->stock as $item): ?>
 
 	            <tr>
-	                <td><?= $item->getArticle()->getTitle(); ?></td>
+	                <td><?= $item->getArticle()->getTitle() . ($item->getArticle()->getVersionNumber() != 1 ? ' (v' . $item->getArticle()->getVersionNumber() . ')' : ''); ?></td>
 	                <td><?= $item->getArticle()->getSupplier()->getName(); ?></td>
 	                <td><?= $item->getNumberInStock(); ?></td>
 	                <td><?= $item->getNumberNotDelivered(); ?></td>
@@ -78,7 +78,7 @@
 				$('#stock_search table').find('tr.item').remove();
 				$(data).each(function () {
 					$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
-					row.append('<td>' + this.title + '</td>')
+					row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 						.append('<td>' + this.supplier + '</td>')
 						.append('<td>' + this.numberInStock + '</td>')
 						.append('<td>' + this.numberNotDelivered + '</td>')

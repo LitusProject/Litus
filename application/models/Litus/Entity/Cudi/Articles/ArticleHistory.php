@@ -29,6 +29,7 @@ class ArticleHistory
 	
 	public function __construct($article, $precursor)
 	{
+		$article->setVersionNumber($precursor->getVersionNumber()+1);
 		$this->article = $article;
 		$this->precursor = $precursor;
 	}

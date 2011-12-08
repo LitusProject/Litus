@@ -5,6 +5,13 @@
 </div>
 
 <div id="controller_action">
+	<h1>Article</h1>
+	
+	<p>Title: <b><?= $this->article->getTitle() . ($article->getVersionNumber() != 1 ? ' (v' . $article->getVersionNumber() . ')' : ''); ?></b></p>
+	<p>Author: <b><?= $this->article->getMetaInfo()->getAuthors(); ?></b></p>
+	<p>Publisher: <b><?= $this->article->getMetaInfo()->getPublishers(); ?></b></p>
+	<br />
+	
     <?= $this->form; ?>
 </div>
 

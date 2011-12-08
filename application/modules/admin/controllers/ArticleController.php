@@ -275,6 +275,7 @@ class ArticleController extends \Litus\Controller\Action
 			$item->publisher = $article->getMetaInfo()->getPublishers();
 			$item->yearPublished = $article->getMetaInfo()->getYearPublished();
 			$item->isStock = $article->isStock();
+			$item->versionNumber = $article->getVersionNumber();
 			$result[] = $item;
 		}
 		echo $json->encode($result);
