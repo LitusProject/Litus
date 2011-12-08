@@ -81,6 +81,18 @@ class LitusEntityCudiArticleProxy extends \Litus\Entity\Cudi\Article implements 
         return parent::getStockItem();
     }
 
+    public function setVersionNumber($versionNumber)
+    {
+        $this->__load();
+        return parent::setVersionNumber($versionNumber);
+    }
+
+    public function getVersionNumber()
+    {
+        $this->__load();
+        return parent::getVersionNumber();
+    }
+
     public function isInternal()
     {
         $this->__load();
@@ -96,7 +108,7 @@ class LitusEntityCudiArticleProxy extends \Litus\Entity\Cudi\Article implements 
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem');
+        return array('__isInitialized__', 'id', 'title', 'metaInfo', 'timestamp', 'removed', 'stockItem', 'versionNumber');
     }
 
     public function __clone()

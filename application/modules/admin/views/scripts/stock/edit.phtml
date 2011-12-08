@@ -6,7 +6,7 @@
 
 <div id="controller_action">
 	<h1>General</h1>
-    <p>Article: <b><?= $this->item->getArticle()->getTitle(); ?></b></p>
+    <p>Article: <b><?= $this->item->getArticle()->getTitle() . ($this->item->getArticle()->getVersionNumber() != 1 ? ' (v' . $this->item->getArticle()->getVersionNumber() . ')' : ''); ?></b></p>
     <p>Barcode: <b><?= $this->item->getArticle()->getBarcode(); ?></b></p>
 	<p>Supplier: <b><?= $this->item->getArticle()->getSupplier()->getName(); ?></b></p>
 	<br style="clear:both" />

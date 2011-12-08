@@ -51,6 +51,11 @@ abstract class Article
 	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Stock\StockItem", mappedBy="article")
 	 */
 	private $stockItem;
+	
+	/**
+	 * @Column(name="version_number", type="smallint", nullable=true)
+	 */
+	private $versionNumber = 1;
 
     /**
      * @throws \InvalidArgumentException
@@ -134,6 +139,25 @@ abstract class Article
 	public function getStockItem()
 	{
 		return $this->stockItem;
+	}
+	
+	/**
+	 * @param integer $versionNumber The version number of this article
+	 *
+	 * @return \Litus\Entity\Cudi\Article
+	 */
+	public function setVersionNumber($versionNumber)
+	{
+		$this->versionNumber = $versionNumber;
+		return $this;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getVersionNumber()
+	{
+		return $this->versionNumber;
 	}
 	
 	/**
