@@ -316,7 +316,7 @@ abstract class Person
      */
     public function setAddress($address)
     {
-        if ((null === $address === null))
+        if (null === $address)
             throw new \InvalidArgumentException('Invalid address');
         $this->address = $address;
         
