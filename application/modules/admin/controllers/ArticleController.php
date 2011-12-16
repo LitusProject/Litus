@@ -167,11 +167,7 @@ class ArticleController extends \Litus\Controller\Action
 						->getRepository('Litus\Entity\Cudi\Supplier')
 						->findOneById($formData['supplier']);
 						
-					$article->setPurchasePrice($formData['purchase_price'])
-						->setSellPrice($formData['sellprice_nomember'])
-						->setSellPriceMembers($formData['sellprice_member'])
-						->setBarcode($formData['barcode'])
-						->setIsBookable($formData['bookable'])
+					$article->setIsBookable($formData['bookable'])
 						->setIsUnbookable($formData['unbookable'])
 						->setSupplier($supplier)
 						->setCanExpire($formData['can_expire']);

@@ -296,8 +296,8 @@ class Add extends \Litus\Form\Admin\Form
 			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
 				$validatorsStock[$formElement->getName()] = $formElement->getValidators();
 				$requiredStock[$formElement->getName()] = $formElement->isRequired();
-				$formElement->clearValidators();
-				$formElement->setRequired(false);
+				$formElement->clearValidators()
+					->setRequired(false);
 			}
 		}
 		
@@ -308,8 +308,8 @@ class Add extends \Litus\Form\Admin\Form
 			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
 				$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
 				$requiredInternal[$formElement->getName()] = $formElement->isRequired();
-				$formElement->clearValidators();
-				$formElement->setRequired(false);
+				$formElement->clearValidators()
+					->setRequired(false);
 			}
 		}
 		

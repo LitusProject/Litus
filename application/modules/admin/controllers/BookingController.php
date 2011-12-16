@@ -189,6 +189,7 @@ class BookingController extends \Litus\Controller\Action
 				$item->number = $booking->getNumber();
 				$item->bookDate = $booking->getBookDate()->format('d/m/Y H:i');
 				$item->status = $booking->getStatus();
+				$item->versionNumber = $booking->getArticle()->getVersionNumber();
 				$result[] = $item;
 			}
 			echo $json->encode($result);

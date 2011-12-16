@@ -47,7 +47,7 @@
 	
 	            <tr>
 	                <td><?= $booking->getPerson()->getFullName(); ?></td>
-	                <td><?= $booking->getArticle()->getTitle(); ?></td>
+	                <td><?= $booking->getArticle()->getTitle() . ($booking->getArticle()->getVersionNumber() != 1 ? ' (v' . $booking->getArticle()->getVersionNumber() . ')' : ''); ?></td>
 	                <td><?= $booking->getNumber(); ?></td>
 	                <td><?= $booking->getBookDate()->format('d/m/Y H:i'); ?></td>
 	                <td><?= $booking->getStatus(); ?></td>
@@ -94,7 +94,7 @@
 				$(data).each(function () {
 					$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
 					row.append('<td>' + this.person + '</td>')
-						.append('<td>' + this.article + '</td>')
+						.append('<td>' + this.article + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 						.append('<td>' + this.number + '</td>')
 						.append('<td>' + this.bookDate + '</td>')
 						.append('<td>' + this.status + '</td>')
