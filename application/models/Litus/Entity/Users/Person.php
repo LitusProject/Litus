@@ -316,7 +316,7 @@ abstract class Person
      */
     public function setAddress($address)
     {
-        if (($address === null) || !is_string($address))
+        if ((null === $address) || !is_string($address))
             throw new \InvalidArgumentException('Invalid address');
         $this->address = $address;
         
@@ -339,7 +339,7 @@ abstract class Person
     public function setTelephone($telephone)
     {
         if (($telephone === null) || !filter_var($telephone, FILTER_VALIDATE_INT))
-            throw new \InvalidArgumentException('Invalid address');
+            throw new \InvalidArgumentException('Invalid telephone');
         $this->telephone = $telephone;
         
         return $this;
