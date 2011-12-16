@@ -18,13 +18,21 @@ class Edit extends \Admin\Form\Article\Add
         $this->removeElement('submit');
         
         $this->getElement('purchase_price')
-        	->setAttrib('disabled', 'disabled');
+        	->setAttrib('disabled', 'disabled')
+        	->clearValidators()
+        	->setRequired(false);
         $this->getElement('sellprice_nomember')
-        	->setAttrib('disabled', 'disabled');
+        	->setAttrib('disabled', 'disabled')
+        	->clearValidators()
+        	->setRequired(false);
         $this->getElement('sellprice_member')
-        	->setAttrib('disabled', 'disabled');
+        	->setAttrib('disabled', 'disabled')
+        	->clearValidators()
+        	->setRequired(false);
         $this->getElement('barcode')
-        	->setAttrib('disabled', 'disabled');
+        	->setAttrib('disabled', 'disabled')
+        	->clearValidators()
+        	->setRequired(false);
         
 		$field = new Submit('submit');
         $field->setLabel('Edit')

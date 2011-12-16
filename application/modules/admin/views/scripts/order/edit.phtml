@@ -20,7 +20,7 @@
 		
 		<? foreach($this->order->getOrderItems() as $item): ?>
 			<tr>
-				<td><?= $item->getArticle()->getTitle(); ?></td>
+				<td><?= $item->getArticle()->getTitle() . ($item->getArticle()->getVersionNumber() != 1 ? ' (v' . $item->getArticle()->getVersionNumber() . ')' : ''); ?></td>
 				<td><?= $item->getNumber(); ?></td>
 				<td>
 					<? if (!$this->order->isPlaced()): ?>

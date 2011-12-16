@@ -71,6 +71,17 @@ class OrderItem
 	}
 	
 	/**
+	 * @param \Litus\Entity\Cudi\Article $article The new article of this order
+	 * 
+	 * @return \Litus\Entity\Cudi\Stock\OrderItem
+	 */
+	public function setArticle($article)
+	{
+		$this->article = $article;
+		return $this;
+	}
+	
+	/**
 	 * @return integer
 	 */
 	public function getNumber()
