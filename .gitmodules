@@ -10,8 +10,8 @@
 [submodule "vendor/DoctrineMongoODMModule"]
 	path = vendor/DoctrineMongoODMModule
 	url = git://github.com/doctrine/DoctrineMongoODMModule.git
-[submodule "vendor/AsseticModule"]
-	path = vendor/AsseticModule
+[submodule "vendor/AsseticBundle"]
+	path = vendor/AsseticBundle
 	url = git://github.com/widmogrod/zf2-assetic-module.git
 [submodule "vendor/TwitterBootstrapModule"]
 	path = vendor/TwitterBootstrapModule
