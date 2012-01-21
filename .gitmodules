@@ -1,9 +1,12 @@
-[submodule "library/doctrine2"]
-	path = library/doctrine2
-	url = https://github.com/doctrine/doctrine2.git
-[submodule "library/zf2"]
-	path = library/zf2
-	url = https://github.com/zendframework/zf2.git
-[submodule "public/_bootstrap"]
-	path = public/_bootstrap
-	url = git://github.com/twitter/bootstrap.git
+[submodule "vendor/ZendFramework"]
+	path = vendor/ZendFramework
+	url = git://github.com/zendframework/zf2.git
+[submodule "vendor/DoctrineModule"]
+	path = vendor/DoctrineModule
+	url = git://github.com/doctrine/DoctrineModule.git
+[submodule "vendor/DoctrineORMModule"]
+	path = vendor/DoctrineORMModule
+	url = git://github.com/doctrine/DoctrineORMModule.git
+[submodule "vendor/DoctrineMongoODMModule"]
+	path = vendor/DoctrineMongoODMModule
+	url = git://github.com/doctrine/DoctrineMongoODMModule.git
