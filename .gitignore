@@ -1,5 +1,10 @@
-# We don't want to version the folders some IDE's create.
+# We don't want to version the folders some IDE's create
 .idea
 .project
-cache
-resources/pdf/
+*.esproj
+
+# Excluding all nasty .DS_Store files
+.DS_Store
+
+# Generated data doesn't have to be versioned
+data/
