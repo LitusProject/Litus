@@ -1,0 +1,37 @@
+{% if 0 != pageCount %}
+    <table class="pagination {% if fullWidth %} full_width {% endif %}">
+        <tr>
+            <td>
+                {% if previous is not sameas(null) %}
+                    <a href="{{ url(null, {'page': first} }}">&larr; First</a>
+                {% else %}
+                    {% if 1 != pageCount and 1 != current %}
+                        &larr; First
+					{% endif %}
+                {% endif %}
+
+				{% if previous is not sameas(null) %}
+                    <a href="{{ url(null, {'page': previous} }}">&laquo; Previous</a>
+                {% endif %}
+            </td>
+
+            <td>
+                {{ current }}/{{ pageCount }}
+            </td>
+
+            <td>
+                {% if next is not sameas(null) %}
+                    <a href="{{ url(null, {'page': next} }}">Next &raquo;</a>
+                {% endif %}
+
+                {% if next is not sameas(null) %}
+                    <a href="{{ url(null, {'page': last} }}">Last &rarr;</a>
+                {% else %}
+                    {% if 1 != pageCount and current != pageCount %}
+                        Last &rarr;
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+{% endif %}

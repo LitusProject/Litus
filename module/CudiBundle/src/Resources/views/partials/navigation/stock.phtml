@@ -1,0 +1,17 @@
+<header id="controller_header">
+    <div class="title"><span class="stock">Stock</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            <? if ($this->hasAccess('admin', 'order', 'index')): ?>
+                <li><a <? if('orders' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'index', 'controller' => 'order')); ?>">Orders</a></li>
+            <? endif; ?>
+			<? if ($this->hasAccess('admin', 'delivery', 'index')): ?>
+                <li><a <? if('deliveries' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'index', 'controller' => 'delivery')); ?>">Deliveries</a></li>
+            <? endif; ?>
+            <? if ($this->hasAccess('admin', 'stock', 'overview')): ?>
+                <li><a <? if('overview' == $this->vars('currentAction')) echo 'class="active"'; ?> href="<?= $this->url(array('action' => 'overview', 'controller' => 'stock')); ?>">Overview</a></li>
+            <? endif; ?>
+        </ul>
+    </nav>
+</header>
