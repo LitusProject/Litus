@@ -12,11 +12,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace Litus\Authentication\Service\Exception;
+namespace CommonBundle\Component\Authentication\Service\Exception;
 
 /**
  * Custom InvalidArgumentException so that we can quickly see where it was
- * thrown
+ * thrown.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

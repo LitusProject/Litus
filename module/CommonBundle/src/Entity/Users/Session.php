@@ -1,16 +1,34 @@
 <?php
-
-namespace Litus\Entity\Users;
-
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Zend\Registry;
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\Session")
+ * We store all sessions in the database, so that we have a tidbit more information and
+ * the authentication process can be made slightly more secure.
+ * 
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Session")
  * @Table(name="users.sessions")
  */
 class Session
 {
+	/**
+	 * @var \Doctrine\EntityManager The EntityManager instance
+	 */
+	private $_entityManager = null;
+	
     /**
      * @var string The session ID
      *
@@ -34,9 +52,9 @@ class Session
     private $expirationTime = null;
 
     /**
-     * @var \Litus\Entity\Users\Person The person associated with this session
+     * @var \CommonBundle\Entity\Users\Person The person associated with this session
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person", fetch="EAGER")
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", fetch="EAGER")
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -63,13 +81,16 @@ class Session
     private $active = true;
 
     /**
+     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
      * @param int $sessionExpire The duration of the session
-     * @param \Litus\Entity\Users\Person $person The person associated with this session
+     * @param \CommonBundle\Entity\Users\Person $person The person associated with this session
      * @param string $userAgent The user agent used when the session was started
      * @param $ip The IP address used when the session was started
      */
-    public function __construct($sessionExpire, Person $person, $userAgent, $ip)
+    public function __construct(EntityManager $entityManager, $sessionExpire, Person $person, $userAgent, $ip)
     {
+    	$this->_entityManager = $entityManager;
+    
         $this->id = md5(uniqid(rand(), true));
 
         $this->startTime = new \Datetime();
@@ -107,7 +128,7 @@ class Session
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function getPerson()
     {
@@ -178,8 +199,8 @@ class Session
                 $ip
             );
 
-            $entityManager = Registry::get(DoctrineResource::REGISTRY_KEY);
-            $entityManager->persist($newSession);
+            $this->_entityManager->persist($newSession);
+            $this->_entityManager->flush();
 
             return $newSession->getId();
         }

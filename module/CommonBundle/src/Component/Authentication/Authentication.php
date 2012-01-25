@@ -13,13 +13,13 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Component\Authentication\Adapter;
+namespace CommonBundle\Component\Authentication;
 
 use Zend\Authentication\Adapter,
 	Zend\Authentication\AuthenticationService;
 
 /**
- * Implementing our own authentication mechanism
+ * Implementing our own authentication mechanism.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

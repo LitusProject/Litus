@@ -1,14 +1,28 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users;
 
-namespace Litus\Entity\Users;
-
-use \Doctrine\Common\Collections\ArrayCollection;
-
-use \Litus\Entity\Acl\Role;
-use \Litus\Entity\Users\Credential;
+use CommonBundle\Entity\Acl\Role,
+ 	CommonBundle\Entity\Users\Credential,
+	Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\Person")
+ * This is the entity for a person.
+ *
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Person")
  * @Table(
  *      name="users.people",
  *      uniqueConstraints={@UniqueConstraint(name="person_unique_username", columns={"username"})}
@@ -16,8 +30,8 @@ use \Litus\Entity\Users\Credential;
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
- *      "company"="Litus\Entity\Users\People\Company",
- *      "academic"="Litus\Entity\Users\People\Academic"}
+ *      "company"="CommonBundle\Entity\Users\People\Company",
+ *      "academic"="CommonBundle\Entity\Users\People\Academic"}
  * )
  */
 abstract class Person
@@ -39,9 +53,9 @@ abstract class Person
     private $username;
 
     /**
-     * @var \Litus\Entity\Users\Credential The person's credential
+     * @var \CommonBundle\Entity\Users\Credential The person's credential
      *
-     * @OneToOne(targetEntity="Litus\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
+     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
      * @JoinColumn(name="credential", referencedColumnName="id")
      */
     private $credential;
@@ -49,7 +63,7 @@ abstract class Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
+     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(name="users.people_roles",
      *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
@@ -108,14 +122,13 @@ abstract class Person
 
     /**
      * @param string $username The user's username
-     * @param \Litus\Entity\Users\Credential $credential The user's credential
+     * @param \CommonBundle\Entity\Users\Credential $credential The user's credential
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
      * @param string $email  The user's e-mail address
      * @param $sex string The users sex ('m' or 'f')
-     * @return \Litus\Entity\Users\Person
-     * @throws \InvalidArgumentException
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
     {
@@ -140,14 +153,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $username
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setUsername($username)
     {
         if (($username === null) || !is_string($username))
             throw new \InvalidArgumentException('Invalid username');
+            
         $this->username = $username;
 
         return $this;
@@ -162,14 +176,15 @@ abstract class Person
     }
 
     /**
+     * @param \CommonBundle\Entity\Users\Credential $credential
+     * @return \CommonBundle\Entity\Users\Person
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Users\Credential $credential
-     * @return \Litus\Entity\Users\Person
      */
     public function setCredential(Credential $credential)
     {
         if ($credential === null)
             throw new \InvalidArgumentException('Credential cannot be null');
+            
         $this->credential = $credential;
 
         return $this;
@@ -206,7 +221,7 @@ abstract class Person
      * Add the specified roles to the user.
      *
      * @param array $roles An array containing the roles that should be added
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function addRoles(array $roles)
     {
@@ -218,7 +233,7 @@ abstract class Person
      * Removes all the old rules and adds the given roles.
      *
      * @param array $roles An array containing the roles that should be added
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function updateRoles(array $roles)
     {
@@ -236,14 +251,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $firstName
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setFirstName($firstName)
     {
         if (($firstName === null) || !is_string($firstName))
             throw new \InvalidArgumentException('Invalid first name');
+            
         $this->firstName = $firstName;
 
         return $this;
@@ -258,14 +274,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $lastName
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setLastName($lastName)
     {
         if (($lastName === null) || !is_string($lastName))
             throw new \InvalidArgumentException('Invalid last name');
+            
         $this->lastName = $lastName;
         
         return $this;
@@ -288,14 +305,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $email
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setEmail($email)
     {
         if (($email === null) || !filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new \InvalidArgumentException('Invalid e-mail');
+            
         $this->email = $email;
 
         return $this;
@@ -310,14 +328,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $address
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setAddress($address)
     {
         if ((null === $address) || !is_string($address))
             throw new \InvalidArgumentException('Invalid address');
+            
         $this->address = $address;
         
         return $this;
@@ -332,14 +351,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param string $telephone
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setTelephone($telephone)
     {
         if (($telephone === null) || !filter_var($telephone, FILTER_VALIDATE_INT))
             throw new \InvalidArgumentException('Invalid telephone');
+            
         $this->telephone = $telephone;
         
         return $this;
@@ -354,14 +374,15 @@ abstract class Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param $sex string The person's sex
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
+     * @throws \InvalidArgumentException
      */
     public function setSex($sex)
     {
         if(($sex !== 'm') && ($sex !== 'f'))
-            throw new \InvalidArgumentException('Invalid sex: ' . $sex);
+            throw new \InvalidArgumentException('Invalid sex');
+            
         $this->sex = $sex;
 
         return $this;
@@ -384,7 +405,7 @@ abstract class Person
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function disableLogin()
     {

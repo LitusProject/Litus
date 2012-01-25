@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Users;
+namespace CommonBundle\Repository\Users;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -1,18 +1,12 @@
 [submodule "vendor/ZendFramework"]
 	path = vendor/ZendFramework
 	url = git://github.com/zendframework/zf2.git
-[submodule "vendor/DoctrineModule"]
-	path = vendor/DoctrineModule
-	url = git://github.com/doctrine/DoctrineModule.git
-[submodule "vendor/DoctrineORMModule"]
-	path = vendor/DoctrineORMModule
-	url = git://github.com/doctrine/DoctrineORMModule.git
-[submodule "vendor/DoctrineMongoODMModule"]
-	path = vendor/DoctrineMongoODMModule
-	url = git://github.com/doctrine/DoctrineMongoODMModule.git
 [submodule "vendor/ZfTwig"]
 	path = vendor/ZfTwig
 	url = git://github.com/mtymek/ZfTwig.git
 [submodule "vendor/AsseticBundle"]
 	path = vendor/AsseticBundle
-	url = git://github.com/mtymek/zf2-assetic-module.git
+	url = git://github.com/Pmaene/zf2-assetic-module.git
+[submodule "vendor/MistDoctrine"]
+	path = vendor/MistDoctrine
+	url = git://github.com/Pmaene/MistDoctrine.git

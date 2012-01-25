@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Authentication;
 
 /**
- * Interface specifying an action that should be taken after authentication
+ * Interface specifying an action that should be taken after authentication.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Controller;
 
 /**
- * Ensuring database access for all our controllers
+ * Ensuring database access for all our controllers.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

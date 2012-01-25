@@ -1,13 +1,14 @@
 <?php
 
-namespace Litus\Util;
+namespace CommonBundle\Component\Util;
 
 /**
+ * Utility class containing methods used for common actions on files
+ *
  * @author Bram Gotink
  */
 class File
 {
-
     /**
      * Returns the real filename of the given file.
      *
@@ -21,8 +22,8 @@ class File
         if ($filename === null)
             return null;
 
+		// Skip the replace, saves time
         if (DIRECTORY_SEPARATOR === '/')
-            // skip the replace, saves time
             return $filename;
 
         return str_replace('/', DIRECTORY_SEPARATOR, $filename);

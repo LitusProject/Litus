@@ -1,33 +1,45 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Component\Util;
 
-namespace Litus\Util;
-
-use \DateTime;
-use \DateInterval;
+use DateTime,
+	DateInterval;
 
 /**
- * Utility class containing methods used to retrieve the academic year or promotion year for a given DateTime object.
+ * Utility class containing methods used to retrieve the academic year 
+ * or promotion year for a given DateTime object.
  *
- * @author Bram Gotink
+ * Note:
+ * DateTime::modify(...) modifies the object, and returns the modified version.
+ * To ensure that the given variable does not change, it should always be cloned.
+ * DateTime does not implement a clone() method, but the following is the same:
+ *
+ * 	$clone = new DateTime($date->format(DateTime::ISO8601))
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class AcademicYear
 {
     /**
-     * Note:
-     * DateTime::modify(...) modifies the object, and returns the modified version.
-     * To ensure that the given variable does not change, it should always be cloned.
-     * DateTime does not implement a clone() method, but the following is the same:
-     * $clone = new DateTime($date->format(DateTime::ISO8601))
-     */
-
-
-    /**
-     * Returns the Academic year in yyyy-zzzz notation (i.e. 2009-2010, 2011-2012) for the given date.
-     * If no date is given, the current date is used.
+     * Returns the Academic year in yyyy-zzzz notation (i.e. 2009-2010, 2011-2012)
+     * for the given date. If no date is given, the current date is used.
      *
      * @static
-     * @param \DateTime|null $date if null, the current date is used
-     * @return string the academic year in yyyy-zzzz notation
+     * @param \DateTime $date If null, the current date is used
+     * @return string The academic year in yyyy-zzzz notation
      */
     public static function getAcademicYear(DateTime $date = null)
     {
@@ -52,8 +64,8 @@ class AcademicYear
      * If no date is given, the current date is used.
      *
      * @static
-     * @param \DateTime|null $date if null, the current date is used
-     * @return string the academic year in yyzz format.
+     * @param \DateTime $date If null, the current date is used
+     * @return string The academic year in yyzz format
      */
     public static function getShortAcademicYear(DateTime $date = null)
     {
@@ -83,30 +95,41 @@ class AcademicYear
      */
     public static function getStartOfAcademicYear(DateTime $date = null, $delta = 0)
     {
-        if ($date === null)
+        if ($date === null) {
             $date = new DateTime('now');
-        else
-            $date = new DateTime($date->format(DateTime::ISO8601));
+        } else {
+            $date = new DateTime(
+            	$date->format(DateTime::ISO8601)
+            );
+        }
+            
         if (($delta === null) || !is_numeric($delta))
             $delta = 0;
 
-        $christmas = new DateTime(($date->format('y')) . '-12-25');
+        $christmas = new DateTime(
+        	($date->format('y')) . '-12-25'
+        );
 
         $weekDay = $christmas->format('N');
-        if ($weekDay > 5) { // => saturday/sunday
+        
+        // Saturday or Sunday
+        if ($weekDay > 5) {
             $christmas->modify('-' . ($weekDay - 1) . ' days');
             $christmas->modify('+1 week');
         } else {
             $christmas->modify('-' . ($weekDay - 1) . ' days');
         }
 
-        // 13 * 7 days = 13 weeks = length of one semester
-        $dateInterval = new DateInterval('P' . (13 * 7 + $delta) . 'D');
+        // One semester is 13 weeks long
+        $dateInterval = new DateInterval(
+        	'P' . (13 * 7 + $delta) . 'D'
+        );
+        
         return $christmas->sub($dateInterval);
     }
 
     /**
-     * Returns the promotion year fo the given date. This is the last year in the academic year.
+     * Returns the promotion year for the given date. This is the last year in the academic year.
      *
      * @static
      * @param \DateTime|null $date if null, the current date is used.
@@ -114,12 +137,16 @@ class AcademicYear
      */
     public static function getGraduationYear(DateTime $date = null)
     {
-        if ($date === null)
+        if ($date === null) {
             $date = new DateTime('now');
-        else
-            $date = new DateTime($date->format(DateTime::ISO8601));
+        } else {
+            $date = new DateTime(
+            	$date->format(DateTime::ISO8601)
+            );
+        }
 
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startAcademicYear = self::getStartOfAcademicYear($date);
+        
         if ($date < $startAcademicYear)
             return $date->format('Y');
         else

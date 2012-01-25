@@ -1,26 +1,37 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users;
 
-namespace Litus\Entity\Users;
-
-use \Litus\Entity\Users\Person;
-use \Litus\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear,
+	CommonBundle\Entity\Users\People\Academic;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\UniversityStatus")
+ * A classification of a user based on his status at our Alma Mater.
+ * 
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\UniversityStatus")
  * @Table(name="users.university_statuses")
  */
 class UniversityStatus
 {
     /**
-     * All the possible status values allowed.
-     *
-     * @var array
+     * @static
+     * @var array All the possible status values allowed
      */
-    private static $POSSIBLE_STATUSES = array(
-        'professor',
-        'student',
-        'alumnus',
-        'external_student'
+    private static $_possibleStatuses = array(
+        'professor', 'student', 'alumnus', 'external_student'
     );
 
     /**
@@ -35,46 +46,39 @@ class UniversityStatus
     private $id;
 
     /**
-     * The Person this UniversityStatus belongs to.
-     *
-     * @var Person
+     * @var \CommonBundle\Entity\Users\People\Academic The Person this university status belongs to
      *
      * @Column(name="person")
      * @ManyToOne(
-     *      targetEntity="Litus\Entity\Users\Academic", inversedBy="universityStatuses"
+     *      targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="universityStatuses"
      * )
      */
     private $person;
 
     /**
-     * The actual status value.
-     *
-     * @var string
+     * @var string The actual status value
      *
      * @Column(type="string")
      */
     private $status;
 
     /**
-     * The academic year this status is/was valid in. The format is yyzz (i.e. 0910, 1112).
-     *
-     * @var string
+     * @var string The academic year this status is/was valid in; the format is yyzz (i.e. 0910, 1112)
      *
      * @Column(type="string", length=4)
      */
     private $year;
 
     /**
-     * Constructing a new status.
-     *
-     * @throws \InvalidArgumentException
-     * @param Person $person The person that should be given the status
+     * @param \CommonBundle\Entity\Users\People\Academic $person The person that should be given the status
      * @param string $status The status that should be given to the person
+     * @throws \InvalidArgumentException
      */
-    public function __construct(Person $person, $status)
+    public function __construct(Academic $person, $status)
     {
         if (!UniversityStatus::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
+            
         $this->person = $person;
         
         $this->setStatus($status);
@@ -82,9 +86,7 @@ class UniversityStatus
     }
 
     /**
-     * Returns the ID of this UniversityStatus.
-     *
-     * @return int the ID
+     * @return int
      */
     public function getId()
     {
@@ -92,9 +94,7 @@ class UniversityStatus
     }
 
     /**
-     * Returns the Person this UniversityStatus belongs to..
-     *
-     * @return Person the person this UniversityStatus belongs to.
+     * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function getPerson()
     {
@@ -105,17 +105,15 @@ class UniversityStatus
      * Returns whether the given user can have a UniversityStatus.
      *
      * @static
-     * @param Person $person the user to check
+     * @param \CommonBundle\Entity\Users\People\Academic $person the user to check
      * @return bool
      */
-    public static function isValidPerson(Person $person)
+    public static function isValidPerson(Academic $person)
     {
         return ($person != null) && $person->canHaveUniversityStatus();
     }
 
     /**
-     * Returns the actual value.
-     *
      * @return string
      */
     public function getStatus()
@@ -124,34 +122,30 @@ class UniversityStatus
     }
 
     /**
-     * Sets the status to the given value if valid.
-     *
-     * @see isValidStatus($status)
      * @param $status string the status to set
-     * @return void doesn't return anything
+     * @return \CommonBundle\Entity\Users\UniversityStatus;
      */
     public function setStatus($status)
     {
         if (self::isValidStatus($status))
             $this->status = $status;
+            
+        return $this;
     }
 
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string a status
+     * @param $status string A status
      * @return bool
      */
     public static function isValidStatus($status)
     {
-        return (array_search($status, UniversityStatus::$POSSIBLE_STATUSES, true) != false);
+        return in_array($status, self::$_possibleStatuses);
     }
 
     /**
-     * Returns the academic year of this UniversityStatus.
-     *
      * @return string
-     * @see \Litus\Util\AcademicYear::getShortAcademicYear(new DateTime('now'))
      */
     public function getYear()
     {

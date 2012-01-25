@@ -1,10 +1,24 @@
 <?php
-namespace Litus\Entity\Users;
-
-use \InvalidArgumentException;
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\Credential")
+ * This entity stores a user's credentials.
+ *
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Credential")
  * @Table(name="users.credentials")
  */
 class Credential
@@ -42,14 +56,15 @@ class Credential
     /**
      * Constructs a new credential
      *
-     * @throws \InvalidArgumentException
      * @param string $algorithm The algorithm that should be used to create the hash
      * @param string $credential The credential that will be hashed and stored
+     * @throws \InvalidArgumentException
      */
     public function __construct($algorithm, $credential)
     {
         if (!in_array($algorithm, hash_algos()))
-            throw new InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
+            throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
+            
         $this->algorithm = $algorithm;
         $this->salt = md5(uniqid(rand(), true));
         $this->hash = hash_hmac($algorithm, $credential, $this->salt);
@@ -63,6 +78,6 @@ class Credential
      */
     public function validateCredential($credential)
     {
-        return hash_hmac($this->algorithm, $credential, $this->salt) == $this->hash;
+        return $this->hash == hash_hmac($this->algorithm, $credential, $this->salt);
     }
 }
