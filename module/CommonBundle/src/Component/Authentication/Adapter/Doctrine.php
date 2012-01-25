@@ -20,7 +20,7 @@ use CommonBundle\Component\Authentication\Result\Doctrine as Result,
 	Doctrine\ORM\QueryBuilder;
 
 /**
- * An authentication adapter using Doctrine
+ * An authentication adapter using Doctrine.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -72,13 +72,17 @@ class Doctrine implements \Zend\Authentication\Adapter
      * @param string $entityName The name of the class in the model that has the authentication information
      * @param string $identityColumn The name of the column that holds the identity
      * @param bool $caseSensitive Whether or not the username check is case-sensitive
+     * @throws \CommonBundle\Component\Authentication\Adapter\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
     	$this->_entityManager = $entityManager;
-    
+    	
+    	// A bit of a dirty hack to get Zend's DI to play nice
+    	$entityName = str_replace('"', '', $entityName);
+    	
         if ('\\' == substr($entityName, 0, 1)) {
-            throw new \Litus\Authentication\Adapter\Exception\InvalidArgumentException(
+            throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }
@@ -90,7 +94,7 @@ class Doctrine implements \Zend\Authentication\Adapter
 
     /**
      * @param string $identity
-     * @return \Litus\Authentication\Adapter\Doctrine
+     * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
      */
     public function setIdentity($identity)
     {
@@ -100,7 +104,7 @@ class Doctrine implements \Zend\Authentication\Adapter
 
     /**
      * @param string $credential
-     * @return \Litus\Authentication\Adapter\Doctrine
+     * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
      */
     public function setCredential($credential)
     {
@@ -111,7 +115,7 @@ class Doctrine implements \Zend\Authentication\Adapter
     /**
      * Authenticate the user.
      *
-     * @return \Litus\Authentication\Result
+     * @return \CommonBundle\Component\Authentication\Result
      */
     public function authenticate()
     {
@@ -139,17 +143,17 @@ class Doctrine implements \Zend\Authentication\Adapter
     /**
      * Execute the DQL query.
      *
-     * @throws \Zend\Authentication\Adapter\Exception If the adapter cannot execute the query
      * @param \Doctrine\ORM\QueryBuilder $query The DQL query that should be executed
      * @return void
+     * @throws \CommonBundle\Component\Authentication\Adapter\Exception\QueryFailedException The adapter failed to execute the query
      */
     private function _executeQuery(QueryBuilder $query)
     {
         try {
             $resultSet = $query->getQuery()->getResult();
         } catch (\Exception $e) {
-            throw new \Litus\Authentication\Adapter\Exception\QueryFailedException(
-                'The adapter failed to execute the query.', 0, $e
+            throw new Exception\QueryFailedException(
+                'The adapter failed to execute the query', 0, $e
             );
         }
 

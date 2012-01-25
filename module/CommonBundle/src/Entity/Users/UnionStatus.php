@@ -1,20 +1,38 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users;
 
-namespace Litus\Entity\Users;
-
-use \Litus\Entity\Users\Person;
-use \Litus\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear,
+	CommonBundle\Entity\Users\Person;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\UnionStatus")
+ * Specifying the different types of memberships the organization has.
+ * 
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\UnionStatus")
  * @Table(name="users.union_statuses")
  */
 class UnionStatus
 {
     /**
+     * @static
      * @var array All the possible status values allowed
      */
-    private static $POSSIBLE_STATUSES = array('member', 'non member', 'honorary member', 'supportive member', 'praesidium');
+    private static $_possibleStatuses = array(
+    	'member', 'non_member', 'honorary_member', 'supportive_member', 'praesidium'
+    );
 
 	/**
      * @var int The ID of this union status
@@ -26,10 +44,10 @@ class UnionStatus
 	private $id;
 
     /**
-     * @var \Litus\Entity\Users\Person The person this union status describes
+     * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
      * @Column(name="person")
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Academic", inversedBy="unionStatuses")
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Academic", inversedBy="unionStatuses")
      */
     private $person;
 
@@ -48,14 +66,15 @@ class UnionStatus
     private $year;
 
     /**
-     * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Users\Person $person The person this union status describes
+     * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
      * @param string $status The actual status value
+     * @throws \InvalidArgumentException
      */
     public function __construct(Person $person, $status)
     {
         if(!UnionStatus::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
+            
         $this->person = $person;
         
         $this->setStatus($status);
@@ -71,7 +90,7 @@ class UnionStatus
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function getPerson()
     {
@@ -82,7 +101,7 @@ class UnionStatus
      * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param \Litus\Entity\Users\Person $person The person to check
+     * @param \CommonBundle\Entity\Users\Person $person The person to check
      * @return bool
      */
     public static function isValidPerson(Person $person)
@@ -100,11 +119,11 @@ class UnionStatus
 
     /**
      * @param $status
-     * @return Litus\Entity\Users\UnionStatus
+     * @return \CommonBundle\Entity\Users\UnionStatus
      */
     public function setStatus($status)
     {
-        if(self::isValidStatus($status))
+        if (self::isValidStatus($status))
             $this->status = $status;
 
         return $this;
@@ -118,7 +137,7 @@ class UnionStatus
      */
     public static function isValidStatus($status)
     {
-        return in_array($status, UnionStatus::$POSSIBLE_STATUSES);
+        return in_array($status, self::$_possibleStatuses);
     }
 
     /**

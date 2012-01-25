@@ -1,14 +1,31 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Users\People;
 
-namespace Litus\Entity\Users\People;
-
-use \Litus\Entity\Users\Credential;
+use CommonBundle\Entity\Users\Credential;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Users\People\Company")
+ * This is a person that represents a company.
+ *
+ * @TODO Build in different company positions
+ *
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\People\Company")
  * @Table(name="users.people_companies")
  */
-class Company extends \Litus\Entity\Users\Person
+class Company extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @Column(type="string", length=50)
@@ -22,7 +39,7 @@ class Company extends \Litus\Entity\Users\Person
 
     /**
      * @param string $username The company's username
-     * @param \Litus\Entity\Users\Credential $credential The company's credential
+     * @param \CommonBundle\Entity\Users\Credential $credential The company's credential
      * @param array $roles The user's roles
      * @param string $firstName The company's first name
      * @param string $lastName The company's last name
@@ -30,7 +47,7 @@ class Company extends \Litus\Entity\Users\Person
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
      * @param $sex string the sex of the contact person ('m' or 'f')
-     * @return \Litus\Entity\Users\People\Company
+     * @return \CommonBundle\Entity\Users\People\Company
      *
      */
     public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $name, $vatNumber, $sex)
@@ -42,15 +59,17 @@ class Company extends \Litus\Entity\Users\Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param $name
-     * @return Litus\Entity\Users\People\Company
+     * @return \CommonBundle\Entity\Users\People\Company
+     * @throws \InvalidArgumentException
      */
     public function setName($name)
     {
         if (($name === null) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
+            
         $this->name = $name;
+        
         return $this;
     }
 
@@ -63,15 +82,17 @@ class Company extends \Litus\Entity\Users\Person
     }
 
     /**
-     * @throws \InvalidArgumentException
      * @param $vatNumber
-     * @return Litus\Entity\Users\People\Company
+     * @return \CommonBundle\Entity\Users\People\Company
+     * @throws \InvalidArgumentException
      */
     public function setVatNumber($vatNumber)
     {
         if (($vatNumber === null) || !is_string($vatNumber))
             throw new \InvalidArgumentException('Invalid VAT number');
+            
         $this->vatNumber = $vatNumber;
+        
         return $this;
     }
 
@@ -82,6 +103,4 @@ class Company extends \Litus\Entity\Users\Person
     {
         return $this->vatNumber;
     }
-
-
 }

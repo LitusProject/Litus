@@ -12,7 +12,10 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
+if ('development' == getenv('APPLICATION_ENV'))
+	error_reporting(E_ALL);
+	 
 chdir(dirname(__DIR__));
 
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';

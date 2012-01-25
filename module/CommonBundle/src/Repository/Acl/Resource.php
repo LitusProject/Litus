@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Acl;
+namespace CommonBundle\Repository\Acl;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -13,12 +13,12 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace Litus\Controller;
+namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Entity\Users\Person;
 
 /**
- * Interface that specifies controller authentication methods
+ * Interface that specifies controller authentication methods.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

@@ -1,15 +1,27 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Entity\Acl;
 
-namespace Litus\Entity\Acl;
-
-use \Doctrine\Common\Collections\ArrayCollection;
-
-use \Litus\Acl\Acl;
+use CommonBundle\Component\Acl\Acl,
+	Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Represents a group of users and is capable of determining which rights those users have.
  *
- * @Entity(repositoryClass="Litus\Repository\Acl\Role")
+ * @Entity(repositoryClass="CommonBundle\Repository\Acl\Role")
  * @Table(
  *      name="acl.roles",
  *      uniqueConstraints={@UniqueConstraint(name="role_unique_name", columns={"name"})}
@@ -26,9 +38,9 @@ class Role
     private $name;
 
     /**
-     * @var Litus\Entity\Acl\Role $parents The parents of this role
+     * @var \CommonBundle\Entity\Acl\Role $parents The parents of this role
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Role")
+     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
      *      name="acl.roles_inheritance",
      *      joinColumns={@JoinColumn(name="parent", referencedColumnName="name")},
@@ -38,9 +50,9 @@ class Role
     private $parents;
 
     /**
-     * @var \Litus\Entity\Acl\Role $actions The actions that this role can execute
+     * @var \CommonBundle\Entity\Acl\Role $actions The actions that this role can execute
      *
-     * @ManyToMany(targetEntity="Litus\Entity\Acl\Action")
+     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
      * @JoinTable(
      *      name="acl.roles_actions",
      *      joinColumns={@JoinColumn(name="role", referencedColumnName="name")},
@@ -86,9 +98,9 @@ class Role
     }
 
     /**
-     * Add a new action to the allow list of this Role
+     * Add a new action to the allow list of this Role.
      *
-     * @param \Litus\Entity\Acl\Action $action
+     * @param \CommonBundle\Entity\Acl\Action $action
      * @return void
      */
     public function allow(Action $action)

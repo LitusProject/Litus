@@ -15,9 +15,12 @@
 
 namespace CommonBundle\Controller;
 
-use Zend\Mvc\Controller\ActionController;
-
-class ErrorController extends ActionController
+/**
+ * Handles system errors and displays them nicely.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class ErrorController extends \CommonBundle\Component\Controller\ActionController
 {
     const ERROR_NO_ROUTE = 404;
     const ERROR_NO_CONTROLLER = 404;

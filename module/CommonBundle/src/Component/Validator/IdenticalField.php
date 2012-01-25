@@ -1,9 +1,25 @@
 <?php
-
-namespace Litus\Validator;
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Component\Validator;
 
 /**
- * Based upon {@link http://emanaton.com/code/php/validateidenticalfield}
+ * Validates whether the given field's value matches the given one.
+ * Based upon {@link http://emanaton.com/code/php/validateidenticalfield}.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class IdenticalField extends \Zend\Validator\AbstractValidator
 {
@@ -12,9 +28,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
     const INVALID_FIELD_NAME = 'invalidFieldName';
 
     /**
-     * Error messages
-     *
-     * @var array
+     * @var array The error messages
      */
     protected $_messageTemplates = array(
         self::MISSING_FIELD_NAME => 'No field name was provided to check against',
@@ -23,7 +37,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @var array
+     * @var array Mapping for the variables used in the error messages
      */
     protected $_messageVariables = array(
         'fieldName' => '_fieldName',
@@ -57,7 +71,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
 
     /**
      * @param string $fieldName
-     * @return \Litus\Validator\IdenticalField
+     * @return \CommonBundle\Component\Validator\IdenticalField
      */
     public function setFieldName($fieldName)
     {
@@ -67,7 +81,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
 
     /**
      * @param string $fieldTitle
-     * @return \Litus\Validator\IdenticalField
+     * @return \CommonBundle\Component\Validator\IdenticalField
      */
     public function setFieldTitle($fieldTitle = '')
     {

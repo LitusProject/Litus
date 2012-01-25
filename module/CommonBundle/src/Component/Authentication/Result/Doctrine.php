@@ -18,7 +18,7 @@ namespace CommonBundle\Component\Authentication\Result;
 use CommonBundle\Entity\Users\Person;
 
 /**
- * Extending the general authentication result to support Doctrine
+ * Extending the general authentication result to support Doctrine.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

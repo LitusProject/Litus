@@ -12,10 +12,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace Litus\Controller\Request\Exception;
+ 
+namespace CommonBundle\Component\Controller\Request\Exception;
 
 /**
- * Thrown when someone tries to access an AJAX action directly
+ * Thrown when someone tries to access an AJAX action directly.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

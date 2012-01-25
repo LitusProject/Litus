@@ -1,24 +1,52 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CommonBundle\Component\Validator;
 
-namespace Litus\Validator;
-
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
-
+/**
+ * Matches the given username against the database to check whether it is
+ * unique or not.
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Username extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
+	/**
+	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
+	 */
+	private $_entityManager = null;
+
     /**
-     * Error messages
-     *
-     * @var array
+     * @var array The error messages
      */
     protected $_messageTemplates = array(
-        self::NOT_VALID => 'The username does not exist'
+        self::NOT_VALID => 'The username already exists'
     );
 
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+	 * @param mixed $opts The validator's options
+	 */
+	public function __construct(EntityManager $entityManager, $opts = null)
+	{
+		parent::__construct($opts);
+		
+		$thus->_entityManager = $entityManager;
+	}
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -32,8 +60,8 @@ class Username extends \Zend\Validator\AbstractValidator
     {
         $this->_setValue($value);
 
-		$person = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Users\Person')
+		$person = $this->_entityManager
+			->getRepository('CommonBundle\Entity\Users\Person')
 			->findOneByUsername($value);
 		
         if (null !== $person)

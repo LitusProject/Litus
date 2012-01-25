@@ -20,7 +20,30 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'commonbundle_error' => 'CommonBundle\Controller\ErrorController',              
+                'commonbundle_authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
+                'commonbundle_authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
+                'commonbundle_authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
+                'commonbundle_error'                          => 'CommonBundle\Controller\ErrorController',              
+            ),
+            'commonbundle_authentication' => array(
+            	'parameters' => array(
+            		'adapter' => 'commonbundle_authentication_doctrineadapter',
+            		'service' => 'commonbundle_authentication_doctrineservice',
+            	),
+            ),
+            'commonbundle_authentication_doctrineadapter' => array(
+            	'parameters' => array(
+            		'entityManager'  => 'doctrine_em',
+            		'entityName'     => '"CommonBundle\Entity\Users\Person"',
+            		'identityColumn' => 'username',
+            	),
+            ),
+            'commonbundle_authentication_doctrineservice' => array(
+            	'parameters' => array(
+            		'entityManager' => 'doctrine_em',
+            		'entityName'    => '"CommonBundle\Entity\Users\Session"',
+            		'expire'        => '2678400',
+            	),
             ),
             'assetic-configuration' => array(
                 'parameters' => array(

@@ -24,7 +24,7 @@ use CommonBundle\Component\Authentication\Action,
 	Zend\Authentication\Storage\Session as SessionStorage;
 
 /**
- * An authentication service that uses a Doctrine result
+ * An authentication service that uses a Doctrine result.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -73,6 +73,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @param \Zend\Authentication\Storage $storage The persistent storage handler
      * @param string $namespace The namespace the storage handlers will use
      * @param string $cookieSuffix The cookie suffix that is used to store the session cookie
+     * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
         EntityManager $entityManager, $entityName, $expire = -1, Storage $storage = null,
@@ -83,12 +84,15 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 		
 		$this->_entityManager = $entityManager;
 		
+		// A bit of a dirty hack to get Zend's DI to play nice
+		$entityName = str_replace('"', '', $entityName);
+		
         $this->_namespace = $namespace;
         $this->_expire = $expire;
         $this->_cookieSuffix = $cookieSuffix;
 
         if ('\\' == substr($entityName, 0, 1)) {
-            throw new \Litus\Authentication\Service\Exception\InvalidArgumentException(
+            throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }
@@ -110,6 +114,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
+                	$this->_entityManager,
                     $this->_expire,
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
@@ -155,7 +160,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             }
         }
 
-        $entityManager->flush();
+        $this->_entityManager->flush();
 
         return $result;
     }

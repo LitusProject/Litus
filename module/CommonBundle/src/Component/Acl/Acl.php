@@ -20,8 +20,8 @@ use Doctrine\ORM\EntityManager,
 	Zend\Cache\Storage\Adapter as CacheAdapter;
 
 /**
- * Extending Zend's ACL implementation to support our own
- * structure, as well as Doctrine
+ * Extending Zend's ACL implementation to support our own structure,
+ * as well as Doctrine.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -33,7 +33,6 @@ class Acl extends \Zend\Acl\Acl
      */
     private $_entityManager = null;
     
-
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      */
