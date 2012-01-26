@@ -90,12 +90,6 @@ return array(
             		'expire'        => '2678400',
             	),
             ),
-            
-            'doctrine_config' => array(
-            	'entityPaths' => array(
-                	'commonbundle' => __DIR__ . '/../src/Entity',
-            	),
-            ),
         ),
     ),
     'routes' => array(

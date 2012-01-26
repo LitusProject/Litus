@@ -15,7 +15,7 @@
  
 namespace CommonBundle\Entity\General\Bank;
 
-use CommonBundle\Entity\General\Bank\BankDevice;
+use CommonBundle\Entity\General\Bank\BankDevice,
 	CommonBundle\Entity\General\Bank\MoneyUnit;
 
 /**
@@ -48,7 +48,7 @@ class CashRegister
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each bank device
      *
 	 * @OneToMany(
-	 *		targetEntity="\Litus\Entity\General\Bank\BankDevice\Amount", mappedBy="cashRegister", cascade={"remove"}
+	 *		targetEntity="CommonBundle\Entity\General\Bank\BankDevice\Amount", mappedBy="cashRegister", cascade={"remove"}
 	 * )
 	 */
 	private $bankDeviceAmounts;

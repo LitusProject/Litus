@@ -18,7 +18,7 @@ namespace CommonBundle\Entity\General\Bank;
 /**
  * This entity represents an appliance thtat is when someone pays by card.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Public\Bank\BankDevice")
+ * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice")
  * @Table(name="general.bank_bank_device")
  */
 class BankDevice

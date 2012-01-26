@@ -49,13 +49,13 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             if ($this->getAuthentication()->isAuthenticated()) {
                 $result['authenticatedUser'] = $this->getAuthentication()->getPersonObject()->getFirstName();
 
-                if ('auth' == $this->getRequest()->getControllerName() && 'login' == $this->getRequest()->getActionName())
-                    $this->_redirect('index', 'index', 'admin');
+                if ('auth' == $this->getParam('controller') && 'login' == $this->getParam('action'))
+                    $this->redirect()->toRoute('admin_dashboard');
             }
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
-                if ('auth' != $this->getRequest()->getControllerName() && 'login' != $this->getRequest()->getActionName())
-                    $this->_redirect('login', 'auth', 'admin');
+                if ('auth' != $this->getParam('controller') && 'login' != $this->getParam('action'))
+                    $this->redirect()->toRoute('admin_dashboard');
             } else {
                 throw new Exception\HasNoAccessException(
                     'You do not have sufficient permissions to access this resource'
@@ -135,10 +135,13 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * @throws \CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
      */
     protected function initAjax()
-    {    
-        if ('XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()) {
+    {        
+        if (
+        	!$this->getRequest()->headers()->get('X_REQUESTED_WITH')
+        	|| 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
+        ) {
             throw new Request\Exception\NoXmlHttpRequestException(
-            	'This page is accessible only by a asynchroneous request'
+            	'This page is accessible only through an asynchroneous request'
             );
         }
     }
