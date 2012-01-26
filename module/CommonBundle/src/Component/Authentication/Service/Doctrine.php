@@ -110,7 +110,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         $result = null;
         if ('' == $this->getIdentity()) {
             $adapterResult = $adapter->authenticate();
-
+			
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
@@ -159,7 +159,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 $this->clearIdentity();
             }
         }
-
+		
         $this->_entityManager->flush();
 
         return $result;

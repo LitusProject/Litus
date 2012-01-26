@@ -1,1 +1,3 @@
-{{ authResult|json_encode }}
+{% autoescape false %}
+	{{ authResult|json_encode }}
+{% endautoescape %}

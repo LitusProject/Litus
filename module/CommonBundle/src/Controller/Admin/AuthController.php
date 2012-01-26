@@ -50,16 +50,17 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
 		$authResult = array(
 		    'result' => false,
-		    'reason' => ''
+		    'reason' => 'NOT_POST'
 		);
 		
         if ($this->getRequest()->isPost()) {
 	        parse_str(
 	        	$this->getRequest()->post()->get('formData'), $formData
 	        );
-	
-	        $this->getAuthentication()
-	            ->authenticate($formData['username'], $formData['password']);
+	        
+	        $this->getAuthentication()->authenticate(
+	        	$formData['username'], $formData['password']
+	        );
 	        
 	        if ($this->getAuthentication()->isAuthenticated()) {
 	            $authResult['result'] = true;

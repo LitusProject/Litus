@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\BankDevice,
 /**
  * For a given register, this class has the amount 
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Public\Bank\BankDevice\Amount")
+ * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice\Amount")
  * @Table(name="general.bank_bank_device_amount")
  */
 class Amount
@@ -36,17 +36,17 @@ class Amount
 	private $id;
 	
 	/**
-	 * @var \CommonBundle\Entity\Public\CashRegister The cash register this amount is assigned to
+	 * @var \CommonBundle\Entity\General\CashRegister The cash register this amount is assigned to
 	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Public\Bank\CashRegister", inversedBy="bankDeviceAmounts")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="bankDeviceAmounts")
 	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
 	 */
 	private $cashRegister;
 	
 	/**
-	 * @var \CommonBundle\Entity\Public\BankDevice The device that received the payments
+	 * @var \CommonBundle\Entity\General\BankDevice The device that received the payments
 	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Public\Bank\BankDevice")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\BankDevice")
 	 * @JoinColumn(name="device_id", referencedColumnName="id")
 	 */
 	private $device;
@@ -59,8 +59,8 @@ class Amount
 	private $amount;
 	
 	/**
-	 * @param \CommonBundle\Entity\Public\CashRegister The cash register this amount is assigned to
-	 * @param \CommonBundle\Entity\Public\BankDevice The device that received the payments
+	 * @param \CommonBundle\Entity\General\CashRegister The cash register this amount is assigned to
+	 * @param \CommonBundle\Entity\General\BankDevice The device that received the payments
 	 * @param float $amount The amount payed
 	 */
 	public function __construct(CashRegister $cashRegister, BankDevice $bankDevice, $amount)
@@ -79,7 +79,7 @@ class Amount
 	}
 	
 	/**
-	 * @return \CommonBundle\Entity\Public\BankDevice
+	 * @return \CommonBundle\Entity\General\BankDevice
 	 */
 	public function getDevice()
 	{
@@ -96,7 +96,7 @@ class Amount
 	
 	/**
 	 * @param int $amount The amount payed
-	 * @return \CommonBundle\Entity\Public\Bank\BankDevice\Amount	 
+	 * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount	 
 	 */
 	public function setAmount($amount)
 	{

@@ -15,8 +15,8 @@
  
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
-use CommonBundle\Entity\Public\CashRegister,
-	CommonBundle\Entity\Public\MoneyUnit;
+use CommonBundle\Entity\General\CashRegister,
+	CommonBundle\Entity\General\MoneyUnit;
 
 /**
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
@@ -34,7 +34,7 @@ class Amount
 	private $id;
 	
 	/**
-	 * @var \CommonBundle\Entity\Public\CashRegister The cash register this amount is assigned to
+	 * @var \CommonBundle\Entity\General\CashRegister The cash register this amount is assigned to
 	 *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
 	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
@@ -57,8 +57,8 @@ class Amount
 	private $amount;
 	
 	/**
-	 * @param \CommonBundle\Entity\Public\CashRegister The cash register this amount is assigned to
-	 * @param \CommonBundle\Entity\Public\MoneyUnit The unit for which this is the amount
+	 * @param \CommonBundle\Entity\General\CashRegister The cash register this amount is assigned to
+	 * @param \CommonBundle\Entity\General\MoneyUnit The unit for which this is the amount
 	 * @param int $amount The number of units
 	 */
 	public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
@@ -77,7 +77,7 @@ class Amount
 	}
 	
 	/**
-	 * @return \CommonBundle\Entity\Public\MoneyUnit
+	 * @return \CommonBundle\Entity\General\MoneyUnit
 	 */
 	public function getUnit()
 	{
@@ -94,7 +94,7 @@ class Amount
 	
 	/**
 	 * @param int $amount The number of units
-	 * @return \CommonBundle\Entity\Public\Bank\BankDevice\Amount	 
+	 * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount	 
 	 */
 	public function setAmount($number)
 	{

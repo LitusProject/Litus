@@ -15,6 +15,8 @@
  
 namespace CommonBundle\Entity\Users;
 
+use Doctrine\ORM\EntityManager;
+
 /**
  * We store all sessions in the database, so that we have a tidbit more information and
  * the authentication process can be made slightly more secure.
