@@ -114,7 +114,6 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
-                	$this->_entityManager,
                     $this->_expire,
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
@@ -136,6 +135,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
             if (null !== $session) {
                 $sessionValidation = $session->validateSession(
+                	$this->_entityManager,
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR']
                 );

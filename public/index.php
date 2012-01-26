@@ -13,8 +13,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('development' == getenv('APPLICATION_ENV'))
+if ('development' == getenv('APPLICATION_ENV')) {
+	ini_set('display_errors', true);
 	error_reporting(E_ALL);
+}
 	 
 chdir(dirname(__DIR__));
 

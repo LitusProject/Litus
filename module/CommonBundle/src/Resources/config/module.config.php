@@ -20,36 +20,20 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'commonbundle_authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
-                'commonbundle_authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
-                'commonbundle_authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
-                'commonbundle_error'                          => 'CommonBundle\Controller\ErrorController',              
+                'authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
+                'authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
+                'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
+                
+                'admin_auth'                     => 'CommonBundle\Controller\Admin\AuthController',
+                'admin_dashboard'                => 'CommonBundle\Controller\Admin\DashboardController',
             ),
-            'commonbundle_authentication' => array(
-            	'parameters' => array(
-            		'adapter' => 'commonbundle_authentication_doctrineadapter',
-            		'service' => 'commonbundle_authentication_doctrineservice',
-            	),
-            ),
-            'commonbundle_authentication_doctrineadapter' => array(
-            	'parameters' => array(
-            		'entityManager'  => 'doctrine_em',
-            		'entityName'     => '"CommonBundle\Entity\Users\Person"',
-            		'identityColumn' => 'username',
-            	),
-            ),
-            'commonbundle_authentication_doctrineservice' => array(
-            	'parameters' => array(
-            		'entityManager' => 'doctrine_em',
-            		'entityName'    => '"CommonBundle\Entity\Users\Session"',
-            		'expire'        => '2678400',
-            	),
-            ),
-            'assetic-configuration' => array(
+            'assetic_configuration' => array(
                 'parameters' => array(
                     'config' => array(
                         'cacheEnabled' => true,
                         'cachePath'    => __DIR__ . '/../../../../../data/cache',
+                        'webPath'      => __DIR__ . '/../../../../../public/_assetic',
+                        'baseUrl'      => '/_assetic',
                         'controllers'  => $asseticConfig['controllers'],
                         'routes' => $asseticConfig['routes'],
                         'modules' => array(
@@ -67,7 +51,6 @@ return array(
                                         'assets'  => array(
                                             'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
                                             'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js',
-                                            'admin_base/stylesheet/css/*.css',
                                             'admin_base/js/*.js',
                                         ),
                                         'filters' => array(),
@@ -79,22 +62,53 @@ return array(
                     ),
                 ),
             ),
+                       
+            'authentication' => array(
+            	'parameters' => array(
+            		'adapter' => 'authentication_doctrineadapter',
+            		'service' => 'authentication_doctrineservice',
+            	),
+            ),
+            'authentication_doctrineadapter' => array(
+            	'parameters' => array(
+            		'entityManager'  => 'doctrine_em',
+            		'entityName'     => '"CommonBundle\Entity\Users\Person"',
+            		'identityColumn' => 'username',
+            	),
+            ),
+            'authentication_doctrineservice' => array(
+            	'parameters' => array(
+            		'entityManager' => 'doctrine_em',
+            		'entityName'    => '"CommonBundle\Entity\Users\Session"',
+            		'expire'        => '2678400',
+            	),
+            ),
         ),
     ),
     'routes' => array(
-	    'commonbundle_default' => array(
-	        'type'    => 'Zend\Mvc\Router\Http\Segment',
-	        'options' => array(
-	            'route'    => '/[:controller[/:action]]',
-	            'constraints' => array(
-	                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-	            ),
-	            'defaults' => array(
-	                'controller' => 'commonbundle_error',
-	                'action'     => 'error',
-	            ),
-	        ),
-	    ),
+    	'admin_dashboard' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin[/dashboard]',
+    	        'defaults' => array(
+    	            'controller' => 'admin_dashboard',
+    	            'action'     => 'index',
+    	        ),
+    	    ),
+    	),
+    	'admin_auth' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin/auth[/:action]',
+    	        'constraints' => array(
+    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        ),
+    	        'defaults' => array(
+    	            'controller' => 'admin_auth',
+    	            'action'     => 'login',
+    	        ),
+    	    ),
+    	),
+    	
 	),
 );

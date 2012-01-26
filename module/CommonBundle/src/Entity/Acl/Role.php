@@ -113,14 +113,13 @@ class Role
      * Checks whether or not this role has sufficient permissions to access
      * the specified action.
      *
+     * @param \CommonBundle\Component\Acl\Acl $acl The ACL instance
      * @param string $resource The resource the action belongs to
      * @param string $action The action that should be verified
      * @return bool
      */
-    public function isAllowed($resource, $action)
+    public function isAllowed(Acl $acl, $resource, $action)
     {
-        $acl = new Acl();
-
         if (
             $acl->getAcl()->isAllowed(
                 $this->getName(), $resource, $action

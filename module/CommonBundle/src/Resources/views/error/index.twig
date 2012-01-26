@@ -1,9 +1,10 @@
-{{ docType() }}
+{{ doctype() }}
+
+<html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <title>Litus Core</title>
+	
+	{{ headTitle('Litus Core', 'PREPEND') }}
 
 	<style type="text/css">
 		* {
@@ -100,9 +101,9 @@
         			    {% for traceNumber, traceItem in exception.getTrace() %}
         				    <tr>
         				        <td>{{ traceNumber }}</td>
-        				        <td>{{ traceItem['line'] }}</td>
-        				        <td>{{ traceItem['function'] }}</td>
-        				        <td>{{ traceItem['class'] }}</td>
+        				        <td>{{ traceItem.line }}</td>
+        				        <td>{{ traceItem.function }}</td>
+        				        <td>{{ traceItem.class }}</td>
         				    </tr>
         			    {% endfor %}
         			

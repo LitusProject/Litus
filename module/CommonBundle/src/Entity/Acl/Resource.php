@@ -15,7 +15,7 @@
  
 namespace CommonBundle\Entity\Acl;
 
-use Doctrine\EntityManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class that represents a resource that can get accessed and/or manipulated, for example, a forum post, or a contact
@@ -29,11 +29,6 @@ use Doctrine\EntityManager;
  */
 class Resource
 {
-	/**
-	 * @var \Doctrine\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-
     /**
      * @var string $name The name of this resource
      *
@@ -51,14 +46,11 @@ class Resource
     private $parent;
 
     /**
-     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
      * @param string $name The name of the resource
      * @param \CommonBundle\Entity\Acl\Resource $parent The parent of the resource, or null if there is no parent
      */
-    public function __construct(EntityManager $enetityManager, $name, Resource $parent = null)
+    public function __construct($name, Resource $parent = null)
     {
-    	$this->_entityManager = $entityManager;
-    
         $this->name = $name;
         $this->parent = $parent;
     }
@@ -82,11 +74,12 @@ class Resource
 	/**
 	 * Retrieves this resource's children.
 	 *
+	 * @param \Doctrine\EntityManager $entityManager The EntityManager instance
 	 * @return array
 	 */
-    public function getChildren()
+    public function getChildren(EntityManager $entityManager)
     {
-        return $this->_entityManager
+        return $entityManager
                 ->getRepository('CommonBundle\Entity\Acl\Resource')
                 ->findByParent($this->getName());
     }
@@ -94,11 +87,12 @@ class Resource
 	/**
 	 * Retrieves this resource's actions.
 	 *
+     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
 	 * @return array
 	 */
-    public function getActions()
+    public function getActions(EntityManager $entityManager)
     {
-        return $this->_entityManager
+        return $entityManager
                 ->getRepository('CommonBundle\Entity\Acl\Action')
                 ->findByResource($this->getName());
     }
