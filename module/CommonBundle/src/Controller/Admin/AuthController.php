@@ -30,7 +30,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         
         if (!$isAuthenticated)
             $form = new LoginForm();
-            
+		            
         return array(
         	'isAuthenticated' => $isAuthenticated,
         	'form' => $form
@@ -41,7 +41,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->getAuthentication()->forget();
 
-        $this->redirect('admin_auth', array('action' => 'login'));
+        $this->redirect()->toRoute('admin_auth');
     }
 
 	public function authenticateAction()

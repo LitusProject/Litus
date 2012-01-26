@@ -22,7 +22,7 @@ namespace CommonBundle\Component\Controller\Exception;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class HasNoAccessException extends \Zend\Controller\Exception
+class HasNoAccessException extends \RuntimeException
 {
 
 }

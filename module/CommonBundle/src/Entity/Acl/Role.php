@@ -121,7 +121,7 @@ class Role
     public function isAllowed(Acl $acl, $resource, $action)
     {
         if (
-            $acl->getAcl()->isAllowed(
+            $acl->isAllowed(
                 $this->getName(), $resource, $action
             )
         ) {
