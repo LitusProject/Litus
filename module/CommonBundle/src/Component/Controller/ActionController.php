@@ -55,7 +55,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if ('auth' != $this->getParam('controller') && 'login' != $this->getParam('action'))
-                    $this->redirect()->toRoute('admin_dashboard');
+                    $this->redirect()->toRoute('admin_auth');
             } else {
                 throw new Exception\HasNoAccessException(
                     'You do not have sufficient permissions to access this resource'
@@ -233,16 +233,14 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
             return true;
-				
-        $request = $this->getRequest();
 
         if ($this->getAuthentication()->isAuthenticated()) {
             foreach ($this->getAuthentication()->getPersonObject()->getRoles() as $role) {
                 if (
                     $role->isAllowed(
                     	$this->_getAcl(),
-                        $request->getModuleName() . '.' . $request->getControllerName(),
-                        $request->getActionName()
+                        str_replace('_', '.', $this->getParam('controller')),
+                        $this->getParam('action')
                     )
                 ) {
                     return true;
@@ -253,8 +251,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         } else {
             return $this->_getAcl()->isAllowed(
                 'guest',
-                $request->getModuleName() . '.' . $request->getControllerName(),
-                $request->getActionName()
+                str_replace('_', '.', $this->getParam('controller')),
+                $this->getParam('action')
             );
         }
     }
