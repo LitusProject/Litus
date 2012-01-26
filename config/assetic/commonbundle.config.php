@@ -20,8 +20,7 @@ return array(
 		    '@admin_base_js',
 		),
 		'admin_auth' => array(
-		    '@admin_base_css',
-		    '@admin_base_js',
+		    '@admin_auth_js',
 		),
 	),
 	'routes' => array(),

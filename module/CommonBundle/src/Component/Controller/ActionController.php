@@ -43,11 +43,11 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         
         $this->_initViewHelpers();
         
-        $authenticatedUser = 'Guest';
-        $this->getAuthentication()->authenticate();
         if ($this->hasAccess()) {
+        	$result['authenticatedUser'] = 'Guest';
+        
             if ($this->getAuthentication()->isAuthenticated()) {
-                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+                $result['authenticatedUser'] = $this->getAuthentication()->getPersonObject()->getFirstName();
 
                 if ('auth' == $this->getRequest()->getControllerName() && 'login' == $this->getRequest()->getActionName())
                     $this->_redirect('index', 'index', 'admin');
@@ -62,7 +62,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 );
             }
         }
-		$result['authenticatedUser'] = $authenticatedUser;
 		        
         $result['flashMessenger'] = $this->flashMessenger();
         
@@ -136,8 +135,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * @throws \CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
      */
     protected function initAjax()
-    {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
+    {    
+        if ('XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()) {
             throw new Request\Exception\NoXmlHttpRequestException(
             	'This page is accessible only by a asynchroneous request'
             );
@@ -165,7 +164,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     		
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
     		'request', 'CommonBundle\Component\View\Helper\Request'
-    	);	
+    	);
     	$view->plugin('request')->setRequest(
     		$this->getRequest()
     	);
@@ -226,6 +225,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function hasAccess()
     {
+    	$this->getAuthentication()->authenticate();
+    	
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
             return true;

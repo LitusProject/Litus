@@ -40,6 +40,13 @@ return array(
                             'commonbundle' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
+                                	'admin_auth_js' => array(
+                                	    'assets'  => array(
+                                	        'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
+                                	    ),
+                                	    'filters' => array(),
+                                	    'options' => array(),
+                                	),
                                     'admin_base_css' => array(
                                         'assets'  => array(
                                             'admin_base/stylesheet/css/*.css',
@@ -81,6 +88,12 @@ return array(
             		'entityManager' => 'doctrine_em',
             		'entityName'    => '"CommonBundle\Entity\Users\Session"',
             		'expire'        => '2678400',
+            	),
+            ),
+            
+            'doctrine_config' => array(
+            	'entityPaths' => array(
+                	'commonbundle' => __DIR__ . '/../src/Entity',
             	),
             ),
         ),

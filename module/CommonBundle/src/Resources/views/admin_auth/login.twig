@@ -1,21 +1,11 @@
-<?php
-$this->headMeta()
-    ->setCharset('utf-8');
-$this->headTitle('Litus Admin', 'PREPEND')
-    ->setSeparator('-');
+{{ doctype() }}
 
-$this->headScript()
-    ->appendFile($this->baseUrl('/_admin/js/modernizr-1.7.min.js'))
-    ->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
-?>
-
-<?= $this->docType(); ?>
+<html lang="en">
 
 <head>
 
-    <?= $this->headMeta(); ?>
-	<?= $this->headTitle(); ?>
-    <?= $this->headScript(); ?>
+    {{ headMeta() }}
+	{{ headTitle('Litus Admin', 'PREPEND') }}
 
     <style type="text/css">
         * {
@@ -54,7 +44,7 @@ $this->headScript()
             border: 5px solid #d7d4d4;
         }
 
-        #form {
+        .form {
             display: block;
             float: left;
             width: 138px;
@@ -93,38 +83,40 @@ $this->headScript()
             text-align: justify;
         }
     </style>
-
-    <script>
-        window.jQuery || document.write("<script src='<?= $this->baseUrl('/_admin/js/jquery-1.6.4.min.js'); ?>'>\x3C/script>")
-    </script>
-
+    
 </head>
 
 <body>
+
 <div id="layout">
     <header><span>Litus Admin</span>/Login</header>
 
     <section>
-        <? if(!$this->isAuthenticated): ?>
+        {% if not isAuthenticated %} 
             <div id="form_container">
-                <?= $this->form; ?>
-                <div id="icon"></div>
+            	{% autoescape false %}
+                	{{ form }}
+                {% endautoescape %}
+                
+                <span id="icon"></span>
             </div>
 
             <div id="error_container" style="display: none;">
                 <p id="error_message">ERROR_MESSAGE</p>
             </div>
-        <? else: ?>
+        {% else %}
             <div id="error_container">
                 <p id="error_message">You are already logged in.</p>
             </div>
-        <? endif; ?>
+        {% endif %}
     </section>
 </div>
 
+{{ inlineScript() }}
+
 <script type="text/javascript">
     function doLogin() {
-        $.post('<?= $this->url(array('action' => 'authenticate')); ?>?format=json', {formData: $('#login').serialize()}, function(data) {
+        $.post('{{ url('admin_auth', {"action": "authenticate"}) }}', {formData: $('#login').serialize()}, function(data) {
             if (!data.result) {
                 if ('USERNAME_PASSWORD' == data.reason) {
                     $('#error_message').html(
@@ -156,7 +148,6 @@ $this->headScript()
         });
     });
 </script>
-</div>
 
 </body>
 

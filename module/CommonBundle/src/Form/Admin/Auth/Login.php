@@ -15,8 +15,8 @@
  
 namespace CommonBundle\Form\Admin\Auth;
 
-use Zend\Form\Form;,
-	Zend\Form\Element\Password;,
+use Zend\Form\Form,
+	Zend\Form\Element\Password,
 	Zend\Form\Element\Text;
 
 /**
@@ -24,7 +24,7 @@ use Zend\Form\Form;,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Login extends \CommonBundle\Component\Form\Form
+class Login extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
 	 * @param mixed $options The form's options

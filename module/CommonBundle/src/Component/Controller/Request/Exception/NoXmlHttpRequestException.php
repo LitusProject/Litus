@@ -21,7 +21,7 @@ namespace CommonBundle\Component\Controller\Request\Exception;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NoXmlHttpRequestException extends \Zend\Controller\Request\Exception
+class NoXmlHttpRequestException extends \RuntimeException
 {
     
 }
