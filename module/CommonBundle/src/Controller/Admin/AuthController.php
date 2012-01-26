@@ -22,44 +22,54 @@ use CommonBundle\Form\Admin\Auth\Login as LoginForm;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ControllerAction
+class AuthController extends \CommonBundle\Component\Controller\ActionController
 {
     public function loginAction()
     {
-        $this->view->isAuthenticated = $this->getAuthentication()->isAuthenticated();
+        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
         
-        if (!$this->getAuthentication()->isAuthenticated())
-            $this->view->form = new LoginForm();
+        if (!$isAuthenticated)
+            $form = new LoginForm();
+            
+        return array(
+        	'isAuthenticated' => $isAuthenticated,
+        	'form' => $form
+        );
     }
 
     public function logoutAction()
     {
-        $this->broker('viewRenderer')->setNoRender();
         $this->getAuthentication()->forget();
 
-        $this->_redirect('login');
+        $this->redirect('admin_auth', array('action' => 'login'));
     }
 
 	public function authenticateAction()
     {
-        $this->_initAjax();
+        $this->initAjax();
 
-        $postData = $this->getRequest()->getPost();
-        parse_str($postData['formData'], $formData);
-        $authResult = array(
-            'result' => false,
-            'reason' => ''
-        );
-
-        $this->getAuthentication()
-            ->authenticate($formData['username'], $formData['password']);
-        
-        if ($this->getAuthentication()->isAuthenticated()) {
-            $authResult['result'] = true;
-        } else {
-            $authResult['reason'] = 'USERNAME_PASSWORD';
+		$authResult = array(
+		    'result' => false,
+		    'reason' => ''
+		);
+		
+        if ($this->getRequest()->isPost()) {
+	        parse_str(
+	        	$this->getRequest()->post()->get('formData'), $formData
+	        );
+	
+	        $this->getAuthentication()
+	            ->authenticate($formData['username'], $formData['password']);
+	        
+	        if ($this->getAuthentication()->isAuthenticated()) {
+	            $authResult['result'] = true;
+	        } else {
+	            $authResult['reason'] = 'USERNAME_PASSWORD';
+	        }
         }
 
-        return $authResult;
+        return array(
+        	'authResult' => $authResult
+        );
     }
 }

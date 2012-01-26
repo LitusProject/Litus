@@ -30,10 +30,8 @@ return array(
             ),
             'doctrine_config' => array(
                 'parameters' => array(
-                	'proxyDir'    => __DIR__ . '/../../data/cache/proxies',
-                    'entityPaths' => array(
-                        'commonbundle' => __DIR__ . '/../../module/CommonModule/src/Entity',
-                    ),
+                	'autoGenerateProxyClasses' => ('development' == getenv('APPLICATION_ENV')),
+                	'proxyDir'                 => realpath('data/proxies'),
                 ),
             ), 
         ),
