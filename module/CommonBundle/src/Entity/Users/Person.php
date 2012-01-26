@@ -37,7 +37,7 @@ use CommonBundle\Entity\Acl\Role,
 abstract class Person
 {
     /**
-     * @var int The persons unique identifier
+     * @var string The persons unique identifier
      *
      * @Id
      * @GeneratedValue
@@ -145,7 +145,7 @@ abstract class Person
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {

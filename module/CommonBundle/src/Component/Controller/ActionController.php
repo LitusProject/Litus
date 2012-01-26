@@ -29,7 +29,7 @@ use CommonBundle\Component\Acl\Acl,
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class ActionController extends \Zend\Mvc\Controller\ActionController implements AuthenticationAware, DoctrineAware
-{	
+{
 	/**
      * Execute the request
      * 
@@ -40,6 +40,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function execute(MvcEvent $e)
     {
         $result = parent::execute($e);
+        
+        $this->_initViewHelpers();
         
         $authenticatedUser = 'Guest';
         $this->getAuthentication()->authenticate();
@@ -63,7 +65,13 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
 		$result['authenticatedUser'] = $authenticatedUser;
 		        
         $result['flashMessenger'] = $this->flashMessenger();
-  
+        
+  		$result['doctrineUnitOfWork'] = $this->getEntityManager()->getUnitOfWork()->size();
+  		$result['now'] = array(
+  			'iso8601' => date('c', time()),
+  			'display' => date('l, F j Y, H:i', time())
+  		);
+  		
         $e->setResult($result);
         return $result;
     }
@@ -135,7 +143,48 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             );
         }
     }
-
+    
+    /**
+     * Initializes our custom view helpers.
+     *
+     * @return void
+     */
+    private function _initViewHelpers()
+    {
+    	$view = $this->getLocator()->get('view');
+    	
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
+    	);		
+    	$view->plugin('hasAccess')->setAcl(
+    		$this->_getAcl()
+    	);
+    	$view->plugin('hasAccess')->setAuthentication(
+    		$this->getAuthentication()
+    	);
+    		
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'request', 'CommonBundle\Component\View\Helper\Request'
+    	);	
+    	$view->plugin('request')->setRequest(
+    		$this->getRequest()
+    	);
+    }
+    
+    /**
+     * Returns the ACL object
+     *
+     * @TODO Figure out how Zend\Cache works
+     *
+     * @return \CommonBundle\Component\Acl\Acl
+     */
+    private function _getAcl()
+    {
+    	return new Acl(
+    		$this->getEntityManager()
+    	);
+    }
+	
     /**
      * Returns the Authentication instance
      *
@@ -143,7 +192,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getAuthentication()
     {
-        return $this->getLocator()->get('commonbundle_authentication');
+        return $this->getLocator()->get('authentication');
     }
 
     /**
@@ -180,30 +229,14 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
             return true;
-		
-		$cache = StorageFactory::adapterFactory(
-		    'Filesystem',
-		    array(
-		        'ttl' => 0
-		    )
-		);
-		
-		if ($cache->hasItem('acl')) {
-			$acl = $cache->getItem('acl');
-		} else {
-			$acl = new Acl(
-				$this->getEntityManager()
-			);
-			
-			$cache->setItem('acl', $acl);	
-		}
-		
+				
         $request = $this->getRequest();
 
         if ($this->getAuthentication()->isAuthenticated()) {
             foreach ($this->getAuthentication()->getPersonObject()->getRoles() as $role) {
                 if (
                     $role->isAllowed(
+                    	$this->_getAcl(),
                         $request->getModuleName() . '.' . $request->getControllerName(),
                         $request->getActionName()
                     )
@@ -214,7 +247,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
 
             return false;
         } else {
-            return $acl->isAllowed(
+            return $this->_getAcl()->isAllowed(
                 'guest',
                 $request->getModuleName() . '.' . $request->getControllerName(),
                 $request->getActionName()

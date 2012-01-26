@@ -33,8 +33,7 @@ class Login extends \CommonBundle\Component\Form\Form
     {
         parent::__construct($options);
 
-        $this->setAttrib('id', 'login')
-            ->setAction('/admin/auth/dologin');
+        $this->setAttrib('id', 'login');
 
         $field = new Text('username');
         $field->setAttrib('placeholder', 'username')

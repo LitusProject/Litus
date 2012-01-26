@@ -1,34 +1,29 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Admin;
+namespace CommonBundle\Controller\Admin;
 
-use \Admin\Form\Auth\Login as LoginForm;
+use CommonBundle\Form\Admin\Auth\Login as LoginForm;
 
-use \Zend\Json\Json;
-
-class AuthController extends \Litus\Controller\Action
+/**
+ * Authentication controller, providing basic actions like login and logout.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class AuthController extends \CommonBundle\Component\Controller\ControllerAction
 {
-    private $_json = null;
-
-    public function init()
-    {
-        parent::init();
-
-        $this->broker('contextSwitch')
-            ->addActionContext('authenticate', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-        
-        $this->broker('layout')->disableLayout();
-
-        $this->_json = new Json();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('login');
-    }
-
     public function loginAction()
     {
         $this->view->isAuthenticated = $this->getAuthentication()->isAuthenticated();
@@ -65,6 +60,6 @@ class AuthController extends \Litus\Controller\Action
             $authResult['reason'] = 'USERNAME_PASSWORD';
         }
 
-        echo $this->_json->encode($authResult);
+        return $authResult;
     }
 }

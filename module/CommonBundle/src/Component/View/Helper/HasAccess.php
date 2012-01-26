@@ -38,20 +38,24 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
 	
 	/**
 	 * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
-	 * @return void
+	 * @return \CommonBundle\Component\View\Helper\HasAccess
 	 */
 	public function setAcl(Acl $acl)
 	{
 		$this->_acl = $acl;
+		
+		return $this;
 	}
 	
 	/**
-	 * @param \CommonBundle\Component\Authentication\Authentication $acl The authentication object
-	 * @return void
+	 * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
+	 * @return \CommonBundle\Component\View\Helper\HasAccess
 	 */
-	public function setAuthentication(Authentication $acl)
+	public function setAuthentication(Authentication $authentication)
 	{
-		$this->_acl = $acl;
+		$this->_authentication = $authentication;
+		
+		return $this;
 	}
 	
 	/**

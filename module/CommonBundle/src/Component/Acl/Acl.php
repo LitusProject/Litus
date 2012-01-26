@@ -75,7 +75,7 @@ class Acl extends \Zend\Acl\Acl
                 (null === $resource->getParent()) ? null : $resource->getParent()->getName()
             );
             
-            $this->_addResources($resource->getChildren());
+            $this->_addResources($resource->getChildren($this->_entityManager));
         }
     }
 
@@ -105,13 +105,13 @@ class Acl extends \Zend\Acl\Acl
                 $parents[] = $parentRole->getName();
             }
             
-            $this->_acl->addRole(
+            $this->addRole(
                 $role->getName(),
                 (0 == count($role->getParents())) ? null : $parents
             );
 
-            foreach ($role->getActions() as $action) {
-                $this->_acl->allow(
+            foreach ($role->getActions($this->_entityManager) as $action) {
+                $this->allow(
                     $role->getName(),
                     $action->getResource()->getName(),
                     $action->getName());

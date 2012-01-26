@@ -23,12 +23,7 @@ namespace CommonBundle\Entity\Users;
  * @Table(name="users.sessions")
  */
 class Session
-{
-	/**
-	 * @var \Doctrine\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
+{	
     /**
      * @var string The session ID
      *
@@ -81,16 +76,13 @@ class Session
     private $active = true;
 
     /**
-     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
      * @param int $sessionExpire The duration of the session
      * @param \CommonBundle\Entity\Users\Person $person The person associated with this session
      * @param string $userAgent The user agent used when the session was started
      * @param $ip The IP address used when the session was started
      */
-    public function __construct(EntityManager $entityManager, $sessionExpire, Person $person, $userAgent, $ip)
+    public function __construct($sessionExpire, Person $person, $userAgent, $ip)
     {
-    	$this->_entityManager = $entityManager;
-    
         $this->id = md5(uniqid(rand(), true));
 
         $this->startTime = new \Datetime();
@@ -174,11 +166,12 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
+     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
      * @param string $userAgent The user agent that should be checked
      * @param string $ip The IP currently used to connect to the site
      * @return bool|string
      */
-    public function validateSession($userAgent, $ip)
+    public function validateSession(EntityManager $entityManager, $userAgent, $ip)
     {
         if ($userAgent != $this->userAgent) {
             return false;
@@ -199,8 +192,8 @@ class Session
                 $ip
             );
 
-            $this->_entityManager->persist($newSession);
-            $this->_entityManager->flush();
+            $entityManager->persist($newSession);
+            $entityManager->flush();
 
             return $newSession->getId();
         }

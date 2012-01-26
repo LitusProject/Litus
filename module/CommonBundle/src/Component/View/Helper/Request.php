@@ -15,7 +15,7 @@
  
 namespace CommonBundle\Component\View\Helper;
 
-use Zend\Stdlib\RequestDescription as Request;
+use Zend\Stdlib\RequestDescription as RequestDescription;
 
 /**
  * This view helper makes sure we can access the Request object in our view.
@@ -31,11 +31,13 @@ class Request extends \Zend\View\Helper\AbstractHelper
 
 	/**
 	 * @param \Zend\Stdlib\RequestDescription $request The request object
-	 * @return void
+	 * @return \CommonBundle\Component\View\Helper\Request
 	 */
-    public function setRequest(Request $request)
+    public function setRequest(RequestDescription $request)
     {
     	$this->_request = $request;
+    	
+    	return $this;
     }
     
     /**

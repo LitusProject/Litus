@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace ComonBundle\Form\Admin\User;
+namespace CommonBundle\Form\Admin\User;
 
 use \Litus\Form\Admin\Decorator\ButtonDecorator;
 use \Litus\Entity\Users\Person;
