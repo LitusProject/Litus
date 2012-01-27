@@ -120,10 +120,11 @@ return array(
     	'admin_user' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/user[/:action[/:id]]',
+    	        'route'    => '/admin/user[/:action[/:id[/:confirm]]]',
     	        'constraints' => array(
-    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'id'     => '[0-9]*',
+    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'id'      => '[0-9]*',
+    	        	'confirm' => '[01]',
     	        ),
     	        'defaults' => array(
     	            'controller' => 'admin_user',

@@ -40,7 +40,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 	
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm(
+        	$this->getEntityManager()
+        );
 
         $userCreated = false;
         if ($this->getRequest()->isPost()) {
@@ -94,9 +96,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneById($this->getRequest()->getParam('id'));
+            ->findOneById($this->getParam('id'));
 
-        $form = new EditForm($user);
+        $form = new EditForm(
+        	$this->getEntityManager(), $user
+        );
 
         $userEdited = false;
         if ($this->getRequest()->isPost()) {
@@ -147,21 +151,21 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         
         $userDeleted = false;
         if (null !== $this->getParam('confirm')) {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-                $sessions = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\Users\Session')
-                    ->findByPerson($this->getRequest()->getParam('id'));
-                
-                foreach ($sessions as $session) {
-                    $session->deactivate();
-                }
-                $user->disableLogin();
-
-                $userDeleted = true;
-            } else {
-                $this->_redirect('manage');
-            }
-        }
+        	if (1 == $this->getParam('confirm')) {
+	            $sessions = $this->getEntityManager()
+	                ->getRepository('CommonBundle\Entity\Users\Session')
+	                ->findByPerson($this->getRequest()->getParam('id'));
+	            
+	            foreach ($sessions as $session) {
+	                $session->deactivate();
+	            }
+	            $user->disableLogin();
+	
+	            $userDeleted = true;
+	        } else {
+	            $this->redirect()->toRoute('admin_user', array('action' => 'manage'));
+	        }
+	    }
         
         return array(
         	'user' => $user,

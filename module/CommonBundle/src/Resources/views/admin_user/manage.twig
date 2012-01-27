@@ -20,12 +20,12 @@
 	            {% for user in paginator %}
 	                <tr>
 	                    <td>{{ user.getUsername() }}</td>
-	                    <td>{{ user.getFirstName() }} {{ user.getLastName() }}</td>
+	                    <td>{{ user.getFullName() }}</td>
 	                    <td>{{ user.getEmail() }}</td>
 	                    <td>
 	                        <ul>
-	                            <li><a href="{{ url('admin_auth', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
-	                            <li><a href="{{ url('admin_auth', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
+	                            <li><a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+	                            <li><a href="{{ url('admin_user', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
 	                        </ul>
 	                    </td>
 	                </tr>
