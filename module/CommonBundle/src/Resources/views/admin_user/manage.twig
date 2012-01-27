@@ -1,0 +1,38 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_user/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+	    <table class="full_width">
+	        <thead>
+	            <tr>
+	                <th>Username</th>
+	                <th width="150px">Name</th>
+	                <th width="175px">E-mail</th>
+	                <th width="120px">Action</th>
+	            </tr>
+	        </thead>
+	
+	        <tbody>
+	            {% for user in paginator %}
+	                <tr>
+	                    <td>{{ user.getUsername() }}</td>
+	                    <td>{{ user.getFirstName() }} {{ user.getLastName() }}</td>
+	                    <td>{{ user.getEmail() }}</td>
+	                    <td>
+	                        <ul>
+	                            <li><a href="{{ url('admin_auth', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+	                            <li><a href="{{ url('admin_auth', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
+	                        </ul>
+	                    </td>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+	    </table>
+	
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}

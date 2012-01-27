@@ -33,7 +33,7 @@
                         <li><a href="{{ url('admin_dashboard') }}">Dashboard</a></li>
                     {% endif %}
                     {% if hasAccess('admin', 'user', 'index') %}
-                        <li><a href="{{ url('admin_dashboard') }}">Users</a></li>
+                        <li><a href="{{ url('admin_user') }}">Users</a></li>
                     {% endif %}
                     {% if hasAccess('admin', 'role', 'index') %}
                         <li><a href="{{ url('admin_dashboard') }}">Groups</a></li>

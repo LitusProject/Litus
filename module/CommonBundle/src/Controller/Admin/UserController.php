@@ -15,34 +15,36 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use \Admin\Form\User\Add as AddForm;
-use \Admin\Form\User\Edit as EditForm;
-
-use \Litus\Entity\Users\Credential;
-use \Litus\Entity\Users\People\Academic;
-use \Litus\FlashMessenger\FlashMessage;
-
-class UserController extends \Litus\Controller\Action
+use CommonBundle\Entity\Users\Credential,
+	CommonBundle\Entity\Users\People\Academic,
+	CommonBundle\FlashMessenger\FlashMessage,
+	CommonBundle\Form\Admin\User\Add as AddForm,
+	CommonBundle\Form\Admin\User\Edit as EditForm;
+	
+class UserController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('add');
-    }
-
+	public function manageAction()
+	{
+	    $paginator = $this->createEntityPaginator(
+	        'CommonBundle\Entity\Users\People\Academic',
+	        array(
+	            'canLogin' => true
+	        )
+	    );
+	    
+	    return array(
+	    	'paginator' => $paginator,
+	    	'paginationControl' => $this->createPaginationControl($paginator, true)
+	    );
+	}
+	
     public function addAction()
     {
         $form = new AddForm();
 
-        $this->view->form = $form;
-        $this->view->userCreated = false;
-
+        $userCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->get('formData');
 
             if ($form->isValid($formData)) {
                 $roles = array();
@@ -50,7 +52,7 @@ class UserController extends \Litus\Controller\Action
                 $formData['roles'][] = 'guest';
                 foreach ($formData['roles'] as $role) {
                     $roles[] = $this->getEntityManager()
-                        ->getRepository('Litus\Entity\Acl\Role')
+                        ->getRepository('CommonBundle\Entity\Acl\Role')
                         ->findOneByName($role);
                 }
 
@@ -70,7 +72,7 @@ class UserController extends \Litus\Controller\Action
                 );
                 $this->getEntityManager()->persist($newUser);
 
-                $this->_addDirectFlashMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -78,34 +80,27 @@ class UserController extends \Litus\Controller\Action
                     )
                 );
                 
-                $this->view->form = new AddForm();
+                $form = new AddForm();
             }
         }
-    }
-
-    public function manageAction()
-    {
-        $this->view->paginator = $this->_createPaginator(
-            'Litus\Entity\Users\People\Academic',
-            array(
-                'canLogin' => true
-            )
+        
+        return array(
+        	'form' => $form,
+        	'userCreated' => $userCreated
         );
     }
 
     public function editAction()
     {
         $user = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Users\People\Academic')
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneById($this->getRequest()->getParam('id'));
 
         $form = new EditForm($user);
 
-        $this->view->form = $form;
-        $this->view->userEdited = false;
-
+        $userEdited = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->get('formData');
 
             if ($form->isValid($formData)) {
                 $roles = array();
@@ -113,7 +108,7 @@ class UserController extends \Litus\Controller\Action
                 $formData['roles'][] = 'guest';
                 foreach ($formData['roles'] as $role) {
                     $roles[] = $this->getEntityManager()
-                        ->getRepository('Litus\Entity\Acl\Role')
+                        ->getRepository('CommonBundle\Entity\Acl\Role')
                         ->findOneByName($role);
                 }
 
@@ -131,26 +126,27 @@ class UserController extends \Litus\Controller\Action
                     )
                 );
 
-                $this->_redirect('manage');
+                $this->redirect()->toRoute('admin_user', array('action' => 'manage'));
             }
         }
+        
+        return array(
+        	'form' => $form,
+        	'userEdited' => $userEdited
+        );
     }
 
     public function deleteAction()
     {
-        if (null !== $this->getRequest()->getParam('id')) {
+    	$user = null;
+        if (null !== $this->getParam('id')) {
             $user = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Users\People\Academic')
-                ->findOneById($this->getRequest()->getParam('id'));
-        } else {
-            $user = null;
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneById($this->getParam('id'));
         }
-
-        $this->view->userDeleted = false;
-
-        if (null === $this->getRequest()->getParam('confirm')) {
-            $this->view->user = $user;
-        } else {
+        
+        $userDeleted = false;
+        if (null !== $this->getParam('confirm')) {
             if (1 == $this->getRequest()->getParam('confirm')) {
                 $sessions = $this->getEntityManager()
                     ->getRepository('Litus\Entity\Users\Session')
@@ -161,10 +157,15 @@ class UserController extends \Litus\Controller\Action
                 }
                 $user->disableLogin();
 
-                $this->view->userDeleted = true;
+                $userDeleted = true;
             } else {
                 $this->_redirect('manage');
             }
         }
+        
+        return array(
+        	'user' => $user,
+        	'userDeleted' => $userDeleted
+        );
     }
 }

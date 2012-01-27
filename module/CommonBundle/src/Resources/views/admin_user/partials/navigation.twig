@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="users">Users</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin', 'user', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_user', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('admin', 'user', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_user', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
