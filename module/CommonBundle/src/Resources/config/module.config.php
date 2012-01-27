@@ -26,6 +26,7 @@ return array(
                 
                 'admin_auth'                     => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_dashboard'                => 'CommonBundle\Controller\Admin\DashboardController',
+                'admin_user'                     => 'CommonBundle\Controller\Admin\UserController',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -116,6 +117,19 @@ return array(
     	        ),
     	    ),
     	),
-    	
+    	'admin_user' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin/user[/:action[/:id]]',
+    	        'constraints' => array(
+    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'id'     => '[0-9]*',
+    	        ),
+    	        'defaults' => array(
+    	            'controller' => 'admin_user',
+    	            'action'     => 'manage',
+    	        ),
+    	    ),
+    	),
 	),
 );

@@ -23,7 +23,9 @@ namespace CommonBundle\Controller\Admin;
 class DashboardController extends \CommonBundle\Component\Controller\ActionController
 {
     public function indexAction()
-    {
-        return array();
+    {    
+        return array(
+        	'ZFVersion' => \Zend\Version::VERSION
+        );
     }
 }

@@ -62,7 +62,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 );
             }
         }
-		        
+		
         $result['flashMessenger'] = $this->flashMessenger();
         
   		$result['doctrineUnitOfWork'] = $this->getEntityManager()->getUnitOfWork()->size();
@@ -74,6 +74,24 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $e->setResult($result);
         return $result;
     }
+
+	/**
+	 * Create a paginator from a given array.
+	 *
+	 * @param string $entity The name of the entity that should be paginated
+	 * @param array $conditions These conditions will be passed to the Repository call
+	 * @return \Zend\Paginator\Paginator
+	 */
+	protected function createArrayPaginator(array $records)
+	{
+	    $paginator = new Paginator(
+	        new ArrayAdapter($records)
+	    );
+	    $paginator->setItemCountPerPage(25);
+	    $paginator->setCurrentPageNumber($this->getParam('page'));
+	    
+	    return $paginator;
+	}
 
     /**
      * Create a paginator for a given entity.
@@ -88,23 +106,20 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             $this->getEntityManager()->getRepository($entity)->findBy(array(), $orderBy) :
             $this->getEntityManager()->getRepository($entity)->findBy($conditions, $orderBy));
     }
-
-	/**
-     * Create a paginator from a given array.
+    
+    /**
+     * A method to quickly create the array needed to build the pagination control.
      *
-     * @param string $entity The name of the entity that should be paginated
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @return \Zend\Paginator\Paginator
+     * @param \Zend\Paginator\Paginator $paginator The paginator
+     * @param bool $fullWidth Whether the paginationControl should be displayed using the full width or not
+     * @return array
      */
-    protected function createArrayPaginator(array $records)
+    protected function createPaginationControl(Paginator $paginator, $fullWidth = false)
     {
-        $paginator = new Paginator(
-            new ArrayAdapter($records)
-        );
-        $paginator->setItemCountPerPage(25);
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-
-        return $paginator;
+       	return array(
+    		'pages' => $paginator->getPages(),
+    		'fullWidth' => $fullWidth
+    	);
     }
 
     /**
@@ -166,10 +181,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	);
     		
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'request', 'CommonBundle\Component\View\Helper\Request'
+    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
     	);
-    	$view->plugin('request')->setRequest(
-    		$this->getRequest()
+    	$view->plugin('getParam')->setRouteMatch(
+    		$this->getEvent()->getRouteMatch()
     	);
     }
     

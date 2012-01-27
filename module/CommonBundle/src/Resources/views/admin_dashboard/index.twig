@@ -6,8 +6,20 @@
 	</header>
 	
 	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
 	    <p>
-	        {TO DO}
+	        
 	    </p>
 	</div>
+	
+	<aside>
+	    <div class="sidebox">
+	        <div class="title">Versions</div>
+	        <div class="content">
+	            <b>ZendFramework</b><br />
+	            {{ ZFVersion }}
+	        </div>
+	    </div>
+	</aside>
 {% endblock %}
