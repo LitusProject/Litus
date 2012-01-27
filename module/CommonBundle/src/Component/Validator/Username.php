@@ -15,6 +15,8 @@
  
 namespace CommonBundle\Component\Validator;
 
+use Doctrine\ORM\EntityManager;
+
 /**
  * Matches the given username against the database to check whether it is
  * unique or not.
