@@ -8,3 +8,4 @@
 
 # Cached data doesn't have to be versioned
 data/cache
+public/_assetic
