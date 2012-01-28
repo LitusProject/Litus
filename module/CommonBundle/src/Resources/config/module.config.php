@@ -19,16 +19,17 @@ return array(
     'display_exceptions'    => true,
     'di'                    => array(
         'instance' => array(
-            'alias'                          => array(
+            'alias' => array(
                 'authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
                 'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 
                 'admin_auth'                     => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_dashboard'                => 'CommonBundle\Controller\Admin\DashboardController',
+                'admin_role'                     => 'CommonBundle\Controller\Admin\RoleController',
                 'admin_user'                     => 'CommonBundle\Controller\Admin\UserController',
             ),
-            'assetic_configuration'          => array(
+            'assetic_configuration' => array(
                 'parameters' => array(
                     'config' => array(
                         'cacheEnabled' => true,
@@ -71,7 +72,7 @@ return array(
                 ),
             ),
                        
-            'authentication'                 => array(
+            'authentication' => array(
             	'parameters' => array(
             		'adapter' => 'authentication_doctrineadapter',
             		'service' => 'authentication_doctrineservice',
@@ -114,6 +115,21 @@ return array(
     	        'defaults' => array(
     	            'controller' => 'admin_auth',
     	            'action'     => 'login',
+    	        ),
+    	    ),
+    	),
+    	'admin_role' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin/role[/:action[/:id[/:confirm]]]',
+    	        'constraints' => array(
+    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'id'      => '[0-9]*',
+    	        	'confirm' => '[01]',
+    	        ),
+    	        'defaults' => array(
+    	            'controller' => 'admin_role',
+    	            'action'     => 'manage',
     	        ),
     	    ),
     	),

@@ -1,0 +1,22 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_role/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+		{% autoescape false %}
+	    	{{ form }}
+	    {% endautoescape %}
+	</div>
+	
+	<aside>
+	    <div class="sidebox">
+	        <div class="title">Current Access</div>
+	        <div class="content">
+	            
+	        </div>
+	    </div>
+	</aside>
+{% endblock %}
