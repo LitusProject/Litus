@@ -25,4 +25,3 @@ class QueryFailedException extends \RuntimeException implements \Zend\Authentica
 {
     
 }
- 

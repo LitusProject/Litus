@@ -15,10 +15,10 @@
  
 namespace CommonBundle\Form\Admin\User;
 
-use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Entity\Users\Person;
-
-use \Zend\Form\Element\Submit;
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Entity\Users\Person,
+	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Submit;
 
 /**
  * Edit a user's data.
@@ -31,9 +31,9 @@ class Edit extends Add
 	 * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
 	 * @param mixed $opts The validator's options
 	 */
-    public function __construct(Person $person, $options = null)
+    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $opts);
 
         $this->removeElement('username');
         $this->removeElement('credential');

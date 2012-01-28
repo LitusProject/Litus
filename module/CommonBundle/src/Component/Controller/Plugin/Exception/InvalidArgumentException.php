@@ -12,20 +12,16 @@
  *
  * @license http://litus.cc/LICENSE
  */
-
-namespace CommonBundle\Controller\Admin;
+ 
+namespace CommonBundle\Component\Controller\Plugin\Exception;
 
 /**
- * Mainly serves the admin dashboard.
+ * Custom InvalidArgumentException so that we can quickly see where it was
+ * thrown.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class DashboardController extends \CommonBundle\Component\Controller\ActionController
+class InvalidArgumentException extends \InvalidArgumentException
 {
-    public function indexAction()
-    {    
-        return array(
-        	'ZFVersion' => \Zend\Version::VERSION
-        );
-    }
+
 }

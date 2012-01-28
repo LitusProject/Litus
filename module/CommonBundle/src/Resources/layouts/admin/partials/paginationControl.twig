@@ -1,0 +1,37 @@
+{% if 0 != paginationControl.pages.pageCount %}
+    <table class="pagination {% if paginationControl.fullWidth %} full_width {% endif %}">
+        <tr>
+            <td>
+                {% if paginationControl.pages.previous is not sameas(null) %}
+                    <a href="{{ url(null, {'page': paginationControl.pages.first}) }}">&larr; First</a>
+                {% else %}
+                    {% if 1 != paginationControl.pages.pageCount and 1 != paginationControl.pages.current %}
+                        &larr; First
+					{% endif %}
+                {% endif %}
+
+				{% if paginationControl.pages.previous is not sameas(null) %}
+                    <a href="{{ url(null, {'page': paginationControl.pages.previous}) }}">&laquo; Previous</a>
+                {% endif %}
+            </td>
+
+            <td>
+                {{ paginationControl.pages.current }}/{{ paginationControl.pages.pageCount }}
+            </td>
+
+            <td>
+                {% if paginationControl.pages.next is not sameas(null) %}
+                    <a href="{{ url(null, {'page': paginationControl.pages.next}) }}">Next &raquo;</a>
+                {% endif %}
+
+                {% if paginationControl.pages.next is not sameas(null) %}
+                    <a href="{{ url(null, {'page': paginationControl.pages.last}) }}">Last &rarr;</a>
+                {% else %}
+                    {% if 1 != paginationControl.pages.pageCount and paginationControl.pages.current != paginationControl.pages.pageCount %}
+                        Last &rarr;
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+{% endif %}

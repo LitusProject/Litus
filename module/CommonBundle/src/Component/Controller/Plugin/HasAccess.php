@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Component\View\Helper;
+namespace CommonBundle\Component\Controller\Plugin;
 
 use CommonBundle\Component\Acl\Acl,
 	CommonBundle\Component\Authentication\Authentication;
@@ -24,7 +24,7 @@ use CommonBundle\Component\Acl\Acl,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class HasAccess extends \Zend\View\Helper\AbstractHelper
+class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
 {	
 	/**
 	 * @var \CommonBundle\Component\Acl\Acl The ACL object
@@ -63,13 +63,13 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
 	 * @param string $action The module that should be verified	 	 
 	 * @return bool
 	 */
-    public function __invoke($resource, $action)
+    public function resourceAction($resource, $action)
     {
     	if (null === $this->_acl)
-    		throw new Exception\RuntimeException('No ACL object was provided');
+    		throw new \RuntimeException('No ACL object was provided');
     		
     	if (null === $this->_authentication)
-    		throw new Exception\RuntimeException('No authentication object was provided');
+    		throw new \RuntimeException('No authentication object was provided');
     
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
