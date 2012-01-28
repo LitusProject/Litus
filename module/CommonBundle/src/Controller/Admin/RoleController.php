@@ -15,41 +15,30 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use \Admin\Form\Role\Add as AddForm;
+use CommonBunle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Form\Admin\Role\Add as AddForm,
+	CommonBunle\Entity\Acl\Action as AclAction,
+	CommonBunle\Entity\Acl\Role,
+	CommonBunle\Entity\Acl\Resource;
 
-use \Litus\Entity\Acl\Action as AclAction;
-use \Litus\Entity\Acl\Role;
-use \Litus\Entity\Acl\Resource;
-use \Litus\FlashMessenger\FlashMessage;
-
-class RoleController extends \Litus\Controller\Action
+class RoleController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('add');
-    }
-
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm(
+        	$this->getEntityManager()
+        );
 
-        $this->view->form = $form;
-        $this->view->roleCreated = false;
-
+        $roleCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $formData = $this->getRequest()->post()->get('formData');;
 
             if ($form->isValid($formData)) {
                 $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
                         $parents[] = $this->getEntityManager()
-                                ->getRepository('Litus\Entity\Acl\Role')
+                                ->getRepository('CommonBundle\Entity\Acl\Role')
                                 ->findOneByName($parent);
                     }
                 }
@@ -57,7 +46,7 @@ class RoleController extends \Litus\Controller\Action
                 $newRole = new Role($formData['name'], $parents);
                 foreach ($formData['actions'] as $action) {
                     $newRole->allow(
-                        $this->getEntityManager()->getRepository('Litus\Entity\Acl\Action')->findOneById($action)
+                        $this->getEntityManager()->getRepository('CommonBundle\Entity\Acl\Action')->findOneById($action)
                     );
                 }
                 $this->getEntityManager()->persist($newRole);
@@ -73,14 +62,21 @@ class RoleController extends \Litus\Controller\Action
                     )
                 );
                 
-                $this->view->form = new AddForm();
+                $form = new AddForm(
+                	$this->getEntityManager()
+                );
             }
         }
+        
+        return array(
+        	'form' => $form,
+        	'roleCreated' => $roleCreated
+        );
     }
 
     public function manageAction()
     {
-        $this->view->paginator = $this->_createPaginator('Litus\Entity\Acl\Role');
+    
     }
 
 	public function editAction()
@@ -191,26 +187,26 @@ class RoleController extends \Litus\Controller\Action
 		$this->getEntityManager()->flush();
 		
 		$repositoryCheck = $this->getEntityManager()
-			->getRepository('Litus\Entity\Acl\Role')
+			->getRepository('CommonBundle\Entity\Acl\Role')
 			->findOneByName('guest');
 		
 		if (null === $repositoryCheck) {
         	$guestRole = new Role('guest');
         	$guestRole->allow(
 				$this->getEntityManager()
-            		->getRepository('Litus\Entity\Acl\Action')
+            		->getRepository('CommonBundle\Entity\Acl\Action')
                 	->findOneBy(array('name' => 'login', 'resource' => 'admin.auth'))
 			);
 			$guestRole->allow(
 				$this->getEntityManager()
-            		->getRepository('Litus\Entity\Acl\Action')
+            		->getRepository('CommonBundle\Entity\Acl\Action')
                 	->findOneBy(array('name' => 'authenticate', 'resource' => 'admin.auth'))
 			);
         	$this->getEntityManager()->persist($guestRole);
 		}
 		
 		$repositoryCheck = $this->getEntityManager()
-			->getRepository('Litus\Entity\Acl\Role')
+			->getRepository('CommonBundle\Entity\Acl\Role')
 			->findOneByName('company');
 		
 		if (null === $repositoryCheck) {

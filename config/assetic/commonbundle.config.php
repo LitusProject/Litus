@@ -15,12 +15,20 @@
  
 return array(
 	'controllers'  => array(
+		'admin_auth'      => array(
+		    '@admin_auth_js',
+		),
 		'admin_dashboard' => array(
 		    '@admin_base_css',
 		    '@admin_base_js',
 		),
-		'admin_auth' => array(
-		    '@admin_auth_js',
+		'admin_role'      => array(
+		    '@admin_base_css',
+		    '@admin_base_js',
+		),
+		'admin_user'      => array(
+		    '@admin_base_css',
+		    '@admin_base_js',
 		),
 		'admin_user' => array(
 		    '@admin_base_css',
