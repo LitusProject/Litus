@@ -1,0 +1,13 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_user/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+		{% autoescape false %}
+	    	{{ form }}
+	    {% endautoescape %}
+	</div>
+{% endblock %}

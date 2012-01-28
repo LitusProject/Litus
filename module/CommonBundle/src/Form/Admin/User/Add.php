@@ -48,7 +48,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 	 */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($opts);
 		
 		$this->_entityManager = $entityManager;
 		
@@ -56,8 +56,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Username')
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new AlnumValidator());
-                ->addValidadtor(new UsernameValidator($this->_entityManager));
+                ->addValidator(new AlnumValidator())
+                ->addValidator(new UsernameValidator($this->_entityManager));
         $this->addElement($field);
 
         $field = new Password('credential');
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
         
         $field = new Text('telephone');
-        $field->setLabel('Phone number')
+        $field->setLabel('Phone Number')
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);

@@ -22,6 +22,10 @@ return array(
 		'admin_auth' => array(
 		    '@admin_auth_js',
 		),
+		'admin_user' => array(
+		    '@admin_base_css',
+		    '@admin_base_js',
+		),
 	),
 	'routes' => array(),
 );

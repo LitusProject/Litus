@@ -39,11 +39,16 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function execute(MvcEvent $e)
     {
-        $result = parent::execute($e);
-        
+    	$startExecutionTime = microtime(true);
+    
+        $this->_initControllerPlugins();
         $this->_initViewHelpers();
         
-        if ($this->hasAccess()) {
+        if (
+        	$this->hasAccess()->resourceAction(
+        		$this->getParam('controller'), $this->getParam('action')
+        	)
+        ) {
         	$result['authenticatedUser'] = 'Guest';
         
             if ($this->getAuthentication()->isAuthenticated()) {
@@ -62,49 +67,24 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 );
             }
         }
-		        
+		
+		$result = parent::execute($e);
+		
         $result['flashMessenger'] = $this->flashMessenger();
         
-  		$result['doctrineUnitOfWork'] = $this->getEntityManager()->getUnitOfWork()->size();
   		$result['now'] = array(
   			'iso8601' => date('c', time()),
   			'display' => date('l, F j Y, H:i', time())
   		);
   		
+  		$result['environment'] = getenv('APPLICATION_ENV');
+  		$result['developmentInformation'] = array(
+  			'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
+  			'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
+  		);
+  		
         $e->setResult($result);
         return $result;
-    }
-
-    /**
-     * Create a paginator for a given entity.
-     *
-     * @param string $entity The name of the entity that should be paginated
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @return \Zend\Paginator\Paginator
-     */
-    protected function createEntityPaginator($entity, array $conditions = array(), array $orderBy = null)
-    {
-		return $this->createArrayPaginator((0 == count($conditions)) ?
-            $this->getEntityManager()->getRepository($entity)->findBy(array(), $orderBy) :
-            $this->getEntityManager()->getRepository($entity)->findBy($conditions, $orderBy));
-    }
-
-	/**
-     * Create a paginator from a given array.
-     *
-     * @param string $entity The name of the entity that should be paginated
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @return \Zend\Paginator\Paginator
-     */
-    protected function createArrayPaginator(array $records)
-    {
-        $paginator = new Paginator(
-            new ArrayAdapter($records)
-        );
-        $paginator->setItemCountPerPage(25);
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-
-        return $paginator;
     }
 
     /**
@@ -155,6 +135,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
     	$view = $this->getLocator()->get('view');
     	
+    	// HasAccess View Helper
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
     	);		
@@ -164,12 +145,40 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	$view->plugin('hasAccess')->setAuthentication(
     		$this->getAuthentication()
     	);
-    		
+    	
+    	// GetParam View Helper
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'request', 'CommonBundle\Component\View\Helper\Request'
+    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
     	);
-    	$view->plugin('request')->setRequest(
-    		$this->getRequest()
+    	$view->plugin('getParam')->setRouteMatch(
+    		$this->getEvent()->getRouteMatch()
+    	);
+    }
+    
+    /**
+     * Initializes our custom controller plugins.
+     *
+     * @return void
+     */
+    private function _initControllerPlugins()
+    {
+    	// HasAccess Plugin
+    	$this->getBroker()->getClassLoader()->registerPlugin(
+    		'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
+    	);		
+    	$this->hasAccess()->setAcl(
+    		$this->_getAcl()
+    	);
+    	$this->hasAccess()->setAuthentication(
+    		$this->getAuthentication()
+    	);
+    	
+    	// Paginator Plugin
+    	$this->getBroker()->getClassLoader()->registerPlugin(
+    		'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
+    	);
+    	$this->paginator()->setEntityManager(
+    		$this->getEntityManager()
     	);
     }
     
@@ -218,42 +227,5 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function getParam($param, $default = null)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
-    }
-
-    /**
-     * This method verifies whether or not there is an active authentication session,
-     * and if not, checks whether guest have access to this resource.
-     *
-     * @return bool
-     */
-    public function hasAccess()
-    {
-    	$this->getAuthentication()->authenticate();
-    	
-        // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('development' == getenv('APPLICATION_ENV'))
-            return true;
-
-        if ($this->getAuthentication()->isAuthenticated()) {
-            foreach ($this->getAuthentication()->getPersonObject()->getRoles() as $role) {
-                if (
-                    $role->isAllowed(
-                    	$this->_getAcl(),
-                        str_replace('_', '.', $this->getParam('controller')),
-                        $this->getParam('action')
-                    )
-                ) {
-                    return true;
-                }
-            }
-
-            return false;
-        } else {
-            return $this->_getAcl()->isAllowed(
-                'guest',
-                str_replace('_', '.', $this->getParam('controller')),
-                $this->getParam('action')
-            );
-        }
     }
 }
