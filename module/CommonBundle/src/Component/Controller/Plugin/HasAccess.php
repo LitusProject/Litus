@@ -72,7 +72,7 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     		throw new \RuntimeException('No authentication object was provided');
     
         // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('development' == getenv('APPLICATION_ENV'))
+        if ('production' != getenv('APPLICATION_ENV'))
             return true;
 
         if ($this->_authentication->isAuthenticated()) {

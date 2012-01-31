@@ -69,6 +69,7 @@ return array(
     'CommonBundle\Form\Admin\Config\Add'                                               => __DIR__ . '/src/Form/Admin/Config/Add.php',
     'CommonBundle\Form\Admin\Config\Edit'                                              => __DIR__ . '/src/Form/Admin/Config/Edit.php',
     'CommonBundle\Form\Admin\Role\Add'                                                 => __DIR__ . '/src/Form/Admin/Role/Add.php',
+    'CommonBundle\Form\Admin\Role\Edit'                                                => __DIR__ . '/src/Form/Admin/Role/Edit.php',
     'CommonBundle\Form\Admin\User\Add'                                                 => __DIR__ . '/src/Form/Admin/User/Add.php',
     'CommonBundle\Form\Admin\User\Edit'                                                => __DIR__ . '/src/Form/Admin/User/Edit.php',
     'CommonBundle\Repository\Acl\Action'                                               => __DIR__ . '/src/Repository/Acl/Action.php',

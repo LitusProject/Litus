@@ -15,7 +15,7 @@ class Person extends EntityRepository
 	public function findOneByUsername($username)
     {
         $resultSet = $this->_em
-            ->createQuery('SELECT p FROM Litus\Entity\Users\Person p WHERE p.username = \'' . $username . '\'')
+            ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p WHERE p.username = \'' . $username . '\'')
 			->setMaxResults(1)
             ->getResult();
 		

@@ -15,12 +15,17 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\Users\Credential,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CommonBundle\Entity\Users\Credential,
 	CommonBundle\Entity\Users\People\Academic,
-	CommonBundle\FlashMessenger\FlashMessage,
 	CommonBundle\Form\Admin\User\Add as AddForm,
 	CommonBundle\Form\Admin\User\Edit as EditForm;
-	
+
+/**
+ * User management.
+ *
+ * @autor Pieter Maene <pieter.maene@litus.cc>
+ */	
 class UserController extends \CommonBundle\Component\Controller\ActionController
 {
 	public function manageAction()
@@ -44,10 +49,10 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm(
         	$this->getEntityManager()
         );
-
-        $userCreated = false;
+		
+		$userCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->get('formData');
+            $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
                 $roles = array();
@@ -74,18 +79,14 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 					$formData['sex']
                 );
                 $this->getEntityManager()->persist($newUser);
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The user was successfully created!'
-                    )
-                );
                 
                 $form = new AddForm();
+                
+                $userCreated = true;
             }
         }
+        
+        $this->getEntityManager()->flush();
         
         return array(
         	'form' => $form,
@@ -95,6 +96,25 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No ID was given to identify the user that you wish to edit!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_user',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneById($this->getParam('id'));
@@ -103,10 +123,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         	$this->getEntityManager(), $user
         );
 
-        $userEdited = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->get('formData');
-
+            $formData = $this->getRequest()->post()->toArray();
+			
             if ($form->isValid($formData)) {
                 $roles = array();
 
@@ -121,9 +140,12 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
+                    ->setTelephone($formData['telephone'])
                     ->updateRoles($roles);
                 
-                $this->broker('flashmessenger')->addMessage(
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
@@ -131,26 +153,47 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                $this->redirect()->toRoute('admin_user', array('action' => 'manage'));
+                $this->redirect()->toRoute(
+                	'admin_user',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+                
+                return;
             }
         }
         
         return array(
-        	'form' => $form,
-        	'userEdited' => $userEdited
+        	'form' => $form
         );
     }
 
     public function deleteAction()
     {
-    	$user = null;
-        if (null !== $this->getParam('id')) {
-            $user = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                ->findOneById($this->getParam('id'));
-        }
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No ID was given to identify the user that you wish to delete!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_user',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $user = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneById($this->getParam('id'));
         
-        $userDeleted = false;
         if (null !== $this->getParam('confirm')) {
         	if (1 == $this->getParam('confirm')) {
 	            $sessions = $this->getEntityManager()
@@ -161,16 +204,39 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 	                $session->deactivate();
 	            }
 	            $user->disableLogin();
-	
-	            $userDeleted = true;
+				
+				$this->getEntityManager()->flush();
+				
+				$this->flashMessenger()->addMessage(
+				    new FlashMessage(
+				        FlashMessage::SUCCESS,
+				        'Succes',
+				        'The user was successfully deleted!'
+				    )
+				);
+				
+				$this->redirect()->toRoute(
+					'admin_user',
+					array(
+						'action' => 'manage'
+					)
+				);
+				
+				return;
 	        } else {
-	            $this->redirect()->toRoute('admin_user', array('action' => 'manage'));
+	            $this->redirect()->toRoute(
+	            	'admin_user',
+	            	array(
+	            		'action' => 'manage'
+	            	)
+	            );
+	            
+	            return;
 	        }
 	    }
         
         return array(
-        	'user' => $user,
-        	'userDeleted' => $userDeleted
+        	'user' => $user
         );
     }
 }

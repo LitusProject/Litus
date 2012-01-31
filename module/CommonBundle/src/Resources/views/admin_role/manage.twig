@@ -1,0 +1,34 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_role/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+	    <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="115px">Action</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for role in paginator %}
+                    <tr>
+                        <td>{{ role.getName() }}</td>
+                        <td>
+                            <a href="{{ url('admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
+                            {% if 'guest' != role.getName() and 'company' != role.getName() %}
+                            	<a href="{{ url('admin_role', {"action": "delete", "name": role.getName()}) }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+	
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}

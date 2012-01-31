@@ -47,7 +47,7 @@ class Username extends \Zend\Validator\AbstractValidator
 	{
 		parent::__construct($opts);
 		
-		$thus->_entityManager = $entityManager;
+		$this->_entityManager = $entityManager;
 	}
 
     /**
@@ -60,16 +60,16 @@ class Username extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $this->_setValue($value);
+        $this->setValue($value);
 
 		$person = $this->_entityManager
 			->getRepository('CommonBundle\Entity\Users\Person')
 			->findOneByUsername($value);
 		
-        if (null !== $person)
+        if (null === $person)
             return true;
 
-        $this->_error(self::NOT_VALID);
+        $this->error(self::NOT_VALID);
         return false;
     }
 }
