@@ -87,6 +87,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         foreach ($roles as $role) {
             $parents[$role->getName()] = $role->getName();
         }
+        
+        ksort($parents);
+        
         return $parents;
     }
 
@@ -108,19 +111,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $actions = array();
         foreach ($resources as $resource) {
-            $resourceActions = $resource->getActions();
+            $resourceActions = $resource->getActions($this->_entityManager);
             foreach ($resourceActions as $resourceAction) {
                 $actions[$resource->getName()][$resourceAction->getId()] = $resourceAction->getName();
             }
 
-            $resourceChildren = $resource->getChildren();
+            $resourceChildren = $resource->getChildren($this->_entityManager);
             foreach ($resourceChildren as $resourceChild) {
-                $childActions = $resourceChild->getActions();
+                $childActions = $resourceChild->getActions($this->_entityManager);
                 foreach ($childActions as $childAction) {
                     $actions[$resourceChild->getName()][$childAction->getId()] = $childAction->getName();
                 }
+                
+                asort($actions[$resourceChild->getName()]);
             }
         }
+        
+        ksort($actions);
 
         return $actions;
     }

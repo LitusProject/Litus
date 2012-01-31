@@ -73,13 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->addValidator(new IdenticalFieldValidator('credential', 'Password'));
         $this->addElement($field);
 
-        $field = new Multiselect('roles');
-        $field->setLabel('Groups')
-                ->setMultiOptions($this->_createRolesArray())
-                ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-        $field = new Text('first_name');
+		$field = new Text('first_name');
         $field->setLabel('First Name')
                 ->setRequired()
                 ->setDecorators(array(new FieldDecorator()))
@@ -117,6 +111,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 					)
 				->setDecorators(array(new FieldDecorator()));
 		$this->addElement($field);
+
+        $field = new Multiselect('roles');
+        $field->setLabel('Groups')
+                ->setMultiOptions($this->_createRolesArray())
+                ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')

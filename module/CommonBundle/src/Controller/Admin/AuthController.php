@@ -41,7 +41,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->getAuthentication()->forget();
 
-        $this->redirect()->toRoute('admin_auth');
+        $this->redirect()->toRoute(
+        	'admin_auth'
+        );
+        
+        return;
     }
 
 	public function authenticateAction()

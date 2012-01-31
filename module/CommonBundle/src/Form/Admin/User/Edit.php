@@ -28,6 +28,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
 	 * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
 	 * @param mixed $opts The validator's options
 	 */
@@ -48,12 +49,12 @@ class Edit extends Add
 
         $this->populate(
             array(
-                'roles' => $this->_createRolesPopulationArray($person->getRoles()),
                 'first_name' => $person->getFirstName(),
                 'last_name' => $person->getLastName(),
                 'email' => $person->getEmail(),
                 'telephone' => $person->getTelephone(),
-                'sex' => $person->getSex()
+                'sex' => $person->getSex(),
+                'roles' => $this->_createRolesPopulationArray($person->getRoles())
             )
         );
     }
@@ -61,6 +62,7 @@ class Edit extends Add
 	/**
 	 * Returns an array that is in the right format to populate the roles field.
 	 *
+	 * @param array $toles The user's roles
 	 * @return array
 	 */
     private function _createRolesPopulationArray(array $roles)
@@ -75,7 +77,7 @@ class Edit extends Add
             if (in_array($role->getName(), $hiddenRoles))
                 continue;
 
-            $rolesArray[$role->getName()] = $role->getName();
+            $rolesArray[] = $role->getName();
         }
         return $rolesArray;
     }

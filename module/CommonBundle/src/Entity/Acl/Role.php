@@ -64,8 +64,9 @@ class Role
     /**
      * @param string $name The name of the role
      * @param array $parents The role's parents
+     * @param array $actions The role's actions
      */
-    public function __construct($name, array $parents = array())
+    public function __construct($name, array $parents = array(), array $actions = array())
     {
         $this->name = $name;
 
@@ -80,7 +81,18 @@ class Role
     {
         return $this->name;
     }
-
+    
+    /**
+     * @param array $parents
+     * @return \CommonBundle\Entity\Acl\Role
+     */
+    public function setParents(array $parents)
+    {
+    	$this->parents = new ArrayCollection($parents);
+    	
+    	return $this;
+    }
+    
     /**
      * @return array
      */
@@ -88,26 +100,25 @@ class Role
     {
         return $this->parents->toArray();
     }
+	
+	/**
+	 * @param array $actions
+	 * @return \CommonBundle\Entity\Acl\Role
+	 */
+	public function setActions(array $actions)
+	{
+		$this->actions = new ArrayCollection($actions);
+		
+		return $this;
+	}
 
-    /**
-     * @return array
-     */
-    public function getActions()
-    {
-        return $this->actions->toArray();
-    }
-
-    /**
-     * Add a new action to the allow list of this Role.
-     *
-     * @param \CommonBundle\Entity\Acl\Action $action
-     * @return void
-     */
-    public function allow(Action $action)
-    {
-        $this->actions->add($action);
-    }
-
+	/**
+	 * @return array
+	 */
+	public function getActions()
+	{
+	    return $this->actions->toArray();
+	}
 
     /**
      * Checks whether or not this role has sufficient permissions to access

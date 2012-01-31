@@ -121,7 +121,7 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:id[/:confirm]]]',
+    	        'route'    => '/admin/role[/:action[/:name[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'id'      => '[0-9]*',

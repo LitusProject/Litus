@@ -27,7 +27,7 @@ class FlashMessage
     /**
      * @var bool Whether or not the message should use the full width when displayed
      */
-    private $_fullWidth = false;
+    private $_fullWidth = true;
 
     /**
      * @param string $type The FlashMessage's type
@@ -35,7 +35,7 @@ class FlashMessage
      * @param string $message The FlashMessage's message
      * @param bool $fullWidth Whether or not the message should use the full width when displayed
      */
-	public function __construct($type, $title, $message, $fullWidth = false)
+	public function __construct($type, $title, $message, $fullWidth = true)
 	{
 		$this->_type = $type;
 		$this->_title = $title;

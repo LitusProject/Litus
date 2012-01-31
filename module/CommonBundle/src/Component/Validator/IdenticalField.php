@@ -99,16 +99,16 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $this->_setValue($value);
+        $this->setValue($value);
         if ('' == $this->_fieldTitle) {
             $this->_fieldTitle = $this->_fieldName;
         }
 
         if (empty($this->_fieldName)) {
-            $this->_error(self::MISSING_FIELD_NAME);
+            $this->error(self::MISSING_FIELD_NAME);
             return false;
         } elseif (!isset($context[$this->_fieldName])) {
-            $this->_error(self::INVALID_FIELD_NAME);
+            $this->error(self::INVALID_FIELD_NAME);
             return false;
         } elseif (is_array($context)) {
             if ($value == $context[$this->_fieldName]) {
@@ -117,7 +117,7 @@ class IdenticalField extends \Zend\Validator\AbstractValidator
         } elseif (is_string($context) && ($value == $context)) {
             return true;
         }
-        $this->_error(self::NOT_MATCH);
+        $this->error(self::NOT_MATCH);
         return false;
     }
 }

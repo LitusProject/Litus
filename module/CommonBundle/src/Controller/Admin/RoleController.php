@@ -15,14 +15,28 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBunle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Role\Add as AddForm,
-	CommonBunle\Entity\Acl\Action as AclAction,
-	CommonBunle\Entity\Acl\Role,
-	CommonBunle\Entity\Acl\Resource;
+    CommonBundle\Form\Admin\Role\Edit as EditForm,
+	CommonBundle\Entity\Acl\Action as AclAction,
+	CommonBundle\Entity\Acl\Role,
+	CommonBundle\Entity\Acl\Resource;
 
 class RoleController extends \CommonBundle\Component\Controller\ActionController
 {
+	public function manageAction()
+	{
+		$paginator = $this->paginator()->createFromEntity(
+		    'CommonBundle\Entity\Acl\Role',
+		    $this->getParam('page')
+		);
+		
+		return array(
+			'paginator' => $paginator,
+			'paginationControl' => $this->paginator()->createControl(true)
+		);
+	}
+
     public function addAction()
     {
         $form = new AddForm(
@@ -31,7 +45,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $roleCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $formData = $this->getRequest()->post()->get('formData');;
+            $formData = $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
                 $parents = array();
@@ -42,31 +56,32 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                                 ->findOneByName($parent);
                     }
                 }
+				
+				$actions = array();
+				if (isset($formData['actions'])) {
+				    foreach ($formData['actions'] as $action) {
+				        $actions[] = $this->getEntityManager()
+				        	->getRepository('CommonBundle\Entity\Acl\Action')
+				            ->findOneByName($action);
+				    }
+				}
+				
+                $newRole = new Role(
+                	$formData['name'], $parents, $actions
+                );
 
-                $newRole = new Role($formData['name'], $parents);
-                foreach ($formData['actions'] as $action) {
-                    $newRole->allow(
-                        $this->getEntityManager()->getRepository('CommonBundle\Entity\Acl\Action')->findOneById($action)
-                    );
-                }
                 $this->getEntityManager()->persist($newRole);
 
                 // Flushing the EM so that new role is displayed
                 $this->getEntityManager()->flush();
-
-                $this->_addDirectFlashMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The role was successfully created!'
-                    )
-                );
                 
                 $form = new AddForm(
                 	$this->getEntityManager()
                 );
+                
+                $roleCreated = true;
             }
-        }
+        }       
         
         return array(
         	'form' => $form,
@@ -74,149 +89,86 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    public function manageAction()
-    {
-    
-    }
-
 	public function editAction()
 	{
-		
+		if (null === $this->getParam('name')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No name was given to lookup the role that you wish to edit!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_role',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $role = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findOneByName($this->getParam('name'));
+
+        $form = new EditForm(
+        	$this->getEntityManager(), $role
+        );
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+			
+            if ($form->isValid($formData)) {
+                if (isset($formData['parents'])) {
+                    foreach ($formData['parents'] as $parent) {
+                        $parents[] = $this->getEntityManager()
+                        	->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($parent);
+                    }
+                }
+				$role->setParents($parents);
+                
+                $actions = array();
+                if (isset($formData['actions'])) {
+                    foreach ($formData['actions'] as $action) {
+                        $actions[] = $this->getEntityManager()
+                        	->getRepository('CommonBundle\Entity\Acl\Action')
+                            ->findOneById($action);
+                    }
+                }
+                $role->setActions($actions);
+                
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The role was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_role',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+                
+                return;
+            }
+        }
+        
+        return array(
+        	'form' => $form
+        );
 	}
 	
 	public function deleteAction()
 	{
 		
-	}
-
-    public function loadAction()
-    {
-		$modules = array(
-            'application' => array(
-                'index' => array(
-                    'index'
-                )
-            ),
-			'admin' => array(
-                'run' => array(
-                    'index', 'queue', 'start', 'stop', 'delete', 'groups'
-                ),
-				'auth' => array(
-					'login', 'logout', 'authenticate'
-				),
-				'company' => array(
-					'index', 'add', 'manage', 'edit', 'delete'
-				),
-				'contract' => array(
-					'index', 'add', 'manage', 'edit', 'delete', 'sign', 'download', 'compose'
-				),
-				'index' => array(
-					'index'
-				),
-				'role' => array(
-					'index', 'add', 'manage', 'edit', 'delete'
-				),
-				'section' => array(
-					'index', 'add', 'manage', 'edit', 'delete'
-				),
-                'textbook' => array(
-					'index', 'add', 'manage', 'edit', 'delete'
-				),
-				'user' => array(
-					'index', 'add', 'manage', 'edit', 'delete'
-				)
-			),
-            'run' => array(
-                'index' => array(
-                    'index'
-                ),
-                'group' => array(
-                    'index', 'add'
-                ),
-                'queue' => array(
-                    'index', 'add', 'runner'
-                ),
-                'screen' => array(
-                    'index', 'currentlap'
-                )
-            )
-		);
-		
-		foreach ($modules as $module => $controllers) {
-			$repositoryCheck = $this->getEntityManager()
-				->getRepository('Litus\Entity\Acl\Resource')
-				->findOneByName($module);
-	
-			if (null === $repositoryCheck) {
-				$moduleResource = new Resource($module);
-				$this->getEntityManager()->persist($moduleResource);
-			} else {
-                $moduleResource = $repositoryCheck;
-            }
-			
-			foreach ($controllers as $controller => $actions) {
-				$repositoryCheck = $this->getEntityManager()
-					->getRepository('Litus\Entity\Acl\Resource')
-					->findOneBy(array('name' => $module . '.' . $controller, 'parent' => $module));
-	
-				if (null === $repositoryCheck) {
-					$controllerResource = new Resource(
-						$module . '.' . $controller,
-						$moduleResource
-					);
-					$this->getEntityManager()->persist($controllerResource);
-				} else {
-                    $controllerResource = $repositoryCheck;
-                }
-				
-				foreach ($actions as $action) {
-					$repositoryCheck = $this->getEntityManager()
-						->getRepository('Litus\Entity\Acl\Action')
-						->findOneBy(array('name' => $action, 'resource' => $module . '.' . $controller));
-					
-					if (null === $repositoryCheck) {
-						$actionResource = new AclAction(
-							$action,
-							$controllerResource
-						);
-						$this->getEntityManager()->persist($actionResource);
-					}
-				}
-			}
-		}
-		$this->getEntityManager()->flush();
-		
-		$repositoryCheck = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\Acl\Role')
-			->findOneByName('guest');
-		
-		if (null === $repositoryCheck) {
-        	$guestRole = new Role('guest');
-        	$guestRole->allow(
-				$this->getEntityManager()
-            		->getRepository('CommonBundle\Entity\Acl\Action')
-                	->findOneBy(array('name' => 'login', 'resource' => 'admin.auth'))
-			);
-			$guestRole->allow(
-				$this->getEntityManager()
-            		->getRepository('CommonBundle\Entity\Acl\Action')
-                	->findOneBy(array('name' => 'authenticate', 'resource' => 'admin.auth'))
-			);
-        	$this->getEntityManager()->persist($guestRole);
-		}
-		
-		$repositoryCheck = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\Acl\Role')
-			->findOneByName('company');
-		
-		if (null === $repositoryCheck) {
-			$companyRole = new Role(
-				'company',
-				array(
-					$guestRole
-				)
-			);
-			$this->getEntityManager()->persist($companyRole);
-    	}
 	}
 }
