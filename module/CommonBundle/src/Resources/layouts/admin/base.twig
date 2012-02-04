@@ -25,84 +25,92 @@
 		</header>
 
 		<nav id="content_nav">
-            <div class="topmenu">
-                <div class="title">Admin</div>
-
-                <ul>
-                	{% if hasAccess('admin_index', 'index') %}
-                        <li><a href="{{ url('admin_dashboard') }}">Dashboard</a></li>
-                    {% endif %}
-                    {% if hasAccess('admin_user', 'index') %}
-                        <li><a href="{{ url('admin_user') }}">Users</a></li>
-                    {% endif %}
-                    {% if hasAccess('admin_role', 'index') %}
-                        <li><a href="{{ url('admin_role') }}">Groups</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div class="submenu">
-                <div class="title">Divisions</div>
-
-                {% if hasAccess('admin_textbook', 'index') %}
-                    <div class="subtitle">
-                    	<p id="toggleCursusdienst">
-                    		<b>CuDi</b><br />
-                    		Articles, Stock &amp; Financial
-                    	</p>
-                    </div>
-                    
-                    <ul id="submenu_cursusdienst">
-                        {% if hasAccess('admin_article', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Articles</a></li>
-                        {% endif %}
-						{% if hasAccess('admin_booking', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Bookings</a></li>
-                        {% endif %}
-                        {% if hasAccess('admin_sale', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Sale</a></li>
-                        {% endif %}
-						{% if hasAccess('admin_stock', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Stock</a></li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-
-                {% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}
-                    <div class="subtitle">
-                    	<p id="toggleBusiness">
-                    		<b>Business Relations</b><br />
-                    		Companies &amp; Contracts
-                    	</p>
-                    </div>
-                    
-                    <ul id="submenu_business">
-                        {% if hasAccess('admin_company', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}>">Companies</a></li>
-                        {% endif %}
-                        {% if hasAccess('admin_section', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Sections</a></li>
-                        {% endif %}
-                        {% if hasAccess('admin_contract', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">Contracts</a></li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-
-				{% if hasAccess('admin_run', 'index') %}
-                    <div class="subtitle">
-                    	<p id="toggleSport">
-                    		<b>Sport</b><br />
-                    		Twenty Four</p>
-                    </div>
-                    
-                    <ul id="submenu_sport">
-                        {% if hasAccess('admin_run', 'index') %}
-                            <li><a href="{{ url('admin_dashboard') }}">24h-Run</a></li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-            </div>
+            <ul class="topmenu">
+            	<li>
+            		<div class="title">Admin</div>
+					<ul>
+		            	{% if hasAccess('admin_index', 'index') %}
+		                    <li><a href="{{ url('admin_dashboard') }}">Dashboard</a></li>
+		                {% endif %}
+		                {% if hasAccess('admin_user', 'index') %}
+		                    <li><a href="{{ url('admin_user') }}">Users</a></li>
+		                {% endif %}
+		                {% if hasAccess('admin_role', 'index') %}
+		                    <li><a href="{{ url('admin_role') }}">Groups</a></li>
+		                {% endif %}
+		            </ul>
+		    	</li>
+            </ul>
+            
+            <ul class="submenu">
+            	<li>
+	                <div class="title">Divisions</div>
+	                <ul class="subsubmenu">
+		                {% if hasAccess('admin_textbook', 'index') %}
+		            		<li>
+		            			<div class="subtitle">
+			            			<b>CuDi</b><br />
+			            			Articles, Stock &amp; Financial
+			            		</div>
+		            			<ul>
+		            			    {% if hasAccess('admin_article', 'index') %}
+		            			        <li><a href="{{ url('admin_dashboard') }}">Articles</a></li>
+		            			    {% endif %}
+		            				{% if hasAccess('admin_booking', 'index') %}
+		            			        <li><a href="{{ url('admin_dashboard') }}">Bookings</a></li>
+		            			    {% endif %}
+		            			    {% if hasAccess('admin_sale', 'index') %}
+		            			        <li><a href="{{ url('admin_dashboard') }}">Sale</a></li>
+		            			    {% endif %}
+		            				{% if hasAccess('admin_stock', 'index') %}
+		            			        <li><a href="{{ url('admin_dashboard') }}">Stock</a></li>
+		            			    {% endif %}
+		            			</ul>
+		            		</li>
+		                {% endif %}
+		                
+		                {% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}
+		                    <li>
+			                    <div class="subtitle">
+		                    		<b>Business Relations</b><br />
+		                    		Companies &amp; Contracts
+			                    </div>
+			                    
+			                    <ul id="submenu_business">
+			                        {% if hasAccess('admin_company', 'index') %}
+			                            <li><a href="{{ url('admin_dashboard') }}>">Companies</a></li>
+			                        {% endif %}
+			                        {% if hasAccess('admin_section', 'index') %}
+			                            <li><a href="{{ url('admin_dashboard') }}">Sections</a></li>
+			                        {% endif %}
+			                        {% if hasAccess('admin_contract', 'index') %}
+			                            <li><a href="{{ url('admin_dashboard') }}">Contracts</a></li>
+			                        {% endif %}
+			                    </ul>
+			            	</li>
+		                {% endif %}
+		                
+		                {% if hasAccess('admin_run', 'index') %}
+		                    <li>
+			                    <div class="subtitle">
+			                    		<b>Sport</b><br />
+			                    		Twenty Four
+			                    </div>
+			                    
+			                    <ul id="submenu_sport">
+			                        {% if hasAccess('admin_run', 'index') %}
+			                            <li><a href="{{ url('admin_dashboard') }}">24h-Run</a></li>
+			                        {% endif %}
+			                    </ul>
+			            	</li>
+		                {% endif %}
+	                </ul>
+	
+	                
+	
+					
+	        	</li>
+            </ul>
         </nav>
 
 		<div id="content_controller">
@@ -126,14 +134,9 @@
 {{ inlineScript() }}
 
 <script type="text/javascript">
-	$(document).ready(function (){
-		$('.submenu .subtitle p').click(function(event) {
-			var target = event.target;
-			if(event.target.nodeName == 'B')
-				var target = $(event.target).parent();
-			$('#submenu_' + $(target).attr('id').substring(6, $(target).attr('id').length).toLowerCase()).toggle();
+	$(document).ready(function () {
+			$('.submenu').sidebarNavigation();
 		});
-	});
 
 	{% block controller_script %} {% endblock %}
 </script>

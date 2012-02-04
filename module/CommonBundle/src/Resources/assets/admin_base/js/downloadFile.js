@@ -12,4 +12,4 @@
 			return false;
 	    });
     }
-})(jQuery)
+})(jQuery);

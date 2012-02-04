@@ -114,7 +114,7 @@ h1 {
             background: url(@iMenuBackground);
         }
 
-        li {
+        ul li {
             text-indent: @tIndent;
 
             a {
@@ -152,47 +152,51 @@ h1 {
 
         .subtitle {
             display: block;
-            height: @menuSubtitleHeight;
+            height: @menuSubtitleHeight - @defaultSpacing;
             padding-left: @tIndent;
+            padding-top: @defaultSpacing;
             background: url(@iMenuBackground) 0 -@menuTitleHeight;
             cursor: pointer;
 
             b {
                 color: @cBlack;
             }
-
-            p {
-                display: block;
-                height: @menuSubtitleHeight;
-                padding-top: @defaultSpacing;
-                font-weight: normal;
-            }
         }
-
-        ul {
-            display: none;
-            padding: @defaultSpacing 0;
-
-            li {
-                display: block;
-                padding-left: @tIndent;
-                line-height: @menuItemHeight;
-
-                a {
-                    display: block;
-                    line-height: @menuItemHeight;
-                    text-decoration: none;
-                    color: inherit;
-                }
-
-                a:hover {
-                    color: @cBlack;
-                }
-
-                a:hover:before {
-                    color: @cAccent;
-                }
-            }
+        
+        .subsubmenu {
+        	padding: 0;
+        	list-style: none;
+        	
+        	li {
+        		padding: 0;
+        	}
+        	
+        	ul {
+        		display: none;
+        		padding: @defaultSpacing 0;
+        		
+	            li {
+	                display: block;
+	                padding-left: @tIndent;
+	                line-height: @menuItemHeight;
+	
+	                a {
+	                    display: block;
+	                    line-height: @menuItemHeight;
+	                    text-decoration: none;
+	                    color: inherit;
+	                }
+	
+	                a:hover {
+	                    color: @cBlack;
+	                }
+	
+	                a:hover:before {
+	                    color: @cAccent;
+	                }
+	            }
+        		
+        	}
         }
     }
 }
