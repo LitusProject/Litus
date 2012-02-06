@@ -15,8 +15,7 @@
  
 namespace CommonBundle\Component\View\Helper;
 
-use CommonBundle\Component\Acl\Acl,
-	CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -27,33 +26,17 @@ use CommonBundle\Component\Acl\Acl,
 class HasAccess extends \Zend\View\Helper\AbstractHelper
 {	
 	/**
-	 * @var \CommonBundle\Component\Acl\Acl The ACL object
+	 * @var \CommonBundle\Component\Acl\Helper\HasAccess The helper object
 	 */
-	private $_acl = null;
+	private $_helper = null;
 	
 	/**
-	 * @var \CommonBundle\Component\Authentication\Authentication The authentication object
-	 */
-	private $_authentication = null;
-	
-	/**
-	 * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
+	 * @param \CommonBundle\Component\Acl\Helper\HasAccess $acl The helper object
 	 * @return \CommonBundle\Component\View\Helper\HasAccess
 	 */
-	public function setAcl(Acl $acl)
+	public function setHelper(HasAccessDriver $helper)
 	{
-		$this->_acl = $acl;
-		
-		return $this;
-	}
-	
-	/**
-	 * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
-	 * @return \CommonBundle\Component\View\Helper\HasAccess
-	 */
-	public function setAuthentication(Authentication $authentication)
-	{
-		$this->_authentication = $authentication;
+		$this->_helper = $helper;
 		
 		return $this;
 	}
@@ -65,32 +48,13 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
 	 */
     public function __invoke($resource, $action)
     {
-    	if (null === $this->_acl)
-    		throw new Exception\RuntimeException('No ACL object was provided');
-    		
-    	if (null === $this->_authentication)
-    		throw new Exception\RuntimeException('No authentication object was provided');
-    
-        // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('production' != getenv('APPLICATION_ENV'))
-            return true;
-
-        if ($this->_authentication->isAuthenticated()) {
-            foreach ($this->_authentication->getPersonObject()->getRoles() as $role) {
-                if (
-                    $role->isAllowed(
-                        $resource, $action
-                    )
-                ) {
-                    return true;
-                }
-            }
-
-            return false;
-        } else {
-            return $this->_acl->isAllowed(
-                'guest', $resource, $action
-            );
-        }
+    	if (null === $this->_helper)
+        	throw new Exception\RuntimeException('No helper driver object was provided');
+        
+        $helper = $this->_helper;
+        	
+        return $helper(
+        	$resource, $action
+        );
     }
 }

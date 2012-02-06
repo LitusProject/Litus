@@ -16,6 +16,7 @@
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
+	CommonBundle\Component\Acl\Driver\HasAccess,
 	CommonBundle\Component\Util\File,
 	Zend\Cache\StorageFactory,
 	Zend\Mvc\MvcEvent,
@@ -139,11 +140,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
     	);		
-    	$view->plugin('hasAccess')->setAcl(
-    		$this->_getAcl()
-    	);
-    	$view->plugin('hasAccess')->setAuthentication(
-    		$this->getAuthentication()
+    	$view->plugin('hasAccess')->setHelper(
+    		new HasAccess(
+    			$this->_getAcl(), $this->getAuthentication()
+    		)
     	);
     	
     	// GetParam View Helper
@@ -166,11 +166,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	$this->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
     	);		
-    	$this->hasAccess()->setAcl(
-    		$this->_getAcl()
-    	);
-    	$this->hasAccess()->setAuthentication(
-    		$this->getAuthentication()
+    	$this->hasAccess()->setHelper(
+    		new HasAccess(
+    			$this->_getAcl(), $this->getAuthentication()
+    		)
     	);
     	
     	// Paginator Plugin
