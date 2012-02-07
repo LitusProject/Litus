@@ -1,0 +1,1978 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DocBlox Documentation</title><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><div xmlns="" id="content">
+<script xmlns:dbx="http://docblox-project.org/xsl/functions">
+
+      function filterElements()
+      {
+        inherited = !$('#show-inherited').hasClass('deselected');
+        public    = !$('#show-public').hasClass('deselected');
+        protected = !$('#show-protected').hasClass('deselected');
+        private   = !$('#show-private').hasClass('deselected');
+
+        $('div.public').each(function(index, val) {
+            $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.protected').each(function(index, val) {
+            $(val).toggle(protected && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.private').each(function(index, val) {
+            $(val).toggle(private && !($(val).hasClass('inherited_from') && !inherited));
+        });
+      }
+
+      $(document).ready(function() {
+        $('a.gripper').click(function() {
+            $(this).nextAll('div.code-tabs').slideToggle();
+            $(this).children('img').toggle();
+            return false;
+        });
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').css('cursor', 'pointer');
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').click(function() {
+            $(this).parent().nextAll('div.code-tabs').slideToggle();
+            $(this).parent().prevAll('a.gripper').children('img').toggle();
+            return false;
+        });
+
+        $('div.code-tabs').hide();
+        $('a.gripper').show();
+        $('div.code-tabs:empty').prevAll('a.gripper').html('');
+
+        $('#show-public, #show-protected, #show-private, #show-inherited')
+            .css('cursor', 'pointer')
+            .click(function(){
+                $(this).toggleClass('deselected');
+                if ($(this).hasClass('deselected')) {
+                  $(this).fadeTo('fast', '0.4');
+                } else {
+                  $(this).fadeTo('fast', '1.0');
+                }
+                filterElements();
+                return false;
+            });
+        $('#show-protected, #show-private').click();
+
+        // add the sliding behaviour to the file navigation and show it
+        // it is initially hidden for non-JS users.
+        $("#file-nav-box").show().hover(function() {
+            $("#file-nav-container").slideDown(400);
+        }, function() {
+            $("#file-nav-container").slideUp(400);
+        });
+      });
+
+      
+    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">CudiBundle/src/Entity/Articles/StockArticles/Internal.php</h1>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" id="file-nav-box">
+<div id="file-nav-options">
+              Show:
+              <img src="images/icons/visibility_public.png" id="show-public"><img src="images/icons/visibility_protected.png" id="show-protected"><img src="images/icons/visibility_private.png" id="show-private"><span class="attribute" id="show-inherited">inherited</span>
+</div>
+<div id="file-nav-container">
+<ul id="file-nav"><li>
+<a href="#classes"><img src="images/icons/class.png" height="14">
+                          Classes
+                      </a><ul><li><a href="#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></li></ul>
+</li></ul>
+<div style="clear: left;"></div>
+</div>
+<div id="file-nav-tab">
+              Table of Contents
+          </div>
+</div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\CudiBundle\Entity\Articles\StockArticles\Internal" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\CudiBundle\Entity\Articles\StockArticles\Internal<div class="to-top"><a href="#top">jump to top</a></div>
+</h2>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
+<small class="package"><b>Package: </b>Default</small><p class="short-description"></p>
+<div class="long-description"></div>
+<dl class="class-info">
+<dt>Parent(s)</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a>
+            &lt;
+            <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle" style="color: gray; font-size: 0.8em
+                ">\CudiBundle\Entity\Article</a>
+</dd>
+</dl>
+<strong>Doctrine</strong><table class="argument-info" style="font-size: 1.0em;">
+<thead><tr>
+<th>Annotation</th>
+<th>Field name</th>
+<th>Value</th>
+</tr></thead>
+<tr class="even">
+<td rowspan="1" style="vertical-align: top; font-variant: small-caps; text-transform: lowercase; font-size: 1.3em"><a href="http://www.doctrine-project.org/docs/orm/2.1/en/reference/annotations-reference.html#annref-entity">Entity</a></td>
+<td>repositoryClass</td>
+<td>"CudiBundle\Repository\Articles\StockArticles\Internal"</td>
+</tr>
+<tr class="odd">
+<td rowspan="1" style="vertical-align: top; font-variant: small-caps; text-transform: lowercase; font-size: 1.3em"><a href="http://www.doctrine-project.org/docs/orm/2.1/en/reference/annotations-reference.html#annref-table">Table</a></td>
+<td>name</td>
+<td>"cudi.articles_stockarticles_internal"</td>
+</tr>
+</table>
+<h3>Properties</h3>
+<div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$barcode" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$barcode</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24barcode">\CudiBundle\Entity\Articles\Stock::$$barcode</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24barcode">\CudiBundle\Entity\Articles\Stock::$$barcode</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$binding" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$binding</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$bookable" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$bookable</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24bookable">\CudiBundle\Entity\Articles\Stock::$$bookable</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24bookable">\CudiBundle\Entity\Articles\Stock::$$bookable</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$canExpire" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$canExpire</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24canExpire">\CudiBundle\Entity\Articles\Stock::$$canExpire</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24canExpire">\CudiBundle\Entity\Articles\Stock::$$canExpire</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$frontPageColor" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$frontPageColor</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$frontPageTextColored" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$frontPageTextColored</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$id" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$id</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24id">\CudiBundle\Entity\Article::$$id</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24id">\CudiBundle\Entity\Articles\Stock::$$id</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24id">\CudiBundle\Entity\Article::$$id</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24id">\CudiBundle\Entity\Articles\Stock::$$id</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$metaInfo" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$metaInfo</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24metaInfo">\CudiBundle\Entity\Article::$$metaInfo</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24metaInfo">\CudiBundle\Entity\Articles\Stock::$$metaInfo</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24metaInfo">\CudiBundle\Entity\Article::$$metaInfo</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24metaInfo">\CudiBundle\Entity\Articles\Stock::$$metaInfo</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$nbBlackAndWhite" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$nbBlackAndWhite</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$nbColored" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$nbColored</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$official" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$official</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$purchasePrice" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$purchasePrice</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24purchasePrice">\CudiBundle\Entity\Articles\Stock::$$purchasePrice</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24purchasePrice">\CudiBundle\Entity\Articles\Stock::$$purchasePrice</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$rectoVerso" class="anchor"></a><div class="property private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$rectoVerso</span>= ''
+                </code><div class="description"><p class="short-description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$removed" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$removed</span>= 'false'
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24removed">\CudiBundle\Entity\Article::$$removed</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24removed">\CudiBundle\Entity\Articles\Stock::$$removed</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Default value</strong><code>false</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24removed">\CudiBundle\Entity\Article::$$removed</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24removed">\CudiBundle\Entity\Articles\Stock::$$removed</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$sellPrice" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$sellPrice</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24sellPrice">\CudiBundle\Entity\Articles\Stock::$$sellPrice</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24sellPrice">\CudiBundle\Entity\Articles\Stock::$$sellPrice</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$sellPriceMembers" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$sellPriceMembers</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24sellPriceMembers">\CudiBundle\Entity\Articles\Stock::$$sellPriceMembers</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24sellPriceMembers">\CudiBundle\Entity\Articles\Stock::$$sellPriceMembers</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$stockItem" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$stockItem</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24stockItem">\CudiBundle\Entity\Article::$$stockItem</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24stockItem">\CudiBundle\Entity\Articles\Stock::$$stockItem</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24stockItem">\CudiBundle\Entity\Article::$$stockItem</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24stockItem">\CudiBundle\Entity\Articles\Stock::$$stockItem</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$supplier" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$supplier</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24supplier">\CudiBundle\Entity\Articles\Stock::$$supplier</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24supplier">\CudiBundle\Entity\Articles\Stock::$$supplier</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$timestamp" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$timestamp</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24timestamp">\CudiBundle\Entity\Article::$$timestamp</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24timestamp">\CudiBundle\Entity\Articles\Stock::$$timestamp</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24timestamp">\CudiBundle\Entity\Article::$$timestamp</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24timestamp">\CudiBundle\Entity\Articles\Stock::$$timestamp</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$title" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$title</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24title">\CudiBundle\Entity\Article::$$title</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24title">\CudiBundle\Entity\Articles\Stock::$$title</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24title">\CudiBundle\Entity\Article::$$title</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24title">\CudiBundle\Entity\Articles\Stock::$$title</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$unbookable" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$unbookable</span>= ''
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24unbookable">\CudiBundle\Entity\Articles\Stock::$$unbookable</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24unbookable">\CudiBundle\Entity\Articles\Stock::$$unbookable</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::$versionNumber" class="anchor"></a><div class="property private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/property.png" alt="Property"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private">
+                 <span class="highlight">$versionNumber</span>= '1'
+                </code><div class="description">
+<span class="attribute">inherited</span><p class="short-description"></p>
+<small>Inherited from:
+                        <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24versionNumber">\CudiBundle\Entity\Article::$$versionNumber</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24versionNumber">\CudiBundle\Entity\Articles\Stock::$$versionNumber</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Default value</strong><code>1</code><strong>Details</strong><dl class="property-info">
+<dt>Type</dt>
+<dd>n/a</dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::%24%24versionNumber">\CudiBundle\Entity\Article::$$versionNumber</a>
+         
+    </dd>
+<dt>Inherited_from</dt>
+<dd>
+<a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::%24%24versionNumber">\CudiBundle\Entity\Articles\Stock::$$versionNumber</a>
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+<h3>Methods</h3>
+<div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::__construct()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">__construct</span><span class="nb-faded-text">(
+          string $title, <a href="db_CudiBundle_src_Entity_Articles_MetaInfo.html#%5CCudiBundle%5CEntity%5CArticles%5CMetaInfo">\CudiBundle\Entity\Articles\MetaInfo</a> $metaInfo, \CudiBundle\Entity\Articles\bigint $purchase_price, \CudiBundle\Entity\Articles\bigint $sellPrice, \CudiBundle\Entity\Articles\bigint $sellPriceMembers, \CudiBundle\Entity\Articles\smallint $barcode, boolean $bookable, boolean $unbookable, <a href="db_CudiBundle_src_Entity_Supplier.html#%5CCudiBundle%5CEntity%5CSupplier">\CudiBundle\Entity\Supplier</a> $supplier,  $canExpire,  $nbBlackAndWhite,  $nbColored,  $binding,  $official,  $rectoverso,  $frontPageColor,  $frontPageTextColored
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$title</th>
+<td>string</td>
+<td><em><p>The title of the article</p></em></td>
+</tr>
+<tr>
+<th>$metaInfo</th>
+<td><a href="db_CudiBundle_src_Entity_Articles_MetaInfo.html#%5CCudiBundle%5CEntity%5CArticles%5CMetaInfo">\CudiBundle\Entity\Articles\MetaInfo</a></td>
+<td><em><p>An unlinked metainfo object to link to this article.</p></em></td>
+</tr>
+<tr>
+<th>$purchase_price</th>
+<td>\CudiBundle\Entity\Articles\bigint</td>
+<td><em><p>The purchase price of this article.</p></em></td>
+</tr>
+<tr>
+<th>$sellPrice</th>
+<td>\CudiBundle\Entity\Articles\bigint</td>
+<td><em><p>The sell price of this article for non-members.</p>
+</em></td>
+</tr>
+<tr>
+<th>$sellPriceMembers</th>
+<td>\CudiBundle\Entity\Articles\bigint</td>
+<td><em><p>The sell price of this article for members.</p></em></td>
+</tr>
+<tr>
+<th>$barcode</th>
+<td>\CudiBundle\Entity\Articles\smallint</td>
+<td><em><p>This article's barcode.</p>
+</em></td>
+</tr>
+<tr>
+<th>$bookable</th>
+<td>boolean</td>
+<td><em><p>Indicates whether the article can be booked.</p></em></td>
+</tr>
+<tr>
+<th>$unbookable</th>
+<td>boolean</td>
+<td><em><p>Indicates whether the article can be unbooked.</p></em></td>
+</tr>
+<tr>
+<th>$supplier</th>
+<td><a href="db_CudiBundle_src_Entity_Supplier.html#%5CCudiBundle%5CEntity%5CSupplier">\CudiBundle\Entity\Supplier</a></td>
+<td><em><p>The supplier of the stock item.</p></em></td>
+</tr>
+<tr>
+<th>$canExpire</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$nbBlackAndWhite</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$nbColored</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$binding</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$official</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$rectoverso</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$frontPageColor</th>
+<td></td>
+<td><em></em></td>
+</tr>
+<tr>
+<th>$frontPageTextColored</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="http://php.net/manual/en/class.invalidargumentexception.php">\InvalidArgumentException</a></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::canExpire()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">canExpire</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::canExpire()">\CudiBundle\Entity\Articles\Stock::canExpire()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getBarcode()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getBarcode</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          int</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getBarcode()">\CudiBundle\Entity\Articles\Stock::getBarcode()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>int</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getBinding()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getBinding</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \CudiBundle\Entity\Articles\StockArticle\Binding</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\CudiBundle\Entity\Articles\StockArticle\Binding</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getFiles()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getFiles</span><span class="nb-faded-text">(
+           $entityManager
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$entityManager</th>
+<td></td>
+<td><em></em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getFrontColor()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getFrontColor</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \CudiBundle\Entity\Articles\StockArticle\Color</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\CudiBundle\Entity\Articles\StockArticle\Color</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getFrontPageTextColored()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getFrontPageTextColored</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getId()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getId</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \CudiBundle\Entity\bigint</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getId()">\CudiBundle\Entity\Article::getId()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getId()">\CudiBundle\Entity\Articles\Stock::getId()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\CudiBundle\Entity\bigint</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getMetaInfo()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getMetaInfo</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_MetaInfo.html#%5CCudiBundle%5CEntity%5CArticles%5CMetaInfo">\CudiBundle\Entity\Articles\MetaInfo</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getMetaInfo()">\CudiBundle\Entity\Article::getMetaInfo()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getMetaInfo()">\CudiBundle\Entity\Articles\Stock::getMetaInfo()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_MetaInfo.html#%5CCudiBundle%5CEntity%5CArticles%5CMetaInfo">\CudiBundle\Entity\Articles\MetaInfo</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getNbBlackAndWhite()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getNbBlackAndWhite</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          int</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>int</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getNbColored()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getNbColored</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          int</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>int</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getNbPages()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getNbPages</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          integer</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>integer</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getPurchasePrice()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getPurchasePrice</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          float</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getPurchasePrice()">\CudiBundle\Entity\Articles\Stock::getPurchasePrice()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>float</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getSellPrice()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getSellPrice</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          float</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getSellPrice()">\CudiBundle\Entity\Articles\Stock::getSellPrice()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>float</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getSellPriceMembers()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getSellPriceMembers</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          float</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getSellPriceMembers()">\CudiBundle\Entity\Articles\Stock::getSellPriceMembers()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>float</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getStockItem()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getStockItem</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Stock_StockItem.html#%5CCudiBundle%5CEntity%5CStock%5CStockItem">\CudiBundle\Entity\Stock\StockItem</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getStockItem()">\CudiBundle\Entity\Article::getStockItem()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getStockItem()">\CudiBundle\Entity\Articles\Stock::getStockItem()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Stock_StockItem.html#%5CCudiBundle%5CEntity%5CStock%5CStockItem">\CudiBundle\Entity\Stock\StockItem</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getSupplier()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getSupplier</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \CudiBundle\Entity\Suppplier</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getSupplier()">\CudiBundle\Entity\Articles\Stock::getSupplier()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\CudiBundle\Entity\Suppplier</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getTimestamp()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getTimestamp</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \CudiBundle\Entity\datetime</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getTimestamp()">\CudiBundle\Entity\Article::getTimestamp()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getTimestamp()">\CudiBundle\Entity\Articles\Stock::getTimestamp()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\CudiBundle\Entity\datetime</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getTitle()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getTitle</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          string</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getTitle()">\CudiBundle\Entity\Article::getTitle()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getTitle()">\CudiBundle\Entity\Articles\Stock::getTitle()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>string</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::getVersionNumber()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getVersionNumber</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          integer</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::getVersionNumber()">\CudiBundle\Entity\Article::getVersionNumber()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::getVersionNumber()">\CudiBundle\Entity\Articles\Stock::getVersionNumber()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>integer</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isBookable()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isBookable</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::isBookable()">\CudiBundle\Entity\Articles\Stock::isBookable()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isInternal()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isInternal</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isOfficial()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isOfficial</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isRectoVerso()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isRectoVerso</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isStock()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isStock</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::isStock()">\CudiBundle\Entity\Articles\Stock::isStock()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::isUnbookable()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">isUnbookable</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          boolean</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::isUnbookable()">\CudiBundle\Entity\Articles\Stock::isUnbookable()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>boolean</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setBarcode()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setBarcode</span><span class="nb-faded-text">(
+          int $barcode
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setBarcode()">\CudiBundle\Entity\Articles\Stock::setBarcode()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$barcode</th>
+<td>int</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setBinding()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setBinding</span><span class="nb-faded-text">(
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Binding.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CBinding">\CudiBundle\Entity\Articles\StockArticles\Binding</a> $binding
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$binding</th>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Binding.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CBinding">\CudiBundle\Entity\Articles\StockArticles\Binding</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setCanExpire()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setCanExpire</span><span class="nb-faded-text">(
+          boolean $canExpire
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setCanExpire()">\CudiBundle\Entity\Articles\Stock::setCanExpire()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$canExpire</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setFrontColor()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setFrontColor</span><span class="nb-faded-text">(
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Color.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CColor">\CudiBundle\Entity\Articles\StockArticles\Color</a> $frontPageColor
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$frontPageColor</th>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Color.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CColor">\CudiBundle\Entity\Articles\StockArticles\Color</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setFrontPageTextColored()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setFrontPageTextColored</span><span class="nb-faded-text">(
+          boolean $frontPageTextColored
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$frontPageTextColored</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setIsBookable()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setIsBookable</span><span class="nb-faded-text">(
+          boolean $bookable
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setIsBookable()">\CudiBundle\Entity\Articles\Stock::setIsBookable()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$bookable</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setIsOfficial()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setIsOfficial</span><span class="nb-faded-text">(
+          boolean $official
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$official</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setIsRectoVerso()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setIsRectoVerso</span><span class="nb-faded-text">(
+          boolean $rectoVerso
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$rectoVerso</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setIsUnbookable()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setIsUnbookable</span><span class="nb-faded-text">(
+          boolean $unbookable
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setIsUnbookable()">\CudiBundle\Entity\Articles\Stock::setIsUnbookable()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$unbookable</th>
+<td>boolean</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setNbBlackAndWhite()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setNbBlackAndWhite</span><span class="nb-faded-text">(
+          int $nbBlackAndWhite
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$nbBlackAndWhite</th>
+<td>int</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setNbColored()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setNbColored</span><span class="nb-faded-text">(
+          int $nbColored
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$nbColored</th>
+<td>int</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_StockArticles_Internal.html#%5CCudiBundle%5CEntity%5CArticles%5CStockArticles%5CInternal">\CudiBundle\Entity\Articles\StockArticles\Internal</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setPurchasePrice()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setPurchasePrice</span><span class="nb-faded-text">(
+          float $purchasePrice
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setPurchasePrice()">\CudiBundle\Entity\Articles\Stock::setPurchasePrice()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$purchasePrice</th>
+<td>float</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setRemoved()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setRemoved</span><span class="nb-faded-text">(
+          boolean $removed
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::setRemoved()">\CudiBundle\Entity\Article::setRemoved()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setRemoved()">\CudiBundle\Entity\Articles\Stock::setRemoved()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$removed</th>
+<td>boolean</td>
+<td><em><p>Whether this item is removed or not</p></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setSellPrice()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setSellPrice</span><span class="nb-faded-text">(
+          float $sellPrice
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setSellPrice()">\CudiBundle\Entity\Articles\Stock::setSellPrice()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$sellPrice</th>
+<td>float</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setSellPriceMembers()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setSellPriceMembers</span><span class="nb-faded-text">(
+          float $sellPriceMembers
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setSellPriceMembers()">\CudiBundle\Entity\Articles\Stock::setSellPriceMembers()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$sellPriceMembers</th>
+<td>float</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setSupplier()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setSupplier</span><span class="nb-faded-text">(
+          <a href="db_CudiBundle_src_Entity_Supplier.html#%5CCudiBundle%5CEntity%5CSupplier">\CudiBundle\Entity\Supplier</a> $supplier
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setSupplier()">\CudiBundle\Entity\Articles\Stock::setSupplier()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$supplier</th>
+<td><a href="db_CudiBundle_src_Entity_Supplier.html#%5CCudiBundle%5CEntity%5CSupplier">\CudiBundle\Entity\Supplier</a></td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock">\CudiBundle\Entity\Articles\Stock</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setTitle()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setTitle</span><span class="nb-faded-text">(
+          string $title
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::setTitle()">\CudiBundle\Entity\Article::setTitle()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setTitle()">\CudiBundle\Entity\Articles\Stock::setTitle()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$title</th>
+<td>string</td>
+<td><em></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CudiBundle\Entity\Articles\StockArticles\Internal::setVersionNumber()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">setVersionNumber</span><span class="nb-faded-text">(
+          integer $versionNumber
+          )
+        </span>
+        :
+          <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description"></p>
+<small>Inherited from:
+                    <a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle::setVersionNumber()">\CudiBundle\Entity\Article::setVersionNumber()</a><a href="db_CudiBundle_src_Entity_Articles_Stock.html#%5CCudiBundle%5CEntity%5CArticles%5CStock::setVersionNumber()">\CudiBundle\Entity\Articles\Stock::setVersionNumber()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$versionNumber</th>
+<td>integer</td>
+<td><em><p>The version number of this article</p></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CudiBundle_src_Entity_Article.html#%5CCudiBundle%5CEntity%5CArticle">\CudiBundle\Entity\Article</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.18.1</a>.
+    </small></body></html>

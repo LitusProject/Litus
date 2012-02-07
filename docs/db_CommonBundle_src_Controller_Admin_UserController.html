@@ -1,0 +1,437 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DocBlox Documentation</title><link rel="stylesheet" href="css/jquery-ui.css" type="text/css"></link><link rel="stylesheet" href="css/docblox/jquery-ui-1.8.16.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.tools.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><div xmlns="" id="content">
+<script xmlns:dbx="http://docblox-project.org/xsl/functions">
+
+      function filterElements()
+      {
+        inherited = !$('#show-inherited').hasClass('deselected');
+        public    = !$('#show-public').hasClass('deselected');
+        protected = !$('#show-protected').hasClass('deselected');
+        private   = !$('#show-private').hasClass('deselected');
+
+        $('div.public').each(function(index, val) {
+            $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.protected').each(function(index, val) {
+            $(val).toggle(protected && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.private').each(function(index, val) {
+            $(val).toggle(private && !($(val).hasClass('inherited_from') && !inherited));
+        });
+      }
+
+      $(document).ready(function() {
+        $('a.gripper').click(function() {
+            $(this).nextAll('div.code-tabs').slideToggle();
+            $(this).children('img').toggle();
+            return false;
+        });
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').css('cursor', 'pointer');
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').click(function() {
+            $(this).parent().nextAll('div.code-tabs').slideToggle();
+            $(this).parent().prevAll('a.gripper').children('img').toggle();
+            return false;
+        });
+
+        $('div.code-tabs').hide();
+        $('a.gripper').show();
+        $('div.code-tabs:empty').prevAll('a.gripper').html('');
+
+        $('#show-public, #show-protected, #show-private, #show-inherited')
+            .css('cursor', 'pointer')
+            .click(function(){
+                $(this).toggleClass('deselected');
+                if ($(this).hasClass('deselected')) {
+                  $(this).fadeTo('fast', '0.4');
+                } else {
+                  $(this).fadeTo('fast', '1.0');
+                }
+                filterElements();
+                return false;
+            });
+        $('#show-protected, #show-private').click();
+
+        // add the sliding behaviour to the file navigation and show it
+        // it is initially hidden for non-JS users.
+        $("#file-nav-box").show().hover(function() {
+            $("#file-nav-container").slideDown(400);
+        }, function() {
+            $("#file-nav-container").slideUp(400);
+        });
+      });
+
+      
+    </script><h1 xmlns:dbx="http://docblox-project.org/xsl/functions" class="file">CommonBundle/src/Controller/Admin/UserController.php</h1>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" id="file-nav-box">
+<div id="file-nav-options">
+              Show:
+              <img src="images/icons/visibility_public.png" id="show-public"><img src="images/icons/visibility_protected.png" id="show-protected"><img src="images/icons/visibility_private.png" id="show-private"><span class="attribute" id="show-inherited">inherited</span>
+</div>
+<div id="file-nav-container">
+<ul id="file-nav"><li>
+<a href="#classes"><img src="images/icons/class.png" height="14">
+                          Classes
+                      </a><ul><li><a href="#%5CCommonBundle%5CController%5CAdmin%5CUserController">\CommonBundle\Controller\Admin\UserController</a></li></ul>
+</li></ul>
+<div style="clear: left;"></div>
+</div>
+<div id="file-nav-tab">
+              Table of Contents
+          </div>
+</div>
+<a xmlns:dbx="http://docblox-project.org/xsl/functions" name="top" class="anchor"></a><a name="classes" class="anchor"></a><a xmlns:dbx="http://docblox-project.org/xsl/functions" id="\CommonBundle\Controller\Admin\UserController" class="anchor"></a><h2 xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">\CommonBundle\Controller\Admin\UserController<div class="to-top"><a href="#top">jump to top</a></div>
+</h2>
+<div xmlns:dbx="http://docblox-project.org/xsl/functions" class="class">
+<small class="package"><b>Package: </b>Default</small><p class="short-description">User management.</p>
+<div class="long-description"></div>
+<dl class="class-info">
+<dt>Parent(s)</dt>
+<dd>
+<a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController">\CommonBundle\Component\Controller\ActionController</a>
+            &lt;
+            <a href="db_CommonBundle_src_Component_Controller_AuthenticationAware.html#%5CCommonBundle%5CComponent%5CController%5CAuthenticationAware" style="color: gray; font-size: 0.8em
+                ">\CommonBundle\Component\Controller\AuthenticationAware</a>
+</dd>
+<dt>Author</dt>
+<dd>
+<a href="mailto:pieter.maene@litus.cc">Pieter Maene</a>
+         
+    </dd>
+<dt>Autor</dt>
+<dd>Pieter Maene <pieter.maene@litus.cc>
+         
+    </dd>
+</dl>
+<h3>Methods</h3>
+<div>
+<a id="\CommonBundle\Controller\Admin\UserController::_getAcl()" class="anchor"></a><div class="method private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">_getAcl</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_CommonBundle_src_Component_Acl_Acl.html#%5CCommonBundle%5CComponent%5CAcl%5CAcl">\CommonBundle\Component\Acl\Acl</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Returns the ACL object</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::_getAcl()">\CommonBundle\Component\Controller\ActionController::_getAcl()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CommonBundle_src_Component_Acl_Acl.html#%5CCommonBundle%5CComponent%5CAcl%5CAcl">\CommonBundle\Component\Acl\Acl</a></td>
+<td></td>
+</tr>
+</table>
+<strong>Details</strong><dl class="function-info">
+<dt>TODO</dt>
+<dd>Figure out how Zend\Cache works
+         
+    </dd>
+</dl>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::_getUser()" class="anchor"></a><div class="method private">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">_getUser</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs"></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::_initControllerPlugins()" class="anchor"></a><div class="method private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">_initControllerPlugins</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Initializes our custom controller plugins.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::_initControllerPlugins()">\CommonBundle\Component\Controller\ActionController::_initControllerPlugins()</a></small>
+</div>
+<div class="code-tabs"><div class="long-description"></div></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::_initViewHelpers()" class="anchor"></a><div class="method private inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_private.png" style="margin-right: 5px" alt="private"><span class="highlight">_initViewHelpers</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Initializes our custom view helpers.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::_initViewHelpers()">\CommonBundle\Component\Controller\ActionController::_initViewHelpers()</a></small>
+</div>
+<div class="code-tabs"><div class="long-description"></div></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::addAction()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">addAction</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs"></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::deleteAction()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">deleteAction</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs"></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::editAction()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">editAction</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs"></div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::execute()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">execute</span><span class="nb-faded-text">(
+          \Zend\Mvc\MvcEvent $e
+          )
+        </span>
+        :
+          array</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Execute the request</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::execute()">\CommonBundle\Component\Controller\ActionController::execute()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$e</th>
+<td>\Zend\Mvc\MvcEvent</td>
+<td><em><p>The MVC event</p></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>array</td>
+<td></td>
+</tr>
+</table>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CommonBundle_src_Component_Controller_Exception_HasNoAccessException.html#%5CCommonBundle%5CComponent%5CController%5CException%5CHasNoAccessException">\CommonBundle\Component\Controller\Exception\HasNoAccessException</a></td>
+<td><em>The user does not have permissions to access this resource</em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::flush()" class="anchor"></a><div class="method protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">flush</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          bool</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Flushes the entity manager and catches ORM exceptions, which is then stored in a view variable.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::flush()">\CommonBundle\Component\Controller\ActionController::flush()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>bool</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::getAuthentication()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getAuthentication</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          <a href="db_CommonBundle_src_Component_Authentication_Authentication.html#%5CCommonBundle%5CComponent%5CAuthentication%5CAuthentication">\CommonBundle\Component\Authentication\Authentication</a></code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Returns the Authentication instance</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::getAuthentication()">\CommonBundle\Component\Controller\ActionController::getAuthentication()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CommonBundle_src_Component_Authentication_Authentication.html#%5CCommonBundle%5CComponent%5CAuthentication%5CAuthentication">\CommonBundle\Component\Authentication\Authentication</a></td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::getEntityManager()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getEntityManager</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          \Doctrine\ORM\EntityManager</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Singleton implementation for the Entity Manager, retrieved
+from the Zend Registry.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::getEntityManager()">\CommonBundle\Component\Controller\ActionController::getEntityManager()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>\Doctrine\ORM\EntityManager</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::getParam()" class="anchor"></a><div class="method public inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">getParam</span><span class="nb-faded-text">(
+          string $param, mixed $default
+              =
+              null
+          )
+        </span>
+        :
+          string</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Gets a parameter from a GET request.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::getParam()">\CommonBundle\Component\Controller\ActionController::getParam()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Parameters</strong><table class="argument-info">
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<th>$param</th>
+<td>string</td>
+<td><em><p>The parameter's key</p>
+</em></td>
+</tr>
+<tr>
+<th>$default</th>
+<td>mixed</td>
+<td><em><p>The default value, returned when the parameter is not found</p></em></td>
+</tr>
+</table>
+<strong>Returns</strong><table class="argument-info">
+<thead><tr>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td>string</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::initAjax()" class="anchor"></a><div class="method protected inherited_from ">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_protected.png" style="margin-right: 5px" alt="protected"><span class="highlight">initAjax</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description">
+<span class="attribute">inherited</span><p class="short_description">Does some initialization work for asynchronously requested actions.</p>
+<small>Inherited from:
+                    <a href="db_CommonBundle_src_Component_Controller_ActionController.html#%5CCommonBundle%5CComponent%5CController%5CActionController::initAjax()">\CommonBundle\Component\Controller\ActionController::initAjax()</a></small>
+</div>
+<div class="code-tabs">
+<div class="long-description"></div>
+<strong>Throws</strong><table class="argument-info">
+<thead><tr>
+<th>Exception</th>
+<th>Description</th>
+</tr></thead>
+<tr>
+<td><a href="db_CommonBundle_src_Component_Controller_Request_Exception_NoXmlHttpRequestException.html#%5CCommonBundle%5CComponent%5CController%5CRequest%5CException%5CNoXmlHttpRequestException">\CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException</a></td>
+<td><em>The method was not accessed by a XHR request</em></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+<a id="\CommonBundle\Controller\Admin\UserController::manageAction()" class="anchor"></a><div class="method public">
+<a href="#" class="gripper"><img src="images/icons/arrow_right.png"><img src="images/icons/arrow_down.png" style="display: none;"></a><code><img src="images/icons/method.png" alt="method"><img src="images/icons/visibility_public.png" style="margin-right: 5px" alt="public"><span class="highlight">manageAction</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+          void</code><div class="description"><p class="short_description"></p></div>
+<div class="code-tabs"></div>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.18.1</a>.
+    </small></body></html>
