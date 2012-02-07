@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Articles\StockArticles;
+namespace CudiBundle\Entity\Articles\StockArticles;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\StockArticles\Color")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\StockArticles\Color")
  * @Table(name="cudi.articles_stockarticles_color")
  */
 class Color

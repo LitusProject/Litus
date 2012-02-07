@@ -1,10 +1,10 @@
 <?php
 
-namespace Litus\Repository\Cudi\Sales;
+namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
 
-use Litus\Entity\Cudi\SaleApp\PollingData;
+	CudiBundle\Entity\SaleApp\PollingData;
 
 /**
  * ServingQueueItem
@@ -29,7 +29,7 @@ class ServingQueueItem extends EntityRepository
 
     public function getPollingData() {
         $pd = $this->getEntityManager()
-                  ->getRepository('\Litus\Entity\Cudi\SaleApp\PollingData')
+                  ->getRepository('CudiBundle\Entity\SaleApp\PollingData')
                   ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
         if( is_null($pd) ) {
            updatePollingData();
@@ -40,7 +40,7 @@ class ServingQueueItem extends EntityRepository
 
     public function updatePollingData() {
         $pd = $this->getEntityManager()
-                  ->getRepository('\Litus\Entity\Cudi\SaleApp\PollingData')
+                  ->getRepository('CudiBundle\Entity\SaleApp\PollingData')
                   ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
         if( is_null($pd) ) {
             $pd = new PollingData();

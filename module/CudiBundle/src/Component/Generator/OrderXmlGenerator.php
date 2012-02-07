@@ -1,27 +1,32 @@
 <?php
 
-namespace Litus\Cudi;
+namespace CudiBundle\Component\Generator;
 
-use \Litus\Entity\Cudi\Stock\Order;
+use CommonBundle\Entity\Stock\Order,
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Litus\Util\Xml\XmlGenerator;
-use \Litus\Util\Xml\XmlObject;
-use \Litus\Util\TmpFile;
-
-use \Zend\Registry;
+	CommonBundle\Component\Util\Xml\XmlGenerator,
+	CommonBundle\Component\Util\Xml\XmlObject,
+	CommonBundle\Component\Util\TmpFile,
+	
+	Doctrine\ORM\EntityManager;
 
 class OrderXmlGenerator
 {
 
 	/**
+	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
+	 */
+	private $_entityManager = null;
+	
+	/**
 	 * @var \Litus\Entity\Cudi\Stock\Order
 	 */
 	private $_order;
 	
-    public function __construct(Order $order)
+    public function __construct(EntityManager $entityManager, Order $order)
     {
     	$this->_order = $order;
+    	$this->_entityManager = $entityManager;
     }
 
 	public function generateArchive($archive)
@@ -46,7 +51,7 @@ class OrderXmlGenerator
 
     private function _generateXml($item, $tmpFile)
     {
-    	$configs = Registry::get(DoctrineResource::REGISTRY_KEY)
+    	$configs = $this->_entityManager
     		->getRepository('Litus\Entity\General\Config');
         
         $xml = new XmlGenerator($tmpFile);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi\SaleApp;
+namespace CudiBundle\Repository\SaleApp;
 
 use Doctrine\ORM\EntityRepository;
 

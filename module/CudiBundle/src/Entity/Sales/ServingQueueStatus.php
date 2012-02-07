@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\ServingQueueStatus")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\ServingQueueStatus")
  * @Table(name="cudi.sales_serving_queue_status")
  */
 class ServingQueueStatus

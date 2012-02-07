@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi\Articles;
+namespace CudiBundle\Repository\Articles;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -14,11 +14,11 @@
  */
  
 return array(
-	'controllers'  => array(),
-	'routes' => array(
-	    'cudibundle_admin_article' => array(
-	        '@admin_base_css',
-	        '@admin_base_js',
-	    ),
+	'controllers'  => array(
+		'cudibundle_admin_article' => array(
+		    '@admin_base_css',
+		    '@admin_base_js',
+		),
 	),
+	'routes' => array(),
 );

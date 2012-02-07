@@ -5,7 +5,14 @@ return array(
         'instance' => array(
             'alias' => array(
                 'cudibundle_admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
-            )
+            ),
+            'doctrine_config' => array(
+                'parameters' => array(
+                	'entityPaths' => array(
+                		'cudibundle' => __DIR__ . '/../../Entity',
+                	),
+                ),
+            ), 
         ),
     ),
     'routes' => array(

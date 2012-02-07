@@ -1,14 +1,13 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
-use \Litus\Entity\Cudi\Sales\BookingStatus;
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
+use CudiBundle\Entity\Sales\BookingStatus,
 
-use \Zend\Registry;
+	Doctrine\ORM\EntityManager;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\Booking")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
  * @Table(name="cudi.sales_booking")
  */
 class Booking
@@ -21,13 +20,13 @@ class Booking
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="person_id", referencedColumnName="id")
 	 */
 	private $person;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
@@ -71,7 +70,7 @@ class Booking
 		'booked', 'assigned', 'sold', 'expired'
 	);
 	
-	public function __construct($person, $article, $status, $number = 1)
+	public function __construct($entityManager, $person, $article, $status, $number = 1)
 	{
 		if (!isset($article))
 			throw new \InvalidArgumentException('The article is not valid.');
@@ -89,7 +88,7 @@ class Booking
 		$this->bookDate = new \DateTime();
 		
 		if ($article->canExpire()) {
-			$expireTime = Registry::get(DoctrineResource::REGISTRY_KEY)
+			$expireTime = $entityManager
 	            ->getRepository('Litus\Entity\General\Config')
 	            ->getConfigValue('cudi.reservation_expire_time');
 	
@@ -124,7 +123,7 @@ class Booking
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -132,9 +131,9 @@ class Booking
 	}
 	
 	/**
-	 * @param \Litus\Entity\Cudi\Article $article The new article of this booking
+	 * @param CudiBundle\Entity\Article $article The new article of this booking
 	 * 
-	 * @return \Litus\Entity\Cudi\Sales\Booking
+	 * @return CudiBundle\Entity\Sales\Booking
 	 */
 	public function setArticle($article)
 	{

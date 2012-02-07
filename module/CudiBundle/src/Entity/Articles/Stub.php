@@ -1,12 +1,12 @@
 <?php
 
-namespace Litus\Entity\Cudi\Articles;
+namespace CudiBundle\Entity\Articles;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\Stub")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\Stub")
  * @Table(name="cudi.articles_stub")
  */
-class Stub extends \Litus\Entity\Cudi\Article
+class Stub extends \CudiBundle\Entity\Article
 {
 	/**
 	 * @return boolean

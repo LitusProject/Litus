@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\SaleItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
  * @Table(name="cudi.sales_saleitem")
  */
 class SaleItem
@@ -16,19 +16,19 @@ class SaleItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\Session")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
 	 * @JoinColumn(name="session_id", referencedColumnName="id")
 	 */
 	private $session;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="person_id", referencedColumnName="id")
 	 */
 	private $person;
@@ -44,13 +44,13 @@ class SaleItem
 	private $price;
 	
 	/**
-	 * @OneToOne(targetEntity="\Litus\Entity\Cudi\Sales\Booking")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Booking")
 	 * @JoinColumn(name="booking", referencedColumnName="id")
 	 */
 	private $booking;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\ServingQueueItem")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueItem")
 	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
 	 */
 	private $servingQueueItem;

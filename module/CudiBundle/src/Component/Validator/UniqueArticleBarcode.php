@@ -1,15 +1,21 @@
 <?php
 
-namespace Litus\Validator;
+namespace CudiBundle\Component\Validator;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+use Doctrine\ORM\EntityManager;
 
 class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
    	
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+	
+	/**
+	 * @var mixed The ids to be ignored
+	 */
    	private $_ignoreIds = array();
 
     /**
@@ -21,8 +27,16 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The article barcode does already exist'
     );
     
-    public function __construct($ignoreIds = array()) {
-		$this->_ignoreIds = $ignoreIds;
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $ignoreIds The ids to be ignored
+     * @param mixed $opts The validator's options
+     */
+    public function __construct(EntityManager $entityManager, $ignoreIds = array(), $opts = null)
+    {
+    	parent::__construct($opts);
+    	
+    	$this->_entityManager = $entityManager;
     }
 
 
@@ -38,7 +52,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     {
         $this->_setValue($value);
 
-		$article = Registry::get(DoctrineResource::REGISTRY_KEY)
+		$article = $this->_entityManager
 			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 			->findOneByBarcode($value);
 

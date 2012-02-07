@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi;
+namespace CudiBundle\Entity;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\InventoryMap")
+ * @Entity(repositoryClass="CudiBundle\Repository\InventoryMap")
  * @Table(name="cudi.inventory_map")
  */
 class InventoryMap
@@ -16,13 +16,13 @@ class InventoryMap
     private $id;
 
     /**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Users\Person")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="person", referencedColumnName="id")
 	 */
 	private $person;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi;
+namespace CudiBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class File extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('f')
-			->from('Litus\Entity\Cudi\File', 'f')
+			->from('CudiBundle\Entity\File', 'f')
 			->where($query->expr()->eq('f.internalArticle', ':article'))
 			->setParameter('article', $article->getId())
 			->getQuery()

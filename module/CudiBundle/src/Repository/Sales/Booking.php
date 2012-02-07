@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi\Sales;
+namespace CudiBundle\Repository\Sales;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -17,7 +17,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->orderBy('b.bookDate', 'DESC')
 			->getQuery()
 			->getResult();
@@ -29,7 +29,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->where($query->expr()->eq('b.status', '\'booked\''))
 			->orderBy('b.bookDate', $order)
 			->getQuery()
@@ -42,7 +42,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->where($query->expr()->andX(
 					$query->expr()->eq('b.article', ':article'),
 					$query->expr()->eq('b.status', '\'booked\'')
@@ -60,7 +60,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->where($query->expr()->andX(
 					$query->expr()->eq('b.article', ':article'),
 					$query->expr()->eq('b.status', '\'assigned\'')
@@ -78,7 +78,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->where($query->expr()->andX(
 					$query->expr()->eq('b.article', ':article'),
 					$query->expr()->eq('b.status', '\'sold\'')
@@ -95,7 +95,7 @@ class Booking extends EntityRepository
 	public function expireBookings()
 	{
 		$bookings = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllBooked();
 		
 		foreach($bookings as $booking) {
@@ -108,7 +108,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			//->innerJoin('b.person', 'p', Join::WITH, $query->expr()->like($query->expr()->lower('p.firstName'), ':name'))
 			->innerJoin('b.person', 'p', Join::WITH, $query->expr()->orX(
 					$query->expr()->like(
@@ -138,7 +138,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->innerJoin('b.article', 'a', Join::WITH, $query->expr()->like($query->expr()->lower('a.title'), ':title'))
 			->setParameter('title', '%'.strtolower($title).'%')
 			->orderBy('b.bookDate', 'DESC')
@@ -152,7 +152,7 @@ class Booking extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
-			->from('Litus\Entity\Cudi\Sales\Booking', 'b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->where($query->expr()->like($query->expr()->lower('b.status'), ':status'))
 			->setParameter('status', '%'.strtolower($status).'%')
 			->orderBy('b.bookDate', 'DESC')

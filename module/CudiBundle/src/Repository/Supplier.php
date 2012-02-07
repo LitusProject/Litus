@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi;
+namespace CudiBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class Supplier extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('s')
-			->from('Litus\Entity\Cudi\Supplier', 's')
+			->from('CudiBundle\Entity\Supplier', 's')
 			->orderBy('s.name', 'ASC')
 			->getQuery()
 			->getResult();

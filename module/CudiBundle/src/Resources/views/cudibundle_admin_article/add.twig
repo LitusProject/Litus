@@ -1,0 +1,43 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudibundle_admin_article/partials/navigation.twig' %}
+	
+	<div id="flashmessenger">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	</div>
+	
+	<div id="controller_action">
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+	</div>
+	
+	{% block controller_script %}
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#internal').click(toggleInternal);
+				$('#stock').click(toggleStock);
+				toggleInternal();
+				toggleStock();
+			});
+			
+			function toggleInternal() {
+				if ($('#internal').is(':checked'))
+					$('#internal_form').show();
+				else
+					$('#internal_form').hide();
+			}
+			
+			function toggleStock() {
+				if ($('#stock').is(':checked')) {
+					$('#stock_form').show();
+					toggleInternal();
+				} else {
+					$('#stock_form, #internal_form').hide();
+					$('#internal').removeAttr("checked");
+				}
+			}
+		</script>
+	{% endblock %}
+{% endblock %}

@@ -1,17 +1,15 @@
 <?php
 
-namespace Litus\Entity\Cudi\Articles;
+namespace CudiBundle\Entity\Articles;
 
-use \Litus\Entity\Cudi\Stock\StockItem;
+use CudiBundle\Entity\Stock\StockItem,
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+	Doctrine\ORM\EntityManager;
 
 /**
  * @MappedSuperclass
  */
-abstract class Stock extends \Litus\Entity\Cudi\Article
+abstract class Stock extends \CudiBundle\Entity\Article
 {
     /**
      * @Column(name="purchase_price", type="bigint")
@@ -44,7 +42,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
     private $unbookable;
 
     /**
-     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
@@ -56,16 +54,16 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 
     /**
      * @param string $title The title of the article
-     * @param Litus\Entity\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      * @param bigint $purchase_price The purchase price of this article.
      * @param bigint $sellPrice The sell price of this article for non-members.
      * @param bigint $sellPriceMembers The sell price of this article for members.
      * @param smallint $barcode This article's barcode.
      * @param boolean $bookable Indicates whether the article can be booked.
      * @param boolean $unbookable Indicates whether the article can be unbooked.
-     * @param Litus\Entity\Cudi\Supplier $supplier The supplier of the stock item.
+     * @param CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
      */
-    public function __construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire)
+    public function __construct(EntityManager $entityManager, $title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire)
     {
         parent::__construct($title, $metaInfo);
 
@@ -79,7 +77,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 			->setCanExpire($canExpire);
 			
 		$stockItem = new StockItem($this);
-		Registry::get(DoctrineResource::REGISTRY_KEY)->persist($stockItem);
+		$entityManager->persist($stockItem);
     }
 
 	/**
@@ -93,7 +91,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param float $purchasePrice
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setPurchasePrice($purchasePrice)
 	{
@@ -112,7 +110,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param float $sellPrice
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setSellPrice($sellPrice)
 	{
@@ -131,7 +129,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param float $sellPriceMembers
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setSellPriceMembers($sellPriceMembers)
 	{
@@ -150,7 +148,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param int $barcode
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setBarcode($barcode)
 	{
@@ -159,7 +157,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Suppplier
+	 * @return CudiBundle\Entity\Suppplier
 	 */
 	public function getSupplier()
 	{
@@ -167,9 +165,9 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	}
 	
 	/**
-     * @param \Litus\Entity\Cudi\Supplier $supplier
+     * @param CudiBundle\Entity\Supplier $supplier
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setSupplier($supplier)
 	{
@@ -188,7 +186,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param boolean $canExpire
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setCanExpire($canExpire)
 	{
@@ -207,7 +205,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param boolean $bookable
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setIsBookable($bookable)
 	{
@@ -226,7 +224,7 @@ abstract class Stock extends \Litus\Entity\Cudi\Article
 	/**
      * @param boolean $unbookable
 	 *
-     * @return \Litus\Entity\Cudi\Articles\Stock
+     * @return CudiBundle\Entity\Articles\Stock
      */
 	public function setIsUnbookable($unbookable)
 	{

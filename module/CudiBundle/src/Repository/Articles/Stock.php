@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi\Articles;
+namespace CudiBundle\Repository\Articles;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class Stock extends EntityRepository
     {
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('s')
-			->from('Litus\Entity\Cudi\Articles\Stock', 's')
+			->from('CudiBundle\Entity\Articles\Stock', 's')
 			->where($query->expr()->eq('s.barcode', ':barcode'))
 			->setParameter('barcode', $barcode)
 			->setMaxResults(1)

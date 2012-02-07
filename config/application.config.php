@@ -20,6 +20,8 @@ return array(
     	'ZfTwig',
     	
         'CommonBundle',
+        'CudiBundle',
+        'SyllabusBundle'
     ),
     'module_listener_options' => array( 
         'config_cache_enabled' 	=> false,

@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\PayDesk")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\PayDesk")
  * @Table(name="cudi.sales_pay_desk")
  */
 class PayDesk

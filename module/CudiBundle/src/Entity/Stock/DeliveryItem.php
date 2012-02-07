@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Entity\Cudi\Stock;
+namespace CudiBundle\Entity\Stock;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\DeliveryItem")
@@ -16,7 +16,7 @@ class DeliveryItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
@@ -32,7 +32,7 @@ class DeliveryItem
 	private $number;
 	
 	/**
-	 * @param \Litus\Entity\Cudi\Article $article The article
+	 * @param CudiBundle\Entity\Article $article The article
 	 * @param integer $number The number of this article
 	 */
 	public function __construct($article, $number)
@@ -55,7 +55,7 @@ class DeliveryItem
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{

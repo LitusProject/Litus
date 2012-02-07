@@ -1,10 +1,8 @@
 <?php
  
-namespace Litus\Entity\Cudi\Stock;
+namespace CudiBundle\Entity\Stock;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+use Doctrine\ORM\EntityManager;
  
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\StockItem")
@@ -20,7 +18,7 @@ class StockItem
 	private $id;
 	
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article", inversedBy="stockItem")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Article", inversedBy="stockItem")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
@@ -47,7 +45,7 @@ class StockItem
 	/**
 	 * Return the article
 	 * 
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -85,10 +83,10 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getTotalOrdered()
+	public function getTotalOrdered(EntityManager $entityManager)
 	{
-		$total = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Stock\Order')
+		$total = $entityManager
+			->getRepository('CudiBundle\Entity\Stock\Order')
 			->getTotalOrdered($this->article);
 		
 		return $total;
@@ -105,10 +103,10 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getNumberQueueOrder()
+	public function getNumberQueueOrder(EntityManager $entityManager)
 	{
-		$item = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+		$item = $entityManager
+			->getRepository('CudiBundle\Entity\Stock\OrderItem')
 			->findOneOpenByArticle($this->article);
 		
 		if (null === $item)
@@ -120,20 +118,20 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getTotalDelivered()
+	public function getTotalDelivered(EntityManager $entityManager)
 	{
-		return Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
+		return $entityManager
+			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
 			->getTotalByArticle($this->article);
 	}
 	
 	/**
 	 * @return integer
 	 */
-	public function getNumberBooked()
+	public function getNumberBooked(EntityManager $entityManager)
 	{
-		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+		$booked = $entityManager
+			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllBookedByArticle($this->article);
 		
 		$number = 0;
@@ -146,10 +144,10 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getNumberAssigned()
+	public function getNumberAssigned(EntityManager $entityManager)
 	{
-		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+		$booked = $entityManager
+			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllAssignedByArticle($this->article);
 		
 		$number = 0;
@@ -162,10 +160,10 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getNumberSold()
+	public function getNumberSold(EntityManager $entityManager)
 	{
-		$booked = Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+		$booked = $entityManager
+			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllSoldByArticle($this->article);
 		
 		$number = 0;
@@ -178,8 +176,8 @@ class StockItem
 	/**
 	 * @return integer
 	 */
-	public function getNumberAvailable()
+	public function getNumberAvailable(EntityManager $entityManager)
 	{
-		return $this->numberInStock - $this->getNumberBooked();
+		return $this->numberInStock - $this->getNumberBooked($entityManager);
 	}
 }
