@@ -24,30 +24,6 @@ use CommonBundle\Form\Admin\Auth\Login as LoginForm;
  */
 class AuthController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function loginAction()
-    {
-        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
-        
-        if (!$isAuthenticated)
-            $form = new LoginForm();
-		            
-        return array(
-        	'isAuthenticated' => $isAuthenticated,
-        	'form' => $form
-        );
-    }
-
-    public function logoutAction()
-    {
-        $this->getAuthentication()->forget();
-
-        $this->redirect()->toRoute(
-        	'admin_auth'
-        );
-        
-        return;
-    }
-
 	public function authenticateAction()
     {
         $this->initAjax();
@@ -76,5 +52,29 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return array(
         	'authResult' => $authResult
         );
+    }
+
+    public function loginAction()
+    {
+        $isAuthenticated = $this->getAuthentication()->isAuthenticated();
+        
+        if (!$isAuthenticated)
+            $form = new LoginForm();
+		            
+        return array(
+        	'isAuthenticated' => $isAuthenticated,
+        	'form' => $form
+        );
+    }
+
+    public function logoutAction()
+    {
+        $this->getAuthentication()->forget();
+
+        $this->redirect()->toRoute(
+        	'admin_auth'
+        );
+        
+        return;
     }
 }

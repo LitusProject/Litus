@@ -80,7 +80,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
                 $this->getEntityManager()->persist($newUser);
                 
-                $form = new AddForm();
+                $form = new AddForm(
+                	$this->getEntityManager()
+                );
                 
                 $userCreated = true;
             }
@@ -96,29 +98,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No ID was given to identify the user that you wish to edit!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_user',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    
-        $user = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneById($this->getParam('id'));
-
+		$user = $this->_getUser();
+		
         $form = new EditForm(
         	$this->getEntityManager(), $user
         );
@@ -171,34 +152,13 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteAction()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No ID was given to identify the user that you wish to delete!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_user',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    
-        $user = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneById($this->getParam('id'));
+		$user = $this->_getUser();
         
         if (null !== $this->getParam('confirm')) {
         	if (1 == $this->getParam('confirm')) {
 	            $sessions = $this->getEntityManager()
 	                ->getRepository('CommonBundle\Entity\Users\Session')
-	                ->findByPerson($this->getRequest()->getParam('id'));
+	                ->findByPerson($user->getId());
 	            
 	            foreach ($sessions as $session) {
 	                $session->deactivate();
@@ -239,4 +199,51 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         	'user' => $user
         );
     }
+    
+    private function _getUser()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No ID was given to identify the user!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_user',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $user = $this->getEntityManager()
+	        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $user) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No user with the given ID was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_user',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $user;
+	}    
 }

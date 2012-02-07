@@ -249,6 +249,19 @@ abstract class Person
 
         return $this;
     }
+    
+    /**
+     * Removes the given role.
+     *
+     * @param \CommonBundle\Entity\Acl\Role $role The role that should be removed
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function removeRole(Role $role)
+    {
+    	$this->roles->removeElement($role);
+    	
+    	return $this;
+    }
 
     /**
      * @param string $firstName

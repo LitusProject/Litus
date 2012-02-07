@@ -54,74 +54,75 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		
         $field = new Text('username');
         $field->setLabel('Username')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new AlnumValidator())
-                ->addValidator(new UsernameValidator($this->_entityManager));
+        	->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlnumValidator())
+            ->addValidator(new UsernameValidator($this->_entityManager));
         $this->addElement($field);
 
         $field = new Password('credential');
         $field->setLabel('Password')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Password('verify_credential');
         $field->setLabel('Repeat Password')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new IdenticalFieldValidator('credential', 'Password'));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new IdenticalFieldValidator('credential', 'Password'));
         $this->addElement($field);
 
 		$field = new Text('first_name');
         $field->setLabel('First Name')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new AlphaValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlphaValidator());
         $this->addElement($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new AlphaValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlphaValidator());
         $this->addElement($field);
 
         $field = new Text('email');
         $field->setLabel('E-mail')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()))
-                ->addValidator(new EmailAddressValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new EmailAddressValidator());
         $this->addElement($field);
         
         $field = new Text('telephone');
         $field->setLabel('Phone Number')
-                ->setRequired()
-                ->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setAttrib('placeholder', '+CC AAA NNNNNN')
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
 		$field = new Select('sex');
 		$field->setLabel('Sex')
-				->setRequired()
-				->setMultiOptions(
-						array(
-							'm' => 'M',
-							'f' => 'F'
-						)
+			->setRequired()
+			->setMultiOptions(
+					array(
+						'm' => 'M',
+						'f' => 'F'
 					)
-				->setDecorators(array(new FieldDecorator()));
+				)
+			->setDecorators(array(new FieldDecorator()));
 		$this->addElement($field);
 
         $field = new Multiselect('roles');
         $field->setLabel('Groups')
-                ->setMultiOptions($this->_createRolesArray())
-                ->setDecorators(array(new FieldDecorator()));
+            ->setMultiOptions($this->_createRolesArray())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'users_add')
-                ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'users_add')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
 	

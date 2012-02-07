@@ -27,7 +27,7 @@ use Zend\Authentication\Adapter,
 class Authentication
 {
 	/**
-     * @var \Litus\Authentication\Adapter\Doctrine The authentication adapter
+     * @var \CommonBundle\Component\Authentication\Adapter\Doctrine The authentication adapter
      */
 	private $_adapter = null;
 	
@@ -37,7 +37,7 @@ class Authentication
 	private $_service = null;
 	
 	/**
-     * @var \Litus\Authentication\Result The authentication result
+     * @var \CommonBundle\Component\Authentication\Result The authentication result
      */
 	private $_result = null;
 	

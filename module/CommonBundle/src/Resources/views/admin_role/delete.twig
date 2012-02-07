@@ -1,0 +1,25 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_role/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+		<div class="flashmessage error_message full_width">
+	        <div class="title">Warning</div>
+	        <div class="content">
+	            <p>
+	                You are about to delete the following role: <b>{{ role.getName() }}</b>?
+	                Please note that this operation cannot be undone!
+	            </p>
+	
+	            <p>
+	                Are you sure you want to continue?<br />
+	                <a href="{{ url('admin_role', {"action": "delete", "name": getParam('name'), "confirm": "1"}) }}">Yes</a>
+	                <a href="{{ url('admin_role', {"action": "delete", "name": getParam('name'), "confirm": "0"}) }}">No</a>
+	            </p>
+	        </div>
+	    </div>
+	</div>
+{% endblock %}
