@@ -16,6 +16,7 @@
 namespace CommonBundle\Entity\Acl;
 
 use CommonBundle\Component\Acl\Acl,
+	CommonBundle\Entity\Acl\Action,
 	Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -118,6 +119,17 @@ class Role
 	public function getActions()
 	{
 	    return $this->actions->toArray();
+	}
+	
+	/**
+	 * Allow this role access to the given action.
+	 *
+	 * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
+	 * @return \CommonBundle\Entity\Acl\Role
+	 */
+	public function allow(Action $action)
+	{
+		$this->actions->add($action);
 	}
 
     /**

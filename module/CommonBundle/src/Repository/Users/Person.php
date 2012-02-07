@@ -24,4 +24,13 @@ class Person extends EntityRepository
 
         return null;
     }
+    
+    public function findByRole($role)
+    {
+    	$resultSet = $this->_em
+    	    ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
+    	    ->getResult();
+    	    
+    	return $resultSet;
+    }
 }
