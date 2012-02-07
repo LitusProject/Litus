@@ -1,11 +1,11 @@
 <?php
 
-namespace Litus\Repository\Cudi\Stock;
+namespace CudiBundle\Repository\Stock;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
-
-use \Zend\Mail\Mail;
+use Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join,
+	
+	Zend\Mail\Mail;
 
 /**
  * StockItem
@@ -20,7 +20,7 @@ class StockItem extends EntityRepository
 		if (sizeof($criteria) == 0) {
 			$query = $this->_em->createQueryBuilder();
 			return $query->select('i')
-				->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+				->from('CudiBundle\Entity\Stock\StockItem', 'i')
 				->innerJoin('i.article', 'a', Join::WITH, $query->expr()->eq('a.removed', 'false'))
 				->getQuery()
 				->getResult();
@@ -32,11 +32,11 @@ class StockItem extends EntityRepository
 	public function findOneByBarcode($barcode)
     {
         $article = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Articles\StockArticles\External')
+			->getRepository('CudiBundle\Entity\Articles\StockArticles\External')
 			->findOneByBarcode($barcode);
 		if (null == $article) {
 			$article = $this->getEntityManager()
-				->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Internal')
+				->getRepository('CudiBundle\Entity\Articles\StockArticles\Internal')
 				->findOneByBarcode($barcode);
 		}
 		
@@ -47,7 +47,7 @@ class StockItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->from('CudiBundle\Entity\Stock\StockItem', 'i')
 			->where($query->expr()->gt('i.numberInStock', 0))
 			->getQuery()
 			->getResult();
@@ -59,7 +59,7 @@ class StockItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->from('CudiBundle\Entity\Stock\StockItem', 'i')
 			->innerJoin('i.article', 'a', Join::WITH, $query->expr()->andX(
 					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
 					$query->expr()->eq('a.removed', 'false')
@@ -77,7 +77,7 @@ class StockItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$internal = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\Internal', 'a')
 			->where($query->expr()->andX(
 					$query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'),
 					$query->expr()->eq('a.removed', 'false')
@@ -89,7 +89,7 @@ class StockItem extends EntityRepository
 			
 		$query = $this->_em->createQueryBuilder();
 		$external = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\External', 'a')
 			->where($query->expr()->andX(
 					$query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode'),
 					$query->expr()->eq('a.removed', 'false')
@@ -110,7 +110,7 @@ class StockItem extends EntityRepository
 
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->from('CudiBundle\Entity\Stock\StockItem', 'i')
 			->innerJoin('i.article', 'a')
 			->where($query->expr()->in('a.id', $ids))
 			->orderBy('a.title', 'ASC')
@@ -124,7 +124,7 @@ class StockItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$internal = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\Internal', 'a')
 			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
 			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('supplier', '%'.strtolower($supplier).'%')
@@ -133,7 +133,7 @@ class StockItem extends EntityRepository
 			
 		$query = $this->_em->createQueryBuilder();
 		$external = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\External', 'a')
 			->innerJoin('a.supplier', 's', Join::WITH, $query->expr()->like($query->expr()->lower('s.name'), ':supplier'))
 			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('supplier', '%'.strtolower($supplier).'%')
@@ -151,7 +151,7 @@ class StockItem extends EntityRepository
 
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\StockItem', 'i')
+			->from('CudiBundle\Entity\Stock\StockItem', 'i')
 			->innerJoin('i.article', 'a')
 			->where($query->expr()->in('a.id', $ids))
 			->orderBy('a.title', 'ASC')
@@ -164,12 +164,12 @@ class StockItem extends EntityRepository
 	public function assignAll()
 	{
 		$this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Sales\Booking')
+			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->expireBookings();
 		$this->getEntityManager()->flush();
 	
 		$items = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+			->getRepository('CudiBundle\Entity\Stock\StockItem')
 			->findAllInStock();
 		$counter = 0;
 		
@@ -177,7 +177,7 @@ class StockItem extends EntityRepository
 		
 		foreach($items as $item) {
 			$bookings = $this->getEntityManager()
-				->getRepository('Litus\Entity\Cudi\Sales\Booking')
+				->getRepository('CudiBundle\Entity\Sales\Booking')
 				->findAllBookedByArticle($item->getArticle(), 'ASC');
 			
 			$now = new \DateTime();
@@ -199,19 +199,19 @@ class StockItem extends EntityRepository
 		}
 		
 		$email = $this->_em
-			->getRepository('Litus\Entity\General\Config')
+			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.booking_assigned_mail');
 			
 		$subject = $this->_em
-			->getRepository('Litus\Entity\General\Config')
+			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.booking_assigned_mail_subject');
 			
 		$mailaddress = $this->_em
-			->getRepository('Litus\Entity\General\Config')
+			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail');
 			
 		$mailname = $this->_em
-			->getRepository('Litus\Entity\General\Config')
+			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail_name');
 		
 		foreach($persons as $person) {

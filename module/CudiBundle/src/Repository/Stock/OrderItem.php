@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Repository\Cudi\Stock;
+namespace CudiBundle\Repository\Stock;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join;
 
 /**
  * OrderItem
@@ -17,7 +17,7 @@ class OrderItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->from('CudiBundle\Entity\Stock\OrderItem', 'i')
 			->where($query->expr()->andX(
 				$query->expr()->eq('i.article', ':article'),
 				$query->expr()->eq('i.order', ':order')
@@ -38,7 +38,7 @@ class OrderItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->from('CudiBundle\Entity\Stock\OrderItem', 'i')
 			->where($query->expr()->andX(
 				$query->expr()->eq('i.article', ':article')
 			))
@@ -62,14 +62,14 @@ class OrderItem extends EntityRepository
 			$item->setNumber($item->getNumber()+$number);
 		} else {
 			$order = $this->_em
-				->getRepository('Litus\Entity\Cudi\Stock\Order')
+				->getRepository('CudiBundle\Entity\Stock\Order')
 				->findOneOpenBySupplier($article->getSupplier());
 			if (null === $order) {
-				$order = new \Litus\Entity\Cudi\Stock\Order($article->getSupplier());
+				$order = new \CudiBundle\Entity\Stock\Order($article->getSupplier());
                 $this->_em->persist($order);
 			}
 			
-			$item = new \Litus\Entity\Cudi\Stock\OrderItem($article, $order, $number);
+			$item = new \CudiBundle\Entity\Stock\OrderItem($article, $order, $number);
             $this->_em->persist($item);
 		}
 		

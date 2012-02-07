@@ -1,11 +1,11 @@
 <?php
 
-namespace Litus\Entity\Cudi\Articles;
+namespace CudiBundle\Entity\Articles;
 
-use Litus\Entity\Cudi\Article;
+use CudiBundle\Entity\Article;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\MetaInfo")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\MetaInfo")
  * @Table(name="cudi.articles_metainfo")
  */
 class MetaInfo
@@ -18,7 +18,7 @@ class MetaInfo
 	private $id;
 	
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
@@ -79,7 +79,7 @@ class MetaInfo
 	/**
      * @param string $authors
 	 *
-     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     * @return \CudiBundle\Entity\Articles\MetaInfo
      */
 	public function setAuthors($authors)
 	{
@@ -98,7 +98,7 @@ class MetaInfo
 	/**
      * @param string $publishers
 	 *
-     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     * @return \CudiBundle\Entity\Articles\MetaInfo
      */
 	public function setPublishers($publishers)
 	{
@@ -117,7 +117,7 @@ class MetaInfo
 	/**
      * @param string $yearPublished
 	 *
-     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     * @return \CudiBundle\Entity\Articles\MetaInfo
      */
 	public function setYearPublished($yearPublished)
 	{

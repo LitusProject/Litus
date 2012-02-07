@@ -1,17 +1,14 @@
 <?php
 
-namespace Litus\Cudi;
+namespace CudiBundle\Component\Generator;
 
-use \Litus\Entity\Cudi\Stock\Order;
+use CommonBundle\Entity\Stock\Order,
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Litus\Util\Xml\XmlGenerator;
-use \Litus\Util\Xml\XmlObject;
-use \Litus\Util\TmpFile;
+	CommonBundle\Component\Util\Xml\XmlGenerator,
+	CommonBundle\Component\Util\Xml\XmlObject,
+	CommonBundle\Component\Util\TmpFile;
 
-use \Zend\Registry;
-
-class OrderPdfGenerator extends \Litus\Br\DocumentGenerator
+class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenerator
 {
 
 	/**
@@ -40,7 +37,7 @@ class OrderPdfGenerator extends \Litus\Br\DocumentGenerator
         $logo = $configs->getConfigValue('cudi.union_logo');
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
-        $person = Registry::get(DoctrineResource::REGISTRY_KEY)
+        $person = $this->getEntityManager()
         	->getRepository('Litus\Entity\Users\Person')
         	->findOneById($configs->getConfigValue('cudi.person'));
 

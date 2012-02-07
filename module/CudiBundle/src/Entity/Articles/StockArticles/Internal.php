@@ -1,16 +1,14 @@
 <?php
 
-namespace Litus\Entity\Cudi\Articles\StockArticles;
+namespace CudiBundle\Entity\Articles\StockArticles;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+use Doctrine\ORM\EntityManager;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Articles\StockArticles\Internal")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\StockArticles\Internal")
  * @Table(name="cudi.articles_stockarticles_internal")
  */
-class Internal extends \Litus\Entity\Cudi\Articles\Stock
+class Internal extends \CudiBundle\Entity\Articles\Stock
 {
 	/**
 	 * @Column(name="nb_black_and_white", type="smallint")
@@ -23,7 +21,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	private $nbColored;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Articles\StockArticles\Binding")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Binding")
 	 * @JoinColumn(name="binding", referencedColumnName="id")
 	 */
 	private $binding;
@@ -39,7 +37,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	private $rectoVerso;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Articles\StockArticles\Color")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Color")
 	 * @JoinColumn(name="front_page_color", referencedColumnName="id")
 	 */
 	private $frontPageColor;
@@ -83,7 +81,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	/**
 	 * @param int $nbBlackAndWhite
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setNbBlackAndWhite($nbBlackAndWhite)
 	{
@@ -102,7 +100,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	/**
 	 * @param int $nbColored
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setNbColored($nbColored)
 	{
@@ -111,7 +109,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	}
 	
 	/**
-	 * @return Litus\Entity\Cudi\Articles\StockArticle\Binding
+	 * @return CudiBundle\Entity\Articles\StockArticle\Binding
 	 */
 	public function getBinding()
 	{
@@ -119,9 +117,9 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	}
 	
 	/**
-	 * @param \Litus\Entity\Cudi\Articles\StockArticles\Binding $binding
+	 * @param CudiBundle\Entity\Articles\StockArticles\Binding $binding
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setBinding($binding)
 	{
@@ -140,7 +138,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	/**
 	 * @param boolean $official
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setIsOfficial($official)
 	{
@@ -159,7 +157,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	/**
 	 * @param boolean $rectoVerso
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setIsRectoVerso($rectoVerso)
 	{
@@ -168,7 +166,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	}
 	
 	/**
-	 * @return Litus\Entity\Cudi\Articles\StockArticle\Color
+	 * @return CudiBundle\Entity\Articles\StockArticle\Color
 	 */
 	public function getFrontColor()
 	{
@@ -176,9 +174,9 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	}
 	
 	/**
-	 * @param \Litus\Entity\Cudi\Articles\StockArticles\Color $frontPageColor
+	 * @param CudiBundle\Entity\Articles\StockArticles\Color $frontPageColor
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setFrontColor($frontPageColor)
 	{
@@ -197,7 +195,7 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 	/**
 	 * @param boolean $frontPageTextColored
 	 *
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setFrontPageTextColored($frontPageTextColored)
 	{
@@ -212,10 +210,10 @@ class Internal extends \Litus\Entity\Cudi\Articles\Stock
 		return $this->getNbBlackAndWhite() + $this->getNbColored();
 	}
 	
-	public function getFiles()
+	public function getFiles(EntityManager $entityManager)
 	{
-		return Registry::get(DoctrineResource::REGISTRY_KEY)
-			->getRepository('Litus\Entity\Cudi\File')
+		return $entityManager
+			->getRepository('CudiBundle\Entity\File')
 			->findAllByArticle($this);
 	}
 }

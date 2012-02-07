@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\Session")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
  * @Table(name="cudi.sales_session")
  */
 class Session
@@ -26,19 +26,19 @@ class Session
 	private $closeDate;
 	
 	/**
-	 * @OneToOne(targetEntity="\Litus\Entity\General\Bank\CashRegister")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
 	 * @JoinColumn(name="open_amount", referencedColumnName="id")
 	 */
 	private $openAmount;
 	
 	/**
-	 * @OneToOne(targetEntity="\Litus\Entity\General\Bank\CashRegister")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
 	 * @JoinColumn(name="close_amount", referencedColumnName="id")
 	 */
 	private $closeAmount;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="manager", referencedColumnName="id")
 	 */
 	private $manager;

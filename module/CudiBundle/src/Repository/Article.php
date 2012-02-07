@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Cudi;
+namespace CudiBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -17,7 +17,7 @@ class Article extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
-			->from('Litus\Entity\Cudi\Article', 'a')
+			->from('CudiBundle\Entity\Article', 'a')
 			->where($query->expr()->eq('a.removed', 'false'))
 			->getQuery()
 			->getResult();
@@ -29,7 +29,7 @@ class Article extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
-			->from('Litus\Entity\Cudi\Article', 'a')
+			->from('CudiBundle\Entity\Article', 'a')
 			->where($query->expr()->andX(
 					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
 					$query->expr()->eq('a.removed', 'false')
@@ -47,7 +47,7 @@ class Article extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
-			->from('Litus\Entity\Cudi\Article', 'a')
+			->from('CudiBundle\Entity\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.authors'), ':author'))
 			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('author', '%'.strtolower($author).'%')
@@ -62,7 +62,7 @@ class Article extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
-			->from('Litus\Entity\Cudi\Article', 'a')
+			->from('CudiBundle\Entity\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'))
 			->where($query->expr()->eq('a.removed', 'false'))
 			->setParameter('publisher', '%'.strtolower($publisher).'%')

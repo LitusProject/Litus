@@ -15,24 +15,24 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManage,
 
-use \Admin\Form\Article\Add;
-use \Admin\Form\Article\Edit;
-use \Admin\Form\Article\NewVersion;
-use \Admin\Form\Article\File as FileForm;
-
-use \Litus\Entity\Cudi\File;
-use \Litus\Entity\Cudi\Articles\Stub;
-use \Litus\Entity\Cudi\Articles\StockArticles\Internal;
-use \Litus\Entity\Cudi\Articles\MetaInfo;
-use \Litus\Entity\Cudi\Articles\StockArticles\External;
-use \Litus\Entity\Cudi\Articles\ArticleHistory;
-
-use \Litus\FlashMessenger\FlashMessage;
-
-use \Zend\Json\Json;
-use \Zend\File\Transfer\Adapter\Http as FileUpload;
+	CudiBundle\Form\Admin\Article\Add as AddForm,
+	CudiBundle\Form\Admin\Article\Edit as EditForm,
+	CudiBundle\Form\Admin\Article\NewVersion as NewVersionForm,
+	CudiBundle\Form\Admin\Article\File as FileForm,
+	
+	CudiBundle\Entity\File,
+	CudiBundle\Entity\Articles\Stub,
+	CudiBundle\Entity\Articles\StockArticles\Internal,
+	CudiBundle\Entity\Articles\MetaInfo,
+	CudiBundle\Entity\Articles\StockArticles\External,
+	CudiBundle\Entity\Articles\ArticleHistory,
+	
+	CommonBundle\Component\FlashMessenger\FlashMessage,
+	
+	Zend\Json\Json,
+	Zend\File\Transfer\Adapter\Http as FileUpload;
 
 /**
  *
@@ -45,7 +45,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function addAction()
     {
-        $form = new Add();
+        $form = new AddForm($this->getEntityManager());
          
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -58,17 +58,17 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 				
 				$supplier = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Supplier')
+					->getRepository('CudiBundle\Entity\Supplier')
 					->findOneById($formData['supplier']);
 				
 				if ($formData['stock']) {
 					if ($formData['internal']) {
 						$binding = $this->getEntityManager()
-							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+							->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
 							->findOneById($formData['binding']);
 
 						$frontColor = $this->getEntityManager()
-							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+							->getRepository('CudiBundle\Entity\Articles\StockArticles\Color')
 							->findOneById($formData['front_color']);
 
 		                $article = new Internal(
@@ -133,8 +133,9 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     
     public function manageAction()
 	{
-		$paginator = $this->_createPaginator(
-            'Litus\Entity\Cudi\Article',
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Article',
+            $this->getParam('page'),
             array(
                 'removed' => false
             )
@@ -148,13 +149,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function editAction()
 	{
 		$article = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')
+            ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $article)
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
-		$form = new Edit();
+		$form = new EditForm();
 		$form->populate($article);
 
         $this->view->form = $form;
@@ -172,7 +173,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 				
 				if ($formData['stock']) {
 					$supplier = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Supplier')
+						->getRepository('CudiBundle\Entity\Supplier')
 						->findOneById($formData['supplier']);
 						
 					$article->setIsBookable($formData['bookable'])
@@ -183,11 +184,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 				
 				if ($formData['internal']) {
 					$binding = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+						->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
 						->findOneById($formData['binding']);
 
 					$frontColor = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+						->getRepository('CudiBundle\Entity\Articles\StockArticles\Color')
 						->findOneById($formData['front_color']);
 						
 					$article->setNbBlackAndWhite($formData['nb_black_and_white'])
@@ -215,7 +216,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     public function deleteAction()
 	{
 		$article = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')
+            ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getRequest()->getParam('id'));
 
 		if (null == $article)
@@ -256,17 +257,17 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		switch($this->getRequest()->getParam('field')) {
 			case 'title':
 				$articles = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Article')
+					->getRepository('CudiBundle\Entity\Article')
 					->findAllByTitle($this->getRequest()->getParam('string'));
 				break;
 			case 'author':
 				$articles = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Article')
+					->getRepository('CudiBundle\Entity\Article')
 					->findAllByAuthor($this->getRequest()->getParam('string'));
 				break;
 			case 'publisher':
 				$articles = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Article')
+					->getRepository('CudiBundle\Entity\Article')
 					->findAllByPublisher($this->getRequest()->getParam('string'));
 				break;
 		}
@@ -290,7 +291,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
 
 		$article = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')
+            ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $article)
@@ -334,7 +335,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function deletefileAction()
 	{
 		$file = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\File')
+            ->getRepository('CudiBundle\Entity\File')
             ->findOneById($this->getRequest()->getParam('id'));
 
 		if (null == $file)
@@ -366,7 +367,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		$this->broker('viewRenderer')->setNoRender();
 		
 		$file = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\File')
+            ->getRepository('CudiBundle\Entity\File')
             ->findOneById($this->getRequest()->getParam('id'));
 
 		if (null == $file)
@@ -385,13 +386,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function newversionAction()
 	{
 		$article = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Article')
+            ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $article)
 			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
 		
-		$form = new NewVersion();
+		$form = new NewVersionForm();
 		$form->populate($article);
 
         $this->view->form = $form;
@@ -408,17 +409,17 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 				
 				$supplier = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Supplier')
+					->getRepository('CudiBundle\Entity\Supplier')
 					->findOneById($formData['supplier']);
 				
 				if ($formData['stock']) {
 					if ($formData['internal']) {
 						$binding = $this->getEntityManager()
-							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Binding')
+							->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
 							->findOneById($formData['binding']);
 
 						$frontColor = $this->getEntityManager()
-							->getRepository('Litus\Entity\Cudi\Articles\StockArticles\Color')
+							->getRepository('CudiBundle\Entity\Articles\StockArticles\Color')
 							->findOneById($formData['front_color']);
 
 		                $newVersion = new Internal(

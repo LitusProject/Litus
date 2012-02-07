@@ -1,12 +1,12 @@
 <?php
 
-namespace Litus\Entity\Cudi\SaleApp;
+namespace CudiBundle\Entity\SaleApp;
 
 use \DateTime;
 
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\SaleApp\PollingData")
+ * @Entity(repositoryClass="CudiBundle\Repository\SaleApp\PollingData")
  * @Table(name="cudi.saleapp_polling_data")
  */
 class PollingData

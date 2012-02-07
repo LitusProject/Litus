@@ -45,22 +45,28 @@ class CommonBundleEntityAclRoleProxy extends \CommonBundle\Entity\Acl\Role imple
         return parent::getName();
     }
 
+    public function setParents(array $parents)
+    {
+        $this->__load();
+        return parent::setParents($parents);
+    }
+
     public function getParents()
     {
         $this->__load();
         return parent::getParents();
     }
 
+    public function setActions(array $actions)
+    {
+        $this->__load();
+        return parent::setActions($actions);
+    }
+
     public function getActions()
     {
         $this->__load();
         return parent::getActions();
-    }
-
-    public function allow(\CommonBundle\Entity\Acl\Action $action)
-    {
-        $this->__load();
-        return parent::allow($action);
     }
 
     public function isAllowed(\CommonBundle\Component\Acl\Acl $acl, $resource, $action)

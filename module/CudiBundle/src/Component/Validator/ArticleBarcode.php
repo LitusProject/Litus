@@ -1,14 +1,17 @@
 <?php
 
-namespace Litus\Validator;
+namespace CudiBundle\Component\Validator;
 
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-use \Zend\Registry;
+use Doctrine\ORM\EntityManager;
 
 class ArticleBarcode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
+    
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
 
     /**
      * Error messages
@@ -18,6 +21,17 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::NOT_VALID => 'The article barcode does not exist'
     );
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
+    public function __construct(EntityManager $entityManager, $opts = null)
+    {
+    	parent::__construct($opts);
+    	
+    	$this->_entityManager = $entityManager;
+    }
 
 
     /**
@@ -32,7 +46,7 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     {
         $this->_setValue($value);
 
-		$article = Registry::get(DoctrineResource::REGISTRY_KEY)
+		$article = $this->_entityManager
 			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
 			->findOneByBarcode($value);
 		

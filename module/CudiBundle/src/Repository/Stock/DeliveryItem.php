@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Repository\Cudi\Stock;
+namespace CudiBundle\Repository\Stock;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join;
 
 /**
  * DeliveryItem
@@ -17,7 +17,7 @@ class DeliveryItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\DeliveryItem', 'i')
+			->from('CudiBundle\Entity\Stock\DeliveryItem', 'i')
 			->where($query->expr()->eq('i.article', ':article'))
 			->setParameter('article', $article->getId())
 			->getQuery()
@@ -34,7 +34,7 @@ class DeliveryItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\DeliveryItem', 'i')
+			->from('CudiBundle\Entity\Stock\DeliveryItem', 'i')
 			->orderBy('i.date', 'DESC')
 			->setMaxResults($number)
 			->getQuery()
@@ -47,7 +47,7 @@ class DeliveryItem extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$internal = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\Internal', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\Internal', 'a')
 			->where($query->expr()->eq('a.supplier', ':supplier'))
 			->setParameter('supplier', $supplier->getId())
 			->getQuery()
@@ -55,7 +55,7 @@ class DeliveryItem extends EntityRepository
 			
 		$query = $this->_em->createQueryBuilder();
 		$external = $query->select('a.id')
-			->from('Litus\Entity\Cudi\Articles\StockArticles\External', 'a')
+			->from('CudiBundle\Entity\Articles\StockArticles\External', 'a')
 			->where($query->expr()->eq('a.supplier', ':supplier'))
 			->setParameter('supplier', $supplier->getId())
 			->getQuery()
@@ -72,7 +72,7 @@ class DeliveryItem extends EntityRepository
 
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\DeliveryItem', 'i')
+			->from('CudiBundle\Entity\Stock\DeliveryItem', 'i')
 			->where($query->expr()->in('i.article', $ids))
 			->orderBy('i.date', 'DESC')
 			->getQuery()

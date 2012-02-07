@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi;
+namespace CudiBundle\Entity;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\File")
+ * @Entity(repositoryClass="CudiBundle\Repository\File")
  * @Table(name="cudi.file")
  */
 class File
@@ -31,7 +31,7 @@ class File
 	private $description;
 	
 	/**
-	 * @ManyToOne(targetEntity="Litus\Entity\Cudi\Articles\StockArticles\Internal")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Internal")
      * @JoinColumn(name="internal_article", referencedColumnName="id")
 	 */
 	private $internalArticle;
@@ -63,7 +63,7 @@ class File
 	/** 
 	 * @param string $path
 	 *
-	 * @return \Litus\Entity\Cudi\File
+	 * @return CudiBundle\Entity\File
 	 */
 	public function setPath($path)
 	{
@@ -81,7 +81,7 @@ class File
 	/** 
 	 * @param string $name
 	 *
-	 * @return \Litus\Entity\Cudi\File
+	 * @return CudiBundle\Entity\File
 	 */
 	public function setName($name)
 	{
@@ -99,7 +99,7 @@ class File
 	/** 
 	 * @param string $description
 	 *
-	 * @return \Litus\Entity\Cudi\File
+	 * @return CudiBundle\Entity\CudiBundle\File
 	 */
 	public function setDescription($description)
 	{
@@ -107,7 +107,7 @@ class File
 	}
 	
 	/** 
-	 * @return \Litus\Entity\Cudi\Articles\StockArticles\Internal
+	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function getInternalArticle()
 	{
@@ -115,9 +115,9 @@ class File
 	}
 	
 	/** 
-	 * @param \Litus\Entity\Cudi\Articles\StockArticles\Internal $internalArticle
+	 * @param CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
 	 *
-	 * @return \Litus\Entity\Cudi\File
+	 * @return CudiBundle\Entity\File
 	 */
 	public function setInternalArticle($internalArticle)
 	{

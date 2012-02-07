@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Entity\Cudi\Stock;
+namespace CudiBundle\Entity\Stock;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\OrderItem")
@@ -16,13 +16,13 @@ class OrderItem
 	private $id;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
-	 * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Stock\Order", inversedBy="orderItems")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order", inversedBy="orderItems")
 	 * @JoinColumn(name="order_id", referencedColumnName="id")
 	 */
 	private $order;
@@ -35,8 +35,8 @@ class OrderItem
 	/**
 	 * Create a new order item.
 	 *
-	 * @param \Litus\Entity\Cudi\Article $article The stock Item
-	 * @param \Litus\Entity\Cudi\Stock\Order $order The order
+	 * @param CudiBundle\Entity\Article $article The stock Item
+	 * @param CudiBundle\Entity\Stock\Order $order The order
 	 * @param integer $number The number of items
 	 */
 	public function __construct($article, $order, $number)
@@ -55,7 +55,7 @@ class OrderItem
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Stock\Order
+	 * @return CudiBundle\Entity\Stock\Order
 	 */
 	public function getOrder()
 	{
@@ -63,7 +63,7 @@ class OrderItem
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -71,9 +71,9 @@ class OrderItem
 	}
 	
 	/**
-	 * @param \Litus\Entity\Cudi\Article $article The new article of this order
+	 * @param CudiBundle\Entity\Article $article The new article of this order
 	 * 
-	 * @return \Litus\Entity\Cudi\Stock\OrderItem
+	 * @return CudiBundle\Entity\Stock\OrderItem
 	 */
 	public function setArticle($article)
 	{
@@ -92,7 +92,7 @@ class OrderItem
 	/**
 	 * @param integer $number The number of items.
 	 *
-	 * @return \Litus\Entity\Cudi\Stock\OrderItem
+	 * @return CudiBundle\Entity\Stock\OrderItem
 	 */
 	public function setNumber($number)
 	{

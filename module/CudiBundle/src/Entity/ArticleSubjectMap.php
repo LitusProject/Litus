@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi;
+namespace CudiBundle\Entity;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\ArticleSubjectMap")
+ * @Entity(repositoryClass="CudiBundle\Repository\ArticleSubjectMap")
  * @Table(name="cudi.article_subject_map")
  */
 class ArticleSubjectMap
@@ -16,13 +16,13 @@ class ArticleSubjectMap
     private $id;
 
     /**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Syllabus\Subject")
+	 * @OneToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(name="subject", referencedColumnName="id")
 	 */
 	private $subject;

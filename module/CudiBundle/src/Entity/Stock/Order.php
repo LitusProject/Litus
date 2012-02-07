@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Entity\Cudi\Stock;
+namespace CudiBundle\Entity\Stock;
 
 /**
  * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\Order")
@@ -16,7 +16,7 @@ class Order
 	private $id;
 	
 	/**
-     * @ManyToOne(targetEntity="Litus\Entity\Cudi\Supplier")
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @JoinColumn(name="supplier", referencedColumnName="id")
      */
 	private $supplier;
@@ -27,12 +27,12 @@ class Order
 	private $date;
 	
 	/**
-	 * @OneToMany(targetEntity="Litus\Entity\Cudi\Stock\OrderItem", mappedBy="order")
+	 * @OneToMany(targetEntity="CudiBundle\Entity\Stock\OrderItem", mappedBy="order")
 	 */
 	private $orderItems;
 	
 	/**
-	 * @param Litus\Entity\Cudi\Supplier $supplier The supplier of this order
+	 * @param CudiBundle\Entity\Supplier $supplier The supplier of this order
 	 */
 	public function __construct($supplier)
 	{
@@ -52,7 +52,7 @@ class Order
 	/**
 	 * Set the supplier of this order
 	 *
-	 * @param Litus\Entity\Cudi\Supplier $supplier The supplier of this order
+	 * @param CudiBundle\Entity\Supplier $supplier The supplier of this order
 	 */
 	public function setSupplier($supplier)
 	{
@@ -63,7 +63,7 @@ class Order
 	/**
 	 * Get the supplier of this order
 	 *
-	 * @return Litus\Entity\Cudi\Supplier
+	 * @return CudiBundle\Entity\Supplier
 	 */
 	public function getSupplier()
 	{

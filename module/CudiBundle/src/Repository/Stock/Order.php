@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Repository\Cudi\Stock;
+namespace CudiBundle\Repository\Stock;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Order
@@ -17,7 +17,7 @@ class Order extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('i')
-			->from('Litus\Entity\Cudi\Stock\OrderItem', 'i')
+			->from('CudiBundle\Entity\Stock\OrderItem', 'i')
 			->innerJoin('i.order', 'o', Join::WITH, $query->expr()->andX(
 					$query->expr()->eq('i.article', ':article'),
 					$query->expr()->eq('o.supplier', ':supplier'),
@@ -40,7 +40,7 @@ class Order extends EntityRepository
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('o')
-			->from('Litus\Entity\Cudi\Stock\Order', 'o')
+			->from('CudiBundle\Entity\Stock\Order', 'o')
 			->where($query->expr()->andX(
 					$query->expr()->eq('o.supplier', ':supplier'),
 					$query->expr()->isNull('o.date')

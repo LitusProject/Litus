@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle;
+namespace CudiBundle;
 
 use Zend\Module\Manager,
 	Zend\EventManager\Event,

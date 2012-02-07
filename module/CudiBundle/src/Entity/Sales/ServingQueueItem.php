@@ -1,9 +1,9 @@
 <?php
 
-namespace Litus\Entity\Cudi\Sales;
+namespace CudiBundle\Entity\Sales;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Sales\ServingQueueItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\ServingQueueItem")
  * @Table(name="cudi.sales_serving_queue_item")
  */
 class ServingQueueItem
@@ -16,25 +16,25 @@ class ServingQueueItem
     private $id;
     
     /**
-     * @ManyToOne(targetEntity="\Litus\Entity\Users\Person")
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
     
     /**
-     * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\ServingQueueStatus")
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueStatus")
      * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
     
     /**
-     * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\PayDesk")
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\PayDesk")
      * @JoinColumn(name="pay_desk", referencedColumnName="id")
      */
     private $payDesk;
     
     /**
-     * @ManyToOne(targetEntity="\Litus\Entity\Cudi\Sales\Session")
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
      * @JoinColumn(name="sale_session", referencedColumnName="id")
      */
     private $session;

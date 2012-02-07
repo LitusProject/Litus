@@ -1,20 +1,20 @@
 <?php
 
-namespace Litus\Entity\Cudi;
+namespace CudiBundle\Entity;
 
-use \DateTime;
-
-use \Litus\Entity\Cudi\Articles\MetaInfo;
+use \DateTime,
+	
+	CudiBundle\Entity\Articles\MetaInfo;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Article")
+ * @Entity(repositoryClass="CudiBundle\Repository\Article")
  * @Table(name="cudi.articles")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
- *      "stub"="Litus\Entity\Cudi\Articles\Stub",
- *      "external"="Litus\Entity\Cudi\Articles\StockArticles\External",
- *      "internal"="Litus\Entity\Cudi\Articles\StockArticles\Internal"}
+ *      "stub"="CudiBundle\Entity\Articles\Stub",
+ *      "external"="CudiBundle\Entity\Articles\StockArticles\External",
+ *      "internal"="CudiBundle\Entity\Articles\StockArticles\Internal"}
  * )
  */
 abstract class Article
@@ -32,7 +32,7 @@ abstract class Article
     private $title;
 
     /**
-     * @OneToOne(targetEntity="Litus\Entity\Cudi\Articles\MetaInfo")
+     * @OneToOne(targetEntity="CudiBundle\Entity\Articles\MetaInfo")
      * @JoinColumn(name="metainfo", referencedColumnName="id")
      */
     private $metaInfo;
@@ -48,7 +48,7 @@ abstract class Article
 	private $removed = false;
 	
 	/**
-	 * @OneToOne(targetEntity="Litus\Entity\Cudi\Stock\StockItem", mappedBy="article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Stock\StockItem", mappedBy="article")
 	 */
 	private $stockItem;
 	
@@ -61,7 +61,7 @@ abstract class Article
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
-     * @param Litus\Entity\Cudi\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      */
     public function __construct($title, $metaInfo)
     {
@@ -93,7 +93,7 @@ abstract class Article
 	/**
      * @param string $title
 	 *
-     * @return \Litus\Entity\Cudi\Article
+     * @return CudiBundle\Entity\Article
      */
 	public function setTitle($title)
 	{
@@ -107,7 +107,7 @@ abstract class Article
 	}
 
     /**
-     * @return \Litus\Entity\Cudi\Articles\MetaInfo
+     * @return CudiBundle\Entity\Articles\MetaInfo
      */
     public function getMetaInfo()
     {
@@ -125,7 +125,7 @@ abstract class Article
 	/**
      * @param boolean $removed Whether this item is removed or not
 	 *
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
      */
 	public function setRemoved($removed)
 	{
@@ -134,7 +134,7 @@ abstract class Article
 	}
 	
 	/**
-	 * @return \Litus\Entity\Cudi\Stock\StockItem
+	 * @return CudiBundle\Entity\Stock\StockItem
 	 */
 	public function getStockItem()
 	{
@@ -144,7 +144,7 @@ abstract class Article
 	/**
 	 * @param integer $versionNumber The version number of this article
 	 *
-	 * @return \Litus\Entity\Cudi\Article
+	 * @return CudiBundle\Entity\Article
 	 */
 	public function setVersionNumber($versionNumber)
 	{
