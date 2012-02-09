@@ -62,9 +62,12 @@ class Authentication
 	 */
 	public function authenticate($identity = '', $credential = '')
 	{
-		if (('' != $identity) && ('' != $credential)) {
+		if (isset($this->_result) && $this->_result->isValid())
+			return;
+	
+		if (('' != $identity) && ('' != $credential))
 			$this->_adapter->setIdentity($identity)->setCredential($credential);
-		}
+		
 		$this->_result = $this->_service->authenticate($this->_adapter);
 	}
 	
@@ -76,6 +79,7 @@ class Authentication
 	public function forget()
 	{
 		$this->_service->clearIdentity();
+		
 		unset($this->_result);
 	}
 	
@@ -86,8 +90,11 @@ class Authentication
      */
 	public function isAuthenticated()
 	{
+		$this->authenticate();
+	
 		if (!isset($this->_result))
 			return false;
+			
 		return $this->_result->isValid();
 	}
 	
@@ -98,8 +105,11 @@ class Authentication
 	 */
 	public function getPersonObject()
 	{
+		$this->authenticate();
+	
 		if (!isset($this->_result))
 			return null;
+
 		return $this->_result->getPersonObject();
 	}
 }

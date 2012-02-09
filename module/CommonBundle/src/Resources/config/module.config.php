@@ -23,7 +23,8 @@ return array(
                 'authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
                 'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
-                
+                'authentication_sessionstorage'  => 'Zend\Authentication\Storage\Session',
+                                
                 'admin_auth'                     => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_dashboard'                => 'CommonBundle\Controller\Admin\DashboardController',
                 'admin_role'                     => 'CommonBundle\Controller\Admin\RoleController',
@@ -95,7 +96,16 @@ return array(
             	'parameters' => array(
             		'entityManager' => 'doctrine_em',
             		'entityName'    => '"CommonBundle\Entity\Users\Session"',
-            		'expire'        => '2678400',
+            		'expire'        => 2678400,
+            		'storage'       => 'authentication_sessionstorage',
+            		'namespace'     => 'Litus_Auth',
+            		'cookieSuffix'  => 'Session',
+            	),
+            ),
+            'authentication_sessionstorage' => array(
+            	'parameters' => array(
+            		'namespace' => 'Litus_Auth',
+            		'member'    => 'storage',
             	),
             ),
             
@@ -135,9 +145,10 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:name[/:confirm]]]',
+    	        'route'    => '/admin/role[/:action[/:page][/:name[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'page'	  => '[0-9]*',
     	        	'id'      => '[0-9]*',
     	        	'confirm' => '[01]',
     	        ),
@@ -150,9 +161,10 @@ return array(
     	'admin_user' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/user[/:action[/:id[/:confirm]]]',
+    	        'route'    => '/admin/user[/:action[/:page][/:id[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'page'	  => '[0-9]*',
     	        	'id'      => '[0-9]*',
     	        	'confirm' => '[01]',
     	        ),

@@ -25,12 +25,7 @@
   * @autor Pieter Maene <pieter.maene@litus.cc>
   */
  class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
- {
- 	/**
- 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
- 	 */
- 	private $_entityManager = null;
- 	
+ {	
  	/**
  	 * @var \Zend\Paginator\Paginator $paginator The paginator
  	 */
@@ -40,17 +35,6 @@
  	 * @var int The number of items on each page
  	 */
  	private $_itemsPerPage = 25;
- 
-	/**
-	 * Injecting the EntityManager into the plugin.
-	 *
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @return void
-	 */
-	public function setEntityManager(EntityManager $entityManager)
-	{
-		$this->_entityManager = $entityManager;
-	}
 	
 	/**
 	 * Setting the number of items per page, defaults to 25.
@@ -100,13 +84,10 @@
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
     {
-    	if (null === $this->_entityManager)
-    		throw new Exception\RuntimeException('No entity manager instance was provided');
-    
 		return $this->createFromArray(
 			(0 == count($conditions)) ?
-            	$this->_entityManager->getRepository($entity)->findBy(array(), $orderBy) :
-            	$this->_entityManager->getRepository($entity)->findBy($conditions, $orderBy),
+            	$this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy(array(), $orderBy) :
+            	$this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
            	$currentPage      
         );
     }
@@ -121,8 +102,9 @@
     public function createControl($fullWidth = false)
     {
        	return array(
-    		'pages' => $this->_paginator->getPages(),
-    		'fullWidth' => $fullWidth
+       	    'fullWidth' => $fullWidth,
+       		'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
+    		'pages' => $this->_paginator->getPages()
     	);
     }
  }

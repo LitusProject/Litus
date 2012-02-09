@@ -141,7 +141,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
     	);		
-    	$view->plugin('hasAccess')->setHelper(
+    	$view->plugin('hasAccess')->setDriver(
     		new HasAccess(
     			$this->_getAcl(), $this->getAuthentication()
     		)
@@ -167,7 +167,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	$this->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
     	);		
-    	$this->hasAccess()->setHelper(
+    	$this->hasAccess()->setDriver(
     		new HasAccess(
     			$this->_getAcl(), $this->getAuthentication()
     		)
@@ -176,9 +176,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	// Paginator Plugin
     	$this->getBroker()->getClassLoader()->registerPlugin(
     		'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
-    	);
-    	$this->paginator()->setEntityManager(
-    		$this->getEntityManager()
     	);
     }
     
