@@ -19,7 +19,7 @@ use CudiBundle\Entity\Article,
 	CudiBundle\Entity\Stock\Order;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\OrderItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\OrderItem")
  * @Table(name="cudi.stock_orderitem")
  */
 class OrderItem

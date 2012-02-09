@@ -75,14 +75,14 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
     public function overviewAction()
 	{
 		$this->view->suppliers = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Supplier')
+			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
     }
 
 	public function supplierAction()
 	{
 		$supplier = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Supplier')
+            ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $supplier)
@@ -90,7 +90,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 			
 		$this->view->supplier = $supplier;
 		$this->view->orders = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\Order',
+            'CudiBundle\Entity\Stock\Order',
 			array('supplier' => $supplier->getId())
         );
 	}
@@ -100,7 +100,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
 		
 		$order = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Stock\Order')
+            ->getRepository('CudiBundle\Entity\Stock\Order')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $order)
@@ -120,11 +120,11 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
 				$item = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+					->getRepository('CudiBundle\Entity\Stock\OrderItem')
 					->addNumberByArticle($article, $formData['number']);
 				$this->broker('flashmessenger')->addMessage(
                     new FlashMessage(
@@ -142,7 +142,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 	public function deleteitemAction()
 	{
 		$item = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+	        ->getRepository('CudiBundle\Entity\Stock\OrderItem')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $item || $item->getOrder()->isPlaced())
@@ -170,7 +170,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 	public function placeAction()
 	{
 		$order = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
+	        ->getRepository('CudiBundle\Entity\Stock\Order')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $order || $order->isPlaced())
@@ -187,7 +187,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 		$this->broker('viewRenderer')->setNoRender();
 		
 		$order = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Stock\Order')
+	        ->getRepository('CudiBundle\Entity\Stock\Order')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $order || !$order->isPlaced())
@@ -214,7 +214,7 @@ class OrderAdminController extends \CommonBundle\Component\Controller\Action
 		$this->broker('viewRenderer')->setNoRender();
 		
 		$order = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Stock\Order')
+			->getRepository('CudiBundle\Entity\Stock\Order')
 			->findOneById($this->getRequest()->getParam('id'));
 			
 		if (null == $order || !$order->isPlaced())

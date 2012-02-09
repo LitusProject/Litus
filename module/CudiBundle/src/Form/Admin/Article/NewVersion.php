@@ -18,14 +18,15 @@ namespace CudiBundle\Form\Admin\Article;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
 	CudiBundle\Entity\Article,
+	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
 
-class NewVersion extends \CommonBundle\Component\Form\Admin\Form
+class NewVersion extends \CudiBundle\Form\Admin\Article\Add
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, Article $article, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
         $this->removeElement('submit');
         
@@ -34,14 +35,10 @@ class NewVersion extends \CommonBundle\Component\Form\Admin\Form
                 ->setAttrib('class', 'article_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-    }
-    
-    public function populate(Article $article)
-    {
-    	parent::populate($article);
-    	
-   		$this->getElement('barcode')
-	    	->setValue('');
-    		
+        
+        $this->populate($article);
+        
+    	$this->getElement('barcode')
+    		->setValue('');
     }
 }

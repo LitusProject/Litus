@@ -21,13 +21,13 @@ return array(
             'options' => array(
                 'route'    => '/admin/article[/:action[/:id[/:confirm]]]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
     	        	'confirm' => '[01]',
                 ),
                 'defaults' => array(
                     'controller' => 'admin_article',
-                    'action'     => 'add',
+                    'action'     => 'manage',
                 ),
             ),
         ),

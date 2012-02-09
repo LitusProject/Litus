@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text,
 	Zend\Validator\Int as IntValidator;
 	
-class Update extends \Litus\Form\Admin\Form
+class Update extends \CommonBundle\Component\Form\Admin\Form
 {
 
     public function __construct($options = null)

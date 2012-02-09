@@ -75,7 +75,7 @@ class OrderXmlGenerator
     private function _generateXml(OrderItem $item, TmpFile $tmpFile)
     {
     	$configs = $this->_entityManager
-    		->getRepository('Litus\Entity\General\Config');
+    		->getRepository('CommonBundle\Entity\General\Config');
         
         $xml = new XmlGenerator($tmpFile);
 		
