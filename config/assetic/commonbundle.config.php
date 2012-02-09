@@ -19,18 +19,17 @@ return array(
 		    '@common_jquery',
 		),
 		'admin_dashboard' => array(
+			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
 		),
 		'admin_role'      => array(
+			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
 		),
 		'admin_user'      => array(
-		    '@admin_css',
-		    '@admin_js',
-		),
-		'admin_user'      => array(
+			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
 		),
