@@ -1,26 +1,32 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Form\Admin\Article;
 
-use CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator
-	
-	CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
-	
 	Zend\Form\Element\Submit;
 
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
 	
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-    public function __construct(EntityManager $entityManager, $options = null)
+    public function __construct(EntityManager $entityManager, Article $article, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
         $this->removeElement('submit');
         
@@ -39,6 +45,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $this->getElement('barcode')
         	->setAttrib('disabled', 'disabled')
         	->clearValidators()
+        	->addValidator(new UniqueArticleBarcodeValidator($entityManager, array($article->getId())))
         	->setRequired(false);
         
 		$field = new Submit('submit');
@@ -46,14 +53,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-    }
-    
-    public function populate($article)
-    {
-    	$this->getElement('barcode')
-    		->clearValidators()
-        	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager, array($article->getId())));
-    	
-    	parent::populate($article);
+        
+        $this->populate($article);
     }
 }

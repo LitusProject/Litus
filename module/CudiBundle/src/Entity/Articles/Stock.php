@@ -1,9 +1,23 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity\Articles;
 
-use CudiBundle\Entity\Stock\StockItem,
-
+use CudiBundle\Entity\Articles\MetaInfo,
+	CudiBundle\Entity\Stock\StockItem,
+	CudiBundle\Entity\Supplier,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -53,21 +67,23 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	private $canExpire;
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $title The title of the article
-     * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
-     * @param bigint $purchase_price The purchase price of this article.
-     * @param bigint $sellPrice The sell price of this article for non-members.
-     * @param bigint $sellPriceMembers The sell price of this article for members.
+     * @param \CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param float $purchasePrice The purchase price of this article.
+     * @param float $sellPrice The sell price of this article for non-members.
+     * @param float $sellPriceMembers The sell price of this article for members.
      * @param smallint $barcode This article's barcode.
      * @param boolean $bookable Indicates whether the article can be booked.
      * @param boolean $unbookable Indicates whether the article can be unbooked.
-     * @param CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
+     * @param \CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
+     * @param boolean $canExpire Whether the article can expire.
      */
-    public function __construct(EntityManager $entityManager, $title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire)
+    public function __construct(EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, Supplier $supplier, $canExpire)
     {
         parent::__construct($title, $metaInfo);
 
-        $this->setPurchasePrice($purchase_price)
+        $this->setPurchasePrice($purchasePrice)
 			->setSellPrice($sellPrice)
 			->setSellPriceMembers($sellPriceMembers)
 			->setBarcode($barcode)
@@ -169,7 +185,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	 *
      * @return CudiBundle\Entity\Articles\Stock
      */
-	public function setSupplier($supplier)
+	public function setSupplier(Supplier $supplier)
 	{
 		$this->supplier = $supplier;
 		return $this;

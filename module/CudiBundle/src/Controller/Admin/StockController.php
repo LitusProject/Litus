@@ -15,15 +15,12 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use \Litus\FlashMessenger\FlashMessage;
-
-use \Admin\Form\Stock\Update as StockForm;
-use \Admin\Form\Order\AddDirect as OrderForm;
-use \Admin\Form\Delivery\AddDirect as DeliveryForm;
-
-use \Litus\Entity\Cudi\Stock\DeliveryItem;
-
-use \Zend\Json\Json;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CudiBundle\Entity\Stock\DeliveryItem,
+	CudiBundle\Form\Admin\Delivery\AddDirect as DeliveryForm,
+	CudiBundle\Form\Admin\Order\AddDirect as OrderForm,
+	CudiBundle\Form\Admin\Stock\Update as StockForm,
+	Zend\Json\Json;
 
 /**
  * This class controls management of the stock.

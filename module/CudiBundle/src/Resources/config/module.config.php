@@ -19,9 +19,11 @@ return array(
         'admin_article' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/admin/article[/:action]',
+                'route'    => '/admin/article[/:action[/:id[/:confirm]]]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+    	        	'confirm' => '[01]',
                 ),
                 'defaults' => array(
                     'controller' => 'admin_article',

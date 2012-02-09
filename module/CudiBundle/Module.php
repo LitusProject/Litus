@@ -15,10 +15,10 @@
 
 namespace CudiBundle;
 
-use Zend\Module\Manager,
-	Zend\EventManager\Event,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider,
+use Zend\EventManager\Event,
+	Zend\EventManager\StaticEventManager,
+	Zend\Module\Consumer\AutoloaderProvider,
+	Zend\Module\Manager,
     Zend\Mvc\MvcEvent,
     Zend\View\Helper\Doctype;
 

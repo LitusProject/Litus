@@ -1,9 +1,23 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity\Sales;
 
-use CudiBundle\Entity\Sales\BookingStatus,
-
+use CommonBundle\Entity\Users\Person,
+	CudiBundle\Entity\Article,
+	CudiBundle\Entity\Sales\BookingStatus,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -70,7 +84,14 @@ class Booking
 		'booked', 'assigned', 'sold', 'expired'
 	);
 	
-	public function __construct($entityManager, $person, $article, $status, $number = 1)
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 * @param \CommonBundle\Entity\Users\Person $person
+	 * @param \CudiBundle\Entity\Article $article
+	 * @param string $status
+	 * @param int $number
+	 */
+	public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1)
 	{
 		if (!isset($article))
 			throw new \InvalidArgumentException('The article is not valid.');
@@ -115,7 +136,7 @@ class Booking
 	}
 	
 	/**
-	 * @return \Litus\Entity\Users\Person
+	 * @return \CommonBundle\Entity\Users\Person
 	 */
 	public function getPerson()
 	{
@@ -175,6 +196,8 @@ class Booking
 	
 	/**
 	 * @param string $status The new status of this booking.
+	 *
+	 * @return \CudiBundle\Entity\Sales\Booking
 	 */
 	public function setStatus($status)
 	{
@@ -187,6 +210,7 @@ class Booking
 			$this->assignmentDate = null;
 		
 		$this->status = $status;
+		return $this;
 	}
 	
 	/**

@@ -1,8 +1,25 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity\Articles\StockArticles;
 
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Articles\MetaInfo,
+	CudiBundle\Entity\Articles\StockArticles\Binding,
+	CudiBundle\Entity\Articles\StockArticles\Color,
+	CudiBundle\Entity\Supplier,
+	Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\StockArticles\Internal")
@@ -47,11 +64,31 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 */
 	private $frontPageTextColored;
 	
+	/**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+	 * @param string $title The title of the article
+	 * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+	 * @param float $purchasePrice The purchase price of this article.
+	 * @param float $sellPrice The sell price of this article for non-members.
+	 * @param float $sellPriceMembers The sell price of this article for members.
+	 * @param smallint $barcode This article's barcode.
+	 * @param boolean $bookable Indicates whether the article can be booked.
+	 * @param boolean $unbookable Indicates whether the article can be unbooked.
+	 * @param CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
+	 * @param boolean $canExpire Whether the article can expire.
+	 * @param int $nbBlackAndWhite
+	 * @param int $nbColored
+	 * @param CudiBundle\Entity\Articles\StockArticles\Binding $binding
+	 * @param boolean $official
+	 * @param boolean $rectoverso
+	 * @param CudiBundle\Entity\Articles\StockArticle\Color $frontPageColor
+	 * @param boolean $frontPageTextColored
+	 */
 	public function __construct(
-		$title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, 
-		$barcode, $bookable, $unbookable, $supplier, $canExpire, $nbBlackAndWhite, $nbColored, $binding, $official, $rectoverso, $frontPageColor, $frontPageTextColored
+		EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, 
+		$barcode, $bookable, $unbookable, Supplier $supplier, $canExpire, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor, $frontPageTextColored
 	) {
-		parent::__construct($title, $metaInfo, $purchase_price, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
+		parent::__construct($entityManager, $title, $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
 		$this->setNbBlackAndWhite($nbBlackAndWhite)
 			->setNbColored($nbColored)
@@ -121,7 +158,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 *
 	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
-	public function setBinding($binding)
+	public function setBinding(Binding $binding)
 	{
 		$this->binding = $binding;
 		return $this;
@@ -178,7 +215,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 *
 	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
-	public function setFrontColor($frontPageColor)
+	public function setFrontColor(Color $frontPageColor)
 	{
 		$this->frontPageColor = $frontPageColor;
 		return $this;
