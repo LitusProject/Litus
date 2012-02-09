@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -28,6 +41,8 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     );
     
     /**
+     * Create a new Unique Article Barcode validator.
+     *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $ignoreIds The ids to be ignored
      * @param mixed $opts The validator's options
@@ -42,7 +57,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
-     * context, and the value of that field name matches the provided value.
+     * context, and the value of that field unique and valid.
      *
      * @param string $value The value of the field that will be validated
      * @param array $context The context of the field that will be validated
@@ -50,10 +65,10 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $this->_setValue($value);
+        $this->setValue($value);
 
 		$article = $this->_entityManager
-			->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+			->getRepository('CudiBundle\Entity\Stock\StockItem')
 			->findOneByBarcode($value);
 
        	if (null === $article || in_array($article->getId(), $this->_ignoreIds))

@@ -15,14 +15,11 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use \Doctrine\ORM\EntityManager;
-
-use \Admin\Form\Booking\Add;
-
-use \Litus\Entity\Cudi\Sales\Booking;
-use \Litus\FlashMessenger\FlashMessage;
-
-use \Zend\Json\Json;
+use CudiBundle\Entity\Sales\Booking,
+	CudiBundle\Form\Admin\Booking\Add,
+	CommonBundle\Component\FlashMessenger\FlashMessage,
+	Doctrine\ORM\EntityManager,
+	Zend\Json\Json;
 
 /**
  *

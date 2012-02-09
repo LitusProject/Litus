@@ -1,21 +1,32 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Form\Admin\Article;
 
-use CommonBundle\Component\Validator\Price as PriceValidator,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CommonBundle\Component\Validator\Price as PriceValidator,
 	CommonBundle\Component\Validator\Year as YearValidator,
 	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
-	
-	CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	
+	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
-	
-	Zend\Form\Form,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Checkbox,
+	Zend\Form\Form,
 	Zend\Form\SubForm;
 
 class Add extends \CommonBundle\Component\Form\Admin\Form
@@ -24,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
-	private $_entityManager = null;
+	protected $_entityManager = null;
 
     public function __construct(EntityManager $entityManager, $opts = null)
     {
@@ -260,7 +271,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		return $colorOptions;
 	}
 	
-	public function populate($article)
+	public function populate(Article $article)
 	{
 		$data = array(
 			'title' => $article->getTitle(),

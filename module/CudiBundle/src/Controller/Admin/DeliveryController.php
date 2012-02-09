@@ -14,11 +14,10 @@
  */
  
 namespace CudiBundle\Controller\Admin;
-use \Admin\Form\Delivery\Add as AddForm;
 
-use \Litus\Entity\Cudi\Stock\DeliveryItem;
-
-use \Litus\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CudiBundle\Entity\Stock\DeliveryItem,
+	CudiBundle\Form\Admin\Delivery\Add as AddForm;
 
 /**
  * This class controls management of the stock.

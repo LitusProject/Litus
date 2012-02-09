@@ -15,25 +15,20 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use \Admin\Form\Order\Add as AddForm;
-use \Admin\Form\Order\Edit as EditForm;
-use \Admin\Form\Order\AddItem as AddItemForm;
-
-use \Litus\Util\File as FileUtil;
-use \Litus\Cudi\OrderPdfGenerator;
-use \Litus\Cudi\OrderXmlGenerator;
-use \Litus\Entity\Cudi\Stock\Order;
-use \Litus\Entity\Cudi\Stock\OrderItem;
-use \Litus\FlashMessenger\FlashMessage;
-
-use \Zend\Pdf\PdfDocument;
-use \Zend\Pdf\Page as PdfPage;
-use \Zend\Registry;
-
-
-use \Litus\Util\Xml\XmlGenerator;
-use \Litus\Util\Xml\XmlObject;
-use \Litus\Util\TmpFile;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CommonBundle\Component\Util\File as FileUtil,
+	CommonBundle\Component\Util\TmpFile,
+	CommonBundle\Component\Util\Xml\XmlGenerator,
+	CommonBundle\Component\Util\Xml\XmlObject,
+	CudiBundle\Component\Generator\OrderPdfGenerator,
+	CudiBundle\Component\Generator\OrderXmlGenerator,
+	CudiBundle\Entity\Stock\Order,
+	CudiBundle\Entity\Stock\OrderItem,
+	CudiBundle\Form\Admin\Order\Add as AddForm,
+	CudiBundle\Form\Admin\Order\AddItem as AddItemForm,
+	CudiBundle\Form\Admin\Order\Edit as EditForm,
+	Zend\Pdf\Page as PdfPage,
+	Zend\Pdf\PdfDocument;
 
 /**
  * This class controls management of the stock.

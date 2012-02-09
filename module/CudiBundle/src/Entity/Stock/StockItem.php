@@ -1,11 +1,25 @@
 <?php
- 
+ /**
+  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+  * various applications to support the IT needs of student unions.
+  *
+  * @author Karsten Daemen <karsten.daemen@litus.cc>
+  * @author Bram Gotink <bram.gotink@litus.cc>
+  * @author Pieter Maene <pieter.maene@litus.cc>
+  * @author Kristof Mariën <kristof.marien@litus.cc>
+  * @author Michiel Staessen <michiel.staessen@litus.cc>
+  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+  *
+  * @license http://litus.cc/LICENSE
+  */
+  
 namespace CudiBundle\Entity\Stock;
 
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Article,
+	Doctrine\ORM\EntityManager;
  
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\StockItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\StockItem")
  * @Table(name="cudi.stock_stockitem")
  */
 class StockItem
@@ -28,7 +42,10 @@ class StockItem
 	 */
 	private $numberInStock;
 	
-	public function __construct($article)
+	/**
+	 * @param \CudiBundle\Entity\Article $article
+	 */
+	public function __construct(Article $article)
 	{
 		$this->article = $article;
 		$this->numberInStock = 0;
@@ -64,23 +81,31 @@ class StockItem
 	
 	/**
 	 * @param integer $number The number in stock
+	 *
+	 * @param \CudiBundle\Entity\Stock\StockItem
 	 */
 	public function setNumberInStock($number)
 	{
 		$this->numberInStock = $number;
+		return $this;
 	}
 	
 	/**
 	 * @param integer $number The number to add
+	 *
+	 * @param \CudiBundle\Entity\Stock\StockItem
 	 */
 	public function addNumber($number)
 	{
 		$this->numberInStock += $number;
 		if ($this->numberInStock < 0)
 			$this->numberInStock = 0;
+		return $this;
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getTotalOrdered(EntityManager $entityManager)
@@ -101,6 +126,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getNumberQueueOrder(EntityManager $entityManager)
@@ -116,6 +143,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getTotalDelivered(EntityManager $entityManager)
@@ -126,6 +155,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getNumberBooked(EntityManager $entityManager)
@@ -142,6 +173,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getNumberAssigned(EntityManager $entityManager)
@@ -158,6 +191,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getNumberSold(EntityManager $entityManager)
@@ -174,6 +209,8 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
 	public function getNumberAvailable(EntityManager $entityManager)

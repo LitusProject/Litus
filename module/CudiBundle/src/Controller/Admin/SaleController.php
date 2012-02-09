@@ -15,18 +15,15 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-
-use \Admin\Form\Sale\CashRegisterAdd as CashRegisterAddForm;
-use \Admin\Form\Sale\CashRegisterEdit as CashRegisterEditForm;
-
-use \Litus\Entity\Cudi\Sales\Session;
-use \Litus\Entity\General\Bank\CashRegister;
-use \Litus\Entity\General\Bank\MoneyUnitAmount;
-use \Litus\Entity\General\Bank\BankDeviceAmount;
-use \Litus\FlashMessenger\FlashMessage;
-
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CommonBundle\Entity\General\Bank\BankDeviceAmount,
+	CommonBundle\Entity\General\Bank\CashRegister,
+	CommonBundle\Entity\General\Bank\MoneyUnitAmount,
+	CudiBundle\Entity\Sales\Session,
+	CudiBundle\Form\Admin\Sale\CashRegisterAdd as CashRegisterAddForm,
+	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
+	Doctrine\ORM\EntityManager,
+	Doctrine\ORM\QueryBuilder;
 
 /**
  * This class controls management and adding of sale sessions
