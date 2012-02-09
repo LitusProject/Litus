@@ -309,32 +309,23 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
 	public function searchAction()
 	{
-		$this->broker('contextSwitch')
-            ->addActionContext('search', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-        
-        $this->broker('layout')->disableLayout();
-
-        $json = new Json();
-
-		$this->_initAjax();
+		$this->initAjax();
 		
-		switch($this->getRequest()->getParam('field')) {
+		switch($this->getParam('field')) {
 			case 'title':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByTitle($this->getRequest()->getParam('string'));
+					->findAllByTitle($this->getParam('string'));
 				break;
 			case 'author':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByAuthor($this->getRequest()->getParam('string'));
+					->findAllByAuthor($this->getParam('string'));
 				break;
 			case 'publisher':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByPublisher($this->getRequest()->getParam('string'));
+					->findAllByPublisher($this->getParam('string'));
 				break;
 		}
 		$result = array();
@@ -349,7 +340,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			$item->versionNumber = $article->getVersionNumber();
 			$result[] = $item;
 		}
-		echo $json->encode($result);
+		
+		return array(
+			'result' => $result,
+		);
 	}
 	
 	public function managefilesAction()

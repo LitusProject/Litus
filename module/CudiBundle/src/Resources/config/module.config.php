@@ -31,5 +31,19 @@ return array(
                 ),
             ),
         ),
+        'admin_article_search' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '/admin/article/search/[/:field[/:string]]',
+                'constraints' => array(
+                    'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'admin_article',
+                    'action'     => 'search',
+                ),
+            ),
+         ),
     ),
 );

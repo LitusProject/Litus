@@ -29,7 +29,7 @@
 						return;
 					}
 					$.ajax({
-						url: opts.url + '/field/' + opts.searchField.val() + '/string/' + opts.searchString.val(),
+						url: opts.url + '/' + opts.searchField.val() + '/' + opts.searchString.val(),
 						method: 'get',
 						dataType: 'json',
 						success: opts.display
