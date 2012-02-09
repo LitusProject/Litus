@@ -60,7 +60,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-        	->getRepository('Litus\Entity\Users\Person')
+        	->getRepository('CommonBundle\Entity\Users\Person')
         	->findOneById($configs->getConfigValue('cudi.person'));
 
         $delivery_address = array(

@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class StockController extends \Litus\Controller\Action
+class StockController extends \CommonBundle\Component\Controller\ActionController
 {
     public function init()
     {
@@ -43,14 +43,14 @@ class StockController extends \Litus\Controller\Action
 	{
 		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->stock = $this->_createPaginator(
-            'Litus\Entity\Cudi\Stock\StockItem'
+            'CudiBundle\Entity\Stock\StockItem'
         );
     }
 
 	public function editAction()
 	{
 		$item = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+            ->getRepository('CudiBundle\Entity\Stock\StockItem')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $item)
@@ -87,7 +87,7 @@ class StockController extends \Litus\Controller\Action
 			} elseif (isset($formData['addOrder'])) {
 				if ($orderForm->isValid($formData)) {
 					$this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Stock\OrderItem')
+						->getRepository('CudiBundle\Entity\Stock\OrderItem')
 						->addNumberByArticle($item->getArticle(), $formData['number']);
 					
 					$this->broker('flashmessenger')->addMessage(
@@ -133,17 +133,17 @@ class StockController extends \Litus\Controller\Action
 		switch($this->getRequest()->getParam('field')) {
 			case 'title':
 				$stock = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findAllByArticleTitle($this->getRequest()->getParam('string'));
 				break;
 			case 'barcode':
 				$stock = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findAllByArticleBarcode($this->getRequest()->getParam('string'));
 				break;
 			case 'supplier':
 				$stock = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findAllByArticleSupplier($this->getRequest()->getParam('string'));
 				break;
 		}

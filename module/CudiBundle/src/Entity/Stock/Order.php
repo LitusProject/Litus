@@ -15,11 +15,11 @@
  
 namespace CudiBundle\Entity\Stock;
 
-use CudiBundle\Entity\Supplier
+use CudiBundle\Entity\Supplier,
 	DateTime;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\Order")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Order")
  * @Table(name="cudi.stock_order")
  */
 class Order

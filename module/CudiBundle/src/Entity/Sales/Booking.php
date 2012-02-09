@@ -110,7 +110,7 @@ class Booking
 		
 		if ($article->canExpire()) {
 			$expireTime = $entityManager
-	            ->getRepository('Litus\Entity\General\Config')
+	            ->getRepository('CommonBundle\Entity\General\Config')
 	            ->getConfigValue('cudi.reservation_expire_time');
 	
 			$now = new \DateTime();

@@ -138,6 +138,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     
     public function manageAction()
 	{
+		//$this->paginator()->setItemsPerPage(4);
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Article',
             $this->getParam('page'),
@@ -147,7 +148,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
         
         return array(
-        	'paginator' => $paginator
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
         );
     }
 
@@ -445,21 +447,23 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function newversionAction()
 	{
-		$article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->_getArticle();
 		
-		if (null == $article)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		if (null === $article) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
 		
-		$form = new NewVersionForm();
-		$form->populate($article);
-
-        $this->view->form = $form;
-        $this->view->article = $article;
+		$form = new NewVersionForm($this->getEntityManager(), $article);
          
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if ($form->isValid($formData)) {
 				$metaInfo = new MetaInfo(
@@ -483,6 +487,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 							->findOneById($formData['front_color']);
 
 		                $newVersion = new Internal(
+		                	$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchaseprice'],
@@ -501,7 +506,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	                        $frontColor,
 	                        $formData['front_text_colored']
 		                );
-		                
+		                // TODO: testen
 		                foreach($article->getFiles() as $file) {
 		                	$fileName = '';
 		                	do{
@@ -513,6 +518,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		                }
 					} else {
 						$newVersion = new External(
+		                	$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchase_price'],
@@ -532,13 +538,15 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	           		);
 				}
 				
-				$history = new ArticleHistory($newVersion, $article);
+				$history = new ArticleHistory($this->getEntityManager(), $newVersion, $article);
 					
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($newVersion);
                 $this->getEntityManager()->persist($history);
+                
+                $this->flush();
 
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -546,8 +554,18 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
                 
-				$this->_redirect('manage');
+				$this->redirect()->toRoute(
+					'admin_article',
+					array(
+						'action' => 'manage'
+					)
+				);
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        	'article' => $article,
+        );
     }
 }

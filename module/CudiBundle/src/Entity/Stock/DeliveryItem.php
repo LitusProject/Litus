@@ -18,7 +18,7 @@ namespace CudiBundle\Entity\Stock;
 use CudiBundle\Entity\Article;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\DeliveryItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\DeliveryItem")
  * @Table(name="cudi.stock_deliveryitem")
  */
 class DeliveryItem

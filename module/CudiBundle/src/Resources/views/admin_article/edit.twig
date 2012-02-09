@@ -29,7 +29,7 @@
 			        	<i>Please hit the link below to manage the files of this article!</i>
 			        </p>
 			        <p>
-			           	<a href="{{ url('admin_article', {"action": "managefiles"}) }}">&rarr; Manage files</a>
+			           	<a href="{{ url('admin_article', {"action": "managefiles", "id": article.getId()}) }}">&rarr; Manage files</a>
 			        </p>
 			    </div>
 			</div>
@@ -41,7 +41,7 @@
 		        	<i>Please hit the link below to create a new version of this article!</i>
 		        </p>
 		        <p>
-		           	<a href="{{ url('admin_article', {"action": "newversion"}) }}">&rarr; New version</a>
+		           	<a href="{{ url('admin_article', {"action": "newversion", "id": article.getId()}) }}">&rarr; New version</a>
 		        </p>
 		    </div>
 		</div>

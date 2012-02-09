@@ -33,7 +33,7 @@ class CashRegisterAdd extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($options);
 
         $units = $entityManager
-            ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
             ->findAll();
         
 		foreach($units as $unit) {
@@ -47,7 +47,7 @@ class CashRegisterAdd extends \CommonBundle\Component\Form\Admin\Form
 		}
 		
 		$devices = $entityManager
-            ->getRepository('Litus\Entity\General\Bank\BankDevice')
+            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
         
 		foreach($devices as $device) {
