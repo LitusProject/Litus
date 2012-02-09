@@ -15,14 +15,11 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use \Doctrine\ORM\EntityManager;
-
-use \Admin\Form\Booking\Add;
-
-use \Litus\Entity\Cudi\Sales\Booking;
-use \Litus\FlashMessenger\FlashMessage;
-
-use \Zend\Json\Json;
+use CudiBundle\Entity\Sales\Booking,
+	CudiBundle\Form\Admin\Booking\Add,
+	CommonBundle\Component\FlashMessenger\FlashMessage,
+	Doctrine\ORM\EntityManager,
+	Zend\Json\Json;
 
 /**
  *
@@ -47,7 +44,7 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 	{
 		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
 		$this->view->paginator = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Booking',
+            'CudiBundle\Entity\Sales\Booking',
             array(),
             array('bookDate' => 'DESC')
         );
@@ -64,10 +61,10 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 
             if($form->isValid($formData)) {
                 $person = $this->getEntityManager()
-					->getRepository('Litus\Entity\Users\Person')
+					->getRepository('CommonBundle\Entity\Users\Person')
 					->findOneByUsername($formData['person']);
                 $article = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
 				$booking = new Booking($person, $article, 'booked', $formData['number']);
@@ -88,7 +85,7 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 	public function deleteAction()
 	{
 		$booking = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Sales\Booking')
+	        ->getRepository('CudiBundle\Entity\Sales\Booking')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $booking)
@@ -116,7 +113,7 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 	public function unassignAction()
 	{
 		$booking = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Sales\Booking')
+	        ->getRepository('CudiBundle\Entity\Sales\Booking')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $booking || 'assigned' != $booking->getStatus())
@@ -143,7 +140,7 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 	
 	public function assignAction()
 	{
-		$number = $this->getEntityManager()->getRepository('Litus\Entity\Cudi\Stock\StockItem')->assignAll();
+		$number = $this->getEntityManager()->getRepository('CudiBundle\Entity\Stock\StockItem')->assignAll();
 		
 		if (0 == $number)
 			$message = 'No booking could be assigned!';
@@ -179,17 +176,17 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 			switch($this->getRequest()->getParam('field')) {
 				case 'person':
 					$bookings = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->getRepository('CudiBundle\Entity\Sales\Booking')
 						->findAllByPerson($this->getRequest()->getParam('string'));
 					break;
 				case 'article':
 					$bookings = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->getRepository('CudiBundle\Entity\Sales\Booking')
 						->findAllByArticle($this->getRequest()->getParam('string'));
 					break;
 				case 'status':
 					$bookings = $this->getEntityManager()
-						->getRepository('Litus\Entity\Cudi\Sales\Booking')
+						->getRepository('CudiBundle\Entity\Sales\Booking')
 						->findAllByStatus($this->getRequest()->getParam('string'));
 					break;
 			}

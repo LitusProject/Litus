@@ -15,8 +15,10 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('#internal').click(toggleInternal);
-			$('#stock').click(toggleStock);
+			$('#internal').click(toggleInternal)
+				.parent().parent().hide();
+			$('#stock').click(toggleStock)
+				.parent().parent().hide();
 			toggleInternal();
 			toggleStock();
 		});

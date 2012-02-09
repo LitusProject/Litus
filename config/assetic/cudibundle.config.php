@@ -16,8 +16,8 @@
 return array(
 	'controllers'  => array(
 		'admin_article' => array(
-		    '@admin_base_css',
-		    '@admin_base_js',
+		    '@admin_css',
+		    '@admin_js',
 		),
 	),
 	'routes' => array(),

@@ -15,24 +15,20 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use Doctrine\ORM\EntityManage,
-
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CudiBundle\Entity\Articles\ArticleHistory,
+	CudiBundle\Entity\Articles\MetaInfo,
+	CudiBundle\Entity\Articles\Stub,
+	CudiBundle\Entity\Articles\StockArticles\External,
+	CudiBundle\Entity\Articles\StockArticles\Internal,
+	CudiBundle\Entity\File,
 	CudiBundle\Form\Admin\Article\Add as AddForm,
 	CudiBundle\Form\Admin\Article\Edit as EditForm,
-	CudiBundle\Form\Admin\Article\NewVersion as NewVersionForm,
 	CudiBundle\Form\Admin\Article\File as FileForm,
-	
-	CudiBundle\Entity\File,
-	CudiBundle\Entity\Articles\Stub,
-	CudiBundle\Entity\Articles\StockArticles\Internal,
-	CudiBundle\Entity\Articles\MetaInfo,
-	CudiBundle\Entity\Articles\StockArticles\External,
-	CudiBundle\Entity\Articles\ArticleHistory,
-	
-	CommonBundle\Component\FlashMessenger\FlashMessage,
-	
-	Zend\Json\Json,
-	Zend\File\Transfer\Adapter\Http as FileUpload;
+	CudiBundle\Form\Admin\Article\NewVersion as NewVersionForm,
+	Doctrine\ORM\EntityManager,
+	Zend\File\Transfer\Adapter\Http as FileUpload,
+	Zend\Json\Json;
 
 /**
  *
@@ -48,7 +44,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         $form = new AddForm($this->getEntityManager());
          
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if ($form->isValid($formData)) {
 				$metaInfo = new MetaInfo(
@@ -72,6 +68,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 							->findOneById($formData['front_color']);
 
 		                $article = new Internal(
+							$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchaseprice'],
@@ -92,6 +89,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		                );
 					} else {
 						$article = new External(
+							$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchase_price'],
@@ -113,8 +111,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 					
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
-
-                $this->broker('flashmessenger')->addMessage(
+				
+				$this->flush();
+				
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -122,7 +122,12 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
                 
-				$this->_redirect('manage');
+                $this->redirect()->toRoute(
+                	'admin_article',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
 			}
         }
         
@@ -133,6 +138,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     
     public function manageAction()
 	{
+		//$this->paginator()->setItemsPerPage(4);
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Article',
             $this->getParam('page'),
@@ -142,27 +148,30 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
         
         return array(
-        	'paginator' => $paginator
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
         );
     }
 
 	public function editAction()
 	{
-		$article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->_getArticle();
 		
-		if (null == $article)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		if (null === $article) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
 		
-		$form = new EditForm();
-		$form->populate($article);
-
-        $this->view->form = $form;
-        $this->view->article = $article;
+		$form = new EditForm($this->getEntityManager(), $article);
 
 		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if ($form->isValid($formData)) {
 				$article->getMetaInfo()->setAuthors($formData['author'])
@@ -199,8 +208,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 						->setFrontColor($frontColor)
 						->setFrontPageTextColored($formData['front_text_colored']);
 				}
+				
+				$this->flush();
 
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -208,27 +219,75 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
 
-                $this->_redirect('manage');
+                $this->redirect()->toRoute(
+                	'admin_article',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        	'article' => $article,
+        );
+	}
+	
+	private function _getArticle()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the article!'
+			    )
+			);
+			
+			return;
+		}
+	
+	    $article = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Article')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $article) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No article with the given id was found!'
+			    )
+			);
+			
+			return;
+		}
+		
+		return $article;
 	}
 
     public function deleteAction()
 	{
-		$article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->_getArticle();
+		
+		if (null === $article) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
 
-		if (null == $article)
-			throw new Zend\Controller\Action\Exception("Page not found", 404);
-
-		$this->view->article = $article;
-
-		if (null !== $this->getRequest()->getParam('confirm')) {
-            if (1 == $this->getRequest()->getParam('confirm')) {
+		if (null !== $this->getParam('confirm')) {
+            if (1 == $this->getParam('confirm')) {
 				$article->setRemoved(true);
+				$this->flush();
 
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -237,38 +296,38 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
             }
 
-            $this->_redirect('manage');
+            $this->redirect()->toRoute(
+            	'admin_article',
+            	array(
+            		'action' => 'manage'
+            	)
+            );
         }
+        
+        return array(
+        	'article' => $article,
+        );
 	}
 
 	public function searchAction()
 	{
-		$this->broker('contextSwitch')
-            ->addActionContext('search', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-        
-        $this->broker('layout')->disableLayout();
-
-        $json = new Json();
-
-		$this->_initAjax();
+		$this->initAjax();
 		
-		switch($this->getRequest()->getParam('field')) {
+		switch($this->getParam('field')) {
 			case 'title':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByTitle($this->getRequest()->getParam('string'));
+					->findAllByTitle($this->getParam('string'));
 				break;
 			case 'author':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByAuthor($this->getRequest()->getParam('string'));
+					->findAllByAuthor($this->getParam('string'));
 				break;
 			case 'publisher':
 				$articles = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Article')
-					->findAllByPublisher($this->getRequest()->getParam('string'));
+					->findAllByPublisher($this->getParam('string'));
 				break;
 		}
 		$result = array();
@@ -283,7 +342,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			$item->versionNumber = $article->getVersionNumber();
 			$result[] = $item;
 		}
-		echo $json->encode($result);
+		
+		return array(
+			'result' => $result,
+		);
 	}
 	
 	public function managefilesAction()
@@ -385,21 +447,23 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function newversionAction()
 	{
-		$article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->_getArticle();
 		
-		if (null == $article)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		if (null === $article) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
 		
-		$form = new NewVersionForm();
-		$form->populate($article);
-
-        $this->view->form = $form;
-        $this->view->article = $article;
+		$form = new NewVersionForm($this->getEntityManager(), $article);
          
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if ($form->isValid($formData)) {
 				$metaInfo = new MetaInfo(
@@ -423,6 +487,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 							->findOneById($formData['front_color']);
 
 		                $newVersion = new Internal(
+		                	$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchaseprice'],
@@ -441,7 +506,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	                        $frontColor,
 	                        $formData['front_text_colored']
 		                );
-		                
+		                // TODO: testen
 		                foreach($article->getFiles() as $file) {
 		                	$fileName = '';
 		                	do{
@@ -453,6 +518,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		                }
 					} else {
 						$newVersion = new External(
+		                	$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
 	                        $formData['purchase_price'],
@@ -472,13 +538,15 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	           		);
 				}
 				
-				$history = new ArticleHistory($newVersion, $article);
+				$history = new ArticleHistory($this->getEntityManager(), $newVersion, $article);
 					
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($newVersion);
                 $this->getEntityManager()->persist($history);
+                
+                $this->flush();
 
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -486,8 +554,18 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
                 
-				$this->_redirect('manage');
+				$this->redirect()->toRoute(
+					'admin_article',
+					array(
+						'action' => 'manage'
+					)
+				);
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        	'article' => $article,
+        );
     }
 }

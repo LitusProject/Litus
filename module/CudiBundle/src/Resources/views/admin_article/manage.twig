@@ -3,11 +3,9 @@
 {% block content %}
 	{% include 'admin_article/partials/navigation.twig' %}
 	
-	<div id="flashmessenger">
-		{% include 'admin/partials/flashMessenger.twig' %}
-	</div>
-	
 	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+		
 		<div id="stock_search" style="display:none;">
 			<div style="padding:4px;text-align:right">
 				Search: 
@@ -53,8 +51,8 @@
 		                <td>{{ article.getMetaInfo().getYearPublished() }}</td>
 		                <td>{% if article.isStock() %} Stock {% else %} Stub {% endif %}</td>
 						<td>
-		                    <a href="{{ url('article_admin', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-		                    <a href="{{ url('article_admin', {"action": "delete", "id": article.getId()}) }}" class="delete">Delete</a>
+		                    <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+		                    <a href="{{ url('admin_article', {"action": "delete", "id": article.getId()}) }}" class="delete">Delete</a>
 		                </td>
 		            </tr>
 		        {% endfor %}
@@ -63,36 +61,36 @@
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
-	
-	{% block controller_script %}
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$.searchDatabase({
-					defaultPage: $('#default_page'),
-					searchDiv: $('#stock_search'),
-					searchString: $('#searchString'),
-					searchField: $('#searchField'),
-					url: '{{ url('admin_article', {"action": "search"}) }}',
-					display: function (data) {
-						$('#stock_search table').find('tr.item').remove();
-						$(data).each(function () {
-							$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
-							row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
-								.append('<td>' + this.author + '</td>')
-								.append('<td>' + this.publisher + '</td>')
-								.append('<td>' + this.yearPublished + '</td>')
-								.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
-								.append('<td>'
-									+ '<a href="<?= $this->url(array('action' => 'edit')); ?>/id/' + this.id + '" class="edit">Edit</a>'
-									+ '<a href="<?= $this->url(array('action' => 'delete')); ?>/id/' + this.id + '" class="delete">Delete</a>'
-									+ '</td>');
-						});
-					},
-					clear: function () {
-						$('#stock_search table').find('tr.item').remove();
-					}
-				});
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#stock_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_article_search') }}',
+				display: function (data) {
+					$('#stock_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+							.append('<td>' + this.author + '</td>')
+							.append('<td>' + this.publisher + '</td>')
+							.append('<td>' + this.yearPublished + '</td>')
+							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
+							.append('<td>'
+								+ '<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>'
+								+ '<a href="{{ url('admin_article', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>'
+								+ '</td>');
+					});
+				},
+				clear: function () {
+					$('#stock_search table').find('tr.item').remove();
+				}
 			});
-		</script>
-	{% endblock %}
+		});
+	</script>
 {% endblock %}

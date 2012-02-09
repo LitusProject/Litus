@@ -1,6 +1,21 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity;
+
+use CudiBundle\Entity\Articles\StockArticles\Internal as InternalArticle;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\File")
@@ -36,7 +51,13 @@ class File
 	 */
 	private $internalArticle;
 	
-	public function __construct($path, $name, $description, $internalArticle)
+	/**
+	 * @param string $path
+	 * @param string $name
+	 * @param string $description
+	 * @param CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
+	 */
+	public function __construct($path, $name, $description, InternalArticle $internalArticle)
 	{
 		$this->setPath($path);
 		$this->setName($name);
@@ -68,6 +89,7 @@ class File
 	public function setPath($path)
 	{
 		$this->path = $path;
+		return $this;
 	}
 	
 	/** 
@@ -86,6 +108,7 @@ class File
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 	
 	/** 
@@ -104,6 +127,7 @@ class File
 	public function setDescription($description)
 	{
 		$this->description = $description;
+		return $this;
 	}
 	
 	/** 
@@ -119,8 +143,9 @@ class File
 	 *
 	 * @return CudiBundle\Entity\File
 	 */
-	public function setInternalArticle($internalArticle)
+	public function setInternalArticle(InternalArticle $internalArticle)
 	{
 		$this->internalArticle = $internalArticle;
+		return $this;
 	}
 }

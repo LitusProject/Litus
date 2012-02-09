@@ -15,18 +15,15 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-
-use \Admin\Form\Sale\CashRegisterAdd as CashRegisterAddForm;
-use \Admin\Form\Sale\CashRegisterEdit as CashRegisterEditForm;
-
-use \Litus\Entity\Cudi\Sales\Session;
-use \Litus\Entity\General\Bank\CashRegister;
-use \Litus\Entity\General\Bank\MoneyUnitAmount;
-use \Litus\Entity\General\Bank\BankDeviceAmount;
-use \Litus\FlashMessenger\FlashMessage;
-
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CommonBundle\Entity\General\Bank\BankDeviceAmount,
+	CommonBundle\Entity\General\Bank\CashRegister,
+	CommonBundle\Entity\General\Bank\MoneyUnitAmount,
+	CudiBundle\Entity\Sales\Session,
+	CudiBundle\Form\Admin\Sale\CashRegisterAdd as CashRegisterAddForm,
+	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
+	Doctrine\ORM\EntityManager,
+	Doctrine\ORM\QueryBuilder;
 
 /**
  * This class controls management and adding of sale sessions
@@ -34,7 +31,7 @@ use \Litus\FlashMessenger\FlashMessage;
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SaleController extends \Litus\Controller\Action
+class SaleController extends \CommonBundle\Component\Controller\ActionController
 {
     public function init()
     {
@@ -49,7 +46,7 @@ class SaleController extends \Litus\Controller\Action
     public function manageAction()
     {
 		$this->view->sessions = $this->_createPaginator(
-            'Litus\Entity\Cudi\Sales\Session',
+            'CudiBundle\Entity\Sales\Session',
 			array(),
 			array('openDate' => 'DESC')
         );
@@ -58,7 +55,7 @@ class SaleController extends \Litus\Controller\Action
     public function editregisterAction()
     {
         $register = $this->getEntityManager()
-                ->getRepository('Litus\Entity\General\Bank\CashRegister')
+                ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
                 ->findOneById($this->_getParam("id"));
 
         $form = new CashRegisterEditForm();
@@ -70,7 +67,7 @@ class SaleController extends \Litus\Controller\Action
 
             if($form->isValid($formData)) {
 				$devices = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\BankDevice')
+                    ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
 
 				foreach($devices as $device) {
@@ -79,7 +76,7 @@ class SaleController extends \Litus\Controller\Action
                 }
 
                 $units = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+                    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 
 				foreach($units as $unit) {
@@ -102,7 +99,7 @@ class SaleController extends \Litus\Controller\Action
     public function managesessionAction()
     {
         $session = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Sales\Session')
+            ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($this->_getParam("id"));
 
         if( !isset($session) )
@@ -110,10 +107,10 @@ class SaleController extends \Litus\Controller\Action
 		
         $this->view->session = $session;
 		$this->view->units = $this->getEntityManager()
-            ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
             ->findAll();
 		$this->view->devices = $this->getEntityManager()
-            ->getRepository('Litus\Entity\General\Bank\BankDevice')
+            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
 		
 		$form = new Form\Sale\SessionComment();
@@ -140,7 +137,7 @@ class SaleController extends \Litus\Controller\Action
     public function closeAction()
     {
         $session = $this->getEntityManager()
-                ->getRepository('Litus\Entity\Cudi\Sales\Session')
+                ->getRepository('CudiBundle\Entity\Sales\Session')
                 ->findOneById($this->_getParam('id'));
 
         if(!isset($session))
@@ -157,7 +154,7 @@ class SaleController extends \Litus\Controller\Action
 				$cashRegister = new CashRegister();
 				
 				$devices = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\BankDevice')
+                    ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
 				foreach($devices as $device) {
 					$amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
@@ -165,7 +162,7 @@ class SaleController extends \Litus\Controller\Action
 				}
 				
 				$units = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+                    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 				foreach($units as $unit) {
 					$amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
@@ -201,7 +198,7 @@ class SaleController extends \Litus\Controller\Action
                 $cashRegister = new CashRegister();
 
 				$devices = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\BankDevice')
+                    ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
 				foreach($devices as $device) {
 					$amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
@@ -209,7 +206,7 @@ class SaleController extends \Litus\Controller\Action
 				}
 				
 				$units = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\General\Bank\MoneyUnit')
+                    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 				foreach($units as $unit) {
 					$amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);

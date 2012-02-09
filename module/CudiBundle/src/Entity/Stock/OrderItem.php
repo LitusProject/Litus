@@ -1,9 +1,25 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity\Stock;
 
+use CudiBundle\Entity\Article,
+	CudiBundle\Entity\Stock\Order;
+
 /**
- * @Entity(repositoryClass="Litus\Repository\Cudi\Stock\OrderItem")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\OrderItem")
  * @Table(name="cudi.stock_orderitem")
  */
 class OrderItem
@@ -39,7 +55,7 @@ class OrderItem
 	 * @param CudiBundle\Entity\Stock\Order $order The order
 	 * @param integer $number The number of items
 	 */
-	public function __construct($article, $order, $number)
+	public function __construct(Article $article, Order $order, $number)
 	{
 		$this->article = $article;
 		$this->order = $order;
@@ -75,7 +91,7 @@ class OrderItem
 	 * 
 	 * @return CudiBundle\Entity\Stock\OrderItem
 	 */
-	public function setArticle($article)
+	public function setArticle(Article $article)
 	{
 		$this->article = $article;
 		return $this;
