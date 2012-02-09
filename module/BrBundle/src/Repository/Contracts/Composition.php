@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Br\Contracts;
+namespace BrBundle\Repository\Contracts;
 
 use Doctrine\ORM\EntityRepository;
 

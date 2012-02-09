@@ -150,11 +150,30 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 	{
 		$role = $this->_getRole();
 		
+		if ('guest' == $role->getName() || 'corporate' == $role->getName()) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'The specified role is a system role which cannot be deleted!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_role',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+			
 		if (null !== $this->getParam('confirm')) {
 			if (1 == $this->getParam('confirm')) {
 		        $users = $this->getEntityManager()
 		            ->getRepository('CommonBundle\Entity\Users\Person')
-		            ->findByRole($this->getParam('name'));
+		            ->findByRole($role->getName());
 		        
 		        foreach ($users as $user) {
 		            $user->removeRole($role);
@@ -280,16 +299,16 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 		
 		$repositoryCheck = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\Acl\Role')
-			->findOneByName('company');
+			->findOneByName('corporate');
 		
 		if (null === $repositoryCheck) {
-			$companyRole = new Role(
-				'company',
+			$corporateRole = new Role(
+				'corporate',
 				array(
 					$guestRole
 				)
 			);
-			$this->getEntityManager()->persist($companyRole);
+			$this->getEntityManager()->persist($corporateRole);
 		}
 		
 		$this->flashMessenger()->addMessage(

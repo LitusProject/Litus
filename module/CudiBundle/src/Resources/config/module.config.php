@@ -4,7 +4,7 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'cudibundle_admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
+                'admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
             ),
             'doctrine_config' => array(
                 'parameters' => array(
@@ -16,7 +16,7 @@ return array(
         ),
     ),
     'routes' => array(
-        'cudibundle_article_admin' => array(
+        'admin_article' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin/article[/:action]',
@@ -24,7 +24,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'cudibundle_admin_article',
+                    'controller' => 'admin_article',
                     'action'     => 'add',
                 ),
             ),

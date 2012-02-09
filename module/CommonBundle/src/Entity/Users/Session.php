@@ -168,7 +168,7 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $userAgent The user agent that should be checked
      * @param string $ip The IP currently used to connect to the site
      * @return bool|string

@@ -13,12 +13,20 @@
  * @license http://litus.cc/LICENSE
  */
  
-return array(
-	'controllers'  => array(
-		'admin_article' => array(
-		    '@admin_base_css',
-		    '@admin_base_js',
-		),
-	),
-	'routes' => array(),
-);
+namespace CommonBundle\Component\Validator;
+
+/**
+ * Verifies whether the given value is in a valid price format.
+ *
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ */
+class PhoneNumber extends \Zend\Validator\Regex
+{
+    function __construct() {
+    	parent::__construct('/^\+(?:[0-9] ?){6,14}[0-9]$/');
+    	
+    	parent::setMessage(
+    		'The given phone number is not in the international format (+CCAAANNNNNN)'
+    	);
+    }
+}

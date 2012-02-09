@@ -4,10 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('admin', 'article', 'new') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('cudibundle_article_admin', {"action": "add"}) }}">Add</a></li>
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_article', {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('admin', 'article', 'manager') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudibundle_article_admin', {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_article', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -1,23 +1,36 @@
 <?php
-
-namespace Litus\Entity\Br;
-
-use \Doctrine\Common\Collections\ArrayCollection;
-
-use \Litus\Entity\Br\Contracts\Composition;
-use \Litus\Entity\Br\Contracts\Section;
-use \Litus\Entity\Users\Person;
-use \Litus\Entity\Users\People\Company;
-
 /**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
  *
- * @Entity(repositoryClass="Litus\Repository\Br\Contract")
- * @Table(name="br.contract")
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace BrBundle\Entity;
+
+use BrBundle\Entity\Company,
+	BrBundle\Entity\Contracts\Composition,
+	BrBundle\Entity\Contracts\Section,
+	CommonBundle\Entity\Users\Person,
+	Doctrine\Common\Collections\ArrayCollection;
+	
+/**
+ * This is the entity for a contract.
+ *
+ * @Entity(repositoryClass="BrBundle\Repository\Br\Contract")
+ * @Table(name="br.contracts")
  */
 class Contract
 {
     /**
-     * @var int A generated ID
+     * @var int The contract's ID
      *
      * @Id
      * @Column(type="bigint")
@@ -33,26 +46,26 @@ class Contract
     private $date;
 
     /**
-     * @var \Litus\Entity\Users\Person The author of this contract
+     * @var \CommonBundle\Entity\Users\Person The author of this contract
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\Person")
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
 
     /**
-     * @var \Litus\Entity\Users\People\Company The company for which this contract is meant
+     * @var \BrBundle\Entity\Company The company for which this contract is meant
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Users\People\Company")
+     * @ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 
     /**
-     * @var \Litus\Entity\Br\Contracts\Composition The sections this contract contains
+     * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
      * @OneToMany(
-     *      targetEntity="Litus\Entity\Br\Contracts\Composition",
+     *      targetEntity="BrBundle\Entity\Contracts\Composition",
      *      mappedBy="contract",
      *      cascade={"all"},
      *      orphanRemoval=true
@@ -76,7 +89,7 @@ class Contract
     private $title;
 
     /**
-     * @var int The invoice number. -1 indicates that the contract hasn't been signed yet.
+     * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
      *
      * @Column(name="invoice_nb", type="integer")
      */
@@ -97,8 +110,8 @@ class Contract
     private $dirty;
 
     /**
-     * @param \Litus\Entity\Users\Person $author The author of this contract
-     * @param \Litus\Entity\Users\People\Company $company The company for which this contract is meant
+     * @param \CommonBundle\Entity\Users\Person $author The author of this contract
+     * @param \BrBundle\Entity\Contract $company The company for which this contract is meant
      * @param int $discount The discount associated with this contract
      * @param string $title The title of the contract
      */
@@ -133,7 +146,7 @@ class Contract
     }
 
     /**
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setDate()
     {
@@ -143,7 +156,7 @@ class Contract
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function getAuthor()
     {
@@ -152,20 +165,21 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Users\Person $author
-     * @return \Litus\Entity\Br\Contract
+     * @param \CommonBundle\Entity\Users\Person $author
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setAuthor(Person $author)
     {
         if ($author === null)
             throw new \InvalidArgumentException('Author cannot be null');
+            
         $this->author = $author;
 
         return $this;
     }
 
     /**
-     * @return \Litus\Entity\Users\People\Company
+     * @return BrBundle\Entity\Company
      */
     public function getCompany()
     {
@@ -174,18 +188,18 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Users\People\Company $company
-     * @return \Litus\Entity\Br\Contract
+     * @param \BrBundle\Entity\Company $company
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setCompany(Company $company)
     {
         if ($company === null)
             throw new \InvalidArgumentException('Company cannot be null');
+            
         $this->company = $company;
 
         return $this;
     }
-
 
     /**
      * @return array
@@ -196,7 +210,7 @@ class Contract
     }
 
     /**
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function resetComposition()
     {
@@ -206,9 +220,9 @@ class Contract
     }
 
     /**
-     * @param \Litus\Entity\Br\Contracts\Section $section The section that should be added
+     * @param \BrBundle\Entity\Br\Contracts\Section $section The section that should be added
      * @param int $position The position of this section
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function addSection(Section $section, $position)
     {
@@ -220,9 +234,8 @@ class Contract
     }
 
     /**
-     * @param array $sections The array containing all sections that should be added.
-     *                        The array keys will be used as the position.
-     * @return \Litus\Entity\Br\Contract
+     * @param array $sections The array containing all sections that should be added; the array keys will be used as the position
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function addSections(array $sections)
     {
@@ -234,13 +247,14 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param int $discount the discount, $discount >= 0 && $discount <= 100
-     * @return \Litus\Entity\Br\Contract
+     * @param int $discount The discount, $discount >= 0 && $discount <= 100
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setDiscount($discount)
     {
         if (($discount < 0) || ($discount > 100))
             throw new \InvalidArgumentException('Invalid discount');
+            
         $this->discount = $discount;
 
         return $this;
@@ -265,12 +279,13 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param string $title The title of the contract
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setTitle($title)
     {
         if (($title === null) || !is_string($title))
             throw new \InvalidArgumentException('Invalid title');
+            
         $this->title = $title;
 
         return $this;
@@ -286,7 +301,7 @@ class Contract
 
     /**
      * @param bool $dirty
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setDirty($dirty = true)
     {
@@ -313,12 +328,13 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param int $invoiceNb
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
         if (($invoiceNb === null) || !is_numeric($invoiceNb))
             throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
+            
         $this->invoiceNb = $invoiceNb;
 
         return $this;
@@ -334,12 +350,13 @@ class Contract
 
     /**
      * @param int $contractNb
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Br\Contract
      */
     public function setContractNb($contractNb)
     {
         if(($contractNb === null) || !is_numeric($contractNb))
             throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
+            
         $this->contractNb = $contractNb;
 
         return $this;

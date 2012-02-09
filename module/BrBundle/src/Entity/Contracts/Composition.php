@@ -1,14 +1,29 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace BrBundle\Entity\Contracts;
 
-namespace Litus\Entity\Br\Contract;
-
-use \Litus\Entity\Br\Contract;
-use \Litus\Entity\Br\Contracts\Section;
+use BrBundle\Entity\Contract,
+	BrBundle\Entity\Contracts\Section;
 
 /**
- * @Entity(repositoryClass="Litus\Repository\Br\Contracts\Composition")
+ * This entity represents the composition of a contract.
+ *
+ * @Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
  * @Table(
- *      name="br.contract_composition",
+ *      name="br.contract_compositions",
  *      uniqueConstraints={
  *          @UniqueConstraint(name="contract_position_unique", columns={"contract", "position"}),
  *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
@@ -18,10 +33,10 @@ use \Litus\Entity\Br\Contracts\Section;
 class Composition
 {
     /**
-     * @var \Litus\Entity\Br\Contract The contract this object is a part of
+     * @var \BrBundle\Entity\Contract The contract this object is a part of
      *
      * @ManyToOne(
-     *      targetEntity="Litus\Entity\Br\Contract", inversedBy="composition", fetch="EAGER"
+     *      targetEntity="BrBundle\Entity\Contract", inversedBy="composition", fetch="EAGER"
      * )
      * @JoinColumn(name="contract", referencedColumnName="id", onDelete="CASCADE")
      *
@@ -30,9 +45,9 @@ class Composition
     private $contract;
 
     /**
-     * @var \Litus\Entity\Br\Contracts\Section The section described in this object
+     * @var \BrBundle\Entity\Contracts\Section The section described in this object
      *
-     * @ManyToOne(targetEntity="Litus\Entity\Br\Contracts\Section", fetch="EAGER")
+     * @ManyToOne(targetEntity="BrBundle\Entity\Contracts\Section", fetch="EAGER")
      * @JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
@@ -46,8 +61,8 @@ class Composition
     private $position;
 
     /**
-     * @param \Litus\Entity\Br\Contract $contract The contract this object is a part of
-     * @param \Litus\Entity\Br\Contracts\Section $section The section described in this object
+     * @param \BrBundle\Entity\Contract $contract The contract this object is a part of
+     * @param \BrBundle\Entity\Contracts\Section $section The section described in this object
      * @param int $position The position number of the section in the contract
      */
     public function __construct(Contract $contract, Section $section, $position)
@@ -66,7 +81,7 @@ class Composition
     }
 
     /**
-     * @return \Litus\Entity\Br\Contract
+     * @return \BrBundle\Entity\Contract
      */
     public function getContract()
     {
@@ -75,20 +90,21 @@ class Composition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Br\Contract $contract
-     * @return \Litus\Entity\Br\Contracts\Composition
+     * @param \BrBundle\Entity\Contract $contract
+     * @return \BrBundle\Entity\Contracts\Composition
      */
     public function setContract(Contract $contract)
     {
-        if($contract === null)
+        if ($contract === null)
             throw new \InvalidArgumentException('Contract cannot be null');
+            
         $this->contract = $contract;
 
         return $this;
     }
 
     /**
-     * @return \Litus\Entity\Br\Contracts\Section
+     * @return \BrBundle\Entity\Contracts\Section
      */
     public function getSection()
     {
@@ -97,13 +113,14 @@ class Composition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \Litus\Entity\Br\Contracts\Section $section
-     * @return \Litus\Entity\Br\Contracts\Composition
+     * @param \BrBundle\Entity\Contracts\Section $section
+     * @return \BrBundle\Entity\Contracts\Composition
      */
     public function setSection(Section $section)
     {
-        if($section === null)
+        if ($section === null)
             throw new \InvalidArgumentException('Contract cannot be null.');
+            
         $this->section = $section;
 
         return $this;
@@ -122,12 +139,13 @@ class Composition
      *
      * @throws \InvalidArgumentException
      * @param $position int
-     * @return \Litus\Entity\Br\Contracts\Composition
+     * @return \BrBundle\Entity\Contracts\Composition
      */
     public function setPosition($position)
     {
-        if($position < 0)
+        if ($position < 0)
             throw new \InvalidArgumentException("Position must be a positive number");
+            
         $this->position = round($position);
 
         return $this;

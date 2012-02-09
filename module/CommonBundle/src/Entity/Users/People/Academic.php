@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Credential,
  * This is the entity for an academic person, e.g. a student or professor.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
- * @Table(name="users.people_academics")
+ * @Table(name="users.academic_people")
  */
 class Academic extends \CommonBundle\Entity\Users\Person
 {
@@ -47,14 +47,9 @@ class Academic extends \CommonBundle\Entity\Users\Person
     private $photoPath;
 
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\UniversityStatus", mappedBy="person")
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person")
      */
     private $universityStatuses;
-
-    /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\UnionStatus", mappedBy="person")
-     */
-    private $unionStatuses;
 
     /**
      * @param string $username The user's username
@@ -64,8 +59,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param string $lastName The user's last name
      * @param string $email  The user's e-mail address
      * @param $sex string The users sex
-     * @return \CommonBundle\Entity\Users\People\Academic
-     *
      */
     public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
     {

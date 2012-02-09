@@ -63,57 +63,71 @@ class ContractGenerator extends DocumentGenerator {
             $entry_s[] = $entry->getSection()->getContent();
         }
 
-        $xml->append(new XmlObject('contract',
-            // params of <contract>
-            array(
-                'location' => $location,
-                'date' => $date
-            ),
-
-            // children of <contract>
-            array(
-                new XmlObject('title',null,$title),
-
-                new XmlObject(
-                    'our_union',
-
-                    // params of <our_union>
-                    array(
-                         'short_name' => $unionNameShort,
-                         'contact_person' => $ourContactPerson
-                    ),
-
-                    // children of <our_union>
-                    array(
-                        new XmlObject('name', null, $brName),
-                        new XmlObject('logo', null, $logo)
-                    )
-                ),
-
-                new XmlObject('company',
-                    // params of <company>
-                    array('contact_person' => $company->getFirstName() . ' ' . $company->getLastName()),
-
-                    // children of <company>
-                    array(
-                        new XmlObject('name', null, $company->getName()),
-                        new XmlObject('address', null, self::_formatAddress($company->getAddress()))
-                    )
-                ),
-
-                new XmlObject('union_address', null, array(
-
-                        // children of <union_address>
-                        new XmlObject('name', null, $unionName),
-                        new XmlObject('address', null, self::_formatAddress($unionAddress))
-                )),
-
-                new XmlObject('entries', null, $entry_s),
-
-                new XmlObject('sub_entries', null, $sub_entries),
-
-                new XmlObject('footer', null, $footer)
-            )
-        ));
+        $xml->append(
+        	new XmlObject(
+        		'contract',
+        		
+	            // params of <contract>
+	            array(
+	                'location' => $location,
+	                'date' => $date
+	            ),
+	
+	            // children of <contract>
+	            array(
+	                new XmlObject('title', null, $title),
+	
+	                new XmlObject(
+	                    'our_union',
+	
+	                    // params of <our_union>
+	                    array(
+	                         'short_name' => $unionNameShort,
+	                         'contact_person' => $ourContactPerson
+	                    ),
+	
+	                    // children of <our_union>
+	                    array(
+	                        new XmlObject('name', null, $brName),
+	                        new XmlObject('logo', null, $logo)
+	                    )
+	                ),
+	
+	                new XmlObject(
+	                	'company',
+	                	
+	                    // params of <company>
+	                    array(
+	                    	'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
+	                    ),
+	
+	                    // children of <company>
+	                    array(
+	                        new XmlObject('name', null, $company->getName()),
+	                        new XmlObject('address', null, self::_formatAddress($company->getAddress()))
+	                    )
+	                ),
+	
+	                new XmlObject(
+	                	'union_address',
+	                	
+	                	// params of <union_address>
+	                	null,
+	                	
+	                	// children of <union_address>
+	                	array(
+	                        new XmlObject('name', null, $unionName),
+	                        new XmlObject('address', null, self::_formatAddress($unionAddress))
+	                	)
+	                ),
+	
+	                new XmlObject('entries', null, $entry_s),
+	
+	                new XmlObject('sub_entries', null, $sub_entries),
+	
+	                new XmlObject('footer', null, $footer)
+	            )
+        	)
+        );
     }
 }

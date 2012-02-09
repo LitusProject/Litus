@@ -69,7 +69,7 @@ class Edit extends Add
     {
         $hiddenRoles = array(
             'guest',
-            'company'
+            'corporate'
         );
 
         $rolesArray = array();

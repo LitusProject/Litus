@@ -30,9 +30,9 @@ use CommonBundle\Entity\Acl\Role,
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
- *      "company"="CommonBundle\Entity\Users\People\Company",
- *      "academic"="CommonBundle\Entity\Users\People\Academic"}
- * )
+ *      "academic"="CommonBundle\Entity\Users\People\Academic",
+ *      "corporate"="CommonBundle\Entity\Users\People\Corporate"
+ * })
  */
 abstract class Person
 {
@@ -104,7 +104,7 @@ abstract class Person
      *
      * @Column(type="string", length=15, nullable=true)
      */
-    private $telephone;
+    private $phoneNumber;
 
     /**
      * @var string The persons sex ('m' or 'f')
@@ -119,6 +119,11 @@ abstract class Person
      * @Column(name="can_login", type="boolean")
      */
     private $canLogin;
+    
+    /**
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Union", mappedBy="person")
+     */
+    private $unionStatuses;
 
     /**
      * @param string $username The user's username
@@ -126,18 +131,18 @@ abstract class Person
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
-     * @param string $email  The user's e-mail address
+     * @param string $email The user's e-mail address
+     * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex ('m' or 'f')
-     * @return \CommonBundle\Entity\Users\Person
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
     {
         $this->setUsername($username);
         $this->setCredential($credential);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setEmail($email);
-
+		$this->setPhoneNumber($phoneNumber);
         $this->setSex($sex);
 
         $this->roles = new ArrayCollection($roles);
@@ -364,16 +369,20 @@ abstract class Person
     }
 
     /**
-     * @param string $telephone
+     * @param string $phoneNumber
      * @return \CommonBundle\Entity\Users\Person
      * @throws \InvalidArgumentException
      */
-    public function setTelephone($telephone)
+    public function setPhoneNumber($phoneNumber)
     {
-        if (($telephone === null) || !filter_var($telephone, FILTER_VALIDATE_INT))
-            throw new \InvalidArgumentException('Invalid telephone');
+        if (
+        	(null === $phoneNumber)
+        	|| !preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)
+        ) {
+            throw new \InvalidArgumentException('Invalid phone number');
+        }
             
-        $this->telephone = $telephone;
+        $this->phoneNumber = $phoneNumber;
         
         return $this;
     }
@@ -381,9 +390,9 @@ abstract class Person
     /**
      * @return string
      */
-    public function getTelephone()
+    public function getPhoneNumber()
     {
-        return $this->telephone;
+        return $this->phoneNumber;
     }
 
     /**

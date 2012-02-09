@@ -50,10 +50,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         		$this->getParam('controller'), $this->getParam('action')
         	)
         ) {
-        	$result['authenticatedUser'] = 'Guest';
+        	$authenticatedUser = 'Guest';
         
             if ($this->getAuthentication()->isAuthenticated()) {
-                $result['authenticatedUser'] = $this->getAuthentication()->getPersonObject()->getFirstName();
+                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
 
                 if ('auth' == $this->getParam('controller') && 'login' == $this->getParam('action'))
                     $this->redirect()->toRoute('admin_dashboard');
@@ -73,6 +73,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
 		
         $result['flashMessenger'] = $this->flashMessenger();
         
+        $result['authenticatedUser'] = $authenticatedUser;
   		$result['now'] = array(
   			'iso8601' => date('c', time()),
   			'display' => date('l, F j Y, H:i', time())

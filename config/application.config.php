@@ -20,6 +20,8 @@ return array(
     	'ZfTwig',
     	
         'CommonBundle',
+        
+        'BrBundle',
         'CudiBundle',
         'SyllabusBundle'
     ),
@@ -27,8 +29,8 @@ return array(
         'config_cache_enabled' 	=> false,
         'cache_dir'            	=> 'data/cache',
         'module_paths' 			=> array(
-            './module',
-            './vendor',
+            'module',
+            'vendor',
         ),
     ),
 );
