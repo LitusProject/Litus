@@ -45,7 +45,7 @@ class CudiBundleEntityStockOrderProxy extends \CudiBundle\Entity\Stock\Order imp
         return parent::getId();
     }
 
-    public function setSupplier($supplier)
+    public function setSupplier(\CudiBundle\Entity\Supplier $supplier)
     {
         $this->__load();
         return parent::setSupplier($supplier);
@@ -63,7 +63,7 @@ class CudiBundleEntityStockOrderProxy extends \CudiBundle\Entity\Stock\Order imp
         return parent::getPrice();
     }
 
-    public function setDate($date)
+    public function setDate(\DateTime $date)
     {
         $this->__load();
         return parent::setDate($date);
