@@ -66,7 +66,6 @@ return array(
                                     ),
                                     'admin_js' => array(
                                         'assets'  => array(
-                                        	'@common_jquery',
                                             'admin/js/*.js',
                                         ),
                                         'filters' => array(),

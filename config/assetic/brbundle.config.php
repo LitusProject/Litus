@@ -16,6 +16,7 @@
 return array(
 	'controllers'  => array(
 		'admin_company' => array(
+			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
 		),
