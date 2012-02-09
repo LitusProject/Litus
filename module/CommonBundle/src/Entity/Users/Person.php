@@ -145,8 +145,10 @@ abstract class Person
 		$this->setPhoneNumber($phoneNumber);
         $this->setSex($sex);
 
-        $this->roles = new ArrayCollection($roles);
         $this->canLogin = true;
+        
+        $this->roles = new ArrayCollection($roles);        
+       	$this->unionStatuses = new ArrayCollection();
     }
 
     /**

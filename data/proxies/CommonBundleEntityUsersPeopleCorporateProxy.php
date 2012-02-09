@@ -60,6 +60,18 @@ class CommonBundleEntityUsersPeopleCorporateProxy extends \CommonBundle\Entity\U
         return parent::getVatNumber();
     }
 
+    public function addCorporateStatus(\CommonBundle\Entity\Users\Statuses\Corporate $corporateStatus)
+    {
+        $this->__load();
+        return parent::addCorporateStatus($corporateStatus);
+    }
+
+    public function canHaveCorporateStatus()
+    {
+        $this->__load();
+        return parent::canHaveCorporateStatus();
+    }
+
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

@@ -57,14 +57,14 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
-     * @param string $email  The user's e-mail address
+     * @param string $email The user's e-mail address
+     * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $sex)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $sex);
+        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
-        $this->unionStatuses = new ArrayCollection();
         $this->universityStatuses = new ArrayCollection();
     }
 

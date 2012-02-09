@@ -44,17 +44,12 @@ class Corporate extends \CommonBundle\Entity\Users\Person
      * @param string $email  The contact's e-mail address
      * @param string $phoneNumber The contact's phone number
      * @param string $sex The contact's sex ('m' or 'f')
-     * @param \CommonBundle\Entity\Users\Statuses\Corporate $companyStatus The contact's status in the company
      */
     public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
     {
         parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
-        $this->corporateStatuses = new ArrayCollection(
-        	array(
-        		$companyStatus
-        	)
-        );
+        $this->corporateStatuses = new ArrayCollection();
     }
 
     /**
@@ -133,7 +128,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     public function canHaveCorporateStatus()
     {
     	foreach ($this->corporateStatuses as $corporateStatus) {
-    		if (AcademicYear::getShortAcademicYear == $corporateStatus->getYear())
+    		if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear())
     			return false;
     	}
     	

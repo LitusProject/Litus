@@ -46,8 +46,10 @@ class Union
     /**
      * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
-     * @Column(name="person")
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses")
+     * @ManyToOne(
+     * 		targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
+     * )
+     * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

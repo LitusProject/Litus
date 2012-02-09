@@ -15,7 +15,8 @@
  
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Form\Admin\Company\Add as AddForm,
+use BrBundle\Entity\Company,
+	BrBundle\Form\Admin\Company\Add as AddForm,
 	CommonBundle\Entity\Users\Credential,
 	CommonBundle\Entity\Users\People\Corporate as CorporatePerson,
 	CommonBundle\Entity\Users\Statuses\Corporate as CorporateStatus;
@@ -47,8 +48,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 		$companyCreated = false;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
-			var_dump($form->isValid($formData));
 			
             if ($form->isValid($formData)) {
                 $corporateRole = $this->getEntityManager()
@@ -95,7 +94,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
                 
                 $signatoryStatus = new CorporateStatus(
-                	$correspondenceContact, 'signatory'
+                	$signatoryContact, 'signatory'
                 );
                 $signatoryContact->addCorporateStatus(
                 	$signatoryStatus

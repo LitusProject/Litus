@@ -62,7 +62,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttrib('id', 'company_information')
             ->removeDecorator('DtDdWrapper');
             
-        $contactPerson = new ContactForm($entityManager, 'correspondence_contact');
+        $contactPerson = new ContactForm(
+        	$entityManager, 'correspondence_contact'
+        );
         
         $contactPerson->removeElement('correspondence_contact_roles');
         $contactPerson->removeElement('correspondence_contact_submit');
@@ -89,7 +91,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttrib('id', 'correspondence_contact')
             ->removeDecorator('DtDdWrapper');
             
-        $contactPerson = new ContactForm($entityManager, 'signatory_contact');
+        $contactPerson = new ContactForm(
+        	$entityManager, 'signatory_contact'
+        );
         
         $contactPerson->removeElement('signatory_contact_roles');
         $contactPerson->removeElement('signatory_contact_submit');
