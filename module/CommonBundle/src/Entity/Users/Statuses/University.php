@@ -46,10 +46,10 @@ class University
     /**
      * @var \CommonBundle\Entity\Users\People\Academic The person this university status belongs to
      *
-     * @Column(name="person")
      * @ManyToOne(
      *      targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="universityStatuses"
      * )
+     * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

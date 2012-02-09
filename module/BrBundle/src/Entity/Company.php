@@ -120,8 +120,8 @@ class Company
 	 */
 	public function setVatNumber($vatNumber)
 	{
-		if ((null === $name) || !is_string($name))
-			throw new \InvalidArgumentException('Invalid name');
+		if ((null === $vatNumber) || !is_string($vatNumber))
+			throw new \InvalidArgumentException('Invalid VAT number');
 			
 	    $this->vatNumber = $vatNumber;
 	    

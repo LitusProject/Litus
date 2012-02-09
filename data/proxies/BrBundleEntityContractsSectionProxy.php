@@ -87,10 +87,10 @@ class BrBundleEntityContractsSectionProxy extends \BrBundle\Entity\Contracts\Sec
         return parent::getYear();
     }
 
-    public function setVatType($vatType)
+    public function setVatType(\Doctrine\ORM\EntityManager $entityManager, $vatType)
     {
         $this->__load();
-        return parent::setVatType($vatType);
+        return parent::setVatType($entityManager, $vatType);
     }
 
     public function getVatType()
@@ -99,10 +99,10 @@ class BrBundleEntityContractsSectionProxy extends \BrBundle\Entity\Contracts\Sec
         return parent::getVatType();
     }
 
-    public function getVat()
+    public function getVatPercentage(\Doctrine\ORM\EntityManager $entityManager)
     {
         $this->__load();
-        return parent::getVat();
+        return parent::getVatPercentage($entityManager);
     }
 
     public function setPrice($price)

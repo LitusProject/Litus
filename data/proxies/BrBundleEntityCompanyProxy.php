@@ -69,10 +69,16 @@ class BrBundleEntityCompanyProxy extends \BrBundle\Entity\Company implements \Do
         return parent::getVatNumber();
     }
 
-    public function setContacts(array $contacts)
+    public function getActive()
     {
         $this->__load();
-        return parent::setContacts($contacts);
+        return parent::getActive();
+    }
+
+    public function deactivate()
+    {
+        $this->__load();
+        return parent::deactivate();
     }
 
     public function getContacts()
@@ -81,10 +87,16 @@ class BrBundleEntityCompanyProxy extends \BrBundle\Entity\Company implements \Do
         return parent::getContacts();
     }
 
+    public function addContact(\CommonBundle\Entity\Users\People\Corporate $contact)
+    {
+        $this->__load();
+        return parent::addContact($contact);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'name', 'vatNumber', 'contacts');
+        return array('__isInitialized__', 'id', 'name', 'vatNumber', 'active', 'contacts');
     }
 
     public function __clone()

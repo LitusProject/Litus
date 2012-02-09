@@ -46,10 +46,10 @@ class Corporate
     /**
      * @var \CommonBundle\Entity\Users\People\Corporate The person this company status belongs to
      *
-     * @Column(name="person")
      * @ManyToOne(
      *      targetEntity="CommonBundle\Entity\Users\People\Corporate", inversedBy="corporateStatuses"
      * )
+     * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
@@ -108,7 +108,7 @@ class Corporate
      */
     public static function isValidPerson(CorporatePerson $person)
     {
-        return ($person != null) && $person->canHaveCorporateStatus();
+        return ($person !== null) && $person->canHaveCorporateStatus();
     }
 
     /**

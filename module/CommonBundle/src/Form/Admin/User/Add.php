@@ -17,7 +17,6 @@ namespace CommonBundle\Form\Admin\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\IdenticalField as IdenticalFieldValidator,
 	CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
 	CommonBundle\Component\Validator\Username as UsernameValidator,
 	Doctrine\ORM\EntityManager,
@@ -29,6 +28,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text,
 	Zend\Validator\Alnum as AlnumValidator,
 	Zend\Validator\Alpha as AlphaValidator,
+	Zend\Validator\Identical as IdenticalValidator,
 	Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		
 		$this->_entityManager = $entityManager;
 		
-        $field = new Text(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'username');
+        $field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'username');
         $field->setLabel('Username')
         	->setRequired()
             ->setDecorators(array(new FieldDecorator()))
@@ -62,48 +62,48 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->addValidator(new UsernameValidator($this->_entityManager));
         $this->addElement($field);
 
-        $field = new Password(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'credential');
+        $field = new Password(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'credential');
         $field->setLabel('Password')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Password(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'verify_credential');
+        $field = new Password(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'verify_credential');
         $field->setLabel('Repeat Password')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new IdenticalFieldValidator('credential', 'Password'));
+            ->addValidator(new IdenticalValidator(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'credential'));
         $this->addElement($field);
 
-		$field = new Text(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'first_name');
+		$field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'first_name');
         $field->setLabel('First Name')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlphaValidator(array('allowWhiteSpace' => true)));
         $this->addElement($field);
 
-        $field = new Text(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'last_name');
+        $field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'last_name');
         $field->setLabel('Last Name')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlphaValidator(array('allowWhiteSpace' => true)));
         $this->addElement($field);
 
-        $field = new Text(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'email');
+        $field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'email');
         $field->setLabel('E-mail')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new EmailAddressValidator());
         $this->addElement($field);
         
-        $field = new Text(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'phone_number');
+        $field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'phone_number');
         $field->setLabel('Phone Number')
             ->setAttrib('placeholder', '+CCAAANNNNNN')
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new PhoneNumberValidator());
         $this->addElement($field);
 
-		$field = new Select(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'sex');
+		$field = new Select(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'sex');
 		$field->setLabel('Sex')
 			->setRequired()
 			->setMultiOptions(
@@ -115,13 +115,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 			->setDecorators(array(new FieldDecorator()));
 		$this->addElement($field);
 
-        $field = new Multiselect(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'roles');
+        $field = new Multiselect(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'roles');
         $field->setLabel('Groups')
             ->setMultiOptions($this->_createRolesArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $field = new Submit(('' == $fieldPrefix ?: $fieldPrefix . '_') . 'submit');
+        $field = new Submit(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'users_add')
             ->setDecorators(array(new ButtonDecorator()));
