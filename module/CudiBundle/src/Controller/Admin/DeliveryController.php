@@ -14,11 +14,10 @@
  */
  
 namespace CudiBundle\Controller\Admin;
-use \Admin\Form\Delivery\Add as AddForm;
 
-use \Litus\Entity\Cudi\Stock\DeliveryItem;
-
-use \Litus\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CudiBundle\Entity\Stock\DeliveryItem,
+	CudiBundle\Form\Admin\Delivery\Add as AddForm;
 
 /**
  * This class controls management of the stock.
@@ -40,7 +39,7 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\Action
 	public function addAction()
 	{
 		$this->view->deliveries = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
+			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
 			->findLastNb(25);
 
 		$form = new AddForm();
@@ -51,7 +50,7 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\Action
 
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
-					->getRepository('Litus\Entity\Cudi\Stock\StockItem')
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
                 $item = new DeliveryItem($article, $formData['number']);
@@ -72,7 +71,7 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\Action
 	public function deleteAction()
 	{
 		$item = $this->getEntityManager()
-	        ->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
+	        ->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
 	    	->findOneById($this->getRequest()->getParam('id'));
 	
 		if (null == $item)
@@ -101,14 +100,14 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\Action
 	public function overviewAction()
 	{
 		$this->view->suppliers = $this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Supplier')
+			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 	}
 	
 	public function supplierAction()
 	{
 		$supplier = $this->getEntityManager()
-            ->getRepository('Litus\Entity\Cudi\Supplier')
+            ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getRequest()->getParam('id'));
 		
 		if (null == $supplier)
@@ -116,7 +115,7 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\Action
 		
 		$this->view->supplier = $supplier;
 		$this->view->deliveries = $this->_createPaginatorArray($this->getEntityManager()
-			->getRepository('Litus\Entity\Cudi\Stock\DeliveryItem')
+			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
 			->findAllBySupplier($supplier));
 	}
 	

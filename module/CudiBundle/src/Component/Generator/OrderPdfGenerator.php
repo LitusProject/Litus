@@ -1,21 +1,38 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Component\Generator;
 
-use CommonBundle\Entity\Stock\Order,
-
+use CommonBundle\Component\Util\TmpFile,
 	CommonBundle\Component\Util\Xml\XmlGenerator,
 	CommonBundle\Component\Util\Xml\XmlObject,
-	CommonBundle\Component\Util\TmpFile;
+	CommonBundle\Entity\Stock\Order;
 
 class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenerator
 {
 
 	/**
-	 * @var \Litus\Entity\Cudi\Stock\Order
+	 * @var \CudiBundle\Entity\Stock\Order
 	 */
 	private $_order;
 	
+	/**
+	 * Create a new Order PDF Generator.
+	 *
+	 * @para \CudiBundle\Entity\Stock\Order $order The order
+	 */
     public function __construct(Order $order)
     {
     	$file = new TmpFile();
@@ -26,7 +43,12 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
     	);
     	$this->_order = $order;
     }
-
+	
+	/**
+	 * Generate the XML for the fop.
+	 *
+	 * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+	 */
     protected function _generateXml(TmpFile $tmpFile)
     {
     	$configs = self::_getConfigRepository();
@@ -38,7 +60,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
-        	->getRepository('Litus\Entity\Users\Person')
+        	->getRepository('CommonBundle\Entity\Users\Person')
         	->findOneById($configs->getConfigValue('cudi.person'));
 
         $delivery_address = array(

@@ -42,25 +42,32 @@ return array(
                             'commonbundle' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
-                                	'admin_auth_js' => array(
+                                	'common_jquery' => array(
                                 	    'assets'  => array(
-                                	        'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
+                                	        'common/js/jquery-1.7.1.min.js',
                                 	    ),
                                 	    'filters' => array(),
                                 	    'options' => array(),
                                 	),
-                                    'admin_base_css' => array(
+                                	'common_jqueryui' => array(
+                                	    'assets'  => array(
+                                	        'common/js/jqueryui-1.8.16.min.js',
+                                	    ),
+                                	    'filters' => array(),
+                                	    'options' => array(),
+                                	),
+                                    
+                                    'admin_css' => array(
                                         'assets'  => array(
-                                            'admin_base/stylesheet/css/*.css',
+                                            'admin/stylesheet/css/*.css',
                                         ),
                                         'filters' => array(),
                                         'options' => array(),
                                     ),
-                                    'admin_base_js' => array(
+                                    'admin_js' => array(
                                         'assets'  => array(
-                                            'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
-                                            'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js',
-                                            'admin_base/js/*.js',
+                                        	'@common_jquery',
+                                            'admin/js/*.js',
                                         ),
                                         'filters' => array(),
                                         'options' => array(),

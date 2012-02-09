@@ -1,8 +1,22 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CudiBundle\Entity\Articles;
 
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Article,
+	Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\ArticleHistory")
@@ -29,7 +43,12 @@ class ArticleHistory
 	 */
 	private $precursor;
 	
-	public function __construct(EntityManager $entityManager, $article, $precursor)
+	/**
+	 * @param Doctrine\ORM\EntityManager $entityManager The entitymanager
+	 * @param CudiBundle\Entity\Article $article The new version of the article
+	 * @param CudiBundle\Entity\Article $precursor The previous version of the article
+	 */
+	public function __construct(EntityManager $entityManager, Article $article, Article $precursor)
 	{
 		$article->setVersionNumber($precursor->getVersionNumber()+1);
 		$precursor->setIsBookable(false);
