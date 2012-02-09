@@ -20,8 +20,7 @@ use CommonBundle\Component\Authentication\Action,
 	CommonBundle\Entity\Users\Session,
 	Doctrine\ORM\EntityManager,
 	Zend\Authentication\Adapter,
-	Zend\Authentication\Storage as Storage,
-	Zend\Authentication\Storage\Session as SessionStorage;
+	Zend\Authentication\Storage as Storage;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -31,20 +30,20 @@ use CommonBundle\Component\Authentication\Action,
  */
 class Doctrine extends \Zend\Authentication\AuthenticationService
 {
-    /**
-     * The default namespace that should be used
-     */
-    const NAMESPACE_DEFAULT = 'Litus_Auth';
-
-    /**
-     * The default suffix that is used to name the session cookie
-     */
-    const COOKIE_SUFFIX_DEFAULT = '_Session';
-	
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
 	private $_entityManager = null;
+	
+	/**
+	 * @var string The name of the entity that holds the sessions
+	 */
+	private $_entityName = '';
+	
+	/**
+	 * @var int The expiration time for the persistent storage
+	 */
+	private $_expire = -1;
 	
     /**
      * @var string The namespace the storage handlers will use
@@ -52,19 +51,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     private $_namespace = '';
 
     /**
-     * @var int The expiration time for the persistent storage
-     */
-    private $_expire = -1;
-
-    /**
      * @var string The cookie suffix that is used to store the session cookie
      */
     private $_cookieSuffix = '';
-
-    /**
-     * @var string The name of the entity that holds the sessions
-     */
-    private $_entityName = '';
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -76,8 +65,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
-        EntityManager $entityManager, $entityName, $expire = -1, Storage $storage = null,
-        $namespace = self::NAMESPACE_DEFAULT, $cookieSuffix = self::COOKIE_SUFFIX_DEFAULT
+        EntityManager $entityManager, $entityName, $expire, Storage $storage, $namespace, $cookieSuffix
     )
     {
         parent::__construct($storage);
@@ -120,12 +108,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
                 $this->_entityManager->persist($newSession);
-
+				
                 $this->getStorage()->write($newSession->getId());
                 setcookie(
-                    $this->_namespace . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire
+                    $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
                 );
-
+                
                 $result = $adapterResult;
             }
         } else {
@@ -143,7 +131,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
                     setcookie(
-                        $this->_namespace . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire
+                        $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
                     );
                 }
 
@@ -191,11 +179,13 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
         if (null !== $session) {
             $session->deactivate();
+            
+            $this->_entityManager->flush();
         }
 
         $this->getStorage()->clear();
         setcookie(
-            $this->_namespace . $this->_cookieSuffix, '', -1
+            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
         );
     }
 
@@ -207,9 +197,10 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     public function hasIdentity()
     {
         if ($this->getStorage()->isEmpty()) {
-            if (isset($_COOKIE[$this->_namespace . $this->_cookieSuffix]))
-                $this->getStorage()->write($_COOKIE[$this->_namespace . $this->_cookieSuffix]);
+            if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]))
+                $this->getStorage()->write($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]);
         }
+        
         return !$this->getStorage()->isEmpty();
     }
 }

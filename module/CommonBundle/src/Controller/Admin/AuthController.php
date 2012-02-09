@@ -43,7 +43,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 	        );
 	        
 	        if ($this->getAuthentication()->isAuthenticated()) {
-	            $authResult['result'] = true;
+	            $authResult = array(
+	            	'result' => true,
+	            	'reason' => ''
+	            );
 	        } else {
 	            $authResult['reason'] = 'USERNAME_PASSWORD';
 	        }

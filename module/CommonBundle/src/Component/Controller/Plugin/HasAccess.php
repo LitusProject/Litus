@@ -26,17 +26,17 @@ use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
 class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
 {	
 	/**
-	 * @var \CommonBundle\Component\Acl\Helper\HasAccess The helper object
+	 * @var \CommonBundle\Component\Acl\Driver\HasAccess The driver object
 	 */
 	private $_helper = null;
 	
 	/**
-	 * @param \CommonBundle\Component\Acl\Helper\HasAccess $acl The helper object
+	 * @param \CommonBundle\Component\Acl\Helper\HasAccess $acl The driver object
 	 * @return \CommonBundle\Component\View\Helper\HasAccess
 	 */
-	public function setHelper(HasAccessDriver $helper)
+	public function setDriver(HasAccessDriver $driver)
 	{
-		$this->_helper = $helper;
+		$this->_driver = $driver;
 		
 		return $this;
 	}
@@ -48,10 +48,10 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
 	 */
     public function resourceAction($resource, $action)
     {
-    	if (null === $this->_helper)
-    		throw new Exception\RuntimeException('No helper driver object was provided');
+    	if (null === $this->_driver)
+    		throw new Exception\RuntimeException('No driver object was provided');
     	
-    	$helper = $this->_helper;
+    	$helper = $this->_driver;
     		
     	return $helper(
     		$resource, $action
