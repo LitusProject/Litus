@@ -32,9 +32,7 @@ return array(
                 'parameters' => array(
                 	'autoGenerateProxyClasses' => ('development' == getenv('APPLICATION_ENV')),
                 	'proxyDir'                 => realpath('data/proxies'),
-                	'entityPaths' => array(
-                		'commonbundle' => __DIR__ . '/../../module/CommonBundle/src/Entity',
-                	),
+                	'entityPaths'              => array(),
                 ),
             ), 
         ),

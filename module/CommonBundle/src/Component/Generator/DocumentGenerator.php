@@ -3,7 +3,6 @@
 namespace CommonBundle\Component\Generator;
 
 use CommonBundle\Component\Util\TmpFile,
-
 	Doctrine\ORM\EntityManager;
 
 abstract class DocumentGenerator
@@ -48,7 +47,7 @@ abstract class DocumentGenerator
      * @param $address string
      * @return string
      */
-    protected static function _formatAddress($address)
+    protected function formatAddress($address)
     {
         return str_replace(',', '<br/>', $address);
     }
@@ -57,6 +56,7 @@ abstract class DocumentGenerator
     {
         if(($xsl === null) || !is_string($xsl))
             throw new \InvalidArgumentException('Invalid xsl');
+            
         if(($pdf === null) || !is_string($pdf))
             throw new \InvalidArgumentException('Invalid pdf');
 
@@ -73,7 +73,7 @@ abstract class DocumentGenerator
 
     protected abstract function _generateXml(TmpFile $file);
 
-    protected function _generatePdf()
+    protected function generatePdf()
     {
         $xml = $this->_xml->getFilename();
 
@@ -86,6 +86,7 @@ abstract class DocumentGenerator
         $resultValue = 0;
         $command = 'fop -xsl ' . $this->_xsl . ' -xml ' . $xml . ' ' . $this->_pdf;
         $result = system($command, &$resultValue);
+        
         if($resultValue != 0)
             throw new \RuntimeException($command . ' failed with return value ' . $resultValue . ': ' . $result);
     }

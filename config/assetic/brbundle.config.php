@@ -15,7 +15,7 @@
  
 return array(
 	'controllers'  => array(
-		'admin_article' => array(
+		'admin_company' => array(
 		    '@admin_base_css',
 		    '@admin_base_js',
 		),

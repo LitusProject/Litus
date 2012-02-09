@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_company/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+	
+	    <table class="full_width">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th width="175px">VAT Number</th>
+	                <th width="120px">Action</th>
+	            </tr>
+	        </thead>
+	
+	        <tbody>
+	            {% for company in paginator %}
+	                <tr>
+	                    <td>{{ company.getName() }}</td>
+	                    <td>{{ company.getVatNumber() }}</td>
+	                    <td>
+	                        <ul>
+	                            <li><a href="{{ url('admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
+	                            <li><a href="{{ url('admin_company', {"action": "delete", "id": company.getId()}) }}" class="delete">Delete</a></li>
+	                        </ul>
+	                    </td>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+	    </table>
+	
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}

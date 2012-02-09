@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle;
+namespace BrBundle;
 
 use Zend\Module\Manager,
 	Zend\EventManager\Event,
@@ -108,7 +108,7 @@ class Module implements AutoloaderProvider
     public function getProvides()
     {
         return array(
-            'name'    => 'commonbundle',
+            'name'    => 'BrBundle',
             'version' => '1.0.0',
         );
     }

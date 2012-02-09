@@ -1,82 +1,131 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace BrBundle\Controller\Admin;
 
-namespace Admin;
+use BrBundle\Form\Admin\Company\Add as AddForm,
+	CommonBundle\Entity\Users\Credential,
+	CommonBundle\Entity\Users\People\Corporate as CorporatePerson,
+	CommonBundle\Entity\Users\Statuses\Corporate as CorporateStatus;
 
-use \Admin\Form\Company\Add as AddForm;
-
-use \Litus\Entity\Users\Credential;
-use \Litus\Entity\Users\People\Company;
-
-class CompanyController extends \Litus\Controller\Action
+class CompanyController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
+    public function manageAction()
     {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('add');
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Company',
+            $this->getParam('page'),
+            array(
+            	'active' => true
+            )
+        );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
     }
 
     public function addAction()
     {
-        $form = new AddForm();
-
-        $this->view->form = $form;
-        $this->view->companyCreated = false;
-
+        $form = new AddForm(
+        	$this->getEntityManager()
+        );
+		
+		$companyCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
+            $formData = $this->getRequest()->post()->toArray();
+			
+			var_dump($form->isValid($formData));
+			
             if ($form->isValid($formData)) {
-                $roles = array();
-
-                $formData['roles'][] = 'company';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('Litus\Entity\Acl\Role')
-                        ->findOneByName($role);
-                }
-
-                $newCredential = new Credential(
-                    'sha512',
-                    $formData['credential']
+                $corporateRole = $this->getEntityManager()
+                	->getRepository('CommonBundle\Entity\Acl\Role')
+                	->findOneByName('corporate');
+                
+                $correspondenceContact = new CorporatePerson(
+                    $formData['correspondence_contact_username'],
+                    new Credential(
+                        'sha512',
+                        $formData['correspondence_contact_credential']
+                    ),
+                    array(
+                   		$corporateRole 
+                    ),
+                    $formData['correspondence_contact_first_name'],
+                    $formData['correspondence_contact_last_name'],
+                    $formData['correspondence_contact_email'],
+                    $formData['correspondence_contact_phone_number'],
+                    $formData['correspondence_contact_sex']
                 );
-                $this->getEntityManager()->persist($newCredential);
-
-                $newUser = new Company(
-                    $formData['username'],
-                    $newCredential,
-                    $roles,
-                    $formData['first_name'],
-                    $formData['last_name'],
-                    $formData['email'],
-                    $formData['company_name'],
-                    $formData['vat_number'],
-                    $formData['sex']
+                
+                $correspondenceStatus = new CorporateStatus(
+                	$correspondenceContact, 'correspondence'
                 );
-                $newUser->setAddress(str_replace("\r\n", ',' ,$formData['company_address']));
-                $newUser->setTelephone($formData['telephone']);
-                $this->getEntityManager()->persist($newUser);
+                $correspondenceContact->addCorporateStatus(
+                	$correspondenceStatus
+                );
+                
+                $signatoryContact = new CorporatePerson(
+                    $formData['signatory_contact_username'],
+                    new Credential(
+                        'sha512',
+                        $formData['signatory_contact_credential']
+                    ),
+                    array(
+                   		$corporateRole 
+                    ),
+                    $formData['signatory_contact_first_name'],
+                    $formData['signatory_contact_last_name'],
+                    $formData['signatory_contact_email'],
+                    $formData['signatory_contact_phone_number'],
+                    $formData['signatory_contact_sex']                    
+                );
+                
+                $signatoryStatus = new CorporateStatus(
+                	$correspondenceContact, 'signatory'
+                );
+                $signatoryContact->addCorporateStatus(
+                	$signatoryStatus
+                );
+                
+                $newCompany = new Company(
+                	$formData['company_name'],
+                	$formData['vat_number'],
+                	array(
+                		$correspondenceContact,
+                		$signatoryContact
+                	)
+                );
+                
+                $this->getEntityManager()->persist($newCompany);
 
-                $this->view->companyCreated = true;
-                $this->view->form = new AddForm();
+				$form = new AddForm(
+					$this->getEntityManager()
+				);
+
+                $companyCreated = true;
             }
         }
-    }
-
-    public function manageAction()
-    {
-        $paginator = new Paginator(
-            new ArrayAdapter(
-                $this->getEntityManager()->getRepository('Litus\Entity\Users\People\Company')->findAll()
-            )
+        
+        $this->getEntityManager()->flush();
+        
+        return array(
+        	'form' => $form,
+        	'companyCreated' => $companyCreated
         );
-        $paginator->setItemCountPerPage(25);
-        $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-
-        $this->view->paginator = $paginator;
     }
 
     public function editAction()

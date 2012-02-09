@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'cudibundle_admin_article/partials/navigation.twig' %}
+	{% include 'admin_article/partials/navigation.twig' %}
 	
 	<div id="flashmessenger">
 		{% include 'admin/partials/flashMessenger.twig' %}
@@ -53,8 +53,8 @@
 		                <td>{{ article.getMetaInfo().getYearPublished() }}</td>
 		                <td>{% if article.isStock() %} Stock {% else %} Stub {% endif %}</td>
 						<td>
-		                    <a href="{{ url('cudibundle_article_admin', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-		                    <a href="{{ url('cudibundle_article_admin', {"action": "delete", "id": article.getId()}) }}" class="delete">Delete</a>
+		                    <a href="{{ url('article_admin', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+		                    <a href="{{ url('article_admin', {"action": "delete", "id": article.getId()}) }}" class="delete">Delete</a>
 		                </td>
 		            </tr>
 		        {% endfor %}
@@ -72,7 +72,7 @@
 					searchDiv: $('#stock_search'),
 					searchString: $('#searchString'),
 					searchField: $('#searchField'),
-					url: '<?= $this->url(array('action' => 'search')); ?>',
+					url: '{{ url('admin_article', {"action": "search"}) }}',
 					display: function (data) {
 						$('#stock_search table').find('tr.item').remove();
 						$(data).each(function () {

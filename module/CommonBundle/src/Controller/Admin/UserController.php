@@ -64,18 +64,17 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                         ->findOneByName($role);
                 }
 
-                $newCredential = new Credential(
-                    'sha512',
-                    $formData['credential']
-                );
-
                 $newUser = new Academic(
                     $formData['username'],
-                    $newCredential,
+                    new Credential(
+                        'sha512',
+                        $formData['credential']
+                    ),
                     $roles,
                     $formData['first_name'],
                     $formData['last_name'],
                     $formData['email'],
+                    $formData['phone_number'],
 					$formData['sex']
                 );
                 $this->getEntityManager()->persist($newUser);

@@ -30,7 +30,7 @@ return array(
 		    '@admin_base_css',
 		    '@admin_base_js',
 		),
-		'admin_user' => array(
+		'admin_user'      => array(
 		    '@admin_base_css',
 		    '@admin_base_js',
 		),

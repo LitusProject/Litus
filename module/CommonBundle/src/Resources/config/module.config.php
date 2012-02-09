@@ -19,7 +19,7 @@ return array(
     'display_exceptions'    => true,
     'di'                    => array(
         'instance' => array(
-            'alias' => array(
+            'alias'                          => array(
                 'authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
                 'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
@@ -29,7 +29,7 @@ return array(
                 'admin_role'                     => 'CommonBundle\Controller\Admin\RoleController',
                 'admin_user'                     => 'CommonBundle\Controller\Admin\UserController',
             ),
-            'assetic_configuration' => array(
+            'assetic_configuration'          => array(
                 'parameters' => array(
                     'config' => array(
                         'cacheEnabled' => true,
@@ -72,7 +72,7 @@ return array(
                 ),
             ),
                        
-            'authentication' => array(
+            'authentication'                 => array(
             	'parameters' => array(
             		'adapter' => 'authentication_doctrineadapter',
             		'service' => 'authentication_doctrineservice',
@@ -91,6 +91,14 @@ return array(
             		'entityName'    => '"CommonBundle\Entity\Users\Session"',
             		'expire'        => '2678400',
             	),
+            ),
+            
+            'doctrine_config' => array(
+                'parameters' => array(
+                	'entityPaths' => array(
+                		'commonbundle' => __DIR__ . '/../../Entity',
+                	),
+                ),
             ),
         ),
     ),

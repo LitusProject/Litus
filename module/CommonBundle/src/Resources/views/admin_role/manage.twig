@@ -20,7 +20,7 @@
                         <td>{{ role.getName() }}</td>
                         <td>
                             <a href="{{ url('admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
-                            {% if 'guest' != role.getName() and 'company' != role.getName() %}
+                            {% if 'guest' != role.getName() and 'corporate' != role.getName() %}
                             	<a href="{{ url('admin_role', {"action": "delete", "name": role.getName()}) }}" class="delete">Delete</a>
                             {% endif %}
                         </td>

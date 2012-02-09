@@ -13,45 +13,41 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Entity\Users;
+namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Users\People\Academic;
+	CommonBundle\Entity\Users\Person;
 
 /**
- * A classification of a user based on his status at our Alma Mater.
+ * Specifying the different types of memberships the organization has.
  * 
- * @Entity(repositoryClass="CommonBundle\Repository\Users\UniversityStatus")
- * @Table(name="users.university_statuses")
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Union")
+ * @Table(name="users.union_statuses")
  */
-class UniversityStatus
+class Union
 {
     /**
      * @static
      * @var array All the possible status values allowed
      */
     private static $_possibleStatuses = array(
-        'professor', 'student', 'alumnus', 'external_student'
+    	'member', 'non_member', 'honorary_member', 'supportive_member', 'praesidium'
     );
 
-    /**
-     * The ID of this UniversityStatus.
+	/**
+     * @var int The ID of this union status
      *
-     * @var int
-     *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    private $id;
+	 * @Id
+	 * @GeneratedValue
+	 * @Column(type="bigint")
+	 */
+	private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The Person this university status belongs to
+     * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
      * @Column(name="person")
-     * @ManyToOne(
-     *      targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="universityStatuses"
-     * )
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses")
      */
     private $person;
 
@@ -63,20 +59,20 @@ class UniversityStatus
     private $status;
 
     /**
-     * @var string The academic year this status is/was valid in; the format is yyzz (i.e. 0910, 1112)
+     * @var string The academic year this status was valid in; the format is yyzz (i.e. 0910, 1112)
      *
      * @Column(type="string", length=4)
      */
     private $year;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Academic $person The person that should be given the status
-     * @param string $status The status that should be given to the person
+     * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
+     * @param string $status The actual status value
      * @throws \InvalidArgumentException
      */
-    public function __construct(Academic $person, $status)
+    public function __construct(Person $person, $status)
     {
-        if (!UniversityStatus::isValidPerson($person))
+        if(!self::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
             
         $this->person = $person;
@@ -86,7 +82,7 @@ class UniversityStatus
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -94,7 +90,7 @@ class UniversityStatus
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\Users\Person
      */
     public function getPerson()
     {
@@ -102,15 +98,15 @@ class UniversityStatus
     }
 
     /**
-     * Returns whether the given user can have a UniversityStatus.
+     * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param \CommonBundle\Entity\Users\People\Academic $person the user to check
+     * @param \CommonBundle\Entity\Users\Person $person The person to check
      * @return bool
      */
-    public static function isValidPerson(Academic $person)
+    public static function isValidPerson(Person $person)
     {
-        return ($person != null) && $person->canHaveUniversityStatus();
+        return ($person != null) && $person->canHaveUnionStatus();
     }
 
     /**
@@ -122,14 +118,14 @@ class UniversityStatus
     }
 
     /**
-     * @param $status string the status to set
-     * @return \CommonBundle\Entity\Users\UniversityStatus;
+     * @param $status
+     * @return \CommonBundle\Entity\Users\UnionStatus
      */
     public function setStatus($status)
     {
         if (self::isValidStatus($status))
             $this->status = $status;
-            
+
         return $this;
     }
 

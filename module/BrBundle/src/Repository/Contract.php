@@ -1,6 +1,6 @@
 <?php
 
-namespace Litus\Repository\Br;
+namespace BrBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -12,11 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class Contract extends EntityRepository
 {
-
     public function findAllContractIds()
     {
-        $result =  $this->_em
-            ->createQuery('SELECT c.id FROM Litus\Entity\Br\Contract c')->getResult();
+        $result = $this->_em
+            ->createQuery('SELECT c.id FROM Litus\Entity\Br\Contract c')
+            ->getResult();
 
         $return = array();
         foreach ($result as $entry)
@@ -33,7 +33,7 @@ class Contract extends EntityRepository
 
         $highestInvoiceNb = $highestInvoiceNb[0]['highest'];
 
-        return (+$highestInvoiceNb) + 1;
+        return ++$highestInvoiceNb;
     }
 
     public function findNextContractNb()
@@ -44,6 +44,6 @@ class Contract extends EntityRepository
 
         $highestContractNb = $highestContractNb[0]['highest'];
 
-        return (+$highestContractNb) + 1;
+        return ++$highestContractNb;
     }
 }

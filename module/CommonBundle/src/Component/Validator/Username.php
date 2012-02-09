@@ -51,8 +51,7 @@ class Username extends \Zend\Validator\AbstractValidator
 	}
 
     /**
-     * Returns true if and only if a field name has been set, the field name is available in the
-     * context, and the value of that field name matches the provided value.
+     * Returns true if no matching record is found in the database.
      *
      * @param string $value The value of the field that will be validated
      * @param array $context The context of the field that will be validated
@@ -70,6 +69,7 @@ class Username extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::NOT_VALID);
+        
         return false;
     }
 }
