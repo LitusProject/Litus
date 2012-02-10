@@ -3,11 +3,9 @@
 {% block content %}
 	{% include 'admin_article/partials/navigation.twig' %}
 	
-	<div id="flashmessenger">
-		{% include 'admin/partials/flashMessenger.twig' %}
-	</div>
-	
 	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+
 		<h1>Article</h1>
 		
 		<p>Title: <b>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</b></p>
