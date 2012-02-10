@@ -112,7 +112,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 				$this->getEntityManager()->persist($metaInfo);
                 $this->getEntityManager()->persist($article);
 				
-				$this->flush();
+				$this->getEntityManager()->flush();
 				
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -209,7 +209,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 						->setFrontPageTextColored($formData['front_text_colored']);
 				}
 				
-				$this->flush();
+				$this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -285,7 +285,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		if (null !== $this->getParam('confirm')) {
             if (1 == $this->getParam('confirm')) {
 				$article->setRemoved(true);
-				$this->flush();
+				$this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -544,7 +544,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($newVersion);
                 $this->getEntityManager()->persist($history);
                 
-                $this->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
