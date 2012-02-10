@@ -90,27 +90,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
 
     /**
-     * Flushes the entity manager and catches ORM exceptions, which is then stored in a view variable.
-     *
-     * @return bool
-     */
-    protected function flush()
-    {
-        if ('development' == getenv('APPLICATION_ENV'))
-            $this->getEntityManager()->flush();
-        else {
-            try {
-                $this->getEntityManager()->flush();
-            }
-            catch (\PDOException $e) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Does some initialization work for asynchronously requested actions.
      *
      * @return void
