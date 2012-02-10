@@ -36,7 +36,6 @@ class FieldDecorator extends \Zend\Form\Decorator\AbstractDecorator
         $viewHelper = new ViewHelper();
         $viewHelper->setElement($this->getElement());
         $content = $viewHelper->render($content);
-
         $divSpanWrapper = new DivSpanWrapper();
         $divSpanWrapper->setElement($this->getElement());
         $content = $divSpanWrapper->render($content);

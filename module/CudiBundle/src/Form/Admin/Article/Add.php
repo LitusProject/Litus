@@ -42,8 +42,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($opts);
         
        	$this->_entityManager = $entityManager;
-
-        $this->setMethod('post');
          
         $field = new Text('title');
         $field->setLabel('Title')
@@ -301,7 +299,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 			$data['rectoverso'] = $article->isRectoVerso();
 			$data['front_color'] = $article->getFrontColor()->getId();
 		}
-		
+						
 		parent::populate($data);
 	}
 	

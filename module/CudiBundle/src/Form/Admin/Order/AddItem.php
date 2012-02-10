@@ -31,8 +31,6 @@ class AddItem extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
 
-        $this->setMethod('post');
-
 		$field = new Text('number');
         $field->setLabel('Number')
         	->setRequired()

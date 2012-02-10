@@ -35,8 +35,6 @@ class File extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-
-        $this->setMethod('post');
          
         $field = new Text('description');
         $field->setLabel('Description')

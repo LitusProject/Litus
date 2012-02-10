@@ -60,7 +60,7 @@ class Company
 	 * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
 	 *
 	 * @ManyToMany(targetEntity="CommonBundle\Entity\Users\People\Corporate", cascade={"persist"})
-	 * @JoinTable(name="companies_contacts",
+	 * @JoinTable(name="br.companies_contacts",
 	 *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
 	 *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
 	 * )

@@ -35,7 +35,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($options);
 
         $this->setAction('/admin/booking/add');
-        $this->setMethod('post');
          
 		$field = new Text('person');
         $field->setLabel('Person')

@@ -15,8 +15,8 @@
  
 namespace CommonBundle\Component\Form\Admin\Decorator;
 
-use Zend\Form\Decorator\Errors;
-	Zend\Form\Decorator\ViewHelper;
+use Zend\Form\Decorator\Errors,
+	Zend\Form\Decorator\ViewHelper,
 	Zend\Form\Decorator\File;
 
 /**

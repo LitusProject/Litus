@@ -72,7 +72,7 @@ class CudiBundleEntityArticlesStockArticlesInternalProxy extends \CudiBundle\Ent
         return parent::getBinding();
     }
 
-    public function setBinding($binding)
+    public function setBinding(\CudiBundle\Entity\Articles\StockArticles\Binding $binding)
     {
         $this->__load();
         return parent::setBinding($binding);
@@ -108,7 +108,7 @@ class CudiBundleEntityArticlesStockArticlesInternalProxy extends \CudiBundle\Ent
         return parent::getFrontColor();
     }
 
-    public function setFrontColor($frontPageColor)
+    public function setFrontColor(\CudiBundle\Entity\Articles\StockArticles\Color $frontPageColor)
     {
         $this->__load();
         return parent::setFrontColor($frontPageColor);
@@ -192,7 +192,7 @@ class CudiBundleEntityArticlesStockArticlesInternalProxy extends \CudiBundle\Ent
         return parent::getSupplier();
     }
 
-    public function setSupplier($supplier)
+    public function setSupplier(\CudiBundle\Entity\Supplier $supplier)
     {
         $this->__load();
         return parent::setSupplier($supplier);

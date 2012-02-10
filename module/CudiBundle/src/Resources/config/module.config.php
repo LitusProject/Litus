@@ -6,6 +6,11 @@ return array(
             'alias' => array(
                 'admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
             ),
+            'admin_article' => array(
+            	'parameters' => array(
+            		'filePath' => realpath('data/cudi/files'),
+            	),
+            ),
             'doctrine_config' => array(
                 'parameters' => array(
                 	'entityPaths' => array(
