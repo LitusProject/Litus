@@ -116,6 +116,14 @@ return array(
                 	),
                 ),
             ),
+            
+            'ZfTwig\TwigEnvironment' => array(
+            	'parameters' => array(
+            		'options' => array(
+            			'charset' => 'ISO-8859-1',
+            		),
+            	),
+            ),
         ),
     ),
     'routes' => array(
