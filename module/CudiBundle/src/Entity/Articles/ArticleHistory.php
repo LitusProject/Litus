@@ -51,19 +51,22 @@ class ArticleHistory
 	public function __construct(EntityManager $entityManager, Article $article, Article $precursor)
 	{
 		$article->setVersionNumber($precursor->getVersionNumber()+1);
-		$precursor->setIsBookable(false);
 		
-		$order = $entityManager
-		    ->getRepository('CudiBundle\Entity\Stock\OrderItem')
-		    ->findOneOpenByArticle($precursor);
-		if (null !== $order)
-			$order->setArticle($article);
-		
-		$bookings = $entityManager
-		    ->getRepository('CudiBundle\Entity\Sales\Booking')
-		    ->findAllBookedByArticle($precursor);
-		foreach($bookings as $booking)
-			$booking->setArticle($article);
+		if ($precursor->isStock()) {
+			$precursor->setIsBookable(false);
+			
+			$order = $entityManager
+			    ->getRepository('CudiBundle\Entity\Stock\OrderItem')
+			    ->findOneOpenByArticle($precursor);
+			if (null !== $order)
+				$order->setArticle($article);
+			
+			$bookings = $entityManager
+			    ->getRepository('CudiBundle\Entity\Sales\Booking')
+			    ->findAllBookedByArticle($precursor);
+			foreach($bookings as $booking)
+				$booking->setArticle($article);
+		}
 		
 		$this->article = $article;
 		$this->precursor = $precursor;

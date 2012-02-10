@@ -28,6 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Form\Admin\Article\NewVersion as NewVersionForm,
 	Doctrine\ORM\EntityManager,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
+	Zend\Http\Headers,
 	Zend\Json\Json;
 
 /**
@@ -39,6 +40,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ArticleController extends \CommonBundle\Component\Controller\ActionController
 {
+	/**
+	 * @var string
+	 */
+	private $_filePath;
+
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
@@ -350,67 +356,87 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function managefilesAction()
 	{
-		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
-
-		$article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$article = $this->_getArticle();
 		
-		if (null == $article)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		if (null === $article) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
 		
 		$form = new FileForm();
-		
-		$this->view->form = $form;
-        $this->view->article = $article;
         
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
         		$upload = new FileUpload();
         		$originalName = $upload->getFileName(null, false);
-        		
+
         		$fileName = '';
         		do{
         		    $fileName = '/' . sha1(uniqid());
-        		} while (file_exists('../resources/files/cudi/' . $fileName));
+        		} while (file_exists($this->_filePath . $fileName));
         		
-        		$upload->addFilter('Rename', '../resources/files/cudi/' . $fileName);
+        		$upload->addFilter('Rename', $this->_filePath . $fileName);
         		$upload->receive();
         		
         		$file = new File($fileName, $originalName, $formData['description'], $article);
         		$this->getEntityManager()->persist($file);
+        		$this->getEntityManager()->flush();
         		
-        		$this->broker('flashmessenger')->addMessage(
+        		$this->flashMessenger()->addMessage(
         		    new FlashMessage(
         		        FlashMessage::SUCCESS,
         		        'SUCCESS',
         		        'The file was successfully added!'
         		    )
         		);
-        		$this->_redirect('managefiles', null, null, array('id' => $article->getId()));
+        		
+        		$this->redirect()->toRoute(
+        			'admin_article',
+        			array(
+        				'action' => 'managefiles',
+        				'id' => $file->getInternalArticle()->getId()
+        			)
+        		);
         	}
         }
+        
+        return array(
+        	'form' => $form,
+        	'article' => $article,
+        	'articleFiles' => $article->getFiles($this->getEntityManager()),
+        );
 	}
 	
 	public function deletefileAction()
 	{
-		$file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File')
-            ->findOneById($this->getRequest()->getParam('id'));
-
-		if (null == $file)
-			throw new Zend\Controller\Action\Exception("Page not found", 404);
+		$file = $this->_getFile();
 		
-		$this->view->articleFile = $file;
-
-		if (null !== $this->getRequest()->getParam('confirm')) {
-            if (1 == $this->getRequest()->getParam('confirm')) {
-            	unlink('../resources/files/cudi/' . $file->getPath());
+		if (null === $file) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		if (null !== $this->getParam('confirm')) {
+            if (1 == $this->getParam('confirm')) {
+            	unlink($this->_filePath . $file->getPath());
             	$this->getEntityManager()->remove($file);
+            	$this->getEntityManager()->flush();
 
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -418,31 +444,84 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     )
                 );
             }
-
-            $this->_redirect('managefiles', null, null, array('id' => $file->getInternalArticle()->getId()));
+            
+            $this->redirect()->toRoute(
+            	'admin_article',
+            	array(
+            		'action' => 'managefiles',
+            		'id' => $file->getInternalArticle()->getId()
+            	)
+            );
         }
+        
+        return array(
+        	'articleFile' => $file,
+        );
+	}
+	
+	private function _getFile()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the file!'
+			    )
+			);
+			
+			return;
+		}
+	
+	    $article = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\File')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $article) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No file with the given id was found!'
+			    )
+			);
+			
+			return;
+		}
+		
+		return $article;
 	}
 	
 	public function downloadfileAction()
 	{
-		$this->broker('layout')->disableLayout(); 
-		$this->broker('viewRenderer')->setNoRender();
+		$file = $this->_getFile();
 		
-		$file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File')
-            ->findOneById($this->getRequest()->getParam('id'));
+		if (null === $file) {
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		$headers = new Headers();
+		$headers->addHeaders(array(
+			'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
+			'Content-type' => 'application/octet-stream',
+			'Content-Length' => filesize($this->_filePath . $file->getPath()),
+		));
+		$this->getResponse()->setHeaders($headers);
 
-		if (null == $file)
-			throw new Zend\Controller\Action\Exception("Page not found", 404);
+		$handle = fopen($this->_filePath . $file->getPath(), 'r');
+		$data = fread($handle, filesize($this->_filePath . $file->getPath()));
+		fclose($handle);
 		
-		// TODO: move this to init function
-		$this->getResponse()->setHeader(
-			'Content-Disposition', 'inline; filename="' . $file->getName() . '"'
-		)->setHeader(
-			'Content-type', 'application/octet-stream'
+		return array(
+			'data' => $data
 		);
-		
-		readfile('../resources/files/cudi/' . $file->getPath());
 	}
 	
 	public function newversionAction()
@@ -472,11 +551,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $formData['year_published']
                 );
 				
-				$supplier = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Supplier')
-					->findOneById($formData['supplier']);
-				
 				if ($formData['stock']) {
+					$supplier = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Supplier')
+						->findOneById($formData['supplier']);
+						
 					if ($formData['internal']) {
 						$binding = $this->getEntityManager()
 							->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
@@ -511,8 +590,9 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		                	$fileName = '';
 		                	do{
 		                	    $fileName = '/' . sha1(uniqid());
-		                	} while (file_exists('../resources/files/cudi/' . $fileName));
-		                	copy('../resources/files/cudi/' . $file->getPath(), '../resources/files/cudi/' . $fileName);
+		                	} while (file_exists($this->_filePath . $fileName));
+		                	
+		                	copy($this->_filePath . $file->getPath(), $this->_filePath . $fileName);
 		                	$newFile = new File($fileName, $file->getName(), $file->getDescription(), $newVersion);
 		                	$this->getEntityManager()->persist($newFile);
 		                }
@@ -567,5 +647,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         	'form' => $form,
         	'article' => $article,
         );
+    }
+    
+    public function setFilePath($filePath)
+    {
+		$this->_filePath = $filePath;
     }
 }
