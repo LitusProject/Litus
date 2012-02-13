@@ -1,5 +1,5 @@
 {% for flashMessage in flashMessenger %}
-	<div class="flashmessage {{ flashMessage.getType() }} {% if flashMessage.getFullWidth() %}full_width{% endif %}">
+	<div class="flashmessage {{ flashMessage.getType() }} full_width">
 		<div class="title">{{ flashMessage.getTitle() }}</div>
 		<div class="content">
 			<p>{{ flashMessage.getMessage() }}</p>

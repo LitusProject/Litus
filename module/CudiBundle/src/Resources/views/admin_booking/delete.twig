@@ -10,13 +10,13 @@
 		    <div class="title">Warning</div>
 		    <div class="content">
 				<p>
-					You are about to delete the following file: <b>{{ articleFile.getName() }} ({{ articleFile.getDescription() }})</b>?
+					You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getTitle() }}</b>?
 					Please note that this operation cannot be undone!
 				</p>
 				<p>
 					Are you sure you want to continue?<br />
-					<a href="{{ url('admin_article', {"action": "deletefile", "id": articleFile.getId(), "confirm": 1}) }}">Yes</a>
-					<a href="{{ url('admin_article', {"action": "deletefile", "id": articleFile.getId(), "confirm": 0}) }}">No</a>
+					<a href="{{ url('admin_booking', {"action": "delete", "id": booking.getId(), "confirm": 1}) }}">Yes</a>
+					<a href="{{ url('admin_booking', {"action": "delete", "id": booking.getId(), "confirm": 0}) }}">No</a>
 				</p>
 		    </div>
 		</div>

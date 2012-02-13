@@ -144,7 +144,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     
     public function manageAction()
 	{
-		//$this->paginator()->setItemsPerPage(4);
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Article',
             $this->getParam('page'),
@@ -162,17 +161,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function editAction()
 	{
 		$article = $this->_getArticle();
-		
-		if (null === $article) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
 		
 		$form = new EditForm($this->getEntityManager(), $article);
 
@@ -251,6 +239,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			    )
 			);
 			
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
 			return;
 		}
 	
@@ -265,6 +260,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			        'Error',
 			        'No article with the given id was found!'
 			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
 			);
 			
 			return;
@@ -419,17 +421,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$file = $this->_getFile();
 		
-		if (null === $file) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
 		if (null !== $this->getParam('confirm')) {
             if (1 == $this->getParam('confirm')) {
             	unlink($this->_filePath . $file->getPath());
@@ -470,6 +461,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			    )
 			);
 			
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
 			return;
 		}
 	
@@ -484,6 +482,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			        'Error',
 			        'No file with the given id was found!'
 			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_article',
+				array(
+					'action' => 'manage'
+				)
 			);
 			
 			return;

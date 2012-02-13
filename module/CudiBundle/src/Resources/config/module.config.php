@@ -37,6 +37,19 @@ return array(
                 ),
             ),
         ),
+        'admin_article_pagination' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '/admin/article/manage[/:page]',
+                'constraints' => array(
+                	'page'	  => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'admin_article',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'admin_article_search' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -54,10 +67,24 @@ return array(
          'admin_booking' => array(
              'type'    => 'Zend\Mvc\Router\Http\Segment',
              'options' => array(
-                 'route'    => '/admin/booking[/:action[/:id]]',
+                 'route'    => '/admin/booking[/:action[/:id[/:confirm]]]',
                  'constraints' => array(
                      'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                      'id'      => '[0-9]*',
+    	        	 'confirm' => '[01]',
+                 ),
+                 'defaults' => array(
+                     'controller' => 'admin_booking',
+                     'action'     => 'manage',
+                 ),
+             ),
+         ),
+         'admin_article_pagination' => array(
+             'type'    => 'Zend\Mvc\Router\Http\Segment',
+             'options' => array(
+                 'route'    => '/admin/booking/manage[/:page]',
+                 'constraints' => array(
+                 	'page'	  => '[0-9]*',
                  ),
                  'defaults' => array(
                      'controller' => 'admin_booking',

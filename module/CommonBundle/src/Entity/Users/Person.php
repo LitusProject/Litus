@@ -377,6 +377,9 @@ abstract class Person
      */
     public function setPhoneNumber($phoneNumber)
     {
+    	if ('' == $phoneNumber)
+    		return $this;
+    	
         if (
         	(null === $phoneNumber)
         	|| !preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)
