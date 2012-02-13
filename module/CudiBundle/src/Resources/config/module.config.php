@@ -5,6 +5,7 @@ return array(
         'instance' => array(
             'alias' => array(
                 'admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
+                'admin_booking' => 'CudiBundle\Controller\Admin\BookingController',
             ),
             'admin_article' => array(
             	'parameters' => array(
@@ -50,5 +51,33 @@ return array(
                 ),
             ),
          ),
+         'admin_booking' => array(
+             'type'    => 'Zend\Mvc\Router\Http\Segment',
+             'options' => array(
+                 'route'    => '/admin/booking[/:action[/:id]]',
+                 'constraints' => array(
+                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                     'id'      => '[0-9]*',
+                 ),
+                 'defaults' => array(
+                     'controller' => 'admin_booking',
+                     'action'     => 'manage',
+                 ),
+             ),
+         ),
+         'admin_booking_search' => array(
+             'type'    => 'Zend\Mvc\Router\Http\Segment',
+             'options' => array(
+                 'route'    => '/admin/booking/search/[/:field[/:string]]',
+                 'constraints' => array(
+                     'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                     'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                 ),
+                 'defaults' => array(
+                     'controller' => 'admin_booking',
+                     'action'     => 'search',
+                 ),
+             ),
+          ),
     ),
 );

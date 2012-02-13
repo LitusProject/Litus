@@ -18,7 +18,7 @@ namespace CommonBundle\Entity\General;
 /**
  * This class represents a configuration entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Public\Config")
+ * @Entity(repositoryClass="CommonBundle\Repository\General\Config")
  * @Table(name="general.config")
  */
 class Config 

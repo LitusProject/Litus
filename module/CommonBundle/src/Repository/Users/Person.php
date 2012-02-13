@@ -14,10 +14,14 @@ class Person extends EntityRepository
 {
 	public function findOneByUsername($username)
     {
-        $resultSet = $this->_em
-            ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p WHERE p.username = \'' . $username . '\'')
+    	$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('p')
+			->from('CommonBundle\Entity\Users\Person', 'p')
+			->where($query->expr()->eq('p.username', ':username'))
+			->setParameter('username', $username)
 			->setMaxResults(1)
-            ->getResult();
+			->getQuery()
+			->getResult();
 		
 		if (isset($resultSet[0]))
             return $resultSet[0];
