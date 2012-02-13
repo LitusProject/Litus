@@ -1,0 +1,116 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_booking/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+		
+		<div id="booking_search" style="display:none;">
+			<div style="padding:4px;text-align:right">
+				Search: 
+				<select id="searchField">
+					<option value="person">Person</option>
+					<option value="article">Article</option>
+					<option value="status">Status</option>
+				</select>
+				is
+				<input type="text" id="searchString" size="30" />
+			</div>
+			
+			<table>
+		
+		    	<tr>
+		        	<th>Person</th>
+		        	<th>Article</th>
+		        	<th>Number</th>
+		        	<th>Book date</th>
+		        	<th>Status</th>
+		        	<th>Actions</th>
+				</tr>
+				
+			</table>
+		</div>
+		
+		<div id="default_page">
+			<table>
+		    
+		        <tr>
+		            <th>Person</th>
+		            <th>Article</th>
+		            <th>Number</th>
+		            <th>Book date</th>
+		            <th>Status</th>
+					<th>Actions</th>
+		        </tr>
+		        
+		        
+		        {% for booking in paginator %}
+		            <tr>
+		                <td>{{ booking.getPerson.getFullName() }}</td>
+		                <td>{{ booking.getArticle().getTitle() }} {% if booking.getArticle().getVersionNumber() != 1 %} (v{{ booking.getArticle().getVersionNumber() }}) {% endif %}</td>
+		                <td>{{ booking.getNumber() }}</td>
+		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
+		                <td>{{ booking.getStatus() }}</td>
+		        		<td>
+		        			{% if booking.getStatus() == 'assigned' %}
+		                    	<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId()}) }}" class="edit">Unassign</a>
+		        			{% elseif booking.getStatus() == 'booked' %}
+			                    <a href="{{ url('admin_booking', {"action": "delete", "id": booking.getId()}) }}" class="delete">Delete</a>
+		                    {% endif %}
+		                </td>
+		            </tr>
+		        {% endfor %}
+		    </table>
+		
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+	
+	<aside>
+		<div class="sidebox">
+	        <div class="title">Assign bookings</div>
+	       	<div class="content">
+		    	<p>
+		        	<i>Please hit the link below to assign bookings!</i>
+		        </p>
+		        <p>
+		           	<a href="{{ url('admin_booking', {"action": "assign"}) }}">&rarr; Assign bookings</a>
+		        </p>
+		    </div>
+		</div>
+	</aside>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#booking_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_booking_search') }}',
+				display: function (data) {
+					$('#booking_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#booking_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.person + '</td>')
+							.append('<td>' + this.article + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+							.append('<td>' + this.number + '</td>')
+							.append('<td>' + this.bookDate + '</td>')
+							.append('<td>' + this.status + '</td>')
+							.append(actions = $('<td>'));
+						if ('assigned' == this.status)
+							actions.append('{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
+						else if ('booked' == this.status)
+							actions.append('{{ url('admin_booking', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>');
+					});
+				},
+				clear: function () {
+					$('#booking_search table').find('tr.item').remove();
+				}
+			});
+		});
+	</script>
+{% endblock %}

@@ -20,6 +20,11 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_booking' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 	),
 	'routes' => array(),
 );

@@ -17,9 +17,10 @@ namespace CudiBundle\Form\Admin\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Username as UsernameValidator,
+	CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
 	CudiBundle\Entity\Sales\BookingStatus,
+	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
@@ -30,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
 
@@ -39,14 +40,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		$field = new Text('person');
         $field->setLabel('Person')
         	->setRequired()
-			->addValidator(new UsernameValidator())
+			->addValidator(new UsernameValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
 		$field = new Text('stockArticle');
         $field->setLabel('Article')
         	->setRequired()
-			->addValidator(new ArticleBarcodeValidator())
+			->addValidator(new ArticleBarcodeValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

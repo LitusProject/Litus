@@ -6,7 +6,7 @@
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
 		
-		<div id="stock_search" style="display:none;">
+		<div id="article_search" style="display:none;">
 			<div style="padding:4px;text-align:right">
 				Search: 
 				<select id="searchField">
@@ -68,14 +68,14 @@
 		$(document).ready(function () {
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
-				searchDiv: $('#stock_search'),
+				searchDiv: $('#article_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
 				url: '{{ url('admin_article_search') }}',
 				display: function (data) {
-					$('#stock_search table').find('tr.item').remove();
+					$('#article_search table').find('tr.item').remove();
 					$(data).each(function () {
-						$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
+						$('#article_search table').append(row = $('<tr>', {class: 'item'}));
 						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 							.append('<td>' + this.author + '</td>')
 							.append('<td>' + this.publisher + '</td>')
@@ -88,7 +88,7 @@
 					});
 				},
 				clear: function () {
-					$('#stock_search table').find('tr.item').remove();
+					$('#article_search table').find('tr.item').remove();
 				}
 			});
 		});

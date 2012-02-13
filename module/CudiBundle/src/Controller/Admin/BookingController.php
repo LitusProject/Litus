@@ -16,7 +16,7 @@
 namespace CudiBundle\Controller\Admin;
 
 use CudiBundle\Entity\Sales\Booking,
-	CudiBundle\Form\Admin\Booking\Add,
+	CudiBundle\Form\Admin\Booking\Add as AddForm,
 	CommonBundle\Component\FlashMessenger\FlashMessage,
 	Doctrine\ORM\EntityManager,
 	Zend\Json\Json;
@@ -28,59 +28,69 @@ use CudiBundle\Entity\Sales\Booking,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  *
  */
-class BookingAdminController extends \CommonBundle\Component\Controller\Action
+class BookingController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('manage');
-    }
 
 	public function manageAction()
 	{
-		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
-		$this->view->paginator = $this->_createPaginator(
+		$paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Sales\Booking',
+            $this->getParam('page'),
             array(),
             array('bookDate' => 'DESC')
         );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl()
+        );
     }
-
+    
     public function addAction()
     {
-        $form = new Add();
+        $form = new AddForm($this->getEntityManager());
 		
-        $this->view->form = $form;
-
 		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
-                $person = $this->getEntityManager()
-					->getRepository('CommonBundle\Entity\Users\Person')
-					->findOneByUsername($formData['person']);
-                $article = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findOneByBarcode($formData['stockArticle']);
-				
-				$booking = new Booking($person, $article, 'booked', $formData['number']);
+				$booking = new Booking(
+					$this->getEntityManager(),
+					$this->getEntityManager()
+						->getRepository('CommonBundle\Entity\Users\Person')
+						->findOneByUsername($formData['person']),
+					$this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Stock\StockItem')
+						->findOneByBarcode($formData['stockArticle']),
+					'booked',
+					$formData['number']);
                  
                 $this->getEntityManager()->persist($booking);
-				$this->broker('flashmessenger')->addMessage(
+                $this->getEntityManager()->flush();
+                
+				$this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
                         'The booking was successfully created!'
                     )
                 );
-				$this->_redirect('manage');
+                
+				$this->redirect()->toRoute(
+					'admin_booking',
+					array(
+						'action' => 'manage'
+					)
+				);
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        );
     }
+
+    /*
 
 	public function deleteAction()
 	{
@@ -161,47 +171,47 @@ class BookingAdminController extends \CommonBundle\Component\Controller\Action
 	}
 	
 	public function searchAction()
-		{
-			$this->broker('contextSwitch')
-	            ->addActionContext('search', 'json')
-	            ->setAutoJsonSerialization(false)
-	            ->initContext();
-	        
-	        $this->broker('layout')->disableLayout();
-	
-	        $json = new Json();
-	
-			$this->_initAjax();
-			
-			switch($this->getRequest()->getParam('field')) {
-				case 'person':
-					$bookings = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Sales\Booking')
-						->findAllByPerson($this->getRequest()->getParam('string'));
-					break;
-				case 'article':
-					$bookings = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Sales\Booking')
-						->findAllByArticle($this->getRequest()->getParam('string'));
-					break;
-				case 'status':
-					$bookings = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Sales\Booking')
-						->findAllByStatus($this->getRequest()->getParam('string'));
-					break;
-			}
-			$result = array();
-			foreach($bookings as $booking) {
-				$item = (object) array();
-				$item->id = $booking->getId();
-				$item->person = $booking->getPerson()->getFullName();
-				$item->article = $booking->getArticle()->getTitle();
-				$item->number = $booking->getNumber();
-				$item->bookDate = $booking->getBookDate()->format('d/m/Y H:i');
-				$item->status = $booking->getStatus();
-				$item->versionNumber = $booking->getArticle()->getVersionNumber();
-				$result[] = $item;
-			}
-			echo $json->encode($result);
+	{
+		$this->broker('contextSwitch')
+            ->addActionContext('search', 'json')
+            ->setAutoJsonSerialization(false)
+            ->initContext();
+        
+        $this->broker('layout')->disableLayout();
+
+        $json = new Json();
+
+		$this->_initAjax();
+		
+		switch($this->getRequest()->getParam('field')) {
+			case 'person':
+				$bookings = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Sales\Booking')
+					->findAllByPerson($this->getRequest()->getParam('string'));
+				break;
+			case 'article':
+				$bookings = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Sales\Booking')
+					->findAllByArticle($this->getRequest()->getParam('string'));
+				break;
+			case 'status':
+				$bookings = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Sales\Booking')
+					->findAllByStatus($this->getRequest()->getParam('string'));
+				break;
 		}
+		$result = array();
+		foreach($bookings as $booking) {
+			$item = (object) array();
+			$item->id = $booking->getId();
+			$item->person = $booking->getPerson()->getFullName();
+			$item->article = $booking->getArticle()->getTitle();
+			$item->number = $booking->getNumber();
+			$item->bookDate = $booking->getBookDate()->format('d/m/Y H:i');
+			$item->status = $booking->getStatus();
+			$item->versionNumber = $booking->getArticle()->getVersionNumber();
+			$result[] = $item;
+		}
+		echo $json->encode($result);
+	}*/
 }
