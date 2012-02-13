@@ -169,86 +169,26 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 		
 		return $article;
 	}
-
-    /*
-	public function unassignAction()
-	{
-		$booking = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Sales\Booking')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $booking || 'assigned' != $booking->getStatus())
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
-		$this->view->booking = $booking;
-		
-		if (null !== $this->getRequest()->getParam('confirm')) {
-			if (1 == $this->getRequest()->getParam('confirm')) {
-				$booking->setStatus('booked');
-
-				$this->broker('flashmessenger')->addMessage(
-            		new FlashMessage(
-                		FlashMessage::SUCCESS,
-                    	'SUCCESS',
-                    	'The booking was successfully unassigned!'
-                	)
-            	);
-			};
-            
-			$this->_redirect('manage', null, null, array('id' => null));
-        }
-	}
-	
-	public function assignAction()
-	{
-		$number = $this->getEntityManager()->getRepository('CudiBundle\Entity\Stock\StockItem')->assignAll();
-		
-		if (0 == $number)
-			$message = 'No booking could be assigned!';
-		elseif (1 == $number)
-			$message = 'There is <b>one</b> booking assigned!';
-		else
-			$message = 'There are <b>' . $number . '</b> bookings assigned!';
-		
-		$this->broker('flashmessenger')->addMessage(
-    		new FlashMessage(
-        		FlashMessage::SUCCESS,
-            	'SUCCESS',
-            	$message
-        	)
-    	);
-
-		$this->_redirect('manage');
-	}
 	
 	public function searchAction()
 	{
-		$this->broker('contextSwitch')
-            ->addActionContext('search', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-        
-        $this->broker('layout')->disableLayout();
-
-        $json = new Json();
-
-		$this->_initAjax();
+		$this->initAjax();
 		
-		switch($this->getRequest()->getParam('field')) {
+		switch($this->getParam('field')) {
 			case 'person':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByPerson($this->getRequest()->getParam('string'));
+					->findAllByPerson($this->getParam('string'));
 				break;
 			case 'article':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByArticle($this->getRequest()->getParam('string'));
+					->findAllByArticle($this->getParam('string'));
 				break;
 			case 'status':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByStatus($this->getRequest()->getParam('string'));
+					->findAllByStatus($this->getParam('string'));
 				break;
 		}
 		$result = array();
@@ -263,6 +203,72 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 			$item->versionNumber = $booking->getArticle()->getVersionNumber();
 			$result[] = $item;
 		}
-		echo $json->encode($result);
-	}*/
+		
+		return array(
+			'result' => $result,
+		);
+	}
+	
+	public function assignAction()
+	{
+		$number = $this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Stock\StockItem')
+			->assignAll();
+		
+		$this->getEntityManager()->flush();
+		
+		if (0 == $number)
+			$message = 'No booking could be assigned!';
+		elseif (1 == $number)
+			$message = 'There is <b>one</b> booking assigned!';
+		else
+			$message = 'There are <b>' . $number . '</b> bookings assigned!';
+		
+		$this->flashMessenger()->addMessage(
+    		new FlashMessage(
+        		FlashMessage::SUCCESS,
+            	'SUCCESS',
+            	$message
+        	)
+    	);
+
+		$this->redirect()->toRoute(
+			'admin_booking',
+			array(
+				'action' => 'manage'
+			)
+		);
+	}
+
+    public function unassignAction()
+	{
+		$booking = $this->_getBooking();
+			
+		if (null !== $this->getParam('confirm')) {
+			if (1 == $this->getParam('confirm')) {
+				$booking->setStatus('booked');
+				
+				$this->getEntityManager()->flush();
+
+				$this->flashMessenger()->addMessage(
+            		new FlashMessage(
+                		FlashMessage::SUCCESS,
+                    	'SUCCESS',
+                    	'The booking was successfully unassigned!'
+                	)
+            	);
+			};
+            
+			$this->redirect()->toRoute(
+				'admin_booking',
+				array(
+					'action' => 'manage'
+				)
+			);
+        }
+        
+        return array(
+        	'booking' => $booking,
+        );
+	}
 }

@@ -29,22 +29,18 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class StockController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('overview');
-    }
     
-    public function overviewAction()
+    public function manageAction()
 	{
-		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/cudi.searchDatabase.js'));
-		$this->view->stock = $this->_createPaginator(
-            'CudiBundle\Entity\Stock\StockItem'
-        );
+		$paginator = $this->paginator()->createFromEntity(
+		    'CudiBundle\Entity\Stock\StockItem',
+		    $this->getParam('page')
+		);
+		
+		return array(
+			'paginator' => $paginator,
+			'paginationControl' => $this->paginator()->createControl()
+		);
     }
 
 	public function editAction()

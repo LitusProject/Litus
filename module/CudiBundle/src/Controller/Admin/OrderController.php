@@ -35,7 +35,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class OrderAdminController extends \CommonBundle\Component\Controller\Action
+class OrderAdminController extends \CommonBundle\Component\Controller\ActionController
 {
     public function init()
     {

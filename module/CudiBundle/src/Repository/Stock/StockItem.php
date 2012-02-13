@@ -5,7 +5,8 @@ namespace CudiBundle\Repository\Stock;
 use Doctrine\ORM\EntityRepository,
 	Doctrine\ORM\Query\Expr\Join,
 	
-	Zend\Mail\Mail;
+	Zend\Mail\Message,
+	Zend\Mail\Transport\Sendmail;
 
 /**
  * StockItem
@@ -182,10 +183,10 @@ class StockItem extends EntityRepository
 			
 			$now = new \DateTime();
 			foreach($bookings as $booking) {
-				if ($item->getNumberAvailable() <= 0)
+				if ($item->getNumberAvailable($this->getEntityManager()) <= 0)
 					break;
 				
-				if ($item->getNumberAvailable() < $booking->getNumber())
+				if ($item->getNumberAvailable($this->getEntityManager()) < $booking->getNumber())
 					continue;
 				
 				$counter++;
@@ -214,17 +215,20 @@ class StockItem extends EntityRepository
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail_name');
 		
+		$transport = new Sendmail();
+
 		foreach($persons as $person) {
 			$bookings = '';
 			foreach($person['bookings'] as $booking)
 				$bookings .= '* ' . $booking->getArticle()->getTitle() . "\r\n";
 		
-			$mail = new Mail();
-			$mail->setBodyText(str_replace('{{bookings}}', $bookings, $email))
+			$mail = new Message();
+			$mail->setBody(str_replace('{{ bookings }}', $bookings, $email))
 				->setFrom($mailaddress, $mailname)
 				->addTo($person['person']->getEmail(), $person['person']->getFullName())
-				->setSubject($subject)
-				->send();
+				->setSubject($subject);
+				
+			$transport->send($mail);
 		}
 		
 		return $counter;

@@ -102,9 +102,9 @@
 							.append('<td>' + this.status + '</td>')
 							.append(actions = $('<td>'));
 						if ('assigned' == this.status)
-							actions.append('{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
+							actions.append('<a href="{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
 						else if ('booked' == this.status)
-							actions.append('{{ url('admin_booking', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>');
+							actions.append('<a href="{{ url('admin_booking', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>');
 					});
 				},
 				clear: function () {
