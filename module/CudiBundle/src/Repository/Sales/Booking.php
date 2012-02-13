@@ -109,7 +109,6 @@ class Booking extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
 			->from('CudiBundle\Entity\Sales\Booking', 'b')
-			//->innerJoin('b.person', 'p', Join::WITH, $query->expr()->like($query->expr()->lower('p.firstName'), ':name'))
 			->innerJoin('b.person', 'p', Join::WITH, $query->expr()->orX(
 					$query->expr()->like(
 						$query->expr()->concat(

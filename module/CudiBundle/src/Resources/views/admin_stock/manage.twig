@@ -1,0 +1,114 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<div id="stock_search" style="display:none;">
+			<div style="padding:4px;text-align:right">
+				Search: 
+				<select id="searchField">
+					<option value="title">Title</option>
+					<option value="barcode">Barcode</option>
+					<option value="supplier">Supplier</option>
+				</select>
+				is
+				<input type="text" id="searchString" size="30" />
+			</div>
+			
+			<table class="full_width">
+		
+		    	<tr>
+		        	<th>Article</th>
+		        	<th>Supplier</th>
+		        	<th>Number in stock</th>
+		        	<th>Wait delivery</th>
+		        	<th>Queue order</th>
+		        	<th>Booked</th>
+		        	<th>Actions</th>
+				</tr>
+				
+			</table>
+		</div>
+		
+		<div id="default_page">
+	    	<table class="full_width">
+	    
+	        	<tr>
+	            	<th>Article</th>
+	            	<th>Supplier</th>
+	            	<th>Number in stock</th>
+	            	<th>Wait delivery</th>
+	            	<th>Queue order</th>
+	            	<th>Booked</th>
+	            	<th>Actions</th>
+				</tr>
+	
+		        {% for item in paginator %}
+	
+		            <tr>
+		                <td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
+		                <td>{{ item.getArticle().getSupplier().getName() }}</td>
+		                <td>{{ item.getNumberInStock() }}</td>
+		                <td>{{ item.getNumberNotDelivered() }}</td>
+		                <td>{{ item.getNumberQueueOrder() }}</td>
+		                <td>{{ item.getNumberBooked() + item.getNumberAssigned() }}</td>
+						<td>
+							<a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
+		                </td>
+		            </tr>
+	
+		        {% endfor %}
+		    </table>
+	
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+	
+	<aside>
+		<div class="sidebox">
+	        <div class="title">Assign bookings</div>
+	       	<div class="content">
+		    	<p>
+		        	<i>Please hit the link below to assign bookings!</i>
+		        </p>
+		        <p>
+		           	<a href="{{ url('admin_booking', {"action": "assign"}) }}">&rarr; Assign bookings</a>
+		        </p>
+		    </div>
+		</div>
+	</aside>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$.SearchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#stock_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '<?= $this->url(array('action' => 'search')); ?>',
+				display: function (data) {
+					$('#stock_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+							.append('<td>' + this.supplier + '</td>')
+							.append('<td>' + this.numberInStock + '</td>')
+							.append('<td>' + this.numberNotDelivered + '</td>')
+							.append('<td>' + this.numberQueueOrder + '</td>')
+							.append('<td>' + this.numberBookedAssigned + '</td>')
+							.append('<td><a href="{{ url('admin_stock', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a></td>');
+					});
+				}
+				,
+				clear: function () {
+					$('#stock_search table').find('tr.item').remove();
+				}
+			});
+		});
+	</script>
+{% endblock %}

@@ -6,6 +6,7 @@ return array(
             'alias' => array(
                 'admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
                 'admin_booking' => 'CudiBundle\Controller\Admin\BookingController',
+                'admin_stock' => 'CudiBundle\Controller\Admin\StockController',
             ),
             'admin_article' => array(
             	'parameters' => array(
@@ -105,6 +106,19 @@ return array(
                      'action'     => 'search',
                  ),
              ),
+          ),
+          'admin_stock' => array(
+              'type'    => 'Zend\Mvc\Router\Http\Segment',
+              'options' => array(
+                  'route'    => '/admin/stock[/:action]',
+                  'constraints' => array(
+                      'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                  ),
+                  'defaults' => array(
+                      'controller' => 'admin_stock',
+                      'action'     => 'manage',
+                  ),
+              ),
           ),
     ),
 );
