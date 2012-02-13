@@ -89,37 +89,88 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         	'form' => $form,
         );
     }
-
-    /*
-
-	public function deleteAction()
+    
+    public function deleteAction()
 	{
-		$booking = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Sales\Booking')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $booking)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		$booking = $this->_getBooking();
 			
 		$this->view->booking = $booking;
 		
-		if (null !== $this->getRequest()->getParam('confirm')) {
-			if (1 == $this->getRequest()->getParam('confirm')) {
+		if (null !== $this->getParam('confirm')) {
+            if (1 == $this->getParam('confirm')) {
 				$this->getEntityManager()->remove($booking);
+				$this->getEntityManager()->flush();
 
-				$this->broker('flashmessenger')->addMessage(
-            		new FlashMessage(
-                		FlashMessage::SUCCESS,
-                    	'SUCCESS',
-                    	'The booking was successfully removed!'
-                	)
-            	);
-			};
-            
-			$this->_redirect('manage', null, null, array('id' => null));
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The booking was successfully removed!'
+                    )
+                );
+            }
+
+            $this->redirect()->toRoute(
+            	'admin_booking',
+            	array(
+            		'action' => 'manage'
+            	)
+            );
         }
+        
+        return array(
+        	'booking' => $booking,
+        );
 	}
 	
+	private function _getBooking()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the booking!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_booking',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $article = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Sales\Booking')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $article) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No booking with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_booking',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $article;
+	}
+
+    /*
 	public function unassignAction()
 	{
 		$booking = $this->getEntityManager()

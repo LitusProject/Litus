@@ -3,9 +3,9 @@
 {% block content %}
 	{% include 'admin_booking/partials/navigation.twig' %}
 	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
 	<div id="controller_action">
-		{% include 'admin/partials/flashMessenger.twig' %}
-		
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}

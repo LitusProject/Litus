@@ -268,46 +268,6 @@ h1 {
 
     #controller_action {
         float: left;
-        
-    	.flashmessage {
-    		width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
-    
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-            }
-    
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-    
-                p {
-                    margin-top: 2 * @defaultSpacing;
-    
-    				a {
-                        margin-right: @defaultSpacing;
-                        text-decoration: none;
-                        font-weight: bold;
-                        color: inherit;
-                    }
-    
-                    a:hover {
-                        text-decoration: underline;
-                    }
-                }
-    
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-    	}
     		
 	    .form {
 	        padding: 0;
@@ -390,56 +350,96 @@ h1 {
 	            }
 	        }
 	    }
-		
-        .full_width {
-            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
+    }
+    
+    .flashmessage {
+		width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+        margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+        .title {
+            display: block;
+            height: @sideboxTitleHeight;
+            line-height: @sideboxTitleHeight;
+            text-indent: @tIndent;
+            text-transform: uppercase;
+            font-size: @tSizeSmall;
+            font-weight: bold;
+            color: @cWhite;
         }
 
-		.half_width {
-            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
-			float: left;
-			margin-right: @defaultSpacing;
-        }
-        
-    	.success_message {
-            .title {
-                background: @cSuccessTitleBackground;
+        .content {
+            padding: @defaultSpacing;
+            color: @cWhite;
+
+            p {
+                margin-top: 2 * @defaultSpacing;
+
+				a {
+                    margin-right: @defaultSpacing;
+                    text-decoration: none;
+                    font-weight: bold;
+                    color: inherit;
+                }
+
+                a:hover {
+                    text-decoration: underline;
+                }
             }
-    
-            .content {
-                background: @cSuccessBackground;
-            }
-        }
-    
-        .error_message {
-            .title {
-                background: @cErrorTitleBackground;
-            }
-    
-            .content {
-                background: @cErrorBackground;
+
+            p:first-child {
+                margin-top: 0;
             }
         }
-    
-    	.warning_message {
-            .title {
-                background: @cWarningTitleBackground;
-            }
-    
-            .content {
-                background: @cWarningBackground;
-            }
+	}
+	
+	.success_message {
+        .title {
+            background: @cSuccessTitleBackground;
         }
-    
-    	.notice_message {
-            .title {
-                background: @cNoticeTitleBackground;
-            }
-    
-            .content {
-                background: @cNoticeBackground;
-            }
+
+        .content {
+            background: @cSuccessBackground;
         }
+    }
+
+    .error_message {
+        .title {
+            background: @cErrorTitleBackground;
+        }
+
+        .content {
+            background: @cErrorBackground;
+        }
+    }
+
+	.warning_message {
+        .title {
+            background: @cWarningTitleBackground;
+        }
+
+        .content {
+            background: @cWarningBackground;
+        }
+    }
+
+	.notice_message {
+        .title {
+            background: @cNoticeTitleBackground;
+        }
+
+        .content {
+            background: @cNoticeBackground;
+        }
+    }
+    
+    .full_width {
+        width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
+    }
+
+	.half_width {
+        width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
+		float: left;
+		margin-right: @defaultSpacing;
     }
 
     aside {
