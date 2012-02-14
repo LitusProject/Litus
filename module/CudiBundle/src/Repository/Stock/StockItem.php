@@ -181,12 +181,14 @@ class StockItem extends EntityRepository
 				->getRepository('CudiBundle\Entity\Sales\Booking')
 				->findAllBookedByArticle($item->getArticle(), 'ASC');
 			
+			$item->setEntityManager($this->getEntityManager());
+			
+			if ($item->getNumberAvailable() <= 0)
+				break;
+				
 			$now = new \DateTime();
 			foreach($bookings as $booking) {
-				if ($item->getNumberAvailable($this->getEntityManager()) <= 0)
-					break;
-				
-				if ($item->getNumberAvailable($this->getEntityManager()) < $booking->getNumber())
+				if ($item->getNumberAvailable() < $booking->getNumber())
 					continue;
 				
 				$counter++;

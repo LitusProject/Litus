@@ -39,7 +39,7 @@ return array(
                 ),
             ),
         ),
-        'admin_article_pagination' => array(
+        'admin_article_paginator' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin/article/manage[/:page]',
@@ -81,7 +81,7 @@ return array(
                  ),
              ),
          ),
-         'admin_article_pagination' => array(
+         'admin_article_paginator' => array(
              'type'    => 'Zend\Mvc\Router\Http\Segment',
              'options' => array(
                  'route'    => '/admin/booking/manage[/:page]',
@@ -127,8 +127,8 @@ return array(
               'options' => array(
                   'route'    => '/admin/stock/search/[/:field[/:string]]',
                   'constraints' => array(
-                      'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                      'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                  		'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                		'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
                   ),
                   'defaults' => array(
                       'controller' => 'admin_stock',
@@ -139,10 +139,11 @@ return array(
            'admin_order' => array(
                'type'    => 'Zend\Mvc\Router\Http\Segment',
                'options' => array(
-                   'route'    => '/admin/order[/:action[/:id]]',
+                   'route'    => '/admin/order[/:action[/:id[/:confirm]]]',
                    'constraints' => array(
-                       'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                       'id'      => '[0-9]*',
+                   		'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                   		'id'      => '[0-9]*',
+						'confirm' => '[01]',
                    ),
                    'defaults' => array(
                        'controller' => 'admin_order',

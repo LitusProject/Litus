@@ -15,15 +15,15 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">0{#{{ item.getTotalOrdered() }}#}</td>
+				<td style="width:30%">{{ item.getTotalOrdered() }}</td>
 			</tr>
 			<tr>
 				<td>Not delivered</td>
-				<td style="width:30%">0{#{{ item.getNumberNotDelivered() }}#}</td>
+				<td style="width:30%">{{ item.getNumberNotDelivered() }}</td>
 			</tr>
 			<tr>
 				<td>Queue</td>
-				<td style="width:30%">0{#{{ item.getNumberQueueOrder() }}#}</td>
+				<td style="width:30%">{{ item.getNumberQueueOrder() }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -35,7 +35,7 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">0{#{{ item.getTotalDelivered() }}#}</td>
+				<td style="width:30%">{{ item.getTotalDelivered() }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -47,11 +47,11 @@
 		<table class="half_width">
 			<tr>
 				<td>Number assigned</td>
-				<td style="width:30%">0{#{{ item.getNumberAssigned() }}#}</td>
+				<td style="width:30%">{{ item.getNumberAssigned() }}</td>
 			</tr>
 			<tr>
 				<td>Number not assigned</td>
-				<td style="width:30%">0{#{{ item.getNumberBooked() }}#}</td>
+				<td style="width:30%">{{ item.getNumberBooked() }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -59,7 +59,7 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">0{#{{ item.getNumberSold() }}#}</td>
+				<td style="width:30%">{{ item.getNumberSold() }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />

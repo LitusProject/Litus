@@ -1,0 +1,50 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_delivery/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<h1>Supplier: {{ supplier.getName() }}</h1>
+		
+		<table>
+		
+		    <tr>
+		        <th>Date</th>
+		        <th>Article</th>
+		        <th>Number</th>
+		        <th>Price</th>
+		        <th>Actions</th>
+		    </tr>
+		    
+		    {% for delivery in deliveries %}
+		        <tr>
+		        	<td>{{ delivery.getDate().format('Y-m-d H:i:s') }}</td>
+		        	<td>{{ delivery.getArticle().getTitle() }}</td>
+		        	<td>{{ delivery.getNumber() }}</td>
+		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
+		        	<td>
+		        		<a href="{{ url('admin_delivery', {"action": "delete", "id": delivery.getId()}) }}" class="delete">Delete</a>
+		        	</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+		
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<aside>
+		<div class="sidebox">
+	        <div class="title">New Delivery</div>
+	        <div class="content">
+	            <p>
+	        		<i>Please hit the link below to add a delivery!</i>
+	            </p>
+	            <p>
+	                <a href="{{ url('admin_delivery', {"action": "add"}) }}">&rarr; Add delivery</a>
+	            </p>
+	        </div>
+	    </div>
+	</aside>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_article/partials/navigation.twig' %}
+	{% include 'admin_booking/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -10,7 +10,7 @@
 		    <div class="title">Warning</div>
 		    <div class="content">
 				<p>
-					You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getTitle() }}</b>?
+					You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getTitle() }}</b>!
 					Please note that this operation cannot be undone!
 				</p>
 				<p>

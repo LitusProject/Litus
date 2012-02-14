@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Component\Util\File as FileUtil,
-	CommonBundle\Component\Util\TmpFile,
+	CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\XmlGenerator,
 	CommonBundle\Component\Util\Xml\XmlObject,
 	CudiBundle\Component\Generator\OrderPdfGenerator,
@@ -37,36 +37,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class OrderController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
 
-		$contextSwitch = $this->broker('contextSwitch');
-        $contextSwitch->setContext(
-	            'pdf',
-	            array(
-	                 'headers' => array(
-	                     'Content-type' => 'application/pdf',
-	                     'Pragma' => 'public',
-	                     'Cache-Control' => 'private, max-age=0, must-revalidate'
-	                 )
-	            )
-	        )->setContext(
-                'zip',
-                array(
-                     'headers' => array(
-                         'Content-type' => 'application/zip',
-                         'Pragma' => 'public',
-                         'Cache-Control' => 'private, max-age=0, must-revalidate'
-                     )
-                )
-            );
-
-        $contextSwitch->setActionContext('pdf', 'pdf')
-        	->setActionContext('export', 'zip')
-            ->initContext();
-    }
-    
     public function manageAction()
 	{
 		$paginator = $this->paginator()->createFromEntity(
@@ -82,42 +53,132 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
 	public function supplierAction()
 	{
-		$supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getRequest()->getParam('id'));
-		
-		if (null == $supplier)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
-		$this->view->supplier = $supplier;
-		$this->view->orders = $this->_createPaginator(
+		$supplier = $this->_getSupplier();
+        
+        $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\Order',
-			array('supplier' => $supplier->getId())
+            $this->getParam('page'),
+            array(
+            	'supplier' => $supplier->getId(),
+            )
         );
+        
+        return array(
+        	'supplier' => $supplier,
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl()
+        );
+	}
+	
+	private function _getSupplier()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the supplier!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $supplier = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Supplier')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $supplier) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No supplier with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $supplier;
 	}
 	
 	public function editAction()
 	{
-		$this->view->inlineScript()->appendFile($this->view->baseUrl('/_admin/js/downloadFile.js'));
-		
-		$order = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Order')
-            ->findOneById($this->getRequest()->getParam('id'));
-		
-		if (null == $order)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		$order = $this->_getOrder();
 
-		$this->view->order = $order;
+		return array(
+			'order' => $order,
+		);
+	}
+	
+	private function _getOrder()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the order!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $order = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Stock\Order')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $order) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No order with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $order;
 	}
 	
 	public function addAction()
 	{
-		$form = new AddItemForm();
-		
-		$this->view->form = $form;
-		
+		$form = new AddItemForm($this->getEntityManager());
+				
 		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
@@ -127,7 +188,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 				$item = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\OrderItem')
 					->addNumberByArticle($article, $formData['number']);
-				$this->broker('flashmessenger')->addMessage(
+				
+				$this->getEntityManager()->flush();	
+				
+				$this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -135,81 +199,146 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     )
 				);
 				
-				$this->_redirect('edit', null, null, array('id' => $item->getOrder()->getId()));
+				$this->redirect()->toRoute(
+					'admin_order',
+					array(
+						'action' => 'edit',
+						'id' => $item->getOrder()->getId(),
+					)
+				);
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        );
 	}
 	
-	public function deleteitemAction()
+	public function deleteAction()
 	{
-		$item = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Stock\OrderItem')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $item || $item->getOrder()->isPlaced())
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
-		$this->view->item = $item;
-		
-		if (null !== $this->getRequest()->getParam('confirm')) {
-			if (1 == $this->getRequest()->getParam('confirm')) {
+		$item = $this->_getOrderItem();
+				
+		if (null !== $this->getParam('confirm')) {
+			if (1 == $this->getParam('confirm')) {
 				$this->getEntityManager()->remove($item);
 
-				$this->broker('flashmessenger')->addMessage(
+				$this->getEntityManager()->flush();
+
+				$this->flashMessenger()->addMessage(
             		new FlashMessage(
                 		FlashMessage::SUCCESS,
                     	'SUCCESS',
-                    	'The article was successfully removed!'
+                    	'The order item was successfully removed!'
                 	)
             	);
 			};
             
-			$this->_redirect('edit', null, null, array('id' => $item->getOrder()->getId()));
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'edit',
+					'id' => $item->getOrder()->getId(),
+				)
+			);
         }
+        
+        return array(
+        	'item' => $item
+        );
+	}
+	
+	private function _getOrderItem()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the order item!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $item = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Stock\OrderItem')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $item) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No order item with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $item;
 	}
 	
 	public function placeAction()
 	{
-		$order = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Stock\Order')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $order || $order->isPlaced())
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
+		$order = $this->_getOrder();
 		$order->setDate(new \DateTime());
-				
-		$this->_redirect('edit', null, null, array('id' => $order->getId()));
+		
+		$this->getEntityManager()->flush();
+		
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'No order is successfully placed!'
+		    )
+		);
+			
+		$this->redirect()->toRoute(
+			'admin_order',
+			array(
+				'action' => 'edit',
+				'id' => $order->getId(),
+			)
+		);
 	}
 	
 	public function pdfAction()
 	{
-		$this->broker('layout')->disableLayout(); 
-		$this->broker('viewRenderer')->setNoRender();
-		
-		$order = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Stock\Order')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $order || !$order->isPlaced())
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-		
-		$document = new OrderPdfGenerator($order);
-		$document->generate();
+		$order = $this->_getOrder();
+		//$file = new TmpFile();
+		$document = new OrderPdfGenerator($order, $file);
+		//$document->generate();
 
-		// TODO: remove content type (must be in init)
-		$this->getResponse()->setHeader(
-			'Content-Disposition', 'inline; filename="order.pdf"'
-		)->setHeader(
-			'Content-type', 'application/pdf'
+		/*$headers = new Headers();
+		$headers->addHeaders(array(
+			'Content-Disposition' => 'inline; filename="order.pdf"',
+			'Content-type' => 'application/pdf',
+			'Content-Length' => filesize($file->getPath()),
+		));*/
+		//$this->getResponse()->setHeaders($headers);
+		
+		return array(
+			'data' => 'dsf'//$file->getContent()
 		);
-		
-		$this->getResponse()->setHeader('Content-Length', filesize($file));
-
-		readfile($file);
 	}
 	
-	public function exportAction()
+	/*public function exportAction()
 	{
 		$this->broker('layout')->disableLayout(); 
 		$this->broker('viewRenderer')->setNoRender();
@@ -234,5 +363,5 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 		$archive = new TmpFile();
 		$document->generateArchive($archive);
 		readfile($archive->getFileName());
-	}
+	}*/
 }

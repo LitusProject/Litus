@@ -18,7 +18,7 @@ namespace CudiBundle\Component\Generator;
 use CommonBundle\Component\Util\TmpFile,
 	CommonBundle\Component\Util\Xml\XmlGenerator,
 	CommonBundle\Component\Util\Xml\XmlObject,
-	CommonBundle\Entity\Stock\Order;
+	CudiBundle\Entity\Stock\Order;
 
 class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenerator
 {
@@ -31,13 +31,12 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
 	/**
 	 * Create a new Order PDF Generator.
 	 *
-	 * @para \CudiBundle\Entity\Stock\Order $order The order
+	 * @param \CudiBundle\Entity\Stock\Order $order The order
+	 * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
 	 */
-    public function __construct(Order $order)
+    public function __construct(Order $order, TmpFile $file)
     {
-    	$file = new TmpFile();
-    	
-    	parent::__construct(
+	   	parent::__construct(
     	    Registry::get('litus.resourceDirectory') . '/pdf_generators/cudi/order.xsl',
     	    $file->getFilename()
     	);

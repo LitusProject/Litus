@@ -37,9 +37,13 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 		    $this->getParam('page')
 		);
 		
+		foreach($paginator as $item) {
+			$item->setEntityManager($this->getEntityManager());
+		}
+		
 		return array(
 			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl()
+			'paginationControl' => $this->paginator()->createControl(true)
 		);
     }
 
@@ -57,7 +61,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			if (isset($formData['updateStock'])) {
 				if ($stockForm->isValid($formData)) {
 					$item->setNumberInStock($formData['number']);
-					$this->entityManager()->flush();
+					$this->getEntityManager()->flush();
 					
 					$this->flashMessenger()->addMessage(
 	                    new FlashMessage(
@@ -79,7 +83,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Stock\OrderItem')
 						->addNumberByArticle($item->getArticle(), $formData['number']);
-					$this->entityManager()->flush();
+					$this->getEntityManager()->flush();
 					
 					$this->flashMessenger()->addMessage(
 	                    new FlashMessage(
@@ -100,7 +104,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 				if ($deliveryForm->isValid($formData)) {
 					$delivery = new DeliveryItem($item->getArticle(), $formData['number']);
 					$this->getEntityManager()->persist($delivery);
-					$this->entityManager()->flush();
+					$this->getEntityManager()->flush();
 
 					$this->flashMessenger()->addMessage(
 		            	new FlashMessage(
@@ -171,6 +175,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			
 			return;
 		}
+		$item->setEntityManager($this->getEntityManager());
 		
 		return $item;
 	}
@@ -198,14 +203,16 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 		}
 		$result = array();
 		foreach($stock as $stockItem) {
+			$stockItem->setEntityManager($this->getEntityManager());
+			
 			$item = (object) array();
 			$item->id = $stockItem->getId();
 			$item->title = $stockItem->getArticle()->getTitle();
 			$item->supplier = $stockItem->getArticle()->getSupplier()->getName();
 			$item->numberInStock = $stockItem->getNumberInStock();
-			$item->numberNotDelivered = $stockItem->getNumberNotDelivered($this->getEntityManager());
-			$item->numberQueueOrder = $stockItem->getNumberQueueOrder($this->getEntityManager());
-			$item->numberBookedAssigned = $stockItem->getNumberBooked($this->getEntityManager()) + $stockItem->getNumberAssigned($this->getEntityManager());
+			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
+			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
+			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
 			$item->versionNumber = $stockItem->getArticle()->getVersionNumber();
 			$result[] = $item;
 		}

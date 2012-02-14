@@ -52,9 +52,9 @@
 		                <td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ item.getArticle().getSupplier().getName() }}</td>
 		                <td>{{ item.getNumberInStock() }}</td>
-		                <td>0{#{{ item.getNumberNotDelivered() }}#}</td>
-		                <td>0{#{{ item.getNumberQueueOrder() }}#}</td>
-		                <td>0{#{{ item.getNumberBooked() + item.getNumberAssigned() }}#}</td>
+		                <td>{{ item.getNumberNotDelivered() }}</td>
+		                <td>{{ item.getNumberQueueOrder() }}</td>
+		                <td>{{ item.getNumberBooked() + item.getNumberAssigned() }}</td>
 						<td>
 							<a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
 		                </td>

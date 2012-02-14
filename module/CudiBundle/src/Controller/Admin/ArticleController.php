@@ -278,17 +278,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     public function deleteAction()
 	{
 		$article = $this->_getArticle();
-		
-		if (null === $article) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
 
 		if (null !== $this->getParam('confirm')) {
             if (1 == $this->getParam('confirm')) {
@@ -359,17 +348,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function managefilesAction()
 	{
 		$article = $this->_getArticle();
-		
-		if (null === $article) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
 		
 		$form = new FileForm();
         
@@ -501,17 +479,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$file = $this->_getFile();
 		
-		if (null === $file) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
 		$headers = new Headers();
 		$headers->addHeaders(array(
 			'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
@@ -532,17 +499,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	public function newversionAction()
 	{
 		$article = $this->_getArticle();
-		
-		if (null === $article) {
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
 		
 		$form = new NewVersionForm($this->getEntityManager(), $article);
          

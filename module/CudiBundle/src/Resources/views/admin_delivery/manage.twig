@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_order/partials/navigation.twig' %}
+	{% include 'admin_delivery/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -17,7 +17,7 @@
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
 					<td>
-						<a href="{{ url('admin_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+						<a href="{{ url('admin_delivery', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
 					</td>
 		        </tr>
 		    {% endfor %}
@@ -26,13 +26,13 @@
 	
 	<aside>
 		<div class="sidebox">
-	        <div class="title">New Order</div>
+	        <div class="title">New Delivery</div>
 	        <div class="content">
 	            <p>
-	                <i>Please hit the link below to add a new order item!</i>
+	        		<i>Please hit the link below to add a delivery!</i>
 	            </p>
 	            <p>
-	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add order item</a>
+	                <a href="{{ url('admin_delivery', {"action": "add"}) }}">&rarr; Add delivery</a>
 	            </p>
 	        </div>
 	    </div>
