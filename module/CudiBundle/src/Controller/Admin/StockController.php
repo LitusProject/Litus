@@ -45,102 +45,155 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 
 	public function editAction()
 	{
-		$item = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\StockItem')
-            ->findOneById($this->getRequest()->getParam('id'));
+		$item = $this->_getItem();
 		
-		if (null == $item)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-		
-		$stockForm = new StockForm();
-		$stockForm->populate($item);
-		
-		$orderForm = new OrderForm();
-		
-		$deliveryForm = new DeliveryForm();
-
-		$this->view->item = $item;
-		$this->view->orderForm = $orderForm;
-		$this->view->stockForm = $stockForm;
-		$this->view->deliveryForm = $deliveryForm;
+		$stockForm = new StockForm($item);
+		$orderForm = new OrderForm($this->getEntityManager());
+		$deliveryForm = new DeliveryForm($this->getEntityManager());
 		
 		if($this->getRequest()->isPost()) {
-			$formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if (isset($formData['updateStock'])) {
 				if ($stockForm->isValid($formData)) {
 					$item->setNumberInStock($formData['number']);
+					$this->entityManager()->flush();
 					
-					$this->broker('flashmessenger')->addMessage(
+					$this->flashMessenger()->addMessage(
 	                    new FlashMessage(
 	                        FlashMessage::SUCCESS,
 	                        'SUCCESS',
 	                        'The stock was successfully updated!'
 	                    )
 					);
-					$this->_redirect('edit', null, null, array('id' => $item->getId()));
+					$this->redirect()->toRoute(
+						'admin_stock',
+						array(
+							'action' => 'edit',
+							'id' => $item->getId(),
+						)
+					);
 				}
 			} elseif (isset($formData['addOrder'])) {
 				if ($orderForm->isValid($formData)) {
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Stock\OrderItem')
 						->addNumberByArticle($item->getArticle(), $formData['number']);
+					$this->entityManager()->flush();
 					
-					$this->broker('flashmessenger')->addMessage(
+					$this->flashMessenger()->addMessage(
 	                    new FlashMessage(
 	                        FlashMessage::SUCCESS,
 	                        'SUCCESS',
 	                        'The order was successfully added!'
 	                    )
 					);
-					$this->_redirect('edit', null, null, array('id' => $item->getId()));
+					$this->redirect()->toRoute(
+						'admin_stock',
+						array(
+							'action' => 'edit',
+							'id' => $item->getId(),
+						)
+					);
 				}
 			} elseif (isset($formData['addDelivery'])) {
 				if ($deliveryForm->isValid($formData)) {
 					$delivery = new DeliveryItem($item->getArticle(), $formData['number']);
 					$this->getEntityManager()->persist($delivery);
+					$this->entityManager()->flush();
 
-					$this->broker('flashmessenger')->addMessage(
+					$this->flashMessenger()->addMessage(
 		            	new FlashMessage(
 		                	FlashMessage::SUCCESS,
 		                    'SUCCESS',
 		                    'The delivery was successfully added!'
 		                )
 					);
-					$this->_redirect('edit', null, null, array('id' => $item->getId()));
+					$this->redirect()->toRoute(
+						'admin_stock',
+						array(
+							'action' => 'edit',
+							'id' => $item->getId(),
+						)
+					);
 				}
 			}
 		}
+		
+		return array(
+			'item' => $item,
+			'stockForm' => $stockForm,
+			'orderForm' => $orderForm,
+			'deliveryForm' => $deliveryForm,
+		);
+	}
+	
+	private function _getItem()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the stock item!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_stock',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $item = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Stock\StockItem')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $item) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No stock item with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_stock',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $item;
 	}
 
 	public function searchAction()
 	{
-		$this->broker('contextSwitch')
-            ->addActionContext('search', 'json')
-            ->setAutoJsonSerialization(false)
-            ->initContext();
-        
-        $this->broker('layout')->disableLayout();
-
-        $json = new Json();
-
-		$this->_initAjax();
+		$this->initAjax();
 		
-		switch($this->getRequest()->getParam('field')) {
+		switch($this->getParam('field')) {
 			case 'title':
 				$stock = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleTitle($this->getRequest()->getParam('string'));
+					->findAllByArticleTitle($this->getParam('string'));
 				break;
 			case 'barcode':
 				$stock = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleBarcode($this->getRequest()->getParam('string'));
+					->findAllByArticleBarcode($this->getParam('string'));
 				break;
 			case 'supplier':
 				$stock = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleSupplier($this->getRequest()->getParam('string'));
+					->findAllByArticleSupplier($this->getParam('string'));
 				break;
 		}
 		$result = array();
@@ -150,12 +203,15 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			$item->title = $stockItem->getArticle()->getTitle();
 			$item->supplier = $stockItem->getArticle()->getSupplier()->getName();
 			$item->numberInStock = $stockItem->getNumberInStock();
-			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
-			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
-			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
+			$item->numberNotDelivered = $stockItem->getNumberNotDelivered($this->getEntityManager());
+			$item->numberQueueOrder = $stockItem->getNumberQueueOrder($this->getEntityManager());
+			$item->numberBookedAssigned = $stockItem->getNumberBooked($this->getEntityManager()) + $stockItem->getNumberAssigned($this->getEntityManager());
 			$item->versionNumber = $stockItem->getArticle()->getVersionNumber();
 			$result[] = $item;
 		}
-		echo $json->encode($result);
+		
+		return array(
+			'result' => $result,
+		);
 	}
 }

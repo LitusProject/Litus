@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Validator\Price as PriceValidator,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,	
+	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Form\Form,
@@ -27,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
 
@@ -42,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Article')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
-			->addValidator(new ArticleBarcodeValidator());
+			->addValidator(new ArticleBarcodeValidator($entityManager));
         $this->addElement($field);
 
         $field = new Submit('submit');

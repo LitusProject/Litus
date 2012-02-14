@@ -1,0 +1,40 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_article/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<table>
+		
+		    <tr>
+		        <th>Name</th>
+				<th>Actions</th>
+		    </tr>
+		    
+		    {% for supplier in paginator %}
+		        <tr>
+		            <td>{{ supplier.getName() }}</td>
+					<td>
+						<a href="{{ url('admin_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+					</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+	</div>
+	
+	<aside>
+		<div class="sidebox">
+	        <div class="title">New Order</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to add a new order item!</i>
+	            </p>
+	            <p>
+	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add order item</a>
+	            </p>
+	        </div>
+	    </div>
+	</aside>
+{% endblock %}

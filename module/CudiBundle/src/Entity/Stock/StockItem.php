@@ -118,11 +118,13 @@ class StockItem
 	}
 	
 	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
 	 * @return integer
 	 */
-	public function getNumberNotDelivered()
+	public function getNumberNotDelivered(EntityManager $entityManager)
 	{
-		return $this->getTotalOrdered() - $this->getTotalDelivered();
+		return $this->getTotalOrdered($entityManager) - $this->getTotalDelivered($entityManager);
 	}
 	
 	/**

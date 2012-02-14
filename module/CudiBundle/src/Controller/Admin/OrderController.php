@@ -35,7 +35,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class OrderAdminController extends \CommonBundle\Component\Controller\ActionController
+class OrderController extends \CommonBundle\Component\Controller\ActionController
 {
     public function init()
     {
@@ -66,17 +66,18 @@ class OrderAdminController extends \CommonBundle\Component\Controller\ActionCont
         	->setActionContext('export', 'zip')
             ->initContext();
     }
-
-    public function indexAction()
-    {
-        $this->_forward('overview');
-    }
     
-    public function overviewAction()
+    public function manageAction()
 	{
-		$this->view->suppliers = $this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Supplier')
-			->findAll();
+		$paginator = $this->paginator()->createFromEntity(
+		    'CudiBundle\Entity\Supplier',
+		    $this->getParam('page')
+		);
+		
+		return array(
+			'paginator' => $paginator,
+			'paginationControl' => $this->paginator()->createControl(true)
+		);
     }
 
 	public function supplierAction()

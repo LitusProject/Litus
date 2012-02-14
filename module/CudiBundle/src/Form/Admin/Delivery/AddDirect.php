@@ -13,16 +13,17 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace Admin\Form\Delivery;
+namespace CudiBundle\Form\Admin\Delivery;
 
-use Zend\Form\Form;
+use Doctrine\ORM\EntityManager,
+	Zend\Form\Form;
 
-class AddDirect extends \Admin\Form\Delivery\Add
+class AddDirect extends \CudiBundle\Form\Admin\Delivery\Add
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
         $this->removeElement('stockArticle');
 		$this->getElement('submit')->setName('addDelivery');

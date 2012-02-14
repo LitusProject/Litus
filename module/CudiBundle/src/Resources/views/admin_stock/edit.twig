@@ -1,0 +1,78 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<h1>General</h1>
+		<p>Article: <b>{{ item.getArticle().getTitle() }} {% if item.article.getVersionNumber() != 1 %} (v{{ item.article.getVersionNumber() }}) {% endif %}</b></p>
+		<p>Barcode: <b>{{ item.getArticle().getBarcode() }}</b></p>
+		<p>Supplier: <b>{{ item.getArticle().getSupplier().getName() }}</b></p>
+		<br style="clear:both" />
+		<h1>Orders</h1>
+		<table class="half_width">
+			<tr>
+				<td>Total</td>
+				<td style="width:30%">0{#{{ item.getTotalOrdered() }}#}</td>
+			</tr>
+			<tr>
+				<td>Not delivered</td>
+				<td style="width:30%">0{#{{ item.getNumberNotDelivered() }}#}</td>
+			</tr>
+			<tr>
+				<td>Queue</td>
+				<td style="width:30%">0{#{{ item.getNumberQueueOrder() }}#}</td>
+			</tr>
+		</table>
+		<br style="clear:both" />
+		{% autoescape false %}
+			{{ orderForm }}
+		{% endautoescape %}
+		<br style="clear:both" />
+		<h1>Deliveries</h1>
+		<table class="half_width">
+			<tr>
+				<td>Total</td>
+				<td style="width:30%">0{#{{ item.getTotalDelivered() }}#}</td>
+			</tr>
+		</table>
+		<br style="clear:both" />
+		{% autoescape false %}
+			{{ deliveryForm }}
+		{% endautoescape %}
+		<br style="clear:both" />
+		<h1>Bookings</h1>
+		<table class="half_width">
+			<tr>
+				<td>Number assigned</td>
+				<td style="width:30%">0{#{{ item.getNumberAssigned() }}#}</td>
+			</tr>
+			<tr>
+				<td>Number not assigned</td>
+				<td style="width:30%">0{#{{ item.getNumberBooked() }}#}</td>
+			</tr>
+		</table>
+		<br style="clear:both" />
+		<h1>Sales</h1>
+		<table class="half_width">
+			<tr>
+				<td>Total</td>
+				<td style="width:30%">0{#{{ item.getNumberSold() }}#}</td>
+			</tr>
+		</table>
+		<br style="clear:both" />
+		<h1>Stock</h1>
+		<table class="half_width">
+			<tr>
+				<td>Total</td>
+				<td style="width:30%">{{ item.getNumberInStock() }}</td>
+			</tr>
+		</table>
+		<br style="clear:both" />
+		{% autoescape false %}
+			{{ stockForm }}
+		{% endautoescape %}
+	</div>
+{% endblock %}

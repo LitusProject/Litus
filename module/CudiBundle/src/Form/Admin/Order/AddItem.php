@@ -18,6 +18,7 @@ namespace CudiBundle\Form\Admin\Order;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
+	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Text,
@@ -27,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class AddItem extends \CommonBundle\Component\Form\Admin\Form
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
 
@@ -41,7 +42,7 @@ class AddItem extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('stockArticle');
         $field->setLabel('Stock article')
         	->setRequired()
-			->addValidator(new ArticleBarcodeValidator())
+			->addValidator(new ArticleBarcodeValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
