@@ -43,6 +43,11 @@ class StockItem
 	private $numberInStock;
 	
 	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	private $_entityManager;
+	
+	/**
 	 * @param \CudiBundle\Entity\Article $article
 	 */
 	public function __construct(Article $article)
@@ -104,13 +109,11 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getTotalOrdered(EntityManager $entityManager)
+	public function getTotalOrdered()
 	{
-		$total = $entityManager
+		$total = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\Order')
 			->getTotalOrdered($this->article);
 		
@@ -118,23 +121,19 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberNotDelivered(EntityManager $entityManager)
+	public function getNumberNotDelivered()
 	{
-		return $this->getTotalOrdered($entityManager) - $this->getTotalDelivered($entityManager);
+		return $this->getTotalOrdered($this->_entityManager) - $this->getTotalDelivered($this->_entityManager);
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberQueueOrder(EntityManager $entityManager)
+	public function getNumberQueueOrder()
 	{
-		$item = $entityManager
+		$item = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\OrderItem')
 			->findOneOpenByArticle($this->article);
 		
@@ -145,25 +144,21 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getTotalDelivered(EntityManager $entityManager)
+	public function getTotalDelivered()
 	{
-		return $entityManager
+		return $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
 			->getTotalByArticle($this->article);
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberBooked(EntityManager $entityManager)
+	public function getNumberBooked()
 	{
-		$booked = $entityManager
+		$booked = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllBookedByArticle($this->article);
 		
@@ -175,13 +170,11 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberAssigned(EntityManager $entityManager)
+	public function getNumberAssigned()
 	{
-		$booked = $entityManager
+		$booked = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllAssignedByArticle($this->article);
 		
@@ -193,13 +186,11 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberSold(EntityManager $entityManager)
+	public function getNumberSold()
 	{
-		$booked = $entityManager
+		$booked = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\Booking')
 			->findAllSoldByArticle($this->article);
 		
@@ -211,12 +202,21 @@ class StockItem
 	}
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
 	 * @return integer
 	 */
-	public function getNumberAvailable(EntityManager $entityManager)
+	public function getNumberAvailable()
 	{
-		return $this->numberInStock - $this->getNumberBooked($entityManager);
+		return $this->numberInStock - $this->getNumberBooked($this->_entityManager);
+	}
+	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return \CudiBundle\Entity\Stock\StockItem
+	 */
+	public function setEntityManager(EntityManager $entityManager)
+	{
+		$this->_entityManager = $entityManager;
+		return $this;
 	}
 }

@@ -26,15 +26,34 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
 
-    public function indexAction()
-    {
-        $this->_forward('add');
-    }
+	public function manageAction()
+	{
+		$paginator = $this->paginator()->createFromEntity(
+		    'CudiBundle\Entity\Supplier',
+		    $this->getParam('page')
+		);
+		
+		return array(
+			'paginator' => $paginator,
+			'paginationControl' => $this->paginator()->createControl(true)
+		);
+	}
+	
+	public function supplierAction()
+	{
+		$supplier = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Supplier')
+	        ->findOneById($this->getRequest()->getParam('id'));
+		
+		if (null == $supplier)
+			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		
+		$this->view->supplier = $supplier;
+		$this->view->deliveries = $this->_createPaginatorArray($this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
+			->findAllBySupplier($supplier));
+	}
 	
 	public function addAction()
 	{
@@ -96,27 +115,4 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionC
 			$this->_redirect('overview', null, null, array('id' => null));
         }
 	}
-
-	public function overviewAction()
-	{
-		$this->view->suppliers = $this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Supplier')
-			->findAll();
-	}
-	
-	public function supplierAction()
-	{
-		$supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getRequest()->getParam('id'));
-		
-		if (null == $supplier)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-		
-		$this->view->supplier = $supplier;
-		$this->view->deliveries = $this->_createPaginatorArray($this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
-			->findAllBySupplier($supplier));
-	}
-	
 }

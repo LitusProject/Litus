@@ -103,7 +103,7 @@
     {
        	return array(
        	    'fullWidth' => $fullWidth,
-       		'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
+       		'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName() . '_paginator',
     		'pages' => $this->_paginator->getPages()
     	);
     }

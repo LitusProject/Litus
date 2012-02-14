@@ -1,0 +1,52 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_order/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<h1>Supplier: {{ supplier.getName() }}</h1>
+		
+		<table>
+		
+		    <tr>
+		        <th>Supplier</th>
+		        <th>Date</th>
+		        <th>Price</th>
+				<th>Actions</th>
+		    </tr>
+		    
+		    {% for order in paginator %}
+		        <tr>
+		            <td>{{ order.getSupplier().getName() }}</td>
+		            <td>{% if order.getDate() %}{{ order.getDate().format('Y-m-d H:i:s') }}{% else %}(new){% endif %}</td>
+		            <td>&euro;{#{{ (order.getPrice()/100)|number_format(2) }}#}</td>
+					<td>
+						{% if order.isPlaced() %}
+							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
+						{% else %}
+							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+						{% endif %}
+					</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+		
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<aside>
+		<div class="sidebox">
+	        <div class="title">New Order</div>
+	        <div class="content">
+	            <p>
+	                <i>Please hit the link below to add a new order item!</i>
+	            </p>
+	            <p>
+	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add order item</a>
+	            </p>
+	        </div>
+	    </div>
+	</aside>
+{% endblock %}

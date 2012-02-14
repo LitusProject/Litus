@@ -4,13 +4,13 @@
     <nav id="controller_nav">
         <ul>
         	{% if hasAccess('admin', 'order', 'index') %}
-                <li><a href="{{ url('admin_order') }}">Orders</a></li>
+                <li><a class="active" href="{{ url('admin_order') }}">Orders</a></li>
             {% endif %}
             {% if hasAccess('admin', 'delivery', 'index') %}
                 <li><a href="{{ url('admin_stock') }}">Deliveries</a></li>
             {% endif %}
             {% if hasAccess('admin', 'stock', 'overview') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
+                <li><a href="{{ url('admin_stock') }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>
