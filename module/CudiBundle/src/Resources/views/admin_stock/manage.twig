@@ -52,9 +52,9 @@
 		                <td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ item.getArticle().getSupplier().getName() }}</td>
 		                <td>{{ item.getNumberInStock() }}</td>
-		                <td>{{ item.getNumberNotDelivered() }}</td>
-		                <td>{{ item.getNumberQueueOrder() }}</td>
-		                <td>{{ item.getNumberBooked() + item.getNumberAssigned() }}</td>
+		                <td>0{#{{ item.getNumberNotDelivered() }}#}</td>
+		                <td>0{#{{ item.getNumberQueueOrder() }}#}</td>
+		                <td>0{#{{ item.getNumberBooked() + item.getNumberAssigned() }}#}</td>
 						<td>
 							<a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
 		                </td>
@@ -66,31 +66,17 @@
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
-	
-	<aside>
-		<div class="sidebox">
-	        <div class="title">Assign bookings</div>
-	       	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to assign bookings!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url('admin_booking', {"action": "assign"}) }}">&rarr; Assign bookings</a>
-		        </p>
-		    </div>
-		</div>
-	</aside>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$.SearchDatabase({
+			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#stock_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '<?= $this->url(array('action' => 'search')); ?>',
+				url: '{{ url('admin_stock_search') }}',
 				display: function (data) {
 					$('#stock_search table').find('tr.item').remove();
 					$(data).each(function () {

@@ -17,6 +17,7 @@ namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CudiBundle\Entity\Stock\StockItem,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Validator\Int as IntValidator;
@@ -24,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
 
-    public function __construct($options = null)
+    public function __construct(StockItem $item, $options = null)
     {
         parent::__construct($options);
 		
@@ -40,13 +41,10 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                 ->setAttrib('class', 'stock_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+        
+        $this->populate(array(
+        		'number' => $item->getNumberInStock()
+        	)
+        );
     }
-
-	public function populate($data)
-	{
-		parent::populate(array(
-				'number' => $data->getNumberInStock()
-			)
-		);
-	}
 }

@@ -4,7 +4,7 @@
     <nav id="controller_nav">
         <ul>
         	{% if hasAccess('admin', 'order', 'index') %}
-                <li><a {% if 'orders' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Orders</a></li>
+                <li><a {% if 'orders' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_order') }}">Orders</a></li>
             {% endif %}
             {% if hasAccess('admin', 'delivery', 'index') %}
                 <li><a {% if 'deliveries' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Deliveries</a></li>

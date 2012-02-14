@@ -15,14 +15,15 @@
  
 namespace CudiBundle\Form\Admin\Order;
 
-use Zend\Form\Form;
+use Doctrine\ORM\EntityManager,
+	Zend\Form\Form;
 
-class AddDirect extends \CommonBundle\Component\Form\Admin\Form
+class AddDirect extends \CudiBundle\Form\Admin\Order\AddItem
 {
 
-    public function __construct($options = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
         $this->removeElement('stockArticle');
 		$this->getElement('submit')->setName('addOrder');

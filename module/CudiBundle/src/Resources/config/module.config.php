@@ -7,6 +7,7 @@ return array(
                 'admin_article' => 'CudiBundle\Controller\Admin\ArticleController',
                 'admin_booking' => 'CudiBundle\Controller\Admin\BookingController',
                 'admin_stock' => 'CudiBundle\Controller\Admin\StockController',
+                'admin_order' => 'CudiBundle\Controller\Admin\OrderController',
             ),
             'admin_article' => array(
             	'parameters' => array(
@@ -110,9 +111,10 @@ return array(
           'admin_stock' => array(
               'type'    => 'Zend\Mvc\Router\Http\Segment',
               'options' => array(
-                  'route'    => '/admin/stock[/:action]',
+                  'route'    => '/admin/stock[/:action[/:id]]',
                   'constraints' => array(
                       'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                      'id'      => '[0-9]*',
                   ),
                   'defaults' => array(
                       'controller' => 'admin_stock',
@@ -120,5 +122,33 @@ return array(
                   ),
               ),
           ),
+          'admin_stock_search' => array(
+              'type'    => 'Zend\Mvc\Router\Http\Segment',
+              'options' => array(
+                  'route'    => '/admin/stock/search/[/:field[/:string]]',
+                  'constraints' => array(
+                      'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                      'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                  ),
+                  'defaults' => array(
+                      'controller' => 'admin_stock',
+                      'action'     => 'search',
+                  ),
+              ),
+           ),
+           'admin_order' => array(
+               'type'    => 'Zend\Mvc\Router\Http\Segment',
+               'options' => array(
+                   'route'    => '/admin/order[/:action[/:id]]',
+                   'constraints' => array(
+                       'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                       'id'      => '[0-9]*',
+                   ),
+                   'defaults' => array(
+                       'controller' => 'admin_order',
+                       'action'     => 'manage',
+                   ),
+               ),
+           ),
     ),
 );
