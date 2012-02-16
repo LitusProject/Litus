@@ -101,10 +101,14 @@
      */
     public function createControl($fullWidth = false)
     {
+    	$matchedRouteName = $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName();
+    	if (false === strpos($matchedRouteName, '_paginator'))
+    		$matchedRouteName .= '_paginator';
+    		
        	return array(
        	    'fullWidth' => $fullWidth,
-       		'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName() . '_paginator',
-    		'pages' => $this->_paginator->getPages()
+       		'matchedRouteName' => $matchedRouteName,
+    		'pages' => $this->_paginator->getPages(),
     	);
     }
  }

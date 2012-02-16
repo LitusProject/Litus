@@ -35,6 +35,11 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_delivery' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 	),
 	'routes' => array(),
 );

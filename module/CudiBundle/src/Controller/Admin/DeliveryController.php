@@ -24,7 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionController
+class DeliveryController extends \CommonBundle\Component\Controller\ActionController
 {
 
 	public function manageAction()
@@ -42,30 +42,76 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionC
 	
 	public function supplierAction()
 	{
-		$supplier = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Supplier')
-	        ->findOneById($this->getRequest()->getParam('id'));
+		$supplier = $this->_getSupplier();
 		
-		if (null == $supplier)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
+		$paginator = $this->paginator()->createFromArray(
+			$this->getEntityManager()
+			    ->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
+			    ->findAllBySupplier($supplier),
+		    $this->getParam('page')
+		);
 		
-		$this->view->supplier = $supplier;
-		$this->view->deliveries = $this->_createPaginatorArray($this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
-			->findAllBySupplier($supplier));
+		return array(
+			'supplier' => $supplier,
+			'paginator' => $paginator,
+			'paginationControl' => $this->paginator()->createControl()
+		);
 	}
+	
+	private function _getSupplier()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the supplier!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $supplier = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Supplier')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $supplier) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No supplier with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $supplier;
+	}
+	
 	
 	public function addAction()
 	{
-		$this->view->deliveries = $this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
-			->findLastNb(25);
-
-		$form = new AddForm();
-		$this->view->form = $form;
+		$form = new AddForm($this->getEntityManager());
 		
 		if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
@@ -74,36 +120,45 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionC
 				
                 $item = new DeliveryItem($article, $formData['number']);
 				$this->getEntityManager()->persist($item);
+				$this->getEntityManager()->flush();
 				
-				$this->broker('flashmessenger')->addMessage(
+				$this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
                         'The delivery was successfully added!'
                     )
 				);
-				$this->_redirect('index');
+				
+				$this->redirect()->toRoute(
+					'admin_delivery',
+					array(
+						'action' => 'supplier',
+						'id'     => $delivery->getArticle()->getSupplier()->getId(),
+					)
+				);
 			}
         }
+        
+        return array(
+        	'form' => $form,
+        	'deliveries' => $this->getEntityManager()
+        		->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
+        		->findLastNb(25),
+        );
 	}
 	
 	public function deleteAction()
 	{
-		$item = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
-	    	->findOneById($this->getRequest()->getParam('id'));
-	
-		if (null == $item)
-			throw new \Zend\Controller\Action\Exception('Page Not Found', 404);
-			
-		$this->view->item = $item;
-		
-		if (null !== $this->getRequest()->getParam('confirm')) {
-			if (1 == $this->getRequest()->getParam('confirm')) {
-				$item->getArticle()->getStockItem()->addNumber(-$item->getNumber());
-				$this->getEntityManager()->remove($item);
-
-				$this->broker('flashmessenger')->addMessage(
+		$delivery = $this->_getDeliveryItem();
+					
+		if (null !== $this->getParam('confirm')) {
+			if (1 == $this->getParam('confirm')) {
+				$delivery->getArticle()->getStockItem()->addNumber(-$delivery->getNumber());
+				$this->getEntityManager()->remove($delivery);
+				$this->getEntityManager()->flush();
+				
+				$this->flashMessenger()->addMessage(
             		new FlashMessage(
                 		FlashMessage::SUCCESS,
                     	'SUCCESS',
@@ -112,7 +167,64 @@ class DeliveryAdminController extends \CommonBundle\Component\Controller\ActionC
             	);
 			};
             
-			$this->_redirect('overview', null, null, array('id' => null));
+			$this->redirect()->toRoute(
+				'admin_delivery',
+				array(
+					'action' => 'supplier',
+					'id'     => $delivery->getArticle()->getSupplier()->getId(),
+				)
+			);
         }
+        
+        return array(
+        	'delivery' => $delivery,
+        );
+	}
+	
+	private function _getDeliveryItem()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the delivery!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $delivery = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $delivery) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No delivery with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $delivery;
 	}
 }

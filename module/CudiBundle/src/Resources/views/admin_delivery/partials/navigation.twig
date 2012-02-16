@@ -7,7 +7,7 @@
                 <li><a href="{{ url('admin_order') }}">Orders</a></li>
             {% endif %}
             {% if hasAccess('admin', 'delivery', 'index') %}
-                <li><a class="active" href="{{ url('admin_stock') }}">Deliveries</a></li>
+                <li><a class="active" href="{{ url('admin_delivery') }}">Deliveries</a></li>
             {% endif %}
             {% if hasAccess('admin', 'stock', 'overview') %}
                 <li><a href="{{ url('admin_stock') }}">Overview</a></li>

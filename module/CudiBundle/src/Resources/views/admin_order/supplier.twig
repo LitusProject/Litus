@@ -21,7 +21,7 @@
 		        <tr>
 		            <td>{{ order.getSupplier().getName() }}</td>
 		            <td>{% if order.getDate() %}{{ order.getDate().format('Y-m-d H:i:s') }}{% else %}(new){% endif %}</td>
-		            <td>&euro;{#{{ (order.getPrice()/100)|number_format(2) }}#}</td>
+		            <td>&euro; {{ (order.getPrice()/100)|number_format(2) }}</td>
 					<td>
 						{% if order.isPlaced() %}
 							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
@@ -32,7 +32,8 @@
 		        </tr>
 		    {% endfor %}
 		</table>
-		
+		{% set paginationParams = {"id": supplier.getId()} %}
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 	

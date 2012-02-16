@@ -18,7 +18,7 @@
 		        <th>Actions</th>
 		    </tr>
 		    
-		    {% for delivery in deliveries %}
+		    {% for delivery in paginator %}
 		        <tr>
 		        	<td>{{ delivery.getDate().format('Y-m-d H:i:s') }}</td>
 		        	<td>{{ delivery.getArticle().getTitle() }}</td>
