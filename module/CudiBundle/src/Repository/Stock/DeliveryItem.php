@@ -77,7 +77,7 @@ class DeliveryItem extends EntityRepository
 			->orderBy('i.date', 'DESC')
 			->getQuery()
 			->getResult();
-			
+						
 		return $resultSet;
 	}
 }

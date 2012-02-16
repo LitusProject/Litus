@@ -8,7 +8,7 @@ return array(
     'CudiBundle\Component\Validator\UniqueArticleBarcode'   => __DIR__ . '/src/Component/Validator/UniqueArticleBarcode.php',
     'CudiBundle\Controller\Admin\ArticleController'         => __DIR__ . '/src/Controller/Admin/ArticleController.php',
     'CudiBundle\Controller\Admin\BookingController'         => __DIR__ . '/src/Controller/Admin/BookingController.php',
-    'CudiBundle\Controller\Admin\DeliveryAdminController'   => __DIR__ . '/src/Controller/Admin/DeliveryController.php',
+    'CudiBundle\Controller\Admin\DeliveryController'        => __DIR__ . '/src/Controller/Admin/DeliveryController.php',
     'CudiBundle\Controller\Admin\OrderController'           => __DIR__ . '/src/Controller/Admin/OrderController.php',
     'CudiBundle\Controller\Admin\SaleController'            => __DIR__ . '/src/Controller/Admin/SaleController.php',
     'CudiBundle\Controller\Admin\StockController'           => __DIR__ . '/src/Controller/Admin/StockController.php',

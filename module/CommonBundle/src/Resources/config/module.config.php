@@ -17,6 +17,7 @@ $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
     'display_exceptions'    => true,
+    'encoding'				=> 'ISO-8859-1',
     'di'                    => array(
         'instance' => array(
             'alias'                          => array(

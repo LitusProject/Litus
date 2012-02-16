@@ -27,15 +27,15 @@
 	
 	            <tr>
 	                <td>{{ delivery.getDate().format('Y-m-d H:i:s') }}</td>
-	                <td><?= $item->getArticle()->getTitle(); ?></td>
-	                <td><?= $item->getNumber(); ?></td>
-	                <td>&euro; <?= number_format($item->getPrice()/100, 2); ?></td>
+	                <td>{{ delivery.getArticle().getTitle() }}</td>
+	                <td>{{ delivery.getNumber() }}</td>
+	                <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
 					<td>
-						<a href="<?= $this->url(array('action' => 'delete', 'id' => $item->getId())); ?>" class="delete">Delete</a>
+						<a href="{{ url("admin_delivery", {"action": "delete", "id": delivery.getId()}) }}" class="delete">Delete</a>
 					</td>
 	            </tr>
 	    
-	        {% endif %}
+	        {% endfor %}
 	    </table>
 	</div>
 	
@@ -47,7 +47,7 @@
 		        	<i>Please hit the link below to view all deliveries!</i>
 		        </p>
 		        <p>
-		           	<a href="<?= $this->url(array('action' => 'overview')); ?>">&rarr; Overview deliveries</a>
+		           	<a href="{{ url("admin_delivery", {"action": "manage"}) }}">&rarr; Overview deliveries</a>
 		        </p>
 		    </div>
 		</div>

@@ -24,7 +24,7 @@
 					<td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
 					<td>{{ item.getNumber() }}</td>
 					<td>
-						{% if order.isPlaced() == false %}
+						{% if not order.isPlaced() %}
 							<a href="{{ url('admin_order', {"action": "delete", "id": item.getId()}) }}" class="delete">Delete</a>
 						{% endif %}
 					</td>
@@ -34,7 +34,7 @@
 	</div>
 	
 	<aside>
-		{% if order.isPlaced() == false %}
+		{% if not order.isPlaced() %}
 			<div class="sidebox">
 		        <div class="title">Place Order</div>
 		        <div class="content">
