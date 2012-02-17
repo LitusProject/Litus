@@ -32,11 +32,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	Zend\Json\Json;
 
 /**
- *
- * This class controlls management and adding of articles.
+ * ArticleController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- *
  */
 class ArticleController extends \CommonBundle\Component\Controller\ActionController
 {

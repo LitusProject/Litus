@@ -2,7 +2,7 @@
 <order date="6 November 2011">
 	<our_union short_name="VTK">
 		<name>VTK VZW</name>
-	    <logo>../images/logo/logo.jpg</logo>
+	    <logo>data/images/logo/logo.jpg</logo>
 	</our_union>
 	<cudi name="CURSUSDIENST">
 		<mail>cursusdienst@vtk.be</mail>

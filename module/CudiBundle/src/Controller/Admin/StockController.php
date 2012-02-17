@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	Zend\Json\Json;
 
 /**
- * This class controls management of the stock.
+ * StockController
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

@@ -38,7 +38,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
 	 */
     public function __construct(EntityManager $entityManager, Order $order, TmpFile $file)
     {
-    	$filePath = $this->_entityManager
+    	$filePath = $entityManager
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.pdf_generator_path');
     				
@@ -86,7 +86,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         foreach($this->_order->getOrderItems() as $item) {
         	if ($item->getArticle()->isInternal()) {
         		$internal_items[] = new Object(
-        			'external_item',
+        			'internal_item',
         			null,
         			array(
         				new Object(

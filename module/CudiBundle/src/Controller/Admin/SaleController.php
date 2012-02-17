@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	Doctrine\ORM\QueryBuilder;
 
 /**
- * This class controls management and adding of sale sessions
+ * SaleController
  *
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
