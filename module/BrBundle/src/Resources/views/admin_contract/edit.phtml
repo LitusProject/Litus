@@ -1,0 +1,60 @@
+<?= $this->partial('partials/contract/navigation.phtml', array('currentAction' => 'null')); ?>
+
+<div id="flashmessenger">
+	<? foreach($this->flashMessages as $message) { echo $message; } ?>
+</div>
+
+<div id="controller_action">
+    <? if ($this->flushResult && $this->contractUpdated): ?>
+        <div class="success_message full_width">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The contract was successfully updated!</p>
+            </div>
+        </div>
+
+        <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
+
+        <div class="sortable">
+            <span id="contractId" style="display: none;"><?= $this->contractId; ?></span>
+            <ul id="contractComposition">
+                <? foreach ($this->sections as $section): ?>
+                    <li id="contractComposition_<?= $section->getId(); ?>" class="sections"><?= $section->getName(); ?></li>
+                <? endforeach; ?>
+            </ul>
+        </div>
+        <div>
+            <a href="/admin/contract/generate/id/<?= $this->contractId; ?>">Generate</a>
+        </div>
+    <? else: ?>
+        <? if (!$this->flushResult): ?>
+            <div class="error_message">
+                <div class="title">Error</div>
+                <div class="content">
+                    <p>An error occurred while saving the entry to the database. Please try again or contact the administrator.</p>
+                </div>
+            </div>
+        <? endif; ?>
+
+        <?= $this->form; ?>
+    <? endif; ?>
+</div>
+
+<? if ($this->contractUpdated): ?>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#contractComposition').sortable({
+            update : function () {
+                $.post(
+                    '/admin/contract/updatecomposition?format=json',
+                    {
+                        contractId: $('#contractId').text(), sections: $('#contractComposition').sortable('serialize')
+                    },
+                    function(data) {},
+                    'json'
+                );
+            }
+        });
+    });
+    </script>
+<? endif; ?>
