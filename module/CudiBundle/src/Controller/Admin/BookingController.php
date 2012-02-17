@@ -123,53 +123,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
 	}
 	
-	private function _getBooking()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the booking!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_booking',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $article = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Sales\Booking')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $article) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No booking with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_booking',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $article;
-	}
-	
 	public function searchAction()
 	{
 		$this->initAjax();
@@ -270,5 +223,52 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return array(
         	'booking' => $booking,
         );
+	}
+	
+	private function _getBooking()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the booking!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_booking',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $article = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Sales\Booking')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $article) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No booking with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_booking',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $article;
 	}
 }

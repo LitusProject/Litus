@@ -49,7 +49,7 @@ class Supplier
 	private $VAT_number;
 	
 	/**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -62,5 +62,29 @@ class Supplier
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->telephone_number;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getVATNumber()
+    {
+        return $this->VAT_number;
     }
 }

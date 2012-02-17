@@ -57,9 +57,9 @@ class OrderItem
 	 */
 	public function __construct(Article $article, Order $order, $number)
 	{
-		$this->article = $article;
+		$this->setArticle($article);
 		$this->order = $order;
-		$this->number = $number;
+		$this->setNumber($number);
 	}
 	
 	/**

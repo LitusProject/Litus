@@ -41,7 +41,7 @@ class Binding
 	}
 	
 	/**
-	 * @return bigint
+	 * @return integer
 	 */
 	public function getId()
 	{

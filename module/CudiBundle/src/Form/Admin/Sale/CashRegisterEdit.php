@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Form\Admin\Sale;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+use CommonBundle\Entity\General\Bank\CashRegister,
+	CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Validator\Price as PriceValidator,
 	Doctrine\ORM\EntityManager,
@@ -25,9 +26,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	
 class CashRegisterEdit extends CashRegisterAdd
 {
-    public function __construct($options = null )
+    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $options = null )
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
 		$this->removeElement('submit');
 
@@ -36,18 +37,12 @@ class CashRegisterEdit extends CashRegisterAdd
             ->setAttrib('class', 'sale_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-    }
-
-	public function populate($data)
-	{
-		$array = array();
-		
-		foreach($data->getBankDeviceAmounts() as $amount)
-			$array['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
         
-		foreach($data->getMoneyUnitAmounts() as $amount)
-			$array['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
-		
-		parent::populate($array);
-	}
+        $data = array();
+        foreach($cashRegister->getBankDeviceAmounts() as $amount)
+        	$data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
+        foreach($cashRegister->getMoneyUnitAmounts() as $amount)
+        	$data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
+       	$this->populate($data);
+    }
 }

@@ -41,7 +41,7 @@ class Color
 	}
 	
 	/**
-	 * @return bigint
+	 * @return integer
 	 */
 	public function getId()
 	{

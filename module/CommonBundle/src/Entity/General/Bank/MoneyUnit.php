@@ -60,6 +60,6 @@ class MoneyUnit
 	 */
 	public function getUnit()
 	{
-		return $this->unit / 100;
+		return $this->unit;
 	}
 }

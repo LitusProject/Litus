@@ -33,7 +33,7 @@ class LetterGenerator extends DocumentGenerator {
         $xml = new XmlGenerator($file);
 
         /** @var $configs \Litus\Repository\General\Config */
-        $configs = self::_getConfigRepository();
+        $configs = $this->_getConfigRepository();
 
         // Get the content
         $ourUnionName = $configs->getConfigValue('br.letter.union_name');

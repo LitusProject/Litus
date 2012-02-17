@@ -15,14 +15,15 @@
  
 namespace CudiBundle\Component\Generator;
 
-use CommonBundle\Component\Util\TmpFile,
-	CommonBundle\Component\Util\Xml\XmlGenerator,
-	CommonBundle\Component\Util\Xml\XmlObject,
-	CudiBundle\Entity\Stock\Order;
+use CommonBundle\Component\Util\File\TmpFile,
+	CommonBundle\Component\Util\Xml\Generator,
+	CommonBundle\Component\Util\Xml\Object,
+	CudiBundle\Entity\Stock\Order,
+	Doctrine\ORM\EntityManager;
 
 class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenerator
 {
-
+	
 	/**
 	 * @var \CudiBundle\Entity\Stock\Order
 	 */
@@ -31,13 +32,19 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
 	/**
 	 * Create a new Order PDF Generator.
 	 *
+	 * @param \Doctrine\ORM\EntityManager $entityManager
 	 * @param \CudiBundle\Entity\Stock\Order $order The order
 	 * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
 	 */
-    public function __construct(Order $order, TmpFile $file)
+    public function __construct(EntityManager $entityManager, Order $order, TmpFile $file)
     {
+    	$filePath = $this->_entityManager
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.pdf_generator_path');
+    				
 	   	parent::__construct(
-    	    Registry::get('litus.resourceDirectory') . '/pdf_generators/cudi/order.xsl',
+	   		$entityManager,
+    	    $filePath . '/orders/order.xsl',
     	    $file->getFilename()
     	);
     	$this->_order = $order;
@@ -50,7 +57,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
 	 */
     protected function _generateXml(TmpFile $tmpFile)
     {
-    	$configs = self::_getConfigRepository();
+    	$configs = $this->_getConfigRepository();
     	
         $now = new \DateTime();
         $union_short_name = $configs->getConfigValue('cudi.union_short_name');
@@ -78,36 +85,36 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         $internal_items = array();
         foreach($this->_order->getOrderItems() as $item) {
         	if ($item->getArticle()->isInternal()) {
-        		$internal_items[] = new XmlObject(
+        		$internal_items[] = new Object(
         			'external_item',
         			null,
         			array(
-        				new XmlObject(
+        				new Object(
         					'barcode',
         					null,
         					(string) $item->getArticle()->getBarcode()
         				),
-        				new XmlObject(
+        				new Object(
         					'title',
         					null,
         					$item->getArticle()->getTitle()
         				),
-        				new XmlObject(
+        				new Object(
         					'recto_verso',
         					null,
         					$item->getArticle()->isRectoVerso() ? '1' : '0'
         				),
-        				new XmlObject(
+        				new Object(
         					'binding',
         					null,
         					$item->getArticle()->getBinding()->getName()
         				),
-        				new XmlObject(
+        				new Object(
         					'nb_pages',
         					null,
         					(string) $item->getArticle()->getNbPages()
         				),
-        				new XmlObject(
+        				new Object(
         				    'number',
         				    null,
         				    (string) $item->getNumber()
@@ -115,31 +122,31 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         			)
         		);
         	} else {
-        		$external_items[] = new XmlObject(
+        		$external_items[] = new Object(
         			'external_item',
         			null,
         			array(
-        				new XmlObject(
+        				new Object(
         					'isbn',
         					null,
         					(string) $item->getArticle()->getBarcode()
         				),
-        				new XmlObject(
+        				new Object(
         					'title',
         					null,
         					$item->getArticle()->getTitle()
         				),
-        				new XmlObject(
+        				new Object(
         					'author',
         					null,
         					$item->getArticle()->getMetaInfo()->getAuthors()
         				),
-        				new XmlObject(
+        				new Object(
         					'publisher',
         					null,
         					$item->getArticle()->getMetaInfo()->getPublishers()
         				),
-        				new XmlObject(
+        				new Object(
         				    'number',
         				    null,
         				    (string) $item->getNumber()
@@ -149,95 +156,95 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         	}
         }
         
-        $xml = new XmlGenerator($tmpFile);
+        $xml = new Generator($tmpFile);
 
         $xml->append(
-        	new XmlObject(
+        	new Object(
         		'order',
         		array(
         			'date' => $now->format('d F Y')
         		),
         		array(
-        			new XmlObject(
+        			new Object(
         				'our_union',
         				array(
         					'short_name' => $union_short_name
         				),
         				array(
-        					new XmlObject(
+        					new Object(
         						'name',
         						null,
         						$union_name
         					),
-        					new XmlObject(
+        					new Object(
         						'logo',
         						null,
         						$logo
         					)
         				)
         			),
-        			new XmlObject(
+        			new Object(
         				'cudi',
         				array(
         					'name' => $cudi_name
         				),
         				array(
-        					 new XmlObject(
+        					 new Object(
         					 	'mail',
         					 	null,
         					 	$cudi_mail
         					 ),
-        					 new XmlObject(
+        					 new Object(
         					 	'phone',
         					 	null,
-        					 	$person->getTelephone()
+        					 	$person->getPhoneNumber()
         					 ),
-        					 new XmlObject(
+        					 new Object(
         					 	'delivery_address',
         					 	null,
         					 	array(
-        					 		new XmlObject(
+        					 		new Object(
         					 			'name',
         					 			null,
         					 			$delivery_address['name']
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'street',
         					 			null,
         					 			$delivery_address['street']
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'city',
         					 			null,
         					 			$delivery_address['city']
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'extra',
         					 			null,
         					 			$delivery_address['extra']
         					 		)
         					 	)
         					 ),
-        					 new XmlObject(
+        					 new Object(
         					 	'billing_address',
         					 	null,
         					 	array(
-        					 		new XmlObject(
+        					 		new Object(
         					 			'name',
         					 			null,
         					 			$billing_address['name']
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'person',
         					 			null,
         					 			$person->getFullname()
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'street',
         					 			null,
         					 			$billing_address['street']
         					 		),
-        					 		new XmlObject(
+        					 		new Object(
         					 			'city',
         					 			null,
         					 			$billing_address['city']
@@ -246,12 +253,12 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
         					 )
         				)
         			),
-        			new XmlObject(
+        			new Object(
         				'external_items',
         				null,
         				$external_items
         			),
-        			new XmlObject(
+        			new Object(
         				'internal_items',
         				null,
         				$internal_items

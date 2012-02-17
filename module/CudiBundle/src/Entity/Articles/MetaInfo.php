@@ -51,6 +51,11 @@ class MetaInfo
 	 */
 	private $yearPublished;
 	
+	/**
+	 * @param string $authors The authors of the article
+	 * @param string $publishers The publishers of the article
+	 * @param string $yearPublished The year of the article
+	 */
 	public function __construct($authors, $publishers, $yearPublished) {
 		$this->authors = $authors;
 		$this->publishers = $publishers;
@@ -58,7 +63,7 @@ class MetaInfo
 	}
 	
 	/**
-	 * @return bigint
+	 * @return integer
 	 */
 	public function getId()
 	{

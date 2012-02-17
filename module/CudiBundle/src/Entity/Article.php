@@ -87,7 +87,7 @@ abstract class Article
     }
 
     /**
-     * @return bigint
+     * @return integer
      */
     public function getId()
     {

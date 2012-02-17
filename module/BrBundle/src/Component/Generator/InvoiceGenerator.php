@@ -32,7 +32,7 @@ class InvoiceGenerator extends DocumentGenerator {
         $xml = new XmlGenerator($file);
 
         /** @var $configs \Litus\Repository\General\Config */
-        $configs = self::_getConfigRepository();
+        $configs = $this->_getConfigRepository();
 
         $totalExclusive = 0;
         $totalVat = 0;

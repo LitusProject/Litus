@@ -15,12 +15,13 @@
  
 namespace CudiBundle\Component\Generator;
 
-use CommonBundle\Component\Util\TmpFile,
-	CommonBundle\Component\Util\Xml\XmlGenerator,
-	CommonBundle\Component\Util\Xml\XmlObject,
-	CommonBundle\Entity\Stock\Order,
-	CommonBundle\Entity\Stock\OrderItem,
-	Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile,
+	CommonBundle\Component\Util\Xml\Generator,
+	CommonBundle\Component\Util\Xml\Object,
+	CudiBundle\Entity\Stock\Order,
+	CudiBundle\Entity\Stock\OrderItem,
+	Doctrine\ORM\EntityManager,
+	ZipArchive;
 
 class OrderXmlGenerator
 {
@@ -54,19 +55,23 @@ class OrderXmlGenerator
 	 */
 	public function generateArchive(TmpFile $archive)
 	{
-		$zip = new \ZipArchive();
+		$filePath = $this->_entityManager
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.file_path');
+			
+		$zip = new ZipArchive();
 		
 		foreach($this->_order->getOrderItems() as $item) {
 			if (!$item->getArticle()->isInternal())
 				continue;
 			
-			$zip->open($archive->getFileName(), \ZIPARCHIVE::CREATE);
+			$zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
 			$xmlFile = new TmpFile();
 			$this->_generateXml($item, $xmlFile);
 			
 			$zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
-			foreach($item->getArticle()->getFiles() as $file)
-				$zip->addFile('../resources/files/cudi/' . $file->getPath(), $file->getName());
+			foreach($item->getArticle()->getFiles($this->_entityManager) as $file)
+				$zip->addFile($filePath . $file->getPath(), $file->getName());
 			
 			$zip->close();
 		}
@@ -77,12 +82,12 @@ class OrderXmlGenerator
     	$configs = $this->_entityManager
     		->getRepository('CommonBundle\Entity\General\Config');
         
-        $xml = new XmlGenerator($tmpFile);
+        $xml = new Generator($tmpFile);
 		
 		$attachments = array();
 		$num = 1;
-		foreach($item->getArticle()->getFiles() as $file) {
-			$attachments[] = new XmlObject(
+		foreach($item->getArticle()->getFiles($this->_entityManager) as $file) {
+			$attachments[] = new Object(
 				'Attachment',
 				array(
 					'AttachmentKey' => 'File' . $num++,
@@ -93,39 +98,39 @@ class OrderXmlGenerator
 		}
 		
 		$itemValues = array(
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'titel'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						$item->getArticle()->getTitle()
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'aantal'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) $item->getNumber()
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'barcode'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) $item->getArticle()->getBarcode()
@@ -133,52 +138,52 @@ class OrderXmlGenerator
 				)
 			),
 			// TODO: generate text
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'afwerking'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) ''
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'kleur'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						$item->getArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'zijde'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) $item->getArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'TypeDrukOpdracht'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						'Cursus'
@@ -186,13 +191,13 @@ class OrderXmlGenerator
 				)
 			),
 			// TODO: generate text
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'DatumOpdrachtKlaar'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) ''
@@ -200,26 +205,26 @@ class OrderXmlGenerator
 				)
 			),
 			// TODO: generate text
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'Referentie'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						(string) ''
 					)
 				)
 			),
-			new XmlObject(
+			new Object(
 				'ItemValue',
 				array(
 					'ItemKey' => 'Opmerking'
 				),
 				array(
-					new XmlObject(
+					new Object(
 						'LastUsedValue',
 						null,
 						''
@@ -229,22 +234,22 @@ class OrderXmlGenerator
 		);
 
         $xml->append(
-        	new XmlObject(
+        	new Object(
         		'Document',
         		null,
         		array(
-        			new XmlObject(
+        			new Object(
         				'Job',
         				array(
         					'JobID' => 'vtk-' . $this->_order->getDate()->format('YmdHi') . '-'
         				),
         				array(
-	        				new XmlObject(
+	        				new Object(
 	        					'Attachments',
 	        					null,
 	        					$attachments
 	        				),
-	        				new XmlObject(
+	        				new Object(
 	        					'ItemValues',
 	        					null,
 	        					$itemValues

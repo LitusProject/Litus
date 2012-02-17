@@ -44,13 +44,13 @@ class TmpFile
         do{
             $filename = '/.' . uniqid();
         } while (
-        	file_exists($tmpDirectory . $file)
+        	file_exists($tmpDirectory . $filename)
         );
 
-        $this->_filename = FileUtil::getRealFilename($this->_getTmpDir() . $filename);
+        $this->_filename = FileUtil::getRealFilename($tmpDirectory . $filename);
         $this->_fileHandler = fopen($this->_filename, 'w+b');
 
-        if(!$this->_file) {
+        if(!$this->_fileHandler) {
             throw new Exception\FailedtoOpenException(
             	'Failed to open file ' . $this->_filename
             );
@@ -68,7 +68,7 @@ class TmpFile
         fseek($this->_fileHandler, 0);
         
         return fread(
-        	$this->_fileHanlder, filesize($this->_filename)
+        	$this->_fileHandler, filesize($this->_filename)
         );
     }
 
@@ -82,7 +82,7 @@ class TmpFile
     {
         $this->_checkOpen();
         
-        fwrite($this->_file, $content);
+        fwrite($this->_fileHandler, $content);
     }
 	
 	/**
@@ -118,7 +118,7 @@ class TmpFile
             $fileHandler = $this->_fileHandler;
             $this->_fileHanlder = null;
             
-            fclose($file);
+            fclose($fileHandler);
             unlink($this->_filename);
         }
     }

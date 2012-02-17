@@ -71,13 +71,13 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 * @param float $purchasePrice The purchase price of this article.
 	 * @param float $sellPrice The sell price of this article for non-members.
 	 * @param float $sellPriceMembers The sell price of this article for members.
-	 * @param smallint $barcode This article's barcode.
+	 * @param integer $barcode This article's barcode.
 	 * @param boolean $bookable Indicates whether the article can be booked.
 	 * @param boolean $unbookable Indicates whether the article can be unbooked.
 	 * @param CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
 	 * @param boolean $canExpire Whether the article can expire.
-	 * @param int $nbBlackAndWhite
-	 * @param int $nbColored
+	 * @param integer $nbBlackAndWhite
+	 * @param integer $nbColored
 	 * @param CudiBundle\Entity\Articles\StockArticles\Binding $binding
 	 * @param boolean $official
 	 * @param boolean $rectoverso
@@ -116,7 +116,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @param int $nbBlackAndWhite
+	 * @param integer $nbBlackAndWhite
 	 *
 	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
@@ -135,7 +135,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @param int $nbColored
+	 * @param integer $nbColored
 	 *
 	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
