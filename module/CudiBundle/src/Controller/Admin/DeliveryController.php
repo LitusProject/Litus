@@ -56,55 +56,7 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 			'paginator' => $paginator,
 			'paginationControl' => $this->paginator()->createControl()
 		);
-	}
-	
-	private function _getSupplier()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the supplier!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_order',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $supplier = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Supplier')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $supplier) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No supplier with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_order',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $supplier;
-	}
-	
+	}	
 	
 	public function addAction()
 	{
@@ -226,5 +178,52 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 		}
 		
 		return $delivery;
+	}
+	
+	private function _getSupplier()
+	{
+		if (null === $this->getParam('id')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No id was given to identify the supplier!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $supplier = $this->getEntityManager()
+	        ->getRepository('CudiBundle\Entity\Supplier')
+	        ->findOneById($this->getParam('id'));
+		
+		if (null === $supplier) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No supplier with the given id was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_order',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $supplier;
 	}
 }

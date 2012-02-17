@@ -18,13 +18,14 @@ namespace CudiBundle\Form\Admin\Sale;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Validator\Price as PriceValidator,
+	CudiBundle\Entity\Sales\Session,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Textarea;
 
 class SessionComment extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null )
+    public function __construct(Session $session, $options = null)
     {
         parent::__construct($options);
 
@@ -36,10 +37,7 @@ class SessionComment extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Edit Comment')
             ->setAttrib('class', 'sale_edit');
         $this->addElement($field);
-    }
-
-    public function populate($data)
-    {
-        parent::populate(array('comment' => $data->getComment()));
+        
+        $this->populate(array('comment' => $session->getComment()));
     }
 }

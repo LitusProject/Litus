@@ -1,0 +1,132 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_sale/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<h1>Sale Session</h1>
+		<p>Manager: <b>{% if session.getManager() is sameas(null) %}{{ session.getManager().getUserName() }}{% else %}guest{% endif %}</b></p>
+        <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
+        <p>Date closed: <b>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i:s')}}{% endif %}</b></p>
+
+        <table class="half_width">
+        
+            <tr>
+                <th>Cash register start</th>
+                <th>Amount</th>
+            </tr>
+    
+            <tr>
+                <td></td>
+                <td><a href="{{ url("admin_sale", {"action": "editregister", "id": session.getOpenAmount().getId()}) }}">(edit)</a></td>
+            </tr>
+            {% for unit in units %}
+                <tr>
+                    <td style="text-align: right">&euro; {{ (unit.getUnit()/100)|number_format(2) }}</td>
+                    <td>{{ session.getOpenAmount().getAmountForUnit(unit).getAmount() }}</td>
+                </tr>
+            {% endfor %}
+            {% for device in devices %}
+                <tr>
+                    <td style="text-align: right">{{ device.getName() }}</td>
+                    <td>&euro; {{ (session.getOpenAmount().getAmountForDevice(device).getAmount()/100)|number_format(2) }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="text-align: right">TOTAL:</td>
+                <td>&euro; {{ (session.getOpenAmount().getTotalAmount()/100)|number_format(2) }}</td>
+            </tr>
+
+        </table>
+        
+        {% if not session.isOpen() %}
+            <table class="half_width">
+                <tr>
+                    <th>Cash register end</th>
+                    <th>Amount</th>
+                </tr>
+
+                <tr>
+                    <td></td>
+                	<td><a href="{{ url("admin_sale", {"action": "editregister", "id": session.getCloseAmount().getId()}) }}">(edit)</a></td>
+                </tr>
+                {% for unit in units %}
+                    <tr>
+                        <td style="text-align: right">&euro; {{ (unit.getUnit()/100)|number_format(2) }}</td>
+                        <td>{{ session.getCloseAmount().getAmountForUnit(unit).getAmount() }}</td>
+                    </tr>
+                {% endfor %}
+                {% for device in devices %}
+                    <tr>
+                        <td style="text-align: right">{{ device.getName() }}</td>
+                        <td>&euro; {{ (session.getCloseAmount().getAmountForDevice(device).getAmount()/100)|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="text-align: right">TOTAL:</td>
+	                <td>&euro; {{ (session.getCloseAmount().getTotalAmount()/100)|number_format(2) }}</td>
+                </tr>
+
+            </table>
+        {% endif %}
+        
+        <br style="clear:both" />
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+	</div>
+	
+	<aside>
+		{% if session.isOpen() %}
+			<div class="sidebox">
+				<div class="title">Close Session</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to close this sale session!</i>
+					</p>
+					<p>
+						<a href="{{ url("admin_sale", {"action": "close", "id": session.getId()}) }}">&rarr; Close</a>
+					</p>
+				</div>
+			</div>
+			
+			<div class="sidebox">
+				<div class="title">Sale Application</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to open the sale application for regular users!</i>
+					</p>
+					<p>
+						<a href="{#{{ url("saleapp_sale", {"session": session.getId()}) }}#}">&rarr; Pay Desk Application</a>
+					</p>
+				</div>
+			</div>
+			
+			<div class="sidebox">
+				<div class="title">Queue Sign-in</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to open queue sign-in page!</i>
+					</p>
+					<p>
+						<a href="{#{{ url("saleapp_queue", {"action": "signin", "session": session.getId()}) }}#}">&rarr; Queue Sign-in</a>
+					</p>
+				</div>
+			</div>
+			
+			<div class="sidebox">
+				<div class="title">Queue Overview</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to go to the queue overview page!</i>
+					</p>
+					<p>
+						<a href="{#{{ url("saleapp_queue", {"session": session.getId()}) }}#}">&rarr; Queue Overviewn</a>
+					</p>
+				</div>
+			</div>
+		{% endif %}
+	</aside>
+{% endblock %}

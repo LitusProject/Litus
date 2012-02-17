@@ -65,7 +65,7 @@ class Object
 
             if (is_string($content)) {
                 $this->_content .= $this->_escape($content);
-            } else if ($content instanceof XmlObject) {
+            } else if ($content instanceof Object) {
                 $this->_content .= $n;
                 $this->_content .= $content->__toString();
             } else if (is_array($content)) {
@@ -73,7 +73,7 @@ class Object
                 foreach ($content as $part) {
                     if (is_string($part))
                         $this->_content .= $this->_escape($part);
-                    else if ($part instanceof XmlObject)
+                    else if ($part instanceof Object)
                         $this->_content .= $part->__toString();
                     else
                         throw new Exception\InvalidArgumentException('The given content was invalid');

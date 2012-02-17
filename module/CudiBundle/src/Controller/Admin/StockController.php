@@ -131,6 +131,48 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			'deliveryForm' => $deliveryForm,
 		);
 	}
+
+	public function searchAction()
+	{
+		$this->initAjax();
+		
+		switch($this->getParam('field')) {
+			case 'title':
+				$stock = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
+					->findAllByArticleTitle($this->getParam('string'));
+				break;
+			case 'barcode':
+				$stock = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
+					->findAllByArticleBarcode($this->getParam('string'));
+				break;
+			case 'supplier':
+				$stock = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
+					->findAllByArticleSupplier($this->getParam('string'));
+				break;
+		}
+		$result = array();
+		foreach($stock as $stockItem) {
+			$stockItem->setEntityManager($this->getEntityManager());
+			
+			$item = (object) array();
+			$item->id = $stockItem->getId();
+			$item->title = $stockItem->getArticle()->getTitle();
+			$item->supplier = $stockItem->getArticle()->getSupplier()->getName();
+			$item->numberInStock = $stockItem->getNumberInStock();
+			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
+			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
+			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
+			$item->versionNumber = $stockItem->getArticle()->getVersionNumber();
+			$result[] = $item;
+		}
+		
+		return array(
+			'result' => $result,
+		);
+	}
 	
 	private function _getItem()
 	{
@@ -178,47 +220,5 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 		$item->setEntityManager($this->getEntityManager());
 		
 		return $item;
-	}
-
-	public function searchAction()
-	{
-		$this->initAjax();
-		
-		switch($this->getParam('field')) {
-			case 'title':
-				$stock = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleTitle($this->getParam('string'));
-				break;
-			case 'barcode':
-				$stock = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleBarcode($this->getParam('string'));
-				break;
-			case 'supplier':
-				$stock = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleSupplier($this->getParam('string'));
-				break;
-		}
-		$result = array();
-		foreach($stock as $stockItem) {
-			$stockItem->setEntityManager($this->getEntityManager());
-			
-			$item = (object) array();
-			$item->id = $stockItem->getId();
-			$item->title = $stockItem->getArticle()->getTitle();
-			$item->supplier = $stockItem->getArticle()->getSupplier()->getName();
-			$item->numberInStock = $stockItem->getNumberInStock();
-			$item->numberNotDelivered = $stockItem->getNumberNotDelivered();
-			$item->numberQueueOrder = $stockItem->getNumberQueueOrder();
-			$item->numberBookedAssigned = $stockItem->getNumberBooked() + $stockItem->getNumberAssigned();
-			$item->versionNumber = $stockItem->getArticle()->getVersionNumber();
-			$result[] = $item;
-		}
-		
-		return array(
-			'result' => $result,
-		);
 	}
 }

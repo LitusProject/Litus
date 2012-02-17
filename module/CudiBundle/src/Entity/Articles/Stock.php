@@ -73,7 +73,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
      * @param float $purchasePrice The purchase price of this article.
      * @param float $sellPrice The sell price of this article for non-members.
      * @param float $sellPriceMembers The sell price of this article for members.
-     * @param smallint $barcode This article's barcode.
+     * @param integer $barcode This article's barcode.
      * @param boolean $bookable Indicates whether the article can be booked.
      * @param boolean $unbookable Indicates whether the article can be unbooked.
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
@@ -154,7 +154,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-	 * @return int
+	 * @return integer
 	 */
 	public function getBarcode()
 	{
@@ -162,7 +162,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-     * @param int $barcode
+     * @param integer $barcode
 	 *
      * @return CudiBundle\Entity\Articles\Stock
      */

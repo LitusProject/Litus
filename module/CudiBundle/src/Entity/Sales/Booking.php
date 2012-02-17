@@ -89,21 +89,15 @@ class Booking
 	 * @param \CommonBundle\Entity\Users\Person $person
 	 * @param \CudiBundle\Entity\Article $article
 	 * @param string $status
-	 * @param int $number
+	 * @param integer $number
 	 */
 	public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1)
 	{
-		if (!isset($article))
-			throw new \InvalidArgumentException('The article is not valid.');
-			
-		if (!isset($person))
-			throw new \InvalidArgumentException('The person is not valid.');
-			
 		if (!$article->isBookable())
 			throw new \InvalidArgumentException('The Stock Article cannot be booked.');
 		
 		$this->person = $person;
-		$this->article = $article;
+		$this->setArticle($article);
 		$this->number = $number;
 		$this->setStatus($status);
 		$this->bookDate = new \DateTime();

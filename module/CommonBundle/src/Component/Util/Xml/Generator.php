@@ -57,7 +57,7 @@ class Generator
 	 * @param \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
 	 * @return void
 	 */
-    public function append(XmlObject $object)
+    public function append(Object $object)
     {
         $this->_data->appendContent(
         	$object->__toString()

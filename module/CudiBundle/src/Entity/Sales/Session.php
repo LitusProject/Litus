@@ -11,12 +11,13 @@
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
- */
- 
-  // TODO: comments
- 
+ */ 
  
 namespace CudiBundle\Entity\Sales;
+
+use CommonBundle\Entity\General\Bank\CashRegister,
+	CommonBundle\Entity\Users\Person,
+	DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
@@ -69,7 +70,12 @@ class Session
 	 */
 	//private $union;
 	
-	public function __construct($openAmount, $manager, $comment = '')
+	/**
+	 * @param CommonBundle\Entity\General\Bank\CashRegister $openAmount The cash register contents at the start of the session
+	 * @param CommonBundle\Entity\Users\Person $manager The manager of the session
+	 * @param string $comment
+	 */
+	public function __construct(CashRegister $openAmount, Person $manager, $comment = '')
 	{
 		$this->openDate = new \DateTime();
 		$this->openAmount = $openAmount;
@@ -77,64 +83,107 @@ class Session
 		$this->manager = $manager;
 	}
 
-	public function getId() {
+	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
 		return $this->id;
 	}
-
-	public function setOpenDate( $openDate ) {
+	
+	/**
+	 * @param DateTime $openDate
+	 *
+	 * @return CudiBundle\Entity\Sales\Session
+	 */
+	public function setOpenDate(DateTime $openDate)
+	{
 		$this->openDate = $openDate;
 		return $this;
 	}
-
-	public function getOpenDate() {
+	/**
+	 * @return DateTime
+	 */
+	public function getOpenDate()
+	{
 		return $this->openDate;
 	}
-
-	public function setCloseDate( $closeDate ) {
+	
+	/**
+	 * @param DateTime $closeDate
+	 *
+	 * @return CudiBundle\Entity\Sales\Session
+	 */
+	public function setCloseDate($closeDate)
+	{
 		$this->closeDate = $closeDate;
 		return $this;
 	}
-
-	public function getCloseDate() {
+	
+	/**
+	 * @return DateTime
+	 */
+	public function getCloseDate()
+	{
 		return $this->closeDate;
 	}
-
-	public function setOpenAmount( $openAmount ) {
-		$this->openAmount = $openAmount;
-		return $this;
-	}
-
-	public function getOpenAmount() {
+	
+	/**
+	 * @return CommonBundle\Entity\General\Bank\CashRegister
+	 */
+	public function getOpenAmount()
+	{
 		return $this->openAmount;
 	}
 
-	public function setCloseAmount( $closeAmount ) {
+	/**
+	 * @param CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 *
+	 * @return CudiBundle\Entity\Sales\Session
+	 */
+	public function setCloseAmount(CashRegister $closeAmount)
+	{
 		$this->closeAmount = $closeAmount;
 		return $this;
 	}
-
-	public function getCloseAmount() {
+	
+	/**
+	 * @return CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 */
+	public function getCloseAmount()
+	{
 		return $this->closeAmount;
 	}
 
-	public function setManager( $manager ) {
-		$this->manager = $manager;
-		return $this;
-	}
-
-	public function getManager() {
+	/**
+	 * @return CommonBundle\Entity\Users\Person
+	 */
+	public function getManager()
+	{
 		return $this->manager;
 	}
-
-	public function setComment( $comment ) {
+	
+	/**
+	 * @param string $comment
+	 *
+	 * @return CudiBundle\Entity\Sales\Session
+	 */
+	public function setComment($comment)
+	{
 		$this->comment = $comment;
 		return $this;
 	}
-
+	
+	/**
+	 * @return string
+	 */
 	public function getComment() {
 		return $this->comment;
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	public function isOpen()
 	{
 		return null === $this->getCloseDate();

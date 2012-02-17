@@ -4,17 +4,13 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
-				'admin_article'	 => 'CudiBundle\Controller\Admin\ArticleController',
-				'admin_booking'	 => 'CudiBundle\Controller\Admin\BookingController',
-				'admin_stock'	 => 'CudiBundle\Controller\Admin\StockController',
-				'admin_order'	 => 'CudiBundle\Controller\Admin\OrderController',
-				'admin_delivery' => 'CudiBundle\Controller\Admin\DeliveryController',
+				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
+				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
+				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
+				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
+				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
+				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
             ),
-			'admin_article' => array(
-				'parameters' => array(
-					'filePath' => realpath('data/cudi/files'),
-				),
-			),
 			'doctrine_config' => array(
 				'parameters' => array(
 					'entityPaths' => array(
@@ -192,6 +188,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_delivery',
 					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_sale' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sale[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sale',
+					'action'     => 'manage',
 				),
 			),
 		),

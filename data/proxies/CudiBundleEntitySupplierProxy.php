@@ -51,6 +51,24 @@ class CudiBundleEntitySupplierProxy extends \CudiBundle\Entity\Supplier implemen
         return parent::getName();
     }
 
+    public function getPhoneNumber()
+    {
+        $this->__load();
+        return parent::getPhoneNumber();
+    }
+
+    public function getAddress()
+    {
+        $this->__load();
+        return parent::getAddress();
+    }
+
+    public function getVATNumber()
+    {
+        $this->__load();
+        return parent::getVATNumber();
+    }
+
 
     public function __sleep()
     {

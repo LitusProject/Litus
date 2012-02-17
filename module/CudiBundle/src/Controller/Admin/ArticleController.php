@@ -40,10 +40,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ArticleController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
-	 * @var string
-	 */
-	private $_filePath;
 
     public function addAction()
     {
@@ -227,53 +223,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         	'article' => $article,
         );
 	}
-	
-	private function _getArticle()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the article!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $article = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Article')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $article) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No article with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $article;
-	}
 
     public function deleteAction()
 	{
@@ -347,6 +296,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function managefilesAction()
 	{
+		$filePath = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.file_path');
+			
 		$article = $this->_getArticle();
 		
 		$form = new FileForm();
@@ -361,9 +314,9 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         		$fileName = '';
         		do{
         		    $fileName = '/' . sha1(uniqid());
-        		} while (file_exists($this->_filePath . $fileName));
+        		} while (file_exists($filePath . $fileName));
         		
-        		$upload->addFilter('Rename', $this->_filePath . $fileName);
+        		$upload->addFilter('Rename', $filePath . $fileName);
         		$upload->receive();
         		
         		$file = new File($fileName, $originalName, $formData['description'], $article);
@@ -397,11 +350,15 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function deletefileAction()
 	{
+		$filePath = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.file_path');
+			
 		$file = $this->_getFile();
 		
 		if (null !== $this->getParam('confirm')) {
             if (1 == $this->getParam('confirm')) {
-            	unlink($this->_filePath . $file->getPath());
+            	unlink($filePath . $file->getPath());
             	$this->getEntityManager()->remove($file);
             	$this->getEntityManager()->flush();
 
@@ -428,67 +385,24 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
 	}
 	
-	private function _getFile()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the file!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $article = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\File')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $article) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No file with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_article',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $article;
-	}
-	
 	public function downloadfileAction()
 	{
+		$filePath = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.file_path');
+			
 		$file = $this->_getFile();
 		
 		$headers = new Headers();
 		$headers->addHeaders(array(
 			'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
 			'Content-type' => 'application/octet-stream',
-			'Content-Length' => filesize($this->_filePath . $file->getPath()),
+			'Content-Length' => filesize($filePath . $file->getPath()),
 		));
 		$this->getResponse()->setHeaders($headers);
 
-		$handle = fopen($this->_filePath . $file->getPath(), 'r');
-		$data = fread($handle, filesize($this->_filePath . $file->getPath()));
+		$handle = fopen($filePath . $file->getPath(), 'r');
+		$data = fread($handle, filesize($filePath . $file->getPath()));
 		fclose($handle);
 		
 		return array(
@@ -498,6 +412,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function newversionAction()
 	{
+		$filePath = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.file_path');
+			
 		$article = $this->_getArticle();
 		
 		$form = new NewVersionForm($this->getEntityManager(), $article);
@@ -546,14 +464,14 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	                        $frontColor,
 	                        $formData['front_text_colored']
 		                );
-		                // TODO: testen
+
 		                foreach($article->getFiles() as $file) {
 		                	$fileName = '';
-		                	do{
+		                	do {
 		                	    $fileName = '/' . sha1(uniqid());
-		                	} while (file_exists($this->_filePath . $fileName));
+		                	} while (file_exists($filePath . $fileName));
 		                	
-		                	copy($this->_filePath . $file->getPath(), $this->_filePath . $fileName);
+		                	copy($filePath . $file->getPath(), $filePath . $fileName);
 		                	$newFile = new File($fileName, $file->getName(), $file->getDescription(), $newVersion);
 		                	$this->getEntityManager()->persist($newFile);
 		                }
@@ -610,8 +528,97 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
     
-    public function setFilePath($filePath)
+    private function _getArticle()
     {
-		$this->_filePath = $filePath;
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the article!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
+    }
+    
+    private function _getFile()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the file!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\File')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No file with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
     }
 }

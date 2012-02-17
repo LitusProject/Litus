@@ -16,12 +16,13 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CommonBundle\Entity\General\Bank\BankDeviceAmount,
+	CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
 	CommonBundle\Entity\General\Bank\CashRegister,
-	CommonBundle\Entity\General\Bank\MoneyUnitAmount,
+	CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
 	CudiBundle\Entity\Sales\Session,
 	CudiBundle\Form\Admin\Sale\CashRegisterAdd as CashRegisterAddForm,
 	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
+	CudiBundle\Form\Admin\Sale\SessionComment as SessionCommentForm,
 	Doctrine\ORM\EntityManager,
 	Doctrine\ORM\QueryBuilder;
 
@@ -33,37 +34,132 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class SaleController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('manage');
-    }
-    
     public function manageAction()
     {
-		$this->view->sessions = $this->_createPaginator(
+        $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Sales\Session',
-			array(),
+            $this->getParam('page'),
+            array(),
 			array('openDate' => 'DESC')
         );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
+    public function addAction()
+    {
+        $form = new CashRegisterAddForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+
+            if($form->isValid($formData)) {
+                $cashRegister = new CashRegister();
+                $this->getEntityManager()->persist($cashRegister);
+
+				$devices = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+                    ->findAll();
+				foreach($devices as $device) {
+					$amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
+					$this->getEntityManager()->persist($amountDevice);
+				}
+				
+				$units = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+                    ->findAll();
+				foreach($units as $unit) {
+					$amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
+					$this->getEntityManager()->persist($amountUnit);
+				}
+
+                $session = new Session($cashRegister, $this->getAuthentication()->getPersonObject());
+                $this->getEntityManager()->persist($session);
+				
+				$this->getEntityManager()->flush();
+				
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The session was successfully added!'
+                    )
+                );
+				
+				$this->redirect()->toRoute(
+					'admin_sale',
+					array(
+						'action' => 'edit',
+						'id' => $session->getId(),
+					)
+				);
+            }
+        }
+        
+        return array(
+        	'form' => $form,
+        );
+    }
+    
+    public function editAction()
+    {
+        $session = $this->_getSession();
+		
+		$form = new SessionCommentForm($session);
+
+		if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+			
+			if($form->isValid($formData)) {
+				$session->setComment($formData['comment']);
+				
+				$this->getEntityManager()->flush();
+				
+				$this->flashMessenger()->addMessage(
+				    new FlashMessage(
+				        FlashMessage::SUCCESS,
+				        'SUCCESS',
+                        'The comment was successfully updated!'
+				    )
+				);
+                
+                $this->redirect()->toRoute(
+                	'admin_sale',
+                	array(
+                		'action' => 'edit',
+                		'id' => $session->getId(),
+                	)
+                );
+			}
+		}
+		
+		return array(
+			'session' => $session,
+			'units'   => $this->getEntityManager()
+			    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+			    ->findAll(),
+			'devices' => $this->getEntityManager()
+				->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+				->findAll(),
+			'form' => $form,
+		);
     }
 
     public function editregisterAction()
     {
-        $register = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-                ->findOneById($this->_getParam("id"));
+        $cashRegister = $this->_getCashRegister();
+        
+        $session = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Sales\Session')
+        	->findOneByCashRegister($cashRegister);
 
-        $form = new CashRegisterEditForm();
-		$form->populate($register);
-        $this->view->form = $form;
+        $form = new CashRegisterEditForm($this->getEntityManager(), $cashRegister);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
 				$devices = $this->getEntityManager()
@@ -71,7 +167,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                     ->findAll();
 
 				foreach($devices as $device) {
-					$register->getAmountForDevice($device)
+					$cashRegister->getAmountForDevice($device)
                         ->setAmount($formData['device_'.$device->getId()]);
                 }
 
@@ -80,75 +176,43 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                     ->findAll();
 
 				foreach($units as $unit) {
-					$register->getAmountForUnit($unit)
+					$cashRegister->getAmountForUnit($unit)
                         ->setAmount($formData['unit_'.$unit->getId()]);
                 }
+                
+                $this->getEntityManager()->flush();
 				
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
                         'The cash register was successfully updated!'
                     )
                 );
-               	$this->_redirect('managesession', null, null, array('id' => $this->_getParam("session")));
+                
+                $this->redirect()->toRoute(
+                	'admin_sale',
+                	array(
+                		'action' => 'edit',
+                		'id' => $session->getId(),
+                	)
+                );
             }
         }
-    }
-    
-    public function managesessionAction()
-    {
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Session')
-            ->findOneById($this->_getParam("id"));
-
-        if( !isset($session) )
-        	$this->_forward('manage');
-		
-        $this->view->session = $session;
-		$this->view->units = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
-            ->findAll();
-		$this->view->devices = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
-            ->findAll();
-		
-		$form = new Form\Sale\SessionComment();
-		$form->populate($session);
-		$this->view->commentForm = $form;
-
-		if($this->getRequest()->isPost()) {
-			$formData = $this->getRequest()->getPost();
-			
-			if($form->isValid($formData)) {
-				$session->setComment($formData['comment']);
-				
-				$this->_addDirectFlashMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The comment was successfully updated!'
-                    )
-                );
-			}
-		}
+        
+        return array(
+        	'form' => $form,
+        );
     }
 
     public function closeAction()
     {
-        $session = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sales\Session')
-                ->findOneById($this->_getParam('id'));
-
-        if(!isset($session))
-            $this->_forward('manage');
-        
-        $form = new CashRegisterEditForm();
-		$form->populate($session->getOpenAmount());
-		$this->view->form = $form;
+        $session = $this->_getSession();
+                
+        $form = new CashRegisterEditForm($this->getEntityManager(), $session->getOpenAmount());
 		
 		if($this->getRequest()->isPost()) {
-			$formData = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->post()->toArray();
 			
 			if($form->isValid($formData)) {
 				$cashRegister = new CashRegister();
@@ -173,61 +237,122 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 					->setCloseDate(new \DateTime());
 				
 				$this->getEntityManager()->persist($cashRegister);
+				$this->getEntityManager()->flush();
 				
-                $this->broker('flashmessenger')->addMessage(
+                $this->flashMessenger()->addMessage(
 					new FlashMessage(
 						FlashMessage::SUCCESS,
 						"SUCCESS",
 						"The session was successfully closed!"
 					)
 				);
-               	$this->_redirect('managesession', null, null, array('id' => $session->getId()));
+				
+               	$this->redirect()->toRoute(
+               		'admin_sale',
+               		array(
+               			'action' => 'edit',
+               			'id' => $session->getId(),
+               		)
+               	);
 			}
 		}
+		
+		return array(
+			'form' => $form,
+		);
     }
-
-    public function newAction()
+    
+    private function _getSession()
     {
-        $form = new CashRegisterAddForm();
-        $this->view->form = $form;
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
-            if($form->isValid($formData)) {
-                $cashRegister = new CashRegister();
-
-				$devices = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
-                    ->findAll();
-				foreach($devices as $device) {
-					$amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
-					$this->getEntityManager()->persist($amountDevice);
-				}
-				
-				$units = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
-                    ->findAll();
-				foreach($units as $unit) {
-					$amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
-					$this->getEntityManager()->persist($amountUnit);
-				}
-
-                $saleSession = new Session($cashRegister, $this->getAuthentication()->getPersonObject());
-
-                $this->getEntityManager()->persist($cashRegister);
-                $this->getEntityManager()->persist($saleSession);
-
-                $this->broker('flashmessenger')->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The session was successfully added!'
-                    )
-                );
-
-               	$this->_redirect('managesession', null, null, array('id' => $saleSession->getId()));
-            }
-        }
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the session!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sale',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $session) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No session with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sale',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $session;
+    }
+    
+    private function _getCashRegister()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the cash register!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sale',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $cashRegister = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $cashRegister) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No cash register with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sale',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $cashRegister;
     }
 }
