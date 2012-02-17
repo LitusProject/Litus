@@ -32,7 +32,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	Zend\Pdf\PdfDocument;
 
 /**
- * This class controls management of the stock.
+ * OrderController
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

@@ -31,7 +31,7 @@ class NewVersion extends \CudiBundle\Form\Admin\Article\Add
         $this->removeElement('submit');
         
 		$field = new Submit('submit');
-        $field->setLabel('Add version')
+        $field->setLabel('Add Version')
                 ->setAttrib('class', 'article_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
