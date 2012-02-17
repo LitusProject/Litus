@@ -20,7 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Form\Admin\Delivery\Add as AddForm;
 
 /**
- * This class controls management of the stock.
+ * DeliveryController
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

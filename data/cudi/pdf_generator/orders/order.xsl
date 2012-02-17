@@ -16,7 +16,7 @@
 	<xsl:import href="../../../pdf_generator/our_union/logo.xsl"/>
 	
 	<!-- translations -->
-	<xsl:import href="../../../pdf_generator/i18n/orders/default.xsl"/>
+	<xsl:import href="default.xsl"/>
 	
 	<xsl:output method="xml" indent="yes"/>
 	
@@ -41,16 +41,69 @@
 	               </fo:repeatable-page-master-alternatives>
 	            </fo:page-sequence-master>
 	        </fo:layout-master-set>
-			
+	        
+	        <xsl:choose>
+	        	<xsl:when test="count($external_items_count)!=0">
+	                <fo:page-sequence master-reference="document">
+	                	<fo:static-content flow-name="header-block">
+	                		<fo:block>
+	        		            <xsl:call-template name="header"/>
+	        		    	</fo:block>
+	        	        </fo:static-content>
+	        	        <fo:static-content flow-name="footer-block">
+	                        <fo:block>
+	                        	<xsl:call-template name="footer"/>
+	                        </fo:block>
+	                    </fo:static-content>
+	                	<fo:flow flow-name="xsl-region-body">
+	                        <fo:block>
+	                            <fo:table table-layout="fixed" width="100%"
+	                            		font-size="8pt" border-style="solid" border-width="0.5mm" border-color="black">
+	                                <fo:table-column column-width="18%"/>
+	                                <fo:table-column column-width="55%"/>
+	                                <fo:table-column column-width="18%"/>
+	                                <fo:table-column column-width="9%"/>
+	                				
+	                				<fo:table-header>
+	                				    <fo:table-row>
+	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
+	                				        			border-style="solid" border-width="0.5mm" border-color="black">
+	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="isbn"/></fo:block>
+	                				        </fo:table-cell>
+	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
+	                				        			border-style="solid" border-width="0.5mm" border-color="black">
+	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="title_author"/></fo:block>
+	                				        </fo:table-cell>
+	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
+	                				        			border-style="solid" border-width="0.5mm" border-color="black">
+	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="publisher"/></fo:block>
+	                				        </fo:table-cell>
+	                				        <fo:table-cell padding-before="1mm" padding-after="1mm"
+	                				        			border-style="solid" border-width="0.5mm" border-color="black">
+	                				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="number"/></fo:block>
+	                				        </fo:table-cell>
+	                				    </fo:table-row>
+	                				</fo:table-header>
+	                				
+	                                <fo:table-body>
+	                                	<xsl:apply-templates select="external_items"/>
+	                                </fo:table-body>
+	                            </fo:table>
+	                        </fo:block>
+	                    </fo:flow>
+	                </fo:page-sequence>
+	            </xsl:when>
+	        </xsl:choose>
+		    
 			<xsl:choose>
-				<xsl:when test="count($external_items_count)!=0">
+				<xsl:when test="count($internal_items_count)!=0">
 			        <fo:page-sequence master-reference="document">
 			        	<fo:static-content flow-name="header-block">
 			        		<fo:block>
-					            <xsl:call-template name="header"/>
-					    	</fo:block>
-				        </fo:static-content>
-				        <fo:static-content flow-name="footer-block">
+			        		    <xsl:call-template name="header"/>
+			        		</fo:block>
+			            </fo:static-content>
+			            <fo:static-content flow-name="footer-block">
 			                <fo:block>
 			                	<xsl:call-template name="footer"/>
 			                </fo:block>
@@ -59,24 +112,34 @@
 			                <fo:block>
 			                    <fo:table table-layout="fixed" width="100%"
 			                    		font-size="8pt" border-style="solid" border-width="0.5mm" border-color="black">
-			                        <fo:table-column column-width="18%"/>
-			                        <fo:table-column column-width="55%"/>
-			                        <fo:table-column column-width="18%"/>
-			                        <fo:table-column column-width="9%"/>
+			                        <fo:table-column column-width="15%"/>
+			                        <fo:table-column column-width="52%"/>
+			                        <fo:table-column column-width="6%"/>
+			                        <fo:table-column column-width="11%"/>
+			                        <fo:table-column column-width="8%"/>
+			                        <fo:table-column column-width="8%"/>
 			        				
 			        				<fo:table-header>
 			        				    <fo:table-row>
 			        				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
 			        				        			border-style="solid" border-width="0.5mm" border-color="black">
-			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="isbn"/></fo:block>
+			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="barcode"/></fo:block>
 			        				        </fo:table-cell>
 			        				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
 			        				        			border-style="solid" border-width="0.5mm" border-color="black">
-			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="title_author"/></fo:block>
+			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="title"/></fo:block>
+			        				        </fo:table-cell>
+			        				        <fo:table-cell padding-before="1mm" padding-after="1mm"
+			        				        			border-style="solid" border-width="0.5mm" border-color="black">
+			        				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="recto_verso"/></fo:block>
 			        				        </fo:table-cell>
 			        				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
 			        				        			border-style="solid" border-width="0.5mm" border-color="black">
-			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="publisher"/></fo:block>
+			        				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="binding"/></fo:block>
+			        				        </fo:table-cell>
+			        				        <fo:table-cell padding-before="1mm" padding-after="1mm"
+			        				        			border-style="solid" border-width="0.5mm" border-color="black">
+			        				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="nb_pages"/></fo:block>
 			        				        </fo:table-cell>
 			        				        <fo:table-cell padding-before="1mm" padding-after="1mm"
 			        				        			border-style="solid" border-width="0.5mm" border-color="black">
@@ -86,97 +149,34 @@
 			        				</fo:table-header>
 			        				
 			                        <fo:table-body>
-			                        	<xsl:apply-templates select="external_items"/>
+			                        	<xsl:apply-templates select="internal_items"/>
 			                        </fo:table-body>
 			                    </fo:table>
 			                </fo:block>
 			            </fo:flow>
 			        </fo:page-sequence>
 			    </xsl:when>
-		    </xsl:choose>
-		    
-		    <xsl:choose>
-		    	<xsl:when test="count($internal_items_count)!=0">
+			</xsl:choose>
+		            
+			<xsl:choose>
+				<xsl:when test="count($internal_items_count)=0 and count($external_items_count)=0">
 			        <fo:page-sequence master-reference="document">
-		            	<fo:static-content flow-name="header-block">
-		            		<fo:block>
-		            		    <xsl:call-template name="header"/>
-		            		</fo:block>
-		                </fo:static-content>
-		                <fo:static-content flow-name="footer-block">
-		                    <fo:block>
-		                    	<xsl:call-template name="footer"/>
-		                    </fo:block>
-		                </fo:static-content>
-		            	<fo:flow flow-name="xsl-region-body">
-		                    <fo:block>
-		                        <fo:table table-layout="fixed" width="100%"
-		                        		font-size="8pt" border-style="solid" border-width="0.5mm" border-color="black">
-		                            <fo:table-column column-width="15%"/>
-		                            <fo:table-column column-width="52%"/>
-		                            <fo:table-column column-width="6%"/>
-		                            <fo:table-column column-width="11%"/>
-		                            <fo:table-column column-width="8%"/>
-		                            <fo:table-column column-width="8%"/>
-		            				
-		            				<fo:table-header>
-		            				    <fo:table-row>
-		            				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="barcode"/></fo:block>
-		            				        </fo:table-cell>
-		            				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="title"/></fo:block>
-		            				        </fo:table-cell>
-		            				        <fo:table-cell padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="recto_verso"/></fo:block>
-		            				        </fo:table-cell>
-		            				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="binding"/></fo:block>
-		            				        </fo:table-cell>
-		            				        <fo:table-cell padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="nb_pages"/></fo:block>
-		            				        </fo:table-cell>
-		            				        <fo:table-cell padding-before="1mm" padding-after="1mm"
-		            				        			border-style="solid" border-width="0.5mm" border-color="black">
-		            				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="number"/></fo:block>
-		            				        </fo:table-cell>
-		            				    </fo:table-row>
-		            				</fo:table-header>
-		            				
-		                            <fo:table-body>
-		                            	<xsl:apply-templates select="internal_items"/>
-		                            </fo:table-body>
-		                        </fo:table>
-		                    </fo:block>
-		                </fo:flow>
-		            </fo:page-sequence>
-		        </xsl:when>
-		    </xsl:choose>
-		    
-		    <xsl:choose>
-		    	<xsl:when test="count($internal_items_count)=0 and count($external_items_count)=0">
-		            <fo:page-sequence master-reference="document">
-		            	<fo:static-content flow-name="header-block">
-		            		<fo:block>
-		            		    <xsl:call-template name="header"/>
-		            		</fo:block>
-		                </fo:static-content>
-		                <fo:static-content flow-name="footer-block">
-		                    <fo:block>
-		                    	<xsl:call-template name="footer"/>
-		                    </fo:block>
-		                </fo:static-content>
-		            	<fo:flow flow-name="xsl-region-body">
-		                    <fo:block></fo:block>
-		                </fo:flow>
-		            </fo:page-sequence>
-		        </xsl:when>
-		    </xsl:choose>
+			        	<fo:static-content flow-name="header-block">
+			        		<fo:block>
+			        		    <xsl:call-template name="header"/>
+			        		</fo:block>
+			            </fo:static-content>
+			            <fo:static-content flow-name="footer-block">
+			                <fo:block>
+			                	<xsl:call-template name="footer"/>
+			                </fo:block>
+			            </fo:static-content>
+			        	<fo:flow flow-name="xsl-region-body">
+			                <fo:block></fo:block>
+			            </fo:flow>
+			        </fo:page-sequence>
+			    </xsl:when>
+			</xsl:choose>
 	    </fo:root>
 	</xsl:template>
 	
@@ -372,5 +372,5 @@
 	          </svg:svg>
 	    </fo:instream-foreign-object>
 	</xsl:template>
-
+	
 </xsl:stylesheet>

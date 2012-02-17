@@ -193,19 +193,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 	    $this->addElement($field);
 
 	    $field = new Checkbox('rectoverso');
-	    $field->setLabel('Recto verso')
+	    $field->setLabel('Recto Verso')
 	        ->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 
 		$field = new Select('front_color');
-	    $field->setLabel('Front page color')
+	    $field->setLabel('Front Page Color')
 	      	->setRequired()
 			->setMultiOptions($this->_getColors())
 	       	->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 	    
 	    $field = new Checkbox('front_text_colored');
-	    $field->setLabel('Front page text colored')
+	    $field->setLabel('Front Page Text Colored')
 	        ->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 		

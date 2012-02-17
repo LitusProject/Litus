@@ -40,7 +40,7 @@ class AddItem extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
 
         $field = new Text('stockArticle');
-        $field->setLabel('Stock article')
+        $field->setLabel('Stock Article')
         	->setRequired()
 			->addValidator(new ArticleBarcodeValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
