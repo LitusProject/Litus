@@ -34,13 +34,13 @@ return array(
             'assetic_configuration'          => array(
                 'parameters' => array(
                     'config' => array(
-                        'cacheEnabled' => true,
+                        'cacheEnabled' => false,
                         'cachePath'    => __DIR__ . '/../../../../../data/cache',
                         'webPath'      => __DIR__ . '/../../../../../public/_assetic',
                         'baseUrl'      => '/_assetic',
                         'controllers'  => $asseticConfig['controllers'],
-                        'routes' => $asseticConfig['routes'],
-                        'modules' => array(
+                        'routes'       => $asseticConfig['routes'],
+                        'modules'      => array(
                             'commonbundle' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
@@ -48,30 +48,116 @@ return array(
                                 	    'assets'  => array(
                                 	        'common/js/jquery-1.7.1.min.js',
                                 	    ),
-                                	    'filters' => array(),
-                                	    'options' => array(),
                                 	),
                                 	'common_jqueryui' => array(
                                 	    'assets'  => array(
                                 	        'common/js/jqueryui-1.8.16.min.js',
                                 	    ),
-                                	    'filters' => array(),
-                                	    'options' => array(),
                                 	),
                                     
                                     'admin_css' => array(
-                                        'assets'  => array(
-                                            'admin/stylesheet/css/*.css',
+                                    	'assets' => array(
+                                    		'admin/less/admin.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'admin_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin' => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'admin_css.css',
                                         ),
-                                        'filters' => array(),
-                                        'options' => array(),
                                     ),
                                     'admin_js' => array(
                                         'assets'  => array(
                                             'admin/js/*.js',
                                         ),
-                                        'filters' => array(),
-                                        'options' => array(),
+                                    ),
+                                    
+                                    'bootstrap_css' => array(
+                                    	'assets' => array(
+                                    		'bootstrap/less/bootstrap.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'bootstrap_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin' => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'bootstrap_css.css',
+                                        ),
+                                    ),
+                                    'bootstrap_js_alert' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-alert.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_button' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-alert.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_carousel' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-carousel.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_collapse' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-collapse.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_dropdown' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-dropdown.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_modal' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-modal.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_popover' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-popover.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_scrollspy' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-scrollspy.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_tab' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-tab.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_tooltip' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-tooltip.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_transition' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-transition.js'
+                                        ),
+                                    ),
+                                    'bootstrap_js_typeahead' => array(
+                                        'assets' => array(
+                                            'bootstrap/js/bootstrap-typeahead.js'
+                                        ),
                                     ),
                                 ),
                             ),

@@ -10,3 +10,12 @@
 [submodule "vendor/MistDoctrine"]
 	path = vendor/MistDoctrine
 	url = git://github.com/Pmaene/MistDoctrine.git
+[submodule "module/CommonBundle/src/Resources/assets/bootstrap"]
+	path = module/CommonBundle/src/Resources/assets/bootstrap
+	url = git://github.com/twitter/bootstrap.git
+[submodule "vendor/TwitterBootstrapFormDecorators"]
+	path = vendor/TwitterBootstrapFormDecorators
+	url = git://github.com/mwillbanks/TwitterBootstrapFormDecorators.git
+[submodule "module/CommonBundle/src/Resources/lib/php/lessphp"]
+	path = module/CommonBundle/src/Resources/lib/php/lessphp
+	url = git://github.com/leafo/lessphp.git
