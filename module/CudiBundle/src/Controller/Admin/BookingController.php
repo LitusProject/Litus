@@ -22,11 +22,9 @@ use CudiBundle\Entity\Sales\Booking,
 	Zend\Json\Json;
 
 /**
- *
- * This class controlls management and adding of bookings.
+ * BookingController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- *
  */
 class BookingController extends \CommonBundle\Component\Controller\ActionController
 {
