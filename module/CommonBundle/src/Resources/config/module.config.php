@@ -34,7 +34,7 @@ return array(
             'assetic_configuration'          => array(
                 'parameters' => array(
                     'config' => array(
-                        'cacheEnabled' => false,
+                        'cacheEnabled' => true,
                         'cachePath'    => __DIR__ . '/../../../../../data/cache',
                         'webPath'      => __DIR__ . '/../../../../../public/_assetic',
                         'baseUrl'      => '/_assetic',
@@ -63,10 +63,11 @@ return array(
                                     		'admin_less' => array(
                                     			'name' => 'LessFilter',
                                     			'parameters' => array(
-                                    				'nodeBin' => '/usr/local/bin/node',
+                                    				'nodeBin'   => '/usr/local/bin/node',
                                     				'nodePaths' => array(
                                     					'/usr/local/lib/node_modules',
                                     				),
+                                    				'compress'  => true,
                                     			),
                                     		),
                                     	),
@@ -88,10 +89,11 @@ return array(
                                     		'bootstrap_less' => array(
                                     			'name' => 'LessFilter',
                                     			'parameters' => array(
-                                    				'nodeBin' => '/usr/local/bin/node',
+                                    				'nodeBin'   => '/usr/local/bin/node',
                                     				'nodePaths' => array(
                                     					'/usr/local/lib/node_modules',
                                     				),
+                                    				'compress'  => true,
                                     			),
                                     		),
                                     	),
