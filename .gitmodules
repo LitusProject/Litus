@@ -16,6 +16,3 @@
 [submodule "vendor/TwitterBootstrapFormDecorators"]
 	path = vendor/TwitterBootstrapFormDecorators
 	url = git://github.com/mwillbanks/TwitterBootstrapFormDecorators.git
-[submodule "module/CommonBundle/src/Resources/lib/php/lessphp"]
-	path = module/CommonBundle/src/Resources/lib/php/lessphp
-	url = git://github.com/leafo/lessphp.git

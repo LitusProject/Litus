@@ -35,9 +35,6 @@ class Module implements AutoloaderProvider
 		$events->attach(
 			'bootstrap', 'bootstrap', array($this, 'initializeView')
 		);
-		$events->attach(
-			'bootstrap', 'bootstrap', array($this, 'initAssetsListener')
-		);
     }
 
     public function getAutoloaderConfig()
@@ -57,36 +54,6 @@ class Module implements AutoloaderProvider
     public function getConfig()
     {
         return include __DIR__ . '/src/Resources/config/module.config.php';
-    }
-
-	public function initAssetsListener(Event $e)
-    {
-        $app = $e->getParam('application');
-        $this->locator = $app->getLocator();
-
-        $app->events()->attach(
-        	'dispatch', array($this, 'renderAssets')
-        );
-    }
-
-    public function renderAssets(MvcEvent $e)
-    {
-        $response = $e->getResponse();
-        if (!$response) {
-            $response = new Response();
-            $e->setResponse($response);
-        }
-
-        $router = $e->getRouteMatch();
-
-        $as = $this->locator->get('assetic');
-
-        $as->setRouteName($router->getMatchedRouteName());
-        $as->setControllerName($router->getParam('controller'));
-        $as->setActionName($router->getParam('action'));
-
-        $as->initLoadedModules($this->moduleManager->getLoadedModules());
-        $as->setupViewHelpers($this->locator->get('view'));
     }
 
     public function initializeView(Event $e)
