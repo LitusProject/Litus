@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace CommonBundle\Component\Util;
 
 /**
@@ -13,10 +26,9 @@ class File
      * Returns the real filename of the given file.
      *
      * @static
-     * @param $filename string the filename as used in the code, with '/' as directory separator
-     * @return string|null if $filename is null, the result is null, else the result will be $filename with all '/'
-     *                     replaced by DIRECTORY_SEPARATOR
-     *///This function allows us to use '/' as file separator and then change it into this
+     * @param string $filename The filename as it is used in the code, with '/' as directory separator
+     * @return string
+     */
     public static function getRealFilename($filename)
     {
         if ($filename === null)
