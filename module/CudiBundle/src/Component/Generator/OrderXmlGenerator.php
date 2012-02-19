@@ -25,7 +25,6 @@ use CommonBundle\Component\Util\File\TmpFile,
 
 class OrderXmlGenerator
 {
-
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */

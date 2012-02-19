@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<order date="6 November 2011">
+	<our_union short_name="VTK">
+		<name>VTK VZW</name>
+	    <logo>data/images/logo/logo.jpg</logo>
+	</our_union>
+	<cudi name="CURSUSDIENST">
+		<mail>cursusdienst@vtk.be</mail>
+		<phone>0472/ 24 97 08</phone>
+		<delivery_address>
+			<name>VTK Cursusdienst</name>
+			<street>Kasteelpark Arenberg 41</street>
+			<city>3001 Heverlee</city>
+			<extra>(Inrit via Celestijnenlaan)</extra>
+		</delivery_address>
+		<billing_address>
+			<name>VTK vzw</name>
+			<person>Ruben Dilissen</person>
+			<street>Studentenwijk Arenberg 6/0</street>
+			<city>3001 Heverlee</city>
+			<extra></extra>
+		</billing_address>
+	</cudi>
+	<external_items>
+		<external_item>
+			<isbn>0132037947</isbn>
+			<title>Digital and Analog Communication Systems</title>
+			<author>Couch</author>
+			<publisher>Pearson</publisher>
+			<number>25</number>
+		</external_item>
+	</external_items>
+	<internal_items>
+		<internal_item>
+			<barcode>9781112330117</barcode>
+			<title>Digitale en Analoge Communicatie</title>
+			<recto_verso>0</recto_verso>
+			<binding>GELIJMD</binding>
+			<nb_pages>200</nb_pages>
+			<number>2</number>
+		</internal_item>
+	</internal_items>
+</order>

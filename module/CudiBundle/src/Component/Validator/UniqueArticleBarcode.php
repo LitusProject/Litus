@@ -37,7 +37,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $_messageTemplates = array(
-        self::NOT_VALID => 'The article barcode does already exist'
+        self::NOT_VALID => 'The article barcode already exists'
     );
     
     /**

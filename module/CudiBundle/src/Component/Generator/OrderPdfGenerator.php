@@ -47,6 +47,7 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
     	    $filePath . '/orders/order.xsl',
     	    $file->getFilename()
     	);
+    	
     	$this->_order = $order;
     }
 	
