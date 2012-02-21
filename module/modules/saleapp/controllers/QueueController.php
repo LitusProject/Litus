@@ -14,23 +14,6 @@ use \Litus\FlashMessenger\BootstrapFlashMessage; // this line should perhaps be 
 
 class QueueController extends \Litus\Controller\Action
 {
-
-    public function init()
-    {
-        parent::init();
-
-        // The html parameter is the type of Ajax request. You can also use JSON or XML.
-        $context = $this->broker('AjaxContext')
-                ->addActionContext('dump', 'html')
-                ->addActionContext('poll', 'html')
-                ->initContext();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('sign-in');
-    }
-
     public function signInAction()
     {
         $this->view->form = new SignInForm();

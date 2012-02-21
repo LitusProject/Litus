@@ -58,6 +58,7 @@ return array(
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',
+                                    		'admin/less/modal.less',
                                     	),
                                     	'filters' => array(
                                     		'admin_less' => array(

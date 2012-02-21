@@ -54,10 +54,10 @@ abstract class Pdf
 	 */
 	public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
-        if(($xsl === null) || !is_string($xsl))
+        if(($xslPath === null) || !is_string($xslPath))
             throw new \InvalidArgumentException('Invalid xsl');
             
-        if(($pdf === null) || !is_string($pdf))
+        if(($pdfPath === null) || !is_string($pdfPath))
             throw new \InvalidArgumentException('Invalid pdf');
 
 		$this->_entityManager = $entityManager;
@@ -121,7 +121,7 @@ abstract class Pdf
     {
         $xmlPath = $this->_xmlFile->getFilename();
 
-        $pdfDir = dirname($this->_pdf);
+        $pdfDir = dirname($this->_pdfPath);
         if (!file_exists($pdfDir)) {
             if(!mkdir($pdfDir, 0770))
                 throw new \RuntimeException('Failed to create the PDF directory');
@@ -129,10 +129,18 @@ abstract class Pdf
 
         $resultValue = 0;
         $result = system(
-        	escapeshellcmd('fop -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
+        	escapeshellcmd('/usr/local/bin/fop -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
         
         if ($resultValue != 0)
-            throw new \RuntimeException('The FOP command failed with return value');
+            throw new \RuntimeException('The FOP command failed with return value ' . $resultValue);
+    }
+    
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+    	return $this->_entityManager;
     }
 }

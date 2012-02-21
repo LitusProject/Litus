@@ -19,6 +19,7 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_modal',
 		),
 		'admin_booking' => array(
 			'@common_jquery',

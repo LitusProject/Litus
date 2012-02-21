@@ -10,6 +10,8 @@ return array(
 				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
+				'sale'	              => 'CudiBundle\Controller\SaleController',
+				'queue'	              => 'CudiBundle\Controller\QueueController',
             ),
 			'doctrine_config' => array(
 				'parameters' => array(
@@ -205,5 +207,20 @@ return array(
 				),
 			),
 		),
+		'sale' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/sale[/:controller[/:action[/:session]]]',
+				'constraints' => array(
+					'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'sale',
+					'action'     => 'index',
+				),
+			),
+		)
 	),
 );
