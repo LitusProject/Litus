@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Component\Generator;
+namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\Generator,
@@ -23,8 +23,9 @@ use CommonBundle\Component\Util\File\TmpFile,
 	Doctrine\ORM\EntityManager,
 	ZipArchive;
 
-class OrderXmlGenerator
+class OrderXml
 {
+
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
@@ -66,7 +67,7 @@ class OrderXmlGenerator
 			
 			$zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
 			$xmlFile = new TmpFile();
-			$this->_generateXml($item, $xmlFile);
+			$this->generateXml($item, $xmlFile);
 			
 			$zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
 			foreach($item->getArticle()->getFiles($this->_entityManager) as $file)
@@ -76,7 +77,7 @@ class OrderXmlGenerator
 		}
 	}
 	
-    private function _generateXml(OrderItem $item, TmpFile $tmpFile)
+    private function generateXml(OrderItem $item, TmpFile $tmpFile)
     {
     	$configs = $this->_entityManager
     		->getRepository('CommonBundle\Entity\General\Config');

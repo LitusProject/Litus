@@ -44,7 +44,7 @@
 		            <th width="130px">Action</th>
 		        </tr>
 		        {% for article in paginator %}
-		            <tr>
+		            <tr class="item">
 		                <td>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ article.getMetaInfo().getAuthors() }}</td>
 		                <td>{{ article.getMetaInfo().getPublishers() }}</td>
@@ -52,13 +52,33 @@
 		                <td>{% if article.isStock() %} Stock {% else %} Stub {% endif %}</td>
 						<td>
 		                    <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-		                    <a href="{{ url('admin_article', {"action": "delete", "id": article.getId()}) }}" class="delete">Delete</a>
+		                    <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getMetaInfo().getAuthors() }}">Delete</a>
 		                </td>
 		            </tr>
 		        {% endfor %}
 		    </table>
 	
 			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+	
+	<div class="modal hide fade" id="removeArticle">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Article Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following article: <b class="articleTitle"></b> of <b class="articleAuthors"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" value="No">
+			</div>
 		</div>
 	</div>
 {% endblock %}
@@ -83,14 +103,51 @@
 							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
 							.append('<td>'
 								+ '<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>'
-								+ '<a href="{{ url('admin_article', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>'
+								+ '<a href="#" data-id="' + this.id + '" data-title="' + this.title + '" data-authors="' + this.author + '" class="delete">Delete</a>'
 								+ '</td>');
 					});
+					$('#article_search .delete').click(openModal);
 				},
 				clear: function () {
 					$('#article_search table').find('tr.item').remove();
 				}
 			});
+			
+			$('.item .delete').click(openModal);
 		});
+		
+		function openModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeArticle = $('#removeArticle');
+			removeArticle.find('.articleTitle').html($(this).data('title'));
+			removeArticle.find('.articleAuthors').html($(this).data('authors'));
+			removeArticle.find('.cancel').unbind('click').click(function () {
+				removeArticle.modal('hide');
+			});
+			removeArticle.find('.delete').unbind('click').click(function () {
+				$('.flashmessage').hide();
+				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+					$('#controller_action').prepend('<div class="flashmessage success_message full_width">'
+						+ '<div class="title">Success</div>'
+						+ '<div class="content">'
+							+ '<p>The article was successfully removed!</p>'
+						+ '</div>'
+					+ '</div>');
+					$this.parent().parent().remove();
+					removeArticle.modal('hide');
+				}, 'json').error(function () {
+					$('#controller_action').prepend('<div class="flashmessage error_message full_width">'
+						+ '<div class="title">Error</div>'
+						+ '<div class="content">'
+							+ '<p>An error occurred while trying to delete an article.</p>'
+						+ '</div>'
+					+ '</div>');
+					removeArticle.modal('hide');
+				});
+			});
+			removeArticle.modal();
+		}
 	</script>
 {% endblock %}

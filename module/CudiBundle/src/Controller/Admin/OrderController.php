@@ -20,8 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\XmlGenerator,
 	CommonBundle\Component\Util\Xml\XmlObject,
-	CudiBundle\Component\Generator\OrderPdfGenerator,
-	CudiBundle\Component\Generator\OrderXmlGenerator,
+	CudiBundle\Component\Document\Generator\OrderPdf as OrderPdfGenerator,
+	CudiBundle\Component\Document\Generator\OrderXml as OrderXmlGenerator,
 	CudiBundle\Entity\Stock\Order,
 	CudiBundle\Entity\Stock\OrderItem,
 	CudiBundle\Form\Admin\Order\Add as AddForm,
@@ -187,7 +187,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
 		$headers = new Headers();
 		$headers->addHeaders(array(
-			'Content-Disposition' => 'inline; filename="order.pdf"',
+			'Content-Disposition' => 'attachment; filename="order.pdf"',
 			'Content-type'        => 'application/pdf',
 		));
 		$this->getResponse()->setHeaders($headers);

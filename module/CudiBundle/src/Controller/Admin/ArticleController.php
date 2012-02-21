@@ -226,30 +226,15 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$article = $this->_getArticle();
 
-		if (null !== $this->getParam('confirm')) {
-            if (1 == $this->getParam('confirm')) {
-				$article->setRemoved(true);
-				$this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully removed!'
-                    )
-                );
-            }
-
-            $this->redirect()->toRoute(
-            	'admin_article',
-            	array(
-            		'action' => 'manage'
-            	)
-            );
-        }
+		$article->setRemoved(true);
+		$this->getEntityManager()->flush();
         
         return array(
-        	'article' => $article,
+        	'flashMessage' => new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The article was successfully removed!'
+            ),
         );
 	}
 

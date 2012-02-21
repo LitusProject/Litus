@@ -108,3 +108,15 @@
     -o-user-select: none;
     user-select: none;
 }
+
+.opacity(@opacity: 100) {
+  opacity: @opacity / 100;
+   filter: e(%("alpha(opacity=%d)", @opacity));
+}
+
+// Modal
+@zindexDropdown:          1000;
+@zindexPopover:           1010;
+@zindexTooltip:           1020;
+@zindexModalBackdrop:     1040;
+@zindexModal:             1050;

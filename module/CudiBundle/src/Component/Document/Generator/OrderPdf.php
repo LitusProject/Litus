@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Component\Generator;
+namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\Generator,
@@ -21,7 +21,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 	CudiBundle\Entity\Stock\Order,
 	Doctrine\ORM\EntityManager;
 
-class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenerator
+class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
 	
 	/**
@@ -44,10 +44,9 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
     				
 	   	parent::__construct(
 	   		$entityManager,
-    	    $filePath . '/orders/order.xsl',
+    	    $filePath . '/order/order.xsl',
     	    $file->getFilename()
     	);
-    	
     	$this->_order = $order;
     }
 	
@@ -56,9 +55,9 @@ class OrderPdfGenerator extends \CommonBundle\Component\Generator\DocumentGenera
 	 *
 	 * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
 	 */
-    protected function _generateXml(TmpFile $tmpFile)
+    protected function generateXml(TmpFile $tmpFile)
     {
-    	$configs = $this->_getConfigRepository();
+    	$configs = $this->getConfigRepository();
     	
         $now = new \DateTime();
         $union_short_name = $configs->getConfigValue('cudi.union_short_name');
