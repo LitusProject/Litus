@@ -128,8 +128,13 @@ abstract class Pdf
         }
 
         $resultValue = 0;
+        
+        $fop_command = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('fop_command');;
+        
         $result = system(
-        	escapeshellcmd('/usr/local/bin/fop -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
+        	escapeshellcmd($fop_command . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
         
         if ($resultValue != 0)

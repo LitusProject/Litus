@@ -4,6 +4,18 @@
 	{% include 'admin_article/partials/navigation.twig' %}
 		
 	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width file_removed_success" style="display: none;">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The file was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width file_removed_error" style="display: none;">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete an file.</p>
+		</div>
+	</div>
 
 	<div id="controller_action">
 		<h1>Article</h1>
@@ -28,17 +40,37 @@
 	
 	        {% for file in articleFiles %}
 	
-	            <tr>
+	            <tr class="item">
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
 					<td>
 						<a href="#" class="downloadFile view" data-file="{{ url('admin_article', {"action": "downloadfile", "id": file.getId()}) }}">Download</a>
-	                    <a href="{{ url('admin_article', {"action": "deletefile", "id": file.getId()}) }}" class="delete">Delete</a>
+		                <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
 	                </td>
 	            </tr>
 	
 	        {% endfor %}
 	    </table>
+	</div>
+	
+	<div class="modal hide fade" id="removeFile">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/File Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following file: <b class="fileName"></b> (<b class="fileDescription"></b>)!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" value="No">
+			</div>
+		</div>
 	</div>
 {% endblock %}
 
@@ -48,6 +80,33 @@
 			$('.downloadFile').each(function () {
 				$(this).downloadFile($(this).data('file'));
 			});
+			
+			$('.item .delete').click(openModal);
 		});
+		
+		function openModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeFile = $('#removeFile');
+			removeFile.find('.fileName').html($(this).data('name'));
+			removeFile.find('.fileDescription').html($(this).data('description'));
+			removeFile.find('.cancel').one('click', function () {
+				removeFile.modal('hide');
+			});
+			removeFile.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_article', {"action": "deletefile"})}}/' + $this.data('id'), function  (data) {
+					$('.flashmessage').hide();
+					$('.file_removed_success').show();
+					$this.parent().parent().remove();
+					removeFile.modal('hide');
+				}, 'json').error(function () {
+					$('.flashmessage').hide();
+					$('.file_removed_error').show();
+					removeFile.modal('hide');
+				});
+			});
+			removeFile.modal();
+		}
 	</script>
 {% endblock %}

@@ -53,11 +53,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $formData['year_published']
                 );
 				
-				$supplier = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Supplier')
-					->findOneById($formData['supplier']);
-				
 				if ($formData['stock']) {
+					$supplier = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Supplier')
+						->findOneById($formData['supplier']);
+						
 					if ($formData['internal']) {
 						$binding = $this->getEntityManager()
 							->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
@@ -224,18 +224,14 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deleteAction()
 	{
+		$this->initAjax();
+
 		$article = $this->_getArticle();
 
 		$article->setRemoved(true);
 		$this->getEntityManager()->flush();
         
-        return array(
-        	'flashMessage' => new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The article was successfully removed!'
-            ),
-        );
+        return array();
 	}
 
 	public function searchAction()
@@ -333,39 +329,19 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	
 	public function deletefileAction()
 	{
+		$this->initAjax();
+
 		$filePath = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.file_path');
 			
 		$file = $this->_getFile();
 		
-		if (null !== $this->getParam('confirm')) {
-            if (1 == $this->getParam('confirm')) {
-            	unlink($filePath . $file->getPath());
-            	$this->getEntityManager()->remove($file);
-            	$this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The file was successfully removed!'
-                    )
-                );
-            }
-            
-            $this->redirect()->toRoute(
-            	'admin_article',
-            	array(
-            		'action' => 'managefiles',
-            		'id' => $file->getInternalArticle()->getId()
-            	)
-            );
-        }
-        
-        return array(
-        	'articleFile' => $file,
-        );
+		unlink($filePath . $file->getPath());
+		$this->getEntityManager()->remove($file);
+		$this->getEntityManager()->flush();
+		
+		return array();
 	}
 	
 	public function downloadfileAction()

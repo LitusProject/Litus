@@ -4,7 +4,19 @@
 	{% include 'admin_article/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-
+	<div class="flashmessage success_message full_width article_removed_success" style="display: none;">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The article was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width article_removed_error" style="display: none;">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete an article.</p>
+		</div>
+	</div>
+	
 	<div id="controller_action">
 		<div id="article_search" style="display:none;">
 			<div style="padding:4px;text-align:right">
@@ -101,10 +113,16 @@
 							.append('<td>' + this.publisher + '</td>')
 							.append('<td>' + this.yearPublished + '</td>')
 							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
-							.append('<td>'
-								+ '<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>'
-								+ '<a href="#" data-id="' + this.id + '" data-title="' + this.title + '" data-authors="' + this.author + '" class="delete">Delete</a>'
-								+ '</td>');
+							.append(
+								$('<td>')
+									.append('<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+								);
+							deleteButton.data({
+								id: this.id,
+								title: this.title,
+								authors: this.author,
+							});
 					});
 					$('#article_search .delete').click(openModal);
 				},
@@ -123,27 +141,18 @@
 			var removeArticle = $('#removeArticle');
 			removeArticle.find('.articleTitle').html($(this).data('title'));
 			removeArticle.find('.articleAuthors').html($(this).data('authors'));
-			removeArticle.find('.cancel').unbind('click').click(function () {
+			removeArticle.find('.cancel').one('click', function () {
 				removeArticle.modal('hide');
 			});
 			removeArticle.find('.delete').unbind('click').click(function () {
-				$('.flashmessage').hide();
 				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('#controller_action').prepend('<div class="flashmessage success_message full_width">'
-						+ '<div class="title">Success</div>'
-						+ '<div class="content">'
-							+ '<p>The article was successfully removed!</p>'
-						+ '</div>'
-					+ '</div>');
+					$('.flashmessage').hide();
+					$('.article_removed_success').show();
 					$this.parent().parent().remove();
 					removeArticle.modal('hide');
 				}, 'json').error(function () {
-					$('#controller_action').prepend('<div class="flashmessage error_message full_width">'
-						+ '<div class="title">Error</div>'
-						+ '<div class="content">'
-							+ '<p>An error occurred while trying to delete an article.</p>'
-						+ '</div>'
-					+ '</div>');
+					$('.flashmessage').hide();
+					$('.article_removed_error').show();
 					removeArticle.modal('hide');
 				});
 			});

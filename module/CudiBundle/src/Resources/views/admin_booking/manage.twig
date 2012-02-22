@@ -4,7 +4,19 @@
 	{% include 'admin_booking/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-
+	<div class="flashmessage success_message full_width booking_removed_success" style="display: none;">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The booking was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width booking_removed_error" style="display: none;">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete an booking.</p>
+		</div>
+	</div>
+	
 	<div id="controller_action">
 		<div id="booking_search" style="display:none;">
 			<div style="padding:4px;text-align:right">
@@ -46,7 +58,7 @@
 		        
 		        
 		        {% for booking in paginator %}
-		            <tr>
+		            <tr class="item">
 		                <td>{{ booking.getPerson.getFullName() }}</td>
 		                <td>{{ booking.getArticle().getTitle() }} {% if booking.getArticle().getVersionNumber() != 1 %} (v{{ booking.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ booking.getNumber() }}</td>
@@ -56,7 +68,7 @@
 		        			{% if booking.getStatus() == 'assigned' %}
 		                    	<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId()}) }}" class="edit">Unassign</a>
 		        			{% elseif booking.getStatus() == 'booked' %}
-			                    <a href="{{ url('admin_booking', {"action": "delete", "id": booking.getId()}) }}" class="delete">Delete</a>
+		                		<a href="#" class="delete" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getTitle() }}">Delete</a>
 		                    {% endif %}
 		                </td>
 		            </tr>
@@ -80,6 +92,26 @@
 		    </div>
 		</div>
 	</aside>
+	
+	<div class="modal hide fade" id="removeBooking">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Booking Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following booking of <b class="bookingPerson"></b>: <b class="bookingTitle"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" value="No">
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block controller_script %}
@@ -103,14 +135,49 @@
 							.append(actions = $('<td>'));
 						if ('assigned' == this.status)
 							actions.append('<a href="{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
-						else if ('booked' == this.status)
-							actions.append('<a href="{{ url('admin_booking', {"action": "delete"}) }}/' + this.id + '" class="delete">Delete</a>');
+						else if ('booked' == this.status) {
+							actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'));
+							deleteButton.data({
+								id: this.id,
+								person: this.person,
+								title: this.article,
+							});
+						}
 					});
+					$('#booking_search .delete').click(openModal);
 				},
 				clear: function () {
 					$('#booking_search table').find('tr.item').remove();
 				}
 			});
+			
+			$('.item .delete').click(openModal);
 		});
+		
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removeBooking = $('#removeBooking');
+			removeBooking.find('.bookingPerson').html($(this).data('person'));
+			removeBooking.find('.bookingTitle').html($(this).data('title'));
+			removeBooking.find('.cancel').one('click', function () {
+				removeBooking.modal('hide');
+			});
+
+			removeBooking.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_booking', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+					$('.flashmessage').hide();
+					$('.booking_removed_success').show();
+					$this.parent().parent().remove();
+					removeBooking.modal('hide');
+				}, 'json').error(function () {
+					$('.flashmessage').hide();
+					$('.booking_removed_error').show();
+					removeBooking.modal('hide');
+				});
+			});
+			removeBooking.modal();
+		}
 	</script>
 {% endblock %}

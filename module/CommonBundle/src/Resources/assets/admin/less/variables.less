@@ -114,6 +114,14 @@
    filter: e(%("alpha(opacity=%d)", @opacity));
 }
 
+.transition(@transition) {
+  -webkit-transition: @transition;
+     -moz-transition: @transition;
+      -ms-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+
 // Modal
 @zindexDropdown:          1000;
 @zindexPopover:           1010;
