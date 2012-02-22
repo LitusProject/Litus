@@ -5,8 +5,9 @@
 >
 
     <xsl:template match="address">
-            <xsl:apply-templates/>
+    	<fo:block text-align="left"><xsl:value-of select="street"/></fo:block>
+    	<fo:block text-align="left"><xsl:value-of select="city"/></fo:block>
+    	<fo:block text-align="left"><xsl:value-of select="country"/></fo:block>
     </xsl:template>
 
 </xsl:stylesheet>
-
