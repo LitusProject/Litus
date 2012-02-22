@@ -58,7 +58,6 @@ return array(
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',
-                                    		'admin/less/modal.less',
                                     	),
                                     	'filters' => array(
                                     		'admin_less' => array(
@@ -109,7 +108,7 @@ return array(
                                     ),
                                     'bootstrap_js_button' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-alert.js'
+                                            'bootstrap/js/bootstrap-button.js'
                                         ),
                                     ),
                                     'bootstrap_js_carousel' => array(

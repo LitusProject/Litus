@@ -90,35 +90,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     
     public function deleteAction()
 	{
+		$this->initAjax();
+
 		$booking = $this->_getBooking();
-			
-		$this->view->booking = $booking;
 		
-		if (null !== $this->getParam('confirm')) {
-            if (1 == $this->getParam('confirm')) {
-				$this->getEntityManager()->remove($booking);
-				$this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The booking was successfully removed!'
-                    )
-                );
-            }
-
-            $this->redirect()->toRoute(
-            	'admin_booking',
-            	array(
-            		'action' => 'manage'
-            	)
-            );
-        }
+		$this->getEntityManager()->remove($booking);
+		$this->getEntityManager()->flush();
         
-        return array(
-        	'booking' => $booking,
-        );
+        return array();
 	}
 	
 	public function searchAction()

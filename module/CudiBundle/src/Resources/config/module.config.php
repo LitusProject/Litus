@@ -26,11 +26,10 @@ return array(
 		'admin_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article[/:action[/:id[/:confirm]]]',
+				'route' => '/admin/article[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
-					'confirm' => '[01]',
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
@@ -68,11 +67,10 @@ return array(
 		'admin_booking' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/booking[/:action[/:id[/:confirm]]]',
+				'route' => '/admin/booking[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
-					'confirm' => '[01]',
 				),
 				'defaults' => array(
 					'controller' => 'admin_booking',
@@ -96,7 +94,7 @@ return array(
 		'admin_booking_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-			'route' => '/admin/booking/search/[/:field[/:string]]',
+			'route' => '/admin/booking/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -124,7 +122,7 @@ return array(
 		'admin_stock_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/search/[/:field[/:string]]',
+				'route' => '/admin/stock/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -138,11 +136,10 @@ return array(
 		'admin_order' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/order[/:action[/:id[/:confirm]]]',
+				'route' => '/admin/order[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
-					'confirm' => '[01]',
 				),
 				'defaults' => array(
 					'controller' => 'admin_order',
@@ -167,11 +164,10 @@ return array(
 		'admin_delivery' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/delivery[/:action[/:id[/:confirm]]]',
+				'route' => '/admin/delivery[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
-					'confirm' => '[01]',
 				),
 				'defaults' => array(
 					'controller' => 'admin_delivery',

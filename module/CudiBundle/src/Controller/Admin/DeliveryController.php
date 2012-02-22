@@ -102,35 +102,15 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 	
 	public function deleteAction()
 	{
+		$this->initAjax();
+		
 		$delivery = $this->_getDeliveryItem();
-					
-		if (null !== $this->getParam('confirm')) {
-			if (1 == $this->getParam('confirm')) {
-				$delivery->getArticle()->getStockItem()->addNumber(-$delivery->getNumber());
-				$this->getEntityManager()->remove($delivery);
-				$this->getEntityManager()->flush();
-				
-				$this->flashMessenger()->addMessage(
-            		new FlashMessage(
-                		FlashMessage::SUCCESS,
-                    	'SUCCESS',
-                    	'The delivery was successfully removed!'
-                	)
-            	);
-			};
-            
-			$this->redirect()->toRoute(
-				'admin_delivery',
-				array(
-					'action' => 'supplier',
-					'id'     => $delivery->getArticle()->getSupplier()->getId(),
-				)
-			);
-        }
-        
-        return array(
-        	'delivery' => $delivery,
-        );
+		
+		$delivery->getArticle()->getStockItem()->addNumber(-$delivery->getNumber());
+		$this->getEntityManager()->remove($delivery);
+		$this->getEntityManager()->flush();
+		
+		return array();
 	}
 	
 	private function _getDeliveryItem()

@@ -19,12 +19,15 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
 		'admin_booking' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
 		),
 		'admin_stock' => array(
 			'@common_jquery',
@@ -35,11 +38,15 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
 		),
 		'admin_delivery' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
 		),
 		'admin_sale' => array(
 			'@common_jquery',

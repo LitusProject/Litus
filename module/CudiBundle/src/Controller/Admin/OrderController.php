@@ -123,35 +123,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function deleteAction()
 	{
+		$this->initAjax();
+		
 		$item = $this->_getOrderItem();
-				
-		if (null !== $this->getParam('confirm')) {
-			if (1 == $this->getParam('confirm')) {
-				$this->getEntityManager()->remove($item);
-
-				$this->getEntityManager()->flush();
-
-				$this->flashMessenger()->addMessage(
-            		new FlashMessage(
-                		FlashMessage::SUCCESS,
-                    	'SUCCESS',
-                    	'The order item was successfully removed!'
-                	)
-            	);
-			};
-            
-			$this->redirect()->toRoute(
-				'admin_order',
-				array(
-					'action' => 'edit',
-					'id' => $item->getOrder()->getId(),
-				)
-			);
-        }
-        
-        return array(
-        	'item' => $item
-        );
+		
+		$this->getEntityManager()->remove($item);
+		$this->getEntityManager()->flush();
+		
+		return array();
 	}
 	
 	public function placeAction()
