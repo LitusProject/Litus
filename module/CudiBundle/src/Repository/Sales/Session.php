@@ -34,4 +34,21 @@ class Session extends EntityRepository
 		
 		return null;
 	}
+	
+	public function findOpenSession()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('CudiBundle\Entity\Sales\Session', 's')
+			->where($query->expr()->isNull('s.closeDate'))
+			->orderBy('s.openDate', 'ASC')
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+			return $resultSet[0];
+		
+		return null;
+	}
 }

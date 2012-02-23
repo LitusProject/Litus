@@ -4,10 +4,10 @@ namespace CommonBundle\Component\FlashMessenger;
 
 class FlashMessage
 {
-	const ERROR = 'error_message';
-	const WARNING = 'warning_message';
-	const SUCCESS = 'success_message';
-	const NOTICE = 'notice_message';
+	const ERROR = 'error';
+	const WARNING = 'warning';
+	const SUCCESS = 'success';
+	const NOTICE = 'info';
 
     /**
      * @var string The FlashMessage's type

@@ -1,0 +1,83 @@
+{% extends 'sale/base.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Selling</th>
+					</tr>
+				</thead>
+				<tbody id="selling_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Collected</th>
+					</tr>
+				</thead>
+				<tbody id="collected_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Collecting</th>
+					</tr>
+				</thead>
+				<tbody id="collecting_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Signed In</th>
+					</tr>
+				</thead>
+				<tbody id="signed_in_list">
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$.loadQueue({
+			url    : '{{ url('sale', {"controller": "queue", "action": "json", "session": session.getId()}) }}',
+			interval : 2000,
+			loaded : function (data) {
+				displayItem($('#signed_in_list'), data.signed_in);
+				displayItem($('#collecting_list'), data.collecting);
+				displayItem($('#collected_list'), data.collected);
+				displayItem($('#selling_list'), data.selling);
+			},
+			error  : function () {
+				
+			}
+		});
+		
+		function displayItem(container, data) {
+			container.html('');
+			$(data).each(function () {
+				var item = $('<tr>').append(
+						$('<td>').html(this.number),
+						$('<td>').html(this.name ? this.name : 'guest ' + this.id)
+					);
+				container.append(item);
+			});
+		}
+	</script>
+{% endblock %}

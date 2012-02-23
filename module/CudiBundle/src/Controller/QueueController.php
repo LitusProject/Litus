@@ -15,7 +15,9 @@
  
 namespace CudiBundle\Controller;
 
-use CudiBundle\Form\Queue\SignIn as SignInForm;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CudiBundle\Entity\Sales\ServingQueueItem,
+	CudiBundle\Form\Queue\SignIn as SignInForm;
 
 /**
  * QueueController
@@ -23,18 +25,87 @@ use CudiBundle\Form\Queue\SignIn as SignInForm;
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class QueueController extends \CommonBundle\Component\Controller\ActionController
+class QueueController extends \CudiBundle\Component\Controller\SaleController
 {
-    
-    public function indexAction()
+
+	public function overviewAction()
 	{
-        $form = new SignInForm();
+	}
+	
+	public function jsonAction()
+	{
+		$this->initAjax();
+		
+		$repItem = $this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem');
+			
+		$repStatus = $this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus');
+		
+		$session = $this->getEntityManager()
+		   ->getRepository('CudiBundle\Entity\Sales\Session')
+		   ->findOneById($this->getParam('session'));
+		   
+		return array(
+			'result' => array(
+				'selling' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('selling'))),
+				'collected' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('collected'))),
+				'collecting' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('collecting'))),
+				'signed_in' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('signed_in'))),
+			),
+		);
+	}
+	
+	private function createObject($items)
+	{
+		$results = array();
+		foreach($items as $item) {
+			$result = (object) array();
+			$result->id = $item->getId();
+			$result->number = $item->getQueueNumber();
+			$result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
+			$results[] = $result;
+		}
+		return $results;
+	}
+
+    public function signinAction()
+	{
+        $form = new SignInForm($this->getEntityManager());
         
         if($this->getRequest()->isPost()) {
         	$formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	
+				$person = $this->getEntityManager()
+					->getRepository('CommonBundle\Entity\Users\Person')
+					->findOneByUsername($formData['username']);
+				
+				$session = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Sales\Session')
+					->findOneById($this->getParam('session'));
+				
+				$queueItem = new ServingQueueItem($this->getEntityManager(), $person, $session);
+				
+				$this->getEntityManager()->persist($queueItem);
+				$this->getEntityManager()->flush();
+				
+				$this->flashMessenger()->addMessage(
+					new FlashMessage(
+						FlashMessage::SUCCESS,
+						'Succes',
+						'You are succesfully added to the queue. Your queue number is: <strong>' . $queueItem->getQueueNumber() . '</strong>'
+					)
+				);
+				
+				$this->redirect()->toRoute(
+					'sale',
+					array(
+						'controller' => 'queue',
+						'action' => 'signin',
+						'session' => $session->getId(),
+					)
+				);
         	}
         }
         
@@ -43,48 +114,3 @@ class QueueController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 }
-/*
-if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            if($this->view->form->isValid($formData)) {
-
-                $person = $this->getEntityManager()
-                               ->getRepository('Litus\Entity\Users\Person')
-                               ->findOneBy( array( 'username' => $formData['number'] ) );
-
-                // TODO: if $person is not valid ...
-                // else,
-
-                // create ServingQueueItem object and and persist
-                $status = $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueStatus')
-                               ->findOneBy( array( 'name' => 'signed_in' ) );
-                $session = $this->getEntityManager()
-                                ->getRepository('Litus\Entity\Cudi\Sales\Session')
-                                ->findOneById($this->_getParam("session"));
-                $queueItem = new ServingQueueItem();
-                $queueItem->setPerson( $person );
-                $queueItem->setStatus( $status );
-                $queueItem->setSession( $session );
-                $queueItem->setQueueNumber( $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->getQueueNumber( $session->getId() ) );
-
-		$this->getEntityManager()->persist( $queueItem );
-                $this->getEntityManager()
-                               ->getRepository('\Litus\Entity\Cudi\Sales\ServingQueueItem')
-                               ->updatePollingData();
-
-                $this->_addDirectFlashMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        "Queue number: <strong>" . $queueItem->getQueueNumber() . "</strong>"
-                    )
-                );
-
-                // empty form
-                $this->view->form->populate("");
-            }
-        }
-*/

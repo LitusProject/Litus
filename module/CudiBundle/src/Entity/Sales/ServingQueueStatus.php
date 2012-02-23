@@ -11,10 +11,7 @@
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
- */
- 
-  // TODO: comments
- 
+ */ 
  
 namespace CudiBundle\Entity\Sales;
 
@@ -36,19 +33,19 @@ class ServingQueueStatus
      */
     private $name;
 
-    public function getId() {
+	/**
+	 * @return integer
+	 */
+    public function getId()
+    {
         return $this->id;
     }
-
-    public function setId( $id_ ) {
-        $this->id = $id_;
-    }
-
-    public function getName() {
+	
+	/**
+	 * @return string
+	 */
+    public function getName()
+    {
         return $this->name;
-    }
-
-    public function setName( $name_ ) {
-        $this->name = $name_;
     }
 }

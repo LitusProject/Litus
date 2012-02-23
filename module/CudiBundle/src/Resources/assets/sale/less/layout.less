@@ -1,0 +1,48 @@
+/**
+ * Layout
+ *
+ * Copyright 2011 Litus
+ *
+ * Author: Kristof Mariën <kristof.marien@litus.cc>
+ */
+ 
+ body {
+ }
+ 
+ header {
+ 	padding-top: 40px;
+ 	.verticalGradient(@cSaleDark, @cSaleLight);
+ 	margin-bottom: 15px;
+ 	
+ 	h1 {
+	 	color: @cWhite;
+	 	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	 }
+ 	
+ 	.inner {
+ 		background: transparent url(/_cudi/img/grid-18px.png) top center;
+ 		padding: 45px 0;
+ 		.box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
+ 	}
+ }
+ 
+ .navbar {
+ 	.brand {
+ 		padding: 3px 20px 5px;
+ 	}
+ }
+ 
+ footer {
+	 margin-top: 45px;
+	 padding: 35px 10px 36px;
+	 border-top: 1px solid #E5E5E5;
+	 color: #555;
+	 
+	 .development_information {
+		float: right;
+	 }
+ }
+ 
+ .alert .title {
+ 	font-weight: bold;
+ }

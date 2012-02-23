@@ -53,6 +53,18 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'sale' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@sale_css',
+			'@sale_js',
+		),
+		'queue' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@sale_css',
+			'@sale_js',
+		),
 	),
 	'routes' => array(),
 );

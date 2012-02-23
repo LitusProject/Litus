@@ -11,12 +11,13 @@
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
- */
- 
-  // TODO: comments
- 
+ */ 
  
 namespace CudiBundle\Entity\Sales;
+
+use CommonBundle\Entity\Users\Person,
+	CudiBundle\Entity\Sales\Session,
+	Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\ServingQueueItem")
@@ -60,54 +61,81 @@ class ServingQueueItem
      */
     private $queueNumber;
 
-    public function __construct() {
+	/**
+	 * @param Doctrine\ORM\EntityManager $entityManager
+	 * @param CommonBundle\Entity\Users\Person $person
+	 * @param CudiBundle\Entity\Sales\Session $session
+	 */
+    public function __construct(EntityManager $entityManager, Person $person, Session $session)
+    {
+    	$this->person = $person;
+    	$this->session = $session;
+    	
+    	$this->status = $entityManager
+    		->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
+    		->findOneByName('signed_in');
+    		
+    	$this->queueNumber = $entityManager
+    		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
+    		->getQueueNumber($session);
+    }
+	
+	/**
+	 * @return integer
+	 */
+    public function getId()
+    {
+		return $this->id;
     }
 
-    public function getId() {
-        return $this->id;
-    }
-
-    public function setId( $id_ ) {
-        $this->id = $id;
-    }
-
-    public function getPerson() {
+	/**
+	 * @return CommonBundle\Entity\Users\Person
+	 */
+    public function getPerson()
+    {
         return $this->person;
     }
-
-    public function setPerson( $person_ ) {
-        $this->person = $person_;
-    }
-
-    public function getStatus() {
+	
+	/**
+	 * @return CudiBundle\Entity\Sales\ServingQueueStatus
+	 */
+    public function getStatus()
+    {
         return $this->status;
     }
-
-    public function setStatus( $status_ ) {
-        $this->status = $status_;
-    }
-
-    public function getPayDesk() {
+	
+	/**
+	 * @return CudiBundle\Entity\Sales\PayDesk
+	 */
+    public function getPayDesk()
+    {
         return $this->payDesk;
     }
-
-    public function setPayDesk( $payDesk_ ) {
-        $this->payDesk = $payDesk_;
+	
+	/**
+	 * @param CudiBundle\Entity\Sales\PayDesk
+	 *
+	 * @return CudiBundle\Entity\Sales\ServingQueueItem
+	 */
+    public function setPayDesk($payDesk)
+    {
+        $this->payDesk = $payDesk;
+        return $this;
     }
-
-    public function getSession() {
+	
+	/**
+	 * @return CudiBundle\Entity\Sales\Session
+	 */
+    public function getSession()
+    {
         return $this->session;
     }
-
-    public function setSession( $session_ ) {
-        $this->session = $session_;
-    }
-
-    public function getQueueNumber() {
+	
+	/**
+	 * @return integer
+	 */
+    public function getQueueNumber() 
+   	{
         return $this->queueNumber;
-    }
-
-    public function setQueueNumber( $queueNumber_ ) {
-        $this->queueNumber = $queueNumber_;
     }
 }

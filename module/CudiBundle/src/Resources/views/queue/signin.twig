@@ -1,0 +1,13 @@
+{% extends 'sale/base_no_nav.twig' %}
+
+{% block content %}
+	{% autoescape false %}
+		{{ form }}
+	{% endautoescape %}
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$.autoHideFlashMessages();
+	</script>
+{% endblock %}
