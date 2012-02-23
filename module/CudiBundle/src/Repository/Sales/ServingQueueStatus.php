@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class ServingQueueStatus extends EntityRepository
 {
+
+	public function findOneByName($name)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('CudiBundle\Entity\Sales\ServingQueueStatus', 's')
+			->where($query->expr()->eq('s.name', ':name'))
+			->setParameter('name', $name)
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+			return $resultSet[0];
+		
+		return null;
+	}
 }

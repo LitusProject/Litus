@@ -15,4 +15,4 @@
 	url = git://github.com/twitter/bootstrap.git
 [submodule "vendor/TwitterBootstrapFormDecorators"]
 	path = vendor/TwitterBootstrapFormDecorators
-	url = git://github.com/mwillbanks/TwitterBootstrapFormDecorators.git
+	url = git://github.com/krmarien/TwitterBootstrapFormDecorators.git

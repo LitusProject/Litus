@@ -21,7 +21,7 @@ namespace CudiBundle\Controller;
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SaleController extends \CommonBundle\Component\Controller\ActionController
+class SaleController extends \CudiBundle\Component\Controller\SaleController
 {
     
     public function indexAction()

@@ -1,8 +1,8 @@
 {% for flashMessage in flashMessenger %}
-	<div class="flashmessage {{ flashMessage.getType() }}_message full_width">
+	<div class="flashmessage alert alert-{{ flashMessage.getType() }}">
 		<div class="title">{{ flashMessage.getTitle() }}</div>
 		<div class="content">
-			<p>{{ flashMessage.getMessage() }}</p>
+			<p>{{ flashMessage.getMessage()|raw }}</p>
 		</div>
 	</div>
 {% endfor %}

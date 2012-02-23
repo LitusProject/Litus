@@ -1,0 +1,61 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+	{{ headTitle('Litus Sale', 'PREPEND') }}
+	
+	{{ headLink() }}   
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a href="http://www.vtk.be" class="brand"><img src="/_cudi/img/logo.png" /></a>
+			<ul class="nav">
+				{% if hasAccess('queue', 'overview') %}
+					<li><a href="{{ url("sale", {"controller": "queue", "action": "overview", "session": session.getId()}) }}">Queue</a></li>
+				{% endif %}
+				{% if hasAccess('queue', 'signin') %}
+					<li><a href="{{ url("sale", {"controller": "queue", "action": "signin", "session": session.getId()}) }}">Queue Sign In</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<header>
+	<div class="inner">
+		<div class="container">
+			<h1>Litus Sale</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container">
+	{% include 'sale/partials/flashMessenger.twig' %}
+
+	<div id="content_controller">
+	    {% block content %} {% endblock %}
+	</div>
+	
+	<footer>
+	    Litus Sale | Code by <a href="http://litus.cc">Litus</a>
+	
+		{% if 'development' == environment %}
+		    <span class="development_information">
+		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+		    </span>
+		{% endif %}
+	</footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block controller_script %} {% endblock %}
+
+</body>
+</html>

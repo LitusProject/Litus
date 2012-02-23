@@ -13,6 +13,44 @@ return array(
 				'sale'	              => 'CudiBundle\Controller\SaleController',
 				'queue'	              => 'CudiBundle\Controller\QueueController',
             ),
+            'assetic_configuration'          => array(
+                'parameters' => array(
+                    'config' => array(
+                        'modules'      => array(
+                            'cudibundle' => array(
+                                'root_path' => __DIR__ . '/../assets',
+                                'collections' => array(
+                                    'sale_css' => array(
+                                    	'assets' => array(
+                                    		'sale/less/sale.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'sale_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'sale_css.css',
+                                        ),
+                                    ),
+                                    'sale_js' => array(
+                                        'assets'  => array(
+                                            'sale/js/*.js',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
 			'doctrine_config' => array(
 				'parameters' => array(
 					'entityPaths' => array(

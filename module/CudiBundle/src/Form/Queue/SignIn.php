@@ -15,27 +15,25 @@
  
 namespace CudiBundle\Form\Queue;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
+	Doctrine\ORM\EntityManager,
+	TwitterBootstrapFormDecorators\Form\Element\Submit,
+	TwitterBootstrapFormDecorators\Form\Element\Text;
 	
-class SignIn extends \CommonBundle\Component\Form\Admin\Form
+class SignIn extends \TwitterBootstrapFormDecorators\Form\Form
 {
-    public function __construct($opts = null )
+    public function __construct(EntityManager $entityManager, $opts = null )
     {
         parent::__construct($opts);
 
-        $field = new Text('number');
+        $field = new Text('username');
         $field->setLabel('Student Number')
-        	->setAttrib('size', 30)
             ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
+			->addValidator(new UsernameValidator($entityManager));
         $this->addElement($field);
         
         $field = new Submit('submit');
-        $field->setLabel('Sign In')
-	        ->setDecorators(array(new ButtonDecorator()));
+        $field->setLabel('Sign In');
         $this->addElement($field);
     }
 }

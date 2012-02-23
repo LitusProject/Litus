@@ -2,9 +2,9 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository,
-
-	CudiBundle\Entity\SaleApp\PollingData;
+use CudiBundle\Entity\Sales\ServingQueueStatus as QueueStatus,
+	CudiBundle\Entity\Sales\Session as SaleSession,
+	Doctrine\ORM\EntityRepository;
 
 /**
  * ServingQueueItem
@@ -14,40 +14,38 @@ use Doctrine\ORM\EntityRepository,
  */
 class ServingQueueItem extends EntityRepository
 {
-
-    public function getQueueNumber( $sessionId ) {
     
-        $query = $this->createQueryBuilder("qi");
-        $query->select( "COUNT(qi)" )
-              ->where( "qi.session = '".$sessionId."'");
-
-        $result = $query->getQuery()->getResult();
-        $count = $result[0][1];
-
-        return $count + 1;
+    public function getQueueNumber(SaleSession $session)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('COUNT(i)')
+    		->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
+    		->where($query->expr()->eq('i.session', ':session'))
+    		->setParameter('session', $session->getId())
+    		->getQuery()
+    		->getResult();
+    	
+    	if (isset($resultSet[0]))
+    		return $resultSet[0][1] + 1;
+    	
+    	return 1;
     }
-
-    public function getPollingData() {
-        $pd = $this->getEntityManager()
-                  ->getRepository('CudiBundle\Entity\SaleApp\PollingData')
-                  ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
-        if( is_null($pd) ) {
-           updatePollingData();
-           return getPollingData();
-        }
-        return $pd->getTimestamp()->getTimestamp();
+    
+    public function findAllByStatus(SaleSession $session, QueueStatus $status)
+    {
+	    $query = $this->_em->createQueryBuilder();
+	    $resultSet = $query->select('i')
+	    	->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
+	    	->where($query->expr()->andX(
+	    			$query->expr()->eq('i.session', ':session'),
+	    			$query->expr()->eq('i.status', ':status')
+	    		)
+	    	)
+	    	->setParameter('session', $session->getId())
+	    	->setParameter('status', $status->getId())
+	    	->getQuery()
+	    	->getResult();
+	    
+	    return $resultSet;
     }
-
-    public function updatePollingData() {
-        $pd = $this->getEntityManager()
-                  ->getRepository('CudiBundle\Entity\SaleApp\PollingData')
-                  ->findOneBy( array( 'name' => 'ServingQueueItem' ) );
-        if( is_null($pd) ) {
-            $pd = new PollingData();
-            $pd->setName( 'ServingQueueItem' );
-        }
-        $pd->setTimestamp( new \DateTime() );
-        $this->getEntityManager()->persist( $pd );
-    }
-
 }
