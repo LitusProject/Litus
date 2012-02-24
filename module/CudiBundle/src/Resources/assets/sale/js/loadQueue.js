@@ -6,7 +6,10 @@
 			$.post(options.url, function (data) {
 				options.loaded(data);
 				setTimeout(load, options.interval);
-			}, 'json').error(options.error);
+			}, 'json').error(function () {
+				options.error()
+				setTimeout(load, options.interval)
+			});
 		}
 	};
 }) (jQuery)

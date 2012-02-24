@@ -2,8 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Booking
