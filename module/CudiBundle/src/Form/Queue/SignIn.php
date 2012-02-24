@@ -17,6 +17,7 @@ namespace CudiBundle\Form\Queue;
 
 use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	Doctrine\ORM\EntityManager,
+	TwitterBootstrapFormDecorators\Form\Element\Reset,
 	TwitterBootstrapFormDecorators\Form\Element\Submit,
 	TwitterBootstrapFormDecorators\Form\Element\Text;
 	
@@ -31,9 +32,28 @@ class SignIn extends \TwitterBootstrapFormDecorators\Form\Form
             ->setRequired()
 			->addValidator(new UsernameValidator($entityManager));
         $this->addElement($field);
-        
+      	
         $field = new Submit('submit');
-        $field->setLabel('Sign In');
+        $field->setLabel('Sign In')
+        	->setAttrib('class', 'btn btn-primary');
         $this->addElement($field);
+        
+        $field = new Reset('cancel');
+        $field->setLabel('Cancel')
+        	->setAttrib('class', 'btn');
+        $this->addElement($field);
+        
+        $this->addDisplayGroup(
+        	array(
+        		'submit',
+                'cancel'
+            ),
+            'form_actions'
+        );
+        $this->getDisplayGroup('form_actions')
+        	->removeDecorator('DtDdWrapper');
+        $this->getDisplayGroup('form_actions')
+        	->addDecorator('HtmlTag', array('class' => 'form-actions', 'tag' => 'div'))
+        	->removeDecorator('Fieldset');
     }
 }
