@@ -1,5 +1,17 @@
 (function ($) {
 	$.searchDatabase = function (opts) {
+		var defaults = {
+			defaultPage: null,
+			searchDiv: null,
+			searchString: null,
+			searchField: null,
+			url: '',
+			minLength: 3,
+			display: function () {}
+		};
+		
+		opts = $.extend(defaults, opts);
+	
 		$(document).keypress(function (e) {
 			if (102 == e.keyCode && e.metaKey) {
 				if (opts.searchDiv.is(':visible')) {
@@ -26,6 +38,8 @@
 				opts.searchString.data('timeout', setTimeout(function () {
 					if ('' == opts.searchString.val()) {
 						opts.clear();
+						return;
+					} else if (opts.searchString.val().length < opts.minLength) {
 						return;
 					}
 					$.ajax({
