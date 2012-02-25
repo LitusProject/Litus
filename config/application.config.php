@@ -18,7 +18,6 @@ return array(
     	'AsseticBundle',
     	'MistDoctrine',
     	'ZfTwig',
-    	'TwitterBootstrapFormDecorators',
     	
         'CommonBundle',
         
