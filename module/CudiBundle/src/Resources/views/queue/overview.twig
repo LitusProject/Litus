@@ -64,8 +64,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$.loadQueue({
-			url    : '{{ url('sale', {"controller": "queue", "action": "json", "session": session.getId()}) }}',
-			interval : 2000,
+			url    : '{{ socketUrl }}',
 			loaded : function (data) {
 				$('#loading_queue_error').removeClass('in');
 				displayItem($('#signed_in_list'), data.signed_in);

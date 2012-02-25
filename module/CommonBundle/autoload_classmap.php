@@ -53,6 +53,8 @@ return array(
     'CommonBundle\Component\View\Helper\Exception\RuntimeException'                    => __DIR__ . '/src/Component/View/Helper/Exception/RuntimeException.php',
     'CommonBundle\Component\View\Helper\GetParam'                                      => __DIR__ . '/src/Component/View/Helper/GetParam.php',
     'CommonBundle\Component\View\Helper\HasAccess'                                     => __DIR__ . '/src/Component/View/Helper/HasAccess.php',
+    'CommonBundle\Component\WebSocket\Server'                                          => __DIR__ . '/src/Component/WebSocket/Server.php',
+    'CommonBundle\Component\WebSocket\User'                                            => __DIR__ . '/src/Component/WebSocket/User.php',
     'CommonBundle\Controller\Admin\AuthController'                                     => __DIR__ . '/src/Controller/Admin/AuthController.php',
     'CommonBundle\Controller\Admin\ConfigController'                                   => __DIR__ . '/src/Controller/Admin/ConfigController.php',
     'CommonBundle\Controller\Admin\DashboardController'                                => __DIR__ . '/src/Controller/Admin/DashboardController.php',
