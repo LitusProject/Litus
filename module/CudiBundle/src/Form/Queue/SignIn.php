@@ -17,11 +17,11 @@ namespace CudiBundle\Form\Queue;
 
 use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	Doctrine\ORM\EntityManager,
-	TwitterBootstrapFormDecorators\Form\Element\Reset,
-	TwitterBootstrapFormDecorators\Form\Element\Submit,
-	TwitterBootstrapFormDecorators\Form\Element\Text;
+	CommonBundle\Component\Form\Bootstrap\Element\Reset,
+	CommonBundle\Component\Form\Bootstrap\Element\Submit,
+	CommonBundle\Component\Form\Bootstrap\Element\Text;
 	
-class SignIn extends \TwitterBootstrapFormDecorators\Form\Form
+class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     public function __construct(EntityManager $entityManager, $opts = null )
     {
@@ -34,26 +34,14 @@ class SignIn extends \TwitterBootstrapFormDecorators\Form\Form
         $this->addElement($field);
       	
         $field = new Submit('submit');
-        $field->setLabel('Sign In')
-        	->setAttrib('class', 'btn btn-primary');
+        $field->setLabel('Sign In');
+        $field->addDecorator('ViewHelper');
         $this->addElement($field);
         
         $field = new Reset('cancel');
-        $field->setLabel('Cancel')
-        	->setAttrib('class', 'btn');
+        $field->setLabel('Cancel');
         $this->addElement($field);
         
-        $this->addDisplayGroup(
-        	array(
-        		'submit',
-                'cancel'
-            ),
-            'form_actions'
-        );
-        $this->getDisplayGroup('form_actions')
-        	->removeDecorator('DtDdWrapper');
-        $this->getDisplayGroup('form_actions')
-        	->addDecorator('HtmlTag', array('class' => 'form-actions', 'tag' => 'div'))
-        	->removeDecorator('Fieldset');
+        $this->setActionsGroup(array('submit', 'cancel'));
     }
 }

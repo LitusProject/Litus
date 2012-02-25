@@ -28,6 +28,17 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class QueueController extends \CudiBundle\Component\Controller\SaleController
 {
 
+	public function indexAction()
+	{
+		$this->forward()->dispatch(
+			'sale',
+			array(
+				'controller' => 'queue',
+				'action' => 'overview'
+			)
+		);
+	}
+
 	public function overviewAction()
 	{
 	}

@@ -111,7 +111,7 @@
 						<i>Please hit the link below to open queue sign-in page!</i>
 					</p>
 					<p>
-						<a href="{{ url("sale", {"controller": "queue", "session": session.getId()}) }}">&rarr; Queue Sign-in</a>
+						<a href="{{ url("sale", {"controller": "queue", "action": "signin", "session": session.getId()}) }}">&rarr; Queue Sign-in</a>
 					</p>
 				</div>
 			</div>
@@ -123,7 +123,7 @@
 						<i>Please hit the link below to go to the queue overview page!</i>
 					</p>
 					<p>
-						<a href="{#{{ url("saleapp_queue", {"session": session.getId()}) }}#}">&rarr; Queue Overview</a>
+						<a href="{{ url("sale", {"controller": "queue", "action": "overview", "session": session.getId()}) }}">&rarr; Queue Overview</a>
 					</p>
 				</div>
 			</div>

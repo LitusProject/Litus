@@ -80,7 +80,6 @@ return array(
                                             'admin/js/*.js',
                                         ),
                                     ),
-                                    
                                     'bootstrap_css' => array(
                                     	'assets' => array(
                                     		'bootstrap/less/bootstrap.less',
