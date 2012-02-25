@@ -18,6 +18,7 @@ namespace CudiBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl,
 	CommonBundle\Component\Acl\Driver\HasAccess,
 	CommonBundle\Component\Util\File,
+	Exception,
 	Zend\Cache\StorageFactory,
 	Zend\Mvc\MvcEvent,
 	Zend\Paginator\Paginator,
@@ -44,11 +45,14 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		    ->getRepository('CudiBundle\Entity\Sales\Session')
 		    ->findOneById($this->getParam('session'));
 		
-		if (null === $session || !$session->isOpen()) {
+		if (null == $session || !$session->isOpen()) {
 			$session = $this->getEntityManager()
 			    ->getRepository('CudiBundle\Entity\Sales\Session')
 			    ->findOpenSession();
-			    
+
+			if (null == $session)
+				throw new Exception('No open session could be found');
+
 			$this->redirect()->toRoute('sale', array(
 				'controller' => $this->getParam('controller'),
 				'action' => $this->getParam('action'),
