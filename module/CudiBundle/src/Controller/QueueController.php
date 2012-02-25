@@ -41,43 +41,16 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
 	public function overviewAction()
 	{
-	}
-	
-	public function jsonAction()
-	{
-		$this->initAjax();
-		
-		$repItem = $this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem');
-			
-		$repStatus = $this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus');
-		
-		$session = $this->getEntityManager()
-		   ->getRepository('CudiBundle\Entity\Sales\Session')
-		   ->findOneById($this->getParam('session'));
-		   
+		$address = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.queue_socketRemoteHost');
+		$port = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.queue_socketPort');
+
 		return array(
-			'result' => array(
-				'selling' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('selling'))),
-				'collected' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('collected'))),
-				'collecting' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('collecting'))),
-				'signed_in' => $this->createObject($repItem->findAllByStatus($session, $repStatus->findOneByName('signed_in'))),
-			),
+			'socketUrl' => 'ws://' . $address . ':' . $port,
 		);
-	}
-	
-	private function createObject($items)
-	{
-		$results = array();
-		foreach($items as $item) {
-			$result = (object) array();
-			$result->id = $item->getId();
-			$result->number = $item->getQueueNumber();
-			$result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
-			$results[] = $result;
-		}
-		return $results;
 	}
 
     public function signinAction()
