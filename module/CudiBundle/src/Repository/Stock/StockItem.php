@@ -164,11 +164,6 @@ class StockItem extends EntityRepository
 
 	public function assignAll()
 	{
-		$this->getEntityManager()
-			->getRepository('CudiBundle\Entity\Sales\Booking')
-			->expireBookings();
-		$this->getEntityManager()->flush();
-	
 		$items = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
 			->findAllInStock();

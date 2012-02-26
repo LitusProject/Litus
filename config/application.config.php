@@ -27,10 +27,10 @@ return array(
     ),
     'module_listener_options' => array( 
         'config_cache_enabled' 	=> false,
-        'cache_dir'            	=> __DIR__ . '/../data/cache',
+        'cache_dir'            	=> 'data/cache',
         'module_paths' 			=> array(
-            __DIR__ . '/../module',
-            __DIR__ . '/../vendor',
+            'module',
+            'vendor',
         ),
     ),
 );

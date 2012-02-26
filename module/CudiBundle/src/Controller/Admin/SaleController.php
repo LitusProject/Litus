@@ -233,6 +233,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 					$this->getEntityManager()->persist($amountUnit);
 				}
 				
+				$this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Sales\Booking')
+					->expireBookings();
+				
 				$session->setCloseAmount($cashRegister)
 					->setCloseDate(new \DateTime());
 				
