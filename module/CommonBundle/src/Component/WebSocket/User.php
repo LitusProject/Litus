@@ -28,11 +28,8 @@ class User
 	
 	private $handshaked = false;
 	
-	private $bufferType;
 	private $buffer;
-	
-	const MAX_BUFFER_SIZE = 1048576;
-	
+		
 	/**
 	 * @param mixed $socket
 	 */
@@ -103,25 +100,21 @@ class User
 	/**
 	 * Create the buffer for fragmented frames
 	 *
-	 * @param mixed $frame
+	 * @param \CommonBundle\Component\WebSocket\Frame $frame
 	 */
-	public function createBuffer($frame)
+	public function createBuffer(Frame $frame)
 	{
-		$this->bufferType = $frame['opcode'];
-		$this->buffer = $frame['data'];
+		$this->buffer = $frame;
 	}
 	
 	/**
 	 * Append data to the buffer for fragmented frames
 	 *
-	 * @param mixed $frame
+	 * @param \CommonBundle\Component\WebSocket\Frame $frame
 	 */
 	public function appendBuffer($frame)
 	{
-		$this->buffer .= $frame['data'];
-		
-		if (strlen($this->buffer) > self::MAX_BUFFER_SIZE)
-			$this->clearBuffer();
+		$this->buffer->appendData($frame->getData());
 	}
 	
 	/**
@@ -129,8 +122,7 @@ class User
 	 */
 	public function clearBuffer()
 	{
-		$this->buffer = '';
-		$this->bufferType = false;
+		$this->buffer = null;
 	}
 	
 	/**
@@ -141,15 +133,5 @@ class User
 	public function getBuffer()
 	{
 		return $this->buffer;
-	}
-	
-	/**
-	 * Return the message type of the fragmented frames
-	 * 
-	 * @return integer
-	 */
-	public function getBufferType()
-	{
-		return $this->bufferType;
 	}
 }
