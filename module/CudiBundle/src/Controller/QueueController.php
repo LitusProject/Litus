@@ -41,15 +41,8 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
 	public function overviewAction()
 	{
-		$address = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.queue_socketRemoteHost');
-		$port = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.queue_socketPort');
-
 		return array(
-			'socketUrl' => 'ws://' . $address . ':' . $port,
+			'socketUrl' => $this->_getSocketUrl(),
 		);
 	}
 
@@ -57,44 +50,49 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 	{
         $form = new SignInForm($this->getEntityManager());
         
-        if($this->getRequest()->isPost()) {
-        	$formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-				$person = $this->getEntityManager()
-					->getRepository('CommonBundle\Entity\Users\Person')
-					->findOneByUsername($formData['username']);
-				
-				$session = $this->getEntityManager()
-					->getRepository('CudiBundle\Entity\Sales\Session')
-					->findOneById($this->getParam('session'));
-				
-				$queueItem = new ServingQueueItem($this->getEntityManager(), $person, $session);
-				
-				$this->getEntityManager()->persist($queueItem);
-				$this->getEntityManager()->flush();
-				
-				$this->flashMessenger()->addMessage(
-					new FlashMessage(
-						FlashMessage::SUCCESS,
-						'Succes',
-						'You are succesfully added to the queue. Your queue number is: <strong>' . $queueItem->getQueueNumber() . '</strong>'
-					)
-				);
-				
-				$this->redirect()->toRoute(
-					'sale',
-					array(
-						'controller' => 'queue',
-						'action' => 'signin',
-						'session' => $session->getId(),
-					)
-				);
-        	}
-        }
-        
         return array(
         	'form' => $form,
+        	'socketUrl' => $this->_getSocketUrl(),
         );
+    }
+    
+    public function addtoqueueAction ()
+    {
+    	$this->initAjax();
+    	    	
+    	$person = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\Users\Person')
+    		->findOneByUsername($this->getRequest()->post()->get('username'));
+
+    	if (null == $person) {
+    		return array(
+    			'result' => array('error' => 'person')
+    		);
+    	}
+    	
+    	$session = $this->getEntityManager()
+    		->getRepository('CudiBundle\Entity\Sales\Session')
+    		->findOpenSession();
+    	
+    	$queueItem = new ServingQueueItem($this->getEntityManager(), $person, $session);
+    	
+    	$this->getEntityManager()->persist($queueItem);
+    	$this->getEntityManager()->flush();
+    	
+    	return array(
+    		'result' => array('queueNumber' => $queueItem->getQueueNumber())
+    	);
+    }
+    
+    private function _getSocketUrl()
+    {
+    	$address = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('cudi.queue_socket_remote_host');
+    	$port = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('cudi.queue_socket_port');
+    		
+    	return 'ws://' . $address . ':' . $port;
     }
 }

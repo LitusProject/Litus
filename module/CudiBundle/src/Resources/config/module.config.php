@@ -244,7 +244,7 @@ return array(
 		'sale' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/sale[/:controller[/:action[/:session]]]',
+				'route' => '/cudi/sale[/:controller[/:action]]',
 				'constraints' => array(
 					'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',

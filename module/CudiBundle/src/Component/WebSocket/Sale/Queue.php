@@ -39,10 +39,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	{
 		$address = $entityManager
 			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.queue_socketHost');
+			->getConfigValue('cudi.queue_socket_host');
 		$port = $entityManager
 			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.queue_socketPort');
+			->getConfigValue('cudi.queue_socket_port');
 	
 		parent::__construct($address, $port);
 		$this->_entityManager = $entityManager;
@@ -70,6 +70,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		$this->sendText($user, $this->getJsonQueue());
 	}
 	
+	/**
+	 * Get the json string of the sale queue
+	 * 
+	 * @return string
+	 */
 	private function getJsonQueue()
 	{
 		$repItem = $this->_entityManager
@@ -92,6 +97,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		);
 	}
 	
+	/**
+	 * Return an array with the items in object
+	 *
+	 * @param array $items
+	 *
+	 * @return array
+	 */
 	private function createJsonObject($items)
 	{
 		$results = array();

@@ -30,6 +30,7 @@ return array(
     'CommonBundle\Component\Form\Admin\Decorator\FileDecorator'                        => __DIR__ . '/src/Component/Form/Admin/Decorator/FileDecorator.php',
     'CommonBundle\Component\Form\Admin\Form'                                           => __DIR__ . '/src/Component/Form/Admin/Form.php',
     'CommonBundle\Component\Form\Bootstrap\DisplayGroup\Actions'                       => __DIR__ . '/src/Component/Form/Bootstrap/DisplayGroup/Actions.php',
+    'CommonBundle\Component\Form\Bootstrap\Element\Button'                             => __DIR__ . '/src/Component/Form/Bootstrap/Element/Button.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Reset'                              => __DIR__ . '/src/Component/Form/Bootstrap/Element/Reset.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Submit'                             => __DIR__ . '/src/Component/Form/Bootstrap/Element/Submit.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Text'                               => __DIR__ . '/src/Component/Form/Bootstrap/Element/Text.php',

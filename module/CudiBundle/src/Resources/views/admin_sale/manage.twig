@@ -19,7 +19,7 @@
 		    
 		    {% for session in paginator %}
 		        <tr>
-		            <td>{% if session.getManager() %}{{ session.getManager().getUserName() }}{% else %}guest{% endif %}</td>
+		            <td>{% if session.getManager() is not sameas(null) %}{{ session.getManager().getUserName() }}{% else %}guest{% endif %}</td>
 		            <td>{% if session.isOpen() %}yes{% else %}no{% endif %}</td>
 		            <td valign=center>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</td>
 		            <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i:s')}}{% endif %}</td>

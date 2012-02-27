@@ -18,7 +18,7 @@ class ServingQueueItem extends EntityRepository
     public function getQueueNumber(SaleSession $session)
     {
     	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('COUNT(i)')
+    	$resultSet = $query->select('MAX(i.queueNumber)')
     		->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
     		->where($query->expr()->eq('i.session', ':session'))
     		->setParameter('session', $session->getId())

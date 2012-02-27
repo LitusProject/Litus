@@ -43,26 +43,19 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     {
 		$session = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Sales\Session')
-		    ->findOneById($this->getParam('session'));
+		    ->findOpenSession();
 		
 		if (null == $session || !$session->isOpen()) {
-			$session = $this->getEntityManager()
-			    ->getRepository('CudiBundle\Entity\Sales\Session')
-			    ->findOpenSession();
-
-			if (null == $session)
-				throw new Exception('No open session could be found');
-
-			$this->redirect()->toRoute('sale', array(
-				'controller' => $this->getParam('controller'),
-				'action' => $this->getParam('action'),
-				'session' => $session->getId(),
-			));
+			throw new Exception('No open session could be found');
 		}
 		
 		$result = parent::execute($e);
 		
 		$result['session'] = $session;
+		
+		$result['unionUrl'] = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.union_url');
   		
         $e->setResult($result);
         return $result;

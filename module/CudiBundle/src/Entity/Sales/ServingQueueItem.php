@@ -57,7 +57,7 @@ class ServingQueueItem
     private $session;
 	
     /**
-     * @Column(type="smallint")
+     * @Column(type="smallint", name="queue_number")
      */
     private $queueNumber;
 
