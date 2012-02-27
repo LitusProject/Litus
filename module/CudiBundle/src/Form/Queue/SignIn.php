@@ -18,7 +18,7 @@ namespace CudiBundle\Form\Queue;
 use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	Doctrine\ORM\EntityManager,
 	CommonBundle\Component\Form\Bootstrap\Element\Reset,
-	CommonBundle\Component\Form\Bootstrap\Element\Submit,
+	CommonBundle\Component\Form\Bootstrap\Element\Button,
 	CommonBundle\Component\Form\Bootstrap\Element\Text;
 	
 class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
@@ -30,12 +30,14 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('username');
         $field->setLabel('Student Number')
             ->setRequired()
-			->addValidator(new UsernameValidator($entityManager));
+			->addValidator(new UsernameValidator($entityManager))
+			->setAttrib('id', 'username');
         $this->addElement($field);
       	
-        $field = new Submit('submit');
-        $field->setLabel('Sign In');
-        $field->addDecorator('ViewHelper');
+        $field = new Button('submit');
+        $field->setLabel('Sign In')
+        	->addDecorator('ViewHelper')
+        	->setAttrib('id', 'signin');
         $this->addElement($field);
         
         $field = new Reset('cancel');

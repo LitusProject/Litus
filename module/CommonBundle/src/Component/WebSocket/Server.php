@@ -122,7 +122,7 @@ class Server
 	 * Get a user by his socket
 	 *
 	 * @param mixed $socket
-	 * @return \CommonBundle\Component\WebSockets\User
+	 * @return \CommonBundle\Component\WebSocket\User
 	 */
 	public function getUserBySocket($socket)
 	{
@@ -153,7 +153,7 @@ class Server
 	/**
 	 * Process a frame send by a user to the master socket
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param mixed $data
 	 */
 	private function _processFrame(User $user, $data)
@@ -190,7 +190,7 @@ class Server
 	/**
 	 * Handle the received control frames
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param \CommonBundle\Component\WebSocket\Frame $frame
 	 */
 	private function _handleControlFrame(User $user, Frame $frame)
@@ -225,7 +225,7 @@ class Server
 	/**
 	 * Handle a received data frame
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param \CommonBundle\Component\WebSocket\Frame $frame
 	 */
 	protected function handleDataFrame(User $user, Frame $frame)
@@ -240,7 +240,7 @@ class Server
 	/**
 	 * Send text to a user socket
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param string $text 
 	 */
 	public function sendText($user, $text)
@@ -296,7 +296,7 @@ class Server
 	/**
 	 * Parse received text
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param string $data
 	 */
 	protected function gotText(User $user, $data)
@@ -306,7 +306,7 @@ class Server
 	/**
 	 * Parse received binary
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param mixed $data
 	 */
 	protected function gotBin(User $user, $data)
@@ -316,7 +316,7 @@ class Server
 	/**
 	 * Do action when user closed his socket
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 * @param integer $statusCode
 	 * @param string $reason
 	 */
@@ -327,7 +327,7 @@ class Server
 	/**
 	 * Do action when a new user has connected to this socket
 	 *
-	 * @param \CommonBundle\Component\WebSockets\User $user
+	 * @param \CommonBundle\Component\WebSocket\User $user
 	 */
 	protected function onConnect(User $user)
 	{

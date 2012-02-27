@@ -14,7 +14,7 @@
 <nav class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a href="http://www.vtk.be" class="brand"><img src="/_cudi/img/logo.png" /></a>
+			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
 				{% if hasAccess('queue', 'overview') %}
 					<li><a href="{{ url("sale", {"controller": "queue", "action": "overview", "session": session.getId()}) }}">Queue</a></li>

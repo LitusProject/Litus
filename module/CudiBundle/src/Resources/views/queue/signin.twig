@@ -1,6 +1,27 @@
 {% extends 'sale/base_no_nav.twig' %}
 
 {% block content %}
+	<div class="flashmessage alert alert-error fade" id="add_queue_error">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while adding you to the queue.</p>
+		</div>
+	</div>
+	
+	<div class="flashmessage alert alert-error fade" id="add_queue_error_person">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>The person you entered does not exist.</p>
+		</div>
+	</div>
+	
+	<div class="flashmessage alert alert-success fade" id="add_queue_success">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>You are succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong></p>
+		</div>
+	</div>
+	
 	{% autoescape false %}
 		{{ form }}
 	{% endautoescape %}
@@ -8,6 +29,42 @@
 
 {% block controller_script %}
 	<script type="text/javascript">
-		$.autoHideFlashMessages();
+		$(document).ready(function () {
+			$('.flashmessage').autoHideFlashMessages({speed: 0, timeOut: 0});
+			
+			$('#username').keypress(function(e) {
+			    if (e.keyCode == 13) {
+			    	e.preventDefault();
+			        signIn();
+			    }
+			});
+			$('#signin').click(function() {
+			    signIn();
+			});
+		});
+		
+		
+		function signIn() {
+			$.post('{{ url ("sale", {"controller": "queue", "action": "addtoqueue"}) }}', {username: $('#username').val()}, function (data) {
+				if ('person' == data.error) {
+					$('#add_queue_error, #add_queue_success').removeClass('in');
+					$('#add_queue_error_person').addClass('in');
+				} else if (data.queueNumber) {
+					$('#add_queue_error, #add_queue_error_person').removeClass('in');
+					$('#add_queue_success').addClass('in')
+						.find('.queueNumber').html(data.queueNumber);
+					$('#username').val('');
+					$.updateQueue({url: '{{ socketUrl }}'});
+				} else {
+					$('#add_queue_error_person, #add_queue_success').removeClass('in');
+					$('#add_queue_error').addClass('in');
+				}
+				$('.flashmessage').autoHideFlashMessages();
+			}, 'json').error(function () {
+				$('#add_queue_error_person, #add_queue_success').removeClass('in');
+				$('#add_queue_error').addClass('in');
+				$('.flashmessage').autoHideFlashMessages();
+			});
+		}
 	</script>
 {% endblock %}
