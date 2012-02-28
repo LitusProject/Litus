@@ -32,7 +32,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ConfigController extends \CommonBundle\Component\Controller\ActionController
 {
-	
 	public function indexAction()
 	{
 		$this->_installConfig();
@@ -58,7 +57,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			),
 			array(
 				'key'         => 'cudi.mail_name',
-				'value'       => 'Cudi VTK',
+				'value'       => 'VTK Cursusdienst',
 				'description' => 'The name of the mail sender',
 			),
 			array(
@@ -68,7 +67,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			),
 			array(
 				'key'         => 'cudi.union_name',
-				'value'       => 'VTK VZW',
+				'value'       => 'VTK vzw',
 				'description' => 'The full name of this union',
 			),
 			array(
@@ -79,7 +78,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			array(
 				'key'         => 'cudi.union_url',
 				'value'       => 'http://www.vtk.be',
-				'description' => 'The url of the union',
+				'description' => 'The URL of the union',
 			),
 			array(
 				'key'         => 'cudi.name',
@@ -113,7 +112,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			),
 			array(
 				'key'         => 'cudi.billing_address_name',
-				'value'       => 'VTK VZW',
+				'value'       => 'VTK vzw',
 				'description' => 'The name of the billing address of the cudi',
 			),
 			array(
@@ -128,7 +127,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			),
 			array(
 				'key'         => 'cudi.booking_assigned_mail_subject',
-				'value'       => 'New assignments',
+				'value'       => 'New Assignments',
 				'description' => 'The subject of the mail send by new assignments',
 			),
 			array(
@@ -137,7 +136,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			
 The following bookings are assigned to you:
 {{ bookings }}',
-				'description' => 'The mail send when a booking is assigned'
+				'description' => 'The mail sent when a booking is assigned'
 			),
 			array(
 				'key'         => 'cudi.reservation_expire_time',
@@ -152,7 +151,7 @@ The following bookings are assigned to you:
 			array(
 				'key'         => 'cudi.pdf_generator_path',
 				'value'       => 'data/cudi/pdf_generator',
-				'description' => 'The path to the pdf generator files',
+				'description' => 'The path to the PDF generator files',
 			),
 			array(
 				'key'         => 'cudi.queue_socket_port',
@@ -175,6 +174,7 @@ The following bookings are assigned to you:
 				'description' => 'The command to call Apache FOP',
 			),
 		);
+		
 		foreach($configs as $item) {
 			try {
 				$config = $this->getEntityManager()
@@ -242,7 +242,7 @@ The following bookings are assigned to you:
 		$suppliers = array(
 			array(
 				'name'    => 'Acco',
-				'phone'   => '012/34 56 78',
+				'phone'   => '+3212345678',
 				'address' => 'Street 1 1111 City',
 				'VAT'     => '1234556',
 			),
