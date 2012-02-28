@@ -72,7 +72,7 @@ class CudiBundleEntitySupplierProxy extends \CudiBundle\Entity\Supplier implemen
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'name', 'telephone_number', 'address', 'VAT_number');
+        return array('__isInitialized__', 'id', 'name', 'telephoneNumber', 'address', 'VAT_number');
     }
 
     public function __clone()

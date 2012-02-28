@@ -15,6 +15,11 @@
  
 return array(
 	'controllers'  => array(
+		'cudi_config' => array(
+			'@common_jquery',
+			'@admin_css',
+			'@admin_js',
+		),
 		'admin_article' => array(
 			'@common_jquery',
 		    '@admin_css',

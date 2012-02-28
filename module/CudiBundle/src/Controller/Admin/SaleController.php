@@ -54,6 +54,29 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $form = new CashRegisterAddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
+        	$session = $this->getEntityManager()
+        		->getRepository('CudiBundle\Entity\Sales\Session')
+        		->findOpenSession();
+        	
+        	if (null != $session) {
+	        	$this->flashMessenger()->addMessage(
+	        	    new FlashMessage(
+	        	        FlashMessage::ERROR,
+	        	        'Error',
+	        	        'Another session is still open, close that one first.'
+	        	    )
+	        	);
+	        	
+	        	$this->redirect()->toRoute(
+	        		'admin_sale',
+	        		array(
+	        			'action' => 'manage'
+	        		)
+	        	);
+	        	return;
+	        }
+        	
+        
             $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {

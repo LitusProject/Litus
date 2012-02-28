@@ -4,6 +4,7 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
+				'cudi_config'		  => 'CudiBundle\Controller\Admin\ConfigController',
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
@@ -61,6 +62,16 @@ return array(
 		),
 	),
 	'routes' => array(
+		'cudi_config' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/install/cudi',
+				'defaults' => array(
+					'controller' => 'cudi_config',
+					'action'     => 'index',
+				),
+			),
+		),
 		'admin_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
