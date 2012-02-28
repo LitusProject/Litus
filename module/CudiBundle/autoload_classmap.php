@@ -9,6 +9,7 @@ return array(
     'CudiBundle\Component\WebSocket\Sale\Queue'             => __DIR__ . '/src/Component/WebSocket/Sale/Queue.php',
     'CudiBundle\Controller\Admin\ArticleController'         => __DIR__ . '/src/Controller/Admin/ArticleController.php',
     'CudiBundle\Controller\Admin\BookingController'         => __DIR__ . '/src/Controller/Admin/BookingController.php',
+    'CudiBundle\Controller\Admin\ConfigController'          => __DIR__ . '/src/Controller/Admin/ConfigController.php',
     'CudiBundle\Controller\Admin\DeliveryController'        => __DIR__ . '/src/Controller/Admin/DeliveryController.php',
     'CudiBundle\Controller\Admin\OrderController'           => __DIR__ . '/src/Controller/Admin/OrderController.php',
     'CudiBundle\Controller\Admin\SaleController'            => __DIR__ . '/src/Controller/Admin/SaleController.php',

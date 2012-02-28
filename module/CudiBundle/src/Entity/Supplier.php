@@ -34,9 +34,9 @@ class Supplier
 	private $name;
 	
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", name="telephone_number")
 	 */
-	private $telephone_number;
+	private $telephoneNumber;
 
 	/**
 	 * @Column(type="string")
@@ -47,6 +47,20 @@ class Supplier
 	 * @Column(type="string")
 	 */
 	private $VAT_number;
+	
+	/**
+	 * @param string $name
+	 * @param string $telephoneNumber
+	 * @param string $address
+	 * @param string $VAT
+	 */
+	public function __construct($name, $telephoneNumber, $address, $VAT)
+	{
+		$this->name = $name;
+		$this->telephoneNumber = $telephoneNumber;
+		$this->address = $address;
+		$this->VAT_number = $VAT;
+	}
 	
 	/**
      * @return integer
@@ -69,7 +83,7 @@ class Supplier
      */
     public function getPhoneNumber()
     {
-        return $this->telephone_number;
+        return $this->telephoneNumber;
     }
     
     /**

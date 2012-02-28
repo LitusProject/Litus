@@ -48,7 +48,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
     public function signinAction()
 	{
-        $form = new SignInForm($this->getEntityManager());
+        $form = new SignInForm();
         
         return array(
         	'form' => $form,

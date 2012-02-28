@@ -34,6 +34,14 @@ class ServingQueueStatus
     private $name;
 
 	/**
+	 * @param string $name
+	 */
+	public function __construct($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
 	 * @return integer
 	 */
     public function getId()

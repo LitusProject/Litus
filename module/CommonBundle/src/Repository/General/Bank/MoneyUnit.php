@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class MoneyUnit extends EntityRepository
 {
+	public function findOneByUnit($unit)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('u')
+			->from('CommonBundle\Entity\General\Bank\MoneyUnit', 'u')
+			->where($query->expr()->eq('u.unit', ':unit'))
+			->setParameter('unit', $unit * 100)
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+	}
 }

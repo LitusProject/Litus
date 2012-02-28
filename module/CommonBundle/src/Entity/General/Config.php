@@ -56,6 +56,7 @@ class Config
             throw new \InvalidArgumentException('Key must be a string');
             
         $this->key = $key;
+        $this->setValue($value);
     }
 	
 	/**
