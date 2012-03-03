@@ -1,14 +1,84 @@
-/**
- * Sale
- *
- * Copyright 2011 Litus
- * Licensed under the
- *
- * Author: Kristof Mariën <kristof.marien@litus.cc>
- */
- 
-// Variables and Global Definitions
-@import "variables.less";
+#queueModal {
+	width: @queueModalWidth;
+	margin-left: -@queueModalWidth / 2;
+	
+	.table {
+		.number {
+			width: 50px;
+		}
+		
+		.name {
+			width: 330px;
+		}
+		
+		.status {
+			width: 120px;
+		}
+		
+		.actions {
+			width: 200px;
+			padding: 3px 8px;
+		}
+		
+		thead {
+			display: block;
+		}
+		
+		tbody {
+			max-height: 300px;
+			overflow: auto;
+			display: block;
+		}
+	}
+}
 
-// Layout
-@import "layout.less";
+#sale {
+	.table {
+		thead {
+			.actions {
+				width: 60px;
+			}
+		}
+		
+		tbody {
+			.actions {
+				padding: 3px 8px;
+			}
+			
+			tr.inactive {
+				color: @cGray;
+			}
+		}
+	}
+	
+	.wrapper {
+		margin-bottom: 10px;
+		
+		.money {
+			font-weight: bold;
+			text-align: right;
+			
+			.total {
+				font-size: 50px;
+				line-height: 55px;
+			}
+		}
+		
+		.custumer {
+			.title {
+				margin: 0 0 10px 0;
+			}
+			
+			.name {
+				font-size: 30px;
+				line-height: 30px;
+				font-weight: bold;
+				margin: 0 0 10px 30px;
+			}
+			
+			.actions {
+				margin: 0;
+			}
+		}
+	}
+}

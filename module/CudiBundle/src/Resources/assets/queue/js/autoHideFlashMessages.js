@@ -20,4 +20,4 @@
 			$this.data('timer', timer);
 		});
 	}
-}) (jQuery)
+}) (jQuery);

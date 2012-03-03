@@ -1,24 +1,18 @@
 ;(function ($) {
-	$.loadQueue = function (options) {
-		var nbTries = 0;
-		
+	$.updateQueue = function (options) {
 		createSocket();
 	
 		function createSocket() {
 			try {
 				var socket = new WebSocket(options.url);
+				var nbTries = 0;
 			
 				socket.onopen = function (msg) {
+					socket.send('queueUpdated');
 					nbTries = 0;
 				};
-				socket.onmessage = function (e) {
-					if (!e.data)
-						return;
-					
-					options.loaded($.parseJSON(e.data));
-				};
+				
 				socket.onclose = recreateSocket;
-				socket.onerror = options.error;
 			} catch (ex) {
 				recreateSocket();
 			};	
@@ -30,4 +24,4 @@
 			nbTries++;
 		}
 	};
-}) (jQuery)
+}) (jQuery);

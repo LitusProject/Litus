@@ -16,11 +16,14 @@
 		<div class="container">
 			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
+				{% if hasAccess('sale', 'sale') %}
+					<li><a href="{{ url("sale_sale", {"action": "sale"}) }}">Sale</a></li>
+				{% endif %}
 				{% if hasAccess('queue', 'overview') %}
-					<li><a href="{{ url("sale", {"controller": "queue", "action": "overview", "session": session.getId()}) }}">Queue</a></li>
+					<li><a href="{{ url("sale_queue", {"action": "overview"}) }}">Queue</a></li>
 				{% endif %}
 				{% if hasAccess('queue', 'signin') %}
-					<li><a href="{{ url("sale", {"controller": "queue", "action": "signin", "session": session.getId()}) }}">Queue Sign In</a></li>
+					<li><a href="{{ url("sale_queue", {"action": "signin"}) }}">Queue Sign In</a></li>
 				{% endif %}
 			</ul>
 		</div>
