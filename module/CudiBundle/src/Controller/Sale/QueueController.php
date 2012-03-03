@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller;
+namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Sales\ServingQueueItem,
@@ -27,22 +27,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class QueueController extends \CudiBundle\Component\Controller\SaleController
 {
-
-	public function indexAction()
-	{
-		$this->forward()->dispatch(
-			'sale',
-			array(
-				'controller' => 'queue',
-				'action' => 'overview'
-			)
-		);
-	}
-
 	public function overviewAction()
 	{
 		return array(
-			'socketUrl' => $this->_getSocketUrl(),
+			'socketUrl' => $this->getSocketUrl(),
 		);
 	}
 
@@ -52,7 +40,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
         
         return array(
         	'form' => $form,
-        	'socketUrl' => $this->_getSocketUrl(),
+        	'socketUrl' => $this->getSocketUrl(),
         );
     }
     

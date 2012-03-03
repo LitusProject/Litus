@@ -60,4 +60,16 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $e->setResult($result);
         return $result;
     }
+    
+    protected function getSocketUrl()
+    {
+    	$address = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('cudi.queue_socket_remote_host');
+    	$port = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('cudi.queue_socket_port');
+    		
+    	return 'ws://' . $address . ':' . $port;
+    }
 }

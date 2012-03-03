@@ -4,15 +4,16 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
-				'cudi_config'		  => 'CudiBundle\Controller\Admin\ConfigController',
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
-				'sale'	              => 'CudiBundle\Controller\SaleController',
-				'queue'	              => 'CudiBundle\Controller\QueueController',
+				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
+				'sale'      	      => 'CudiBundle\Controller\Sale\IndexController',
+				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
+				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -23,7 +24,7 @@ return array(
                                 'collections' => array(
                                     'sale_css' => array(
                                     	'assets' => array(
-                                    		'sale/less/sale.less',
+                                    		'sale/less/base.less',
                                     	),
                                     	'filters' => array(
                                     		'sale_less' => array(
@@ -39,6 +40,11 @@ return array(
                                     	),
                                     	'options' => array(
                                             'output' => 'sale_css.css',
+                                        ),
+                                    ),
+                                    'queue_js' => array(
+                                        'assets'  => array(
+                                            'queue/js/*.js',
                                         ),
                                     ),
                                     'sale_js' => array(
@@ -255,7 +261,7 @@ return array(
 		'sale' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/sale[/:controller[/:action]]',
+				'route' => '/cudi/sale',
 				'constraints' => array(
 					'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -266,6 +272,34 @@ return array(
 					'action'     => 'index',
 				),
 			),
-		)
+		),
+		'sale_queue' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/cudi/sale/queue[/:action]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'sale_queue',
+					'action'     => 'overview',
+				),
+			),
+		),
+		'sale_sale' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/cudi/sale/sale[/:action]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'sale_sale',
+					'action'     => 'sale',
+				),
+			),
+		),
 	),
 );

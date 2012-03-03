@@ -1,0 +1,132 @@
+{% extends 'sale/base.twig' %}
+
+{% block content %}
+	<div class="flashmessage alert alert-error fade" id="loading_queue_error">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while loading the queue.</p>
+		</div>
+	</div>
+	
+	<div id="sale">
+		<div class="row wrapper">
+			<div class="span9 custumer">
+				<div class="row title">Current custumer:</div>
+				<div class="row name">Persoon</div>
+				<div class="row actions">
+					<button class="btn btn-primary showQueue">Queue</button>
+					<button class="btn btn-success">Sell</button>
+					<button class="btn btn-danger">Cancel</button>
+				</div>
+			</div>
+			<div class="span3 money">
+				<div class="total">
+					&euro; 50.30
+				</div>
+				<div>
+					Payed: &euro; 100.00
+				</div>
+				<div>
+					Change: &euro; 49.70
+				</div>
+			</div>
+		</div>
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Barcode</th>
+					<th>Title</th>
+					<th>Status</th>
+					<th>Number</th>
+					<th>Price</th>
+					<th class="actions">Action</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr class="inactive">
+					<td>6789</td>
+					<td>Inleiding tot ....</td>
+					<td>Niet Toegewezen</td>
+					<td>0/1</td>
+					<td>&euro; 4.50</td>
+					<td class="actions"></td>
+				</tr>
+				<tr>
+					<td>8765</td>
+					<td>Inleiding tot ....</td>
+					<td>Toegewezen</td>
+					<td>0/1</td>
+					<td>&euro; 5.50</td>
+					<td class="actions">
+						<button class="btn btn-success">Add</button>
+					</td>
+				</tr>
+				<tr>
+					<td>8765</td>
+					<td>Inleiding tot ....</td>
+					<td>Toegewezen</td>
+					<td>1/1</td>
+					<td>&euro; 5.50</td>
+					<td class="actions">
+						<button class="btn btn-danger">Remove</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="queueModal" class="modal fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Queue</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="number">Num</th>
+						<th class="name">Name</th>
+						<th class="status">Status</th>
+						<th class="actions">Action</th>
+					</tr>
+				</thead>
+				
+				<tbody id="queueList"></tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-success">Print next</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#queueModal').permanentModal('open');
+			
+			$('.showQueue').click(function () {
+				$('#queueModal').permanentModal('open', {closable: true});
+			});
+			
+			$('#queueList').showQueue({
+				url             : '{{ socketUrl }}',
+				errorDialog     : $('#loading_queue_error'),
+				statusTranslate : function (status) {
+					switch (status) {
+						case 'signed_in':
+							return 'Signed In';
+						case 'collecting':
+							return 'Collecting';
+						case 'collected':
+							return 'Collected';
+						case 'selling':
+							return 'Selling';
+						case 'hold':
+							return 'Hold';
+					}
+				}
+			});			
+		});
+	</script>
+{% endblock %}

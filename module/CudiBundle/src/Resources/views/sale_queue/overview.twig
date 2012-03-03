@@ -65,6 +65,7 @@
 	<script type="text/javascript">
 		$.loadQueue({
 			url    : '{{ socketUrl }}',
+			type   : 'fullQueue',
 			loaded : function (data) {
 				$('#loading_queue_error').removeClass('in');
 				displayItem($('#signed_in_list'), data.signed_in);

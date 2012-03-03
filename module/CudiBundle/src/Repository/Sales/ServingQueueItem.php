@@ -31,6 +31,29 @@ class ServingQueueItem extends EntityRepository
     	return 1;
     }
     
+    public function findAllBySession(SaleSession $session)
+    {
+    	$repStatus = $this->_em
+    		->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus');
+    		
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('i')
+    		->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
+    		->where($query->expr()->andX(
+    				$query->expr()->eq('i.session', ':session'),
+    				$query->expr()->neq('i.status', ':sold'),
+    				$query->expr()->neq('i.status', ':cancelled')
+    			)
+    		)
+    		->setParameter('session', $session->getId())
+    		->setParameter('sold', $repStatus->findOneByName('sold'))
+    		->setParameter('cancelled', $repStatus->findOneByName('cancelled'))
+    		->getQuery()
+    		->getResult();
+    	
+    	return $resultSet;
+    }
+    
     public function findAllByStatus(SaleSession $session, QueueStatus $status)
     {
 	    $query = $this->_em->createQueryBuilder();

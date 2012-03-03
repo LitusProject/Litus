@@ -13,17 +13,15 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller;
+namespace CudiBundle\Controller\Sale;
 
 /**
  * SaleController
  *
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SaleController extends \CudiBundle\Component\Controller\SaleController
+class IndexController extends \CudiBundle\Component\Controller\SaleController
 {
-    
     public function indexAction()
 	{
 		

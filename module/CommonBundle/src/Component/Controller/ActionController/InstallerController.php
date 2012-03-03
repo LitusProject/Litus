@@ -21,7 +21,7 @@ namespace CommonBundle\Component\Controller\ActionController;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class InstallerController extends \CommonBundle\Component\Controller\IActionController
+abstract class InstallerController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
 	 * Running all installation methods.
@@ -43,12 +43,12 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\IA
 	 *
 	 * @return void
 	 */
-	abstract private function _initConfig();
+	abstract protected function _initConfig();
 	
 	/**
 	 * Initializes the ACL tree for the bundle.
 	 *
 	 * @return void
 	 */
-	abstract private function _initAcl();
+	abstract protected function _initAcl();
 }

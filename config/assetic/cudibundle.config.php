@@ -62,13 +62,21 @@ return array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@sale_css',
-			'@sale_js',
 		),
-		'queue' => array(
+		'sale_sale' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@sale_css',
 			'@sale_js',
+			'@queue_js',
+			'@bootstrap_js_transition',
+			'@bootstrap_js_modal',
+		),
+		'sale_queue' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@sale_css',
+			'@queue_js',
 		),
 	),
 	'routes' => array(),

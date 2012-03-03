@@ -45,7 +45,7 @@
 		
 		
 		function signIn() {
-			$.post('{{ url ("sale", {"controller": "queue", "action": "addtoqueue"}) }}', {username: $('#username').val()}, function (data) {
+			$.post('{{ url ("sale_queue", {"action": "addtoqueue"}) }}', {username: $('#username').val()}, function (data) {
 				if ('person' == data.error) {
 					$('#add_queue_error, #add_queue_success').removeClass('in');
 					$('#add_queue_error_person').addClass('in');

@@ -13,6 +13,7 @@ return array(
     'CommonBundle\Component\Authentication\Result'                                     => __DIR__ . '/src/Component/Authentication/Result.php',
     'CommonBundle\Component\Authentication\Service\Doctrine'                           => __DIR__ . '/src/Component/Authentication/Service/Doctrine.php',
     'CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException' => __DIR__ . '/src/Component/Authentication/Service/Exception/InvalidArgumentException.php',
+    'CommonBundle\Component\Controller\ActionController\InstallerController'           => __DIR__ . '/src/Component/Controller/ActionController/InstallerController.php',
     'CommonBundle\Component\Controller\ActionController'                               => __DIR__ . '/src/Component/Controller/ActionController.php',
     'CommonBundle\Component\Controller\AuthenticationAware'                            => __DIR__ . '/src/Component/Controller/AuthenticationAware.php',
     'CommonBundle\Component\Controller\DoctrineAware'                                  => __DIR__ . '/src/Component/Controller/DoctrineAware.php',

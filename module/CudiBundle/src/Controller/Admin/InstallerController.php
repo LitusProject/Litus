@@ -30,9 +30,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ConfigController extends \CommonBundle\Component\Controller\ActionController
+class InstallerController extends \CommonBundle\Component\Controller\ActionController\InstallerController
 {
-	public function indexAction()
+	protected function _initConfig()
 	{
 		$this->_installConfig();
 		$this->_installServingQueueStatus();
@@ -41,10 +41,11 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 		$this->_installSupplier();
 		$this->_installBinding();
 		$this->_installColor();
-		
-		return array(
-			'installReady' => true,
-		);
+	}
+	
+	protected function _initAcl()
+	{
+	
 	}
 	
 	private function _installConfig()
