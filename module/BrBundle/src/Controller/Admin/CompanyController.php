@@ -21,6 +21,11 @@ use BrBundle\Entity\Company,
 	CommonBundle\Entity\Users\People\Corporate as CorporatePerson,
 	CommonBundle\Entity\Users\Statuses\Corporate as CorporateStatus;
 
+/**
+ * CompanyController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class CompanyController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()

@@ -20,6 +20,12 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_section' => array(
+			'@common_jquery',
+			'@common_jqueryui',
+		    '@admin_css',
+		    '@admin_js',
+		),
 	),
 	'routes' => array(),
 );

@@ -19,6 +19,7 @@ return array(
         'instance' => array(
             'alias'           => array(
 				'admin_company' => 'BrBundle\Controller\Admin\CompanyController',
+				'admin_section' => 'BrBundle\Controller\Admin\SectionController',
           	),
           	'doctrine_config' => array(
           	    'parameters' => array(
@@ -41,6 +42,21 @@ return array(
 	            ),
 	            'defaults' => array(
 	                'controller' => 'admin_company',
+	                'action'     => 'manage',
+	            ),
+	        ),
+	    ),
+	    'admin_section' => array(
+	        'type'    => 'Zend\Mvc\Router\Http\Segment',
+	        'options' => array(
+	            'route'    => '/admin/section[/:action[/:id[/:confirm]]]',
+	            'constraints' => array(
+	            	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+	            	'id'      => '[0-9]*',
+	            	'confirm' => '[01]',
+	            ),
+	            'defaults' => array(
+	                'controller' => 'admin_section',
 	                'action'     => 'manage',
 	            ),
 	        ),

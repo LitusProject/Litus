@@ -1,31 +1,47 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Admin;
+namespace BrBundle\Controller\Admin;
 
-use \Admin\Form\Section\Add as AddForm;
-use \Admin\Form\Section\Edit as EditForm;
+use BrBundle\Entity\Contracts\Section,
+	BrBundle\Form\Admin\Section\Add as AddForm,
+	BrBundle\Form\Admin\Section\Edit as EditForm;
 
-use \Litus\Entity\Br\Contracts\Section;
-
-use \Zend\Paginator\Paginator;
-use \Zend\Paginator\Adapter\ArrayAdapter;
-use \Zend\Registry;
-
-class SectionController extends \Litus\Controller\Action
+/**
+ * SectionController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class SectionController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function init()
-    {
-        parent::init();
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('add');
-    }
+	public function manageAction()
+	{
+	    $paginator = $this->paginator()->createFromEntity(
+	        'BrBundle\Entity\Contracts\Section',
+	        $this->getParam('page')
+	    );
+	    
+	    return array(
+	    	'paginator' => $paginator,
+	    	'paginationControl' => $this->paginator()->createControl(true)
+	    );
+	}
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         $this->view->form = $form;
         $this->view->sectionCreated = false;
@@ -53,11 +69,6 @@ class SectionController extends \Litus\Controller\Action
                 $this->view->sectionCreated = true;
             }
         }
-    }
-
-    public function manageAction()
-    {
-        $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contracts\Section');
     }
 
     public function editAction()
