@@ -1,24 +1,44 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
-namespace Admin\Form\Section;
+namespace BrBundle\Form\Admin\Section;
 
-use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Form\Admin\Decorator\FieldDecorator;
-use \Litus\Application\Resource\Doctrine as DoctrineResource;
-use \Litus\Entity\Br\Contracts\Section;
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	BrBundle\Entity\Contracts\Section,
+	Doctrine\ORM\EntityManager,
+	Zend\Form\Form,
+	Zend\Form\Element\Select,
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text,
+	Zend\Form\Element\Textarea;
 
-use \Zend\Form\Form;
-use \Zend\Form\Element\Select;
-use \Zend\Form\Element\Submit;
-use \Zend\Form\Element\Text;
-use \Zend\Form\Element\Textarea;
-use \Zend\Registry;
-
-class Add extends \Litus\Form\Admin\Form
+/**
+ * Add a section.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+	 * @param mixed $opts The validator's options
+	 */
+    public function __construct(EntityManager $entityManager, $opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($opts);
 
         $field = new Text('name');
         $field->setLabel('Name')
@@ -36,7 +56,7 @@ class Add extends \Litus\Form\Admin\Form
 		$field = new Select('vat_type');
 		$field->setLabel('VAT Type')
 		    ->setRequired()
-			->setMultiOptions($this->_getVatTypes())
+			->setMultiOptions($this->_getVatTypes($entityManager))
 			->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -59,11 +79,15 @@ class Add extends \Litus\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-
-	private function _getVatTypes()
+	
+	/**
+	 * Retrieve the different VAT types applicable.
+	 *
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+	 */
+	private function _getVatTypes(EntityManager $entityManager)
 	{
-        $types =  Registry::get(DoctrineResource::REGISTRY_KEY)
-            ->getRepository('Litus\Entity\General\Config')
+        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
 
         $typesArray = array();
