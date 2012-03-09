@@ -4,14 +4,7 @@
 	<div class="flashmessage alert alert-error fade" id="add_queue_error">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while adding you to the queue.</p>
-		</div>
-	</div>
-	
-	<div class="flashmessage alert alert-error fade" id="add_queue_error_person">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>The person you entered does not exist.</p>
+			<p>There are no bookings for you.</p>
 		</div>
 	</div>
 	
@@ -19,6 +12,13 @@
 		<div class="title">Success</div>
 		<div class="content">
 			<p>You are succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong></p>
+		</div>
+	</div>
+	
+	<div class="flashmessage alert alert-error fade" id="socket_error">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>The connection with the server is down.</p>
 		</div>
 	</div>
 	
@@ -43,28 +43,44 @@
 			});
 		});
 		
-		
-		function signIn() {
-			$.post('{{ url ("sale_queue", {"action": "addtoqueue"}) }}', {username: $('#username').val()}, function (data) {
-				if ('person' == data.error) {
-					$('#add_queue_error, #add_queue_success').removeClass('in');
-					$('#add_queue_error_person').addClass('in');
-				} else if (data.queueNumber) {
-					$('#add_queue_error, #add_queue_error_person').removeClass('in');
-					$('#add_queue_success').addClass('in')
-						.find('.queueNumber').html(data.queueNumber);
-					$('#username').val('');
-					$.updateQueue({url: '{{ socketUrl }}'});
-				} else {
-					$('#add_queue_error_person, #add_queue_success').removeClass('in');
-					$('#add_queue_error').addClass('in');
+		$.webSocket(
+			{
+				name: 'signinQueue',
+				url: '{{ socketUrl }}',
+				open: function (e) {
+					$('#socket_error').removeClass('in');
+				},
+				message: function (e, data) {
+					if (data.queueNumber) {
+						$('#add_queue_error').removeClass('in');
+						$('#add_queue_success').addClass('in')
+							.find('.queueNumber').html(data.queueNumber);
+						$('#username').val('');
+					} else if (data.error) {
+						if ('person' == data.error) {
+							$('#add_queue_success').removeClass('in');
+							$('#add_queue_error').addClass('in')
+								.find('.content').html('The person you entered does not exist.');
+						} else if ('noBookings' == data.error) {
+							$('#add_queue_success').removeClass('in');
+							$('#add_queue_error').addClass('in')
+								.find('.content').html('There are no bookings for you.');
+						} else {
+							$('#add_queue_success').removeClass('in');
+							$('#add_queue_error').addClass('in')
+								.find('.content').html('An unexpected error occured.')
+						}
+					}
+					$('.flashmessage').autoHideFlashMessages();
+				},
+				error: function (e) {
+					$('#socket_error').addClass('in');
 				}
-				$('.flashmessage').autoHideFlashMessages();
-			}, 'json').error(function () {
-				$('#add_queue_error_person, #add_queue_success').removeClass('in');
-				$('#add_queue_error').addClass('in');
-				$('.flashmessage').autoHideFlashMessages();
-			});
+			}
+		);
+			
+		function signIn() {
+			$.webSocket('send', {name: 'signinQueue', text: 'action: addToQueue ' + $('#username').val()});
 		}
 	</script>
 {% endblock %}

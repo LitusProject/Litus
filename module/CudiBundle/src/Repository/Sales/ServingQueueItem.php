@@ -48,6 +48,7 @@ class ServingQueueItem extends EntityRepository
     		->setParameter('session', $session->getId())
     		->setParameter('sold', $repStatus->findOneByName('sold'))
     		->setParameter('cancelled', $repStatus->findOneByName('cancelled'))
+	    	->orderBy('i.queueNumber', 'ASC')
     		->getQuery()
     		->getResult();
     	
@@ -66,6 +67,7 @@ class ServingQueueItem extends EntityRepository
 	    	)
 	    	->setParameter('session', $session->getId())
 	    	->setParameter('status', $status->getId())
+	    	->orderBy('i.queueNumber', 'ASC')
 	    	->getQuery()
 	    	->getResult();
 	    

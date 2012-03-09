@@ -16,6 +16,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
+	CudiBundle\Entity\Sales\ServingQueueStatus,
 	CudiBundle\Entity\Sales\Session,
 	Doctrine\ORM\EntityManager;
 
@@ -94,6 +95,17 @@ class ServingQueueItem
     public function getPerson()
     {
         return $this->person;
+    }
+    
+    /**
+     * @param CudiBundle\Entity\Sales\ServingQueueStatus $status
+     *
+	 * @return CudiBundle\Entity\Sales\ServingQueueItem
+     */
+    public function setStatus(ServingQueueStatus $status)
+    {
+    	$this->status = $status;
+        return $this;
     }
 	
 	/**

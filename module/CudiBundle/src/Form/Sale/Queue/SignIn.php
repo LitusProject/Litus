@@ -13,10 +13,9 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Queue;
+namespace CudiBundle\Form\Sale\Queue;
 
-use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
-	CommonBundle\Component\Form\Bootstrap\Element\Reset,
+use CommonBundle\Component\Form\Bootstrap\Element\Reset,
 	CommonBundle\Component\Form\Bootstrap\Element\Button,
 	CommonBundle\Component\Form\Bootstrap\Element\Text;
 	
@@ -29,7 +28,8 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('username');
         $field->setLabel('Student Number')
             ->setRequired()
-			->setAttrib('id', 'username');
+			->setAttrib('id', 'username')
+			->setAttrib('autocomplete', 'off');
         $this->addElement($field);
       	
         $field = new Button('submit');

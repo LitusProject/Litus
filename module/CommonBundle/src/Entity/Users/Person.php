@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Entity\Users;
 
-use CommonBundle\Entity\Acl\Role,
+use CommonBundle\Component\Util\AcademicYear,
+	CommonBundle\Entity\Acl\Role,
  	CommonBundle\Entity\Users\Credential,
 	Doctrine\Common\Collections\ArrayCollection;
 
@@ -439,4 +440,16 @@ abstract class Person
         $this->canLogin = false;
         return $this;
     }
+    
+   /**
+    * @return boolean
+    */
+   public function isMember()
+   {
+   	foreach ($this->unionStatuses as $status) {
+   		if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
+   			return true;
+   	}
+   	return false;
+   }
 }

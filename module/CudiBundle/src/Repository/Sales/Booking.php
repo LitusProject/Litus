@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\Users\Person,
+	CudiBundle\Entity\Article,
+	Doctrine\ORM\EntityRepository,
 	Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -38,7 +40,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 
-	public function findAllBookedByArticle($article, $order = 'DESC')
+	public function findAllBookedByArticle(Article $article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -56,7 +58,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllAssignedByArticle($article, $order = 'DESC')
+	public function findAllAssignedByArticle(Article $article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -74,7 +76,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllSoldByArticle($article, $order = 'DESC')
+	public function findAllSoldByArticle(Article $article, $order = 'DESC')
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -104,7 +106,38 @@ class Booking extends EntityRepository
 		}
 	}
 	
-	public function findAllByPerson($name)
+	public function findAllByPerson(Person $person)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
+			->where($query->expr()->eq('b.person', ':person'))
+			->setParameter(':person', $person->getId())
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllOpenByPerson(Person $person)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
+			->where($query->expr()->andX(
+					$query->expr()->eq('b.person', ':person'),
+					$query->expr()->neq('b.status', '\'sold\''),
+					$query->expr()->neq('b.status', '\'expired\'')
+				)
+			)
+			->setParameter(':person', $person->getId())
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllByPersonName($name)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -159,5 +192,28 @@ class Booking extends EntityRepository
 			->getResult();
 			
 		return $resultSet;
+	}
+	
+	public function findOneSoldByPersonAndArticle(Person $person, Article $article)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
+			->where($query->expr()->andX(
+					$query->expr()->eq('b.person', ':person'),
+					$query->expr()->eq('b.article', ':article'),
+					$query->expr()->eq('b.status', '\'sold\'')
+				)
+			)
+			->setParameter('person', $person->getId())
+			->setParameter('article', $article->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+			return $resultSet[0];
+		
+		return null;
 	}
 }

@@ -17,7 +17,10 @@
 		
 		.actions {
 			width: 200px;
-			padding: 3px 8px;
+			
+			.hold {
+				float: right;
+			}
 		}
 		
 		thead {
@@ -28,6 +31,10 @@
 			max-height: 300px;
 			overflow: auto;
 			display: block;
+			
+			.actions {
+				padding: 3px 8px;
+			}
 		}
 	}
 }
@@ -36,13 +43,17 @@
 	.table {
 		thead {
 			.actions {
-				width: 60px;
+				width: 130px;
 			}
 		}
 		
 		tbody {
 			.actions {
 				padding: 3px 8px;
+				
+				.removeArticle {
+					float: right;
+				}
 			}
 			
 			tr.inactive {

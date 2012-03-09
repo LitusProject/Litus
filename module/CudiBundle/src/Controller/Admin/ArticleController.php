@@ -71,7 +71,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 							$this->getEntityManager(),
 		                	$formData['title'],
 	                        $metaInfo,
-	                        $formData['purchaseprice'],
+	                        $formData['purchase_price'],
 	                        $formData['sellprice_nomember'],
 	                        $formData['sellprice_member'],
 		 					$formData['barcode'],
