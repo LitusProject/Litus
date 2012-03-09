@@ -108,7 +108,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 			case 'person':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByPerson($this->getParam('string'));
+					->findAllByPersonName($this->getParam('string'));
 				break;
 			case 'article':
 				$bookings = $this->getEntityManager()

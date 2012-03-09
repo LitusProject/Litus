@@ -67,6 +67,11 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+		if (! is_numeric($value)) {
+			$this->error(self::NOT_VALID);
+			return false;
+		}
+		
 		$article = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
 			->findOneByBarcode($value);
@@ -74,7 +79,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
        	if (null === $article || in_array($article->getId(), $this->_ignoreIds))
             return true;
 
-        $this->_error(self::NOT_VALID);
+        $this->error(self::NOT_VALID);
         return false;
     }
 }

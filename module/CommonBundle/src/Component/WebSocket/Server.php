@@ -140,6 +140,7 @@ class Server
 	private function _removeUserSocket($socket)
 	{
 		foreach($this->_users as $key => $value) {
+			$this->onClose($value, 0, '');
 			if ($value->getSocket() == $socket)
 				unset($this->_users[$key]);
 		}

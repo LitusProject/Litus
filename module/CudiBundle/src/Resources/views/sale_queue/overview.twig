@@ -63,21 +63,26 @@
 
 {% block controller_script %}
 	<script type="text/javascript">
-		$.loadQueue({
-			url    : '{{ socketUrl }}',
-			type   : 'fullQueue',
-			loaded : function (data) {
-				$('#loading_queue_error').removeClass('in');
-				displayItem($('#signed_in_list'), data.signed_in);
-				displayItem($('#collecting_list'), data.collecting);
-				displayItem($('#collected_list'), data.collected);
-				displayItem($('#selling_list'), data.selling);
-			},
-			error  : function () {
-				$('#loading_queue_error').addClass('in');
-				$('.queue_list').html('');
+		$.webSocket(
+			{
+				name: 'overviewQueue',
+				url: '{{ socketUrl }}',
+				open: function (e) {
+					$.webSocket('send', {name: 'overviewQueue', text: 'queue-type: fullQueue'});
+				},
+				message: function (e, data) {
+					$('#loading_queue_error').removeClass('in');
+					displayItem($('#signed_in_list'), data.queue.signed_in);
+					displayItem($('#collecting_list'), data.queue.collecting);
+					displayItem($('#collected_list'), data.queue.collected);
+					displayItem($('#selling_list'), data.queue.selling);
+				},
+				error: function (e) {
+					$('#loading_queue_error').addClass('in');
+					$('.queue_list').html('');
+				}
 			}
-		});
+		);
 		
 		function displayItem(container, data) {
 			container.html('');

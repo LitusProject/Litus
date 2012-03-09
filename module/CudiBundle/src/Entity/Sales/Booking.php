@@ -165,6 +165,17 @@ class Booking
 	}
 	
 	/**
+	 * @param integer $number
+	 * 
+	 * @return CudiBundle\Entity\Sales\Booking
+	 */
+	public function setNumber($number)
+	{
+		$this->number = $number;
+		return $this;
+	}
+	
+	/**
 	 * @return \DateTime
 	 */
 	public function getBookDate()

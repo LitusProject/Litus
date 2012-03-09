@@ -60,6 +60,11 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
+        
+        if (! is_numeric($value)) {
+        	$this->error(self::NOT_VALID);
+        	return false;
+        }
 
 		$article = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
@@ -68,7 +73,7 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
         if (null !== $article)
             return true;
 
-        $this->_error(self::NOT_VALID);
+        $this->error(self::NOT_VALID);
         return false;
     }
 }

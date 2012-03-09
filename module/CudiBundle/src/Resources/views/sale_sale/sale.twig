@@ -12,22 +12,22 @@
 		<div class="row wrapper">
 			<div class="span9 custumer">
 				<div class="row title">Current custumer:</div>
-				<div class="row name">Persoon</div>
+				<div class="row name">&nbsp;</div>
 				<div class="row actions">
-					<button class="btn btn-primary showQueue">Queue</button>
-					<button class="btn btn-success">Sell</button>
-					<button class="btn btn-danger">Cancel</button>
+					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">Queue - F8</button>
+					<button class="btn btn-success concludeSelling" data-key="120" data-dismiss="key">Sell - F9</button>
+					<button class="btn btn-danger cancelSelling" data-key="121" data-dismiss="key">Cancel - F10</button>
 				</div>
 			</div>
 			<div class="span3 money">
 				<div class="total">
-					&euro; 50.30
+					&euro; <span id="totalMoney">0.00</span>
 				</div>
 				<div>
-					Payed: &euro; 100.00
+					Payed: &euro; <span id="payedMoney">0.00</span>
 				</div>
 				<div>
-					Change: &euro; 49.70
+					Change: &euro; <span id="changeMoney">0.00</span>
 				</div>
 			</div>
 		</div>
@@ -43,37 +43,49 @@
 				</tr>
 			</thead>
 			
-			<tbody>
-				<tr class="inactive">
-					<td>6789</td>
-					<td>Inleiding tot ....</td>
-					<td>Niet Toegewezen</td>
-					<td>0/1</td>
-					<td>&euro; 4.50</td>
-					<td class="actions"></td>
-				</tr>
-				<tr>
-					<td>8765</td>
-					<td>Inleiding tot ....</td>
-					<td>Toegewezen</td>
-					<td>0/1</td>
-					<td>&euro; 5.50</td>
-					<td class="actions">
-						<button class="btn btn-success">Add</button>
-					</td>
-				</tr>
-				<tr>
-					<td>8765</td>
-					<td>Inleiding tot ....</td>
-					<td>Toegewezen</td>
-					<td>1/1</td>
-					<td>&euro; 5.50</td>
-					<td class="actions">
-						<button class="btn btn-danger">Remove</button>
-					</td>
-				</tr>
-			</tbody>
+			<tbody class="articles"></tbody>
 		</table>
+		
+		<div id="modalCancelSelling" class="modal fade">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">&times;</a>
+				<h3>Cancel Selling</h3>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to cancel this selling? All changes will be lost.
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger confirmCancel" data-key="122">Ok - F11</button>
+				<button class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+		
+		<div id="modalConcludeSelling" class="modal fade">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">&times;</a>
+				<h3>Confirm Selling</h3>
+			</div>
+			<div class="modal-body">
+				Do you want to confirm the selling? After this it cannot be undone.
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-success confirmConclude" data-key="122">Ok - F11</button>
+				<button class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+		
+		<div id="modalUnableToAdd" class="modal fade">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">&times;</a>
+				<h3>Error</h3>
+			</div>
+			<div class="modal-body">
+				The article can not be sold. It was not booked or assigned. 
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
 	</div>
 	<div id="queueModal" class="modal fade">
 		<div class="modal-header">
@@ -95,18 +107,22 @@
 			</table>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-success">Print next</button>
+			<button id="startCollectingNext" class="btn btn-success" data-key="118">Print next - F7</button>
 		</div>
 	</div>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
+		$('#queueModal').permanentModal('open');
+
 		$(document).ready(function () {
-			$('#queueModal').permanentModal('open');
-			
 			$('.showQueue').click(function () {
 				$('#queueModal').permanentModal('open', {closable: true});
+			});
+			
+			$('#startCollectingNext').click(function () {
+				$('#queueList .startCollecting:first').click();
 			});
 			
 			$('#queueList').showQueue({
@@ -125,6 +141,24 @@
 						case 'hold':
 							return 'Hold';
 					}
+				},
+				openSale		: function (socketName, data) {
+					$('#sale').sale({
+						socketName: socketName,
+						data: data,
+						modal: $('#queueModal'),
+						statusTranslate: function (status) {
+							switch (status) {
+								case 'booked':
+									return 'Not Assigned';
+								case 'assigned':
+									return 'Assigned';
+							}
+						}
+					});
+				},
+				closeSale		: function () {
+					$('#sale').sale('close');
 				}
 			});			
 		});

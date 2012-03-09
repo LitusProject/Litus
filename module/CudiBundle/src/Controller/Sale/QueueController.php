@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Sales\ServingQueueItem,
-	CudiBundle\Form\Queue\SignIn as SignInForm;
+	CudiBundle\Form\Sale\Queue\SignIn as SignInForm;
 
 /**
  * QueueController
@@ -42,45 +42,5 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
         	'form' => $form,
         	'socketUrl' => $this->getSocketUrl(),
         );
-    }
-    
-    public function addtoqueueAction ()
-    {
-    	$this->initAjax();
-    	    	
-    	$person = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\Users\Person')
-    		->findOneByUsername($this->getRequest()->post()->get('username'));
-
-    	if (null == $person) {
-    		return array(
-    			'result' => array('error' => 'person')
-    		);
-    	}
-    	
-    	$session = $this->getEntityManager()
-    		->getRepository('CudiBundle\Entity\Sales\Session')
-    		->findOpenSession();
-    	
-    	$queueItem = new ServingQueueItem($this->getEntityManager(), $person, $session);
-    	
-    	$this->getEntityManager()->persist($queueItem);
-    	$this->getEntityManager()->flush();
-    	
-    	return array(
-    		'result' => array('queueNumber' => $queueItem->getQueueNumber())
-    	);
-    }
-    
-    private function _getSocketUrl()
-    {
-    	$address = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_remote_host');
-    	$port = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_port');
-    		
-    	return 'ws://' . $address . ':' . $port;
     }
 }
