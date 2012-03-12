@@ -17,16 +17,24 @@
 			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
 				{% if hasAccess('sale_sale', 'sale') %}
-					<li {% if 'sale' == getParam('action') and 'sale_sale' == getParam('controller') %} class="active" {% endif %}><a href="{{ url("sale_sale", {"action": "sale"}) }}">Sale</a></li>
+					<li {% if 'sale' == getParam('action') and 'sale_sale' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("sale_sale", {"action": "sale"}) }}">Sale</a>
+					</li>
 				{% endif %}
 				{% if hasAccess('sale_sale', 'return') %}
-					<li {% if 'return' == getParam('action') and 'sale_sale' == getParam('controller') %} class="active" {% endif %}><a href="{{ url("sale_sale", {"action": "return"}) }}">Return</a></li>
+					<li {% if 'return' == getParam('action') and 'sale_sale' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("sale_sale", {"action": "return"}) }}">Return</a>
+					</li>
 				{% endif %}
 				{% if hasAccess('sale_queue', 'overview') %}
-					<li {% if 'overview' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}><a href="{{ url("sale_queue", {"action": "overview"}) }}">Queue</a></li>
+					<li {% if 'overview' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("sale_queue", {"action": "overview"}) }}">Queue</a>
+					</li>
 				{% endif %}
 				{% if hasAccess('sale_queue', 'signin') %}
-					<li {% if 'signin' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}><a href="{{ url("sale_queue", {"action": "signin"}) }}">Queue Sign In</a></li>
+					<li {% if 'signin' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("sale_queue", {"action": "signin"}) }}">Queue Sign In</a>
+					</li>
 				{% endif %}
 			</ul>
 		</div>

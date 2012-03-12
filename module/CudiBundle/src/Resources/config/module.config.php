@@ -258,25 +258,10 @@ return array(
 				),
 			),
 		),
-		'sale' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/sale',
-				'constraints' => array(
-					'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'sale',
-					'action'     => 'index',
-				),
-			),
-		),
 		'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/sale/queue[/:action]',
+				'route' => '/cudi/queue[/:action]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
@@ -290,7 +275,7 @@ return array(
 		'sale_sale' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/sale/sale[/:action]',
+				'route' => '/cudi/sale[/:action]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
