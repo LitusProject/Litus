@@ -32,6 +32,7 @@ class ReturnBooking extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Student Number')
             ->setRequired()
 			->setAttrib('autocomplete', 'off')
+			->setAttrib('placeholder', "Student Number")
 			->addValidator(new UsernameValidator($entityManager));
         $this->addElement($field);
         
@@ -39,6 +40,7 @@ class ReturnBooking extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Article')
             ->setRequired()
         	->setAttrib('autocomplete', 'off')
+			->setAttrib('placeholder', "Article Barcode")
         	->addValidator(new ArticleBarcodeValidator($entityManager));
         $this->addElement($field);
       	

@@ -29,6 +29,7 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Student Number')
             ->setRequired()
 			->setAttrib('id', 'username')
+			->setAttrib('placeholder', "Student Number")
 			->setAttrib('autocomplete', 'off');
         $this->addElement($field);
       	

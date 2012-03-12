@@ -29,7 +29,7 @@
 				});
 						
 			$(window).unload(function(){
-				$.webSocket('close');
+				$.webSocket('close', settings);
 			});
 			
 			$(document).data(settings.name, ws);
