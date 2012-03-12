@@ -1,42 +1,110 @@
 (function ($) {
-	$('body').data('calculateChange', {
+	var defaults = {
+		clearTime: 5000,
+		changeField: null,
+		totalMoney: 0,
 		timer: null,
-		buffer: 0
-	});
-	
-	$('body').bind('keydown.calculateChange', function (e) {
-		if (e.which >= 48 && e.which <= 57) {
-			setBuffer(getBuffer() * 10 + (e.which - 48));
-			$('#payedMoney').html((getBuffer() / 100).toFixed(2)).data('value', getBuffer());
-			calculateChange();
-			$('#totalMoney').change(calculateChange);
+		value: 0,
+	};
+ 	
+	var methods = {
+		clear: function () {
+			_clear($(this));
+			return this;
+		},
+		clearBuffer: function () {
+			_clearBuffer($(this));
+			return this;
+		},
+		init: function (options) {
+			var settings = $.extend(defaults, options);
+			var $this = $(this);
 			
-			clearTimeout($('body').data('calculateChange').timer);
-			var timer = setTimeout(clearBuffer, 5000);
-			$('body').data('calculateChange').timer = timer;
-		} else if (e.which == 67) {
-			clearBuffer();
-			$('#payedMoney').html((getBuffer() / 100).toFixed(2)).data('value', getBuffer());
-			calculateChange();
+			$(this).data('calculateChange', settings);
+			_init($(this));
+		    
+			return this;
+		},
+		update: function () {
+			_update($(this));
+			return this;
+		},
+	};
+	
+	$.fn.calculateChange = function (method) {
+		if ( methods[ method ] ) {
+			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on $.calculateChange' );
 		}
+	};
+	
+	function _clear ($this) {
+	    if ($this.data('calculateChange'))
+	        $this.data('calculateChange').value = 0;
+	    
+	    _clearBuffer($this);
+	    _update($this);
+	}
+	
+	function _clearBuffer ($this) {
+	    if (! $this.data('calculateChange'))
+	        return;
+	    
+	    clearTimeout($this.data('calculateChange').timer);
+	    $this.data('calculateChange').timer = null;
+	    $this.data('calculateChange').value = 0;
+	}
+	
+	function _getNumericValue(keyCode) {
+		if (! _isNumericKey(keyCode))
+			return;
 		
-		function clearBuffer () {
-			setBuffer(0);
-		}
-		
-		function getBuffer () {
-			var buffer = $('body').data('calculateChange');
-			return buffer ? buffer.buffer : 0;
-		}
-		
-		function setBuffer (value) {
-			$('body').data('calculateChange').buffer = value;
-		}
-		
-		function calculateChange () {
-			$('#payedMoney').data('value') == 0 ?
-				$('#changeMoney').html((0).toFixed(2)):
-				$('#changeMoney').html((($('#payedMoney').data('value') - $('#totalMoney').data('value')) / 100 ).toFixed(2));
-		}
-	});
+		if (keyCode <= 57)
+			return (keyCode - 48);
+		else
+			return (keyCode - 96);
+	}
+	
+	function _init ($this) {
+	    _clear($this);
+	    	    
+	    $this.unbind('keydown').bind('keydown', function (e) {
+	        e.preventDefault();
+	        
+	        if (e.keyCode == 67) {
+	            _clear($this);
+	            return;
+	        }
+	        
+	        if (! _isNumericKey(e.keyCode))
+	            return;
+
+	        $this.data('calculateChange').value = $this.data('calculateChange').value * 10 + _getNumericValue(e.keyCode);
+	        _update($this);
+	        
+	        if ($this.data('calculateChange').timer)
+	        	clearTimeout($this.data('calculateChange').timer);
+	        
+	        $this.data('calculateChange').timer = setTimeout(function () {
+	        	_clearBuffer($this);
+	        }, $this.data('calculateChange').clearTime);
+	    });
+	}
+	
+	function _isNumericKey(keyCode) {
+		return (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105);
+	}
+	
+	function _update ($this) {
+	    var data = $this.data('calculateChange');
+	    
+	    $this.val((data.value / 100).toFixed(2));
+	    
+		data.value == 0 ?
+			data.changeField.html((0).toFixed(2)):
+			data.changeField.html(((data.value - data.totalMoney) / 100 ).toFixed(2));
+	}
 }) (jQuery);

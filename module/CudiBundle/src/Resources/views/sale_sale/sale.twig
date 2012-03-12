@@ -14,20 +14,23 @@
 				<div class="row title">Current custumer:</div>
 				<div class="row name">&nbsp;</div>
 				<div class="row actions">
-					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">Queue - F8</button>
-					<button class="btn btn-success concludeSelling" data-key="120" data-dismiss="key">Sell - F9</button>
-					<button class="btn btn-danger cancelSelling" data-key="121" data-dismiss="key">Cancel - F10</button>
+					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
+					    <i class="icon-eye-open icon-white"></i>
+					    Queue - F8
+					</button>
+					<button class="btn btn-success concludeSelling" data-key="120" data-dismiss="key">
+					    <i class="icon-shopping-cart icon-white"></i>
+					    Sell - F9
+					</button>
+					<button class="btn btn-danger cancelSelling" data-key="121" data-dismiss="key">
+					    <i class="icon-remove icon-white"></i>
+					    Cancel - F10
+					</button>
 				</div>
 			</div>
 			<div class="span3 money">
 				<div class="total">
 					&euro; <span id="totalMoney">0.00</span>
-				</div>
-				<div>
-					Payed: &euro; <span id="payedMoney">0.00</span>
-				</div>
-				<div>
-					Change: &euro; <span id="changeMoney">0.00</span>
 				</div>
 			</div>
 		</div>
@@ -66,7 +69,28 @@
 				<h3>Confirm Selling</h3>
 			</div>
 			<div class="modal-body">
-				Do you want to confirm the selling? After this it cannot be undone.
+				<p>Do you want to confirm the selling? After this it cannot be undone.</p>
+				<h4>Calculate change:</h4>
+				<form class="form-horizontal">
+				    <div class="control-group">
+                        <label class="control-label" for="payedMoney">Payed: </label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on">&euro;</span>
+                                <input class="input-large" id="payedMoney" type="text" placeholder="Payed" autofocus>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Change: </label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on">&euro;</span>
+                                <span class="input-large uneditable-input" id="changeMoney">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+    			</form>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-success confirmConclude" data-key="122">Ok - F11</button>
@@ -107,15 +131,16 @@
 			</table>
 		</div>
 		<div class="modal-footer">
-			<button id="startCollectingNext" class="btn btn-success" data-key="118">Print next - F7</button>
+			<button id="startCollectingNext" class="btn btn-success" data-key="118">
+			    <i class="icon-print icon-white"></i>
+			    Print next - F7
+			</button>
 		</div>
 	</div>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
-		$('#queueModal').permanentModal('open');
-
 		$(document).ready(function () {
 			$('.showQueue').click(function () {
 				$('#queueModal').permanentModal('open', {closable: true});
@@ -125,10 +150,26 @@
 				$('#queueList .startCollecting:first').click();
 			});
 			
+			$('body').barcodeControl();
+			
+			$('#queueModal').on('shown', function () {
+			    $('body').barcodeControl('option', {
+			        onBarcode: function (value) {
+			            $('#queueList').showQueue('gotBarcode', value);
+			        }
+			    });
+			}).on('hidden', function () {
+			    $('body').barcodeControl('option', {
+			        onBarcode: function (value) {
+			            $('#sale').sale('gotBarcode', value);
+			        }
+			    });
+			}).permanentModal('open');
+						
 			$('#queueList').showQueue({
-				url             : '{{ socketUrl }}',
-				errorDialog     : $('#loading_queue_error'),
-				statusTranslate : function (status) {
+				url: '{{ socketUrl }}',
+				errorDialog: $('#loading_queue_error'),
+				statusTranslate: function (status) {
 					switch (status) {
 						case 'signed_in':
 							return 'Signed In';
@@ -142,8 +183,8 @@
 							return 'Hold';
 					}
 				},
-				openSale		: function (socketName, data) {
-					$('#sale').sale({
+				openSale: function (socketName, data) {
+				    $('#sale').sale({
 						socketName: socketName,
 						data: data,
 						modal: $('#queueModal'),
@@ -157,10 +198,13 @@
 						}
 					});
 				},
-				closeSale		: function () {
+				closeSale: function () {
 					$('#sale').sale('close');
+				},
+				isSelling: function () {
+				    return $('#sale').data('saleSettings') ? true : false;
 				}
-			});			
+			});		
 		});
 	</script>
 {% endblock %}

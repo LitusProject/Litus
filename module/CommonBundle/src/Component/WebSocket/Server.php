@@ -140,9 +140,9 @@ class Server
 	private function _removeUserSocket($socket)
 	{
 		foreach($this->_users as $key => $value) {
-			$this->onClose($value, 0, '');
 			if ($value->getSocket() == $socket)
 				unset($this->_users[$key]);
+			$this->onClose($value, 0, '');
 		}
 		
 		foreach($this->_sockets as $key => $value) {
@@ -218,8 +218,8 @@ class Server
 			* 0x88: 10001000 fin, opcode close */
 			$user->write(chr(0x88) . chr(0));
 			
-			$this->onClose($user, $statusCode, $reason);
 			$this->_removeUserSocket($user->getSocket());
+			$this->onClose($user, $statusCode, $reason);
 		}
 	}
 	

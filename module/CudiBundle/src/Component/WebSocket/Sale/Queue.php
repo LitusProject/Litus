@@ -209,11 +209,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     	$session = $this->_entityManager
     		->getRepository('CudiBundle\Entity\Sales\Session')
     		->findOpenSession();
+    		
+    	$queueItem = $this->_entityManager
+    		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
+    		->findOneByPerson($session, $person);
     	
-    	$queueItem = new ServingQueueItem($this->_entityManager, $person, $session);
-    	
-    	$this->_entityManager->persist($queueItem);
-    	$this->_entityManager->flush();
+    	if (sizeof($queueItem) == 0) {
+    		$queueItem = new ServingQueueItem($this->_entityManager, $person, $session);
+    		
+    		$this->_entityManager->persist($queueItem);
+    		$this->_entityManager->flush();
+    	}
     	
     	return json_encode(
     		(object) array(

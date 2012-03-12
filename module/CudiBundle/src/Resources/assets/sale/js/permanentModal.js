@@ -25,5 +25,7 @@
 		} else if ('hide' == method) {
 			$(this).modal('hide');
 		}
+		
+		return this;
 	}
 }) (jQuery);

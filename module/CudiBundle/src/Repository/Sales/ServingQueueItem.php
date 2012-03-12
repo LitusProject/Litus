@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use CudiBundle\Entity\Sales\ServingQueueStatus as QueueStatus,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\ServingQueueStatus as QueueStatus,
 	CudiBundle\Entity\Sales\Session as SaleSession,
 	Doctrine\ORM\EntityRepository;
 
@@ -72,5 +73,27 @@ class ServingQueueItem extends EntityRepository
 	    	->getResult();
 	    
 	    return $resultSet;
+    }
+    
+    public function findOneByPerson(SaleSession $session, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+        	->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
+        	->where($query->expr()->andX(
+            	    $query->expr()->eq('i.session', ':session'),
+            	    $query->expr()->eq('i.person', ':person')
+            	)
+            )
+        	->setParameter('session', $session->getId())
+        	->setParameter('person', $person->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
     }
 }
