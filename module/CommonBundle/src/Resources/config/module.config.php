@@ -196,7 +196,6 @@ return array(
             		'member'    => 'storage',
             	),
             ),
-            
             'doctrine_config' => array(
                 'parameters' => array(
                 	'entityPaths' => array(
@@ -204,7 +203,6 @@ return array(
                 	),
                 ),
             ),
-            
             'ZfTwig\TwigEnvironment' => array(
             	'parameters' => array(
             		'options' => array(

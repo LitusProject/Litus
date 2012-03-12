@@ -41,7 +41,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
     private $sellPriceMembers;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="bigint")
      */
     private $barcode;
 

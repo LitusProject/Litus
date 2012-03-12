@@ -5,6 +5,7 @@ return array(
     'CudiBundle\Component\Document\Generator\OrderPdf'      => __DIR__ . '/src/Component/Document/Generator/OrderPdf.php',
     'CudiBundle\Component\Document\Generator\OrderXml'      => __DIR__ . '/src/Component/Document/Generator/OrderXml.php',
     'CudiBundle\Component\Validator\ArticleBarcode'         => __DIR__ . '/src/Component/Validator/ArticleBarcode.php',
+    'CudiBundle\Component\Validator\Barcode'                => __DIR__ . '/src/Component/Validator/Barcode.php',
     'CudiBundle\Component\Validator\UniqueArticleBarcode'   => __DIR__ . '/src/Component/Validator/UniqueArticleBarcode.php',
     'CudiBundle\Component\WebSocket\Sale\Queue'             => __DIR__ . '/src/Component/WebSocket/Sale/Queue.php',
     'CudiBundle\Controller\Admin\ArticleController'         => __DIR__ . '/src/Controller/Admin/ArticleController.php',
