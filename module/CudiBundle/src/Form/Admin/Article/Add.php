@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Validator\Price as PriceValidator,
 	CommonBundle\Component\Validator\Year as YearValidator,
 	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+	CudiBundle\Component\Validator\Barcode as BarcodeValidator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
@@ -116,6 +117,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		$field = new Text('barcode');
         $field->setLabel('Barcode')
         	->setRequired()
+        	->addValidator(new BarcodeValidator())
         	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
