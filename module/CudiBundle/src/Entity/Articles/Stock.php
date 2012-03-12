@@ -168,6 +168,9 @@ abstract class Stock extends \CudiBundle\Entity\Article
      */
 	public function setBarcode($barcode)
 	{
+	    if (strlen($barcode) == 13)
+	        $barcode = floor($barcode / 10);
+	        
 		$this->barcode = $barcode;
 		return $this;
 	}

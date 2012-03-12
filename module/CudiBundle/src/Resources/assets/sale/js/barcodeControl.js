@@ -1,7 +1,7 @@
 (function ($) {
 	var defaults = {
         clearTime: 100,
-        barcodeLength: 13,
+        barcodeLength: 12,
 		onBarcode: function () {},
 	};
 	
@@ -68,8 +68,8 @@
 			return;
 				
 		value = ($this.data('barcodeControl').buffer * 10 + value).toString();
-		$this.data('barcodeControl').buffer = value.substr(Math.max(0, value.length - $this.data('barcodeControlSettings').barcodeLength));
-		
+		$this.data('barcodeControl').buffer = value.substr(Math.max(0, value.length - $this.data('barcodeControlSettings').barcodeLength - 1));
+
 		if ($this.data('barcodeControl').timer)
 			clearTimeout($this.data('barcodeControl').timer);
 
@@ -97,7 +97,9 @@
 
 		if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength)
 			$this.data('barcodeControlSettings').onBarcode(_read($this));
-		
+		else if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength + 1)
+		    $this.data('barcodeControlSettings').onBarcode(_read($this).toString().substr(0, $this.data('barcodeControlSettings').barcodeLength));
+		    		
 		_clear($this);
 	}
 	

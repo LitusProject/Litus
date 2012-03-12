@@ -24,6 +24,6 @@ class IndexController extends \CudiBundle\Component\Controller\SaleController
 {
     public function indexAction()
 	{
-		
+        
     }
 }
