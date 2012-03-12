@@ -39,7 +39,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
      * @param integer $length The barcode length
      * @param mixed $opts The validator's options
      */
-    public function __construct($length = 13, $opts = null)
+    public function __construct($length = 12, $opts = null)
     {
     	parent::__construct($opts);
     	
@@ -64,7 +64,8 @@ class Barcode extends \Zend\Validator\AbstractValidator
         	return false;
         }
 		
-		if (strlen($value) == $this->_length)
+		if (strlen($value) == $this->_length
+		    || strlen($value) == $this->_length + 1)
 		    return true;
 
         $this->error(self::NOT_VALID);

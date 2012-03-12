@@ -14,6 +14,9 @@ class Stock extends EntityRepository
 {
 	public function findOneByBarcode($barcode)
     {
+        if (strlen($barcode) == 13)
+            $barcode = floor($barcode / 10);
+    
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('s')
 			->from('CudiBundle\Entity\Articles\Stock', 's')

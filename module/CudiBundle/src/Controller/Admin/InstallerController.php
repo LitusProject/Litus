@@ -174,6 +174,11 @@ The following bookings are assigned to you:
 				'value'       => '/usr/local/bin/fop',
 				'description' => 'The command to call Apache FOP',
 			),
+			array(
+				'key'         => 'cudi.serving_queue_barcode_prefix',
+				'value'       => '988000000000',
+				'description' => 'The start for a serving queue item barcode',
+			),
 		);
 		
 		foreach($configs as $item) {

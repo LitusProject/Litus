@@ -29,6 +29,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     {
     	return array(
     		'socketUrl' => $this->getSocketUrl(),
+    		'barcodePrefix' => $this->getEntityManager()
+    			->getRepository('CommonBundle\Entity\General\Config')
+    			->getConfigValue('cudi.serving_queue_barcode_prefix')
     	);
     }
     

@@ -169,6 +169,7 @@
 			$('#queueList').showQueue({
 				url: '{{ socketUrl }}',
 				errorDialog: $('#loading_queue_error'),
+				barcodePrefix: {{ barcodePrefix }},
 				statusTranslate: function (status) {
 					switch (status) {
 						case 'signed_in':
