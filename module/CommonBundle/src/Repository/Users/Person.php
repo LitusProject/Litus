@@ -25,7 +25,14 @@ class Person extends EntityRepository
 		
 		if (isset($resultSet[0]))
             return $resultSet[0];
-
+        
+        $barcode = $this->_em
+            ->getRepository('CommonBundle\Entity\Users\Barcode')
+            ->findOneByBarcode($username);
+        
+        if ($barcode)
+            return $barcode->getPerson();
+        
         return null;
     }
     
