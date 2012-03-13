@@ -119,6 +119,22 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
+	public function findAllAssignedByPerson(Person $person)
+	{
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+    		->where($query->expr()->andX(
+    				$query->expr()->eq('b.person', ':person'),
+    				$query->expr()->eq('b.status', '\'assigned\'')
+    			))
+    		->setParameter(':person', $person->getId())
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+	}
+	
 	public function findAllOpenByPerson(Person $person)
 	{
 		$query = $this->_em->createQueryBuilder();

@@ -206,7 +206,7 @@ class StockItem
 	 */
 	public function getNumberAvailable()
 	{
-		return $this->numberInStock - $this->getNumberBooked($this->_entityManager);
+		return $this->numberInStock - $this->getNumberAssigned();
 	}
 	
 	/**
