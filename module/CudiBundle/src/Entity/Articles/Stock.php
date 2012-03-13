@@ -170,7 +170,10 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	{
 	    if (strlen($barcode) == 13)
 	        $barcode = floor($barcode / 10);
-	        
+	    
+	    if (strlen($barcode) != 12)
+	        throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
+	    
 		$this->barcode = $barcode;
 		return $this;
 	}

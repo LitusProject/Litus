@@ -125,6 +125,12 @@ abstract class Person
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Union", mappedBy="person")
      */
     private $unionStatuses;
+    
+    /**
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
+     * @OrderBy({"time" = "ASC"})
+     */
+    private $barcodes;
 
     /**
      * @param string $username The user's username
@@ -451,5 +457,13 @@ abstract class Person
    			return true;
    	}
    	return false;
+   }
+   
+   /**
+    * @return \CommonBundle\Entity\Users\Barcode
+    */
+   public function getBarcode()
+   {
+       return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
    }
 }
