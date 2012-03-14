@@ -31,7 +31,6 @@
 			</div>
 			
 			<table class="full_width">
-	    
 	        	<tr>
 	            	<th>Title</th>
 	            	<th>Author</th>
@@ -40,13 +39,11 @@
 					<th>Type</th>
 	            	<th>Actions</th>
 				</tr>
-				
 			</table>
 		</div>
 		
 		<div id="default_page">
 			<table class="full_width">
-	
 		        <tr>
 		            <th>Title</th>
 		            <th>Author</th>
@@ -55,6 +52,7 @@
 					<th>Type</th>
 		            <th width="130px">Action</th>
 		        </tr>
+		        
 		        {% for article in paginator %}
 		            <tr class="item">
 		                <td>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</td>
