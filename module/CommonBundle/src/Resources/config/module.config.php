@@ -54,7 +54,11 @@ return array(
                                 	        'common/js/jqueryui-1.8.16.min.js',
                                 	    ),
                                 	),
-                                    
+                                    'common_form_upload_progress' => array(
+                                        'assets'  => array(
+                                            'common/js/formUploadProgress.js',
+                                        ),
+                                    ),
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',

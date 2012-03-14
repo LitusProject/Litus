@@ -36,7 +36,7 @@ class NewVersion extends \CudiBundle\Form\Admin\Article\Add
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
         
-        $this->populate($article);
+        $this->populateFromArticle($article);
         
     	$this->getElement('barcode')
     		->setValue('');

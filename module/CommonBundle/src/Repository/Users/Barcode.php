@@ -19,6 +19,8 @@ class Barcode extends EntityRepository
         
         if (strlen($barcode) == 13)
             $barcode = floor($barcode / 10);
+        if (strlen($barcode) > 12)
+            return null;
             
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')

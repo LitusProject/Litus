@@ -44,7 +44,7 @@
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
 					<td>
-						<a href="#" class="downloadFile view" data-file="{{ url('admin_article', {"action": "downloadfile", "id": file.getId()}) }}">Download</a>
+						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": file.getId()}) }}">Download</a>
 		                <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
 	                </td>
 	            </tr>
@@ -81,6 +81,16 @@
 				$(this).downloadFile($(this).data('file'));
 			});
 			
+			$('#uploadFile').formUploadProgress({
+			    url: '{{ url('admin_file', {"action": "progress"}) }}',
+			    name: '{{ uploadProgressId }}',
+			    uploadProgressName: '{{ uploadProgressName }}',
+			    interval: 1000,
+			    onProgress: function (data) {
+			        console.log(data);
+			    }
+			});
+			
 			$('.item .delete').click(openModal);
 		});
 		
@@ -95,7 +105,7 @@
 				removeFile.modal('hide');
 			});
 			removeFile.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article', {"action": "deletefile"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 					$('.flashmessage').hide();
 					$('.file_removed_success').show();
 					$this.parent().parent().remove();

@@ -103,23 +103,23 @@
 
 .disableSelect {
     -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+         -o-user-select: none;
+            user-select: none;
 }
 
 .opacity(@opacity: 100) {
-  opacity: @opacity / 100;
-   filter: e(%("alpha(opacity=%d)", @opacity));
+    opacity: @opacity / 100;
+    filter: e(%("alpha(opacity=%d)", @opacity));
 }
 
 .transition(@transition) {
-  -webkit-transition: @transition;
-     -moz-transition: @transition;
-      -ms-transition: @transition;
-       -o-transition: @transition;
-          transition: @transition;
+    -webkit-transition: @transition;
+       -moz-transition: @transition;
+        -ms-transition: @transition;
+         -o-transition: @transition;
+            transition: @transition;
 }
 
 // Modal
