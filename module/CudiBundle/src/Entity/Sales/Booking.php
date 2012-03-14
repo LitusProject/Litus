@@ -81,7 +81,7 @@ class Booking
 	private $cancelationDate;
 	
 	private static $POSSIBLE_STATUSES = array(
-		'booked', 'assigned', 'sold', 'expired'
+		'booked', 'assigned', 'sold', 'expired', 'canceled'
 	);
 	
 	/**
@@ -209,10 +209,25 @@ class Booking
 		if (!self::isValidBookingStatus($status))
 			throw new \InvalidArgumentException('The BookingStatus is not valid.');
 		
-		if ($status == 'assigned')
+		if ($status == 'booked') {
+		    $this->bookDate = new \DateTime();
+		    $this->assignmentDate = null;
+		    $this->saleDate = null;
+		    $this->cancelationDate = null;
+		} elseif ($status == 'assigned') {
 			$this->assignmentDate = new \DateTime();
-		else
-			$this->assignmentDate = null;
+			$this->saleDate = null;
+			$this->cancelationDate = null;
+		} elseif ($status == 'sold') {
+			$this->saleDate = new \DateTime();
+			$this->cancelationDate = null;
+		} elseif ($status == 'expired') {
+		    $this->saleDate = null;
+		    $this->cancelationDate = null;
+		} elseif ($status == 'canceled') {
+		    $this->saleDate = null;
+		    $this->cancelationDate = new \DateTime();
+		}
 		
 		$this->status = $status;
 		return $this;

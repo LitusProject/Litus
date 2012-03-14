@@ -12,8 +12,9 @@
 		
 		opts = $.extend(defaults, opts);
 	
-		$(document).keypress(function (e) {
-			if (102 == e.keyCode && e.metaKey) {
+		$(document).keydown(function (e) {
+			if (70 == e.keyCode && e.metaKey) {
+				e.preventDefault();
 				if (opts.searchDiv.is(':visible')) {
 					opts.searchDiv.hide();
 					opts.defaultPage.show();
@@ -22,10 +23,10 @@
 					opts.defaultPage.hide();
 					opts.searchString.focus();
 				}
-				return false;
 			}
 		}).keyup(function (e) {
 			if (27 == e.keyCode) {
+			    e.preventDefault();
 				opts.searchDiv.hide();
 				opts.defaultPage.show();
 			}

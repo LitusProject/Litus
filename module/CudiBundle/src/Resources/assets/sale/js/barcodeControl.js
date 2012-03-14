@@ -23,12 +23,15 @@
 			var $this = $(this);
 			
 			$(this).data('barcodeControlSettings', settings);
+			$('body').focus();
 			_clear($(this));
 			
 			$('body').unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
 				if (_isNumericKey(e.which)) {
+				    e.preventDefault();
 				    _append($this, _getNumericValue(e.which));
 				} else if (e.which == 13) {
+				    e.preventDefault();
 					_complete($this);
 				} else {
 					_clear($this);
@@ -51,22 +54,22 @@
 		read : function () {
 			return _read($(this));
 		},
-	}
-
+	};
+	
 	$.fn.barcodeControl = function (method) {
-		if ( methods[ method ] ) {
-			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-		} else if ( typeof method === 'object' || ! method ) {
-			return methods.init.apply( this, arguments );
+		if (methods[method]) {
+			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+		} else if (typeof method === 'object' || ! method) {
+			return methods.init.apply(this, arguments);
 		} else {
-			$.error( 'Method ' +  method + ' does not exist on $.barcodeControl' );
+			$.error('Method ' +  method + ' does not exist on $.barcodeControl');
 		}
 	};
 	
 	function _append ($this, value) {
 		if (undefined == $this.data('barcodeControl'))
 			return;
-				
+		
 		value = ($this.data('barcodeControl').buffer * 10 + value).toString();
 		$this.data('barcodeControl').buffer = value.substr(Math.max(0, value.length - $this.data('barcodeControlSettings').barcodeLength - 1));
 
@@ -94,7 +97,7 @@
 	function _complete($this) {
 		if (undefined == $this.data('barcodeControlSettings'))
 			return;
-
+        
 		if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength)
 			$this.data('barcodeControlSettings').onBarcode(_read($this));
 		else if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength + 1)
