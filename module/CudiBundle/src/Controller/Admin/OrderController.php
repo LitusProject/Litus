@@ -26,7 +26,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\OrderItem,
 	CudiBundle\Form\Admin\Order\Add as AddForm,
 	CudiBundle\Form\Admin\Order\AddItem as AddItemForm,
-	CudiBundle\Form\Admin\Order\Edit as EditForm,
 	Zend\Http\Headers,
 	Zend\Pdf\Page as PdfPage,
 	Zend\Pdf\PdfDocument;

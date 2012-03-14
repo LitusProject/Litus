@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Article;
+namespace CudiBundle\Form\Admin\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
@@ -35,6 +35,8 @@ class File extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
+        
+        $this->setAttrib('id', 'uploadFile');
          
         $field = new Text('description');
         $field->setLabel('Description')

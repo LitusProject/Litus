@@ -2,6 +2,7 @@
     var defaults = {
         url: '',
         errorDialog: null,
+        barcodePrefix: 0,
         statusTranslate: function () {},
         openSale: function () {},
         closeSale: function () {},
@@ -25,12 +26,12 @@
     }
     
     $.fn.showQueue = function (method) {
-    	if ( methods[ method ] ) {
-    		return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    	} else if ( typeof method === 'object' || ! method ) {
-    		return methods.init.apply( this, arguments );
+    	if (methods[method]) {
+    		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    	} else if (typeof method === 'object' || ! method) {
+    		return methods.init.apply(this, arguments);
     	} else {
-    		$.error( 'Method ' +  method + ' does not exist on $.showQueue' );
+    		$.error('Method ' +  method + ' does not exist on $.showQueue');
     	}
     };
     
@@ -60,9 +61,7 @@
     
     function _gotBarcode ($this, value) {
         var options = $this.data('showQueueSettings');
-        
-        value = value - options.barcodePrefix;
-        
+             
         $this.find('tr').each(function () {
             if ($(this).data('info').id == value) {
                 switch ($(this).data('info').status) {
@@ -113,7 +112,7 @@
     
     function _showQueueItem ($this, item) {
         var options = $this.data('showQueueSettings');
-        
+
 		var row = $('<tr>').append(
 			$('<td>', {'class': 'number'}).html(item.number),
 			$('<td>', {'class': 'name'}).html(item.name ? item.name : 'guest ' + item.id),

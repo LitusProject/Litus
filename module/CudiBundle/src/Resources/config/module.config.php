@@ -5,6 +5,7 @@ return array(
 		'instance' => array(
 			'alias' => array(
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
+				'admin_file'	      => 'CudiBundle\Controller\Admin\FileController',
 				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
@@ -92,6 +93,20 @@ return array(
 				),
 			),
 		),
+		'admin_file' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/file[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_file',
+					'action'     => 'manage',
+				),
+			),
+		),
 		'admin_article_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -108,7 +123,7 @@ return array(
 		'admin_article_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article/search/[/:field[/:string]]',
+				'route' => '/admin/article/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',

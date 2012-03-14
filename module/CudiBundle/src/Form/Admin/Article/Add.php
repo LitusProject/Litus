@@ -271,7 +271,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		return $colorOptions;
 	}
 	
-	public function populate(Article $article)
+	public function populateFromArticle(Article $article)
 	{
 		$data = array(
 			'title' => $article->getTitle(),
@@ -302,7 +302,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 			$data['front_color'] = $article->getFrontColor()->getId();
 		}
 						
-		parent::populate($data);
+		$this->populate($data);
 	}
 	
 	public function isValid($data)
