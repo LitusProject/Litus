@@ -12,6 +12,54 @@ use Doctrine\ORM\EntityRepository;
  */
 class Person extends EntityRepository
 {
+	public function findAllByRole($role)
+	{
+		$resultSet = $this->_em
+		    ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
+		    ->getResult();
+		    
+		return $resultSet;
+	}
+	
+	public function findAllByName($name)
+	{
+		$resultSet = $query->select('p')
+			->from('CommonBundle\Entity\Person', 'p')
+			->where(
+				$query->expr()->orX(
+					$query->expr()->like(
+						$query->expr()->concat(
+							$query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+							$query->expr()->lower('p.lastName')
+						),
+						':name'
+					),
+					$query->expr()->like(
+						$query->expr()->concat(
+							$query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+							$query->expr()->lower('p.firstName')
+						),
+						':name'
+					)
+				))
+			->setParameter('name', '%' . strtolower($name) . '%')
+			->getQuery()
+			->getResult();
+		
+		return $resultset;
+	}
+	
+	public function findAllByUsername($username)
+	{
+		$resultSet = $query->select('p')
+			->from('CommonBundle\Entity\Person', 'p')
+			->setParameter('username', '%' . strtolower($username) . '%')
+			->getQuery()
+			->getResult();
+		
+		return $resultset;
+	}
+	
 	public function findOneByUsername($username)
     {
     	$query = $this->_em->createQueryBuilder();
@@ -34,14 +82,5 @@ class Person extends EntityRepository
             return $barcode->getPerson();
         
         return null;
-    }
-    
-    public function findByRole($role)
-    {
-    	$resultSet = $this->_em
-    	    ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
-    	    ->getResult();
-    	    
-    	return $resultSet;
     }
 }

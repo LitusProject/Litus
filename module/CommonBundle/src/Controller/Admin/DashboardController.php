@@ -25,6 +25,7 @@ class DashboardController extends \CommonBundle\Component\Controller\ActionContr
     public function indexAction()
     {    
         return array(
+        	'PHPVersion' => phpversion(),
         	'ZFVersion' => \Zend\Version::VERSION
         );
     }

@@ -6,33 +6,122 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    <table class="full_width">
-	        <thead>
-	            <tr>
-	                <th>Username</th>
-	                <th width="150px">Name</th>
-	                <th width="175px">E-mail</th>
-	                <th width="120px">Action</th>
-	            </tr>
-	        </thead>
+		<div id="user_search" style="display: none;">
+			<div style="padding: 4px; text-align: right">
+				Search: 
+				<select id="searchField">
+					<option value="username">Username</option>
+					<option value="name">Name</option>
+				</select>
+				is
+				<input type="text" id="searchString" size="30" />
+			</div>
+			
+			<table class="full_width">
+		    	<tr>
+		        	<th>Username</th>
+		        	<th width="150px">Name</th>
+		        	<th width="175px">E-mail</th>
+		        	<th width="120px">Action</th>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="default_page">
+		    <table class="full_width">
+		        <thead>
+		            <tr>
+		                <th>Username</th>
+		                <th width="150px">Name</th>
+		                <th width="175px">E-mail</th>
+		                <th width="120px">Action</th>
+		            </tr>
+		        </thead>
+		
+		        <tbody>
+		            {% for user in paginator %}
+		                <tr>
+		                    <td>{{ user.getUsername() }}</td>
+		                    <td>{{ user.getFullName() }}</td>
+		                    <td>{{ user.getEmail() }}</td>
+		                    <td>
+		                        <ul>
+		                            <li><a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+		                            <li><a href="{{ url('admin_user', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
+		                        </ul>
+		                    </td>
+		                </tr>
+		            {% endfor %}
+		        </tbody>
+		    </table>
 	
-	        <tbody>
-	            {% for user in paginator %}
-	                <tr>
-	                    <td>{{ user.getUsername() }}</td>
-	                    <td>{{ user.getFullName() }}</td>
-	                    <td>{{ user.getEmail() }}</td>
-	                    <td>
-	                        <ul>
-	                            <li><a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
-	                            <li><a href="{{ url('admin_user', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
-	                        </ul>
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
-	    </table>
-	
-		{% include 'admin/partials/paginationControl.twig' %}
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
 	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#user_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_user_search') }}',
+				display: function (data) {
+					$('#user_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#user_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+							.append('<td>' + this.author + '</td>')
+							.append('<td>' + this.publisher + '</td>')
+							.append('<td>' + this.yearPublished + '</td>')
+							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
+							.append(
+								$('<td>')
+									.append('<a href="{{ url('admin_user', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+								);
+							deleteButton.data({
+								id: this.id,
+								title: this.title,
+								authors: this.author,
+							});
+					});
+					$('#user_search .delete').click(openModal);
+				},
+				clear: function () {
+					$('#user_search table').find('tr.item').remove();
+				}
+			});
+			
+			$('.item .delete').click(openModal);
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeArticle = $('#removeArticle');
+			removeArticle.find('.articleTitle').html($(this).data('title'));
+			removeArticle.find('.articleAuthors').html($(this).data('authors'));
+			removeArticle.find('.cancel').one('click', function () {
+				removeArticle.modal('hide');
+			});
+			removeArticle.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+					$('.flashmessage').hide();
+					$('.article_removed_success').show();
+					$this.parent().parent().remove();
+					removeArticle.modal('hide');
+				}, 'json').error(function () {
+					$('.flashmessage').hide();
+					$('.article_removed_error').show();
+					removeArticle.modal('hide');
+				});
+			});
+			removeArticle.modal();
+		}
+	</script>
 {% endblock %}

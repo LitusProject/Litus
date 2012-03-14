@@ -173,7 +173,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 			if (1 == $this->getParam('confirm')) {
 		        $users = $this->getEntityManager()
 		            ->getRepository('CommonBundle\Entity\Users\Person')
-		            ->findByRole($role->getName());
+		            ->findAllByRole($role->getName());
 		        
 		        foreach ($users as $user) {
 		            $user->removeRole($role);

@@ -52,7 +52,7 @@ class Edit extends Add
                 'first_name' => $person->getFirstName(),
                 'last_name' => $person->getLastName(),
                 'email' => $person->getEmail(),
-                'telephone' => $person->getTelephone(),
+                'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
                 'roles' => $this->_createRolesPopulationArray($person->getRoles())
             )

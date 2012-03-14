@@ -19,7 +19,6 @@
 			</div>
 			
 			<table class="full_width">
-		
 		    	<tr>
 		        	<th>Article</th>
 		        	<th>Supplier</th>
@@ -29,13 +28,11 @@
 		        	<th>Booked</th>
 		        	<th>Actions</th>
 				</tr>
-				
 			</table>
 		</div>
 		
 		<div id="default_page">
 	    	<table class="full_width">
-	    
 	        	<tr>
 	            	<th>Article</th>
 	            	<th>Supplier</th>
@@ -47,7 +44,6 @@
 				</tr>
 	
 		        {% for item in paginator %}
-	
 		            <tr>
 		                <td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ item.getArticle().getSupplier().getName() }}</td>
@@ -59,7 +55,6 @@
 							<a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
 		                </td>
 		            </tr>
-	
 		        {% endfor %}
 		    </table>
 	

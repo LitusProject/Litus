@@ -239,10 +239,9 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:page][/:name[/:confirm]]]',
+    	        'route'    => '/admin/role[/:action[/:name[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'page'	  => '[0-9]*',
     	        	'id'      => '[0-9]*',
     	        	'confirm' => '[01]',
     	        ),
@@ -252,13 +251,25 @@ return array(
     	        ),
     	    ),
     	),
+    	'admin_role_paginator' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/role/manage[/:page]',
+    			'constraints' => array(
+    				'page' => '[0-9]*',
+    			),
+    			'defaults' => array(
+    				'controller' => 'admin_role',
+    				'action'     => 'manage',
+    			),
+    		),
+    	),
     	'admin_user' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/user[/:action[/:page][/:id[/:confirm]]]',
+    	        'route'    => '/admin/user[/:action[/:id[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'page'	  => '[0-9]*',
     	        	'id'      => '[0-9]*',
     	        	'confirm' => '[01]',
     	        ),
@@ -267,6 +278,33 @@ return array(
     	            'action'     => 'manage',
     	        ),
     	    ),
+    	),
+    	'admin_user_paginator' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/user/manage[/:page]',
+    			'constraints' => array(
+    				'page' => '[0-9]*',
+    			),
+    			'defaults' => array(
+    				'controller' => 'admin_user',
+    				'action'     => 'manage',
+    			),
+    		),
+    	),
+    	'admin_user_search' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/user/search[/:field[/:string]]',
+    			'constraints' => array(
+    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        ),
+    			'defaults' => array(
+    				'controller' => 'admin_user',
+    				'action'     => 'search',
+    			),
+    		),
     	),
 	),
 );

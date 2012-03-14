@@ -199,6 +199,39 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         );
     }
     
+    public function searchAction()
+    {
+    	$this->initAjax();
+    	
+    	switch($this->getParam('field')) {
+    		case 'username':
+    			$users = $this->getEntityManager()
+    				->getRepository('CommonBundle\Entity\Person')
+    				->findAllByUsername($this->getParam('string'));
+    			break;
+    		case 'name':
+    			$users = $this->getEntityManager()
+    				->getRepository('CommonBundle\Entity\Person')
+    				->findAllByName($this->getParam('string'));
+    			break;
+    	}
+    	
+    	$result = array();
+    	foreach($users as $user) {
+    		$item = (object) array();
+    		$item->id = $user->getId();
+    		$item->username = $user->getUsername();
+    		$item->fullName = $user->getMetaInfo()->getAuthors();
+    		$item->email = $user->getMetaInfo()->getPublishers();
+    		
+    		$result[] = $item;
+    	}
+    	
+    	return array(
+    		'result' => $result,
+    	);
+    }
+    
     private function _getUser()
 	{
 		if (null === $this->getParam('id')) {
