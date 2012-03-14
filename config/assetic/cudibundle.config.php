@@ -66,6 +66,11 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_financial' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 		'sale_sale' => array(
 			'@common_jquery',
 			'@bootstrap_css',

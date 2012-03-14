@@ -10,6 +10,7 @@ return array(
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
+				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
 				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
 				'sale'      	      => 'CudiBundle\Controller\Sale\IndexController',
@@ -256,6 +257,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_delivery',
 					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_financial' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/financial[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_financial',
+					'action'     => 'manage',
 				),
 			),
 		),

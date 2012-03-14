@@ -15,6 +15,7 @@ return array(
     'CudiBundle\Controller\Admin\InstallerController'       => __DIR__ . '/src/Controller/Admin/InstallerController.php',
     'CudiBundle\Controller\Admin\OrderController'           => __DIR__ . '/src/Controller/Admin/OrderController.php',
     'CudiBundle\Controller\Admin\SaleController'            => __DIR__ . '/src/Controller/Admin/SaleController.php',
+    'CudiBundle\Controller\Admin\FinancialController'       => __DIR__ . '/src/Controller/Admin/FinancialController.php',
     'CudiBundle\Controller\Admin\StockController'           => __DIR__ . '/src/Controller/Admin/StockController.php',
     'CudiBundle\Controller\Sale\QueueController'            => __DIR__ . '/src/Controller/Sale/QueueController.php',
     'CudiBundle\Controller\Sale\SaleController'             => __DIR__ . '/src/Controller/Sale/SaleController.php',
