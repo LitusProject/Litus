@@ -27,6 +27,14 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_file' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@common_form_upload_progress',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_booking' => array(
 			'@common_jquery',
 		    '@admin_css',
