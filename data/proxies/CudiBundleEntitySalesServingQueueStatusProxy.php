@@ -45,22 +45,10 @@ class CudiBundleEntitySalesServingQueueStatusProxy extends \CudiBundle\Entity\Sa
         return parent::getId();
     }
 
-    public function setId($id_)
-    {
-        $this->__load();
-        return parent::setId($id_);
-    }
-
     public function getName()
     {
         $this->__load();
         return parent::getName();
-    }
-
-    public function setName($name_)
-    {
-        $this->__load();
-        return parent::setName($name_);
     }
 
 

@@ -34,16 +34,22 @@
         $this.append($('<input>', {type: 'hidden', name: settings.uploadProgressName, value: settings.name}));
         
         $this.submit(function (e) {
-            //e.preventDefault();
+            e.preventDefault();
             
             _load($this);
-            setInterval(function () {_load($this);}, settings.interval);
+            
+            $this.ajaxSubmit();
         });
     }
     
     function _load($this) {
         var settings = $this.data('formUploadProgress');
-        console.log('load');
-        $.post(settings.url, {upload_id: settings.name}, settings.onProgress, 'json');
+        
+        $.post(settings.url, {upload_id: settings.name}, function (data) {
+            if (!data)
+                return;
+            settings.onProgress(data);
+            setTimeout(function () {_load($this);}, settings.interval);
+        }, 'json');
     }
 }) (jQuery);

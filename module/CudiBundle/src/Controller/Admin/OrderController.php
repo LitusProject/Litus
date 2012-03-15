@@ -25,7 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\Order,
 	CudiBundle\Entity\Stock\OrderItem,
 	CudiBundle\Form\Admin\Order\Add as AddForm,
-	CudiBundle\Form\Admin\Order\AddItem as AddItemForm,
 	Zend\Http\Headers,
 	Zend\Pdf\Page as PdfPage,
 	Zend\Pdf\PdfDocument;
@@ -81,7 +80,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function addAction()
 	{
-		$form = new AddItemForm($this->getEntityManager());
+		$form = new AddForm($this->getEntityManager());
 				
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();

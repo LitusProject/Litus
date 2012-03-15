@@ -81,7 +81,7 @@
 				$(this).downloadFile($(this).data('file'));
 			});
 			
-			$('#uploadFile').formUploadProgress({
+			/*$('#uploadFile').formUploadProgress({
 			    url: '{{ url('admin_file', {"action": "progress"}) }}',
 			    name: '{{ uploadProgressId }}',
 			    uploadProgressName: '{{ uploadProgressName }}',
@@ -89,7 +89,7 @@
 			    onProgress: function (data) {
 			        console.log(data);
 			    }
-			});
+			});*/
 			
 			$('.item .delete').click(openModal);
 		});

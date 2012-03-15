@@ -35,7 +35,7 @@ class File extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+                
         $this->setAttrib('id', 'uploadFile');
          
         $field = new Text('description');

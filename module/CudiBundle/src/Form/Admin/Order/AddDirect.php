@@ -18,7 +18,7 @@ namespace CudiBundle\Form\Admin\Order;
 use Doctrine\ORM\EntityManager,
 	Zend\Form\Form;
 
-class AddDirect extends \CudiBundle\Form\Admin\Order\AddItem
+class AddDirect extends \CudiBundle\Form\Admin\Order\Add
 {
 
     public function __construct(EntityManager $entityManager, $options = null)

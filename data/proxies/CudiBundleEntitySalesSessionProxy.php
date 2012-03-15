@@ -45,7 +45,7 @@ class CudiBundleEntitySalesSessionProxy extends \CudiBundle\Entity\Sales\Session
         return parent::getId();
     }
 
-    public function setOpenDate($openDate)
+    public function setOpenDate(\DateTime $openDate)
     {
         $this->__load();
         return parent::setOpenDate($openDate);
@@ -69,19 +69,13 @@ class CudiBundleEntitySalesSessionProxy extends \CudiBundle\Entity\Sales\Session
         return parent::getCloseDate();
     }
 
-    public function setOpenAmount($openAmount)
-    {
-        $this->__load();
-        return parent::setOpenAmount($openAmount);
-    }
-
     public function getOpenAmount()
     {
         $this->__load();
         return parent::getOpenAmount();
     }
 
-    public function setCloseAmount($closeAmount)
+    public function setCloseAmount(\CommonBundle\Entity\General\Bank\CashRegister $closeAmount)
     {
         $this->__load();
         return parent::setCloseAmount($closeAmount);
@@ -91,12 +85,6 @@ class CudiBundleEntitySalesSessionProxy extends \CudiBundle\Entity\Sales\Session
     {
         $this->__load();
         return parent::getCloseAmount();
-    }
-
-    public function setManager($manager)
-    {
-        $this->__load();
-        return parent::setManager($manager);
     }
 
     public function getManager()

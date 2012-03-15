@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Form,
 	Zend\Validator\Int as IntValidator;
 
-class AddItem extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
     public function __construct(EntityManager $entityManager, $options = null)
@@ -41,6 +41,7 @@ class AddItem extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('stockArticle');
         $field->setLabel('Stock Article')
+            ->setAttrib('class', 'disableEnter')
         	->setRequired()
 			->addValidator(new ArticleBarcodeValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));

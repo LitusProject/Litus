@@ -116,6 +116,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		
 		$field = new Text('barcode');
         $field->setLabel('Barcode')
+            ->setAttrib('class', 'disableEnter')
         	->setRequired()
         	->addValidator(new BarcodeValidator())
         	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
