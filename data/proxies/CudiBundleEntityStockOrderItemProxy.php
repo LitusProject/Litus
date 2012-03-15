@@ -57,7 +57,7 @@ class CudiBundleEntityStockOrderItemProxy extends \CudiBundle\Entity\Stock\Order
         return parent::getArticle();
     }
 
-    public function setArticle($article)
+    public function setArticle(\CudiBundle\Entity\Article $article)
     {
         $this->__load();
         return parent::setArticle($article);

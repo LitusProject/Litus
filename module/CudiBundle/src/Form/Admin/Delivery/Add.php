@@ -41,6 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
 		$field = new Text('stockArticle');
         $field->setLabel('Article')
+            ->setAttrib('class', 'disableEnter')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
 			->addValidator(new ArticleBarcodeValidator($entityManager));

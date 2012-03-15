@@ -39,6 +39,7 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 		$article = $this->_getArticle();
 		
 		$form = new FileForm();
+		//$form->setAction($this->url()->fromRoute('admin_file', array('action' => 'upload')));
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -84,6 +85,12 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
         	'uploadProgressName' => ini_get('session.upload_progress.name'),
         	'uploadProgressId' => ini_get('session.upload_progress.prefix') . uniqid(),
         );
+	}
+	
+	public function uploadAction()
+	{
+	    print_r($_SESSION);
+	    exit;
 	}
 	
 	public function deleteAction()
@@ -180,9 +187,9 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     public function progressAction()
     {
         $uploadId = $this->getRequest()->post()->get('upload_id');
-        
+
         return array(
-            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : 'err',
+            'result' => null//$_SESSION//isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : 'err',
         );
     }
     

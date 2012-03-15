@@ -117,7 +117,7 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_article',
 					'action'     => 'manage',
-				),
+				), 
 			),
 		),
 		'admin_article_search' => array(
@@ -126,7 +126,7 @@ return array(
 				'route' => '/admin/article/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
                 ),
 				'defaults' => array(
 					'controller' => 'admin_article',
@@ -167,7 +167,7 @@ return array(
 			'route' => '/admin/booking/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_booking',
@@ -195,7 +195,7 @@ return array(
 				'route' => '/admin/stock/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock',
