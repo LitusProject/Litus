@@ -16,6 +16,12 @@
 			<p>An error occurred while trying to delete an file.</p>
 		</div>
 	</div>
+	<div class="flashmessage success_message full_width file_uploaded" style="display: none;">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The file was succesfully uploaded.</p>
+		</div>
+	</div>
 
 	<div id="controller_action">
 		<h1>Article</h1>
@@ -30,7 +36,7 @@
 		{% endautoescape %}
 		<br style="clear:both"/>
 		
-		<table class="full_width">
+		<table class="full_width" id="articleFiles">
 		    
 	        <tr>
 	            <th>Name</th>
@@ -72,6 +78,23 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal hide fade" id="progressModal">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/File Upload
+		</div>
+		<div class="modal-body">
+			<p>
+				Your files are being uploaded.
+			</p>
+			<p>
+				<div class="progress progress-striped active">
+				    <div class="bar" style="width: 100%;"></div>
+				</div>
+			</p>
+		</div>
+	</div>
 {% endblock %}
 
 {% block controller_script %}
@@ -81,20 +104,64 @@
 				$(this).downloadFile($(this).data('file'));
 			});
 			
-			/*$('#uploadFile').formUploadProgress({
+			$('#uploadFile').formUploadProgress({
 			    url: '{{ url('admin_file', {"action": "progress"}) }}',
 			    name: '{{ uploadProgressId }}',
 			    uploadProgressName: '{{ uploadProgressName }}',
 			    interval: 1000,
 			    onProgress: function (data) {
-			        console.log(data);
+			        $('#progressModal').find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+			    },
+			    onSubmitted: function (data) {
+			        if (data.errors) {
+			            $('.file_uploaded').hide();
+    			        $('#uploadFile').find('ul.errors').remove();
+    			        for(element in data.errors) {
+    			            var list = $('<ul>', {class: 'errors'})
+    			            for (error in data[element])
+    			                list.append($('<li>').html(data[element][error]));
+    			            $('#uploadFile').find('#' + element).parent().parent().after(list);
+    			        }
+    			    } else if (data.info) {
+    			        $('#uploadFile').resetForm();
+    			        $('.file_uploaded').show();
+    			        
+    			        var item = $('<tr>', {class: 'item'});
+    			        item.append(
+    			            $('<td>').html(data.info.name),
+    			            $('<td>').html(data.info.description),
+    			            $('<td>').append(
+    			                downloadFile = $('<a>', {class: 'downloadFile view'}).html('Download'),
+    			                deleteFile = $('<a>', {class: 'delete'}).html('Delete')
+    			            )
+    			        );
+    			        
+    			        $('#articleFiles').append(item);
+    			        
+    			        downloadFile.downloadFile('{{ url('admin_file', {"action": "download"}) }}/' + data.info.id);
+    			        
+    			        deleteFile.data(data.info)
+    			            .click(openDeleteModal);
+    			    }
+    			    var progressModal = $('#progressModal');
+    			    progressModal.permanentModal('hide');
+			    },
+			    onSubmit: function () {
+			        $('.file_uploaded').hide();
+			        var progressModal = $('#progressModal');
+			        progressModal.permanentModal('open');
+			    },
+			    onError: function () {
+			        $('.file_uploaded').hide();
+			        var progressModal = $('#progressModal');
+			        progressModal.permanentModal('hide');
 			    }
-			});*/
+			});
 			
-			$('.item .delete').click(openModal);
+			$('.item .delete').click(openDeleteModal);
 		});
 		
-		function openModal(e) {
+		function openDeleteModal(e) {
 			var $this = $(this);
 			
 			e.preventDefault();

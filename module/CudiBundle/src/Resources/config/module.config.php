@@ -13,9 +13,9 @@ return array(
 				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
 				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
-				'sale'      	      => 'CudiBundle\Controller\Sale\IndexController',
 				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
+				'prof'      	      => 'CudiBundle\Controller\Prof\IndexController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -42,6 +42,26 @@ return array(
                                     	),
                                     	'options' => array(
                                             'output' => 'sale_css.css',
+                                        ),
+                                    ),
+                                    'prof_css' => array(
+                                    	'assets' => array(
+                                    		'prof/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'prof_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'prof_css.css',
                                         ),
                                     ),
                                     'queue_js' => array(
@@ -313,6 +333,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'sale_sale',
 					'action'     => 'sale',
+				),
+			),
+		),
+		'prof' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/cudi/prof[/:action]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'prof',
+					'action'     => 'index',
 				),
 			),
 		),

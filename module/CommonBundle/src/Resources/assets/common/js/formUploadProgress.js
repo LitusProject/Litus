@@ -4,7 +4,10 @@
         name: '',
         uploadProgressName: '',
         interval: 200,
-        onProgress: function () {}
+        onProgress: function () {},
+        onSubmitted: function () {},
+        onSubmit: function () {},
+        onError: function () {},
     };
     
     var methods = {
@@ -31,14 +34,20 @@
     function _init($this) {
         var settings = $this.data('formUploadProgress');
         
-        $this.append($('<input>', {type: 'hidden', name: settings.uploadProgressName, value: settings.name}));
+        $this.prepend($('<input>', {type: 'hidden', name: settings.uploadProgressName, value: settings.name}));
         
         $this.submit(function (e) {
             e.preventDefault();
             
+            settings.onSubmit();
+            
             _load($this);
             
-            $this.ajaxSubmit();
+            $this.ajaxSubmit({
+                dataType: 'json',
+                success: settings.onSubmitted,
+                error: settings.onError,
+            });
         });
     }
     
