@@ -32,18 +32,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
 
-		$field = new Text('number');
-        $field->setLabel('Number')
-        	->setRequired()
-			->addValidator(new IntValidator())
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
         $field = new Text('stockArticle');
         $field->setLabel('Stock Article')
             ->setAttrib('class', 'disableEnter')
         	->setRequired()
 			->addValidator(new ArticleBarcodeValidator($entityManager))
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new Text('number');
+        $field->setLabel('Number')
+        	->setRequired()
+        	->addValidator(new IntValidator())
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

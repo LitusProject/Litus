@@ -60,6 +60,11 @@ return array(
                                             'common/js/formUploadProgress.js',
                                         ),
                                     ),
+                                    'common_permanentModal' => array(
+                                        'assets'  => array(
+                                            'common/js/permanentModal.js',
+                                        ),
+                                    ),
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',
