@@ -2,9 +2,9 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use Doctrine\ORM\EntityRepository,
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository,
 	Doctrine\ORM\Query\Expr\Join,
-	
 	Zend\Mail\Message,
 	Zend\Mail\Transport\Sendmail;
 
@@ -29,6 +29,23 @@ class StockItem extends EntityRepository
 		}
 		return parent::findBy($criteria, $orderBy, $limit, $offset);
 	}
+	
+	public function findOneByArticle(Article $article)
+	{
+	    $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('CudiBundle\Entity\Stock\StockItem', 'i')
+			->where($query->expr()->eq('i.article', ':article'))
+			->setParameter('article', $article->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+			
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+	} 
 	
 	public function findOneByBarcode($barcode)
     {

@@ -5,6 +5,7 @@ return array(
 		'instance' => array(
 			'alias' => array(
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
+				'admin_comment'	      => 'CudiBundle\Controller\Admin\CommentController',
 				'admin_file'	      => 'CudiBundle\Controller\Admin\FileController',
 				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
@@ -110,6 +111,20 @@ return array(
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_comment' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/comment[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_comment',
 					'action'     => 'manage',
 				),
 			),

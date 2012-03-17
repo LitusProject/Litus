@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\File,
-	CudiBundle\Form\Admin\File\File as FileForm,
+	CudiBundle\Form\Admin\File\Add as FileForm,
 	Doctrine\ORM\EntityManager,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
 	Zend\Http\Headers;
@@ -154,6 +154,15 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 			'data' => $data
 		);
 	}
+	
+	public function progressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+
+        return array(
+            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+        );
+    }
     
     private function _getArticle()
     {
@@ -200,15 +209,6 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     	}
     	
     	return $article;
-    }
-    
-    public function progressAction()
-    {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
-
-        return array(
-            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
-        );
     }
     
     private function _getFile()

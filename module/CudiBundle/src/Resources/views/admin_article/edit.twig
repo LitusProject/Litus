@@ -33,6 +33,17 @@
 			</div>
 		{% endif %}
 		<div class="sidebox">
+		    <div class="title">Manage Comments</div>
+		   	<div class="content">
+		    	<p>
+		        	<i>Please hit the link below to manage the comments of this article!</i>
+		        </p>
+		        <p>
+		           	<a href="{{ url('admin_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+		        </p>
+		    </div>
+		</div>
+		<div class="sidebox">
 		    <div class="title">New Version</div>
 		   	<div class="content">
 		    	<p>

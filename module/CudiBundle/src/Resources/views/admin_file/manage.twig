@@ -37,7 +37,6 @@
 		<br style="clear:both"/>
 		
 		<table class="full_width" id="articleFiles">
-		    
 	        <tr>
 	            <th>Name</th>
 	            <th>Description</th>
@@ -45,7 +44,6 @@
 	        </tr>
 	
 	        {% for file in articleFiles %}
-	
 	            <tr class="item">
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
@@ -54,7 +52,6 @@
 		                <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
 	                </td>
 	            </tr>
-	
 	        {% endfor %}
 	    </table>
 	</div>

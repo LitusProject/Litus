@@ -1,0 +1,20 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_article/partials/navigation.twig' %}
+		
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div id="controller_action">
+		<h1>Article</h1>
+		
+		<p>Title: <b>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</b></p>
+		<p>Author: <b>{{ article.getMetaInfo().getAuthors() }}</b></p>
+		<p>Publisher: <b>{{ article.getMetaInfo().getPublishers() }}</b></p>
+		<br />
+		
+		<h1>Comment</h1>
+		<p>Date: <b>{{ comment.getDate().format('d/m/Y H:i') }}</b></p>
+		<p>Person: <b>{{ comment.getPerson().getFullName() }}</b></p>
+		<p>Text: <b>{{ comment.getText() }}</b></p>
+	</div>
+{% endblock %}
