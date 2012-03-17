@@ -70,25 +70,47 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 					->getRepository('CudiBundle\Entity\Stock\StockItem')
 					->findOneByBarcode($formData['stockArticle']);
 				
-                $item = new DeliveryItem($article, $formData['number']);
-				$this->getEntityManager()->persist($item);
-				$this->getEntityManager()->flush();
+				$stock = $this->getEntityManager()
+				    ->getRepository('CudiBundle\Entity\Stock\StockItem')
+				    ->findOneByArticle($article)
+				    ->setEntityManager($this->getEntityManager());
 				
-				$this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The delivery was successfully added!'
-                    )
-				);
-				
-				$this->redirect()->toRoute(
-					'admin_delivery',
-					array(
-						'action' => 'supplier',
-						'id'     => $delivery->getArticle()->getSupplier()->getId(),
-					)
-				);
+				if ($stock->getNumberNotDelivered() >= $formData['number']) {
+                    $item = new DeliveryItem($article, $formData['number']);
+    				$this->getEntityManager()->persist($item);
+    				$this->getEntityManager()->flush();
+    				
+    				$this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The delivery was successfully added!'
+                        )
+    				);
+    				
+    				$this->redirect()->toRoute(
+    					'admin_delivery',
+    					array(
+    						'action' => 'supplier',
+    						'id'     => $article->getSupplier()->getId(),
+    					)
+    				);
+    			} else {
+        			$this->flashMessenger()->addMessage(
+        			    new FlashMessage(
+        			        FlashMessage::ERROR,
+        			        'ERROR',
+        			        'The delivery couldn\'t be added, these items where not ordered!'
+        			    )
+        			);
+        			
+        			$this->redirect()->toRoute(
+        				'admin_delivery',
+        				array(
+        					'action' => 'add',
+        				)
+        			);
+    			}
 			}
         }
         
