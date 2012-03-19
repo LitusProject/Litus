@@ -72,7 +72,7 @@ class CommonBundleEntityUsersStatusesUniversityProxy extends \CommonBundle\Entit
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'person', 'status', 'year');
+        return array('__isInitialized__', 'id', 'status', 'year', 'person');
     }
 
     public function __clone()

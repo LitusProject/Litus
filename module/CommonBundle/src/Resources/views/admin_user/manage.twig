@@ -73,14 +73,12 @@
 					$('#user_search table').find('tr.item').remove();
 					$(data).each(function () {
 						$('#user_search table').append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
-							.append('<td>' + this.author + '</td>')
-							.append('<td>' + this.publisher + '</td>')
-							.append('<td>' + this.yearPublished + '</td>')
-							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
+						row.append('<td>' + this.username + '</td>')
+							.append('<td>' + this.fullName + '</td>')
+							.append('<td>' + this.email + '</td>')
 							.append(
 								$('<td>')
-									.append('<a href="{{ url('admin_user', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append('<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
 									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
 								);
 							deleteButton.data({

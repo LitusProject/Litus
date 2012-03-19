@@ -225,10 +225,22 @@ class CommonBundleEntityUsersPeopleCorporateProxy extends \CommonBundle\Entity\U
         return parent::disableLogin();
     }
 
+    public function isMember()
+    {
+        $this->__load();
+        return parent::isMember();
+    }
+
+    public function getBarcode()
+    {
+        $this->__load();
+        return parent::getBarcode();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'firstName', 'lastName', 'email', 'address', 'phoneNumber', 'sex', 'canLogin', 'credential', 'roles', 'unionStatuses', 'corporateStatuses');
+        return array('__isInitialized__', 'id', 'username', 'firstName', 'lastName', 'email', 'address', 'phoneNumber', 'sex', 'canLogin', 'credential', 'roles', 'unionStatuses', 'barcodes', 'corporateStatuses');
     }
 
     public function __clone()

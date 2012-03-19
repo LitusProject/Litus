@@ -237,10 +237,22 @@ class CommonBundleEntityUsersPeopleAcademicProxy extends \CommonBundle\Entity\Us
         return parent::disableLogin();
     }
 
+    public function isMember()
+    {
+        $this->__load();
+        return parent::isMember();
+    }
+
+    public function getBarcode()
+    {
+        $this->__load();
+        return parent::getBarcode();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'username', 'firstName', 'lastName', 'email', 'address', 'phoneNumber', 'sex', 'canLogin', 'credential', 'roles', 'unionStatuses', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath', 'universityStatuses');
+        return array('__isInitialized__', 'id', 'username', 'firstName', 'lastName', 'email', 'address', 'phoneNumber', 'sex', 'canLogin', 'credential', 'roles', 'unionStatuses', 'barcodes', 'personalEmail', 'primaryEmail', 'universityIdentification', 'photoPath', 'universityStatuses');
     }
 
     public function __clone()

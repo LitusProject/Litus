@@ -45,22 +45,16 @@ class CudiBundleEntitySalesServingQueueItemProxy extends \CudiBundle\Entity\Sale
         return parent::getId();
     }
 
-    public function setId($id_)
-    {
-        $this->__load();
-        return parent::setId($id_);
-    }
-
     public function getPerson()
     {
         $this->__load();
         return parent::getPerson();
     }
 
-    public function setPerson($person_)
+    public function setStatus(\CudiBundle\Entity\Sales\ServingQueueStatus $status)
     {
         $this->__load();
-        return parent::setPerson($person_);
+        return parent::setStatus($status);
     }
 
     public function getStatus()
@@ -69,22 +63,16 @@ class CudiBundleEntitySalesServingQueueItemProxy extends \CudiBundle\Entity\Sale
         return parent::getStatus();
     }
 
-    public function setStatus($status_)
-    {
-        $this->__load();
-        return parent::setStatus($status_);
-    }
-
     public function getPayDesk()
     {
         $this->__load();
         return parent::getPayDesk();
     }
 
-    public function setPayDesk($payDesk_)
+    public function setPayDesk($payDesk)
     {
         $this->__load();
-        return parent::setPayDesk($payDesk_);
+        return parent::setPayDesk($payDesk);
     }
 
     public function getSession()
@@ -93,22 +81,10 @@ class CudiBundleEntitySalesServingQueueItemProxy extends \CudiBundle\Entity\Sale
         return parent::getSession();
     }
 
-    public function setSession($session_)
-    {
-        $this->__load();
-        return parent::setSession($session_);
-    }
-
     public function getQueueNumber()
     {
         $this->__load();
         return parent::getQueueNumber();
-    }
-
-    public function setQueueNumber($queueNumber_)
-    {
-        $this->__load();
-        return parent::setQueueNumber($queueNumber_);
     }
 
 

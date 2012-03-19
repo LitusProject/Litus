@@ -69,6 +69,12 @@ class CudiBundleEntitySalesBookingProxy extends \CudiBundle\Entity\Sales\Booking
         return parent::getNumber();
     }
 
+    public function setNumber($number)
+    {
+        $this->__load();
+        return parent::setNumber($number);
+    }
+
     public function getBookDate()
     {
         $this->__load();

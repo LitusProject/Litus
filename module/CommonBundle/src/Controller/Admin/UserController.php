@@ -206,12 +206,12 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     	switch($this->getParam('field')) {
     		case 'username':
     			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Person')
+    				->getRepository('CommonBundle\Entity\Users\Person')
     				->findAllByUsername($this->getParam('string'));
     			break;
     		case 'name':
     			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Person')
+    				->getRepository('CommonBundle\Entity\Users\Person')
     				->findAllByName($this->getParam('string'));
     			break;
     	}
@@ -221,8 +221,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     		$item = (object) array();
     		$item->id = $user->getId();
     		$item->username = $user->getUsername();
-    		$item->fullName = $user->getMetaInfo()->getAuthors();
-    		$item->email = $user->getMetaInfo()->getPublishers();
+    		$item->fullName = $user->getFullName();
+    		$item->email = $user->getEmail();
     		
     		$result[] = $item;
     	}
