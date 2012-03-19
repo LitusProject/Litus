@@ -96,7 +96,7 @@ class CudiBundleEntityArticlesStockArticlesExternalProxy extends \CudiBundle\Ent
         return parent::getSupplier();
     }
 
-    public function setSupplier($supplier)
+    public function setSupplier(\CudiBundle\Entity\Supplier $supplier)
     {
         $this->__load();
         return parent::setSupplier($supplier);

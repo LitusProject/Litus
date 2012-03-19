@@ -23,8 +23,9 @@ class Person extends EntityRepository
 	
 	public function findAllByName($name)
 	{
+		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('p')
-			->from('CommonBundle\Entity\Person', 'p')
+			->from('CommonBundle\Entity\Users\Person', 'p')
 			->where(
 				$query->expr()->orX(
 					$query->expr()->like(
@@ -46,18 +47,22 @@ class Person extends EntityRepository
 			->getQuery()
 			->getResult();
 		
-		return $resultset;
+		return $resultSet;
 	}
 	
 	public function findAllByUsername($username)
 	{
+		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('p')
-			->from('CommonBundle\Entity\Person', 'p')
+			->from('CommonBundle\Entity\Users\Person', 'p')
+			->where(
+				$query->expr()->like('p.username', ':username')
+			)
 			->setParameter('username', '%' . strtolower($username) . '%')
 			->getQuery()
 			->getResult();
 		
-		return $resultset;
+		return $resultSet;
 	}
 	
 	public function findOneByUsername($username)

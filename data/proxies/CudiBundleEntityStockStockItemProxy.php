@@ -69,10 +69,10 @@ class CudiBundleEntityStockStockItemProxy extends \CudiBundle\Entity\Stock\Stock
         return parent::addNumber($number);
     }
 
-    public function getTotalOrdered(\Doctrine\ORM\EntityManager $entityManager)
+    public function getTotalOrdered()
     {
         $this->__load();
-        return parent::getTotalOrdered($entityManager);
+        return parent::getTotalOrdered();
     }
 
     public function getNumberNotDelivered()
@@ -81,40 +81,46 @@ class CudiBundleEntityStockStockItemProxy extends \CudiBundle\Entity\Stock\Stock
         return parent::getNumberNotDelivered();
     }
 
-    public function getNumberQueueOrder(\Doctrine\ORM\EntityManager $entityManager)
+    public function getNumberQueueOrder()
     {
         $this->__load();
-        return parent::getNumberQueueOrder($entityManager);
+        return parent::getNumberQueueOrder();
     }
 
-    public function getTotalDelivered(\Doctrine\ORM\EntityManager $entityManager)
+    public function getTotalDelivered()
     {
         $this->__load();
-        return parent::getTotalDelivered($entityManager);
+        return parent::getTotalDelivered();
     }
 
-    public function getNumberBooked(\Doctrine\ORM\EntityManager $entityManager)
+    public function getNumberBooked()
     {
         $this->__load();
-        return parent::getNumberBooked($entityManager);
+        return parent::getNumberBooked();
     }
 
-    public function getNumberAssigned(\Doctrine\ORM\EntityManager $entityManager)
+    public function getNumberAssigned()
     {
         $this->__load();
-        return parent::getNumberAssigned($entityManager);
+        return parent::getNumberAssigned();
     }
 
-    public function getNumberSold(\Doctrine\ORM\EntityManager $entityManager)
+    public function getNumberSold()
     {
         $this->__load();
-        return parent::getNumberSold($entityManager);
+        return parent::getNumberSold();
     }
 
-    public function getNumberAvailable(\Doctrine\ORM\EntityManager $entityManager)
+    public function getNumberAvailable()
     {
         $this->__load();
-        return parent::getNumberAvailable($entityManager);
+        return parent::getNumberAvailable();
+    }
+
+    public function setEntityManager(\Doctrine\ORM\EntityManager $entityManager)
+    {
+        $this->__load();
+        return parent::setEntityManager($entityManager);
     }
 
 
