@@ -13,19 +13,19 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Order;
+namespace CudiBundle\Controller\Prof;
 
-use Doctrine\ORM\EntityManager,
-	Zend\Form\Form;
+use CommonBundle\Component\FlashMessenger\FlashMessage;
 
-class AddDirect extends \CudiBundle\Form\Admin\Order\Add
+/**
+ * IndexController
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class IndexController extends \CommonBundle\Component\Controller\ActionController
 {
-
-    public function __construct(EntityManager $entityManager, $options = null)
+    public function indexAction()
     {
-        parent::__construct($entityManager, $options);
-
-        $this->removeElement('stockArticle');
-		$this->getElement('submit')->setName('addOrder');
+    	return array();
     }
 }

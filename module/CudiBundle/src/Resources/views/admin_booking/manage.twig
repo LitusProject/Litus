@@ -61,7 +61,7 @@
 		                <td>{{ booking.getArticle().getTitle() }} {% if booking.getArticle().getVersionNumber() != 1 %} (v{{ booking.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ booking.getNumber() }}</td>
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
-		                <td>{{ booking.getStatus() }}</td>
+		                <td>{{ booking.getStatus()|capitalize }}</td>
 		        		<td>
 		        			{% if booking.getStatus() == 'assigned' %}
 		                    	<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId()}) }}" class="edit">Unassign</a>
@@ -129,7 +129,7 @@
 							.append('<td>' + this.article + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 							.append('<td>' + this.number + '</td>')
 							.append('<td>' + this.bookDate + '</td>')
-							.append('<td>' + this.status + '</td>')
+							.append('<td>' + ucfirst(this.status) + '</td>')
 							.append(actions = $('<td>'));
 						if ('assigned' == this.status)
 							actions.append('<a href="{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
@@ -176,6 +176,10 @@
 				});
 			});
 			removeBooking.modal();
+		}
+		
+		function ucfirst(str) {
+    		return str.slice(0,1).toUpperCase() + str.substring(1);
 		}
 	</script>
 {% endblock %}

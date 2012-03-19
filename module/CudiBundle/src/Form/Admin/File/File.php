@@ -18,26 +18,19 @@ namespace CudiBundle\Form\Admin\File;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
-	CommonBundle\Component\Validator\Year as YearValidator,
-	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
 	Zend\Form\Element\File as FileElement,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Checkbox,
-	Zend\Form\Form,
-	Zend\Form\SubForm;
+	Zend\Form\Element\Text;
 
-class File extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+                
         $this->setAttrib('id', 'uploadFile');
-         
+     
         $field = new Text('description');
         $field->setLabel('Description')
 			->setAttrib('size', 70)
