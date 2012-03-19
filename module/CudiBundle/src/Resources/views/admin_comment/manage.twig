@@ -31,10 +31,40 @@
 	                <td>{{ comment.getPerson().getFullName() }}</td>
 	                <td>{{ comment.getSummary() }}</td>
 					<td>
-						<a class="view" href="{{ url('admin_comment', {"action": "view", "id": comment.getId()}) }}">View</a>
+						<a class="view" data-text="{{ comment.getText() }}">View</a>
 	                </td>
 	            </tr>
 	        {% endfor %}
 	    </table>
 	</div>
+	
+	<div class="modal hide fade" id="viewComment">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Article Comment
+		</div>
+		<div class="modal-body">
+			<p class="text"></p>
+			<div class="footer">
+				<input type="button" data-dismiss="modal" value="Close">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .view').click(openViewModal);
+		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var viewComment = $('#viewComment');
+			viewComment.find('.text').html($this.data('text'));
+			viewComment.modal();
+		}
+	</script>
 {% endblock %}
