@@ -13,43 +13,29 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Delivery;
+namespace CudiBundle\Form\Admin\Comment;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
-	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,	
-	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Form,
-	Zend\Validator\Int as IntValidator;
+	Zend\Form\Element\TextArea;
 
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
-    public function __construct(EntityManager $entityManager, $options = null)
+    public function __construct($options = null)
     {
         parent::__construct($options);
-
-		$field = new Text('stockArticle');
-        $field->setLabel('Article')
-            ->setAttrib('class', 'disableEnter')
+             
+        $field = new TextArea('text');
+        $field->setLabel('Comment')
         	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-			->addValidator(new ArticleBarcodeValidator($entityManager));
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
-        $field = new Text('number');
-        $field->setLabel('Number')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new IntValidator());
-        $this->addElement($field);
-
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'stock_add')
+                ->setAttrib('class', 'comment_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }

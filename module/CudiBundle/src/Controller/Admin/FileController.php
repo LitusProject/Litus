@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\File,
-	CudiBundle\Form\Admin\File\File as FileForm,
+	CudiBundle\Form\Admin\File\Add as FileForm,
 	Doctrine\ORM\EntityManager,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
 	Zend\Http\Headers;
@@ -32,58 +32,83 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     
 	public function manageAction()
 	{
-		$filePath = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.file_path');
-			
 		$article = $this->_getArticle();
 		
 		$form = new FileForm();
-        
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        		$upload = new FileUpload();
-        		$originalName = $upload->getFileName(null, false);
-
-        		$fileName = '';
-        		do{
-        		    $fileName = '/' . sha1(uniqid());
-        		} while (file_exists($filePath . $fileName));
-        		
-        		$upload->addFilter('Rename', $filePath . $fileName);
-        		$upload->receive();
-        		
-        		$file = new File($fileName, $originalName, $formData['description'], $article);
-        		$this->getEntityManager()->persist($file);
-        		$this->getEntityManager()->flush();
-        		
-        		$this->flashMessenger()->addMessage(
-        		    new FlashMessage(
-        		        FlashMessage::SUCCESS,
-        		        'SUCCESS',
-        		        'The file was successfully added!'
-        		    )
-        		);
-        		
-        		$this->redirect()->toRoute(
-        			'admin_file',
-        			array(
-        				'action' => 'manage',
-        				'id' => $file->getInternalArticle()->getId()
-        			)
-        		);
-        	}
-        }
+		$form->setAction(
+		    $this->url()->fromRoute(
+		        'admin_file',
+		        array(
+		            'action' => 'upload',
+		            'id' => $article->getId(),
+		        )
+		    )
+		);
         
         return array(
         	'form' => $form,
         	'article' => $article,
         	'articleFiles' => $article->getFiles($this->getEntityManager()),
         	'uploadProgressName' => ini_get('session.upload_progress.name'),
-        	'uploadProgressId' => ini_get('session.upload_progress.prefix') . uniqid(),
+        	'uploadProgressId' => uniqid(),
         );
+	}
+	
+	public function uploadAction()
+	{
+	    $this->initAjax();
+	    
+	    $article = $this->_getArticle();
+	    
+		$form = new FileForm();
+	    $formData = $this->getRequest()->post()->toArray();
+	            	
+    	if ($form->isValid($formData)) {
+    	    $filePath = $this->getEntityManager()
+    	    	->getRepository('CommonBundle\Entity\General\Config')
+    	    	->getConfigValue('cudi.file_path');
+    	    	
+    		$upload = new FileUpload();
+    		$originalName = $upload->getFileName(null, false);
+
+    		$fileName = '';
+    		do{
+    		    $fileName = '/' . sha1(uniqid());
+    		} while (file_exists($filePath . $fileName));
+    		
+    		$upload->addFilter('Rename', $filePath . $fileName);
+    		$upload->receive();
+    		
+    		$file = new File($fileName, $originalName, $formData['description'], $article);
+    		$this->getEntityManager()->persist($file);
+    		$this->getEntityManager()->flush();
+    		
+    		return array(
+    		    'status' => 'success',
+    		    'info' => array(
+    		        'info' => (object) array(
+    		            'name' => $file->getName(),
+    		            'description' => $file->getDescription(),
+    		            'id' => $file->getId(),
+    		        )
+    		    ),
+    		);
+    	} else {
+    	    $errors = $form->getErrors();
+    	    $formErrors = array();
+    	    foreach ($form->getElements() as $key => $element) {
+    	        $formErrors[$element->getId()] = array();
+    	        foreach ($errors[$element->getName()] as $error) {
+    	            $formErrors[$element->getId()][] = $element->getMessages()[$error];
+    	        }
+    	    }
+    	    return array(
+    	        'status' => 'error',
+    	        'form' => array(
+    	            'errors' => $formErrors
+    	        ),
+    	    );
+    	}
 	}
 	
 	public function deleteAction()
@@ -129,6 +154,15 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 			'data' => $data
 		);
 	}
+	
+	public function progressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+
+        return array(
+            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+        );
+    }
     
     private function _getArticle()
     {
@@ -175,15 +209,6 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     	}
     	
     	return $article;
-    }
-    
-    public function progressAction()
-    {
-        $uploadId = $this->getRequest()->post()->get('upload_id');
-        
-        return array(
-            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : 'err',
-        );
     }
     
     private function _getFile()

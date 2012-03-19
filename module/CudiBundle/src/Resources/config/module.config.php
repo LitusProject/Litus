@@ -5,16 +5,18 @@ return array(
 		'instance' => array(
 			'alias' => array(
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
+				'admin_comment'	      => 'CudiBundle\Controller\Admin\CommentController',
 				'admin_file'	      => 'CudiBundle\Controller\Admin\FileController',
 				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
+				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
 				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
-				'sale'      	      => 'CudiBundle\Controller\Sale\IndexController',
 				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
+				'prof'      	      => 'CudiBundle\Controller\Prof\IndexController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -41,6 +43,26 @@ return array(
                                     	),
                                     	'options' => array(
                                             'output' => 'sale_css.css',
+                                        ),
+                                    ),
+                                    'prof_css' => array(
+                                    	'assets' => array(
+                                    		'prof/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'prof_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'prof_css.css',
                                         ),
                                     ),
                                     'queue_js' => array(
@@ -93,6 +115,20 @@ return array(
 				),
 			),
 		),
+		'admin_comment' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/comment[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_comment',
+					'action'     => 'manage',
+				),
+			),
+		),
 		'admin_file' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -117,7 +153,7 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_article',
 					'action'     => 'manage',
-				),
+				), 
 			),
 		),
 		'admin_article_search' => array(
@@ -126,7 +162,7 @@ return array(
 				'route' => '/admin/article/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
                 ),
 				'defaults' => array(
 					'controller' => 'admin_article',
@@ -167,7 +203,7 @@ return array(
 			'route' => '/admin/booking/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_booking',
@@ -195,7 +231,7 @@ return array(
 				'route' => '/admin/stock/search[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock',
@@ -259,6 +295,20 @@ return array(
 				),
 			),
 		),
+		'admin_financial' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/financial[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_financial',
+					'action'     => 'manage',
+				),
+			),
+		),
 		'admin_sale' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -298,6 +348,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'sale_sale',
 					'action'     => 'sale',
+				),
+			),
+		),
+		'prof' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/cudi/prof[/:action]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'prof',
+					'action'     => 'index',
 				),
 			),
 		),

@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Sales\Session,
 	CudiBundle\Form\Admin\Sale\CashRegisterAdd as CashRegisterAddForm,
 	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
+	CudiBundle\Form\Admin\Sale\CashRegisterClose as CashRegisterCloseForm,
 	CudiBundle\Form\Admin\Sale\SessionComment as SessionCommentForm,
 	Doctrine\ORM\EntityManager,
 	Doctrine\ORM\QueryBuilder;
@@ -232,7 +233,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     {
         $session = $this->_getSession();
                 
-        $form = new CashRegisterEditForm($this->getEntityManager(), $session->getOpenAmount());
+        $form = new CashRegisterCloseForm($this->getEntityManager(), $session->getOpenAmount());
 		
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();

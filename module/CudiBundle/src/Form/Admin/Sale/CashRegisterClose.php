@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\Bank\CashRegister,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
 	
-class CashRegisterEdit extends CashRegisterAdd
+class CashRegisterClose extends CashRegisterAdd
 {
     public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $options = null )
     {
@@ -29,7 +29,7 @@ class CashRegisterEdit extends CashRegisterAdd
 		$this->removeElement('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Edit')
+        $field->setLabel('Close')
             ->setAttrib('class', 'sale_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);

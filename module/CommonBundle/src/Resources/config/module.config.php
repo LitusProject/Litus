@@ -56,7 +56,13 @@ return array(
                                 	),
                                     'common_form_upload_progress' => array(
                                         'assets'  => array(
+                                            'common/js/jquery.form.js',
                                             'common/js/formUploadProgress.js',
+                                        ),
+                                    ),
+                                    'common_permanentModal' => array(
+                                        'assets'  => array(
+                                            'common/js/permanentModal.js',
                                         ),
                                     ),
                                     'admin_css' => array(
