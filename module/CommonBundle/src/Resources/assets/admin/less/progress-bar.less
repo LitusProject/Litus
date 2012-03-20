@@ -50,7 +50,7 @@
   font-size: 12px;
   text-align: center;
   text-shadow: 0 -1px 0 rgba(0,0,0,.25);
-  #gradient > .vertical(#149bdf, #0480be);
+  #gradient > .vertical(lighten(@cOrange, 15%), @cOrange);
   .box-shadow(inset 0 -1px 0 rgba(0,0,0,.15));
   .box-sizing(border-box);
   .transition(width .6s ease);
@@ -58,7 +58,7 @@
 
 // Striped bars
 .progress-striped .bar {
-  #gradient > .striped(#149bdf);
+  #gradient > .striped(@cOrange);
   .background-size(40px 40px);
 }
 
@@ -67,41 +67,4 @@
   -webkit-animation: progress-bar-stripes 2s linear infinite;
      -moz-animation: progress-bar-stripes 2s linear infinite;
           animation: progress-bar-stripes 2s linear infinite;
-}
-
-
-
-// COLORS
-// ------
-
-// Danger (red)
-.progress-danger .bar {
-  #gradient > .vertical(#ee5f5b, #c43c35);
-}
-.progress-danger.progress-striped .bar {
-  #gradient > .striped(#ee5f5b);
-}
-
-// Success (green)
-.progress-success .bar {
-  #gradient > .vertical(#62c462, #57a957);
-}
-.progress-success.progress-striped .bar {
-  #gradient > .striped(#62c462);
-}
-
-// Info (teal)
-.progress-info .bar {
-  #gradient > .vertical(#5bc0de, #339bb9);
-}
-.progress-info.progress-striped .bar {
-  #gradient > .striped(#5bc0de);
-}
-
-// Warning (orange)
-.progress-warning .bar {
-  #gradient > .vertical(lighten(@cOrange, 15%), @cOrange);
-}
-.progress-warning.progress-striped .bar {
-  #gradient > .striped(lighten(@cOrange, 15%));
 }

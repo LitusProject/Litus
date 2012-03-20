@@ -68,16 +68,6 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
     
-    public function viewAction()
-    {
-        $comment = $this->_getComment();
-        
-        return array(
-            'article' => $comment->getArticle(),
-            'comment' => $comment,
-        );
-    }
-    
     private function _getArticle()
     {
     	if (null === $this->getParam('id')) {
