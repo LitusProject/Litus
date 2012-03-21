@@ -16,14 +16,14 @@
 		<div class="container">
 			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
-				{% if hasAccess('prof', 'index') %}
-					<li {% if 'index' == getParam('action') and 'prof' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof") }}">Home</a>
+				{% if hasAccess('supplier', 'index') %}
+					<li {% if 'index' == getParam('action') and 'supplier' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("supplier") }}">Home</a>
 					</li>
 				{% endif %}
-				{% if hasAccess('prof_article', 'manage') %}
-					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_article") }}">Articles</a>
+				{% if hasAccess('supplier_article', 'index') %}
+					<li {% if 'supplier_article' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("supplier_article") }}">Articles</a>
 					</li>
 				{% endif %}
 			</ul>
@@ -34,7 +34,7 @@
 <header>
 	<div class="inner">
 		<div class="container">
-			<h1>Litus Prof</h1>
+			<h1>Litus Supplier</h1>
 		</div>
 	</div>
 </header>
@@ -47,7 +47,7 @@
 	</div>
 	
 	<footer>
-	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+	    Litus Supplier | Code by <a href="http://litus.cc">Litus</a>
 	
 		{% if 'development' == environment %}
 		    <span class="development_information">
