@@ -13,6 +13,7 @@ return array(
 				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
+				'admin_supplier'	  => 'CudiBundle\Controller\Admin\SupplierController',
 				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
 				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
@@ -344,6 +345,34 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_sale',
 					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_supplier' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_supplier_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/search[/:field/:string]',
+				'constraints' => array(
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier',
+					'action'     => 'search',
 				),
 			),
 		),

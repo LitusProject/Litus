@@ -97,7 +97,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 		$this->getEntityManager()->remove($booking);
 		$this->getEntityManager()->flush();
         
-        return array();
+        return array(
+            'result' => (object) array("status" => "success")
+        );
 	}
 	
 	public function searchAction()

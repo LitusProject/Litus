@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Component\Controller;
 
-use Exception,
+use CommonBundle\Component\Controller\Exception\HasNoAccessException,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -23,7 +23,7 @@ use Exception,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SaleController extends \CommonBundle\Component\Controller\ActionController
+class SupplierController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
      * Execute the request
@@ -34,34 +34,19 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$session = $this->getEntityManager()
-		    ->getRepository('CudiBundle\Entity\Sales\Session')
-		    ->findOpenSession();
-		
-		if (null == $session || !$session->isOpen())
-			throw new Exception('No open session could be found');
+		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier'))
+			throw new HasNoAccessException('You are not authorized to view this page');
 		
 		$result = parent::execute($e);
 		
-		$result['session'] = $session;
-		
-		$result['unionUrl'] = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.union_url');
+		$result['supplier'] = $this->getSupplier();
   		
         $e->setResult($result);
         return $result;
     }
     
-    protected function getSocketUrl()
+    protected function getSupplier()
     {
-    	$address = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_remote_host');
-    	$port = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_port');
-    		
-    	return 'ws://' . $address . ':' . $port;
+    	return $this->getAuthentication()->getPersonObject()->getSupplier();
     }
 }

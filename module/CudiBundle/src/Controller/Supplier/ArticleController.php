@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ArticleController extends \CommonBundle\Component\Controller\ActionController
+class ArticleController extends \CudiBundle\Component\Controller\SupplierController
 {
     public function manageAction()
     {
