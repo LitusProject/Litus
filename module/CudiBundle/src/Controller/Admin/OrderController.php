@@ -128,7 +128,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 		$this->getEntityManager()->remove($item);
 		$this->getEntityManager()->flush();
 		
-		return array();
+		return array(
+		    'result' => (object) array("status" => "success")
+		);
 	}
 	
 	public function placeAction()

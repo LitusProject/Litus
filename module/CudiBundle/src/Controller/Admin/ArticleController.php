@@ -224,10 +224,12 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
 		$article = $this->_getArticle();
 
-		$article->setRemoved(true);
+        $article->setRemoved(true);
 		$this->getEntityManager()->flush();
         
-        return array();
+        return array(
+            'result' => (object) array("status" => "success")
+        );
 	}
 
 	public function searchAction()
