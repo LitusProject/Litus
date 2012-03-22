@@ -150,7 +150,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			case 'supplier':
 				$stock = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\StockItem')
-					->findAllByArticleSupplier($this->getParam('string'));
+					->findAllByArticleSupplierName($this->getParam('string'));
 				break;
 		}
 		$result = array();

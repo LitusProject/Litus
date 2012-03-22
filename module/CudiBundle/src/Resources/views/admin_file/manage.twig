@@ -38,7 +38,7 @@
 		
 		<table class="full_width" id="articleFiles">
 	        <tr>
-	            <th>Name</th>
+	            <th width="200px">Name</th>
 	            <th>Description</th>
 	            <th width="150px">Action</th>
 	        </tr>
@@ -47,7 +47,7 @@
 	            <tr class="item">
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
-					<td>
+					<td width="140px">
 						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": file.getId()}) }}">Download</a>
 		                <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
 	                </td>
@@ -168,7 +168,7 @@
 			removeFile.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 					$('.flashmessage').addClass('hide');
-					$('.file_removed_success').removeClass('hide'));
+					$('.file_removed_success').removeClass('hide');
 					$this.parent().parent().remove();
 					removeFile.modal('hide');
 				}, 'json').error(function () {
