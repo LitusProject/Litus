@@ -26,6 +26,15 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
 {
     public function manageAction()
     {
-    	return array();
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\StockItem')
+            ->findAllByArticleSupplier($this->getSupplier());
+        
+        foreach($articles as $article)
+        	$article->setEntityManager($this->getEntityManager());
+        
+    	return array(
+    	    'articles' => $articles
+    	);
     }
 }

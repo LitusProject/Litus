@@ -174,33 +174,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unassignAction()
 	{
+	    $this->initAjax();
+	    
 		$booking = $this->_getBooking();
-			
-		if (null !== $this->getParam('confirm')) {
-			if (1 == $this->getParam('confirm')) {
-				$booking->setStatus('booked');
-				
-				$this->getEntityManager()->flush();
 
-				$this->flashMessenger()->addMessage(
-            		new FlashMessage(
-                		FlashMessage::SUCCESS,
-                    	'SUCCESS',
-                    	'The booking was successfully unassigned!'
-                	)
-            	);
-			};
-            
-			$this->redirect()->toRoute(
-				'admin_booking',
-				array(
-					'action' => 'manage'
-				)
-			);
-        }
+        $booking->setStatus('booked');
+		$this->getEntityManager()->flush();
         
         return array(
-        	'booking' => $booking,
+            'result' => (object) array("status" => "success")
         );
 	}
 	

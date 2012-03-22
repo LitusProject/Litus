@@ -65,7 +65,7 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
         	$this->error(self::NOT_VALID);
         	return false;
         }
-
+        
 		$article = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
 			->findOneByBarcode($value);

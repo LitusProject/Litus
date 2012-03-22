@@ -16,6 +16,18 @@
 			<p>An error occurred while trying to delete an booking.</p>
 		</div>
 	</div>
+	<div class="flashmessage success_message full_width booking_unassign_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The booking was successfully unassigned!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width booking_unassign_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to unassign an booking.</p>
+		</div>
+	</div>
 	
 	<div id="controller_action">
 		<div id="booking_search" style="display:none;">
@@ -32,28 +44,26 @@
 			
 			<table>
 		    	<tr>
-		        	<th>Person</th>
+		        	<th width="90px">Person</th>
 		        	<th>Article</th>
-		        	<th>Number</th>
-		        	<th>Book date</th>
-		        	<th>Status</th>
-		        	<th>Actions</th>
+		        	<th width="50px">Number</th>
+		        	<th width="100px">Book date</th>
+		        	<th width="55px">Status</th>
+		        	<th width="70px">Actions</th>
 				</tr>
 			</table>
 		</div>
 		
 		<div id="default_page">
 			<table>
-		    
 		        <tr>
-		            <th>Person</th>
+		            <th width="90px">Person</th>
 		            <th>Article</th>
-		            <th>Number</th>
-		            <th>Book date</th>
-		            <th>Status</th>
-					<th>Actions</th>
+		            <th width="50px">Number</th>
+		            <th width="100px">Book date</th>
+		            <th width="55px">Status</th>
+					<th width="70px">Actions</th>
 		        </tr>
-		        
 		        
 		        {% for booking in paginator %}
 		            <tr class="item">
@@ -61,10 +71,10 @@
 		                <td>{{ booking.getArticle().getTitle() }} {% if booking.getArticle().getVersionNumber() != 1 %} (v{{ booking.getArticle().getVersionNumber() }}) {% endif %}</td>
 		                <td>{{ booking.getNumber() }}</td>
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
-		                <td>{{ booking.getStatus()|capitalize }}</td>
+		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
 		        		<td>
 		        			{% if booking.getStatus() == 'assigned' %}
-		                    	<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId()}) }}" class="edit">Unassign</a>
+		                    	<a href="#" class="edit" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getTitle() }}">Unassign</a>
 		        			{% elseif booking.getStatus() == 'booked' %}
 		                		<a href="#" class="delete" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getTitle() }}">Delete</a>
 		                    {% endif %}
@@ -110,6 +120,26 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal hide fade" id="unassignBooking">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Booking Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to unassign the following booking of <b class="bookingPerson"></b>: <b class="bookingTitle"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block controller_script %}
@@ -129,30 +159,31 @@
 							.append('<td>' + this.article + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
 							.append('<td>' + this.number + '</td>')
 							.append('<td>' + this.bookDate + '</td>')
-							.append('<td>' + ucfirst(this.status) + '</td>')
+							.append('<td class="status">' + ucfirst(this.status) + '</td>')
 							.append(actions = $('<td>'));
 						if ('assigned' == this.status)
-							actions.append('<a href="{{ url('admin_booking', {"action": "unassign"}) }}/' + this.id + '" class="edit">Unassign</a>');
-						else if ('booked' == this.status) {
-							actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'));
-							deleteButton.data({
-								id: this.id,
-								person: this.person,
-								title: this.article,
-							});
-						}
+							actions.append(button = $('<a href="#" class="edit">Unassign</a>'));
+						else if ('booked' == this.status)
+							actions.append(button = $('<a href="#" class="delete">Delete</a>'));
+						button.data({
+							id: this.id,
+							person: this.person,
+							title: this.article,
+						});
 					});
-					$('#booking_search .delete').click(openModal);
+					$('#booking_search .delete').click(openRemoveModal);
+					$('#booking_search .edit').click(openUnassignModal);
 				},
 				clear: function () {
 					$('#booking_search table').find('tr.item').remove();
 				}
 			});
 			
-			$('.item .delete').click(openModal);
+			$('.item .delete').click(openRemoveModal);
+			$('.item .edit').click(openUnassignModal);
 		});
 		
-		function openModal(e) {
+		function openRemoveModal(e) {
 			var $this = $(this);
 
 			e.preventDefault();
@@ -172,6 +203,30 @@
 				});
 			});
 			removeBooking.modal();
+		}
+		
+		function openUnassignModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var unassignBooking = $('#unassignBooking');
+			unassignBooking.find('.bookingPerson').html($(this).data('person'));
+			unassignBooking.find('.bookingTitle').html($(this).data('title'));
+			unassignBooking.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_booking', {"action": "unassign"})}}/' + $this.data('id'), function  (data) {
+					$('.flashmessage').addClass('hide');
+					$('.booking_unassign_success').removeClass('hide');
+				    var button = $('<a href="#" class="delete">Delete</a>').data($this.parent().data()).click(openRemoveModal);
+					$this.parent().parent().find('.status').html('Booked');
+					$this.parent().html(button);
+					unassignBooking.modal('hide');
+				}, 'json').error(function () {
+					$('.flashmessage').addClass('hide');
+					$('.booking_unassign_error').removeClass('hide');
+					unassignBooking.modal('hide');
+				});
+			});
+			unassignBooking.modal();
 		}
 		
 		function ucfirst(str) {

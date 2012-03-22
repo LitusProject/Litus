@@ -49,6 +49,7 @@ class StockItem extends EntityRepository
 	
 	public function findOneByBarcode($barcode)
     {
+        echo $barcode.'df';
         $article = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Articles\StockArticles\External')
 			->findOneByBarcode($barcode);
@@ -138,7 +139,7 @@ class StockItem extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllByArticleSupplier($supplier)
+	public function findAllByArticleSupplierName($supplier)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$internal = $query->select('a.id')
@@ -178,6 +179,53 @@ class StockItem extends EntityRepository
 			
 		return $resultSet;
 	}
+	
+	public function findAllByArticleSupplier($supplier)
+		{
+			$query = $this->_em->createQueryBuilder();
+			$internal = $query->select('a.id')
+				->from('CudiBundle\Entity\Articles\StockArticles\Internal', 'a')
+				->where($query->expr()->andX(
+    				    $query->expr()->eq('a.supplier', ':supplier'),
+    				    $query->expr()->eq('a.removed', 'false')
+    				)
+				)
+				->setParameter('supplier', $supplier->getId())
+				->getQuery()
+				->getResult();
+				
+			$query = $this->_em->createQueryBuilder();
+			$external = $query->select('a.id')
+				->from('CudiBundle\Entity\Articles\StockArticles\External', 'a')
+				->where($query->expr()->andX(
+    				    $query->expr()->eq('a.supplier', ':supplier'),
+    				    $query->expr()->eq('a.removed', 'false')
+    				)
+				)
+				->setParameter('supplier', $supplier->getId())
+				->getQuery()
+				->getResult();
+				
+			$ids = array();
+			foreach($external as $article)
+				$ids[] = $article['id'];
+			foreach($internal as $article)
+				$ids[] = $article['id'];
+	
+			if (sizeof($ids) === 0)
+				return array();
+	
+			$query = $this->_em->createQueryBuilder();
+			$resultSet = $query->select('i')
+				->from('CudiBundle\Entity\Stock\StockItem', 'i')
+				->innerJoin('i.article', 'a')
+				->where($query->expr()->in('a.id', $ids))
+				->orderBy('a.title', 'ASC')
+				->getQuery()
+				->getResult();
+				
+			return $resultSet;
+		}
 
 	public function assignAll()
 	{
