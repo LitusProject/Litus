@@ -8,22 +8,42 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    <p>
-	        
-	    </p>
-	</div>
+		<table>
+			<tr>
+				<th>Key</th>
+				<th>Value</th>
+			</tr>
+			
+	    	{% for key, value in server_environment %}
+	    		<tr>
+	    			<td>{{key}}</td>
+	    			<td>{{value}}</td>
+	    		</tr>
+	    	{% endfor %}
+		</table>
+		
+			</div>
 	
 	<aside>
+		<div class="sidebox">
+		    <div class="title">Shibboleth</div>
+		    <div class="content">
+		    	<p>
+		    		<a href="https://www.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Fdev.vtk.be%2Fadmin%2Fdashboard">&rarr; Shibboleth</a>
+		    	</p>
+		    </div>
+		</div>
+		
 	    <div class="sidebox">
 	        <div class="title">Versions</div>
 	        <div class="content">
 	        	<p>
 	        		<b>PHP</b><br />
-	        		{{ PHPVersion }}
+	        		{{ versions.php }}
 	        	</p>
 	        	<p>
 	            	<b>ZendFramework</b><br />
-	            	{{ ZFVersion }}
+	            	{{ versions.zf }}
 	            </p>
 	        </div>
 	    </div>
