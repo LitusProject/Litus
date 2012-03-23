@@ -1,0 +1,65 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+	{{ headTitle('Litus Prof', 'PREPEND') }}
+	
+	{{ headLink() }}   
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+			<ul class="nav">
+				{% if hasAccess('supplier', 'index') %}
+					<li {% if 'index' == getParam('action') and 'supplier' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("supplier") }}">Home</a>
+					</li>
+				{% endif %}
+				{% if hasAccess('supplier_article', 'index') %}
+					<li {% if 'supplier_article' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("supplier_article") }}">Articles</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<header>
+	<div class="inner">
+		<div class="container">
+			<h1>Litus Supplier</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container">
+	{% include 'sale/partials/flashMessenger.twig' %}
+
+	<div id="content_controller">
+	    {% block content %} {% endblock %}
+	</div>
+	
+	<footer>
+	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+	
+		{% if 'development' == environment %}
+		    <span class="development_information">
+		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+		    </span>
+		{% endif %}
+	</footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block controller_script %} {% endblock %}
+
+</body>
+</html>

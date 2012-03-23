@@ -53,21 +53,24 @@
 			            			Articles, Stock &amp; Financial
 			            		</div>
 		            			<ul
-		            				{% if 'admin_article' == getParam('controller') or 'admin_booking' == getParam('controller') or 'admin_sale' == getParam('controller') or 'admin_stock' == getParam('controller') %}
+		            				{% if 'admin_article' == getParam('controller') or 'admin_booking' == getParam('controller') or 'admin_sale' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_supplier' == getParam('controller') %}
 		            					style="display: block;"
 		            				{% endif %}
 		            			>
-		            			    {% if hasAccess('admin_article', 'index') %}
+		            			    {% if hasAccess('admin_article', 'manage') %}
 		            			        <li><a href="{{ url('admin_article') }}">Articles</a></li>
 		            			    {% endif %}
-		            				{% if hasAccess('admin_booking', 'index') %}
+		            				{% if hasAccess('admin_booking', 'manage') %}
 		            			        <li><a href="{{ url('admin_booking') }}">Bookings</a></li>
 		            			    {% endif %}
-		            			    {% if hasAccess('admin_sale', 'index') %}
+		            			    {% if hasAccess('admin_sale', 'manage') %}
 		            			        <li><a href="{{ url('admin_sale') }}">Sale</a></li>
 		            			    {% endif %}
-		            				{% if hasAccess('admin_stock', 'index') %}
+		            				{% if hasAccess('admin_stock', 'manage') %}
 		            			        <li><a href="{{ url('admin_stock') }}">Stock</a></li>
+		            			    {% endif %}
+		            			    {% if hasAccess('admin_supplier', 'manage') %}
+		            			        <li><a href="{{ url('admin_supplier') }}">Supplier</a></li>
 		            			    {% endif %}
 		            			</ul>
 		            		</li>

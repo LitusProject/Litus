@@ -74,6 +74,13 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_supplier' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_financial' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -99,6 +106,26 @@ return array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@prof_css',
+		),
+		'prof_article' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@prof_css',
+		),
+		'prof_file' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@prof_css',
+		),
+		'supplier' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@supplier_css',
+		),
+		'supplier_article' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@supplier_css',
 		),
 	),
 	'routes' => array(),

@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class Internal extends EntityRepository
 {
+     public function findOneByBarcode($barcode)
+    {
+        if (strlen($barcode) == 13)
+            $barcode = floor($barcode / 10);
+        echo 'dsf';
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('s')
+			->from('CudiBundle\Entity\Articles\StockArticles\Internal', 's')
+			->where($query->expr()->eq('s.barcode', ':barcode'))
+			->setParameter('barcode', $barcode)
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

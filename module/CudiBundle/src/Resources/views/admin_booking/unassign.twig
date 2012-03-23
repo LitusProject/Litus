@@ -1,24 +1,3 @@
-{% extends 'admin/base.twig' %}
-
-{% block content %}
-	{% include 'admin_booking/partials/navigation.twig' %}
-	
-	{% include 'admin/partials/flashMessenger.twig' %}
-
-	<div id="controller_action">
-		<div class="error_message flashmessage full_width">
-		    <div class="title">Warning</div>
-		    <div class="content">
-				<p>
-					You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getTitle() }}</b>!<br />
-					Please note that this operation cannot be undone!
-				</p>
-				<p>
-					Are you sure you want to continue?<br />
-					<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId(), "confirm": 1}) }}">Yes</a>
-					<a href="{{ url('admin_booking', {"action": "unassign", "id": booking.getId(), "confirm": 0}) }}">No</a>
-				</p>
-		    </div>
-		</div>
-	</div>
-{% endblock %}
+{% autoescape false %}
+	{{ result|json_encode }}
+{% endautoescape %}

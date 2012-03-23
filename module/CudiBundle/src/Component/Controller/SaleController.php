@@ -15,14 +15,8 @@
  
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Acl\Acl,
-	CommonBundle\Component\Acl\Driver\HasAccess,
-	CommonBundle\Component\Util\File,
-	Exception,
-	Zend\Cache\StorageFactory,
-	Zend\Mvc\MvcEvent,
-	Zend\Paginator\Paginator,
-	Zend\Paginator\Adapter\ArrayAdapter;
+use Exception,
+	Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a sale session is selected.
@@ -31,7 +25,6 @@ use CommonBundle\Component\Acl\Acl,
  */
 class SaleController extends \CommonBundle\Component\Controller\ActionController
 {
-	
 	/**
      * Execute the request
      * 
@@ -45,9 +38,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		    ->getRepository('CudiBundle\Entity\Sales\Session')
 		    ->findOpenSession();
 		
-		if (null == $session || !$session->isOpen()) {
+		if (null == $session || !$session->isOpen())
 			throw new Exception('No open session could be found');
-		}
 		
 		$result = parent::execute($e);
 		
