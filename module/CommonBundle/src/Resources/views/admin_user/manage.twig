@@ -4,6 +4,18 @@
 	{% include 'admin_user/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width user_removed_success" style="display: none;">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The user was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width user_removed_error" style="display: none;">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete a user.</p>
+		</div>
+	</div>
 
 	<div id="controller_action">
 		<div id="user_search" style="display: none;">
@@ -40,15 +52,13 @@
 		
 		        <tbody>
 		            {% for user in paginator %}
-		                <tr>
+		                <tr class="item">
 		                    <td>{{ user.getUsername() }}</td>
 		                    <td>{{ user.getFullName() }}</td>
 		                    <td>{{ user.getEmail() }}</td>
 		                    <td>
-		                        <ul>
-		                            <li><a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
-		                            <li><a href="{{ url('admin_user', {"action": "delete", "id": user.getId()}) }}" class="delete">Delete</a></li>
-		                        </ul>
+								<a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+								<a href="#" class="delete" data-id="{{ user.getId() }}" data-fullname="{{ user.getFullName() }}">Delete</a>
 		                    </td>
 		                </tr>
 		            {% endfor %}
@@ -56,6 +66,26 @@
 		    </table>
 	
 			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+	
+	<div class="modal hide fade" id="removeUser">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/User Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following user: <b class="fullname"></b>?
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" value="No">
+			</div>
 		</div>
 	</div>
 {% endblock %}
@@ -73,11 +103,9 @@
 					$('#user_search table').find('tr.item').remove();
 					$(data).each(function () {
 						$('#user_search table').append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
-							.append('<td>' + this.author + '</td>')
-							.append('<td>' + this.publisher + '</td>')
-							.append('<td>' + this.yearPublished + '</td>')
-							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
+						row.append('<td>' + this.username + '</td>')
+							.append('<td>' + this.fullName + '</td>')
+							.append('<td>' + this.email + '</td>')
 							.append(
 								$('<td>')
 									.append('<a href="{{ url('admin_user', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
@@ -85,8 +113,7 @@
 								);
 							deleteButton.data({
 								id: this.id,
-								title: this.title,
-								authors: this.author,
+								fullname: this.fullName
 							});
 					});
 					$('#user_search .delete').click(openModal);
@@ -101,27 +128,26 @@
 		
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
-			var removeArticle = $('#removeArticle');
-			removeArticle.find('.articleTitle').html($(this).data('title'));
-			removeArticle.find('.articleAuthors').html($(this).data('authors'));
-			removeArticle.find('.cancel').one('click', function () {
-				removeArticle.modal('hide');
+			var removeUser = $('#removeUser');
+			removeUser.find('.fullname').html($(this).data('fullname'));
+			removeUser.find('.cancel').one('click', function () {
+				removeUser.modal('hide');
 			});
-			removeArticle.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+			removeUser.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_user', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 					$('.flashmessage').hide();
-					$('.article_removed_success').show();
+					$('.user_removed_success').show();
 					$this.parent().parent().remove();
-					removeArticle.modal('hide');
+					removeUser.modal('hide');
 				}, 'json').error(function () {
 					$('.flashmessage').hide();
-					$('.article_removed_error').show();
-					removeArticle.modal('hide');
+					$('.user_removed_error').show();
+					removeUser.modal('hide');
 				});
 			});
-			removeArticle.modal();
+			removeUser.modal();
 		}
 	</script>
 {% endblock %}
