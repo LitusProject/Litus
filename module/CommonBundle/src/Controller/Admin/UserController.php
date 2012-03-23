@@ -151,52 +151,24 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteAction()
     {
+    	$this->initAjax();
+    
 		$user = $this->_getUser();
         
-        if (null !== $this->getParam('confirm')) {
-        	if (1 == $this->getParam('confirm')) {
-	            $sessions = $this->getEntityManager()
-	                ->getRepository('CommonBundle\Entity\Users\Session')
-	                ->findByPerson($user->getId());
-	            
-	            foreach ($sessions as $session) {
-	                $session->deactivate();
-	            }
-	            $user->disableLogin();
-				
-				$this->getEntityManager()->flush();
-				
-				$this->flashMessenger()->addMessage(
-				    new FlashMessage(
-				        FlashMessage::SUCCESS,
-				        'Succes',
-				        'The user was successfully deleted!'
-				    )
-				);
-				
-				$this->redirect()->toRoute(
-					'admin_user',
-					array(
-						'action' => 'manage'
-					)
-				);
-				
-				return;
-	        } else {
-	            $this->redirect()->toRoute(
-	            	'admin_user',
-	            	array(
-	            		'action' => 'manage'
-	            	)
-	            );
-	            
-	            return;
-	        }
-	    }
+        $sessions = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Session')
+            ->findByPerson($user->getId());
         
-        return array(
-        	'user' => $user
-        );
+        foreach ($sessions as $session) {
+            $session->deactivate();
+        }
+        $user->disableLogin();
+		
+		$this->getEntityManager()->flush();
+		
+		return array(
+			'result' => array('status' => 'success'),
+		);
     }
     
     public function searchAction()
