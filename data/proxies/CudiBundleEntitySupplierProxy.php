@@ -57,10 +57,22 @@ class CudiBundleEntitySupplierProxy extends \CudiBundle\Entity\Supplier implemen
         return parent::getPhoneNumber();
     }
 
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->__load();
+        return parent::setPhoneNumber($phoneNumber);
+    }
+
     public function getAddress()
     {
         $this->__load();
         return parent::getAddress();
+    }
+
+    public function setAddress($address)
+    {
+        $this->__load();
+        return parent::setAddress($address);
     }
 
     public function getVATNumber()
@@ -69,10 +81,16 @@ class CudiBundleEntitySupplierProxy extends \CudiBundle\Entity\Supplier implemen
         return parent::getVATNumber();
     }
 
+    public function setVATNumber($VAT)
+    {
+        $this->__load();
+        return parent::setVATNumber($VAT);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'name', 'telephoneNumber', 'address', 'VAT_number');
+        return array('__isInitialized__', 'id', 'name', 'phoneNumber', 'address', 'VAT_number');
     }
 
     public function __clone()

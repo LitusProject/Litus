@@ -15,47 +15,42 @@
  
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Entity\Users\Person,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CudiBundle\Entity\Supplier,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Select;
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text;
 
-class Edit extends \CommonBundle\Form\Admin\User\Edit
+class Edit extends \CudiBundle\Form\Admin\Supplier\Add
 {
 
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	protected $_entityManager = null;
-
-    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
+    public function __construct(EntityManager $entityManager, Supplier $supplier, $options = null)
     {
-        parent::__construct($entityManager, $person, $opts);
-        
-       	$this->_entityManager = $entityManager;
-		
-        $field = new Select('supplier');
-        $field->setLabel('Supplier')
-        	->setRequired()
-			->setMultiOptions($this->_getSuppliers())
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-        
-        $field = $this->getElement('submit');
+        parent::__construct($entityManager, $options);
+         
         $this->removeElement('submit');
+        
+        $this->getElement('name')
+        	->setAttrib('disabled', 'disabled')
+        	->clearValidators()
+        	->setRequired(false);
+        
+        $field = new Submit('submit');
+        $field->setLabel('Edit')
+                ->setAttrib('class', 'supplier_edit')
+                ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+        
+        $this->populateFromSupplier($supplier);
     }
-
-	private function _getSuppliers()
-	{
-		$suppliers = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Supplier')
-			->findAll();
-			
-		$supplierOptions = array();
-		foreach($suppliers as $item)
-			$supplierOptions[$item->getId()] = $item->getName();
-		
-		return $supplierOptions;
-	}
+    
+    public function populateFromSupplier(Supplier $supplier)
+    {
+        $this->populate(array(
+        	'name' => $supplier->getName(),
+        	'phone_number' => $supplier->getPhoneNumber(),
+        	'address' => $supplier->getAddress(),
+        	'vat' => $supplier->getVATNumber(),
+        ));
+    }
 }

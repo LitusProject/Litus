@@ -34,9 +34,9 @@ class Supplier
 	private $name;
 	
 	/**
-	 * @Column(type="string", name="telephone_number")
+	 * @Column(type="string", name="phone_number")
 	 */
-	private $telephoneNumber;
+	private $phoneNumber;
 
 	/**
 	 * @Column(type="string")
@@ -50,14 +50,14 @@ class Supplier
 	
 	/**
 	 * @param string $name
-	 * @param string $telephoneNumber
+	 * @param string $phoneNumber
 	 * @param string $address
 	 * @param string $VAT
 	 */
-	public function __construct($name, $telephoneNumber, $address, $VAT)
+	public function __construct($name, $phoneNumber, $address, $VAT)
 	{
 		$this->name = $name;
-		$this->telephoneNumber = $telephoneNumber;
+		$this->phoneNumber = $phoneNumber;
 		$this->address = $address;
 		$this->VAT_number = $VAT;
 	}
@@ -83,7 +83,18 @@ class Supplier
      */
     public function getPhoneNumber()
     {
-        return $this->telephoneNumber;
+        return $this->phoneNumber;
+    }
+    
+    /**
+     * @param string
+     *
+     * @return CudiBundle\Entity\Supplier
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+        return $this;
     }
     
     /**
@@ -95,10 +106,32 @@ class Supplier
     }
     
     /**
+     * @param string
+     *
+     * @return CudiBundle\Entity\Supplier
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+    
+    /**
      * @return string
      */
     public function getVATNumber()
     {
         return $this->VAT_number;
+    }
+    
+    /**
+     * @param string
+     *
+     * @return CudiBundle\Entity\Supplier
+     */
+    public function setVATNumber($VAT)
+    {
+        $this->VAT_number = $VAT;
+        return $this;
     }
 }

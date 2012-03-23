@@ -10,13 +10,13 @@
 		
 		    <tr>
 		        <th>Name</th>
-				<th>Actions</th>
+				<th width="200px">Actions</th>
 		    </tr>
 		    
 		    {% for supplier in paginator %}
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
-					<td width="200px">
+					<td>
 						<a href="{{ url('admin_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
 					</td>
 		        </tr>
