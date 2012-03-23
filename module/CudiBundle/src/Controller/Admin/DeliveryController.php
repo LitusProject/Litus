@@ -132,7 +132,9 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 		$this->getEntityManager()->remove($delivery);
 		$this->getEntityManager()->flush();
 		
-		return array();
+		return array(
+		    'result' => (object) array("status" => "success")
+		);
 	}
 	
 	private function _getDeliveryItem()

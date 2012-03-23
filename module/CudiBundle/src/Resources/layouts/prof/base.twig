@@ -16,9 +16,14 @@
 		<div class="container">
 			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
-				{% if hasAccess('sale_sale', 'sale') %}
+				{% if hasAccess('prof', 'index') %}
 					<li {% if 'index' == getParam('action') and 'prof' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof", {"action": "index"}) }}">Home</a>
+					    <a href="{{ url("prof") }}">Home</a>
+					</li>
+				{% endif %}
+				{% if hasAccess('prof_article', 'manage') %}
+					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_article") }}">Articles</a>
 					</li>
 				{% endif %}
 			</ul>
@@ -42,7 +47,7 @@
 	</div>
 	
 	<footer>
-	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
 	
 		{% if 'development' == environment %}
 		    <span class="development_information">

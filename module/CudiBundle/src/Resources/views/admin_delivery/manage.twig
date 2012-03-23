@@ -16,7 +16,7 @@
 		    {% for supplier in paginator %}
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
-					<td>
+					<td width="200px">
 						<a href="{{ url('admin_delivery', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
 					</td>
 		        </tr>

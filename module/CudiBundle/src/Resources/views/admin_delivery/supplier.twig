@@ -4,13 +4,13 @@
 	{% include 'admin_delivery/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width delivery_removed_success" style="display: none;">
+	<div class="flashmessage success_message full_width delivery_removed_success hide">
 		<div class="title">Success</div>
 		<div class="content">
 			<p>The delivery was successfully removed!</p>
 		</div>
 	</div>
-	<div class="flashmessage error_message full_width delivery_removed_error" style="display: none;">
+	<div class="flashmessage error_message full_width delivery_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
 			<p>An error occurred while trying to delete an delivery.</p>
@@ -23,11 +23,11 @@
 		<table>
 		
 		    <tr>
-		        <th>Date</th>
+		        <th width="100px">Date</th>
 		        <th>Article</th>
-		        <th>Number</th>
-		        <th>Price</th>
-		        <th>Actions</th>
+		        <th width="60px">Number</th>
+		        <th width="60px">Price</th>
+		        <th width="70px">Actions</th>
 		    </tr>
 		    
 		    {% for delivery in paginator %}
@@ -75,7 +75,7 @@
 			</p>
 			<div class="footer">
 				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" value="No">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
 			</div>
 		</div>
 	</div>
@@ -94,19 +94,15 @@
 			var removeDelivery = $('#removeDelivery');
 			removeDelivery.find('.articleTitle').html($(this).data('title'));
 			removeDelivery.find('.deliveryNumber').html($(this).data('number'));
-			removeDelivery.find('.cancel').one('click', function () {
-				removeDelivery.modal('hide');
-			});
-
 			removeDelivery.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_delivery', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').hide();
-					$('.delivery_removed_success').show();
+					$('.flashmessage').addClass('hide');
+					$('.delivery_removed_success').removeClass('hide');
 					$this.parent().parent().remove();
 					removeDelivery.modal('hide');
 				}, 'json').error(function () {
-					$('.flashmessage').hide();
-					$('.delivery_removed_error').show();
+					$('.flashmessage').addClass('hide');
+					$('.delivery_removed_error').removeClass('hide');
 					removeDelivery.modal('hide');
 				});
 			});
