@@ -308,7 +308,7 @@ return array(
     			'route' => '/admin/user/search[/:field[/:string]]',
     			'constraints' => array(
     				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
     	        ),
     			'defaults' => array(
     				'controller' => 'admin_user',
