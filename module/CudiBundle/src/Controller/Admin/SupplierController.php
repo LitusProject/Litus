@@ -18,8 +18,11 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Credential,
     CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
+    CudiBundle\Entity\Supplier,
     CudiBundle\Form\Admin\Supplier\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\Edit as EditForm,
+    CudiBundle\Form\Admin\Supplier\AddUser as AddUserForm,
+    CudiBundle\Form\Admin\Supplier\EditUser as EditUserForm,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -29,17 +32,34 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class SupplierController extends \CommonBundle\Component\Controller\ActionController
 {
-	public function manageAction()
+    public function manageAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Supplier',
+            $this->getParam('page')
+        );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+
+	public function supplierAction()
 	{
+	    $supplier = $this->_getSupplier();
+	    
 		$paginator = $this->paginator()->createFromEntity(
 		    'CudiBundle\Entity\Users\People\Supplier',
 		    $this->getParam('page'),
 		    array(
-		        'canLogin' => true
+		        'canLogin' => true,
+		        'supplier' => $supplier->getId()
 		    )
 		);
         
         return array(
+            'supplier' => $supplier,
         	'paginator' => $paginator,
         	'paginationControl' => $this->paginator()->createControl()
         );
@@ -48,6 +68,90 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     public function addAction()
     {
         $form = new AddForm(
+        	$this->getEntityManager()
+        );
+        
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+
+            if ($form->isValid($formData)) {
+                $supplier = new Supplier(
+                    $formData['name'],
+                    $formData['phone_number'],
+                    $formData['address'],
+					$formData['vat']
+                );
+                $this->getEntityManager()->persist($supplier);
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The supplier was successfully created!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                	'admin_supplier',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+            }
+        }
+        
+        return array(
+        	'form' => $form,
+        );
+    }
+    
+    public function editAction()
+    {
+        $supplier = $this->_getSupplier();
+        
+        $form = new EditForm(
+        	$this->getEntityManager(),
+        	$supplier
+        );
+        
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        
+            if ($form->isValid($formData)) {
+                $supplier->setPhoneNumber($formData['phone_number'])
+                    ->setAddress($formData['address'])
+                    ->setVATNumber($formData['vat']);
+
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The supplier was successfully updated!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                	'admin_supplier',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+            }
+        }
+        
+        return array(
+        	'form' => $form,
+        );
+    }
+    
+    public function addUserAction()
+    {
+        $supplier = $this->_getSupplier();
+        
+        $form = new AddUserForm(
         	$this->getEntityManager()
         );
 		
@@ -63,10 +167,6 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                         ->getRepository('CommonBundle\Entity\Acl\Role')
                         ->findOneByName($role);
                 }
-                
-                $supplier = $this->getEntityManager()
-                	->getRepository('CudiBundle\Entity\Supplier')
-                	->findOneById($formData['supplier']);
 
                 $newUser = new SupplierPerson(
                     $formData['username'],
@@ -96,7 +196,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                 	'admin_supplier',
                 	array(
-                		'action' => 'manage'
+                		'action' => 'supplier',
+                		'id' => $supplier->getId()
                 	)
                 );
             }
@@ -107,11 +208,11 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
     
-    public function editAction()
+    public function editUserAction()
     {
-        $user = $this->_getSupplier();
+        $user = $this->_getSupplierUser();
         		
-        $form = new EditForm(
+        $form = new EditUserForm(
         	$this->getEntityManager(), $user
         );
 
@@ -127,17 +228,12 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                         ->getRepository('CommonBundle\Entity\Acl\Role')
                         ->findOneByName($role);
                 }
-                
-                $supplier = $this->getEntityManager()
-                	->getRepository('CudiBundle\Entity\Supplier')
-                	->findOneById($formData['supplier']);
 
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number'])
-                    ->setSupplier($supplier)
                     ->updateRoles($roles);
                 
                 $this->getEntityManager()->flush();
@@ -153,7 +249,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                 	'admin_supplier',
                 	array(
-                		'action' => 'manage'
+                		'action' => 'supplier',
+                		'id' => $user->getSupplier()->getId()
                 	)
                 );
             }
@@ -164,13 +261,13 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
     
-    public function deleteAction()
+    public function deleteUserAction()
 	{
 		$this->initAjax();
 
-		$user = $this->_getSupplier();
+		$user = $this->_getSupplierUser();
 
-		//$user->disableLogin();
+		$user->disableLogin();
 		$this->getEntityManager()->flush();
         
         return array(
@@ -214,8 +311,55 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         	'result' => $result,
         );
     }
+    
+    private function _getSupplier()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the supplier!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_supplier',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $supplier = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $supplier) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No supplier with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_supplier',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $supplier;
+    }
 	
-	private function _getSupplier()
+	private function _getSupplierUser()
 	{
 		if (null === $this->getParam('id')) {
 			$this->flashMessenger()->addMessage(

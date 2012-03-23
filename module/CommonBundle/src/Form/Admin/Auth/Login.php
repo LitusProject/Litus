@@ -37,6 +37,7 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('username');
         $field->setAttrib('placeholder', 'username')
+            ->setAttrib('autofocus', 'autofocus')
             ->setDecorators(array('ViewHelper', 'Errors'));
         $this->addElement($field);
 

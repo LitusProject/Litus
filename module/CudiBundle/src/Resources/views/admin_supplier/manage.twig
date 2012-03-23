@@ -4,66 +4,25 @@
 	{% include 'admin_supplier/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width supplier_removed_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The supplier was successfully removed!</p>
-    	</div>
-    </div>
-    <div class="flashmessage error_message full_width supplier_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete an supplier.</p>
-    	</div>
-    </div>
     
 	<div id="controller_action">
-		<div id="user_search" style="display: none;">
-			<div style="padding: 4px; text-align: right">
-				Search: 
-				<select id="searchField">
-					<option value="username">Username</option>
-					<option value="name">Name</option>
-					<option value="supplier">Supplier</option>
-				</select>
-				is
-				<input type="text" id="searchString" size="30" />
-			</div>
-			
-			<table class="full_width">
-		    	<tr>
-		        	<th>Username</th>
-		            <th width="100px">Supplier</th>
-		        	<th width="150px">Name</th>
-		        	<th width="175px">E-mail</th>
-		        	<th width="120px">Action</th>
-				</tr>
-			</table>
-		</div>
-		
-		<div id="default_page">
+		<div>
 		    <table class="full_width">
 		        <thead>
 		            <tr>
-		                <th>Username</th>
-		                <th width="100px">Supplier</th>
-		                <th width="150px">Name</th>
-		                <th width="175px">E-mail</th>
-		                <th width="120px">Action</th>
+		                <th>Name</th>
+		            	<th width="200px">Actions</th>
 		            </tr>
 		        </thead>
 		
 		        <tbody>
-		            {% for user in paginator %}
-		                <tr class="item">
-		                    <td>{{ user.getUsername() }}</td>
-		                    <td>{{ user.getSupplier().getName() }}</td>
-		                    <td>{{ user.getFullName() }}</td>
-		                    <td>{{ user.getEmail() }}</td>
-		                    <td>
-		                        <a href="{{ url('admin_supplier', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>
-		                        <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
-		                    </td>
+		            {% for supplier in paginator %}
+		                <tr>
+		                    <td>{{ supplier.getName() }}</td>
+		            		<td>
+		            			<a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
+		            			<a href="{{ url('admin_supplier', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+		            		</td>
 		                </tr>
 		            {% endfor %}
 		        </tbody>
@@ -72,86 +31,4 @@
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
-	
-	<div class="modal hide fade" id="removeUser">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Supplier Delete
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following supplier: <b class="fullName"></b> of <b class="supplier"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
-{% endblock %}
-
-{% block controller_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$.searchDatabase({
-				defaultPage: $('#default_page'),
-				searchDiv: $('#user_search'),
-				searchString: $('#searchString'),
-				searchField: $('#searchField'),
-				url: '{{ url('admin_supplier_search') }}',
-				display: function (data) {
-					$('#user_search table').find('tr.item').remove();
-					$(data).each(function () {
-						$('#user_search table').append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.username + '</td>')
-							.append('<td>' + this.supplier + '</td>')
-							.append('<td>' + this.name + '</td>')
-							.append('<td>' + this.email + '</td>')
-							.append(
-								$('<td>')
-									.append('<a href="{{ url('admin_supplier', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
-									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-								);
-							deleteButton.data({
-								id: this.id,
-								name: this.name,
-								supplier: this.supplier,
-							});
-					});
-					$('#user_search .delete').click(openModal);
-				},
-				clear: function () {
-					$('#user_search table').find('tr.item').remove();
-				}
-			});
-			
-			$('.item .delete').click(openModal);
-		});
-		
-		function openModal(e) {
-			var $this = $(this);
-			
-			e.preventDefault();
-			var removeUser = $('#removeUser');
-			removeUser.find('.fullName').html($(this).data('name'));
-			removeUser.find('.supplier').html($(this).data('supplier'));
-			removeUser.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_supplier', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').hide();
-					$('.supplier_removed_success').show();
-					$this.parent().parent().remove();
-					removeUser.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').hide();
-					$('.supplier_removed_error').show();
-					removeUser.modal('hide');
-				});
-			});
-			removeUser.modal();
-		}
-	</script>
 {% endblock %}

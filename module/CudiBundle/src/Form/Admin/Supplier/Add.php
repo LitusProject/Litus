@@ -15,46 +15,53 @@
  
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+	CudiBundle\Component\Validator\Supplier as SupplierValidator,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Select;
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text;
 
-class Add extends \CommonBundle\Form\Admin\User\Add
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	protected $_entityManager = null;
-
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $options = null)
     {
-        parent::__construct($entityManager, '', $opts);
-        
-       	$this->_entityManager = $entityManager;
-		
-        $field = new Select('supplier');
-        $field->setLabel('Supplier')
+        parent::__construct($options);
+         
+		$field = new Text('name');
+        $field->setLabel('Name')
         	->setRequired()
-			->setMultiOptions($this->_getSuppliers())
+			->addValidator(new SupplierValidator($entityManager))
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+		$field = new Text('phone_number');
+        $field->setLabel('Phone Number')
+        	->setRequired()
+        	->setAttrib('placeholder', '+CCAAANNNNNN')
+			->addValidator(new PhoneNumberValidator())
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+		$field = new Text('address');
+        $field->setLabel('Address')
+        	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
-        $field = $this->getElement('submit');
-        $this->removeElement('submit');
+        $field = new Text('vat');
+        $field->setLabel('VAT')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-    }
 
-	private function _getSuppliers()
-	{
-		$suppliers = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Supplier')
-			->findAll();
-			
-		$supplierOptions = array();
-		foreach($suppliers as $item)
-			$supplierOptions[$item->getId()] = $item->getName();
-		
-		return $supplierOptions;
-	}
+        $field = new Submit('submit');
+        $field->setLabel('Add')
+                ->setAttrib('class', 'supplier_add')
+                ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
+
+    }
 }
