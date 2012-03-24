@@ -22,6 +22,7 @@ return array(
 				'prof_file'           => 'CudiBundle\Controller\Prof\FileController',
 				'supplier'            => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'    => 'CudiBundle\Controller\Supplier\ArticleController',
+				'supplier_auth'       => 'CudiBundle\Controller\Supplier\AuthController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -457,6 +458,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'supplier',
 					'action'     => 'index',
+				),
+			),
+		),
+		'supplier_auth' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/cudi/supplier/auth[/:action]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'session' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'supplier_auth',
+					'action'     => 'login',
 				),
 			),
 		),

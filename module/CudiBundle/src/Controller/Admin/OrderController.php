@@ -111,6 +111,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 						'id' => $item->getOrder()->getId(),
 					)
 				);
+				
+				return;
 			}
         }
         

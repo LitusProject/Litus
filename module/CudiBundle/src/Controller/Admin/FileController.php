@@ -96,12 +96,14 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     	} else {
     	    $errors = $form->getErrors();
     	    $formErrors = array();
+    	    
     	    foreach ($form->getElements() as $key => $element) {
     	        $formErrors[$element->getId()] = array();
     	        foreach ($errors[$element->getName()] as $error) {
     	            $formErrors[$element->getId()][] = $element->getMessages()[$error];
     	        }
     	    }
+    	    
     	    return array(
     	        'status' => 'error',
     	        'form' => array(

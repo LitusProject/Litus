@@ -98,6 +98,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 		'action' => 'manage'
                 	)
                 );
+                
+                return;
             }
         }
         
@@ -139,6 +141,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 		'action' => 'manage'
                 	)
                 );
+                
+                return;
             }
         }
         
@@ -161,7 +165,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid($formData)) {
                 $roles = array();
 
-                $formData['roles'][] = 'guest';
+                $formData['roles'][] = 'supplier';
                 foreach ($formData['roles'] as $role) {
                     $roles[] = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -200,6 +204,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 		'id' => $supplier->getId()
                 	)
                 );
+                
+                return;
             }
         }
                 
@@ -253,6 +259,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 		'id' => $user->getSupplier()->getId()
                 	)
                 );
+                
+                return;
             }
         }
         

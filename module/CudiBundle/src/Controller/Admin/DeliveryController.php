@@ -110,6 +110,8 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
         					'action' => 'add',
         				)
         			);
+        			
+        			return;
     			}
 			}
         }

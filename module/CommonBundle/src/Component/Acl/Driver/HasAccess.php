@@ -67,7 +67,7 @@ class HasAccess
             foreach ($this->_authentication->getPersonObject()->getRoles() as $role) {
                 if (
                     $role->isAllowed(
-                        $resource, $action
+                        $this->_acl, $resource, $action
                     )
                 ) {
                     return true;

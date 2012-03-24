@@ -16,6 +16,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+    CommonBundle\Form\Auth\Login as LoginForm,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -34,12 +35,15 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function execute(MvcEvent $e)
     {
-		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier'))
+		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
 			throw new HasNoAccessException('You are not authorized to view this page');
 		
 		$result = parent::execute($e);
-		
+				
 		$result['supplier'] = $this->getSupplier();
+		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
+		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
+		$result['loginForm'] = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
   		
         $e->setResult($result);
         return $result;
@@ -47,6 +51,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     
     protected function getSupplier()
     {
-    	return $this->getAuthentication()->getPersonObject()->getSupplier();
+        if ($this->getAuthentication()->isAuthenticated())
+    	    return $this->getAuthentication()->getPersonObject()->getSupplier();
     }
 }

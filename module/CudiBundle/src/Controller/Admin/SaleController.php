@@ -74,6 +74,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 	        			'action' => 'manage'
 	        		)
 	        	);
+	        	
 	        	return;
 	        }
         	
@@ -120,6 +121,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 						'id' => $session->getId(),
 					)
 				);
+				
+				return;
             }
         }
         
@@ -157,6 +160,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                 		'id' => $session->getId(),
                 	)
                 );
+                
+                return;
 			}
 		}
 		
@@ -221,6 +226,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                 		'id' => $session->getId(),
                 	)
                 );
+                
+                return;
             }
         }
         
@@ -282,6 +289,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                			'id' => $session->getId(),
                		)
                	);
+               	
+               	return;
 			}
 		}
 		

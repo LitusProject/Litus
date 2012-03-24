@@ -27,6 +27,7 @@ return array(
     'CudiBundle\Controller\Sale\QueueController'            => __DIR__ . '/src/Controller/Sale/QueueController.php',
     'CudiBundle\Controller\Sale\SaleController'             => __DIR__ . '/src/Controller/Sale/SaleController.php',
     'CudiBundle\Controller\Supplier\ArticleController'      => __DIR__ . '/src/Controller/Supplier/ArticleController.php',
+    'CudiBundle\Controller\Supplier\AuthController'         => __DIR__ . '/src/Controller/Supplier/AuthController.php',
     'CudiBundle\Controller\Supplier\IndexController'        => __DIR__ . '/src/Controller/Supplier/IndexController.php',
     'CudiBundle\Entity\Article'                             => __DIR__ . '/src/Entity/Article.php',
     'CudiBundle\Entity\Articles\ArticleHistory'             => __DIR__ . '/src/Entity/Articles/ArticleHistory.php',

@@ -16,6 +16,9 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\Acl\Action as AclAction,
+    CommonBundle\Entity\Acl\Role,
+    CommonBundle\Entity\Acl\Resource,
 	CommonBundle\Entity\General\Bank\BankDevice,
 	CommonBundle\Entity\General\Bank\MoneyUnit,
 	CommonBundle\Entity\General\Config,
@@ -45,7 +48,8 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	
 	protected function _initAcl()
 	{
-	
+	    $this->_initStructure();
+	    $this->_installRoles();
 	}
 	
 	private function _installConfig()
@@ -296,5 +300,166 @@ The following bookings are assigned to you:
 			}
 		}
 		$this->getEntityManager()->flush();
+	}
+	
+	private function _installRoles()
+	{
+	    $roles = array(
+	        'supplier' => array(
+	            'supplier' => array(
+	                'resource' => 'supplier',
+	                'name' => 'index'
+	            ),
+	            'supplier_auth_login' => array(
+	                'resource' => 'supplier_auth',
+	                'name' => 'login'
+	            ),
+	            'supplier_auth_logout' => array(
+	                'resource' => 'supplier_auth',
+	                'name' => 'logout'
+	            ),
+	            'supplier_article' => array(
+	                'resource' => 'supplier_article',
+	                'name' => 'manage'
+	            ),
+	        ),
+	        'guest' => array(
+	            'supplier' => array(
+	                'resource' => 'supplier',
+	                'name' => 'index'
+	            ),
+	            'supplier_auth_login' => array(
+	                'resource' => 'supplier_auth',
+	                'name' => 'login'
+	            ),
+	        )
+	    );
+	    
+	    foreach($roles as $roleName => $actions) {
+    	    $repositoryCheck = $this->getEntityManager()
+    	    	->getRepository('CommonBundle\Entity\Acl\Role')
+    	    	->findOneByName($roleName);
+    	    
+    	    if (null === $repositoryCheck) {
+    	    	$role = new Role($roleName);
+    	    	
+    	    	foreach ($actions as $action) {
+        	    	$role->allow(
+        	    		$this->getEntityManager()
+        	        		->getRepository('CommonBundle\Entity\Acl\Action')
+        	            	->findOneBy(array('name' => $action['name'], 'resource' => $action['resource']))
+        	    	);
+    	    	}
+    	    	
+    	    	$this->getEntityManager()->persist($role);
+    	    } else {
+    	        foreach ($actions as $action) {
+        	        $action = $this->getEntityManager()
+        	        	->getRepository('CommonBundle\Entity\Acl\Action')
+        	        	->findOneBy(array('name' => $action['name'], 'resource' => $action['resource']));
+        	        if (! in_array($action, $repositoryCheck->getActions()))
+        	            $repositoryCheck->allow($action);
+        	    }
+    	    }
+    	}
+	    
+	    $this->getEntityManager()->flush();
+	}
+	
+	private function _initStructure()
+	{
+	    $modules = array(
+            'cudibundle' => array(
+                'admin_article' => array(
+                	'add', 'delete', 'edit', 'manage', 'newversion', 'search'
+                ),
+                'admin_booking' => array(
+                	'add', 'delete', 'manage', 'search', 'unassign'
+                ),
+                'admin_comment' => array(
+                	'manage'
+                ),
+                'admin_delivery' => array(
+                	'add', 'delete', 'manage', 'supplier'
+                ),
+                'admin_file' => array(
+                	'delete', 'download', 'manage', 'progress', 'upload'
+                ),
+                'admin_financial' => array(
+                	'manage'
+                ),
+                'admin_order' => array(
+                	'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
+                ),
+                'admin_sale' => array(
+                	'add', 'close', 'edit', 'editregister', 'manage'
+                ),
+                'admin_stock' => array(
+                	'edit', 'manage', 'search'
+                ),
+                'admin_supplier' => array(
+                	'add', 'addUser', 'deleteUser', 'edit', 'editUser', 'manage', 'search', 'supplier'
+                ),
+                'sale_queue' => array(
+                	'addtoqueue', 'overview', 'signin'
+                ),
+                'sale_sale' => array(
+                	'return', 'sale'
+                ),
+                'supplier' => array(
+                	'index'
+                ),
+                'supplier_auth' => array(
+                	'login', 'logout'
+                ),
+                'supplier_article' => array(
+                	'manage'
+                ),
+            )
+    	);
+    	
+    	foreach ($modules as $module => $routesArray) {
+    		$repositoryCheck = $this->getEntityManager()
+    			->getRepository('CommonBundle\Entity\Acl\Resource')
+    			->findOneByName($module);
+    
+    		if (null === $repositoryCheck) {
+    			$moduleResource = new Resource($module);
+    			$this->getEntityManager()->persist($moduleResource);
+    		} else {
+                $moduleResource = $repositoryCheck;
+            }
+    		
+    		foreach ($routesArray as $route => $actions) {
+    			$repositoryCheck = $this->getEntityManager()
+    				->getRepository('CommonBundle\Entity\Acl\Resource')
+    				->findOneBy(array('name' => $route, 'parent' => $module));
+    
+    			if (null === $repositoryCheck) {
+    				$routeResource = new Resource(
+    					$route,
+    					$moduleResource
+    				);
+    				$this->getEntityManager()->persist($routeResource);
+    			} else {
+                    $routeResource = $repositoryCheck;
+                }
+    			
+    			foreach ($actions as $action) {
+    				$repositoryCheck = $this->getEntityManager()
+    					->getRepository('CommonBundle\Entity\Acl\Action')
+    					->findOneBy(array('name' => $action, 'resource' => $route));
+    				
+    				if (null === $repositoryCheck) {
+    					$actionResource = new AclAction(
+    						$action,
+    						$routeResource
+    					);
+    					$this->getEntityManager()->persist($actionResource);
+    				}
+    			}
+    		}
+    	}
+    	$this->getEntityManager()->flush();
 	}
 }

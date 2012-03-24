@@ -120,11 +120,13 @@ return array(
 		'supplier' => array(
 			'@common_jquery',
 			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
 			'@supplier_css',
 		),
 		'supplier_article' => array(
 			'@common_jquery',
 			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
 			'@supplier_css',
 		),
 	),

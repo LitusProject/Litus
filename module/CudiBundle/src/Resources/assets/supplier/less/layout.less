@@ -32,6 +32,52 @@
  	.brand {
  		padding: 3px 20px 5px;
  	}
+ 	
+ 	.auth-nav {
+ 	    #accountDropdown {
+ 	        .profile-wrapper {
+ 	            height: 18px;
+ 	            display: block;
+ 	            position: relative;
+ 	            float: left;
+ 	        }
+ 	        
+ 	        .profile {
+ 	            margin: -2px 4px 0 0;
+ 	            background: transparent url(/_cudi/img/profile.png) 0 0;
+ 	            display: inline-block;
+ 	            width: 21px;
+ 	            height: 22px;
+ 	        }
+ 	        
+ 	        &:hover,
+ 	        &.open {
+ 	            .profile {
+ 	                background-position: 0 -30px;
+ 	            }
+ 	        }
+ 	        
+ 	        .fullName {
+ 	            display: block;
+ 	        }
+ 	        
+ 	        .metadata {
+ 	            display: block;
+ 	            font-size: 12px;
+ 	            color: @cGray;
+ 	        }
+ 	    }
+ 	
+ 	    #loginDropdown {
+ 	        li {
+ 	            padding: 10px;
+ 	            
+ 	            label {
+ 	                margin: 0;
+ 	            }
+ 	        }
+ 	    }
+ 	}
  }
  
  footer {
