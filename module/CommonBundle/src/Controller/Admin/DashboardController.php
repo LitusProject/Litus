@@ -28,7 +28,8 @@ class DashboardController extends \CommonBundle\Component\Controller\ActionContr
         	'server_environment' => $this->getRequest()->server()->toArray(),
         	'versions' => array(
         		'php' => phpversion(),
-        		'zf' => \Zend\Version::VERSION
+        		'zf' => \Zend\Version::VERSION,
+        		'doctrine' => \Doctrine\Common\Version::VERSION
         	)
         );
     }

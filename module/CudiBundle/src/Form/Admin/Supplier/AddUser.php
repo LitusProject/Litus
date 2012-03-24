@@ -25,5 +25,7 @@ class AddUser extends \CommonBundle\Form\Admin\User\Add
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, '', $opts);
+        
+        $this->removeElement('roles');
     }
 }

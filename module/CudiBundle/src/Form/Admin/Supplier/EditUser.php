@@ -31,5 +31,7 @@ class EditUser extends \CommonBundle\Form\Admin\User\Edit
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
+        
+        $this->removeElement('roles');
     }
 }
