@@ -50,7 +50,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addElement($field);
         
         $field = new Submit('submit');
-        $field->setValue('Login')
+        $field->setLabel('Login')
             ->setAttrib('class', 'btn pull-right');
         $this->addElement($field);
     }

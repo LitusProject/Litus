@@ -163,22 +163,20 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $roles = array();
-
-                $formData['roles'][] = 'supplier';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
-                }
-
                 $newUser = new SupplierPerson(
                     $formData['username'],
                     new Credential(
                         'sha512',
                         $formData['credential']
                     ),
-                    $roles,
+                    array(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName('guest'),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName('supplier')
+                    ),
                     $formData['first_name'],
                     $formData['last_name'],
                     $formData['email'],
@@ -226,21 +224,11 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
 			
             if ($form->isValid($formData)) {
-                $roles = array();
-
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
-                }
-
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
-                    ->setPhoneNumber($formData['phone_number'])
-                    ->updateRoles($roles);
+                    ->setPhoneNumber($formData['phone_number']);
                 
                 $this->getEntityManager()->flush();
                 

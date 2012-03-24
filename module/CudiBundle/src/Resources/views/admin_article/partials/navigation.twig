@@ -7,7 +7,7 @@
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_article', {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('admin', 'article', 'manager') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_article', {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_article', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>
