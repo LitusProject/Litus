@@ -4,7 +4,7 @@
 <head>
 
     {{ headMeta() }}
-	{{ headTitle('Litus Prof', 'PREPEND') }}
+	{{ headTitle('Litus Supplier', 'PREPEND') }}
 	
 	{{ headLink() }}   
 </head>
@@ -21,11 +21,49 @@
 					    <a href="{{ url("supplier") }}">Home</a>
 					</li>
 				{% endif %}
-				{% if hasAccess('supplier_article', 'index') %}
+				{% if hasAccess('supplier_article', 'manage') %}
 					<li {% if 'supplier_article' == getParam('controller') %} class="active" {% endif %}>
 					    <a href="{{ url("supplier_article") }}">Articles</a>
 					</li>
 				{% endif %}
+			</ul>
+			<ul class="nav pull-right auth-nav">
+			    {% if authenticated %}
+			        <li class="dropdown" id="accountDropdown">
+			            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			                <span class="profile-wrapper">
+			                    <i class="profile"></i>
+			                </span>
+			                <span class="caret"></span>
+			            </a> 
+			            <ul class="dropdown-menu">
+			                <li>
+			                    <a href="">
+			                        <b class="fullName">{{ authenticatedUserObject.getFullName() }}</b>
+			                        <small class="metadata">{{ supplier.getName() }}</small>
+			                    </a>
+			                </li>
+			                <li class="divider"></li>
+			                <li>
+			                    <a href="{{ url("supplier_auth", {"action": "logout"}) }}">Logout</a>
+			                </li>
+			            </ul>
+			        </li>
+			    {% else %}
+    			    <li class="dropdown" id="loginDropdown">
+    			        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+    			            Login <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                {% autoescape false %}
+                                    {{ loginForm }}
+                                {% endautoescape %}
+                                <br class="clear">
+                            </li>
+                        </ul>
+    			    </li>
+    			{% endif %}
 			</ul>
 		</div>
 	</div>
@@ -59,7 +97,15 @@
 
 {{ inlineScript() }}
 
-{% block controller_script %} {% endblock %}
+{% block controller_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown form').on('click', function (e) {
+                e.stopPropagation()
+            });
+        });
+    </script>
+{% endblock %}
 
 </body>
 </html>

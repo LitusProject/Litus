@@ -1,5 +1,9 @@
 {% extends 'supplier/base.twig' %}
 
 {% block content %}
-	<h2>Welcome <i>{{ authenticatedUser }}</i> of <i>{{ supplier.getName() }}</i></h2>
+    {% if authenticated %}
+	    <h2>Welcome <i>{{ authenticatedUser }}</i> of <i>{{ supplier.getName() }}</i></h2>
+	{% else %}
+	    <h2>Please login to get access to these pages.</h2>
+	{% endif %}
 {% endblock %}

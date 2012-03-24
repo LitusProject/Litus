@@ -80,6 +80,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 						'action' => 'manage'
 					)
 				);
+				
+				return;
 			}
         }
         
@@ -170,6 +172,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 				'action' => 'manage'
 			)
 		);
+		
+		return array();
 	}
 
     public function unassignAction()

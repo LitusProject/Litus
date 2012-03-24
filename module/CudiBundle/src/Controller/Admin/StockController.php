@@ -70,6 +70,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 	                        'The stock was successfully updated!'
 	                    )
 					);
+					
 					$this->redirect()->toRoute(
 						'admin_stock',
 						array(
@@ -77,6 +78,8 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 							'id' => $item->getId(),
 						)
 					);
+					
+					return;
 				}
 			} elseif (isset($formData['addOrder'])) {
 				if ($orderForm->isValid($formData)) {
@@ -92,6 +95,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 	                        'The order was successfully added!'
 	                    )
 					);
+					
 					$this->redirect()->toRoute(
 						'admin_stock',
 						array(
@@ -99,6 +103,8 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 							'id' => $item->getId(),
 						)
 					);
+					
+					return;
 				}
 			} elseif (isset($formData['addDelivery'])) {
 				if ($deliveryForm->isValid($formData)) {
@@ -113,6 +119,7 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 		                    'The delivery was successfully added!'
 		                )
 					);
+					
 					$this->redirect()->toRoute(
 						'admin_stock',
 						array(
@@ -120,6 +127,8 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 							'id' => $item->getId(),
 						)
 					);
+					
+					return;
 				}
 			}
 		}

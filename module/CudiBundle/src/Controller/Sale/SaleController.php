@@ -93,6 +93,8 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     					'action' => 'return',
     				)
     			);
+    			
+    			return;
     		}
     	}
     	

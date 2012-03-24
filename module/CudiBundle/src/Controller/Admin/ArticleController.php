@@ -124,6 +124,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 		'action' => 'manage'
                 	)
                 );
+                
+                return;
 			}
         }
         
@@ -209,6 +211,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 		'action' => 'manage'
                 	)
                 );
+                
+                return;
 			}
         }
         
@@ -380,6 +384,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 						'action' => 'manage'
 					)
 				);
+				
+				return;
 			}
         }
         

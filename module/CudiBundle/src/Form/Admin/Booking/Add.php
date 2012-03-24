@@ -34,8 +34,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
-
-        $this->setAction('/admin/booking/add');
          
 		$field = new Text('person');
         $field->setLabel('Person')

@@ -56,6 +56,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 						'id' => $article->getId(),
 					)
 				);
+				
+				return;
 			}
         }
         
