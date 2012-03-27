@@ -311,6 +311,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 			$this->getEntityManager()->persist($corporateRole);
 		}
 		
+		$this->getEntityManager()->flush();
+		
 		$this->flashMessenger()->addMessage(
 		    new FlashMessage(
 		        FlashMessage::SUCCESS,
@@ -325,8 +327,6 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 				'action' => 'manage'
 			)
 		);
-		
-		$this->getEntityManager()->flush();
 		
 		return;
 	}

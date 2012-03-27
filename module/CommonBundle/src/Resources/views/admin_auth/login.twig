@@ -91,24 +91,18 @@
 <div id="layout">
     <header><span>Litus Admin</span>/Login</header>
 
-    <section>
-        {% if not isAuthenticated %} 
-            <div id="form_container">
-            	{% autoescape false %}
-                	{{ form }}
-                {% endautoescape %}
-                
-                <span id="icon"></span>
-            </div>
+    <section> 
+        <div id="form_container">
+        	{% autoescape false %}
+            	{{ form }}
+            {% endautoescape %}
+            
+            <span id="icon"></span>
+        </div>
 
-            <div id="error_container" style="display: none;">
-                <p id="error_message">ERROR_MESSAGE</p>
-            </div>
-        {% else %}
-            <div id="error_container">
-                <p id="error_message">You are already logged in.</p>
-            </div>
-        {% endif %}
+        <div id="error_container" style="display: none;">
+            <p id="error_message">ERROR_MESSAGE</p>
+        </div>
     </section>
 </div>
 

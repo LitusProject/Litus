@@ -50,7 +50,6 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         	$this->getEntityManager()
         );
 		
-		$userCreated = false;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -77,21 +76,31 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $formData['phone_number'],
 					$formData['sex']
                 );
-                $this->getEntityManager()->persist($newUser);
+                $this->getEntityManager()->persist($newUser);                
+                $this->getEntityManager()->flush();
                 
-                $form = new AddForm(
-                	$this->getEntityManager()
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The user was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_user',
+                	array(
+                		'action' => 'add'
+                	)
                 );
                 
-                $userCreated = true;
+                return;
+                
             }
         }
         
-        $this->getEntityManager()->flush();
-        
         return array(
         	'form' => $form,
-        	'userCreated' => $userCreated
         );
     }
 
@@ -120,7 +129,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
-                    ->setTelephone($formData['telephone'])
+                    ->setPhoneNumber($formData['phone_number'])
                     ->updateRoles($roles);
                 
                 $this->getEntityManager()->flush();

@@ -61,12 +61,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $isAuthenticated = $this->getAuthentication()->isAuthenticated();
         
-        if (!$isAuthenticated)
-            $form = new LoginForm();
+        if ($isAuthenticated) {
+            $this->redirect()->toRoute('admin_dashboard');
+            
+            return;
+        }
 		            
         return array(
         	'isAuthenticated' => $isAuthenticated,
-        	'form' => $form
+        	'form' => new LoginForm()
         );
     }
 
