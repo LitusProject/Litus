@@ -1,6 +1,5 @@
 <?php
 return array(
-	'display_exceptions'	=> true,
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(

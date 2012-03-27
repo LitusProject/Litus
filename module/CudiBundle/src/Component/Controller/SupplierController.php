@@ -36,7 +36,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     public function execute(MvcEvent $e)
     {
 		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
-			throw new HasNoAccessException('You are not authorized to view this page');
+			throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
 		
 		$result = parent::execute($e);
 				

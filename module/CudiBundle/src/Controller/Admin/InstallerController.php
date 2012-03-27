@@ -307,35 +307,26 @@ The following bookings are assigned to you:
 	    $roles = array(
 	        'supplier' => array(
 	            'supplier' => array(
-	                'resource' => 'supplier',
-	                'name' => 'index'
+	            	'index'
 	            ),
-	            'supplier_auth_login' => array(
-	                'resource' => 'supplier_auth',
-	                'name' => 'login'
-	            ),
-	            'supplier_auth_logout' => array(
-	                'resource' => 'supplier_auth',
-	                'name' => 'logout'
+	            'supplier_auth' => array(
+	            	'login', 'logout'
 	            ),
 	            'supplier_article' => array(
-	                'resource' => 'supplier_article',
-	                'name' => 'manage'
+	            	'manage'
 	            ),
 	        ),
 	        'guest' => array(
 	            'supplier' => array(
-	                'resource' => 'supplier',
-	                'name' => 'index'
+	            	'index'
 	            ),
-	            'supplier_auth_login' => array(
-	                'resource' => 'supplier_auth',
-	                'name' => 'login'
+	            'supplier_auth' => array(
+	            	'login'
 	            ),
 	        )
 	    );
 	    
-	    foreach($roles as $roleName => $actions) {
+	    foreach($roles as $roleName => $allowedActions) {
     	    $repositoryCheck = $this->getEntityManager()
     	    	->getRepository('CommonBundle\Entity\Acl\Role')
     	    	->findOneByName($roleName);
@@ -343,23 +334,27 @@ The following bookings are assigned to you:
     	    if (null === $repositoryCheck) {
     	    	$role = new Role($roleName);
     	    	
-    	    	foreach ($actions as $action) {
-        	    	$role->allow(
-        	    		$this->getEntityManager()
-        	        		->getRepository('CommonBundle\Entity\Acl\Action')
-        	            	->findOneBy(array('name' => $action['name'], 'resource' => $action['resource']))
-        	    	);
+    	    	foreach ($allowedActions as $resource => $actions) {
+    	    	    foreach($actions as $action) {
+            	    	$role->allow(
+            	    		$this->getEntityManager()
+            	        		->getRepository('CommonBundle\Entity\Acl\Action')
+            	            	->findOneBy(array('name' => $action, 'resource' => $resource))
+            	    	);
+            	    }
     	    	}
     	    	
     	    	$this->getEntityManager()->persist($role);
     	    } else {
-    	        foreach ($actions as $action) {
-        	        $action = $this->getEntityManager()
-        	        	->getRepository('CommonBundle\Entity\Acl\Action')
-        	        	->findOneBy(array('name' => $action['name'], 'resource' => $action['resource']));
-        	        if (! in_array($action, $repositoryCheck->getActions()))
-        	            $repositoryCheck->allow($action);
-        	    }
+    	        foreach ($allowedActions as $resource => $actions) {
+    	            foreach($actions as $action) {
+    	            	$action = $this->getEntityManager()
+    	            		->getRepository('CommonBundle\Entity\Acl\Action')
+    	            		->findOneBy(array('name' => $action, 'resource' => $resource));
+    	            	if (! in_array($action, $repositoryCheck->getActions()))
+    	            	    $repositoryCheck->allow($action);
+    	            }
+    	        }
     	    }
     	}
 	    
