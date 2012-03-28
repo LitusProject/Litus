@@ -52,19 +52,78 @@ class Study
      * @Column(type="boolean")
      */
     private $active;
-
-    /**
-     * @Column(type="string")
-     */
-    private $url;
     
-    public function __construct($title, $subTitle, $phase, $language, $url)
+    /**
+     * @param string $title
+     * @param string $subTitle
+     * @param integer $phase
+     * @param string $language
+     */
+    public function __construct($title, $subTitle, $phase, $language)
     {
     	$this->title = $title;
     	$this->subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $subTitle)));
     	$this->phase = $phase;
     	$this->language = $language;
-    	$this->url = $url;
-        //echo $title . ($this->subTitle ? ': ' . $this->subTitle : '') . ' - phase ' . $phase . ' - language ' . $language . '<br>'; 
+    	$this->active = true;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSubTitle()
+    {
+        return $this->subTitle;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getFullTitle()
+    {
+        return $this->title . ($this->subTitle ? ': ' . $this->subTitle : '');
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getPhase()
+    {
+        return $this->phase;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+    
+    /**
+     * @param boolean $flag
+     *
+     * @return SyllabusBundle\Entity\Study
+     */
+    public function setActive($flag = true)
+    {
+        $this->active = $flag;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 }
