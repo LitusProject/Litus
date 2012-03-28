@@ -72,6 +72,9 @@
 		            			    {% if hasAccess('admin_supplier', 'manage') %}
 		            			        <li><a href="{{ url('admin_supplier') }}">Supplier</a></li>
 		            			    {% endif %}
+		            			    {% if hasAccess('admin_financial', 'manage') %}
+		            			        <li><a href="{{ url('admin_financial') }}">Financial</a></li>
+		            			    {% endif %}
 		            			</ul>
 		            		</li>
 		                {% endif %}
