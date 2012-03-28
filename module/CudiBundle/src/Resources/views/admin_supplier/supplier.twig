@@ -61,8 +61,12 @@
 		                    <td>{{ user.getFullName() }}</td>
 		                    <td>{{ user.getEmail() }}</td>
 		                    <td>
-		                        <a href="{{ url('admin_supplier', {"action": "editUser", "id": user.getId()}) }}" class="edit">Edit</a>
-		                        <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
+		                        {% if hasAccess('admin_supplier', 'editUser') %}
+		                            <a href="{{ url('admin_supplier', {"action": "editUser", "id": user.getId()}) }}" class="edit">Edit</a>
+		                        {% endif %}
+		                        {% if hasAccess('admin_supplier', 'deleteUser') %}
+		                            <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
+		                        {% endif %}
 		                    </td>
 		                </tr>
 		            {% endfor %}
@@ -74,17 +78,19 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">Add User</div>
-	       	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to add a user!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url('admin_supplier', {"action": "addUser", "id": supplier.getId() }) }}">&rarr; Add User</a>
-		        </p>
-		    </div>
-		</div>
+	    {% if hasAccess('admin_supplier', 'addUser') %}
+    		<div class="sidebox">
+    	        <div class="title">Add User</div>
+    	       	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to add a user!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url('admin_supplier', {"action": "addUser", "id": supplier.getId() }) }}">&rarr; Add User</a>
+    		        </p>
+    		    </div>
+    		</div>
+    	{% endif %}
 	</aside>
 	
 	<div class="modal hide fade" id="removeUser">
@@ -111,6 +117,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    {% if hasAccess('admin_supplier', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#user_search'),
@@ -142,6 +149,7 @@
 					$('#user_search table').find('tr.item').remove();
 				}
 			});
+			{% endif %}
 			
 			$('.item .delete').click(openModal);
 		});
@@ -155,17 +163,23 @@
 			removeUser.find('.supplier').html($(this).data('supplier'));
 			removeUser.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_supplier', {"action": "deleteUser"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').hide();
-					$('.supplier_removed_success').show();
-					$this.parent().parent().remove();
-					removeUser.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').hide();
-					$('.supplier_removed_error').show();
-					removeUser.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').hide();
+    					$('.supplier_removed_success').show();
+    					$this.parent().parent().remove();
+    					removeUser.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeUser.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').hide();
+		    $('.supplier_removed_error').show();
+		    $('#removeUser').modal('hide');
 		}
 	</script>
 {% endblock %}

@@ -19,7 +19,7 @@
 	</div>
 	
 	<aside>
-		{% if article.isInternal() %}
+		{% if article.isInternal() and hasAccess('admin_file', 'manage') %}
 			<div class="sidebox">
 		        <div class="title">Manage Files</div>
 		       	<div class="content">
@@ -32,28 +32,32 @@
 			    </div>
 			</div>
 		{% endif %}
-		<div class="sidebox">
-		    <div class="title">Manage Comments</div>
-		   	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to manage the comments of this article!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url('admin_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
-		        </p>
-		    </div>
-		</div>
-		<div class="sidebox">
-		    <div class="title">New Version</div>
-		   	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to create a new version of this article!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url('admin_article', {"action": "newversion", "id": article.getId()}) }}">&rarr; New Version</a>
-		        </p>
-		    </div>
-		</div>
+		{% if hasAccess('admin_comment', 'manage') %}
+    		<div class="sidebox">
+    		    <div class="title">Manage Comments</div>
+    		   	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to manage the comments of this article!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url('admin_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+    		        </p>
+    		    </div>
+    		</div>
+		{% endif %}
+		{% if hasAccess('admin_article', 'newversion') %}
+    		<div class="sidebox">
+    		    <div class="title">New Version</div>
+    		   	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to create a new version of this article!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url('admin_article', {"action": "newversion", "id": article.getId()}) }}">&rarr; New Version</a>
+    		        </p>
+    		    </div>
+    		</div>
+		{% endif %}
 	</aside>
 {% endblock %}
 

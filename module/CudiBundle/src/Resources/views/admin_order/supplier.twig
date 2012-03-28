@@ -23,11 +23,13 @@
 		            <td>{% if order.getDate() %}{{ order.getDate().format('Y-m-d H:i:s') }}{% else %}(new){% endif %}</td>
 		            <td>&euro; {{ (order.getPrice()/100)|number_format(2) }}</td>
 					<td>
-						{% if order.isPlaced() %}
-							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
-						{% else %}
-							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
-						{% endif %}
+					    {% if hasAccess('admin_order', 'edit') %}
+    						{% if order.isPlaced() %}
+    							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
+    						{% else %}
+    							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+    						{% endif %}
+    					{% endif %}
 					</td>
 		        </tr>
 		    {% endfor %}
@@ -38,16 +40,18 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">New Order</div>
-	        <div class="content">
-	            <p>
-	                <i>Please hit the link below to add a new order item!</i>
-	            </p>
-	            <p>
-	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
-	            </p>
-	        </div>
-	    </div>
+	    {% if hasAccess('admin_order', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Order</div>
+    	        <div class="content">
+    	            <p>
+    	                <i>Please hit the link below to add a new order item!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
 	</aside>
 {% endblock %}

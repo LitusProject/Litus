@@ -61,8 +61,12 @@
 		                <td>{{ article.getMetaInfo().getYearPublished() }}</td>
 		                <td>{% if article.isStock() %} Stock {% else %} Stub {% endif %}</td>
 						<td>
-		                    <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-		                    <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getMetaInfo().getAuthors() }}">Delete</a>
+						    {% if hasAccess('admin_article', 'edit') %}
+		                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
+		                    {% endif %}
+						    {% if hasAccess('admin_article', 'delete') %}
+		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getMetaInfo().getAuthors() }}">Delete</a>
+		                    {% endif %}
 		                </td>
 		            </tr>
 		        {% endfor %}
@@ -96,6 +100,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    {% if hasAccess('admin_article', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#article_search'),
@@ -112,15 +117,21 @@
 							.append('<td>' + this.yearPublished + '</td>')
 							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
 							.append(
-								$('<td>')
-									.append('<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
-									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-								);
-							deleteButton.data({
-								id: this.id,
-								title: this.title,
-								authors: this.author,
-							});
+								actions = $('<td>')
+							);
+							
+							{% if hasAccess('admin_article', 'edit') %}
+							    actions.append('<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+							{% endif %}
+							
+							{% if hasAccess('admin_article', 'delete') %}
+    							actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+    							deleteButton.data({
+    								id: this.id,
+    								title: this.title,
+    								authors: this.author,
+    							});
+							{% endif %}
 					});
 					$('#article_search .delete').click(openModal);
 				},
@@ -128,6 +139,7 @@
 					$('#article_search table').find('tr.item').remove();
 				}
 			});
+			{% endif %}
 			
 			$('.item .delete').click(openModal);
 		});
@@ -141,17 +153,23 @@
 			removeArticle.find('.articleAuthors').html($(this).data('authors'));
 			removeArticle.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.article_removed_success').removeClass('hide');
-					$this.parent().parent().remove();
-					removeArticle.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.article_removed_error').removeClass('hide');
-					removeArticle.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.article_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeArticle.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeArticle.modal();
+		}
+		
+		function errorRemove() {
+    		$('.flashmessage').addClass('hide');
+    		$('.article_removed_error').removeClass('hide');
+    		$('#removeArticle').modal('hide');
 		}
 	</script>
 {% endblock %}

@@ -20,8 +20,12 @@
 		                <tr>
 		                    <td>{{ supplier.getName() }}</td>
 		            		<td>
-		            			<a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
-		            			<a href="{{ url('admin_supplier', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+		            		    {% if hasAccess('admin_supplier', 'edit') %}
+		            			    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
+		            			{% endif %}
+		            			{% if hasAccess('admin_supplier', 'supplier') %}
+		            			    <a href="{{ url('admin_supplier', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+		            			{% endif %}
 		            		</td>
 		                </tr>
 		            {% endfor %}

@@ -73,9 +73,10 @@
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
 		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
 		        		<td>
-		        			{% if booking.getStatus() == 'assigned' %}
+		        			{% if booking.getStatus() == 'assigned' and hasAccess('admin_booking', 'unassign') %}
 		                    	<a href="#" class="edit" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getTitle() }}">Unassign</a>
-		        			{% elseif booking.getStatus() == 'booked' %}
+		        			{% endif %}
+		        			{% if booking.getStatus() == 'booked' and hasAccess('admin_booking', 'delete') %}
 		                		<a href="#" class="delete" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getTitle() }}">Delete</a>
 		                    {% endif %}
 		                </td>
@@ -88,17 +89,19 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">Assign bookings</div>
-	       	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to assign bookings!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url('admin_booking', {"action": "assign"}) }}">&rarr; Assign Bookings</a>
-		        </p>
-		    </div>
-		</div>
+	    {% if hasAccess('admin_booking', 'assign') %}
+    		<div class="sidebox">
+    	        <div class="title">Assign bookings</div>
+    	       	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to assign bookings!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url('admin_booking', {"action": "assign"}) }}">&rarr; Assign Bookings</a>
+    		        </p>
+    		    </div>
+    		</div>
+		{% endif %}
 	</aside>
 	
 	<div class="modal hide fade" id="removeBooking">
@@ -145,6 +148,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    {% if hasAccess('admin_booking', 'assign') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#booking_search'),
@@ -161,15 +165,21 @@
 							.append('<td>' + this.bookDate + '</td>')
 							.append('<td class="status">' + ucfirst(this.status) + '</td>')
 							.append(actions = $('<td>'));
+						{% if hasAccess('admin_booking', 'unassign') %}
 						if ('assigned' == this.status)
 							actions.append(button = $('<a href="#" class="edit">Unassign</a>'));
-						else if ('booked' == this.status)
+						{% endif %}
+						{% if hasAccess('admin_booking', 'delete') %}
+						if ('booked' == this.status)
 							actions.append(button = $('<a href="#" class="delete">Delete</a>'));
-						button.data({
-							id: this.id,
-							person: this.person,
-							title: this.article,
-						});
+						{% endif %}
+						if (button) {
+    						button.data({
+    							id: this.id,
+    							person: this.person,
+    							title: this.article,
+    						});
+    					}
 					});
 					$('#booking_search .delete').click(openRemoveModal);
 					$('#booking_search .edit').click(openUnassignModal);
@@ -178,6 +188,7 @@
 					$('#booking_search table').find('tr.item').remove();
 				}
 			});
+			{% endif %}
 			
 			$('.item .delete').click(openRemoveModal);
 			$('.item .edit').click(openUnassignModal);
@@ -192,17 +203,23 @@
 			removeBooking.find('.bookingTitle').html($(this).data('title'));
 			removeBooking.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_booking', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.booking_removed_success').removeClass('hide');
-					$this.parent().parent().remove();
-					removeBooking.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.booking_removed_error').removeClass('hide');
-					removeBooking.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.booking_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeBooking.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeBooking.modal();
+		}
+		
+		function errorRemove() {
+    		$('.flashmessage').addClass('hide');
+    		$('.booking_removed_error').removeClass('hide');
+    		$('#removeBooking').modal('hide');
 		}
 		
 		function openUnassignModal(e) {
@@ -214,19 +231,25 @@
 			unassignBooking.find('.bookingTitle').html($(this).data('title'));
 			unassignBooking.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_booking', {"action": "unassign"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.booking_unassign_success').removeClass('hide');
-				    var button = $('<a href="#" class="delete">Delete</a>').data($this.parent().data()).click(openRemoveModal);
-					$this.parent().parent().find('.status').html('Booked');
-					$this.parent().html(button);
-					unassignBooking.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.booking_unassign_error').removeClass('hide');
-					unassignBooking.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.booking_unassign_success').removeClass('hide');
+    				    var button = $('<a href="#" class="delete">Delete</a>').data($this.parent().data()).click(openRemoveModal);
+    					$this.parent().parent().find('.status').html('Booked');
+    					$this.parent().html(button);
+    					unassignBooking.modal('hide');
+    				} else {
+    				    errorUnassign();
+    				}
+				}, 'json').error(errorUnassign);
 			});
 			unassignBooking.modal();
+		}
+		
+		function errorUnassign() {
+		    $('.flashmessage').addClass('hide');
+		    $('.booking_unassign_error').removeClass('hide');
+		    $('#unassignBooking').modal('hide');
 		}
 		
 		function ucfirst(str) {

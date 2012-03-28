@@ -31,7 +31,9 @@
 	                <td>{{ delivery.getNumber() }}</td>
 	                <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
 					<td>
-						<a href="{{ url("admin_delivery", {"action": "delete", "id": delivery.getId()}) }}" class="delete">Delete</a>
+					    {% if hasAccess('admin_delivery', 'delete') %}
+    						<a href="{{ url("admin_delivery", {"action": "delete", "id": delivery.getId()}) }}" class="delete">Delete</a>
+    					{% endif %}
 					</td>
 	            </tr>
 	    
@@ -40,16 +42,18 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">Overview deliveries</div>
-	       	<div class="content">
-		    	<p>
-		        	<i>Please hit the link below to view all deliveries!</i>
-		        </p>
-		        <p>
-		           	<a href="{{ url("admin_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
-		        </p>
-		    </div>
-		</div>
+		{% if hasAccess('admin_delivery', 'manage') %}
+    		<div class="sidebox">
+    	        <div class="title">Overview deliveries</div>
+    	       	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to view all deliveries!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url("admin_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
+    		        </p>
+    		    </div>
+    		</div>
+		{% endif %}
 	</aside>
 {% endblock %}

@@ -148,71 +148,24 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 	
 	public function deleteAction()
 	{
-		$role = $this->_getRole();
-		
-		if ('guest' == $role->getName() || 'corporate' == $role->getName()) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'The specified role is a system role which cannot be deleted!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_role',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-			
-		if (null !== $this->getParam('confirm')) {
-			if (1 == $this->getParam('confirm')) {
-		        $users = $this->getEntityManager()
-		            ->getRepository('CommonBundle\Entity\Users\Person')
-		            ->findAllByRole($role->getName());
-		        
-		        foreach ($users as $user) {
-		            $user->removeRole($role);
-		        }
-				$this->getEntityManager()->remove($role);
-				
-				$this->getEntityManager()->flush();
-				
-				$this->flashMessenger()->addMessage(
-				    new FlashMessage(
-				        FlashMessage::SUCCESS,
-				        'Succes',
-				        'The role was successfully deleted!'
-				    )
-				);
-				
-				$this->redirect()->toRoute(
-					'admin_role',
-					array(
-						'action' => 'manage'
-					)
-				);
-				
-				return;
-		    } else {
-		        $this->redirect()->toRoute(
-		        	'admin_role',
-		        	array(
-		        		'action' => 'manage'
-		        	)
-		        );
-		        
-		        return;
-		    }
-		}
-		
-		return array(
-			'role' => $role
-		);
+	    $this->initAjax();
+	    
+    	$role = $this->_getRole();
+        
+        $users = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findAllByRole($role->getName());
+        
+        foreach ($users as $user) {
+            $user->removeRole($role);
+        }
+        $this->getEntityManager()->remove($role);
+        
+        $this->getEntityManager()->flush();
+    	
+    	return array(
+    		'result' => array('status' => 'success'),
+    	);
 	}
 	
 	public function loadAction()
