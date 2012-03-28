@@ -17,6 +17,7 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\WebSocket\User,
 	CudiBundle\Entity\Sales\Booking,
+	CudiBundle\Entity\Sales\SaleItem,
 	CudiBundle\Entity\Sales\ServingQueueItem,
 	Doctrine\ORM\EntityManager;
 
@@ -214,7 +215,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
     		->findOneByPerson($session, $person);
     	
-    	if (sizeof($queueItem) == 0) {
+    	$soldStatus = $this->_entityManager
+    		->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
+    		->findOneByName('sold');
+    	
+    	
+    	if (null == $queueItem || $soldStatus == $queueItem->getStatus()) {
     		$queueItem = new ServingQueueItem($this->_entityManager, $person, $session);
     		
     		$this->_entityManager->persist($queueItem);
@@ -400,16 +406,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	{
 		unset($this->_lockedItems[$data->id]);
 		
-		$item = $this->_entityManager
+		$servingQueueItem = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
 			->findOneById($data->id);
 					
-		if (!isset($item))
+		if (!isset($servingQueueItem))
 			return;
 			
 		$bookings = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\Booking')
-			->findAllOpenByPerson($item->getPerson());
+			->findAllOpenByPerson($servingQueueItem->getPerson());
 		
 		foreach($bookings as $booking) {
 			$currentNumber = $data->articles->{$booking->getId()};
@@ -422,6 +428,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 					$booking->setNumber($currentNumber)
 						->setStatus('sold');
 				}
+				
+				$saleItem = new SaleItem(
+				    $booking->getPerson()->isMember() ? $booking->getArticle()->getSellPriceMembers() / 100 : $booking->getArticle()->getSellPrice() / 100,
+				    $booking,
+				    $servingQueueItem
+				);
+				$this->_entityManager->persist($saleItem);
 				
 				$item = $this->_entityManager
 					->getRepository('CudiBundle\Entity\Stock\StockItem')

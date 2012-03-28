@@ -51,4 +51,96 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	 * @return void
 	 */
 	abstract protected function _initAcl();
+	
+	/**
+	 * Install the roles for the Acl
+	 *
+	 * @param array $roles
+	 */
+	protected function installRoles($roles = array())
+	{
+	    foreach($roles as $roleName => $config) {
+	        $role = $this->getEntityManager()
+	        	->getRepository('CommonBundle\Entity\Acl\Role')
+	        	->findOneByName($roleName);
+	        
+	        $parents = array();
+	        
+	        foreach($config['parent_roles'] as $roleName) {
+	            $parents[] = $this->getEntityManager()
+	            	->getRepository('CommonBundle\Entity\Acl\Role')
+	            	->findOneByName($roleName);
+	        }
+	        
+	        if (null === $role) {
+	        	$role = new Role($roleName, $config['parent_roles']);
+	        	$this->getEntityManager()->persist($role);
+	        } else {
+	            $role->setParents($parents);
+	        }
+	        foreach ($config['actions'] as $resource => $actions) {
+	            foreach($actions as $action) {
+	            	$action = $this->getEntityManager()
+	            		->getRepository('CommonBundle\Entity\Acl\Action')
+	            		->findOneBy(array('name' => $action, 'resource' => $resource));
+	            	if (! in_array($action, $role->getActions()))
+	            	    $repositoryCheck->allow($action);
+	            }
+	        }
+	    }
+	    
+	    $this->getEntityManager()->flush();
+	}
+	
+	/**
+	 * Install the structure for the Acl
+	 *
+	 * @param array $structure
+	 */
+	protected function installAclStructure($structure = array())
+	{
+	    foreach ($structure as $module => $routesArray) {
+	    		$repositoryCheck = $this->getEntityManager()
+	    			->getRepository('CommonBundle\Entity\Acl\Resource')
+	    			->findOneByName($module);
+	    
+	    		if (null === $repositoryCheck) {
+	    			$moduleResource = new Resource($module);
+	    			$this->getEntityManager()->persist($moduleResource);
+	    		} else {
+	                $moduleResource = $repositoryCheck;
+	            }
+	    		
+	    		foreach ($routesArray as $route => $actions) {
+	    			$repositoryCheck = $this->getEntityManager()
+	    				->getRepository('CommonBundle\Entity\Acl\Resource')
+	    				->findOneBy(array('name' => $route, 'parent' => $module));
+	    
+	    			if (null === $repositoryCheck) {
+	    				$routeResource = new Resource(
+	    					$route,
+	    					$moduleResource
+	    				);
+	    				$this->getEntityManager()->persist($routeResource);
+	    			} else {
+	                    $routeResource = $repositoryCheck;
+	                }
+	    			
+	    			foreach ($actions as $action) {
+	    				$repositoryCheck = $this->getEntityManager()
+	    					->getRepository('CommonBundle\Entity\Acl\Action')
+	    					->findOneBy(array('name' => $action, 'resource' => $route));
+	    				
+	    				if (null === $repositoryCheck) {
+	    					$actionResource = new AclAction(
+	    						$action,
+	    						$routeResource
+	    					);
+	    					$this->getEntityManager()->persist($actionResource);
+	    				}
+	    			}
+	    		}
+	    	}
+	    	$this->getEntityManager()->flush();
+	}
 }

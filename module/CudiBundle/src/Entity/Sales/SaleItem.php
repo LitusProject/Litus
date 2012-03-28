@@ -15,6 +15,10 @@
  
 namespace CudiBundle\Entity\Sales;
 
+use CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Entity\Sales\ServingQueueItem,
+    DateTime;
+
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
  * @Table(name="cudi.sales_saleitem")
@@ -41,10 +45,9 @@ class SaleItem
 	private $article;
 	
 	/**
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-	 * @JoinColumn(name="person_id", referencedColumnName="id")
+	 * @Column(type="integer")
 	 */
-	private $person;
+	private $number;
 	
 	/**
 	 * @Column(type="datetime")
@@ -52,7 +55,7 @@ class SaleItem
 	private $timestamp;
 	
 	/**
-	 * @Column(type="float")
+	 * @Column(type="integer")
 	 */
 	private $price;
 	
@@ -67,4 +70,15 @@ class SaleItem
 	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
 	 */
 	private $servingQueueItem;
+	
+	public function __construct($price, Booking $booking, ServingQueueItem $servingQueueItem)
+	{
+	    $this->session = $servingQueueItem->getSession();
+	    $this->article = $booking->getArticle();
+	    $this->number = $booking->getNumber();
+	    $this->timestamp = new DateTime();
+	    $this->price = $price * 100;
+	    $this->booking = $booking;
+	    $this->servingQueueItem = $servingQueueItem;
+	}
 }
