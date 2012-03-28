@@ -24,7 +24,11 @@
 		            <td valign=center>{{ session.getOpenDate().format('Y-m-d H:i') }}</td>
 		            <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i:s')}}{% endif %}</td>
 		            <td>&euro; {% if session.isOpen() %}{{ -session.getOpenAmount().getTotalAmount()/100|number_format(2)}}{% else %}{{ (session.getCloseAmount().getTotalAmount() - session.getOpenAmount().getTotalAmount())/100|number_format(2)}}{% endif %}
-					<td><a href="{{ url("admin_sale", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a></td>
+					<td>
+					    {% if hasAccess('admin_sale', 'edit') %}
+					        <a href="{{ url("admin_sale", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
+					    {% endif %}
+					</td>
 		        </tr>
 		    {% endfor %}
 		</table>

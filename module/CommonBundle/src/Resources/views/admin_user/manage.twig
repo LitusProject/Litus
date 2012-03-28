@@ -4,13 +4,13 @@
 	{% include 'admin_user/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width user_removed_success" style="display: none;">
+	<div class="flashmessage success_message full_width user_removed_success hide">
 		<div class="title">Success</div>
 		<div class="content">
 			<p>The user was successfully removed!</p>
 		</div>
 	</div>
-	<div class="flashmessage error_message full_width user_removed_error" style="display: none;">
+	<div class="flashmessage error_message full_width user_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
 			<p>An error occurred while trying to delete a user.</p>
@@ -57,8 +57,12 @@
 		                    <td>{{ user.getFullName() }}</td>
 		                    <td>{{ user.getEmail() }}</td>
 		                    <td>
-								<a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
-								<a href="#" class="delete" data-id="{{ user.getId() }}" data-fullname="{{ user.getFullName() }}">Delete</a>
+		                        {% if hasAccess('admin_user', 'edit') %}
+								    <a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+								{% endif %}
+								{% if hasAccess('admin_user', 'delete') %}
+								    <a href="#" class="delete" data-id="{{ user.getId() }}" data-fullname="{{ user.getFullName() }}">Delete</a>
+								{% endif %}
 		                    </td>
 		                </tr>
 		            {% endfor %}
@@ -84,7 +88,7 @@
 			</p>
 			<div class="footer">
 				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" value="No">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
 			</div>
 		</div>
 	</div>
@@ -93,6 +97,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    {% if hasAccess('admin_user', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#user_search'),
@@ -122,6 +127,7 @@
 					$('#user_search table').find('tr.item').remove();
 				}
 			});
+			{% endif %}
 			
 			$('.item .delete').click(openModal);
 		});
@@ -137,17 +143,23 @@
 			});
 			removeUser.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_user', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').hide();
-					$('.user_removed_success').show();
-					$this.parent().parent().remove();
-					removeUser.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').hide();
-					$('.user_removed_error').show();
-					removeUser.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.user_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeUser.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeUser.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.user_removed_error').removeClass('hide');
+		    $('#removeUser').modal('hide');
 		}
 	</script>
 {% endblock %}

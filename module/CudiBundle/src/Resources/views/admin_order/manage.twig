@@ -17,7 +17,9 @@
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
 					<td>
-						<a href="{{ url('admin_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+					    {% if hasAccess('admin_order', 'supplier') %}
+						    <a href="{{ url('admin_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+						{% endif %}
 					</td>
 		        </tr>
 		    {% endfor %}
@@ -25,16 +27,18 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">New Order</div>
-	        <div class="content">
-	            <p>
-	                <i>Please hit the link below to add a new order item!</i>
-	            </p>
-	            <p>
-	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
-	            </p>
-	        </div>
-	    </div>
+	    {% if hasAccess('admin_order', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Order</div>
+    	        <div class="content">
+    	            <p>
+    	                <i>Please hit the link below to add a new order item!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
 	</aside>
 {% endblock %}

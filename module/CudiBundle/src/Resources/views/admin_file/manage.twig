@@ -31,10 +31,12 @@
 		<p>Publisher: <b>{{ article.getMetaInfo().getPublishers() }}</b></p>
 		<br />
 		
-		{% autoescape false %}
-			{{ form }}
-		{% endautoescape %}
-		<br style="clear:both"/>
+		{% if hasAccess('admin_file', 'upload') %}
+    		{% autoescape false %}
+    			{{ form }}
+    		{% endautoescape %}
+    		<br style="clear:both"/>
+    	{% endif %}
 		
 		<table class="full_width" id="articleFiles">
 	        <tr>
@@ -48,8 +50,12 @@
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
 					<td width="140px">
-						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": file.getId()}) }}">Download</a>
-		                <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
+					    {% if hasAccess('admin_file', 'download') %}
+    						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": file.getId()}) }}">Download</a>
+    					{% endif %}
+    					{% if hasAccess('admin_file', 'delete') %}
+		                    <a href="#" class="delete" data-id="{{ file.getId() }}" data-name="{{ file.getName() }}" data-description="{{ file.getDescription() }}">Delete</a>
+		                {% endif %}
 	                </td>
 	            </tr>
 	        {% endfor %}
@@ -167,17 +173,23 @@
 			removeFile.find('.fileDescription').html($(this).data('description'));
 			removeFile.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.file_removed_success').removeClass('hide');
-					$this.parent().parent().remove();
-					removeFile.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.file_removed_error').removeClass('hide');
-					removeFile.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.file_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeFile.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeFile.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+			$('.file_removed_error').removeClass('hide');
+		    $('#removeFile').modal('hide');
 		}
 	</script>
 {% endblock %}

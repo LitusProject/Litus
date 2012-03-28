@@ -36,7 +36,7 @@
 					<td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
 					<td>{{ item.getNumber() }}</td>
 					<td>
-						{% if not order.isPlaced() %}
+						{% if not order.isPlaced() and hasAccess('admin_order', 'delete') %}
 		        			<a href="{{ url('admin_order', {"action": "delete", "id": item.getId()}) }}" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
 						{% endif %}
 					</td>
@@ -47,51 +47,59 @@
 	
 	<aside>
 		{% if not order.isPlaced() %}
-			<div class="sidebox">
-		        <div class="title">Place Order</div>
-		        <div class="content">
-		            <p>
-		                <i>Please hit the link below to place this order!</i>
-		            </p>
-		            <p>
-		                <a href="{{ url('admin_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
-		            </p>
-		        </div>
-		    </div>
-			<div class="sidebox">
-		        <div class="title">New Order Item</div>
-		        <div class="content">
-		            <p>
-		                <i>Please hit the link below to add a new order item!</i>
-		            </p>
-		            <p>
-		                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
-		            </p>
-		        </div>
-		    </div>
+		    {% if hasAccess('admin_order', 'place') %}
+    			<div class="sidebox">
+    		        <div class="title">Place Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to place this order!</i>
+    		            </p>
+    		            <p>
+    		                <a href="{{ url('admin_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
+    		{% if hasAccess('admin_order', 'add') %}
+    			<div class="sidebox">
+    		        <div class="title">New Order Item</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to add a new order item!</i>
+    		            </p>
+    		            <p>
+    		                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
 		{% else %}
-			<div class="sidebox">
-		        <div class="title">Print Order</div>
-		        <div class="content">
-		            <p>
-		                <i>Please hit the link below to print the order for the supplier!</i>
-		            </p>
-		            <p>
-		                <a href="#" id="printOrder" target="_blank">&rarr; Print Order</a>
-		            </p>
-		        </div>
-		    </div>
-		    <div class="sidebox">
-		        <div class="title">Export Order</div>
-		        <div class="content">
-		            <p>
-		                <i>Please hit the link below to export the order to XML for the supplier!</i>
-		            </p>
-		            <p>
-		                <a href="#" id="exportOrder">&rarr; Export Order</a>
-		            </p>
-		        </div>
-		    </div>
+		    {% if hasAccess('admin_order', 'pdf') %}
+    			<div class="sidebox">
+    		        <div class="title">Print Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to print the order for the supplier!</i>
+    		            </p>
+    		            <p>
+    		                <a href="#" id="printOrder" target="_blank">&rarr; Print Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+		    {% endif %}
+		    {% if hassAccess('admin_order', 'export') %}
+    		    <div class="sidebox">
+    		        <div class="title">Export Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to export the order to XML for the supplier!</i>
+    		            </p>
+    		            <p>
+    		                <a href="#" id="exportOrder">&rarr; Export Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
 		{% endif %}
 	</aside>
 	
@@ -135,17 +143,23 @@
 			removeOrder.find('.orderNumber').html($(this).data('number'));
 			removeOrder.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_order', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.order_removed_success').removeClass('hide');
-					$this.parent().parent().remove();
-					removeOrder.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.order_removed_error').removeClass('hide');
-					removeOrder.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.order_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeOrder.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove());
 			});
 			removeOrder.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.order_removed_error').removeClass('hide');
+		    $('#removeOrder').modal('hide');
 		}
 	</script>
 {% endblock %}

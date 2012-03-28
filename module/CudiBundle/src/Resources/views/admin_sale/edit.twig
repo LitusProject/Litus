@@ -20,7 +20,10 @@
     
             <tr>
                 <td></td>
-                <td><a href="{{ url("admin_sale", {"action": "editregister", "id": session.getOpenAmount().getId()}) }}">(edit)</a></td>
+                <td>
+                    {% if hasAccess('admin_sale', 'editregister') %}
+                        <a href="{{ url("admin_sale", {"action": "editregister", "id": session.getOpenAmount().getId()}) }}">(edit)</a></td>
+                    {% endif %}
             </tr>
             {% for unit in units %}
                 <tr>
@@ -50,7 +53,10 @@
 
                 <tr>
                     <td></td>
-                	<td><a href="{{ url("admin_sale", {"action": "editregister", "id": session.getCloseAmount().getId()}) }}">(edit)</a></td>
+                	<td>
+                	    {% if hasAccess('admin_sale', 'editregister') %}
+                	        <a href="{{ url("admin_sale", {"action": "editregister", "id": session.getCloseAmount().getId()}) }}">(edit)</a></td>
+                	    {% endif %}
                 </tr>
                 {% for unit in units %}
                     <tr>
@@ -80,53 +86,58 @@
 	
 	<aside>
 		{% if session.isOpen() %}
-			<div class="sidebox">
-				<div class="title">Close Session</div>
-				<div class="content">
-					<p>
-						<i>Please hit the link below to close this sale session!</i>
-					</p>
-					<p>
-						<a href="{{ url("admin_sale", {"action": "close", "id": session.getId()}) }}">&rarr; Close</a>
-					</p>
-				</div>
-			</div>
-			
-			<div class="sidebox">
-				<div class="title">Sale Application</div>
-				<div class="content">
-					<p>
-						<i>Please hit the link below to open the sale application for regular users!</i>
-					</p>
-					<p>
-						<a href="{{ url("sale_sale") }}">&rarr; Pay Desk Application</a>
-					</p>
-				</div>
-			</div>
-			
-			<div class="sidebox">
-				<div class="title">Queue Sign-in</div>
-				<div class="content">
-					<p>
-						<i>Please hit the link below to open queue sign-in page!</i>
-					</p>
-					<p>
-						<a href="{{ url("sale_queue", {"action": "signin"}) }}">&rarr; Queue Sign-in</a>
-					</p>
-				</div>
-			</div>
-			
-			<div class="sidebox">
-				<div class="title">Queue Overview</div>
-				<div class="content">
-					<p>
-						<i>Please hit the link below to go to the queue overview page!</i>
-					</p>
-					<p>
-						<a href="{{ url("sale_queue", {"action": "overview"}) }}">&rarr; Queue Overview</a>
-					</p>
-				</div>
-			</div>
+		    {% if hasAccess('admin_sale', 'close') %}
+    			<div class="sidebox">
+    				<div class="title">Close Session</div>
+    				<div class="content">
+    					<p>
+    						<i>Please hit the link below to close this sale session!</i>
+    					</p>
+    					<p>
+    						<a href="{{ url("admin_sale", {"action": "close", "id": session.getId()}) }}">&rarr; Close</a>
+    					</p>
+    				</div>
+    			</div>
+			{% endif %}
+			{% if hasAccess('sale_sale', 'sale') %}
+    			<div class="sidebox">
+    				<div class="title">Sale Application</div>
+    				<div class="content">
+    					<p>
+    						<i>Please hit the link below to open the sale application for regular users!</i>
+    					</p>
+    					<p>
+    						<a href="{{ url("sale_sale") }}">&rarr; Pay Desk Application</a>
+    					</p>
+    				</div>
+    			</div>
+			{% endif %}
+			{% if hasAccess('sale_queue', 'signin') %}
+    			<div class="sidebox">
+    				<div class="title">Queue Sign-in</div>
+    				<div class="content">
+    					<p>
+    						<i>Please hit the link below to open queue sign-in page!</i>
+    					</p>
+    					<p>
+    						<a href="{{ url("sale_queue", {"action": "signin"}) }}">&rarr; Queue Sign-in</a>
+    					</p>
+    				</div>
+    			</div>
+			{% endif %}
+			{% if hasAccess('sale_queue', 'overview') %}
+    			<div class="sidebox">
+    				<div class="title">Queue Overview</div>
+    				<div class="content">
+    					<p>
+    						<i>Please hit the link below to go to the queue overview page!</i>
+    					</p>
+    					<p>
+    						<a href="{{ url("sale_queue", {"action": "overview"}) }}">&rarr; Queue Overview</a>
+    					</p>
+    				</div>
+    			</div>
+    		{% endif %}
 		{% endif %}
 	</aside>
 {% endblock %}

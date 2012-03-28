@@ -3,10 +3,10 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin', 'booking', 'new') %}
+            {% if hasAccess('admin_booking', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_booking', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin', 'booking', 'manager') %}
+            {% if hasAccess('admin_booking', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_booking', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>

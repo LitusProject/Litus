@@ -52,7 +52,9 @@
 		                <td>{{ item.getNumberQueueOrder() }}</td>
 		                <td>{{ item.getNumberBooked() + item.getNumberAssigned() }}</td>
 						<td>
-							<a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
+						    {% if hasAccess('admin_stock', 'edit') %}
+							    <a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
+							{% endif %}
 		                </td>
 		            </tr>
 		        {% endfor %}
@@ -66,6 +68,7 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    {% if hasAccess('admin_stock', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
 				searchDiv: $('#stock_search'),
@@ -90,6 +93,7 @@
 					$('#stock_search table').find('tr.item').remove();
 				}
 			});
+			{% endif %}
 		});
 	</script>
 {% endblock %}

@@ -37,7 +37,9 @@
 		        	<td>{{ delivery.getNumber() }}</td>
 		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
 		        	<td>
-		        		<a href="{{ url('admin_delivery', {"action": "delete", "id": delivery.getId()}) }}" class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
+		        	    {% if hasAccess('admin_delivery', 'delete') %}
+    		        		<a class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
+    		        	{% endif %}
 		        	</td>
 		        </tr>
 		    {% endfor %}
@@ -47,17 +49,19 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-	        <div class="title">New Delivery</div>
-	        <div class="content">
-	            <p>
-	        		<i>Please hit the link below to add a delivery!</i>
-	            </p>
-	            <p>
-	                <a href="{{ url('admin_delivery', {"action": "add"}) }}">&rarr; Add Delivery</a>
-	            </p>
-	        </div>
-	    </div>
+	    {% if hasAccess('admin_delivery', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Delivery</div>
+    	        <div class="content">
+    	            <p>
+    	        		<i>Please hit the link below to add a delivery!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_delivery', {"action": "add"}) }}">&rarr; Add Delivery</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
 	</aside>
 	
 	<div class="modal hide fade" id="removeDelivery">
@@ -96,17 +100,23 @@
 			removeDelivery.find('.deliveryNumber').html($(this).data('number'));
 			removeDelivery.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_delivery', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-					$('.flashmessage').addClass('hide');
-					$('.delivery_removed_success').removeClass('hide');
-					$this.parent().parent().remove();
-					removeDelivery.modal('hide');
-				}, 'json').error(function () {
-					$('.flashmessage').addClass('hide');
-					$('.delivery_removed_error').removeClass('hide');
-					removeDelivery.modal('hide');
-				});
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.delivery_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeDelivery.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
 			});
 			removeDelivery.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.delivery_removed_error').removeClass('hide');
+		    $('#removeDelivery').modal('hide');
 		}
 	</script>
 {% endblock %}
