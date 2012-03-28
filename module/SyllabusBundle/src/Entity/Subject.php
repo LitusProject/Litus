@@ -48,12 +48,49 @@ class Subject
      */
     private $credits;
     
+    /**
+     * @param string $code
+     * @param string $name
+     * @param integer $semester
+     * @param integer $credits
+     */
     public function __construct($code, $name, $semester, $credits)
     {
         $this->code = $code;
         $this->name = $name;
         $this->semester = $semester;
         $this->credits = $credits;
-        //echo $code . ' - ' . $name . ' - semester ' . $semester . ' - ' . $credits . '<br>'; 
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getCredits()
+    {
+        return $this->credits;
     }
 }

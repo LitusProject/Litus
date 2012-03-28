@@ -29,13 +29,13 @@ class StudySubjectMap
     private $id;
 
     /**
-	 * @OneToOne(targetEntity="SyllabusBundle\Entity\Study")
+	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
 	 * @JoinColumn(name="study", referencedColumnName="id")
 	 */
 	private $study;
 
 	/**
-	 * @OneToOne(targetEntity="SyllabusBundle\Entity\Subject")
+	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(name="subject", referencedColumnName="id")
 	 */
 	private $subject;
@@ -44,4 +44,40 @@ class StudySubjectMap
      * @Column(type="boolean")
      */
     private $mandatory;
+    
+    /**
+     * @param SyllabusBundle\Entity\Study $study
+     * @param SyllabusBundle\Entity\Subject $subject
+     * @param boolean $mandatory
+     */
+    public function __construct(Study $study, Subject $subject, $mandatory)
+    {
+        $this->study = $study;
+        $this->subject = $subject;
+        $this->mandatory = $mandatory;
+    }
+    
+    /**
+     * @return SyllabusBundle\Entity\Study
+     */
+    public function getStudy()
+    {
+        return $this->study;
+    }
+    
+    /**
+     * @return SyllabusBundle\Entity\Subject
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isMandatory()
+    {
+        return $this->mandatory;
+    }
 }
