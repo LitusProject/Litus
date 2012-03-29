@@ -98,7 +98,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     	);
     	
 		$authentication->authenticate(
-			$this->getRequest()->server()->get('Shib-Person-uid')
+			$this->getRequest()->server()->get('Shib-Person-uid', '')
 		);
     	
     	if ($authentication->isAuthenticated()) {
