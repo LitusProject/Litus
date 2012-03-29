@@ -81,4 +81,23 @@ class SaleItem
 	    $this->booking = $booking;
 	    $this->servingQueueItem = $servingQueueItem;
 	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getNumber()
+	{
+		return $this->number;
+	}
+	
+	/**
+	 * @param integer $number
+	 * 
+	 * @return CudiBundle\Entity\Sales\SaleItem
+	 */
+	public function setNumber($number)
+	{
+		$this->number = $number;
+		return $this;
+	}
 }

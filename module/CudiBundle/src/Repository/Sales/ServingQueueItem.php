@@ -96,4 +96,32 @@ class ServingQueueItem extends EntityRepository
         
         return null;
     }
+    
+    public function findOneByPersonNotSold(SaleSession $session, Person $person)
+    {
+        $soldStatus = $this->_em
+        	->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
+        	->findOneByName('sold');
+        	
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+        	->from('CudiBundle\Entity\Sales\ServingQueueItem', 'i')
+        	->where($query->expr()->andX(
+            	    $query->expr()->eq('i.session', ':session'),
+            	    $query->expr()->eq('i.person', ':person'),
+            	    $query->expr()->neq('i.status', ':status')
+            	)
+            )
+        	->setParameter('session', $session->getId())
+        	->setParameter('person', $person->getId())
+        	->setParameter('status', $soldStatus->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
+    }
 }
