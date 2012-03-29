@@ -32,7 +32,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
     
 	public function updateAction()
 	{
-		$xml = simplexml_load_file('http://litus/admin/syllabus/xml');
+		$xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
 
 		$studies = $this->_createStudies($xml->data->sc);
 		$this->_createSubjects($xml->data->sc->cg, $studies);
@@ -70,7 +70,9 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         
         $language = trim((string) $data->doceertaal);
         $mainTitle = ucfirst(trim((string) $data->titel));
-
+        
+        $subStudies = array();
+        
         foreach($data->fases->children() as $phase) {
 		    $phaseNumber = (int) $phase->attributes()->code;
             
@@ -78,21 +80,34 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
             
             $mainStudy = new Study($mainTitle, $phaseNumber, $language);
             $this->getEntityManager()->persist($mainStudy);
-            $studies[$phaseNumber][0] = $mainStudy;
             
 		    if ($phase->tcs->children()->count() > 0) {
 		        foreach($phase->tcs->children() as $studyData) {
-                    $parent = $mainStudy;
-		            $title = preg_replace('/\([a-zA-Z0-9\s]*\)/', '', 
-		                str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $studyData->titel)
-		            );
+		            $title = preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel);
 		            $titles = explode('+', $title);
-		            foreach($titles as $subTitle) {
-		                $parent = new Study(ucfirst(trim($subTitle)), $phaseNumber, $language, $parent);
-		                $this->getEntityManager()->persist($parent);
+		            
+		            if (sizeof($titles) == 2) {
+		                if (isset($subStudies[$titles[0]])) {
+		                    $subStudy = $subStudies[$titles[0]];
+		                } else {
+		                    $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[0])));
+		                    $subStudy= new Study($subTitle, $phaseNumber, $language, $mainStudy);
+		                    $this->getEntityManager()->persist($subStudy);
+		                    $subStudies[$titles[0]] = $subStudy;
+		                }
+		                
+		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
+		                $study= new Study($subTitle, $phaseNumber, $language, $subStudy);
+		                $this->getEntityManager()->persist($study);
+		            } else {
+		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
+		                $study = new Study($subTitle, $phaseNumber, $language, $mainStudy);
+		                $this->getEntityManager()->persist($study);
 		            }
-		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $parent;
+		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
 		        }
+		    } else {
+		        $studies[$phaseNumber][0] = $mainStudy;
 		    }
 		}
 		return $studies;

@@ -103,7 +103,7 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	        	$role = new Role($roleName, $parents);
 	        	$this->getEntityManager()->persist($role);
 	        } elseif(sizeof($config['parent_roles']) > 0) {
-	            $role->setParents($config['parent_roles']);
+	            $role->setParents($parents);
 	        }
 	        
 	        foreach ($config['actions'] as $resource => $actions) {

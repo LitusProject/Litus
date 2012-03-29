@@ -15,7 +15,7 @@
  
 return array(
 	'controllers'  => array(
-		'cudi_config' => array(
+		'cudi_install' => array(
 			'@common_jquery',
 			'@admin_css',
 			'@admin_js',

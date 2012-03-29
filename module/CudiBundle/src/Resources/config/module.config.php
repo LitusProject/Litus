@@ -3,6 +3,7 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
+				'cudi_install'		  => 'CudiBundle\Controller\Admin\InstallerController',
 				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_comment'	      => 'CudiBundle\Controller\Admin\CommentController',
 				'admin_file'	      => 'CudiBundle\Controller\Admin\FileController',
@@ -13,7 +14,6 @@ return array(
 				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
 				'admin_supplier'	  => 'CudiBundle\Controller\Admin\SupplierController',
-				'cudi_config'		  => 'CudiBundle\Controller\Admin\InstallerController',
 				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
 				'prof'      	      => 'CudiBundle\Controller\Prof\IndexController',
@@ -116,12 +116,12 @@ return array(
 		),
 	),
 	'routes' => array(
-		'cudi_config' => array(
+		'cudi_install' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/install/cudi',
 				'defaults' => array(
-					'controller' => 'cudi_config',
+					'controller' => 'cudi_install',
 					'action'     => 'index',
 				),
 			),

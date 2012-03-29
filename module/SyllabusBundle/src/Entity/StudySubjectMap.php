@@ -58,6 +58,14 @@ class StudySubjectMap
     }
     
     /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
      * @return SyllabusBundle\Entity\Study
      */
     public function getStudy()
