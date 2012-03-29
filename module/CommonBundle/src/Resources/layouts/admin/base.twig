@@ -46,7 +46,7 @@
 	                <div class="title">Divisions</div>
 	                
 	                <ul class="subsubmenu">
-		                {% if hasAccess('admin_textbook', 'index') %}
+		                {% if hasAccess('admin_article', 'manage') or hasAccess('admin_booking', 'manage') or hasAccess('admin_sale', 'manage') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_financial', 'manage') %}
 		            		<li>
 		            			<div class="subtitle">
 			            			<b>CuDi</b><br />
@@ -77,6 +77,24 @@
 		            			    {% endif %}
 		            			</ul>
 		            		</li>
+		                {% endif %}
+		                
+		                {% if hasAccess('admin_study', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Syllabus</b><br />
+		                			Studies &amp; Subjects
+		                		</div>
+		                		<ul
+		                			{% if 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_study', 'manage') %}
+		                		        <li><a href="{{ url('admin_study') }}">Studies</a></li>
+		                		    {% endif %}
+		                		</ul>
+		                	</li>
 		                {% endif %}
 		                
 		                {% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}

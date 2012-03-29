@@ -12,4 +12,67 @@ use Doctrine\ORM\EntityRepository;
  */
 class Study extends EntityRepository
 {
+    public function findAllStudies()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Study', 's')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('s.active', 'true'),
+       	            $query->expr()->notIn('s.id', $this->_findParentStudiesIds())
+        	    )
+        	)
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByTitle($title)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Study', 's')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('s.active', 'true'),
+                    $query->expr()->notIn('s.id', $this->_findParentStudiesIds())
+        	    )
+        	)
+        	->getQuery()
+        	->getResult();
+        	
+        $result = array();
+        
+        $title = strtolower($title);
+        
+        foreach($resultSet as $study) {
+            if (strpos(strtolower($study->getFullTitle()), $title) !== false)
+                $result[] = $study;
+        }
+        
+        return $result;
+    }
+    
+    private function _findParentStudiesIds()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('IDENTITY(s.parent)')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.active', 'true'),
+                    $query->expr()->isNotNull('s.parent')
+                )
+            )
+            ->getQuery()
+            ->getResult();
+            
+        $ids = array();
+        foreach($resultSet as $id)
+            $ids[] = $id[1];
+            
+        return $ids;
+    }
 }

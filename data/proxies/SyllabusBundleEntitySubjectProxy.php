@@ -36,10 +36,55 @@ class SyllabusBundleEntitySubjectProxy extends \SyllabusBundle\Entity\Subject im
     }
 
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getCode()
+    {
+        $this->__load();
+        return parent::getCode();
+    }
+
+    public function getName()
+    {
+        $this->__load();
+        return parent::getName();
+    }
+
+    public function getSemester()
+    {
+        $this->__load();
+        return parent::getSemester();
+    }
+
+    public function getCredits()
+    {
+        $this->__load();
+        return parent::getCredits();
+    }
+
+    public function setActive($flag = true)
+    {
+        $this->__load();
+        return parent::setActive($flag);
+    }
+
+    public function isActive()
+    {
+        $this->__load();
+        return parent::isActive();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'code', 'name', 'semester');
+        return array('__isInitialized__', 'id', 'code', 'name', 'semester', 'credits', 'active');
     }
 
     public function __clone()

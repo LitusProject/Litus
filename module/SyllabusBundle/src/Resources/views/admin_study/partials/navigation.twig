@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="study">Studies</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_study', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'study' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_study') }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

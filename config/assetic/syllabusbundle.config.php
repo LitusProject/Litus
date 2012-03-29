@@ -15,7 +15,22 @@
  
 return array(
 	'controllers'  => array(
-		'syllabus_update' => array(
+	    'syllabus_install' => array(
+	    	'@common_jquery',
+	    	'@admin_css',
+	    	'@admin_js',
+	    ),
+		'admin_update_syllabus' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
+		'admin_study' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
+		'admin_subject' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',

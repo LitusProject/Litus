@@ -36,10 +36,67 @@ class SyllabusBundleEntityStudyProxy extends \SyllabusBundle\Entity\Study implem
     }
 
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
+    public function getTitle()
+    {
+        $this->__load();
+        return parent::getTitle();
+    }
+
+    public function getFullTitle()
+    {
+        $this->__load();
+        return parent::getFullTitle();
+    }
+
+    public function getPhase()
+    {
+        $this->__load();
+        return parent::getPhase();
+    }
+
+    public function getLanguage()
+    {
+        $this->__load();
+        return parent::getLanguage();
+    }
+
+    public function setActive($flag = true)
+    {
+        $this->__load();
+        return parent::setActive($flag);
+    }
+
+    public function isActive()
+    {
+        $this->__load();
+        return parent::isActive();
+    }
+
+    public function getParent()
+    {
+        $this->__load();
+        return parent::getParent();
+    }
+
+    public function getParents()
+    {
+        $this->__load();
+        return parent::getParents();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'phase', 'type', 'acronym', 'active', 'url');
+        return array('__isInitialized__', 'id', 'title', 'phase', 'language', 'active', 'parent');
     }
 
     public function __clone()
