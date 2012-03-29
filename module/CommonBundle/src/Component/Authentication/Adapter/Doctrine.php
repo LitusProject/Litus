@@ -189,6 +189,20 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
 	}
     
     /**
+     * Authenticate the user.
+     *
+     * @return \CommonBundle\Component\Authentication\Result
+     */
+    public function authenticate()
+    {   
+        $this->executeQuery(
+            $this->createQuery()
+        );
+
+        return $this->createResult();
+    }
+    
+    /**
      * Execute the DQL query.
      *
      * @param \Doctrine\ORM\QueryBuilder $query The DQL query that should be executed
