@@ -25,9 +25,9 @@
 		            <td>{% if session['open'] %}yes{% else %}no{% endif %}</td>
 		            <td>{{ session['openDate'] }} </td>
 		            <td>{% if not session['open'] %}{{ session['closeDate'] }}{% endif %}</td>
-		            <td>{{ session['theoreticalrevenue'] }}</td>
+		            <td>{{ session['theoreticalrevenue']/100 }}</td>
 		            <td>{{ session['actualrevenue']/100 }}</td>
-		            <td>{{ session['actualrevenue']/100 - session['theoreticalrevenue'] }}</td>
+		            <td>{% if session['theoreticalrevenue'] - session['actualrevenue'] < 0 %}+{% endif %}{{ session['actualrevenue']/100 - session['theoreticalrevenue']/100 }}</td>
 					<td><a href="{{ url("admin_sale", {"action": "edit", "id": session['id']}) }}" class="edit">Edit</a></td>
 		        </tr>
 		    {% endfor %}
