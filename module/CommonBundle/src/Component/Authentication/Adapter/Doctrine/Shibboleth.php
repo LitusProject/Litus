@@ -65,7 +65,9 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
         	->select('u')
         	->where('TRIM(LOWER(u.' . $this->getIdentityColumn() . ')) = :identity')
         	->setParameter('identity', trim(strtolower($this->getIdentity())));
-
+		
+		var_dump($query->toString());
+		
         return $query;
     }
 
