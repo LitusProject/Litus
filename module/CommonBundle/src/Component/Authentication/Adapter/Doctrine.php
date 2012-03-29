@@ -187,13 +187,6 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
 	{
 		return $this->_personObject;
 	}
-	
-    /**
-     * Authenticate the user.
-     *
-     * @return \CommonBundle\Component\Authentication\Result
-     */
-    abstract public function authenticate();
     
     /**
      * Execute the DQL query.
