@@ -139,7 +139,6 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
      */
     public function setIdentity($identity)
     {
-    	var_dump($identity);
         $this->_identity = $identity;
         return $this;
     }
@@ -147,7 +146,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
 	/**
 	 * @return string
 	 */
-	protected function getIdentity()
+	public function getIdentity()
 	{
 		return $this->_identity;
 	}
