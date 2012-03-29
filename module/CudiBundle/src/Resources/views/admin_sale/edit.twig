@@ -107,7 +107,7 @@
     						<i>Please hit the link below to open the sale application for regular users!</i>
     					</p>
     					<p>
-    						<a href="{{ url("sale_sale") }}">&rarr; Pay Desk Application</a>
+    						<a href="{{ url("sale_sale", {"action": "sale", "session": session.getId()}) }}">&rarr; Pay Desk Application</a>
     					</p>
     				</div>
     			</div>
@@ -120,7 +120,7 @@
     						<i>Please hit the link below to open queue sign-in page!</i>
     					</p>
     					<p>
-    						<a href="{{ url("sale_queue", {"action": "signin"}) }}">&rarr; Queue Sign-in</a>
+    						<a href="{{ url("sale_queue", {"action": "signin", "session": session.getId()}) }}">&rarr; Queue Sign-in</a>
     					</p>
     				</div>
     			</div>
@@ -133,7 +133,7 @@
     						<i>Please hit the link below to go to the queue overview page!</i>
     					</p>
     					<p>
-    						<a href="{{ url("sale_queue", {"action": "overview"}) }}">&rarr; Queue Overview</a>
+    						<a href="{{ url("sale_queue", {"action": "overview", "session": session.getId()}) }}">&rarr; Queue Overview</a>
     					</p>
     				</div>
     			</div>
