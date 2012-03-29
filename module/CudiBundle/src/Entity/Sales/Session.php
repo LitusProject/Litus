@@ -188,4 +188,5 @@ class Session
 	{
 		return null === $this->getCloseDate();
 	}
+	
 }

@@ -25,7 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	Doctrine\ORM\QueryBuilder;
 
 /**
- * SaleController
+ * FinancialController
  *
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  */
@@ -34,36 +34,37 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
     public function manageAction()
     {
     
-    	$qb = $this->getEntityManager()->createQueryBuilder();
-    	$qb->select( 's.openDate, s.closeDate, m.username, s.id' )
-           ->from( 'CudiBundle\Entity\Sales\Session', 's' )
-           ->from( 'CommonBundle\Entity\Users\Person', 'm' )
-           ->where( 's.manager = m.id' )
-           ->orderBy( 's.openDate', 'DESC' );
-    		
-        $records = $qb->getQuery()->getArrayResult();
-        
-        foreach( $records as &$record )
+        $sessions = $this->getEntityManager()
+                         ->createQuery("select s from CudiBundle\Entity\Sales\Session s order by s.openDate DESC")
+                         ->getResult();
+                         
+        $i = 0;
+        foreach( $sessions as $session )
         {
-        	$opentime = "0".strtotime( $record['openDate'] );
-        	$closetime = "0".strtotime( $record['closeDate'] ); // prefix 0 to allow arithmetic
-        	
-            if( $opentime < $closetime )
-                $record['open'] = false;
+            $i++;
+            
+            $rec[$i]['id'] = $session->getId();
+            $rec[$i]['username'] = $session->getManager()->getUsername();
+            $rec[$i]['openDate'] = $session->getOpenDate()->format( 'Y-m-d H:i' );
+            
+            if( $session->getCloseDate() != null )
+            	$rec[$i]['closeDate'] = $session->getCloseDate()->format( 'Y-m-d H:i' );
             else
-                $record['open'] = true;
+                $rec[$i]['closeDate'] = 0;
+        	
+            if( $session->getOpenDate() < $session->getCloseDate() )
+                $rec[$i]['open'] = false;
+            else
+                $rec[$i]['open'] = true;
                 
-            $record['theoreticalrevenue'] = $this->getTheoreticalRevenue( $record['id'] );
-            $record['actualrevenue'] = $this->getActualRevenue( $record['id'] );
+            
+            $rec[$i]['theoreticalrevenue'] = 500;
+            $rec[$i]['actualrevenue'] = 495;
         }
-        
-        // hats off to whoever gets all the above into one query
-        // for now, the combination of several queries will do
-        
-        $currentPage = 0; // todo
+
         $paginator = $this->paginator()->createFromArray(
-            $records,
-            $currentPage
+            $rec,
+            $this->getParam('page')
         );
         
         // todo: display sale session comment on mouse over
