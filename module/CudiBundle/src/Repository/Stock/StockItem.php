@@ -49,7 +49,6 @@ class StockItem extends EntityRepository
 	
 	public function findOneByBarcode($barcode)
     {
-        echo $barcode.'df';
         $article = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Articles\StockArticles\External')
 			->findOneByBarcode($barcode);

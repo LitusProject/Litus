@@ -56,6 +56,21 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				->findOneSoldByPersonAndArticle($person, $article);
     			
     			if ($booking) {
+    			    $soldStatus = $this->getEntityManager()
+    			    	->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
+    			    	->findOneByName('sold');
+    			    	
+			        $saleItem = $this->getEntityManager()
+			            ->getRepository('CudiBundle\Entity\Sales\SaleItem')
+			            ->findOneByBooking($booking);
+
+			        if ($saleItem->getNumber() == 1) {
+			        	$this->getEntityManager()->remove($saleItem);
+			        } else {
+			        	$saleItem->setNumber($saleItem->getNumber() - 1);
+			        }
+    			    $this->getEntityManager()->flush();
+    			    
     				if ($booking->getNumber() == 1) {
     					$this->getEntityManager()->remove($booking);
     				} else {
