@@ -8,19 +8,6 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-		<table>
-			<tr>
-				<th>Key</th>
-				<th>Value</th>
-			</tr>
-			
-	    	{% for key, value in server_environment %}
-	    		<tr>
-	    			<td>{{key}}</td>
-	    			<td>{{value}}</td>
-	    		</tr>
-	    	{% endfor %}
-		</table>
 	</div>
 	
 	<aside>
