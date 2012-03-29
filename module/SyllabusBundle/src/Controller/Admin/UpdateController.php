@@ -26,13 +26,42 @@ use SyllabusBundle\Entity\Study,
  */
 class UpdateController extends \CommonBundle\Component\Controller\ActionController
 {
+    public function xmlAction()
+    {
+    }
+    
 	public function updateAction()
 	{
-		$xml = simplexml_load_file('http://localhost/SC_51016766.xml');
+		$xml = simplexml_load_file('http://litus/admin/syllabus/xml');
 
 		$studies = $this->_createStudies($xml->data->sc);
 		$this->_createSubjects($xml->data->sc->cg, $studies);
 		$this->getEntityManager()->flush();
+		
+		echo '<h1>Result</h1>';
+		foreach($studies as $phase) {
+		    if (is_array($phase)) {
+		        foreach($phase as $study) {
+		            echo '<h3>' . $study->getFullTitle() . ' - ' . $study->getPhase() . '</h3>';
+		            $this->printSubjects($study);
+		        }
+		    } else {
+		        echo '<h3>' . $phase->getFullTitle() . ' - ' . $phase->getPhase() . '</h3>';
+		        $this->printSubjects($phase);
+		    }
+		}
+		exit;
+    }
+    
+    private function printSubjects($study)
+    {
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findAllByStudy($study);
+            
+        foreach($mapping as $map) {
+            echo ($map->isMandatory() ? '<b>' : '<i>') . $map->getSubject()->getName() . ($map->isMandatory() ? '</b>' : '</i>') . '<br>';
+        }
     }
     
     private function _createStudies($data)
@@ -40,23 +69,30 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         $studies = array();
         
         $language = trim((string) $data->doceertaal);
-        $title = trim((string) $data->titel);
+        $mainTitle = ucfirst(trim((string) $data->titel));
 
         foreach($data->fases->children() as $phase) {
 		    $phaseNumber = (int) $phase->attributes()->code;
-
+            
+            $studies[$phaseNumber] = array();
+            
+            $mainStudy = new Study($mainTitle, $phaseNumber, $language);
+            $this->getEntityManager()->persist($mainStudy);
+            $studies[$phaseNumber][0] = $mainStudy;
+            
 		    if ($phase->tcs->children()->count() > 0) {
-		        $studies[$phaseNumber] = array();
-		        foreach($phase->tcs->children() as $minor) {
-		            $study = new Study($title, trim((string) $minor->titel), $phaseNumber, $language);
-		            $this->getEntityManager()->persist($study);
-		            $studies[$phaseNumber][(int) $minor->attributes()->objid] = $study;
+		        foreach($phase->tcs->children() as $studyData) {
+                    $parent = $mainStudy;
+		            $title = preg_replace('/\([a-zA-Z0-9\s]*\)/', '', 
+		                str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $studyData->titel)
+		            );
+		            $titles = explode('+', $title);
+		            foreach($titles as $subTitle) {
+		                $parent = new Study(ucfirst(trim($subTitle)), $phaseNumber, $language, $parent);
+		                $this->getEntityManager()->persist($parent);
+		            }
+		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $parent;
 		        }
-		        // what with majors and minors
-		    } else {
-		        $study = new Study($title, '', $phaseNumber, $language, '');
-		        $this->getEntityManager()->persist($study);
-		        $studies[$phaseNumber] = $study;
 		    }
 		}
 		return $studies;

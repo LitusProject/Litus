@@ -65,8 +65,11 @@ class Authentication
 		if (isset($this->_result) && $this->_result->isValid())
 			return;
 	
-		if (('' != $identity) && ('' != $credential))
-			$this->_adapter->setIdentity($identity)->setCredential($credential);
+		if ('' != $identity) {
+			$this->_adapter
+				->setIdentity($identity)
+				->setCredential($credential);
+		}
 		
 		$this->_result = $this->_service->authenticate($this->_adapter);
 	}
