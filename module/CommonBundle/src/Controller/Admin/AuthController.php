@@ -97,9 +97,13 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     		$this->getLocator()->get('authentication_doctrineservice')
     	);
     	
+    	var_dump($this->getRequest()->server()->get('Shib-Person-uid'));
+    	
 		$authentication->authenticate(
 			$this->getRequest()->server()->get('Shib-Person-uid'), ''
 		);
+		
+		var_dump($authentication);
     	
     	if ($authentication->isAuthenticated()) {
 	    	$this->redirect()->toRoute(
