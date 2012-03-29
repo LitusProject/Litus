@@ -4,6 +4,8 @@ namespace SyllabusBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use SyllabusBundle\Entity\Study;
+
 /**
  * StudySubjectMap
  *
@@ -12,4 +14,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class StudySubjectMap extends EntityRepository
 {
+    public function findAllByStudy(Study $study)
+    {
+        $parentIds = array($study->getId());
+        foreach($study->getParents() as $parent) {
+            $parentIds[] = $parent->getId();
+        }
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+        	->innerJoin('m.subject', 's')
+        	->where($query->expr()->in('m.study', $parentIds))
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

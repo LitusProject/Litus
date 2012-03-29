@@ -49,6 +49,11 @@ class Subject
     private $credits;
     
     /**
+     * @Column(type="boolean")
+     */
+    private $active;
+    
+    /**
      * @param string $code
      * @param string $name
      * @param integer $semester
@@ -60,6 +65,15 @@ class Subject
         $this->name = $name;
         $this->semester = $semester;
         $this->credits = $credits;
+        $this->active = true;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
     
     /**
@@ -92,5 +106,24 @@ class Subject
     public function getCredits()
     {
         return $this->credits;
+    }
+    
+    /**
+     * @param boolean $flag
+     *
+     * @return SyllabusBundle\Entity\Study
+     */
+    public function setActive($flag = true)
+    {
+        $this->active = $flag;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 }

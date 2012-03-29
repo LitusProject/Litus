@@ -32,11 +32,6 @@ class Study
      * @Column(type="string")
      */
     private $title;
-    
-    /**
-     * @Column(name="sub_title", type="string")
-     */
-    private $subTitle;
 
     /**
      * @Column(type="smallint")
@@ -54,18 +49,32 @@ class Study
     private $active;
     
     /**
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @JoinColumn(name="parent", referencedColumnName="id")
+     */
+    private $parent;
+    
+    /**
      * @param string $title
      * @param string $subTitle
      * @param integer $phase
      * @param string $language
      */
-    public function __construct($title, $subTitle, $phase, $language)
+    public function __construct($title, $phase, $language, Study $parent = null)
     {
     	$this->title = $title;
-    	$this->subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $subTitle)));
     	$this->phase = $phase;
     	$this->language = $language;
     	$this->active = true;
+    	$this->parent = $parent;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
     
     /**
@@ -79,17 +88,17 @@ class Study
     /**
      * @return string
      */
-    public function getSubTitle()
-    {
-        return $this->subTitle;
-    }
-    
-    /**
-     * @return string
-     */
     public function getFullTitle()
     {
-        return $this->title . ($this->subTitle ? ': ' . $this->subTitle : '');
+        if (null == $this->parent) {
+            return $this->title;
+        } else {
+            if (null == $this->parent->getParent()) {
+                return $this->parent->getFullTitle() . ': ' . $this->title;
+            } else {
+                return $this->parent->getFullTitle() . ' - ' . $this->title;
+            }
+        }
     }
     
     /**
@@ -125,5 +134,23 @@ class Study
     public function isActive()
     {
         return $this->active;
+    }
+    
+    /**
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getParents()
+    {
+        if ($this->parent)
+            return array_merge(array($this->parent), $this->parent->getParents());
+        return array();
     }
 }
