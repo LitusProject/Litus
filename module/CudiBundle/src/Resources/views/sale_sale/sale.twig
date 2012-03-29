@@ -168,6 +168,7 @@
 						
 			$('#queueList').showQueue({
 				url: '{{ socketUrl }}',
+				saleSession: {{ session.getId() }},
 				errorDialog: $('#loading_queue_error'),
 				barcodePrefix: {{ barcodePrefix }},
 				statusTranslate: function (status) {

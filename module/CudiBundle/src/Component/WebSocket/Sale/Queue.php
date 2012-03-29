@@ -19,6 +19,7 @@ use CommonBundle\Component\WebSocket\User,
 	CudiBundle\Entity\Sales\Booking,
 	CudiBundle\Entity\Sales\SaleItem,
 	CudiBundle\Entity\Sales\ServingQueueItem,
+	CudiBundle\Entity\Sales\Session as SaleSession,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -66,16 +67,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	protected function gotText(User $user, $data)
 	{
 		$this->_entityManager->clear();
-		
-		if (strpos($data, 'queue-type: ') === 0) {
-			$type = substr($data, strlen('queue-type: '));
-			
-			$user->setExtraData('queue-type', $type);
-			$this->sendQueue($user);
-		} elseif (strpos($data, 'action: ') === 0) {
+
+		if (strpos($data, 'action: ') === 0) {
 			$this->_gotAction($user, $data);
 		} elseif ($data == 'queueUpdated') {
 			$this->sendQueueToAll();
+		} elseif (strpos($data, 'initialize: ') === 0) {
+		    $data = json_decode(substr($data, strlen('initialize: ')));
+		    if (isset($data->saleSession) && is_numeric($data->saleSession))
+		        $user->setExtraData('saleSession', $data->saleSession);
+		    if (isset($data->queueType))
+    		    $user->setExtraData('queueType', $data->queueType);
+			$this->sendQueue($user);
 		}
 	}
 	
@@ -112,7 +115,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		
 		switch ($action) {
 			case 'addToQueue':
-				$result = $this->_addToQueue($params);
+				$result = $this->_addToQueue(
+				    $this->_entityManager
+				        ->getRepository('CudiBundle\Entity\Sales\Session')
+				        ->findOneById($user->getExtraData('saleSession')),
+				    $params);
 				$this->sendText($user, $result);
 				break;
 			case 'startCollecting':
@@ -155,12 +162,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	 */
 	private function sendQueue(User $user)
 	{
-		switch ($user->getExtraData('queue-type')) {
+	    if (null == $user->getExtraData('saleSession'))
+	        return;
+	        
+	    $session = $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Sales\Session')
+	        ->findOneById($user->getExtraData('saleSession'));
+	    
+		switch ($user->getExtraData('queueType')) {
 			case 'fullQueue':
-				$this->sendText($user, $this->_getJsonFullQueue());
+				$this->sendText($user, $this->_getJsonFullQueue($session));
 				break;
 			case 'shortQueue':
-				$this->sendText($user, $this->_getJsonShortQueue());
+				$this->sendText($user, $this->_getJsonShortQueue($session));
 				break;
 		}
 	}
@@ -181,7 +195,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	 *
 	 * @return string
 	 */
-	private function _addToQueue($username)
+	private function _addToQueue(SaleSession $session, $username)
 	{
 		$person = $this->_entityManager
     		->getRepository('CommonBundle\Entity\Users\Person')
@@ -207,20 +221,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	    	);
     	}
     	
-    	$session = $this->_entityManager
-    		->getRepository('CudiBundle\Entity\Sales\Session')
-    		->findOpenSession();
-    		
     	$queueItem = $this->_entityManager
     		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
-    		->findOneByPerson($session, $person);
+    		->findOneByPersonNotSold($session, $person);
     	
-    	$soldStatus = $this->_entityManager
-    		->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
-    		->findOneByName('sold');
-    	
-    	
-    	if (null == $queueItem || $soldStatus == $queueItem->getStatus()) {
+    	if (null == $queueItem) {
     		$queueItem = new ServingQueueItem($this->_entityManager, $person, $session);
     		
     		$this->_entityManager->persist($queueItem);
@@ -298,10 +303,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	
 	/**
 	 * Get the json string of the full sale queue
+	 *
+	 * @param CudiBundle\Entity\Sales\Session
 	 * 
 	 * @return string
 	 */
-	private function _getJsonFullQueue()
+	private function _getJsonFullQueue(SaleSession $session)
 	{
 		$repItem = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem');
@@ -309,10 +316,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		$repStatus = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus');
 		
-		$session = $this->_entityManager
-		   ->getRepository('CudiBundle\Entity\Sales\Session')
-		   ->findOpenSession();
-		   
 		return json_encode(
 			(object) array(
 				'queue' => array(
@@ -327,17 +330,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	
 	/**
 	 * Get the json string of the short sale queue
+     *
+  	 * @param CudiBundle\Entity\Sales\Session
 	 * 
 	 * @return string
 	 */
-	private function _getJsonShortQueue()
+	private function _getJsonShortQueue(SaleSession $session)
 	{
 		$repItem = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem');
-		
-		$session = $this->_entityManager
-		   ->getRepository('CudiBundle\Entity\Sales\Session')
-		   ->findOpenSession();
 		   
 		return json_encode(
 			(object) array(

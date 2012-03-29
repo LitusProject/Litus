@@ -36,10 +36,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     {
 		$session = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Sales\Session')
-		    ->findOpenSession();
+		    ->findOneById($this->getParam('session'));
 		
 		if (null == $session || !$session->isOpen())
-			throw new Exception('No open session could be found');
+			throw new Exception('No valid session is given');
 		
 		$result = parent::execute($e);
 		

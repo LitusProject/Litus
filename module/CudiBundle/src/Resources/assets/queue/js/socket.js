@@ -16,11 +16,11 @@
 			$(ws)
 				.bind('open', settings.open)
 				.bind('close', function (e) {
-					$.webSocket(settings);
+					setTimeout(function () {$.webSocket(settings)}, 1000);
 					settings.error(e);
 				})
 				.bind('error', function (e) {
-					$.webSocket(settings);
+					setTimeout(function () {$.webSocket(settings)}, 1000);
 					settings.error(e);
 				})
 				.bind('message', function (e) {

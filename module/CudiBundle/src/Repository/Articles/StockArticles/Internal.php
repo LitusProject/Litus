@@ -16,7 +16,7 @@ class Internal extends EntityRepository
     {
         if (strlen($barcode) == 13)
             $barcode = floor($barcode / 10);
-        echo 'dsf';
+        
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('s')
 			->from('CudiBundle\Entity\Articles\StockArticles\Internal', 's')
