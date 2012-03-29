@@ -40,20 +40,6 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
     }
 
     /**
-     * Authenticate the user.
-     *
-     * @return \CommonBundle\Component\Authentication\Result
-     */
-    public function authenticate()
-    {   
-        $this->executeQuery(
-            $this->createQuery()
-        );
-
-        return $this->createResult();
-    }
-
-    /**
      * Create the Doctrine query.
      *
      * @return \Doctrine\ORM\QueryBuilder
