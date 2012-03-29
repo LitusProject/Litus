@@ -103,7 +103,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 			$this->getRequest()->server()->get('Shib-Person-uid'), ''
 		);
 		
-		var_dump($authentication);
+		var_dump($authentication->getPersonObject());
     	
     	if ($authentication->isAuthenticated()) {
 	    	$this->redirect()->toRoute(
