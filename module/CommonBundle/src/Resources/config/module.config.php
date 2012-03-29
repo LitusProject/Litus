@@ -16,22 +16,22 @@
 $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
-    'display_exceptions'    => true,
-    'encoding'				=> 'ISO-8859-1',
-    'di'                    => array(
+    'display_exceptions' => true,
+    'encoding' => 'ISO-8859-1',
+    'di' => array(
         'instance' => array(
-            'alias'                          => array(
-                'authentication'                 => 'CommonBundle\Component\Authentication\Authentication',
-                'authentication_doctrineadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine',
-                'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Service\Doctrine',
-                'authentication_sessionstorage'  => 'Zend\Authentication\Storage\Session',
+            'alias' => array(
+                'authentication'                   => 'CommonBundle\Component\Authentication\Authentication',
+                'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
+                'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
+                'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
                                 
-                'admin_auth'                     => 'CommonBundle\Controller\Admin\AuthController',
-                'admin_dashboard'                => 'CommonBundle\Controller\Admin\DashboardController',
-                'admin_role'                     => 'CommonBundle\Controller\Admin\RoleController',
-                'admin_user'                     => 'CommonBundle\Controller\Admin\UserController',
+                'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
+                'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
+                'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
+                'admin_user'                       => 'CommonBundle\Controller\Admin\UserController',
             ),
-            'assetic_configuration'          => array(
+            'assetic_configuration' => array(
                 'parameters' => array(
                     'config' => array(
                         'cacheEnabled' => true,
@@ -177,13 +177,13 @@ return array(
                 ),
             ),
                        
-            'authentication'                 => array(
+            'authentication' => array(
             	'parameters' => array(
-            		'adapter' => 'authentication_doctrineadapter',
+            		'adapter' => 'authentication_credentialadapter',
             		'service' => 'authentication_doctrineservice',
             	),
             ),
-            'authentication_doctrineadapter' => array(
+            'authentication_credentialadapter' => array(
             	'parameters' => array(
             		'entityManager'  => 'doctrine_em',
             		'entityName'     => '"CommonBundle\Entity\Users\Person"',
@@ -206,6 +206,7 @@ return array(
             		'member'    => 'storage',
             	),
             ),
+            
             'doctrine_config' => array(
                 'parameters' => array(
                 	'entityPaths' => array(
@@ -213,6 +214,7 @@ return array(
                 	),
                 ),
             ),
+            
             'ZfTwig\TwigEnvironment' => array(
             	'parameters' => array(
             		'options' => array(

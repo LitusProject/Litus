@@ -15,7 +15,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Form\Admin\Auth\Login as LoginForm;
+use CommonBundle\Component\Authentication\Authentication,
+	CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+	CommonBundle\Form\Admin\Auth\Login as LoginForm;
 
 /**
  * Authentication controller, providing basic actions like login and logout.
@@ -82,5 +84,27 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         return;
+    }
+    
+    public function shibbolethAction()
+    {
+    	$authentication = new Authentication(
+    		new ShibbolethAdapter(
+    			$this->getEntityManager(),
+    			'CommonBundle\Entity\Users\Person',
+    			'username'
+    		),
+    		$this->getLocator()->get('authentication_doctrineservice')
+    	);
+    	
+		$authentication->authenticate(
+			$this->getRequest()->server()->get('Shib-Person-uid'), ''
+		);
+    	
+    	if ($authentication->isAuthenticated()) {
+	    	$this->redirect()->toRoute(
+	    		'admin_dashboard'
+	    	);
+	    }
     }
 }
