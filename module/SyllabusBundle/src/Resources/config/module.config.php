@@ -38,7 +38,7 @@ return array(
         		),
         		'defaults' => array(
         			'controller' => 'admin_update_syllabus',
-        			'action'     => 'update',
+        			'action'     => 'index',
         		),
         	),
         ),
