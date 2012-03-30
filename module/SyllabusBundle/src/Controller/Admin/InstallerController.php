@@ -38,7 +38,7 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	                	'manage', 'search'
 	                ),
 	                'admin_update_syllabus' => array(
-	                	'update'
+	                	'index', 'update'
 	                ),
 	            )
 	        )

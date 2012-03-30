@@ -58,11 +58,10 @@ class Study extends EntityRepository
     private function _findParentStudiesIds()
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('IDENTITY(s.parent)')
+        $resultSet = $query->select('DISTINCT IDENTITY(s.parent)')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('s.active', 'true'),
                     $query->expr()->isNotNull('s.parent')
                 )
             )
@@ -72,7 +71,7 @@ class Study extends EntityRepository
         $ids = array();
         foreach($resultSet as $id)
             $ids[] = $id[1];
-            
+
         return $ids;
     }
 }

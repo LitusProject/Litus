@@ -1,0 +1,11 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_study/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+	<div id="controller_action">
+	    <a href="{{ url("admin_update_syllabus", {"action": "update"})}}">Update Now</a>
+	</div>
+{% endblock %}

@@ -15,11 +15,13 @@
  
 namespace SyllabusBundle\Entity;
 
+use CommonBundle\Entity\Users\People\Academic;
+
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\StudySubjectMap")
- * @Table(name="syllabus.study_subject_map")
+ * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectDocentMap")
+ * @Table(name="syllabus.subject_docent_map")
  */
-class StudySubjectMap
+class SubjectDocentMap
 {
     /**
 	 * @Id
@@ -29,32 +31,25 @@ class StudySubjectMap
     private $id;
 
     /**
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
-	private $study;
+	private $docent;
 
 	/**
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $subject;
-
-    /**
-     * @Column(type="boolean")
-     */
-    private $mandatory;
     
     /**
-     * @param SyllabusBundle\Entity\Study $study
      * @param SyllabusBundle\Entity\Subject $subject
-     * @param boolean $mandatory
+     * @param CommonBundle\Entity\Users\People\Academic $docent
      */
-    public function __construct(Study $study, Subject $subject, $mandatory)
+    public function __construct(Subject $subject, Academic $docent)
     {
-        $this->study = $study;
         $this->subject = $subject;
-        $this->mandatory = $mandatory;
+        $this->docent = $docent;
     }
     
     /**
@@ -66,14 +61,6 @@ class StudySubjectMap
     }
     
     /**
-     * @return SyllabusBundle\Entity\Study
-     */
-    public function getStudy()
-    {
-        return $this->study;
-    }
-    
-    /**
      * @return SyllabusBundle\Entity\Subject
      */
     public function getSubject()
@@ -82,10 +69,10 @@ class StudySubjectMap
     }
     
     /**
-     * @return boolean
+     * @return CommonBundle\Entity\Users\People\Academic
      */
-    public function isMandatory()
+    public function getDocent()
     {
-        return $this->mandatory;
+        return $this->docent;
     }
 }
