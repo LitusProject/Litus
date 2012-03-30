@@ -330,7 +330,7 @@ return array(
 				),
 				'defaults' => array(
 					'controller' => 'admin_financial',
-					'action'     => 'manage',
+					'action'     => 'sales',
 				),
 			),
 		),
