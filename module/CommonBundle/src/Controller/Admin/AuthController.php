@@ -91,7 +91,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     	$authentication = new Authentication(
     		new ShibbolethAdapter(
     			$this->getEntityManager(),
-    			'CommonBundle\Entity\Users\Person',
+    			'CommonBundle\Entity\Users\People\Academic',
     			'university_identification'
     		),
     		$this->getLocator()->get('authentication_doctrineservice')
