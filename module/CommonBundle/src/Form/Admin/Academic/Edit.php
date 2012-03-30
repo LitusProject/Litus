@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Form\Admin\User;
+namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Entity\Users\Person,

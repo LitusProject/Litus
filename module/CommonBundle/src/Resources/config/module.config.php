@@ -25,11 +25,11 @@ return array(
                 'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
-                                
+				
+				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
-                'admin_user'                       => 'CommonBundle\Controller\Admin\UserController',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -225,15 +225,47 @@ return array(
         ),
     ),
     'routes' => array(
-    	'admin_dashboard' => array(
+    	'admin_academic' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin[/dashboard]',
+    	        'route'    => '/admin/academic[/:action[/:id[/:confirm]]]',
+    	        'constraints' => array(
+    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        	'id'      => '[0-9]*',
+    	        	'confirm' => '[01]',
+    	        ),
     	        'defaults' => array(
-    	            'controller' => 'admin_dashboard',
-    	            'action'     => 'index',
+    	            'controller' => 'admin_academic',
+    	            'action'     => 'manage',
     	        ),
     	    ),
+    	),
+    	'admin_academic_paginator' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/academic/manage[/:page]',
+    			'constraints' => array(
+    				'page' => '[0-9]*',
+    			),
+    			'defaults' => array(
+    				'controller' => 'admin_academic',
+    				'action'     => 'manage',
+    			),
+    		),
+    	),
+    	'admin_academic_search' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/academic/search[/:field[/:string]]',
+    			'constraints' => array(
+    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+    	        ),
+    			'defaults' => array(
+    				'controller' => 'admin_academic',
+    				'action'     => 'search',
+    			),
+    		),
     	),
     	'admin_auth' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
@@ -245,6 +277,16 @@ return array(
     	        'defaults' => array(
     	            'controller' => 'admin_auth',
     	            'action'     => 'login',
+    	        ),
+    	    ),
+    	),
+    	'admin_dashboard' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin[/dashboard]',
+    	        'defaults' => array(
+    	            'controller' => 'admin_dashboard',
+    	            'action'     => 'index',
     	        ),
     	    ),
     	),
@@ -273,48 +315,6 @@ return array(
     			'defaults' => array(
     				'controller' => 'admin_role',
     				'action'     => 'manage',
-    			),
-    		),
-    	),
-    	'admin_user' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin/user[/:action[/:id[/:confirm]]]',
-    	        'constraints' => array(
-    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'id'      => '[0-9]*',
-    	        	'confirm' => '[01]',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'admin_user',
-    	            'action'     => 'manage',
-    	        ),
-    	    ),
-    	),
-    	'admin_user_paginator' => array(
-    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-    		'options' => array(
-    			'route' => '/admin/user/manage[/:page]',
-    			'constraints' => array(
-    				'page' => '[0-9]*',
-    			),
-    			'defaults' => array(
-    				'controller' => 'admin_user',
-    				'action'     => 'manage',
-    			),
-    		),
-    	),
-    	'admin_user_search' => array(
-    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-    		'options' => array(
-    			'route' => '/admin/user/search[/:field[/:string]]',
-    			'constraints' => array(
-    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-    	        ),
-    			'defaults' => array(
-    				'controller' => 'admin_user',
-    				'action'     => 'search',
     			),
     		),
     	),

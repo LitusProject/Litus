@@ -15,7 +15,7 @@
  
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\Users\People\Corporate,
+use BrBundle\Entity\Users\People\Corporate,
 	Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -59,7 +59,7 @@ class Company
 	/**
 	 * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
 	 *
-	 * @ManyToMany(targetEntity="CommonBundle\Entity\Users\People\Corporate", cascade={"persist"})
+	 * @ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
 	 * @JoinTable(name="br.companies_contacts",
 	 *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
 	 *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}

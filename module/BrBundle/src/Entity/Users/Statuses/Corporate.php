@@ -13,15 +13,15 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Entity\Users\Statuses;
+namespace BrBundle\Entity\Users\Statuses;
 
-use CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Users\People\Corporate as CorporatePerson;
+use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
+	CommonBundle\Component\Util\AcademicYear;
 
 /**
  * A classification of a user based on his status at our Alma Mater.
  * 
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Corporate")
+ * @Entity(repositoryClass="BrBundle\Repository\Users\Statuses\Corporate")
  * @Table(name="users.corporate_statuses")
  */
 class Corporate
@@ -44,10 +44,10 @@ class Corporate
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Corporate The person this company status belongs to
+     * @var \BrBundle\Entity\Users\People\Corporate The person this company status belongs to
      *
      * @ManyToOne(
-     *      targetEntity="CommonBundle\Entity\Users\People\Corporate", inversedBy="corporateStatuses"
+     *      targetEntity="BrBundle\Entity\Users\People\Corporate", inversedBy="corporateStatuses"
      * )
      * @JoinColumn(name="person", referencedColumnName="id")
      */
@@ -68,7 +68,7 @@ class Corporate
     private $year;
 
     /**
-     * @param \CommonBundle\Entity\Users\People\Corporate $person The person that should be given the status
+     * @param \BrBundle\Entity\Users\People\Corporate $person The person that should be given the status
      * @param string $status The status that should be given to the person
      * @throws \InvalidArgumentException
      */
@@ -92,7 +92,7 @@ class Corporate
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\People\Corporate
+     * @return \BrBundle\Entity\Users\People\Corporate
      */
     public function getPerson()
     {
@@ -103,7 +103,7 @@ class Corporate
      * Returns whether the given user can have a corporate status.
      *
      * @static
-     * @param \CommonBundle\Entity\Users\People\Corporate $person the user to check
+     * @param \BrBundle\Entity\Users\People\Corporate $person the user to check
      * @return bool
      */
     public static function isValidPerson(CorporatePerson $person)

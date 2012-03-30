@@ -1,29 +1,30 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_user/partials/navigation.twig' %}
+	{% include 'admin_academic/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width user_removed_success hide">
+	<div class="flashmessage success_message full_width student_removed_success hide">
 		<div class="title">Success</div>
 		<div class="content">
-			<p>The user was successfully removed!</p>
+			<p>The student was successfully removed!</p>
 		</div>
 	</div>
-	<div class="flashmessage error_message full_width user_removed_error hide">
+	<div class="flashmessage error_message full_width student_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while trying to delete a user.</p>
+			<p>An error occurred while trying to delete a student.</p>
 		</div>
 	</div>
 
 	<div id="controller_action">
-		<div id="user_search" style="display: none;">
+		<div id="student_search" style="display: none;">
 			<div style="padding: 4px; text-align: right">
 				Search: 
 				<select id="searchField">
 					<option value="username">Username</option>
 					<option value="name">Name</option>
+					<option value="university_identification">University Identification</option>
 				</select>
 				is
 				<input type="text" id="searchString" size="30" />
@@ -32,6 +33,7 @@
 			<table class="full_width">
 		    	<tr>
 		        	<th>Username</th>
+		        	<th>University Identification</th>
 		        	<th width="150px">Name</th>
 		        	<th width="175px">E-mail</th>
 		        	<th width="120px">Action</th>
@@ -44,6 +46,7 @@
 		        <thead>
 		            <tr>
 		                <th>Username</th>
+		                <th>University Identification</th>
 		                <th width="150px">Name</th>
 		                <th width="175px">E-mail</th>
 		                <th width="120px">Action</th>
@@ -51,17 +54,18 @@
 		        </thead>
 		
 		        <tbody>
-		            {% for user in paginator %}
+		            {% for academic in paginator %}
 		                <tr class="item">
-		                    <td>{{ user.getUsername() }}</td>
-		                    <td>{{ user.getFullName() }}</td>
-		                    <td>{{ user.getEmail() }}</td>
+		                    <td>{{ academic.getUsername() }}</td>
+		                    <td>{{ academic.getUniversityIdentification() }}
+		                    <td>{{ academic.getFullName() }}</td>
+		                    <td>{{ academic.getEmail() }}</td>
 		                    <td>
-		                        {% if hasAccess('admin_user', 'edit') %}
-								    <a href="{{ url('admin_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a></li>
+		                        {% if hasAccess('admin_academic', 'edit') %}
+								    <a href="{{ url('admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
 								{% endif %}
-								{% if hasAccess('admin_user', 'delete') %}
-								    <a href="#" class="delete" data-id="{{ user.getId() }}" data-fullname="{{ user.getFullName() }}">Delete</a>
+								{% if hasAccess('admin_academic', 'delete') %}
+								    <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>
 								{% endif %}
 		                    </td>
 		                </tr>
@@ -73,14 +77,14 @@
 		</div>
 	</div>
 	
-	<div class="modal hide fade" id="removeUser">
+	<div class="modal hide fade" id="removeStudent">
 		<div class="modal-header">
 			<span>Litus Admin</span>
 			/User Delete
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following user: <b class="fullname"></b>?
+				You are about to delete the following student: <b class="fullname"></b>?
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -97,23 +101,24 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-		    {% if hasAccess('admin_user', 'search') %}
+		    {% if hasAccess('admin_academic', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),
-				searchDiv: $('#user_search'),
+				searchDiv: $('#student_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_user_search') }}',
+				url: '{{ url('admin_academic_search') }}',
 				display: function (data) {
-					$('#user_search table').find('tr.item').remove();
+					$('#student_search table').find('tr.item').remove();
 					$(data).each(function () {
-						$('#user_search table').append(row = $('<tr>', {class: 'item'}));
+						$('#student_search table').append(row = $('<tr>', {class: 'item'}));
 						row.append('<td>' + this.username + '</td>')
+							.append('<td>' + this.universityIdentification + '</td>')
 							.append('<td>' + this.fullName + '</td>')
 							.append('<td>' + this.email + '</td>')
 							.append(
 								$('<td>')
-									.append('<a href="{{ url('admin_user', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append('<a href="{{ url('admin_academic', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
 									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
 								);
 							deleteButton.data({
@@ -121,10 +126,10 @@
 								fullname: this.fullName
 							});
 					});
-					$('#user_search .delete').click(openModal);
+					$('#student_search .delete').click(openModal);
 				},
 				clear: function () {
-					$('#user_search table').find('tr.item').remove();
+					$('#student_search table').find('tr.item').remove();
 				}
 			});
 			{% endif %}
@@ -136,30 +141,30 @@
 			var $this = $(this);
 
 			e.preventDefault();
-			var removeUser = $('#removeUser');
-			removeUser.find('.fullname').html($(this).data('fullname'));
-			removeUser.find('.cancel').one('click', function () {
-				removeUser.modal('hide');
+			var removeStudent = $('#removeStudent');
+			removeStudent.find('.fullname').html($(this).data('fullname'));
+			removeStudent.find('.cancel').one('click', function () {
+				removeStudent.modal('hide');
 			});
-			removeUser.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_user', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+			removeStudent.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
-    					$('.user_removed_success').removeClass('hide');
+    					$('.student_removed_success').removeClass('hide');
     					$this.parent().parent().remove();
-    					removeUser.modal('hide');
+    					removeStudent.modal('hide');
     				} else {
     				    errorRemove();
     				}
 				}, 'json').error(errorRemove);
 			});
-			removeUser.modal();
+			removeStudent.modal();
 		}
 		
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
-		    $('.user_removed_error').removeClass('hide');
-		    $('#removeUser').modal('hide');
+		    $('.student_removed_error').removeClass('hide');
+		    $('#removeStudent').modal('hide');
 		}
 	</script>
 {% endblock %}

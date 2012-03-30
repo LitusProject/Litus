@@ -15,6 +15,13 @@
  
 return array(
 	'controllers' => array(
+		'admin_academic' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_auth' => array(
 		    '@common_jquery',
 		),
@@ -24,13 +31,6 @@ return array(
 		    '@admin_js',
 		),
 		'admin_role' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
-		'admin_user' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',

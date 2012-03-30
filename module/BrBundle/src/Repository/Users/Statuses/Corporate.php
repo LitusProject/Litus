@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonBundle\Repository\Users\Statuses;
+namespace BrBundle\Repository\Users\Statuses;
 
 use Doctrine\ORM\EntityRepository;
 

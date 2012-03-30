@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Form\Admin\User;
+namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
@@ -120,10 +120,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setMultiOptions($this->_createRolesArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
+        
+        $field = new Text(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'university_identification');
+        $field->setLabel('University Identification')
+        	->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlnumValidator());
+        $this->addElement($field);
 
         $field = new Submit(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'submit');
         $field->setLabel('Add')
-            ->setAttrib('class', 'users_add')
+            ->setAttrib('class', 'students_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
