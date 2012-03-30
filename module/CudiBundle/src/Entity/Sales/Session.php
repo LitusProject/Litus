@@ -186,7 +186,63 @@ class Session
 	 */
 	public function isOpen()
 	{
-		return null === $this->getCloseDate();
+	//	return null === $this->getCloseDate();
+	
+	    if( null === $this->getCloseDate() )
+	        return true;
+	    
+	    if( $this->getCloseDate() >= $this->getOpenDate() )
+	        return false;
+	    
+	    return true;
 	}
+	
+	
+    /**
+     * getTheoreticalRevenue
+     * calculates the theoretical revenue of a given session --
+     * that is, the revenue expected on the basis of sold stock items
+     * @param $em -- the EntityManager object
+     * the session
+     */
+    public function getTheoreticalRevenue( $em )
+    {
+        $qb = $em->createQueryBuilder();
+    	$qb->select( 'sum(s.price)' )
+           ->from( 'CudiBundle\Entity\Sales\SaleItem', 's' )
+           ->where( 's.session = ' . $this->getId() );
+        $revenue = $qb->getQuery()->getSingleScalarResult();
+        if( $revenue === NULL )
+            return 0;
+        else
+            return $revenue;
+    }
+    
+    /**
+     * getActualRevenue
+     * calculates the actual revenue of a given session --
+     * that is, the register difference between opening and closure of
+     * a session
+     * @param $em -- the EntityManager object
+     * the session
+     */
+    public function getActualRevenue( $em )
+    {
+
+        if( $this->isOpen() )
+            return 0;
+        
+        $closeamount = $em->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
+                          ->findOneById(
+                              $this->getCloseAmount()
+                          );
+        
+        $openamount = $em->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
+                          ->findOneById(
+                              $this->getOpenAmount()
+                          );
+        
+        return $closeamount->getTotalAmount() - $openamount->getTotalAmount();
+    }
 	
 }
