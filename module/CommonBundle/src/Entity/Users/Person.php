@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
  *      "academic"="CommonBundle\Entity\Users\People\Academic",
- *      "corporate"="CommonBundle\Entity\Users\People\Corporate",
+ *      "corporate"="BrBundle\Entity\Users\People\Corporate",
  *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
  * })
  */

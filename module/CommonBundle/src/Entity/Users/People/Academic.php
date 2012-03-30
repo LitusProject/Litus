@@ -27,26 +27,36 @@ use CommonBundle\Entity\Users\Credential,
 class Academic extends \CommonBundle\Entity\Users\Person
 {
     /**
+     * @var string The user's personal email
+     *
      * @Column(name="personal_email", type="string", length=100, nullable=true)
      */
     private $personalEmail;
 
     /**
+     * @var string The user's primary email
+     *
      * @Column(name="primary_email", type="string", length=100, nullable=true)
      */
     private $primaryEmail;
 
     /**
+     * @var string The user's university identification
+     *
      * @Column(name="university_identification", type="string", length=8, nullable=true)
      */
     private $universityIdentification;
 
     /**
+     * @var string The path to the user's photo
+     *
      * @Column(name="photo_path", type="string", nullable=true)
      */
     private $photoPath;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
+     *
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person")
      */
     private $universityStatuses;
@@ -59,12 +69,15 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param string $lastName The user's last name
      * @param string $email The user's e-mail address
      * @param string $phoneNumber The user's phone number
-     * @param $sex string The users sex
+     * @param string $sex The user's sex
+     * @param string $universityIdentification The user's university identification
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
     {
         parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
+		$this->setUniversityIdentification($universityIdentification);
+		
         $this->universityStatuses = new ArrayCollection();
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonBundle\Repository\Users\People;
+namespace BrBundle\Repository\Users\People;
 
 use Doctrine\ORM\EntityRepository;
 

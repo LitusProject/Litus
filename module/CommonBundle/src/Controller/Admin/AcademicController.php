@@ -18,15 +18,15 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Entity\Users\Credential,
 	CommonBundle\Entity\Users\People\Academic,
-	CommonBundle\Form\Admin\User\Add as AddForm,
-	CommonBundle\Form\Admin\User\Edit as EditForm;
+	CommonBundle\Form\Admin\Academic\Add as AddForm,
+	CommonBundle\Form\Admin\Academic\Edit as EditForm;
 
 /**
  * User management.
  *
  * @autor Pieter Maene <pieter.maene@litus.cc>
  */	
-class UserController extends \CommonBundle\Component\Controller\ActionController
+class AcademicController extends \CommonBundle\Component\Controller\ActionController
 {
 	public function manageAction()
 	{	
@@ -74,7 +74,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $formData['last_name'],
                     $formData['email'],
                     $formData['phone_number'],
-					$formData['sex']
+					$formData['sex'],
+					$formData['university_identification']
                 );
                 $this->getEntityManager()->persist($newUser);                
                 $this->getEntityManager()->flush();
@@ -88,7 +89,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_user',
+                	'admin_academic',
                 	array(
                 		'action' => 'add'
                 	)
@@ -130,6 +131,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number'])
+                    ->setUniversityIdentification($formData['university_identification'])
                     ->updateRoles($roles);
                 
                 $this->getEntityManager()->flush();
@@ -143,7 +145,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_user',
+                	'admin_academic',
                 	array(
                 		'action' => 'manage'
                 	)
@@ -187,13 +189,18 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     	switch($this->getParam('field')) {
     		case 'username':
     			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Users\Person')
+    				->getRepository('CommonBundle\Entity\Users\People\Academic')
     				->findAllByUsername($this->getParam('string'));
     			break;
     		case 'name':
     			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Users\Person')
+    				->getRepository('CommonBundle\Entity\Users\People\Academic')
     				->findAllByName($this->getParam('string'));
+    			break;
+    		case 'university_identification':
+    			$users = $this->getEntityManager()
+    				->getRepository('CommonBundle\Entity\Users\People\Academic')
+    				->findAllByUniversityIdentification($this->getParam('string'));
     			break;
     	}
     	
@@ -202,6 +209,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     		$item = (object) array();
     		$item->id = $user->getId();
     		$item->username = $user->getUsername();
+    		$item->universityIdentification = $user->getUniversityIdentification();
     		$item->fullName = $user->getFullName();
     		$item->email = $user->getEmail();
     		
@@ -225,7 +233,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_user',
+				'admin_academic',
 				array(
 					'action' => 'manage'
 				)
@@ -248,7 +256,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_user',
+				'admin_academic',
 				array(
 					'action' => 'manage'
 				)

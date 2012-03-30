@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Entity\Users\People;
+namespace BrBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Users\Credential,
@@ -30,7 +30,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @OneToMany(
-     * 		targetEntity="CommonBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"}
+     * 		targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"}
      * )
      */
     private $corporateStatuses;
