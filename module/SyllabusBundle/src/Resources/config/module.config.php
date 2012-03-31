@@ -7,6 +7,7 @@ return array(
                 'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
                 'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
                 'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
+                'admin_prof'             => 'SyllabusBundle\Controller\Admin\ProfController',
             ),
             'doctrine_config' => array(
                 'parameters' => array(
@@ -109,6 +110,20 @@ return array(
         		'defaults' => array(
         			'controller' => 'admin_subject',
         			'action'     => 'search',
+        		),
+        	),
+        ),
+        'admin_prof' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/admin/syllabus/prof[/:action[/:id]]',
+        		'constraints' => array(
+        			'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id'      => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'admin_prof',
+        			'action'     => 'manage',
         		),
         	),
         ),

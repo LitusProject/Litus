@@ -59,7 +59,7 @@ class Study
         $this->_prof = array();
         $this->_callback = $callback;
         
-        call_user_func($this->_callback, json_encode((object) array('status' => 'Loading XML')));
+        $this->_callback('load_xml', 'SC_51016934.xml');
         
         $xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
         
@@ -68,9 +68,9 @@ class Study
             $this->_createStudies($xml->data->sc)
         );
         
-        call_user_func($this->_callback, json_encode((object) array('status' => 'Saving Data')));
+        $this->_callback('saving_data', (string) $xml->data->sc->titel);
+        
         $this->getEntityManager()->flush();
-        call_user_func($this->_callback, json_encode((object) array('status' => 'done')));
     }
     
     /**
@@ -83,7 +83,7 @@ class Study
     
     private function _createStudies($data)
     {
-        call_user_func($this->_callback, json_encode((object) array('status' => 'Creating Studies')));
+        $this->_callback('create_studies', (string) $data->titel);
         $studies = array();
         
         $language = trim((string) $data->doceertaal);
@@ -101,8 +101,6 @@ class Study
             if (null == $mainStudy) {
                 $mainStudy = new StudyEntity($mainTitle, $phaseNumber, $language);
                 $this->getEntityManager()->persist($mainStudy);
-            } else {
-                $this->_removeSubjectMapping($mainStudy);
             }
             
 		    if ($phase->tcs->children()->count() > 0) {
@@ -118,12 +116,10 @@ class Study
 		                    
 		                    $subStudy = $this->getEntityManager()
 		                        ->getRepository('SyllabusBundle\Entity\Study')
-		                        ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $mainStudy);
+		                        ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $mainStudy);
 		                    if (null == $subStudy) {
 		                        $subStudy = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
 		                        $this->getEntityManager()->persist($subStudy);
-		                    } else {
-		                        $this->_removeSubjectMapping($subStudy);
 		                    }
 		                    $subStudies[$titles[0]] = $subStudy;
 		                }
@@ -131,29 +127,27 @@ class Study
 		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
 		                $study = $this->getEntityManager()
 		                    ->getRepository('SyllabusBundle\Entity\Study')
-		                    ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $subStudy);
+		                    ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $subStudy);
 		                if (null == $study) {
 		                    $study = new StudyEntity($subTitle, $phaseNumber, $language, $subStudy);
 		                    $this->getEntityManager()->persist($study);
-		                } else {
-		                    $this->_removeSubjectMapping($study);
 		                }
 		            } else {
 		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
 		                $study = $this->getEntityManager()
 		                    ->getRepository('SyllabusBundle\Entity\Study')
-		                    ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $mainStudy);
+		                    ->findOneByTitlePhaseLanguageAndParent($subTitle, $phaseNumber, $language, $mainStudy);
 		                if (null == $study) {
 		                    $study = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
 		                    $this->getEntityManager()->persist($study);
-		                } else {
-		                    $this->_removeSubjectMapping($study);
 		                }
 		            }
 		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
+		            $this->_removeSubjectMapping($study);
 		        }
 		    } else {
 		        $studies[$phaseNumber][0] = $mainStudy;
+                $this->_removeSubjectMapping($mainStudy);
 		    }
 		}
 		return $studies;
@@ -161,7 +155,7 @@ class Study
     
     private function _createSubjects($data, $studies)
     {
-        call_user_func($this->_callback, json_encode((object) array('status' => 'Creating Subjects')));
+        $this->_callback('create_subjects');
         foreach($data->cg as $subjects) {
             if ($subjects->tc_cgs->children()->count() > 0) {
                 $activeStudies = array();
@@ -187,6 +181,8 @@ class Study
             if ($subjects->opos->children()->count() > 0) {
                 foreach($subjects->opos->opo as $subjectData) {
                     $code = trim((string) $subjectData->attributes()->short);
+                    $this->_callback('create_subjects', (string) $subjectData->titel);
+                    
                     $subject = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Subject')
                         ->findOneByCode($code);
@@ -194,9 +190,8 @@ class Study
                     if (null === $subject) {
                         $subject = new SubjectEntity($code, trim((string) $subjectData->titel), (int) $subjectData->periode, (int) $subjectData->pts);
                         $this->getEntityManager()->persist($subject);
-                    } else {
-                        $this->_removeProfMapping($subject);
                     }
+                    $this->_removeProfMapping($subject);
                     $this->_createProf($subject, $subjectData->docenten->children());
                     
                     $mandatory = $subjectData->attributes()->verplicht == 'J' ? true : false;
@@ -205,22 +200,12 @@ class Study
                         $phaseNumber = (int) $phase;
                         if (is_array($activeStudies[$phaseNumber])) {
                             foreach($activeStudies[$phaseNumber] as $activeStudy) {
-                                $map = $this->getEntityManager()
-                                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                                    ->findOneBySubjectAndStudy($subject, $activeStudy);
-                                if (null == $map) {
-                                    $map = new StudySubjectMap($activeStudy, $subject, $mandatory);
-                                    $this->getEntityManager()->persist($map);
-                                }
-                            }
-                        } else {
-                            $map = $this->getEntityManager()
-                                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                                ->findOneBySubjectAndStudy($subject, $activeStudies[$phaseNumber]);
-                            if (null == $map) {
-                                $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory);
+                                $map = new StudySubjectMap($activeStudy, $subject, $mandatory);
                                 $this->getEntityManager()->persist($map);
                             }
+                        } else {
+                            $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory);
+                            $this->getEntityManager()->persist($map);
                         }
                     }
                 }
@@ -274,6 +259,7 @@ class Study
             if (null == $map) {
                 $map = new SubjectProfMap($subject, $prof);
                 $this->getEntityManager()->persist($map);
+                $this->getEntityManager()->flush();
             }
         }
     }
@@ -283,10 +269,9 @@ class Study
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
             ->findByStudy($study);
+
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
-            
-        $this->getEntityManager()->flush();
     }
     
     private function _removeProfMapping($subject)
@@ -294,9 +279,10 @@ class Study
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findBySubject($subject);
+
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
-            
+        
         $this->getEntityManager()->flush();
     }
     
@@ -322,5 +308,10 @@ class Study
             'email' => $email,
             'phone' => $phone,
         );
+    }
+    
+    private function _callback($type, $extra = null)
+    {
+        call_user_func($this->_callback, $type, $extra);
     }
 }

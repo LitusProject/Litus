@@ -2,7 +2,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * Study
@@ -68,7 +69,7 @@ class Study extends EntityRepository
             ->getQuery()
             ->getResult();
             
-        $ids = array();
+        $ids = array(0);
         foreach($resultSet as $id)
             $ids[] = $id[1];
 
@@ -93,10 +94,37 @@ class Study extends EntityRepository
         	->setParameter('title', $title)
         	->setParameter('phase', $phase)
         	->setParameter('language', $language)
-        	->setMaxResults(1)
     		->getQuery()
     		->getResult();
+
+    	if (isset($resultSet[0]))
+    		return $resultSet[0];
     	
+    	return null;
+    }
+    
+    public function findOneByTitlePhaseLanguageAndParent($title, $phase, $language, StudyEntity $parent)
+    {
+        if (! is_numeric($phase))
+            return null;
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Study', 's')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('s.title', ':title'),
+        	        $query->expr()->eq('s.phase', ':phase'),
+        	        $query->expr()->eq('s.language', ':language'),
+        	        ($parent ? $query->expr()->eq('s.parent', $parent->getId()) : $query->expr()->isNull('s.parent'))       	        
+        	    )
+        	)
+        	->setParameter('title', $title)
+        	->setParameter('phase', $phase)
+        	->setParameter('language', $language)
+    		->getQuery()
+    		->getResult();
+
     	if (isset($resultSet[0]))
     		return $resultSet[0];
     	

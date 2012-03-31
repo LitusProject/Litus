@@ -18,21 +18,21 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage;
 
 /**
- * SubjectController
+ * ProfController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SubjectController extends \CommonBundle\Component\Controller\ActionController
+class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function manageAction()
+    public function subjectAction()
     {
-        $study = $this->_getStudy();
+        $subject = $this->_getSubject();
         
         return array(
-            'study' => $study,
+            'subject' => $subject,
             'mapping' => $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                ->findAllByStudy($study)
+                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                ->findAllBySubject($subject)
         );
     }
     
@@ -71,19 +71,19 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
     
-    private function _getStudy()
+    private function _getSubject()
     {
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
     		        'Error',
-    		        'No id was given to identify the study!'
+    		        'No id was given to identify the subject!'
     		    )
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_study',
+    			'admin_prof',
     			array(
     				'action' => 'manage'
     			)
@@ -92,11 +92,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     		return;
     	}
     
-        $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
+        $subject = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $study) {
+    	if (null === $subject) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -106,7 +106,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_study',
+    			'admin_prof',
     			array(
     				'action' => 'manage'
     			)
@@ -115,6 +115,6 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     		return;
     	}
     	
-    	return $study;
+    	return $subject;
     }
 }

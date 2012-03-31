@@ -4,6 +4,7 @@ return array(
     'SyllabusBundle\Component\WebSocket\Syllabus\Update'  => __DIR__ . '/src/Component/WebSocket/Syllabus/Update.php',
     'SyllabusBundle\Component\XMLParser\Study'            => __DIR__ . '/src/Component/XMLParser/Study.php',
     'SyllabusBundle\Controller\Admin\InstallerController' => __DIR__ . '/src/Controller/Admin/InstallerController.php',
+    'SyllabusBundle\Controller\Admin\ProfController'      => __DIR__ . '/src/Controller/Admin/ProfController.php',
     'SyllabusBundle\Controller\Admin\StudyController'     => __DIR__ . '/src/Controller/Admin/StudyController.php',
     'SyllabusBundle\Controller\Admin\SubjectController'   => __DIR__ . '/src/Controller/Admin/SubjectController.php',
     'SyllabusBundle\Controller\Admin\UpdateController'    => __DIR__ . '/src/Controller/Admin/UpdateController.php',
