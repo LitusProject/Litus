@@ -74,4 +74,33 @@ class Study extends EntityRepository
 
         return $ids;
     }
+    
+    public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
+    {
+        if (! is_numeric($phase))
+            return null;
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Study', 's')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('s.title', ':title'),
+        	        $query->expr()->eq('s.phase', ':phase'),
+        	        $query->expr()->eq('s.language', ':language')        	        
+        	    )
+        	)
+        	->setParameter('title', $title)
+        	->setParameter('phase', $phase)
+        	->setParameter('language', $language)
+        	->setMaxResults(1)
+    		->getQuery()
+    		->getResult();
+    	
+    	if (isset($resultSet[0]))
+    		return $resultSet[0];
+    	
+    	return null;
+    }
+    
 }

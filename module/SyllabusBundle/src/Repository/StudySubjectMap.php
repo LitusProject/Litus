@@ -4,7 +4,8 @@ namespace SyllabusBundle\Repository;
 
 use Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
-    SyllabusBundle\Entity\Study as StudyEntity;
+    SyllabusBundle\Entity\Study as StudyEntity,
+    SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * StudySubjectMap
@@ -78,5 +79,28 @@ class StudySubjectMap extends EntityRepository
         	->getResult();
         	
         return $resultSet;
+    }
+    
+    public function findOneBySubjectAndStudy(SubjectEntity $subject, StudyEntity $study)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.subject', ':subject'),
+        	        $query->expr()->eq('m.study', ':study')
+        	    )
+        	)
+        	->setParameter('subject', $subject->getId())
+        	->setParameter('study', $study->getId())
+        	->setMaxResults(1)
+    		->getQuery()
+    		->getResult();
+    	
+    	if (isset($resultSet[0]))
+    		return $resultSet[0];
+    	
+    	return null;
     }
 }
