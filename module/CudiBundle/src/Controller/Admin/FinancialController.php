@@ -38,12 +38,15 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
             'CudiBundle\Entity\Sales\Session',
             $this->getParam('page'),
             array(),
-			array('openDate' => 'DESC')
+        	array('openDate' => 'DESC')
         );
+        
+        foreach($paginator as $item) {
+        	$item->setEntityManager($this->getEntityManager());
+        }
         
         return array(
         	'paginator' => $paginator,
-        	'em' => $this->getEntityManager(),
         	'paginationControl' => $this->paginator()->createControl(true)
         );
     }

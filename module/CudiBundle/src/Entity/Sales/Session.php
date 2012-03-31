@@ -17,7 +17,8 @@ namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
 	CommonBundle\Entity\Users\Person,
-	DateTime;
+	DateTime,
+	Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
@@ -69,6 +70,11 @@ class Session
 	 * @todo ManyToOne(targetEntity="Litus\Entity\Unions\Union")
 	 */
 	//private $union;
+	
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	private $_entityManager;
 	
 	/**
 	 * @param CommonBundle\Entity\General\Bank\CashRegister $openAmount The cash register contents at the start of the session
@@ -186,12 +192,10 @@ class Session
 	 */
 	public function isOpen()
 	{
-	//	return null === $this->getCloseDate();
-	
-	    if( null === $this->getCloseDate() )
+	    if(null === $this->getCloseDate())
 	        return true;
 	    
-	    if( $this->getCloseDate() >= $this->getOpenDate() )
+	    if($this->getCloseDate() >= $this->getOpenDate())
 	        return false;
 	    
 	    return true;
@@ -199,50 +203,49 @@ class Session
 	
 	
     /**
-     * getTheoreticalRevenue
-     * calculates the theoretical revenue of a given session --
+     * Calculates the theoretical revenue of a given session --
      * that is, the revenue expected on the basis of sold stock items
-     * @param $em -- the EntityManager object
-     * the session
+     *
+     * @return integer
      */
-    public function getTheoreticalRevenue( $em )
+    public function getTheoreticalRevenue()
     {
-        $qb = $em->createQueryBuilder();
-    	$qb->select( 'sum(s.price)' )
-           ->from( 'CudiBundle\Entity\Sales\SaleItem', 's' )
-           ->where( 's.session = ' . $this->getId() );
-        $revenue = $qb->getQuery()->getSingleScalarResult();
-        if( $revenue === NULL )
-            return 0;
-        else
-            return $revenue;
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->getTheoreticalRevenue($this);
     }
     
     /**
-     * getActualRevenue
-     * calculates the actual revenue of a given session --
+     * Calculates the actual revenue of a given session --
      * that is, the register difference between opening and closure of
      * a session
-     * @param $em -- the EntityManager object
-     * the session
+     *
+     * @return integer
      */
-    public function getActualRevenue( $em )
+    public function getActualRevenue()
     {
-
-        if( $this->isOpen() )
+        if ($this->isOpen())
             return 0;
         
-        $closeamount = $em->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-                          ->findOneById(
-                              $this->getCloseAmount()
-                          );
+        $closeamount = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
+            ->findOneById($this->getCloseAmount());
         
-        $openamount = $em->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-                          ->findOneById(
-                              $this->getOpenAmount()
-                          );
+        $openamount = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
+            ->findOneById($this->getOpenAmount());
         
         return $closeamount->getTotalAmount() - $openamount->getTotalAmount();
     }
 	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return \CudiBundle\Entity\Sales\Session
+	 */
+	public function setEntityManager(EntityManager $entityManager)
+	{
+		$this->_entityManager = $entityManager;
+		return $this;
+	}
 }

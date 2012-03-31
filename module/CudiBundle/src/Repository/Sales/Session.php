@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
+    CudiBundle\Entity\Sales\Session as SaleSession,
 	Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,7 +14,6 @@ use CommonBundle\Entity\General\Bank\CashRegister,
  */
 class Session extends EntityRepository
 {
-
 	public function findOneByCashRegister(CashRegister $cashRegister)
 	{
 		$query = $this->_em->createQueryBuilder();
@@ -50,5 +50,23 @@ class Session extends EntityRepository
 			return $resultSet[0];
 		
 		return null;
+	}
+	
+	public function getTheoreticalRevenue(SaleSession $session)
+	{
+	    $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('sum(s.price)')
+	        ->from('CudiBundle\Entity\Sales\SaleItem', 's')
+	        ->where(
+	            $query->expr()->eq('s.session', ':session')
+	        )
+	        ->setParameter('session', $session->getId())
+	        ->getQuery()
+	        ->getSingleScalarResult();
+	    
+	    if (null === $resultSet)
+	        return 0;
+	    else
+	        return $resultSet;
 	}
 }

@@ -22,13 +22,17 @@
 		    {% for session in paginator %}
 		        <tr>
 		            <td>{% if session.getId() is not sameas(null) %}{{ session.getManager().getUsername() }}{% else %}guest{% endif %}</td>
-		            <td>{% if session.isOpen() %}yes{% else %}no{% endif %}</td>
+		            <td>{% if session.isOpen() %}Yes{% else %}No{% endif %}</td>
 		            <td>{{ session.getOpenDate().format('Y-m-d H:i:s') }} </td>
 		            <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i:s') }}{% endif %}</td>
-		            <td>{{ session.getTheoreticalRevenue(em)/100 }}</td>
-		            <td>{{ session.getActualRevenue(em)/100 }}</td>
-		            <td>{% if session.getTheoreticalRevenue(em) - session.getActualRevenue(em) < 0 %}+{% endif %}{{ -session.getTheoreticalRevenue(em)/100 + session.getActualRevenue(em)/100 }}</td>
-					<td><a href="{{ url("admin_sale", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a></td>
+		            <td>{{ session.getTheoreticalRevenue()/100 }}</td>
+		            <td>{{ session.getActualRevenue()/100 }}</td>
+		            <td>{% if session.getTheoreticalRevenue() - session.getActualRevenue() < 0 %}+{% endif %}{{ -session.getTheoreticalRevenue()/100 + session.getActualRevenue()/100 }}</td>
+					<td>
+					    {% if hasAccess('admin_sale', 'edit') %}
+    					    <a href="{{ url("admin_sale", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
+    					{% endif %}
+					</td>
 		        </tr>
 		    {% endfor %}
 		</table>
