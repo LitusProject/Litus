@@ -24,6 +24,25 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 {
 	protected function _initConfig()
 	{
+	    $this->_installConfig(
+	        array(
+	    		array(
+	    			'key'         => 'syllabus.update_socket_port',
+	    			'value'       => '8898',
+	    			'description' => 'The port used for the websocket of the syllabus update',
+	    		),
+	    		array(
+	    			'key'         => 'syllabus.update_socket_remote_host',
+	    			'value'       => '127.0.0.1',
+	    			'description' => 'The remote host for the websocket of the syllabus update',
+	    		),
+	    		array(
+	    			'key'         => 'syllabus.update_socket_host',
+	    			'value'       => '127.0.0.1',
+	    			'description' => 'The host used for the websocket of the syllabus update',
+	    		),
+	    	)
+	    );
 	}
 	
 	protected function _initAcl()

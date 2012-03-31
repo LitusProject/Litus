@@ -24,6 +24,10 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+			'@common_socket',
+			'@common_permanentModal',
+			'@bootstrap_js_transition',
+			'@bootstrap_js_modal',
 		),
 		'admin_study' => array(
 			'@common_jquery',

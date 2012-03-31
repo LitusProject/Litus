@@ -65,6 +65,11 @@ return array(
                                             'common/js/permanentModal.js',
                                         ),
                                     ),
+                                    'common_socket' => array(
+                                        'assets'  => array(
+                                            'common/js/socket.js',
+                                        ),
+                                    ),
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',

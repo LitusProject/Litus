@@ -95,12 +95,14 @@ return array(
 			'@bootstrap_js_transition',
 			'@bootstrap_js_modal',
 			'@common_permanentModal',
+			'@common_socket',
 		),
 		'sale_queue' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@sale_css',
 			'@queue_js',
+			'@common_socket',
 		),
 		'prof' => array(
 			'@common_jquery',
