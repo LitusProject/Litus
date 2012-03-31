@@ -9,9 +9,9 @@ return array(
     'SyllabusBundle\Entity\Study'                         => __DIR__ . '/src/Entity/Study.php',
     'SyllabusBundle\Entity\StudySubjectMap'               => __DIR__ . '/src/Entity/StudySubjectMap.php',
     'SyllabusBundle\Entity\Subject'                       => __DIR__ . '/src/Entity/Subject.php',
-    'SyllabusBundle\Entity\SubjectDocentMap'              => __DIR__ . '/src/Entity/SubjectDocentMap.php',
+    'SyllabusBundle\Entity\SubjectProfMap'                => __DIR__ . '/src/Entity/SubjectProfMap.php',
     'SyllabusBundle\Repository\Study'                     => __DIR__ . '/src/Repository/Study.php',
     'SyllabusBundle\Repository\StudySubjectMap'           => __DIR__ . '/src/Repository/StudySubjectMap.php',
     'SyllabusBundle\Repository\Subject'                   => __DIR__ . '/src/Repository/Subject.php',
-    'SyllabusBundle\Repository\SubjectDocentMap'          => __DIR__ . '/src/Repository/SubjectDocentMap.php',
+    'SyllabusBundle\Repository\SubjectProfMap'            => __DIR__ . '/src/Repository/SubjectProfMap.php',
 );

@@ -15,11 +15,16 @@
  
 namespace SyllabusBundle\Component\XMLParser;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\EntityManager,
     SimpleXMLElement,
     SyllabusBundle\Entity\Study as StudyEntity,
     SyllabusBundle\Entity\StudySubjectMap,
-    SyllabusBundle\Entity\Subject as SubjectEntity;
+    SyllabusBundle\Entity\Subject as SubjectEntity,
+    SyllabusBundle\Entity\SubjectProfMap,
+    Zend\Http\Client as HttpClient,
+    Zend\Dom\Query as DomQuery;
 
 /**
  * Study
@@ -29,6 +34,8 @@ use Doctrine\ORM\EntityManager,
 class Study
 {
     private $_entityManager;
+    
+    private $_profs;
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
@@ -36,6 +43,7 @@ class Study
     public function __construct(EntityManager $entityManager, SimpleXMLElement $xml)
     {
         $this->_entityManager = $entityManager;
+        $this->_prof = array();
         
         $this->_createSubjects(
             $xml->data->sc->cg, 
@@ -66,8 +74,15 @@ class Study
             $subStudies = array();
             $studies[$phaseNumber] = array();
             
-            $mainStudy = new StudyEntity($mainTitle, $phaseNumber, $language);
-            $this->getEntityManager()->persist($mainStudy);
+            $mainStudy = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study')
+                ->findOneByTitlePhaseAndLanguage($mainTitle, $phaseNumber, $language);
+            if (null == $mainStudy) {
+                $mainStudy = new StudyEntity($mainTitle, $phaseNumber, $language);
+                $this->getEntityManager()->persist($mainStudy);
+            } else {
+                $this->_removeSubjectMapping($mainStudy);
+            }
             
 		    if ($phase->tcs->children()->count() > 0) {
 		        foreach($phase->tcs->children() as $studyData) {
@@ -79,18 +94,40 @@ class Study
 		                    $subStudy = $subStudies[$titles[0]];
 		                } else {
 		                    $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[0])));
-		                    $subStudy= new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
-		                    $this->getEntityManager()->persist($subStudy);
+		                    
+		                    $subStudy = $this->getEntityManager()
+		                        ->getRepository('SyllabusBundle\Entity\Study')
+		                        ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $mainStudy);
+		                    if (null == $subStudy) {
+		                        $subStudy = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
+		                        $this->getEntityManager()->persist($subStudy);
+		                    } else {
+		                        $this->_removeSubjectMapping($subStudy);
+		                    }
 		                    $subStudies[$titles[0]] = $subStudy;
 		                }
 		                
 		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
-		                $study= new StudyEntity($subTitle, $phaseNumber, $language, $subStudy);
-		                $this->getEntityManager()->persist($study);
+		                $study = $this->getEntityManager()
+		                    ->getRepository('SyllabusBundle\Entity\Study')
+		                    ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $subStudy);
+		                if (null == $study) {
+		                    $study = new StudyEntity($subTitle, $phaseNumber, $language, $subStudy);
+		                    $this->getEntityManager()->persist($study);
+		                } else {
+		                    $this->_removeSubjectMapping($study);
+		                }
 		            } else {
 		                $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
-		                $study = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
-		                $this->getEntityManager()->persist($study);
+		                $study = $this->getEntityManager()
+		                    ->getRepository('SyllabusBundle\Entity\Study')
+		                    ->findOneByTitlePhaseAndLanguage($subTitle, $phaseNumber, $language, $mainStudy);
+		                if (null == $study) {
+		                    $study = new StudyEntity($subTitle, $phaseNumber, $language, $mainStudy);
+		                    $this->getEntityManager()->persist($study);
+		                } else {
+		                    $this->_removeSubjectMapping($study);
+		                }
 		            }
 		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
 		        }
@@ -135,7 +172,10 @@ class Study
                     if (null === $subject) {
                         $subject = new SubjectEntity($code, trim((string) $subjectData->titel), (int) $subjectData->periode, (int) $subjectData->pts);
                         $this->getEntityManager()->persist($subject);
+                    } else {
+                        $this->_removeProfMapping($subject);
                     }
+                    $this->_createProf($subject, $subjectData->docenten->children());
                     
                     $mandatory = $subjectData->attributes()->verplicht == 'J' ? true : false;
 
@@ -143,12 +183,22 @@ class Study
                         $phaseNumber = (int) $phase;
                         if (is_array($activeStudies[$phaseNumber])) {
                             foreach($activeStudies[$phaseNumber] as $activeStudy) {
-                                $map = new StudySubjectMap($activeStudy, $subject, $mandatory);
-                                $this->getEntityManager()->persist($map);
+                                $map = $this->getEntityManager()
+                                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                                    ->findOneBySubjectAndStudy($subject, $activeStudy);
+                                if (null == $map) {
+                                    $map = new StudySubjectMap($activeStudy, $subject, $mandatory);
+                                    $this->getEntityManager()->persist($map);
+                                }
                             }
                         } else {
-                            $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory);
-                            $this->getEntityManager()->persist($map);
+                            $map = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                                ->findOneBySubjectAndStudy($subject, $activeStudies[$phaseNumber]);
+                            if (null == $map) {
+                                $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory);
+                                $this->getEntityManager()->persist($map);
+                            }
                         }
                     }
                 }
@@ -158,5 +208,97 @@ class Study
                 $this->_createSubjects($subjects, $activeStudies);
             }
         }
+    }
+    
+    private function _createProf(SubjectEntity $subject, $profs)
+    {
+        foreach($profs as $profData) {
+            $identification = 'u' . substr(trim($profData->attributes()->persnr), 1);
+            
+            $prof = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneByUniversityIdentification($identification);
+            if (null == $prof) {
+                if (isset($this->_profs[$identification])) {
+                    $prof = $this->_profs[$identification];
+                } else {
+                    $info = $this->_getInfoProf(trim($profData->attributes()->persnr));
+                    
+                    $prof = new Academic(
+                        $identification,
+                        new Credential(
+                            'sha512',
+                            sha1(uniqid())
+                        ),
+                        array(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\Acl\Role')
+                                ->findOneByName('prof')
+                        ),
+                        trim($profData->voornaam),
+                        trim($profData->familienaam),
+                        $info['email'],
+                        $info['phone'],
+                        null,
+                        $identification);
+                    $this->getEntityManager()->persist($prof);
+                    $this->_profs[$identification] = $prof;
+                }
+            }
+            
+            $map = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                ->findOneBySubjectAndProf($subject, $prof);
+            if (null == $map) {
+                $map = new SubjectProfMap($subject, $prof);
+                $this->getEntityManager()->persist($map);
+            }
+        }
+    }
+    
+    private function _removeSubjectMapping($study)
+    {
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findByStudy($study);
+        foreach($mapping as $map)
+            $this->getEntityManager()->remove($map);
+            
+        $this->getEntityManager()->flush();
+    }
+    
+    private function _removeProfMapping($subject)
+    {
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findBySubject($subject);
+        foreach($mapping as $map)
+            $this->getEntityManager()->remove($map);
+            
+        $this->getEntityManager()->flush();
+    }
+    
+    private function _getInfoProf($identification)
+    {
+        $client = new HttpClient();
+        $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
+            ->send();
+
+        preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
+        if (sizeof($matches) > 1)
+            $email = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
+        else
+            $email = null;
+
+        preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
+        if (sizeof($matches) > 1)
+            $phone = trim(str_replace(' ', '', $matches[1]));
+        else
+            $phone = null;
+        
+        return array(
+            'email' => $email,
+            'phone' => $phone,
+        );
     }
 }

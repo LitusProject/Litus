@@ -46,6 +46,13 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	    
 	    $this->installRoles(
 	        array(
+	            'prof' => array(
+	                'parent_roles' => array(
+	                    'guest',
+	                ),
+	                'actions' => array(
+	                )
+	            )
 	        )
 	    );
 	}

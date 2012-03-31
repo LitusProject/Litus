@@ -18,10 +18,10 @@ namespace SyllabusBundle\Entity;
 use CommonBundle\Entity\Users\People\Academic;
 
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectDocentMap")
- * @Table(name="syllabus.subject_docent_map")
+ * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectProfMap")
+ * @Table(name="syllabus.subject_prof_map")
  */
-class SubjectDocentMap
+class SubjectProfMap
 {
     /**
 	 * @Id
@@ -34,7 +34,7 @@ class SubjectDocentMap
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
-	private $docent;
+	private $prof;
 
 	/**
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
@@ -44,12 +44,12 @@ class SubjectDocentMap
     
     /**
      * @param SyllabusBundle\Entity\Subject $subject
-     * @param CommonBundle\Entity\Users\People\Academic $docent
+     * @param CommonBundle\Entity\Users\People\Academic $prof
      */
-    public function __construct(Subject $subject, Academic $docent)
+    public function __construct(Subject $subject, Academic $prof)
     {
         $this->subject = $subject;
-        $this->docent = $docent;
+        $this->prof = $prof;
     }
     
     /**
@@ -71,8 +71,8 @@ class SubjectDocentMap
     /**
      * @return CommonBundle\Entity\Users\People\Academic
      */
-    public function getDocent()
+    public function getProf()
     {
-        return $this->docent;
+        return $this->prof;
     }
 }

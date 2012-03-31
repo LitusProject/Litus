@@ -111,7 +111,7 @@ abstract class Person
     /**
      * @var string The persons sex ('m' or 'f')
      *
-     * @Column(type="string", length=1)
+     * @Column(type="string", length=1, nullable=true)
      */
     private $sex;
 
@@ -143,7 +143,7 @@ abstract class Person
      * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex ('m' or 'f')
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
     {
         $this->setUsername($username);
         $this->setCredential($credential);
@@ -379,20 +379,17 @@ abstract class Person
     }
 
     /**
-     * @param string $phoneNumber
+     * @param null|string $phoneNumber
      * @return \CommonBundle\Entity\Users\Person
      * @throws \InvalidArgumentException
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber = null)
     {
     	if ('' == $phoneNumber)
     		return $this;
     	
-        if (
-        	(null === $phoneNumber)
-        	|| !preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)
-        ) {
-            throw new \InvalidArgumentException('Invalid phone number');
+        if (!preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)) {
+            throw new \InvalidArgumentException('Invalid phone number' . $phoneNumber);
         }
             
         $this->phoneNumber = $phoneNumber;
@@ -401,7 +398,7 @@ abstract class Person
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getPhoneNumber()
     {
@@ -409,13 +406,13 @@ abstract class Person
     }
 
     /**
-     * @param $sex string The person's sex
+     * @param null|string $sex The person's sex
      * @return \CommonBundle\Entity\Users\Person
      * @throws \InvalidArgumentException
      */
     public function setSex($sex)
     {
-        if(($sex !== 'm') && ($sex !== 'f'))
+        if(($sex !== 'm') && ($sex !== 'f') && ($sex !== null))
             throw new \InvalidArgumentException('Invalid sex');
             
         $this->sex = $sex;
@@ -424,7 +421,7 @@ abstract class Person
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getSex()
     {

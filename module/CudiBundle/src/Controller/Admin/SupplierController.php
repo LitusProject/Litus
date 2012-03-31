@@ -172,9 +172,6 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                     array(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('guest'),
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName('supplier')
                     ),
                     $formData['first_name'],

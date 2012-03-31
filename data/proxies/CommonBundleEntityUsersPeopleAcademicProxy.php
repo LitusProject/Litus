@@ -201,7 +201,7 @@ class CommonBundleEntityUsersPeopleAcademicProxy extends \CommonBundle\Entity\Us
         return parent::getAddress();
     }
 
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber = NULL)
     {
         $this->__load();
         return parent::setPhoneNumber($phoneNumber);
