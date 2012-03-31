@@ -1,6 +1,7 @@
 <?php
 return array(
     'SyllabusBundle\Module'                               => __DIR__ . '/Module.php',
+    'SyllabusBundle\Component\WebSocket\Syllabus\Update'  => __DIR__ . '/src/Component/WebSocket/Syllabus/Update.php',
     'SyllabusBundle\Component\XMLParser\Study'            => __DIR__ . '/src/Component/XMLParser/Study.php',
     'SyllabusBundle\Controller\Admin\InstallerController' => __DIR__ . '/src/Controller/Admin/InstallerController.php',
     'SyllabusBundle\Controller\Admin\StudyController'     => __DIR__ . '/src/Controller/Admin/StudyController.php',

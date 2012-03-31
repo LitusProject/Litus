@@ -27,19 +27,19 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
 
     public function indexAction()
     {
-    
+        $address = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('syllabus.update_socket_remote_host');
+        $port = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('syllabus.update_socket_port');
+        	
+        return array(
+        	'socketUrl' => 'ws://' . $address . ':' . $port,
+        );
     }
     
     public function xmlAction()
     {
-    }
-    
-	public function updateAction()
-	{
-		new StudyParser($this->getEntityManager(), simplexml_load_file('http://litus/admin/syllabus/update/xml'));
-		
-		return array(
-			'updateReady' => true
-		);
     }
 }

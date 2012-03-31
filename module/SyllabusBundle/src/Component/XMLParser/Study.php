@@ -33,24 +33,44 @@ use CommonBundle\Entity\Users\Credential,
  */
 class Study
 {
+    /**
+     * @var Doctrine\ORM\EntityManager
+     */
     private $_entityManager;
     
+    /**
+     * @var array
+     */
     private $_profs;
+    
+    /**
+     * @var array
+     */
+    private $_callback;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param string $xmlPath
+     * @param array $callback
      */
-    public function __construct(EntityManager $entityManager, SimpleXMLElement $xml)
+    public function __construct(EntityManager $entityManager, $xmlPath, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_prof = array();
+        $this->_callback = $callback;
+        
+        call_user_func($this->_callback, json_encode((object) array('status' => 'Loading XML')));
+        
+        $xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
         
         $this->_createSubjects(
             $xml->data->sc->cg, 
             $this->_createStudies($xml->data->sc)
         );
         
+        call_user_func($this->_callback, json_encode((object) array('status' => 'Saving Data')));
         $this->getEntityManager()->flush();
+        call_user_func($this->_callback, json_encode((object) array('status' => 'done')));
     }
     
     /**
@@ -63,6 +83,7 @@ class Study
     
     private function _createStudies($data)
     {
+        call_user_func($this->_callback, json_encode((object) array('status' => 'Creating Studies')));
         $studies = array();
         
         $language = trim((string) $data->doceertaal);
@@ -140,6 +161,7 @@ class Study
     
     private function _createSubjects($data, $studies)
     {
+        call_user_func($this->_callback, json_encode((object) array('status' => 'Creating Subjects')));
         foreach($data->cg as $subjects) {
             if ($subjects->tc_cgs->children()->count() > 0) {
                 $activeStudies = array();
