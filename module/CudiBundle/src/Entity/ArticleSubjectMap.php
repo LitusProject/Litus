@@ -29,13 +29,13 @@ class ArticleSubjectMap
     private $id;
 
     /**
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 
 	/**
-	 * @OneToOne(targetEntity="SyllabusBundle\Entity\Subject")
+	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(name="subject", referencedColumnName="id")
 	 */
 	private $subject;

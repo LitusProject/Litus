@@ -43,7 +43,7 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setLabel('Save')
-            ->setAttrib('class', 'users_edit')
+            ->setAttrib('class', 'students_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
 
@@ -54,7 +54,8 @@ class Edit extends Add
                 'email' => $person->getEmail(),
                 'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
-                'roles' => $this->_createRolesPopulationArray($person->getRoles())
+                'roles' => $this->_createRolesPopulationArray($person->getRoles()),
+                'university_identification' => $person->getUniversityIdentification()
             )
         );
     }

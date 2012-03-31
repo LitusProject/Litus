@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Select;
 
-class EditUser extends \CommonBundle\Form\Admin\User\Edit
+class EditUser extends \CommonBundle\Form\Admin\Academic\Edit
 {
 
 	/**
@@ -33,5 +33,6 @@ class EditUser extends \CommonBundle\Form\Admin\User\Edit
         parent::__construct($entityManager, $person, $opts);
         
         $this->removeElement('roles');
+        $this->removeElement('university_identification');
     }
 }

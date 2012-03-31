@@ -19,7 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Select;
 
-class AddUser extends \CommonBundle\Form\Admin\User\Add
+class AddUser extends \CommonBundle\Form\Admin\Academic\Add
 {
 
     public function __construct(EntityManager $entityManager, $opts = null)
@@ -27,5 +27,6 @@ class AddUser extends \CommonBundle\Form\Admin\User\Add
         parent::__construct($entityManager, '', $opts);
         
         $this->removeElement('roles');
+        $this->removeElement('university_identification');
     }
 }
