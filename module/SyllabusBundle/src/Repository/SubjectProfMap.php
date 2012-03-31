@@ -37,4 +37,17 @@ class SubjectProfMap extends EntityRepository
         
         return null;
     }
+    
+    public function findAllBySubject(SubjectEntity $subject)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+        	->where($query->expr()->in('m.subject', ':subject'))
+        	->setParameter('subject', $subject->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

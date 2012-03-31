@@ -63,12 +63,30 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 	 */
 	protected function gotText(User $user, $data)
 	{
-		$this->_entityManager->clear();
-
 		if (strpos($data, 'update') === 0 && 'done' == $this->_status) {
+			$this->_entityManager->clear();
 		    $this->_status = 'updating';
-			new StudyParser($this->_entityManager, 'http://litus/admin/syllabus/update/xml', array($this, 'sendTextToAll'));
+			new StudyParser($this->_entityManager, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));
+			$this->callback('done');
 			$this->_status = 'done';
 		}
+	}
+	
+	/**
+	 * @param string $type
+	 * @param null|string $extra
+	 */
+	public function callback($type, $extra = null)
+	{
+	    $this->sendTextToAll( 
+	        json_encode(
+	            (object) array(
+	                'status' => (object) array(
+	                    'type' => $type,
+	                    'extra' => trim($extra),
+	                )
+	            )
+	        )
+	    );
 	}
 }

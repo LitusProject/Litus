@@ -18,8 +18,21 @@
 	</div>
 	
 	<div id="controller_action">
-	    <a href="#" id="updateNow">Update Now</a>
 	</div>
+	
+	<aside>
+		<div class="sidebox">
+		    <div class="title">Update Syllabus</div>
+		    <div class="content">
+		        <p>
+		            <i>Please hit the link below to update the Syllabus!</i>
+		        </p>
+		    	<p>
+		    		<a href="#" id="updateNow">&rarr; Update Syllabus</a>
+		    	</p>
+		    </div>
+		</div>
+	</aside>
 	
 	<div class="modal hide fade" id="updateSyllabus">
 		<div class="modal-header">
@@ -51,9 +64,9 @@
 				message: function (e, data) {
 					$('#syllabus_update_error, #syllabus_update_success').addClass('hide');
 
-				    $('#updateSyllabus .status').html(data.status ? data.status : '');
+				    $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
 				    
-				    if ('done' == data.status) {
+				    if ('done' == data.status.type) {
 				        $('#syllabus_update_success').removeClass('hide');
 		                $('#updateSyllabus').permanentModal('hide');
 				    }
@@ -74,5 +87,34 @@
 		        }
 		    );
 		});
+		
+		function translateStatus(status) {
+		    var text = '';
+		    switch(status.type) {
+		        case 'done':
+		            text += 'Done';
+		            break;
+		        case 'load_xml':
+		            text += 'Loading XML';
+		            break;
+		        case 'create_studies':
+		            text += 'Creating Studies';
+		            break;
+		        case 'create_subjects':
+		            text += 'Create Subjects';
+		            break;
+		        case 'saving_data':
+		            text += 'Saving Data';
+		            break;
+		    }
+		    
+		    if (! status.extra)
+		        return text;
+		    
+		    var extra = status.extra;
+		    if (extra.length > 40)
+		        extra = extra.substr(0, 40) + '...';
+		    return text + ' (' + extra + ')';
+		}
 	</script>
 {% endblock %}
