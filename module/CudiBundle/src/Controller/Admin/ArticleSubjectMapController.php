@@ -13,39 +13,39 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace SyllabusBundle\Controller\Admin;
+namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    SyllabusBundle\Entity\SubjectProfMap,
-    SyllabusBundle\Form\Admin\Prof\Add as AddForm;
+    CudiBundle\Entity\ArticleSubjectMap,
+    CudiBundle\Form\Admin\Mapping\Add as AddForm;
 
 /**
- * ProfController
+ * ArticleSubjectMapController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ProfController extends \CommonBundle\Component\Controller\ActionController
+class ArticleSubjectMapController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function addAction()
-    {
-        $subject = $this->_getSubject();
-        
-        $form = new AddForm();
-        
-        if($this->getRequest()->isPost()) {
+	public function manageAction()
+	{
+	    $article = $this->_getArticle();
+	    
+	    $form = new AddForm();
+	    
+	    if($this->getRequest()->isPost()) {
 	        $formData = $this->getRequest()->post()->toArray();
 	    	
 	    	if ($form->isValid($formData)) {
-	    	    $docent = $this->getEntityManager()
-	    	        ->getRepository('CommonBundle\Entity\Users\People\Academic')
-	    	        ->findOneById($formData['prof_id']);
+	    	    $subject = $this->getEntityManager()
+	    	        ->getRepository('SyllabusBundle\Entity\Subject')
+	    	        ->findOneById($formData['subject_id']);
 	    	        
 	    	    $mapping = $this->getEntityManager()
-	    	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	    	        ->findOneBySubjectAndProf($subject, $docent);
+	    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+	    	        ->findOneByArticleAndSubject($article, $subject);
 	    	    
 	    	    if (null === $mapping) {
-    	    	    $mapping = new SubjectProfMap($subject, $docent);
+    	    	    $mapping = new ArticleSubjectMap($article, $subject, $formData['mandatory']);
     	    	    $this->getEntityManager()->persist($mapping);
     	    	    $this->getEntityManager()->flush();
     	    	}
@@ -54,23 +54,28 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The docent was successfully added!'
+                        'The mapping was successfully added!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_subject',
+                	'admin_article_subject',
                 	array(
-                		'action' => 'subject',
-                		'id' => $subject->getId(),
+                		'action' => 'manage',
+                		'id' => $article->getId(),
                 	)
                 );
 	        }
 	    }
+		
+		$subjects = $this->getEntityManager()
+		    ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+		    ->findAllByArticle($article);
         
         return array(
-            'subject' => $subject,
             'form' => $form,
+            'article' => $article,
+        	'subjects' => $subjects,
         );
     }
     
@@ -79,84 +84,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
         
 		$mapping = $this->_getMapping();
-        
+
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
         
         return array(
             'result' => (object) array("status" => "success")
         );
-    }
-    
-    public function typeaheadAction()
-    {
-        $docents = array_merge(
-            $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\Users\People\Academic')
-            	->findAllByName($this->getParam('string')),
-            $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\Users\People\Academic')
-            	->findAllByUniversityIdentification($this->getParam('string'))
-        );
-        	
-        $result = array();
-        foreach($docents as $docent) {
-        	$item = (object) array();
-        	$item->id = $docent->getId();
-        	$item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
-        	$result[] = $item;
-        }
-        
-        return array(
-        	'result' => $result,
-        );
-    }
-    
-    private function _getSubject()
-    {
-        if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the subject!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_study',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    
-        $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
-    	
-    	if (null === $study) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No subject with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_study',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $study;
     }
     
     private function _getMapping()
@@ -171,7 +105,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_study',
+    			'admin_article_subject',
     			array(
     				'action' => 'manage'
     			)
@@ -180,11 +114,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $mapping) {
+    	if (null === $article) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -194,7 +128,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_study',
+    			'admin_article_subject',
     			array(
     				'action' => 'manage'
     			)
@@ -203,6 +137,53 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     	
-    	return $mapping;
+    	return $article;
+    }
+    
+    private function _getArticle()
+    {
+        if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the article!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
     }
 }

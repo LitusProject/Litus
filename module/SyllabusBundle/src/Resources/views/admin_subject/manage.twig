@@ -55,8 +55,8 @@
 		                <td>{{ subject.getSubject().getCredits() }}</td>
 		                <td>{% if subject.isMandatory() %}yes{% else %}no{% endif %}</td>
 		                <td>
-		                    {% if hasAccess('admin_prof', 'subject') %}
-		                        <a href="{{ url('admin_prof', {"action": "subject", "id": subject.getSubject().getId()}) }}" class="view">View</a>
+		                    {% if hasAccess('admin_subject', 'subject') %}
+		                        <a href="{{ url('admin_subject', {"action": "subject", "id": subject.getSubject().getId()}) }}" class="view">View</a>
 		                    {% endif %}
 		                </td>
 		            </tr>

@@ -1,0 +1,39 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_study/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+	<div id="controller_action">
+	    <h1>Subject</h1>
+	    
+	    <p>Code: <b>{{ subject.getCode() }}</b></p>
+	    <p>Name: <b>{{ subject.getName() }}</b></p>
+	    <p>Semester: <b>{{ subject.getSemester() }}</b></p>
+	    <p>Credits: <b>{{ subject.getCredits() }}</b></p>
+	    <br />
+	    
+		{% autoescape false %}
+		    {{ form }}
+		{% endautoescape %}
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $('#profSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("admin_prof_typeahead")}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#profId').val($(this).data('value').id);
+			    } else {
+			        $('#profId').val('');
+			    }
+			});
+		});
+	</script>
+{% endblock %}

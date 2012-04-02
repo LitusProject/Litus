@@ -19,6 +19,19 @@
 	</div>
 	
 	<aside>
+	    {% if hasAccess('admin_article_subject', 'manage') %}
+	    	<div class="sidebox">
+	    	    <div class="title">Manage Subject Mapping</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to manage the mapping of this article to subjects!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="{{ url('admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
 		{% if article.isInternal() and hasAccess('admin_file', 'manage') %}
 			<div class="sidebox">
 		        <div class="title">Manage Files</div>
