@@ -3,25 +3,23 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
-				'cudi_install'		  => 'CudiBundle\Controller\Admin\InstallerController',
-				'admin_article'	      => 'CudiBundle\Controller\Admin\ArticleController',
-				'admin_comment'	      => 'CudiBundle\Controller\Admin\CommentController',
-				'admin_file'	      => 'CudiBundle\Controller\Admin\FileController',
-				'admin_booking'	      => 'CudiBundle\Controller\Admin\BookingController',
-				'admin_delivery'      => 'CudiBundle\Controller\Admin\DeliveryController',
-				'admin_order'	      => 'CudiBundle\Controller\Admin\OrderController',
-				'admin_sale'          => 'CudiBundle\Controller\Admin\SaleController',
-				'admin_financial'     => 'CudiBundle\Controller\Admin\FinancialController',
-				'admin_stock'	      => 'CudiBundle\Controller\Admin\StockController',
-				'admin_supplier'	  => 'CudiBundle\Controller\Admin\SupplierController',
-				'sale_sale'	          => 'CudiBundle\Controller\Sale\SaleController',
-				'sale_queue'	      => 'CudiBundle\Controller\Sale\QueueController',
-				'prof'      	      => 'CudiBundle\Controller\Prof\IndexController',
-				'prof_article'        => 'CudiBundle\Controller\Prof\ArticleController',
-				'prof_file'           => 'CudiBundle\Controller\Prof\FileController',
-				'supplier'            => 'CudiBundle\Controller\Supplier\IndexController',
-				'supplier_article'    => 'CudiBundle\Controller\Supplier\ArticleController',
-				'supplier_auth'       => 'CudiBundle\Controller\Supplier\AuthController',
+				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallerController',
+				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
+				'admin_article_subject'  => 'CudiBundle\Controller\Admin\ArticleSubjectMapController',
+				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
+				'admin_file'	         => 'CudiBundle\Controller\Admin\FileController',
+				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
+				'admin_delivery'         => 'CudiBundle\Controller\Admin\DeliveryController',
+				'admin_order'	         => 'CudiBundle\Controller\Admin\OrderController',
+				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
+				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
+				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
+				'admin_supplier'	     => 'CudiBundle\Controller\Admin\SupplierController',
+				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
+				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
+				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
+				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
+				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -48,26 +46,6 @@ return array(
                                     	),
                                     	'options' => array(
                                             'output' => 'sale_css.css',
-                                        ),
-                                    ),
-                                    'prof_css' => array(
-                                    	'assets' => array(
-                                    		'prof/less/base.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'prof_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => true,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
-                                            'output' => 'prof_css.css',
                                         ),
                                     ),
                                     'supplier_css' => array(
@@ -136,6 +114,20 @@ return array(
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_article_subject'=> array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/article/subject[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_article_subject',
 					'action'     => 'manage',
 				),
 			),
@@ -401,48 +393,6 @@ return array(
 				'defaults' => array(
 					'controller' => 'sale_sale',
 					'action'     => 'index',
-				),
-			),
-		),
-		'prof' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/prof[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'prof',
-					'action'     => 'index',
-				),
-			),
-		),
-		'prof_article' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/prof/article[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'prof_article',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'prof_file' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/prof/files[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'prof_file',
-					'action'     => 'manage',
 				),
 			),
 		),

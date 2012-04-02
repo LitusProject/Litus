@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\Bank\BankDevice,
 	Exception;
 
 /**
- * ConfigController
+ * InstallerController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

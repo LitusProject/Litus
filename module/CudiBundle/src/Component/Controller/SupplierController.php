@@ -20,7 +20,7 @@ use CommonBundle\Component\Controller\Exception\HasNoAccessException,
 	Zend\Mvc\MvcEvent;
 
 /**
- * We extend the CommonBundle controller to check a sale session is selected.
+ * We extend the CommonBundle controller to check a valid user is logged in.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -44,6 +44,10 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
 		$result['loginForm'] = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
+		
+		$result['unionUrl'] = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.union_url');
   		
         $e->setResult($result);
         return $result;

@@ -27,6 +27,14 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_article_subject' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		    '@bootstrap_js_typeahead',
+		),
 		'admin_comment' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -103,21 +111,6 @@ return array(
 			'@sale_css',
 			'@queue_js',
 			'@common_socket',
-		),
-		'prof' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
-		),
-		'prof_article' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
-		),
-		'prof_file' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
 		),
 		'supplier' => array(
 			'@common_jquery',

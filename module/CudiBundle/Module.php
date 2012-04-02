@@ -75,7 +75,7 @@ class Module implements AutoloaderProvider
     public function getProvides()
     {
         return array(
-            'name'    => 'commonbundle',
+            'name'    => 'CudiBundle',
             'version' => '1.0.0',
         );
     }

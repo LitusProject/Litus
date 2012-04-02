@@ -13,28 +13,18 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Prof;
+namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage;
 
 /**
- * ArticleController
+ * FileController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ArticleController extends \CommonBundle\Component\Controller\ActionController
+class FileController extends \ProfBundle\Component\Controller\ProfController
 {
     public function manageAction()
-    {
-    	return array();
-    }
-    
-    public function editAction()
-    {
-    	return array();
-    }
-    
-    public function addAction()
     {
     	return array();
     }

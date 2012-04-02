@@ -16,7 +16,7 @@
 namespace SyllabusBundle\Controller\Admin;
 
 /**
- * ConfigController
+ * InstallerController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

@@ -15,7 +15,9 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Form\Admin\Prof\Add as AddForm;
 
 /**
  * ProfController
@@ -24,45 +26,84 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
  */
 class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
-    public function subjectAction()
+    public function addAction()
     {
         $subject = $this->_getSubject();
         
+        $form = new AddForm();
+        
+        if($this->getRequest()->isPost()) {
+	        $formData = $this->getRequest()->post()->toArray();
+	    	
+	    	if ($form->isValid($formData)) {
+	    	    $docent = $this->getEntityManager()
+	    	        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+	    	        ->findOneById($formData['prof_id']);
+	    	        
+	    	    $mapping = $this->getEntityManager()
+	    	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+	    	        ->findOneBySubjectAndProf($subject, $docent);
+	    	    
+	    	    if (null === $mapping) {
+    	    	    $mapping = new SubjectProfMap($subject, $docent);
+    	    	    $this->getEntityManager()->persist($mapping);
+    	    	    $this->getEntityManager()->flush();
+    	    	}
+	    	    
+	    	    $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The docent was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_subject',
+                	array(
+                		'action' => 'subject',
+                		'id' => $subject->getId(),
+                	)
+                );
+	        }
+	    }
+        
         return array(
             'subject' => $subject,
-            'mapping' => $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-                ->findAllBySubject($subject)
+            'form' => $form,
         );
     }
     
-    public function searchAction()
+    public function deleteAction()
     {
         $this->initAjax();
         
-        $study = $this->_getStudy();
+		$mapping = $this->_getMapping();
         
-        switch($this->getParam('field')) {
-        	case 'name':
-        		$subjects = $this->getEntityManager()
-        			->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-        			->findAllByNameAndStudy($this->getParam('string'), $study);
-        		break;
-        	case 'code':
-        	    $subjects = $this->getEntityManager()
-        	    	->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-        	    	->findAllByCodeAndStudy($this->getParam('string'), $study);
-        	    break;
-        }
+        $this->getEntityManager()->remove($mapping);
+		$this->getEntityManager()->flush();
+        
+        return array(
+            'result' => (object) array("status" => "success")
+        );
+    }
+    
+    public function typeaheadAction()
+    {
+        $docents = array_merge(
+            $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\Users\People\Academic')
+            	->findAllByName($this->getParam('string')),
+            $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\Users\People\Academic')
+            	->findAllByUniversityIdentification($this->getParam('string'))
+        );
+        	
         $result = array();
-        foreach($subjects as $subject) {
+        foreach($docents as $docent) {
         	$item = (object) array();
-        	$item->id = $subject->getSubject()->getId();
-        	$item->name = $subject->getSubject()->getName();
-        	$item->code = $subject->getSubject()->getCode();
-        	$item->semester = $subject->getSubject()->getSemester();
-        	$item->credits = $subject->getSubject()->getCredits();
-        	$item->mandatory = $subject->isMandatory();
+        	$item->id = $docent->getId();
+        	$item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
         	$result[] = $item;
         }
         
@@ -83,7 +124,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_prof',
+    			'admin_study',
     			array(
     				'action' => 'manage'
     			)
@@ -92,11 +133,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     
-        $subject = $this->getEntityManager()
+        $study = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $subject) {
+    	if (null === $study) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -106,7 +147,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_prof',
+    			'admin_study',
     			array(
     				'action' => 'manage'
     			)
@@ -115,6 +156,53 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     	
-    	return $subject;
+    	return $study;
+    }
+    
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the mapping!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $mapping) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No mapping with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $mapping;
     }
 }

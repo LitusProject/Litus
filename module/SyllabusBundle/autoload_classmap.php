@@ -12,6 +12,7 @@ return array(
     'SyllabusBundle\Entity\StudySubjectMap'               => __DIR__ . '/src/Entity/StudySubjectMap.php',
     'SyllabusBundle\Entity\Subject'                       => __DIR__ . '/src/Entity/Subject.php',
     'SyllabusBundle\Entity\SubjectProfMap'                => __DIR__ . '/src/Entity/SubjectProfMap.php',
+    'SyllabusBundle\Form\Admin\Prof\Add'                  => __DIR__ . '/src/Form/Admin/Prof/Add.php',
     'SyllabusBundle\Repository\Study'                     => __DIR__ . '/src/Repository/Study.php',
     'SyllabusBundle\Repository\StudySubjectMap'           => __DIR__ . '/src/Repository/StudySubjectMap.php',
     'SyllabusBundle\Repository\Subject'                   => __DIR__ . '/src/Repository/Subject.php',

@@ -36,6 +36,21 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
     
+    public function subjectAction()
+    {
+        $subject = $this->_getSubject();
+        
+        return array(
+            'subject' => $subject,
+            'profs' => $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                ->findAllBySubject($subject),
+            'articles' => $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+                ->findAllBySubject($subject)
+        );
+    }
+    
     public function searchAction()
     {
         $this->initAjax();
@@ -71,6 +86,25 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
     
+    public function typeaheadAction()
+    {
+        $subjects = $this->getEntityManager()
+        	->getRepository('SyllabusBundle\Entity\Subject')
+        	->findAllByNameTypeAhead($this->getParam('string'));
+        
+        $result = array();
+        foreach($subjects as $subject) {
+        	$item = (object) array();
+        	$item->id = $subject->getId();
+        	$item->value = $subject->getCode() . ' - ' . $subject->getName();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+    }
+    
     private function _getStudy()
     {
         if (null === $this->getParam('id')) {
@@ -94,6 +128,53 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     
         $study = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $study) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No study with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $study;
+    }
+    
+    private function _getSubject()
+    {
+        if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the subject!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $study = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
     	
     	if (null === $study) {

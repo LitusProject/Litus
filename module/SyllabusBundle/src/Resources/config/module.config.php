@@ -113,6 +113,19 @@ return array(
         		),
         	),
         ),
+        'admin_subject_typeahead' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/admin/syllabus/subject/typeahead[/:string]',
+        		'constraints' => array(
+        			'string'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'admin_subject',
+        			'action'     => 'typeahead',
+        		),
+        	),
+        ),
         'admin_prof' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
@@ -124,6 +137,19 @@ return array(
         		'defaults' => array(
         			'controller' => 'admin_prof',
         			'action'     => 'manage',
+        		),
+        	),
+        ),
+        'admin_prof_typeahead' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/admin/syllabus/prof/typeahead[/:string]',
+        		'constraints' => array(
+        			'string'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'admin_prof',
+        			'action'     => 'typeahead',
         		),
         	),
         ),
