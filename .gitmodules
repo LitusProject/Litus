@@ -9,7 +9,7 @@
 	url = git://github.com/Pmaene/zf2-assetic-module.git
 [submodule "vendor/MistDoctrine"]
 	path = vendor/MistDoctrine
-	url = git://github.com/Pmaene/MistDoctrine.git
+	url = git://github.com/LitusProject/MistDoctrine.git
 [submodule "module/CommonBundle/src/Resources/assets/bootstrap"]
 	path = module/CommonBundle/src/Resources/assets/bootstrap
 	url = git://github.com/twitter/bootstrap.git
