@@ -23,7 +23,8 @@ return array(
         
         'BrBundle',
         'CudiBundle',
-        'SyllabusBundle'
+        'SyllabusBundle',
+        'ProfBundle',
     ),
     'module_listener_options' => array( 
         'config_cache_enabled' 	=> false,

@@ -29,4 +29,25 @@ class Subject extends EntityRepository
         
         return $resultSet;
     }
+    
+    public function findAllByNameTypeAhead($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Subject', 's')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('s.active', 'true'),
+            	    $query->expr()->orX(
+                        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                        $query->expr()->like($query->expr()->lower('s.code'), ':name')
+                    )
+        	    )
+        	)
+        	->setParameter('name', strtolower($name) . '%')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
 }
