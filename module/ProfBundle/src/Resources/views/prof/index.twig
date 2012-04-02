@@ -1,5 +1,12 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-	Litus Prof
+	{% if authenticated %}
+	    <h2>Welcome <i>{{ authenticatedUser }}</i></h2>
+	{% else %}
+	    <div style="text-align: center">
+	        <img src="/img/litus.png" alt="Litus" /><br />
+	        Please login to get access to these pages.
+	    </div>
+	{% endif %}
 {% endblock %}
