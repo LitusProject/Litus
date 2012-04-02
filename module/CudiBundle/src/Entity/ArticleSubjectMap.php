@@ -15,6 +15,8 @@
  
 namespace CudiBundle\Entity;
 
+use SyllabusBundle\Entity\Subject;
+
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\ArticleSubjectMap")
  * @Table(name="cudi.article_subject_map")
@@ -44,4 +46,48 @@ class ArticleSubjectMap
      * @Column(type="boolean")
      */
     private $mandatory;
+    
+    /**
+     * @param \CudiBundle\Entity\Article $article
+     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param boolean $mandatory
+     */
+    public function __construct(Article $article, Subject $subject, $mandatory)
+    {
+        $this->article = $article;
+        $this->subject = $subject;
+        $this->mandatory = $mandatory;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return \SyllabusBundle\Entity\Subject
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isMandatory()
+    {
+        return $this->mandatory;
+    }
 }
