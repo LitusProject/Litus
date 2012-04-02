@@ -112,21 +112,6 @@ return array(
 			'@queue_js',
 			'@common_socket',
 		),
-		'prof' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
-		),
-		'prof_article' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
-		),
-		'prof_file' => array(
-			'@common_jquery',
-			'@bootstrap_css',
-			'@prof_css',
-		),
 		'supplier' => array(
 			'@common_jquery',
 			'@bootstrap_css',

@@ -13,18 +13,18 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Component\Controller;
+namespace ProfBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Form\Auth\Login as LoginForm,
 	Zend\Mvc\MvcEvent;
 
 /**
- * We extend the CommonBundle controller to check a valid user is logged in.
+ * We extend the CommonBundle controller.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SupplierController extends \CommonBundle\Component\Controller\ActionController
+class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
      * Execute the request
@@ -35,15 +35,11 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function execute(MvcEvent $e)
     {
-		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
-			throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-		
 		$result = parent::execute($e);
 				
-		$result['supplier'] = $this->getSupplier();
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
-		$result['loginForm'] = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
+		$result['loginForm'] = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
 		
 		$result['unionUrl'] = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
@@ -51,11 +47,5 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
   		
         $e->setResult($result);
         return $result;
-    }
-    
-    protected function getSupplier()
-    {
-        if ($this->getAuthentication()->isAuthenticated())
-    	    return $this->getAuthentication()->getPersonObject()->getSupplier();
     }
 }

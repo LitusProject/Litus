@@ -13,25 +13,29 @@
  * @license http://litus.cc/LICENSE
  */
  
-return array(
-    'modules' => array(
-    	'AsseticBundle',
-    	'MistDoctrine',
-    	'ZfTwig',
-    	
-        'CommonBundle',
-        
-        'BrBundle',
-        'CudiBundle',
-        'SyllabusBundle',
-        'ProfBundle',
-    ),
-    'module_listener_options' => array( 
-        'config_cache_enabled' 	=> false,
-        'cache_dir'            	=> 'data/cache',
-        'module_paths' 			=> array(
-            'module',
-            'vendor',
-        ),
-    ),
-);
+namespace ProfBundle\Controller\Prof;
+
+use CommonBundle\Component\FlashMessenger\FlashMessage;
+
+/**
+ * ArticleController
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class ArticleController extends \ProfBundle\Component\Controller\ProfController
+{
+    public function manageAction()
+    {
+    	return array();
+    }
+    
+    public function editAction()
+    {
+    	return array();
+    }
+    
+    public function addAction()
+    {
+    	return array();
+    }
+}

@@ -13,12 +13,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle;
+namespace ProfBundle;
 
-use Zend\EventManager\Event,
-	Zend\EventManager\StaticEventManager,
-	Zend\Module\Consumer\AutoloaderProvider,
-	Zend\Module\Manager,
+use Zend\Module\Manager,
+	Zend\EventManager\Event,
+    Zend\EventManager\StaticEventManager,
+    Zend\Module\Consumer\AutoloaderProvider,
     Zend\Mvc\MvcEvent,
     Zend\View\Helper\Doctype;
 
@@ -62,7 +62,7 @@ class Module implements AutoloaderProvider
         $locator = $app->getLocator();
         $view = $locator->get('view');
 		
-		$view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CudiBundle/src/Resources/layouts');
+		$view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../ProfBundle/src/Resources/layouts');
         $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
 
         $url = $view->plugin('url');
@@ -75,7 +75,7 @@ class Module implements AutoloaderProvider
     public function getProvides()
     {
         return array(
-            'name'    => 'CudiBundle',
+            'name'    => 'ProfBundle',
             'version' => '1.0.0',
         );
     }
