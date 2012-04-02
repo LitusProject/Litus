@@ -62,7 +62,6 @@ class Module implements AutoloaderProvider
         $locator = $app->getLocator();
         $view = $locator->get('view');
 		
-		$view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CommonBundle/src/Resources/layouts');
         $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
 
         $url = $view->plugin('url');

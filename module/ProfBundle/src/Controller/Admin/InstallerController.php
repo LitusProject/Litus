@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace SyllabusBundle\Controller\Admin;
+namespace ProfBundle\Controller\Admin;
 
 /**
  * InstallerController
@@ -26,21 +26,11 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	{
 	    $this->_installConfig(
 	        array(
-	    		array(
+	    		/*array(
 	    			'key'         => 'syllabus.update_socket_port',
 	    			'value'       => '8898',
 	    			'description' => 'The port used for the websocket of the syllabus update',
-	    		),
-	    		array(
-	    			'key'         => 'syllabus.update_socket_remote_host',
-	    			'value'       => '127.0.0.1',
-	    			'description' => 'The remote host for the websocket of the syllabus update',
-	    		),
-	    		array(
-	    			'key'         => 'syllabus.update_socket_host',
-	    			'value'       => '127.0.0.1',
-	    			'description' => 'The host used for the websocket of the syllabus update',
-	    		),
+	    		),*/
 	    	)
 	    );
 	}
@@ -49,16 +39,10 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	{
 	    $this->installAclStructure(
 	        array(
-	            'syllabusbundle' => array(
-	                'admin_study' => array(
+	            'profbundle' => array(
+	                /*'admin_study' => array(
 	                	'manage', 'search'
-	                ),
-	                'admin_subject' => array(
-	                	'manage', 'search'
-	                ),
-	                'admin_update_syllabus' => array(
-	                	'index', 'update'
-	                ),
+	                ),*/
 	            )
 	        )
 	    );

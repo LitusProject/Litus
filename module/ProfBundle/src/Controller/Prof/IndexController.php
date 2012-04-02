@@ -13,19 +13,17 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Prof;
-
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+namespace ProfBundle\Controller\Prof;
 
 /**
  * IndexController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class IndexController extends \CommonBundle\Component\Controller\ActionController
+class IndexController extends \ProfBundle\Component\Controller\ProfController
 {
-    public function indexAction()
-    {
-    	return array();
-    }
+	public function indexAction()
+	{
+	    return array();
+	}
 }

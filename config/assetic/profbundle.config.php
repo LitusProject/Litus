@@ -13,19 +13,26 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Prof;
-
-use CommonBundle\Component\FlashMessenger\FlashMessage;
-
-/**
- * FileController
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class FileController extends \CommonBundle\Component\Controller\ActionController
-{
-    public function manageAction()
-    {
-    	return array();
-    }
-}
+return array(
+	'controllers'  => array(
+	    'prof' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@prof_css',
+		),
+		'prof_article' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@prof_css',
+		),
+		'prof_file' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@prof_css',
+		),
+	),
+	'routes' => array(),
+);
