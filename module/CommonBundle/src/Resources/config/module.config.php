@@ -26,6 +26,7 @@ return array(
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
 				
+				'index'                            => 'CommonBundle\Controller\IndexController',
 				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
@@ -230,6 +231,18 @@ return array(
         ),
     ),
     'routes' => array(
+        'home' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '/',
+                'constraints' => array(
+                ),
+                'defaults' => array(
+                    'controller' => 'index',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     	'admin_academic' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
