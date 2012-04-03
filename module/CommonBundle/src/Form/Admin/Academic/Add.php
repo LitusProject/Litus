@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit(('' == $fieldPrefix ? '' : $fieldPrefix . '_') . 'submit');
         $field->setLabel('Add')
-            ->setAttrib('class', 'students_add')
+            ->setAttrib('class', 'academic_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }

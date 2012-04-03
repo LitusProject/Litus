@@ -43,7 +43,7 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setLabel('Save')
-            ->setAttrib('class', 'students_edit')
+            ->setAttrib('class', 'academic_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
 
