@@ -68,6 +68,7 @@ return array(
     'CommonBundle\Controller\Admin\DashboardController'                                => __DIR__ . '/src/Controller/Admin/DashboardController.php',
     'CommonBundle\Controller\Admin\RoleController'                                     => __DIR__ . '/src/Controller/Admin/RoleController.php',
     'CommonBundle\Controller\ErrorController'                                          => __DIR__ . '/src/Controller/ErrorController.php',
+    'CommonBundle\Controller\IndexController'                                          => __DIR__ . '/src/Controller/IndexController.php',
     'CommonBundle\Entity\Acl\Action'                                                   => __DIR__ . '/src/Entity/Acl/Action.php',
     'CommonBundle\Entity\Acl\Resource'                                                 => __DIR__ . '/src/Entity/Acl/Resource.php',
     'CommonBundle\Entity\Acl\Role'                                                     => __DIR__ . '/src/Entity/Acl/Role.php',
