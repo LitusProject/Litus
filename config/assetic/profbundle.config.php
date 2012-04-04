@@ -44,6 +44,7 @@ return array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
+			'@common_typeahead_remote',
 			'@prof_css',
 		),
 		'prof_file' => array(

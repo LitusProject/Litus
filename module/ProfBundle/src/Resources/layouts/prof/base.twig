@@ -25,6 +25,11 @@
 					    <a href="{{ url("prof_subject") }}">Subjects</a>
 					</li>
 				{% endif %}
+				{% if hasAccess('prof_article', 'manage') %}
+					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_article") }}">Articles</a>
+					</li>
+				{% endif %}
 			</ul>
 			<ul class="nav pull-right auth-nav">
 			    {% if authenticated %}

@@ -121,6 +121,19 @@ return array(
         		),
         	),
         ),
+        'prof_article_typeahead' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/article/typeahead[/:string]',
+        		'constraints' => array(
+        			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_article',
+        			'action'     => 'typeahead',
+        		),
+        	),
+        ),
         'prof_article_mapping' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(

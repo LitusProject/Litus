@@ -24,14 +24,79 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
  */
 class ArticleController extends \ProfBundle\Component\Controller\ProfController
 {
+    public function manageAction()
+    {
+        $articles = array();
+        
+        $subjects = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findAllByProf($this->getAuthentication()->getPersonObject());
+        
+        foreach($subjects as $subject) {
+            $allArticles = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+                ->findAllBySubject($subject->getSubject());
+            
+            foreach($allArticles as $article) {
+                $removeAction = $this->getEntityManager()
+                    ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
+                    ->findOneByMapping($article);
+                if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
+                    $articles[] = $article;
+            }
+        }
+        
+        return array(
+            'articles' => $articles,
+        );
+    }
+    
     public function editAction()
     {
+        if (!($article = $this->_getArticle()))
+            return;
+        
     	return array();
     }
     
     public function addAction()
     {
     	return array();
+    }
+    
+    public function typeaheadAction()
+    {
+        $articles = array();
+        
+        $subjects = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findAllByProf($this->getAuthentication()->getPersonObject());
+        
+        foreach($subjects as $subject) {
+            $allArticles = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+                ->findAllBySubject($subject->getSubject());
+            
+            foreach($allArticles as $article) {
+                $removeAction = $this->getEntityManager()
+                    ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
+                    ->findOneByMapping($article);
+                if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
+                    $articles[] = $article->getArticle();
+            }
+        }
+        
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->value = $article->getTitle() . ' - ' . $article->getMetaInfo()->getYearPublished();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
     }
     
     private function _getArticle()
@@ -59,7 +124,20 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $article) {
+    	$subjects = $this->getEntityManager()
+    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+    	    ->findAllByProf($this->getAuthentication()->getPersonObject());
+    	
+    	foreach($subjects as $subject) {
+    	    $mapping = $this->getEntityManager()
+    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+    	        ->findOneByArticleAndSubject($article, $subject->getSubject());
+    	    
+    	    if ($mapping)
+    	        break;
+    	}
+    	
+    	if (null === $article || null === $mapping) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
