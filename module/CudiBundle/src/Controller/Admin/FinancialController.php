@@ -78,9 +78,10 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
     		->findAll();
     	
     	$currentSupplier = $supplierRepository
-    		->findBy( array( 'id' => $this->getParam('supplier') ) );
+    		->findBy( array( 'id' => $this->getParam('id') ) );
     	
-    	if( array() === $currentSupplier && null !== $this->getParam('id') )
+    	
+    	if( null !== $this->getParam('id') && array() === $currentSupplier )
     	{
 		    $this->flashMessenger()->addMessage(
 		        new FlashMessage(
@@ -97,20 +98,42 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
 				)
 			);
 		}
-    
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\DeliveryItem',
-            $this->getParam('page'),
-            array(),
-        	array('date' => 'DESC')
-        ); // filter out delivery items delivered by other suppliers than the currentSupplier
-        // ... but how? O_o
-        
-        return array(
-        	'suppliers' => $allSuppliers,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
-        );
+    		
+		if( array() !== $currentSupplier )
+		{
+		
+		    $deliveryItems = $this->getEntityManager()
+		    	->createQueryBuilder()
+				->select( 'di' )
+				->from( 'CudiBundle\Entity\Stock\DeliveryItem', 'di' )
+				->from( 'CudiBundle\Entity\Articles\StockArticles\Internal', 's' )
+		    	->where( 's.id = di.article' )
+		    	->andWhere( 's.supplier = ' . $this->getParam('id') )
+		    	->orderBy( 'di.date','DESC' )
+		    	->getQuery()
+		    	->getResult();
+		    	
+		    	// TODO: add returnItems to this list ;-)
+			
+			$paginator = $this->paginator()->createFromArray(
+				$deliveryItems,
+				$this->getParam('page')
+			);
+		    
+		    return array(
+				'suppliers' => $allSuppliers,
+				'showitems' => true,
+				'paginator' => $paginator,
+				'paginationControl' => $this->paginator()->createControl(true)
+			);
+        }
+        else
+        	$paginator = array();
+		    
+	    return array(
+	    	'suppliers' => $allSuppliers,
+	    	'showitems' => false
+	    );
     }
     
 }
