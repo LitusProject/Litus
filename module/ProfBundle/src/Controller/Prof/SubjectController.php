@@ -49,7 +49,7 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
             $removeAction = $this->getEntityManager()
                 ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
                 ->findOneByMapping($article);
-            if (null === $removeAction)
+            if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
                 $articles[] = $article;
         }
           
@@ -85,11 +85,15 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
     		return;
     	}
     
-        $study = $this->getEntityManager()
+        $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $study) {
+    	$mapping = $this->getEntityManager()
+    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+    	    ->findOneBySubjectAndProf($subject, $this->getAuthentication()->getPersonObject());
+    	
+    	if (null === $subject || null === $mapping) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -108,6 +112,6 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
     		return;
     	}
     	
-    	return $study;
+    	return $subject;
     }
 }

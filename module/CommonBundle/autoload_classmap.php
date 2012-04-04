@@ -35,6 +35,7 @@ return array(
     'CommonBundle\Component\Form\Bootstrap\Decorator\Errors'                           => __DIR__ . '/src/Component/Form/Bootstrap/Decorator/Errors.php',
     'CommonBundle\Component\Form\Bootstrap\DisplayGroup\Actions'                       => __DIR__ . '/src/Component/Form/Bootstrap/DisplayGroup/Actions.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Button'                             => __DIR__ . '/src/Component/Form/Bootstrap/Element/Button.php',
+    'CommonBundle\Component\Form\Bootstrap\Element\Checkbox'                           => __DIR__ . '/src/Component/Form/Bootstrap/Element/Checkbox.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Password'                           => __DIR__ . '/src/Component/Form/Bootstrap/Element/Password.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Reset'                              => __DIR__ . '/src/Component/Form/Bootstrap/Element/Reset.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Submit'                             => __DIR__ . '/src/Component/Form/Bootstrap/Element/Submit.php',

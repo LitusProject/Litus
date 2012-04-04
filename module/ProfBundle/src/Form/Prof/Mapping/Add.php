@@ -13,9 +13,10 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace ProfBundle\Form\Prof\Prof;
+namespace ProfBundle\Form\Prof\Mapping;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
 	CommonBundle\Component\Form\Bootstrap\Element\Text,
 	Zend\Form\Element\Hidden,
 	Zend\Validator\Int as IntValidator;
@@ -27,18 +28,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($options);
          
-		$field = new Hidden('prof_id');
+		$field = new Hidden('article_id');
 		$field->setRequired()
 		    ->addValidator(new IntValidator())
-		    ->setAttrib('id', 'profId');
+		    ->setAttrib('id', 'articleId');
 		$this->addElement($field);
 		 
-		$field = new Text('prof');
-		$field->setLabel('Docent')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
-			->setAttrib('id', 'profSearch')
+		$field = new Text('article');
+		$field->setLabel('Article')
+		    ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
+			->setAttrib('id', 'articleSearch')
 			->setAttrib('data-provide', 'typeahead')
 			->setRequired();
+		$this->addElement($field);
+		
+		$field = new Checkbox('mandatory');
+		$field->setLabel('Mandatory');
 		$this->addElement($field);
 
         $field = new Submit('submit');
