@@ -16,7 +16,7 @@
         </ul>
     </nav>
 </header>
-
+	{% if showitems == true %}
 	<div id="controller_action">
 		<table class="full_width">
 		
@@ -41,4 +41,5 @@
 		
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
+	{% endif %}
 {% endblock %}
