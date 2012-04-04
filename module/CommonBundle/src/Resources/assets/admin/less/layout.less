@@ -207,7 +207,8 @@ h1 {
     height: auto !important;
     height: @contentHeight;
     padding-bottom: @defaultSpacing;
-
+    
+    #controller_sub_header,
     #controller_header {
         height: @contentHeaderHeight;
         margin: 0 @defaultSpacing @defaultSpacing 0;
@@ -223,7 +224,8 @@ h1 {
                 padding-left: @iconWidth + 4;
             }
         }
-
+        
+        #controller_sub_nav,
         #controller_nav {
             display: block;
             float: right;
@@ -262,6 +264,14 @@ h1 {
                 content: none;
             }
         }
+        
+        #controller_sub_nav {
+            float: left;
+        }
+    }
+    
+    #controller_sub_header {
+        overflow: hidden;
     }
 
     #controller_action {

@@ -55,7 +55,10 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 		return array(
 			'supplier' => $supplier,
 			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl()
+			'paginationControl' => $this->paginator()->createControl(),
+			'suppliers' => $this->getEntityManager()
+				->getRepository('CudiBundle\Entity\Supplier')
+				->findAll(),
 		);
 	}	
 	

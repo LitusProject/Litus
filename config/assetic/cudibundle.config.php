@@ -69,6 +69,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@supplier_nav',
 		),
 		'admin_delivery' => array(
 			'@common_jquery',
@@ -76,6 +77,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@supplier_nav',
 		),
 		'admin_sale' => array(
 			'@common_jquery',
