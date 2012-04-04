@@ -51,4 +51,57 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
         );
     }
     
+    public function stockAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Stock\StockItem',
+            $this->getParam('page'),
+            array(),
+        	array('id' => 'DESC')
+        );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
+    public function supplyAction()
+    {
+    
+    	$supplierRepository = $this->getEntityManager()
+    		->getRepository( 'CudiBundle\Entity\Supplier' );
+    		
+    	$allSuppliers = $supplierRepository
+    		->findAll();
+    	
+    	$currentSupplier = $supplierRepository
+    		->findBy( array( 'name' => $this->getParam('supplier') ) );
+    	
+    	if( array() === $currentSupplier && "" != $this->getParam('supplier') )
+    	{
+		    $this->flashMessenger()->addMessage(
+		        new FlashMessage(
+		            FlashMessage::ERROR,
+		            'ERROR',
+		            'The supplier "'.$this->getParam('supplier').'" was not found.'
+		        )
+		    ); // why does this flash message appear with delay? O_o It shouldn't!
+		}
+    
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Stock\DeliveryItem',
+            $this->getParam('page'),
+            array(),
+        	array('date' => 'DESC')
+        ); // filter out delivery items delivered by other suppliers than the currentSupplier
+        // ... but how? O_o
+        
+        return array(
+        	'suppliers' => $allSuppliers,
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
 }
