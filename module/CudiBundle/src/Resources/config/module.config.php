@@ -340,18 +340,17 @@ return array(
 				),
 			),
 		),
-		'admin_financial_supply' => array(
+		'admin_financial_supplier' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/financial[/:action[/:supplier[/:id]]]',
+				'route' => '/admin/financial[/:action[/:id]]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'supplier'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_financial',
-					'action'     => 'supply',
-					'id'     => '[0-9]*',
+					'action'     => 'supplier',
 				),
 			),
 		),

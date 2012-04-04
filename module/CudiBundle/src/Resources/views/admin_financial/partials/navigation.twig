@@ -6,7 +6,7 @@
         	{% if hasAccess('admin', 'financial', 'sales') %}
                 <li><a {% if 'sales' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_financial', {"action": "sales"}) }}">Sales</a></li>
                 <li><a {% if 'stock' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_financial', {"action": "stock"}) }}">Stock</a></li>
-                <li><a {% if 'supply' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_financial', {"action": "supply"}) }}">Supply</a></li>
+                <li><a {% if 'supplier' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_financial', {"action": "supplier"}) }}">Supplier</a></li>
 			{% endif %}
         </ul>
     </nav>

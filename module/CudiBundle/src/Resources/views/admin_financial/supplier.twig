@@ -1,0 +1,44 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_financial/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+<header id="controller_header">
+    <div class="title"><span class="suppliers">Suppliers</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% for supplier in suppliers %}
+                <li><a {% if supplier.getId() == getParam('id') %} class="active" {% endif %}href="{{ url("admin_financial_supplier", {"action": "supplier", "id": supplier.getId()}) }}">{{ supplier.getName() }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
+
+	<div id="controller_action">
+		<table class="full_width">
+		
+		    <tr>
+		        <th>Article</th>
+		        <th>Type</th>
+		        <th>Number</th>
+		    	<th>Unit Value</th>
+		        <th>Total Value</th>
+		    </tr>
+		    
+		    {% for deliveryitem in paginator %}
+		        <tr>
+		            <td>{{ deliveryitem.getArticle().getTitle() }}</td>
+		            <td>{% if deliveryitem.getNumber() > 0 %}delivery{% else %}return{% endif %}</td>
+		            <td>{{ deliveryitem.getNumber() }}</td>
+		            <td>{{ deliveryitem.getArticle().getPurchasePrice()/100 }}</td>
+		            <td>{{ deliveryitem.getPrice()/100 }}</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+		
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}
