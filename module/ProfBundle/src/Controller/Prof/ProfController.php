@@ -120,11 +120,15 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
     		return;
     	}
     
-        $study = $this->getEntityManager()
+        $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $study) {
+    	$mapping = $this->getEntityManager()
+    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+    	    ->findOneBySubjectAndProf($subject, $this->getAuthentication()->getPersonObject());
+    	
+    	if (null === $subject || null === $mapping) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -143,6 +147,6 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
     		return;
     	}
     	
-    	return $study;
+    	return $subject;
     }
 }

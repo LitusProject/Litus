@@ -53,7 +53,7 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('prof_article', 'add') %}
-            <a href="{{ url('prof_article', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">Add Article</a>
+            <a href="{{ url('prof_article_mapping', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">Add Article</a>
         {% endif %}
     </div>
     <br class="clear" />
