@@ -53,12 +53,14 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
     
     public function stockAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\StockItem',
-            $this->getParam('page'),
-            array(),
-        	array('id' => 'DESC')
-        );
+		$paginator = $this->paginator()->createFromEntity(
+		    'CudiBundle\Entity\Stock\StockItem',
+		    $this->getParam('page')
+		);
+		
+		foreach($paginator as $item) {
+			$item->setEntityManager($this->getEntityManager());
+		}
         
         return array(
         	'paginator' => $paginator,
@@ -66,7 +68,7 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
         );
     }
     
-    public function supplyAction()
+    public function supplierAction()
     {
     
     	$supplierRepository = $this->getEntityManager()
@@ -76,17 +78,24 @@ class FinancialController extends \CommonBundle\Component\Controller\ActionContr
     		->findAll();
     	
     	$currentSupplier = $supplierRepository
-    		->findBy( array( 'name' => $this->getParam('supplier') ) );
+    		->findBy( array( 'id' => $this->getParam('supplier') ) );
     	
-    	if( array() === $currentSupplier && "" != $this->getParam('supplier') )
+    	if( array() === $currentSupplier && null !== $this->getParam('id') )
     	{
 		    $this->flashMessenger()->addMessage(
 		        new FlashMessage(
 		            FlashMessage::ERROR,
 		            'ERROR',
-		            'The supplier "'.$this->getParam('supplier').'" was not found.'
+		            'The supplier "'.$this->getParam('id').'" was not found.'
 		        )
-		    ); // why does this flash message appear with delay? O_o It shouldn't!
+		    );
+		    
+		    $this->redirect()->toRoute(
+				'admin_financial',
+				array(
+					'action' => 'supplier'
+				)
+			);
 		}
     
         $paginator = $this->paginator()->createFromEntity(
