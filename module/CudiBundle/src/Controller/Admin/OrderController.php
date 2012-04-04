@@ -66,7 +66,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return array(
         	'supplier' => $supplier,
         	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        	'paginationControl' => $this->paginator()->createControl(),
+        	'suppliers' => $this->getEntityManager()
+        		->getRepository('CudiBundle\Entity\Supplier')
+        		->findAll(),
         );
 	}
 	
@@ -77,6 +80,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
 		return array(
 			'order' => $order,
+			'suppliers' => $this->getEntityManager()
+				->getRepository('CudiBundle\Entity\Supplier')
+				->findAll(),
 		);
 	}
 	
