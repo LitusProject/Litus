@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity;
 
-use \DateTime,
+use DateTime,
 	CudiBundle\Entity\Articles\MetaInfo;
 
 /**
@@ -32,6 +32,8 @@ use \DateTime,
 abstract class Article
 {
     /**
+     * @var integer The ID of this article
+     *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -39,41 +41,60 @@ abstract class Article
     private $id;
 
     /**
+     * @var string The title of this article
+     *
      * @Column(type="string")
      */
     private $title;
 
     /**
+     * @var \CudiBundle\Entity\Articles\MetaInfo The metainfo of this article
+     *
      * @OneToOne(targetEntity="CudiBundle\Entity\Articles\MetaInfo")
      * @JoinColumn(name="metainfo", referencedColumnName="id")
      */
     private $metaInfo;
 
     /**
+     * @var \DateTime The time the article was created
+     *
      * @Column(type="datetime")
      */
     private $timestamp;
 
 	/**
+	 * @var boolean The flag whether the article is removed
+	 *
 	 * @Column(type="boolean")
 	 */
 	private $removed = false;
 	
 	/**
+	 * @var \CudiBundle\Entity\Stock\StockItem The reference to a stock item
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Stock\StockItem", mappedBy="article")
 	 */
 	private $stockItem;
 	
 	/**
+	 * @var integer The version number of this article
+	 * 
 	 * @Column(name="version_number", type="smallint", nullable=true)
 	 */
 	private $versionNumber = 1;
+	
+	/**
+	 * @var boolean The flag whether the article is enabled (for in ProfBundle)
+	 *
+	 * @Column(type="boolean")
+	 */
+	private $enabled = true;
 
     /**
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
-     * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param \CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      */
     public function __construct($title, MetaInfo $metaInfo)
     {
@@ -105,7 +126,7 @@ abstract class Article
 	/**
      * @param string $title
 	 *
-     * @return CudiBundle\Entity\Article
+     * @return \CudiBundle\Entity\Article
      */
 	public function setTitle($title)
 	{
@@ -119,7 +140,7 @@ abstract class Article
 	}
 
     /**
-     * @return CudiBundle\Entity\Articles\MetaInfo
+     * @return \CudiBundle\Entity\Articles\MetaInfo
      */
     public function getMetaInfo()
     {
@@ -127,7 +148,7 @@ abstract class Article
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getTimestamp()
     {
@@ -137,7 +158,7 @@ abstract class Article
 	/**
      * @param boolean $removed Whether this item is removed or not
 	 *
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
      */
 	public function setRemoved($removed)
 	{
@@ -146,7 +167,7 @@ abstract class Article
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Stock\StockItem
+	 * @return \CudiBundle\Entity\Stock\StockItem
 	 */
 	public function getStockItem()
 	{
@@ -156,7 +177,7 @@ abstract class Article
 	/**
 	 * @param integer $versionNumber The version number of this article
 	 *
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function setVersionNumber($versionNumber)
 	{
@@ -170,6 +191,24 @@ abstract class Article
 	public function getVersionNumber()
 	{
 		return $this->versionNumber;
+	}
+	
+	/**
+	 * @param boolean
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setEnabled($enabled = true)
+	{
+	    $this->enabled = $enabled;
+	    return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isEnabled()
+	{
+	    return $this->enabled;
 	}
 	
 	/**

@@ -25,6 +25,8 @@ use CudiBundle\Entity\Supplier,
 class Order
 {
 	/**
+	 * @var integer The ID of the order
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -32,17 +34,23 @@ class Order
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Supplier The supplier of the order
+	 *
      * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @JoinColumn(name="supplier", referencedColumnName="id")
      */
 	private $supplier;
 	
 	/**
+	 * @var \DateTime The time of the order
+	 *
 	 * @Column(type="datetime", nullable=true)
 	 */
 	private $date;
 	
 	/**
+	 * @var array The items ordered
+	 *
 	 * @OneToMany(targetEntity="CudiBundle\Entity\Stock\OrderItem", mappedBy="order")
 	 */
 	private $orderItems;
@@ -81,7 +89,7 @@ class Order
 	/**
 	 * Get the supplier of this order
 	 *
-	 * @return CudiBundle\Entity\Supplier
+	 * @return \CudiBundle\Entity\Supplier
 	 */
 	public function getSupplier()
 	{

@@ -5,6 +5,7 @@ namespace SyllabusBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 use CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
@@ -43,8 +44,23 @@ class SubjectProfMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+        	->innerJoin('m.subject', 's', Join::WITH, $query->expr()->eq('s.active', 'true'))
         	->where($query->expr()->in('m.subject', ':subject'))
         	->setParameter('subject', $subject->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByProf(Academic $prof)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+        	->innerJoin('m.subject', 's', Join::WITH, $query->expr()->eq('s.active', 'true'))
+        	->where($query->expr()->in('m.prof', ':prof'))
+        	->setParameter('prof', $prof->getId())
         	->getQuery()
         	->getResult();
         	

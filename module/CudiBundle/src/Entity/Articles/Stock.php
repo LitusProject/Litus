@@ -26,42 +26,58 @@ use CudiBundle\Entity\Articles\MetaInfo,
 abstract class Stock extends \CudiBundle\Entity\Article
 {
     /**
+     * @var integer The purchase price of the article
+     *
      * @Column(name="purchase_price", type="bigint")
      */
     private $purchasePrice;
 
     /**
+     * @var integer The sell price of the article
+     *
      * @Column(name="sell_price", type="bigint")
      */
     private $sellPrice;
 
     /**
+     * @var integer The sell price of the article for members
+     *
      * @Column(name="sell_price_members", type="bigint")
      */
     private $sellPriceMembers;
 
     /**
+     * @var integer The barcode of the article
+     *
      * @Column(type="bigint")
      */
     private $barcode;
 
     /**
+     * @var boolean Flag whether the aritcle is bookable
+     *
      * @Column(type="boolean")
      */
     private $bookable;
 
     /**
+     * @var boolean Flag whether the aritcle is unbookable
+     *
      * @Column(type="boolean")
      */
     private $unbookable;
 
     /**
+     * @var \CudiBundle\Entity\Supplier The supplier of the article
+     *
      * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 
 	/**
+	 * @var boolean Flag whether the aritcle can expire
+	 *
 	 * @Column(type="boolean")
 	 */
 	private $canExpire;
@@ -97,7 +113,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
     }
 
 	/**
-	 * @return float
+	 * @return integer
 	 */
 	public function getPurchasePrice()
 	{
@@ -107,7 +123,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param float $purchasePrice
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setPurchasePrice($purchasePrice)
 	{
@@ -116,7 +132,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-	 * @return float
+	 * @return integer
 	 */
 	public function getSellPrice()
 	{
@@ -126,7 +142,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param float $sellPrice
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setSellPrice($sellPrice)
 	{
@@ -135,7 +151,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-	 * @return float
+	 * @return integer
 	 */
 	public function getSellPriceMembers()
 	{
@@ -145,7 +161,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param float $sellPriceMembers
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setSellPriceMembers($sellPriceMembers)
 	{
@@ -164,7 +180,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param integer $barcode
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setBarcode($barcode)
 	{
@@ -179,7 +195,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Suppplier
+	 * @return \CudiBundle\Entity\Suppplier
 	 */
 	public function getSupplier()
 	{
@@ -187,9 +203,9 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
-     * @param CudiBundle\Entity\Supplier $supplier
+     * @param \CudiBundle\Entity\Supplier $supplier
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setSupplier(Supplier $supplier)
 	{
@@ -227,7 +243,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param boolean $bookable
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setIsBookable($bookable)
 	{
@@ -246,7 +262,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	/**
      * @param boolean $unbookable
 	 *
-     * @return CudiBundle\Entity\Articles\Stock
+     * @return \CudiBundle\Entity\Articles\Stock
      */
 	public function setIsUnbookable($unbookable)
 	{

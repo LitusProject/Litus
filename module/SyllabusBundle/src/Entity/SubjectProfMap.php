@@ -24,6 +24,8 @@ use CommonBundle\Entity\Users\People\Academic;
 class SubjectProfMap
 {
     /**
+     * @var integer The ID of this mapping
+     *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -31,20 +33,24 @@ class SubjectProfMap
     private $id;
 
     /**
+     * @var \CommonBundle\Entity\Users\People\Academic The prof of this mapping
+     *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $prof;
 
 	/**
+	 * @var \SyllabusBundle\Entity\Subject The subject of this mapping
+	 *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $subject;
     
     /**
-     * @param SyllabusBundle\Entity\Subject $subject
-     * @param CommonBundle\Entity\Users\People\Academic $prof
+     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \CommonBundle\Entity\Users\People\Academic $prof
      */
     public function __construct(Subject $subject, Academic $prof)
     {
@@ -61,7 +67,7 @@ class SubjectProfMap
     }
     
     /**
-     * @return SyllabusBundle\Entity\Subject
+     * @return \SyllabusBundle\Entity\Subject
      */
     public function getSubject()
     {
@@ -69,7 +75,7 @@ class SubjectProfMap
     }
     
     /**
-     * @return CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function getProf()
     {

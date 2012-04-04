@@ -27,6 +27,8 @@ use CommonBundle\Entity\Users\Person,
 class Booking
 {
 	/**
+	 * @var integer The ID of the booking
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -34,52 +36,73 @@ class Booking
 	private $id;
 	
 	/**
+	 * @var \CommonBundle\Entity\Users\Person The person of this booking
+	 *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="person_id", referencedColumnName="id")
 	 */
 	private $person;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The booked article
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var integer The number of articles booked
+	 *
 	 * @Column(type="smallint")
 	 */
 	private $number;
 	
 	/**
+	 * @var string The status of this booking
+	 *
 	 * @Column(type="string", length=50)
 	 */
 	private $status;
 	
 	/**
+	 * @var \DateTime The time this booking will expire
+	 *
 	 * @Column(type="datetime", nullable=true)
 	 */
 	private $expirationDate;
 	
 	/**
+	 * @var \DateTime The time this booking was assigned
+	 *
 	 * @Column(type="datetime", nullable=true)
 	 */
 	private $assignmentDate;
 	
 	/**
+	 * @var \DateTime The time this booking was made
+	 *
 	 * @Column(type="datetime")
 	 */
 	private $bookDate;
 	
 	/**
+	 * @var \DateTime The time this booking was sold
+	 *
 	 * @Column(type="datetime", nullable=true)
 	 */
 	private $saleDate;
 	
 	/**
+	 * @var \DateTime The time this booking was canceled
+	 *
 	 * @Column(type="datetime", nullable=true)
 	 */
 	private $cancelationDate;
 	
+	/**
+	 * @var array The possible states of a booking
+	 */
 	private static $POSSIBLE_STATUSES = array(
 		'booked', 'assigned', 'sold', 'expired', 'canceled'
 	);
@@ -138,7 +161,7 @@ class Booking
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -146,9 +169,9 @@ class Booking
 	}
 	
 	/**
-	 * @param CudiBundle\Entity\Article $article The new article of this booking
+	 * @param \CudiBundle\Entity\Article $article The new article of this booking
 	 * 
-	 * @return CudiBundle\Entity\Sales\Booking
+	 * @return \CudiBundle\Entity\Sales\Booking
 	 */
 	public function setArticle($article)
 	{
@@ -167,7 +190,7 @@ class Booking
 	/**
 	 * @param integer $number
 	 * 
-	 * @return CudiBundle\Entity\Sales\Booking
+	 * @return \CudiBundle\Entity\Sales\Booking
 	 */
 	public function setNumber($number)
 	{

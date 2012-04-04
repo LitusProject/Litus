@@ -22,6 +22,8 @@ namespace CudiBundle\Entity\Sales;
 class PayDesk
 {
 	/**
+	 * @var integer The ID of this paydesk
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -29,11 +31,15 @@ class PayDesk
 	private $id;
 	
 	/**
+	 * @var string The name of this paydesk
+	 *
 	 * @Column(type="string")
 	 */
 	private $name;
 	
 	/**
+	 * @var boolean Flag whether this paydesk is active
+	 *
 	 * @Column(type="boolean")
 	 */
 	private $active;

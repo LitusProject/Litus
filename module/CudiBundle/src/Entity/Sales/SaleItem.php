@@ -26,6 +26,8 @@ use CudiBundle\Entity\Sales\Booking,
 class SaleItem
 {
 	/**
+	 * @var integer The ID of this sale item
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -33,44 +35,63 @@ class SaleItem
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Sales\Session The session of this sale item
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
 	 * @JoinColumn(name="session_id", referencedColumnName="id")
 	 */
 	private $session;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article of this sale item
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var integer The number sold of the article
+	 *
 	 * @Column(type="integer")
 	 */
 	private $number;
 	
 	/**
+	 * @var \DateTime The time this was sold
+	 *
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;
 	
 	/**
+	 * @var integer The price of the selling
+	 *
 	 * @Column(type="integer")
 	 */
 	private $price;
 	
 	/**
+	 * @var \CudiBundle\Entity\Sales\Booking The booking belonging to this sale item
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Booking")
 	 * @JoinColumn(name="booking", referencedColumnName="id")
 	 */
 	private $booking;
 	
 	/**
+	 * @var \CudiBundle\Entity\Sales\ServingQueueItem The queue item belonging to this sale item
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueItem")
 	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
 	 */
 	private $servingQueueItem;
 	
+	/**
+	 * @param integer $price
+	 * @param \CudiBundle\Entity\Sales\Booking $booking
+	 * @param \CudiBundle\Entity\Sales\ServingQueueItem $servingQueueItem
+	 */
 	public function __construct($price, Booking $booking, ServingQueueItem $servingQueueItem)
 	{
 	    $this->session = $servingQueueItem->getSession();
@@ -93,7 +114,7 @@ class SaleItem
 	/**
 	 * @param integer $number
 	 * 
-	 * @return CudiBundle\Entity\Sales\SaleItem
+	 * @return \CudiBundle\Entity\Sales\SaleItem
 	 */
 	public function setNumber($number)
 	{

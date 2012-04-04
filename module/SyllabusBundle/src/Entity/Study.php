@@ -22,6 +22,8 @@ namespace SyllabusBundle\Entity;
 class Study
 {
 	/**
+	 * @var integer The ID of this study
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -29,26 +31,36 @@ class Study
 	private $id;
 
     /**
+     * @var string The title of this study
+     *
      * @Column(type="string")
      */
     private $title;
 
     /**
+     * @var integer The phase number of this study
+     *
      * @Column(type="smallint")
      */
     private $phase;
     
     /**
+     * @var string The language of this study
+     *
      * @Column(type="string", length=2)
      */
     private $language;
 
     /**
+     * @var boolean Flag whether this study is active
+     *
      * @Column(type="boolean")
      */
     private $active;
     
     /**
+     * @var \SyllabusBundle\Entity\Study The parent study of this study
+     *
      * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
      * @JoinColumn(name="parent", referencedColumnName="id")
      */
@@ -120,7 +132,7 @@ class Study
     /**
      * @param boolean $flag
      *
-     * @return SyllabusBundle\Entity\Study
+     * @return \SyllabusBundle\Entity\Study
      */
     public function setActive($flag = true)
     {

@@ -24,6 +24,8 @@ use CudiBundle\Entity\Articles\StockArticles\Internal as InternalArticle;
 class File
 {
 	/**
+	 * @var integer The ID of the file
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -31,31 +33,46 @@ class File
 	private $id;
 	
 	/**
+	 * @var string The path to the file
+	 * 
 	 * @Column(type="string")
 	 */
 	private $path;
 	
 	/**
+	 * @var string The name of the file
+	 * 
 	 * @Column(type="string")
 	 */
 	private $name;
 	
 	/**
+	 * @var string The description of the file
+	 * 
 	 * @Column(type="string")
 	 */
 	private $description;
 	
 	/**
+	 * @var \CudiBundle\Entity\Articles\StockArticles\Internal The article where the file belongs to
+	 * 
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Internal")
      * @JoinColumn(name="internal_article", referencedColumnName="id")
 	 */
 	private $internalArticle;
 	
 	/**
+	 * @var boolean The flag whether the file is enabled (for in ProfBundle)
+	 *
+	 * @Column(type="boolean")
+	 */
+	private $enabled = true;
+	
+	/**
 	 * @param string $path
 	 * @param string $name
 	 * @param string $description
-	 * @param CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
+	 * @param \CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
 	 */
 	public function __construct($path, $name, $description, InternalArticle $internalArticle)
 	{
@@ -84,7 +101,7 @@ class File
 	/** 
 	 * @param string $path
 	 *
-	 * @return CudiBundle\Entity\File
+	 * @return \CudiBundle\Entity\File
 	 */
 	public function setPath($path)
 	{
@@ -103,7 +120,7 @@ class File
 	/** 
 	 * @param string $name
 	 *
-	 * @return CudiBundle\Entity\File
+	 * @return \CudiBundle\Entity\File
 	 */
 	public function setName($name)
 	{
@@ -122,7 +139,7 @@ class File
 	/** 
 	 * @param string $description
 	 *
-	 * @return CudiBundle\Entity\CudiBundle\File
+	 * @return \CudiBundle\Entity\File
 	 */
 	public function setDescription($description)
 	{
@@ -131,7 +148,7 @@ class File
 	}
 	
 	/** 
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function getInternalArticle()
 	{
@@ -139,13 +156,31 @@ class File
 	}
 	
 	/** 
-	 * @param CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
+	 * @param \CudiBundle\Entity\Articles\StockArticles\Internal $internalArticle
 	 *
-	 * @return CudiBundle\Entity\File
+	 * @return \CudiBundle\Entity\File
 	 */
 	public function setInternalArticle(InternalArticle $internalArticle)
 	{
 		$this->internalArticle = $internalArticle;
 		return $this;
+	}
+	
+	/**
+	 * @param boolean
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setEnabled($enabled = true)
+	{
+	    $this->enabled = $enabled;
+	    return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isEnabled()
+	{
+	    return $this->enabled;
 	}
 }

@@ -24,6 +24,8 @@ use CudiBundle\Entity\Article;
 class DeliveryItem
 {
 	/**
+	 * @var integer The ID of the delivery item
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -31,23 +33,29 @@ class DeliveryItem
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article delivered
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var \DateTime The time of delivery
+	 *
 	 * @Column(type="datetime")
 	 */
 	private $date;
 	
 	/**
+	 * @var integer The ID of the file
+	 *
 	 * @Column(type="integer")
 	 */
 	private $number;
 	
 	/**
-	 * @param CudiBundle\Entity\Article $article The article
+	 * @param \CudiBundle\Entity\Article $article The article
 	 * @param integer $number The number of this article
 	 */
 	public function __construct(Article $article, $number)
@@ -70,7 +78,7 @@ class DeliveryItem
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{

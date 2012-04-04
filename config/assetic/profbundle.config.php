@@ -15,13 +15,32 @@
  
 return array(
 	'controllers'  => array(
+	    'prof_install' => array(
+	    	'@common_jquery',
+	    	'@admin_css',
+	    	'@admin_js',
+	    ),
 	    'prof' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
 			'@prof_css',
 		),
+		'prof_subject' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@bootstrap_js_transition',
+			'@bootstrap_js_modal',
+			'@prof_css',
+		),
 		'prof_article' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@prof_css',
+		),
+		'prof_article_mapping' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
@@ -31,6 +50,13 @@ return array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
+			'@prof_css',
+		),
+		'prof_prof' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@common_typeahead_remote',
 			'@prof_css',
 		),
 	),

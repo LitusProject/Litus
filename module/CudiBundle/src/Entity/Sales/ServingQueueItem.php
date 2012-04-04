@@ -27,6 +27,8 @@ use CommonBundle\Entity\Users\Person,
 class ServingQueueItem
 {
     /**
+	 * @var integer The ID of this serving queue item
+	 *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -34,38 +36,40 @@ class ServingQueueItem
     private $id;
     
     /**
+     * @var \CommonBundle\Entity\Users\Person The person of this serving queue item
+     *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
     
     /**
+     * @var \CudiBundle\Entity\Sales\ServingQueueStatus The status of this serving queue item
+     *
      * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueStatus")
      * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
     
     /**
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\PayDesk")
-     * @JoinColumn(name="pay_desk", referencedColumnName="id")
-     */
-    private $payDesk;
-    
-    /**
+     * @var \CudiBundle\Entity\Sales\Session The session of this serving queue item
+     *
      * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
      * @JoinColumn(name="sale_session", referencedColumnName="id")
      */
     private $session;
 	
     /**
+     * @var integer The number of this serving queue item
+     *
      * @Column(type="smallint", name="queue_number")
      */
     private $queueNumber;
 
 	/**
-	 * @param Doctrine\ORM\EntityManager $entityManager
-	 * @param CommonBundle\Entity\Users\Person $person
-	 * @param CudiBundle\Entity\Sales\Session $session
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 * @param \CommonBundle\Entity\Users\Person $person
+	 * @param \CudiBundle\Entity\Sales\Session $session
 	 */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
@@ -90,7 +94,7 @@ class ServingQueueItem
     }
 
 	/**
-	 * @return CommonBundle\Entity\Users\Person
+	 * @return \CommonBundle\Entity\Users\Person
 	 */
     public function getPerson()
     {
@@ -98,9 +102,9 @@ class ServingQueueItem
     }
     
     /**
-     * @param CudiBundle\Entity\Sales\ServingQueueStatus $status
+     * @param \CudiBundle\Entity\Sales\ServingQueueStatus $status
      *
-	 * @return CudiBundle\Entity\Sales\ServingQueueItem
+	 * @return \CudiBundle\Entity\Sales\ServingQueueItem
      */
     public function setStatus(ServingQueueStatus $status)
     {
@@ -109,7 +113,7 @@ class ServingQueueItem
     }
 	
 	/**
-	 * @return CudiBundle\Entity\Sales\ServingQueueStatus
+	 * @return \CudiBundle\Entity\Sales\ServingQueueStatus
 	 */
     public function getStatus()
     {
@@ -117,26 +121,7 @@ class ServingQueueItem
     }
 	
 	/**
-	 * @return CudiBundle\Entity\Sales\PayDesk
-	 */
-    public function getPayDesk()
-    {
-        return $this->payDesk;
-    }
-	
-	/**
-	 * @param CudiBundle\Entity\Sales\PayDesk
-	 *
-	 * @return CudiBundle\Entity\Sales\ServingQueueItem
-	 */
-    public function setPayDesk($payDesk)
-    {
-        $this->payDesk = $payDesk;
-        return $this;
-    }
-	
-	/**
-	 * @return CudiBundle\Entity\Sales\Session
+	 * @return \CudiBundle\Entity\Sales\Session
 	 */
     public function getSession()
     {

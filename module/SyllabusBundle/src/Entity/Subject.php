@@ -22,6 +22,8 @@ namespace SyllabusBundle\Entity;
 class Subject
 {
 	/**
+	 * @var integer The ID of this subject
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -29,26 +31,36 @@ class Subject
 	private $id;
 
     /**
+     * @var string The code of this subject
+     *
      * @Column(type="string")
      */
     private $code;
 
     /**
+     * @var string The name of this subject
+     *
      * @Column(type="string")
      */
     private $name;
 
     /**
+     * @var integer The semester number of this subject
+     *
      * @Column(type="smallint")
      */
     private $semester;
     
     /**
+     * @var integer The credits of this subject
+     *
      * @Column(type="smallint")
      */
     private $credits;
     
     /**
+     * @var boolean Flag whether this study is active
+     *
      * @Column(type="boolean")
      */
     private $active;
@@ -111,7 +123,7 @@ class Subject
     /**
      * @param boolean $flag
      *
-     * @return SyllabusBundle\Entity\Study
+     * @return \SyllabusBundle\Entity\Study
      */
     public function setActive($flag = true)
     {

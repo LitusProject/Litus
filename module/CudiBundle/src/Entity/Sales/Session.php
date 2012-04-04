@@ -27,6 +27,8 @@ use CommonBundle\Entity\General\Bank\CashRegister,
 class Session
 {
 	/**
+	 * @var integer The ID of this sale session
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -34,34 +36,46 @@ class Session
 	private $id;
 	
 	/**
+	 * @var \DateTime The open date of this sale session
+	 *
 	 * @Column(name="open_date", type="datetime")
 	 */
 	private $openDate;
 	
 	/**
+	 * @var \DateTime The close date of this sale session
+	 *
 	 * @Column(name="close_date", type="datetime", nullable=true)
 	 */
 	private $closeDate;
 	
 	/**
+	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister open status
+	 *
 	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
 	 * @JoinColumn(name="open_amount", referencedColumnName="id")
 	 */
 	private $openAmount;
 	
 	/**
+	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister close status
+	 *
 	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
 	 * @JoinColumn(name="close_amount", referencedColumnName="id")
 	 */
 	private $closeAmount;
 	
 	/**
+	 * @var \CommonBundle\Entity\Users\Person The person responsible for this sale session
+	 *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="manager", referencedColumnName="id")
 	 */
 	private $manager;
 	
 	/**
+	 * @var string The comments on this sale session
+	 *
 	 * @Column(type="string")
 	 */
 	private $comment;
@@ -77,8 +91,8 @@ class Session
 	private $_entityManager;
 	
 	/**
-	 * @param CommonBundle\Entity\General\Bank\CashRegister $openAmount The cash register contents at the start of the session
-	 * @param CommonBundle\Entity\Users\Person $manager The manager of the session
+	 * @param \CommonBundle\Entity\General\Bank\CashRegister $openAmount The cash register contents at the start of the session
+	 * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
 	 * @param string $comment
 	 */
 	public function __construct(CashRegister $openAmount, Person $manager, $comment = '')
@@ -98,9 +112,9 @@ class Session
 	}
 	
 	/**
-	 * @param DateTime $openDate
+	 * @param \DateTime $openDate
 	 *
-	 * @return CudiBundle\Entity\Sales\Session
+	 * @return \CudiBundle\Entity\Sales\Session
 	 */
 	public function setOpenDate(DateTime $openDate)
 	{
@@ -108,7 +122,7 @@ class Session
 		return $this;
 	}
 	/**
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getOpenDate()
 	{
@@ -116,9 +130,9 @@ class Session
 	}
 	
 	/**
-	 * @param DateTime $closeDate
+	 * @param \DateTime $closeDate
 	 *
-	 * @return CudiBundle\Entity\Sales\Session
+	 * @return \CudiBundle\Entity\Sales\Session
 	 */
 	public function setCloseDate($closeDate)
 	{
@@ -135,7 +149,7 @@ class Session
 	}
 	
 	/**
-	 * @return CommonBundle\Entity\General\Bank\CashRegister
+	 * @return \CommonBundle\Entity\General\Bank\CashRegister
 	 */
 	public function getOpenAmount()
 	{
@@ -143,9 +157,9 @@ class Session
 	}
 
 	/**
-	 * @param CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 * @param \CommonBundle\Entity\General\Bank\CashRegister $closeAmount
 	 *
-	 * @return CudiBundle\Entity\Sales\Session
+	 * @return \CudiBundle\Entity\Sales\Session
 	 */
 	public function setCloseAmount(CashRegister $closeAmount)
 	{
@@ -154,7 +168,7 @@ class Session
 	}
 	
 	/**
-	 * @return CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 * @return \CommonBundle\Entity\General\Bank\CashRegister $closeAmount
 	 */
 	public function getCloseAmount()
 	{
@@ -162,7 +176,7 @@ class Session
 	}
 
 	/**
-	 * @return CommonBundle\Entity\Users\Person
+	 * @return \CommonBundle\Entity\Users\Person
 	 */
 	public function getManager()
 	{
@@ -172,7 +186,7 @@ class Session
 	/**
 	 * @param string $comment
 	 *
-	 * @return CudiBundle\Entity\Sales\Session
+	 * @return \CudiBundle\Entity\Sales\Session
 	 */
 	public function setComment($comment)
 	{

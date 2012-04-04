@@ -22,6 +22,8 @@ namespace CudiBundle\Entity\Articles\StockArticles;
 class Binding
 {
 	/**
+	 * @var integer The ID of the binding
+	 *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -29,6 +31,8 @@ class Binding
 	private $id;
 	
 	/**
+	 * @var string The name of the binding
+	 *
      * @Column(type="string")
      */
     private $name;

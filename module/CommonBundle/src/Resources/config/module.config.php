@@ -61,7 +61,7 @@ return array(
                                             'common/js/formUploadProgress.js',
                                         ),
                                     ),
-                                    'common_permanentModal' => array(
+                                    'common_permanent_modal' => array(
                                         'assets'  => array(
                                             'common/js/permanentModal.js',
                                         ),
@@ -69,6 +69,11 @@ return array(
                                     'common_socket' => array(
                                         'assets'  => array(
                                             'common/js/socket.js',
+                                        ),
+                                    ),
+                                    'common_typeahead_remote' => array(
+                                        'assets'  => array(
+                                            'common/js/typeaheadRemote.js',
                                         ),
                                     ),
                                     'admin_css' => array(

@@ -25,6 +25,8 @@ use CommonBundle\Entity\Users\Person,
 class Comment
 {
 	/**
+	 * @var integer The ID of the comment
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -32,22 +34,30 @@ class Comment
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article of this comment
+	 * 
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var \DateTime The time the comment was created
+	 * 
 	 * @Column(type="datetime")
 	 */
 	private $date;
 	
 	/**
+	 * @var string The content of the comment
+	 *
 	 * @Column(type="text")
 	 */
 	private $text;
 	
 	/**
+	 * @var \CommonBundle\Entity\Users\Person The person that created the comment
+	 *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
 	 * @JoinColumn(name="person", referencedColumnName="id")
 	 */
@@ -74,7 +84,7 @@ class Comment
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -82,7 +92,7 @@ class Comment
 	}
 	
 	/**
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getDate()
 	{
@@ -106,7 +116,7 @@ class Comment
 	}
 	
 	/**
-	 * @return CommonBundle\Entity\Users\Person
+	 * @return \CommonBundle\Entity\Users\Person
 	 */
 	public function getPerson()
 	{

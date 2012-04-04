@@ -1,0 +1,130 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-error fade" id="article_removed_error">
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while removing the article.</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="article_removed_success">
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The mapping between this subject and the article was succesfully removed.</p>
+    	</div>
+    </div>
+    
+    <div class="page-header">
+        <h2>Subject</h2>
+    </div>
+	
+	<p>
+	    Code: <b>{{ subject.getCode() }}</b><br />
+	    Name: <b>{{ subject.getName() }}</b><br />
+	    Semester: <b>{{ subject.getSemester() }}</b><br />
+	    Credits: <b>{{ subject.getCredits() }}</b>
+	</p>
+    
+    <h3>Articles:</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Title</th>
+            <th width="120px">Authors</th>
+            <th width="220px">Publisher</th>
+            <th width="80px">Publish Year</th>
+            <th width="100px">Barcode</th>
+            <th width="90px">Actions</th>
+        </tr>
+        
+    	{% for article in articles %}
+    	    <tr>
+    	        <td>{{ article.getArticle().getTitle() }}</td>
+    	        <td>{{ article.getArticle().getMetaInfo().getAuthors() }}</td>
+    	        <td>{{ article.getArticle().getMetaInfo().getPublishers() }}</td>
+    	        <td>{{ article.getArticle().getMetaInfo().getYearPublished() }}</td>
+    	        <td>{{ article.getArticle().getBarcode() }}</td>
+    	        <td class="actions">
+    	            {% if hasAccess('prof_article_mapping', 'delete') %}
+    	                <a href="#" class="btn btn-danger removeArticle" data-id="{{ article.getId() }}" data-article="{{ article.getArticle().getTitle() }}">Remove</a>
+    	            {% endif %}
+    	        </td>
+    	    </tr>
+    	{% endfor %}
+    </table>
+    <div class="pull-right">
+        {% if hasAccess('prof_article', 'add') %}
+            <a href="{{ url('prof_article', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">Add Article</a>
+        {% endif %}
+    </div>
+    <br class="clear" />
+    
+    <h3>Docents</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th width="90px">Identification</th>
+            <th>Name</th>
+        </tr>
+        
+        {% for prof in profs %}
+            <tr class="item">
+                <td>{{ prof.getProf().getUniversityIdentification() }}</td>
+                <td>{{ prof.getProf().getFullName() }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pull-right">
+        {% if hasAccess('prof_prof', 'add') %}
+            <a href="{{ url('prof_prof', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">Add Docent</a>
+        {% endif %}
+    </div>
+    <br class="clear" />
+    
+    <div id="modalRemoveArticle" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>Remove Article</h3>
+    	</div>
+    	<div class="modal-body">
+    		Are you sure you want to remove the following article: <b><span class="articleTitle"></span></b>?
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-danger confirm">Yes</button>
+    		<button class="btn" data-dismiss="modal">No</button>
+    	</div>
+    </div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $('.removeArticle').click(openRemoveModal);
+		});
+		
+		function openRemoveModal(e) {
+		    var $this = $(this);
+		    
+		    e.preventDefault();
+		    var removeArticle = $('#modalRemoveArticle');
+		    removeArticle.find('.articleTitle').html($(this).data('article'));
+		    removeArticle.find('.confirm').unbind('click').click(function () {
+		    	$.post('{{ url('prof_article_mapping', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+		    	    if (data && 'success' == data.status) {
+		    			$('.flashmessage').removeClass('in');
+		    			$('#article_removed_success').addClass('in');
+		    			$this.parent().parent().remove();
+		    			removeArticle.modal('hide');
+		    		} else {
+		    		    errorRemove();
+		    		}
+		    	}, 'json').error(errorRemove);
+		    });
+		    removeArticle.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').removeClass('in');
+		    $('#article_removed_error').addClass('in');
+		    $('#modalRemoveArticle').modal('hide');
+		}
+	</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+	<div class="page-header">
+	    <h2>Your Subjects</h2>
+	</div>
+	
+	<table class="table table-bordered table-striped">
+	    <tr>
+	        <th width="80px">Code</th>
+	        <th>Name</th>
+	        <th width="80px">Semester</th>
+	        <th width="80px">Credits</th>
+	        <th width="80px">Actions</th>
+	    </tr>
+	    
+		{% for subject in subjects %}
+		    <tr>
+		        <td>{{ subject.getSubject().getCode() }}</td>
+		        <td>{{ subject.getSubject().getName() }}</td>
+		        <td>{{ subject.getSubject().getSemester() }}</td>
+		        <td>{{ subject.getSubject().getCredits() }}</td>
+		        <td class="actions">
+		            {% if hasAccess('prof_subject', 'subject') %}
+		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId()}) }}" class="btn btn-primary">View</a>
+		            {% endif %}
+		        </td>
+		    </tr>
+		{% endfor %}
+	</table>
+{% endblock %}
