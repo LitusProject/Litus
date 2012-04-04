@@ -7,6 +7,9 @@ return array(
                 'prof'      	         => 'ProfBundle\Controller\Prof\IndexController',
                 'prof_auth'      	     => 'ProfBundle\Controller\Prof\AuthController',
                 'prof_article'           => 'ProfBundle\Controller\Prof\ArticleController',
+                'prof_article_mapping'   => 'ProfBundle\Controller\Prof\ArticleMappingController',
+                'prof_prof'              => 'ProfBundle\Controller\Prof\ProfController',
+                'prof_subject'           => 'ProfBundle\Controller\Prof\SubjectController',
                 'prof_file'              => 'ProfBundle\Controller\Prof\FileController',
             ),
             'assetic_configuration'          => array(
@@ -90,13 +93,27 @@ return array(
         		),
         	),
         ),
+        'prof_subject' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/subject[/:action[/:id]]',
+        		'constraints' => array(
+        			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_subject',
+        			'action'     => 'manage',
+        		),
+        	),
+        ),
         'prof_article' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
-        		'route' => '/prof/article[/:action]',
+        		'route' => '/prof/article[/:action[/:id]]',
         		'constraints' => array(
         			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'session' => '[0-9]*',
+        			'id' => '[0-9]*',
         		),
         		'defaults' => array(
         			'controller' => 'prof_article',
@@ -104,17 +121,58 @@ return array(
         		),
         	),
         ),
+        'prof_article_mapping' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/article/mapping[/:action[/:id]]',
+        		'constraints' => array(
+        			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_article_mapping',
+        			'action'     => 'manage',
+        		),
+        	),
+        ),
         'prof_file' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
-        		'route' => '/prof/files[/:action]',
+        		'route' => '/prof/files[/:action[/:id]]',
         		'constraints' => array(
         			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'session' => '[0-9]*',
+        			'id' => '[0-9]*',
         		),
         		'defaults' => array(
         			'controller' => 'prof_file',
         			'action'     => 'manage',
+        		),
+        	),
+        ),
+        'prof_prof' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/prof[/:action[/:id]]',
+        		'constraints' => array(
+        			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_prof',
+        			'action'     => 'manage',
+        		),
+        	),
+        ),
+        'prof_typeahead' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/prof/typeahead[/:string]',
+        		'constraints' => array(
+        			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_prof',
+        			'action'     => 'typeahead',
         		),
         	),
         ),

@@ -25,6 +25,8 @@ use CudiBundle\Entity\Article,
 class ArticleHistory
 {
     /**
+     * @var integer The ID of this article history
+     *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -32,21 +34,25 @@ class ArticleHistory
     private $id;
 
 	/**
+	 * @var \CudiBundle\Entity\Article The newest version of the two
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
      * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The oldest version of the two
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
      * @JoinColumn(name="precursor", referencedColumnName="id")
 	 */
 	private $precursor;
 	
 	/**
-	 * @param Doctrine\ORM\EntityManager $entityManager The entitymanager
-	 * @param CudiBundle\Entity\Article $article The new version of the article
-	 * @param CudiBundle\Entity\Article $precursor The previous version of the article
+	 * @param \Doctrine\ORM\EntityManager $entityManager The entitymanager
+	 * @param \CudiBundle\Entity\Article $article The new version of the article
+	 * @param \CudiBundle\Entity\Article $precursor The previous version of the article
 	 */
 	public function __construct(EntityManager $entityManager, Article $article, Article $precursor)
 	{

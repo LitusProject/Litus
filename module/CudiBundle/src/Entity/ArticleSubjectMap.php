@@ -24,6 +24,8 @@ use SyllabusBundle\Entity\Subject;
 class ArticleSubjectMap
 {
     /**
+     * @var integer The ID of the mapping
+     *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -31,18 +33,24 @@ class ArticleSubjectMap
     private $id;
 
     /**
+     * @var \CudiBundle\Entity\Article The article of the mapping
+     *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 
 	/**
+	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+	 *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(name="subject", referencedColumnName="id")
 	 */
 	private $subject;
 
     /**
+     * @var boolean Flag whether the article is mandatory
+     *
      * @Column(type="boolean")
      */
     private $mandatory;

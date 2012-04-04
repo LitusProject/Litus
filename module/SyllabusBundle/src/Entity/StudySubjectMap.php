@@ -22,6 +22,8 @@ namespace SyllabusBundle\Entity;
 class StudySubjectMap
 {
     /**
+     * @var integer The ID of this mapping
+     *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -29,25 +31,31 @@ class StudySubjectMap
     private $id;
 
     /**
+     * @var \SyllabusBundle\Entity\Study The study of this mapping
+     *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $study;
 
 	/**
+	 * @var \SyllabusBundle\Entity\Subject The subject of this mapping
+	 *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $subject;
 
     /**
+     * @var boolean Flag whether this subject is mandatory
+     *
      * @Column(type="boolean")
      */
     private $mandatory;
     
     /**
-     * @param SyllabusBundle\Entity\Study $study
-     * @param SyllabusBundle\Entity\Subject $subject
+     * @param \SyllabusBundle\Entity\Study $study
+     * @param \SyllabusBundle\Entity\Subject $subject
      * @param boolean $mandatory
      */
     public function __construct(Study $study, Subject $subject, $mandatory)
@@ -66,7 +74,7 @@ class StudySubjectMap
     }
     
     /**
-     * @return SyllabusBundle\Entity\Study
+     * @return \SyllabusBundle\Entity\Study
      */
     public function getStudy()
     {
@@ -74,7 +82,7 @@ class StudySubjectMap
     }
     
     /**
-     * @return SyllabusBundle\Entity\Subject
+     * @return \SyllabusBundle\Entity\Subject
      */
     public function getSubject()
     {

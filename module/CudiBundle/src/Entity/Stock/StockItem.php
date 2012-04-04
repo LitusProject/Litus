@@ -25,6 +25,8 @@ use CudiBundle\Entity\Article,
 class StockItem
 {
 	/**
+	 * @var integer The ID of the stock item
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -32,12 +34,16 @@ class StockItem
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article of the stock item
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Article", inversedBy="stockItem")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var integer The number in stock
+	 *
 	 * @Column(type="integer")
 	 */
 	private $numberInStock;
@@ -67,7 +73,7 @@ class StockItem
 	/**
 	 * Return the article
 	 * 
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{

@@ -24,11 +24,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
  */
 class ArticleController extends \ProfBundle\Component\Controller\ProfController
 {
-    public function manageAction()
-    {
-    	return array();
-    }
-    
     public function editAction()
     {
     	return array();
@@ -37,5 +32,52 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
     public function addAction()
     {
     	return array();
+    }
+    
+    private function _getArticle()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the article!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'prof_subject',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'prof_subject',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
     }
 }

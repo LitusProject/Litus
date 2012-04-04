@@ -24,6 +24,8 @@ use CudiBundle\Entity\Article;
 class MetaInfo
 {
 	/**
+	 * @var integer The ID of the meta info
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -31,22 +33,30 @@ class MetaInfo
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article of this meta info
+	 *
 	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var string The authors of the article
+	 *
 	 * @Column(type="string")
 	 */
 	private $authors;
 	
 	/**
+	 * @var string The publishers of the article
+     *
 	 * @Column(type="string")
 	 */
 	private $publishers;
 	
 	/**
+     * @var integer The year the article was published
+     *
 	 * @Column(name="year_published", type="integer", length=4)
 	 */
 	private $yearPublished;

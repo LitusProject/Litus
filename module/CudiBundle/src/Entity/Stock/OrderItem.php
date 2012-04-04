@@ -25,6 +25,8 @@ use CudiBundle\Entity\Article,
 class OrderItem
 {
 	/**
+	 * @var integer The ID of the order item
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -32,18 +34,24 @@ class OrderItem
 	private $id;
 	
 	/**
+	 * @var \CudiBundle\Entity\Article The article of the order item
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
 	 * @JoinColumn(name="article_id", referencedColumnName="id")
 	 */
 	private $article;
 	
 	/**
+	 * @var \CudiBundle\Entity\Stock\Order The order of the order item
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order", inversedBy="orderItems")
 	 * @JoinColumn(name="order_id", referencedColumnName="id")
 	 */
 	private $order;
 	
 	/**
+	 * @var integer The number of items ordered
+	 *
 	 * @Column(type="integer")
 	 */
 	private $number;
@@ -51,8 +59,8 @@ class OrderItem
 	/**
 	 * Create a new order item.
 	 *
-	 * @param CudiBundle\Entity\Article $article The stock Item
-	 * @param CudiBundle\Entity\Stock\Order $order The order
+	 * @param \CudiBundle\Entity\Article $article The stock Item
+	 * @param \CudiBundle\Entity\Stock\Order $order The order
 	 * @param integer $number The number of items
 	 */
 	public function __construct(Article $article, Order $order, $number)
@@ -71,7 +79,7 @@ class OrderItem
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Stock\Order
+	 * @return \CudiBundle\Entity\Stock\Order
 	 */
 	public function getOrder()
 	{
@@ -79,7 +87,7 @@ class OrderItem
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function getArticle()
 	{
@@ -87,9 +95,9 @@ class OrderItem
 	}
 	
 	/**
-	 * @param CudiBundle\Entity\Article $article The new article of this order
+	 * @param \CudiBundle\Entity\Article $article The new article of this order
 	 * 
-	 * @return CudiBundle\Entity\Stock\OrderItem
+	 * @return \CudiBundle\Entity\Stock\OrderItem
 	 */
 	public function setArticle(Article $article)
 	{
@@ -108,7 +116,7 @@ class OrderItem
 	/**
 	 * @param integer $number The number of items.
 	 *
-	 * @return CudiBundle\Entity\Stock\OrderItem
+	 * @return \CudiBundle\Entity\Stock\OrderItem
 	 */
 	public function setNumber($number)
 	{

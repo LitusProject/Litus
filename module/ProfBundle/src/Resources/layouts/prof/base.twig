@@ -2,7 +2,6 @@
 
 <html lang="en">
 <head>
-
     {{ headMeta() }}
 	{{ headTitle('Litus Prof', 'PREPEND') }}
 	
@@ -21,9 +20,9 @@
 					    <a href="{{ url("prof") }}">Home</a>
 					</li>
 				{% endif %}
-				{% if hasAccess('prof_article', 'manage') %}
-					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_article") }}">Articles</a>
+				{% if hasAccess('prof_subject', 'manage') %}
+					<li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_subject") }}">Subjects</a>
 					</li>
 				{% endif %}
 			</ul>
@@ -85,7 +84,7 @@
 	</div>
 	
 	<footer>
-	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
 	
 		{% if 'development' == environment %}
 		    <span class="development_information">

@@ -22,6 +22,8 @@ namespace CudiBundle\Entity\Sales;
 class ServingQueueStatus
 {
     /**
+     * @var integer The ID of this serving queue status
+     *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -29,6 +31,8 @@ class ServingQueueStatus
     private $id;
 	
     /**
+     * @var string The name of this serving queue status
+     *
      * @Column(type="string")
      */
     private $name;

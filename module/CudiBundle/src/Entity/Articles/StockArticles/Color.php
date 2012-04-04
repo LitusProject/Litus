@@ -22,6 +22,8 @@ namespace CudiBundle\Entity\Articles\StockArticles;
 class Color
 {
 	/**
+	 * @var integer The ID of the color
+	 *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -29,6 +31,8 @@ class Color
 	private $id;
 	
 	/**
+	 * @var string The name of the color
+	 *
      * @Column(type="string")
      */
     private $name;

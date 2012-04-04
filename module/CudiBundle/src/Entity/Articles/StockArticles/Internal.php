@@ -28,38 +28,52 @@ use CudiBundle\Entity\Articles\MetaInfo,
 class Internal extends \CudiBundle\Entity\Articles\Stock
 {
 	/**
+	 * @var integer The number of black and white pages
+	 *
 	 * @Column(name="nb_black_and_white", type="smallint")
 	 */
 	private $nbBlackAndWhite;
 	
 	/**
+	 * @var integer The number of colored pages
+	 *
 	 * @Column(name="nb_colored", type="smallint")
 	 */
 	private $nbColored;
 	
 	/**
+	 * @var \CudiBundle\Entity\Articles\StockArticles\Binding The binding of this article
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Binding")
 	 * @JoinColumn(name="binding", referencedColumnName="id")
 	 */
 	private $binding;
 	
 	/**
+	 * @var boolean Whether the aricle is an official one.
+	 *
 	 * @Column(type="boolean")
 	 */
 	private $official;
 	
 	/**
+	 * @var boolean Flag whether the article is rectoverso or not.
+	 *
 	 * @Column(name="recto_verso", type="boolean")
 	 */
 	private $rectoVerso;
 	
 	/**
+	 * @var \CudiBundle\Entity\Articles\StockArticles\Color The color of the front page.
+	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\StockArticles\Color")
 	 * @JoinColumn(name="front_page_color", referencedColumnName="id")
 	 */
 	private $frontPageColor;
 	
 	/**
+	 * @var boolean Flag whether the front page is colored or not.
+	 * 
 	 * @Column(name="front_page_text_colored", type="boolean")
 	 */
 	private $frontPageTextColored;
@@ -118,7 +132,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	/**
 	 * @param integer $nbBlackAndWhite
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setNbBlackAndWhite($nbBlackAndWhite)
 	{
@@ -137,7 +151,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	/**
 	 * @param integer $nbColored
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setNbColored($nbColored)
 	{
@@ -146,7 +160,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Articles\StockArticle\Binding
+	 * @return \CudiBundle\Entity\Articles\StockArticle\Binding
 	 */
 	public function getBinding()
 	{
@@ -154,9 +168,9 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @param CudiBundle\Entity\Articles\StockArticles\Binding $binding
+	 * @param \CudiBundle\Entity\Articles\StockArticles\Binding $binding
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setBinding(Binding $binding)
 	{
@@ -175,7 +189,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	/**
 	 * @param boolean $official
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setIsOfficial($official)
 	{
@@ -194,7 +208,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	/**
 	 * @param boolean $rectoVerso
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setIsRectoVerso($rectoVerso)
 	{
@@ -203,7 +217,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @return CudiBundle\Entity\Articles\StockArticle\Color
+	 * @return \CudiBundle\Entity\Articles\StockArticle\Color
 	 */
 	public function getFrontColor()
 	{
@@ -211,9 +225,9 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	}
 	
 	/**
-	 * @param CudiBundle\Entity\Articles\StockArticles\Color $frontPageColor
+	 * @param \CudiBundle\Entity\Articles\StockArticles\Color $frontPageColor
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setFrontColor(Color $frontPageColor)
 	{
@@ -232,7 +246,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	/**
 	 * @param boolean $frontPageTextColored
 	 *
-	 * @return CudiBundle\Entity\Articles\StockArticles\Internal
+	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
 	public function setFrontPageTextColored($frontPageTextColored)
 	{
@@ -247,6 +261,11 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 		return $this->getNbBlackAndWhite() + $this->getNbColored();
 	}
 	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return array
+	 */
 	public function getFiles(EntityManager $entityManager)
 	{
 		return $entityManager

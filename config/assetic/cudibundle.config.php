@@ -33,7 +33,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
-		    '@bootstrap_js_typeahead',
+			'@common_typeahead_remote',
 		),
 		'admin_comment' => array(
 			'@common_jquery',
@@ -47,7 +47,7 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		    '@common_form_upload_progress',
-		    '@common_permanentModal',
+		    '@common_permanent_modal',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
@@ -102,7 +102,7 @@ return array(
 			'@queue_js',
 			'@bootstrap_js_transition',
 			'@bootstrap_js_modal',
-			'@common_permanentModal',
+			'@common_permanent_modal',
 			'@common_socket',
 		),
 		'sale_queue' => array(

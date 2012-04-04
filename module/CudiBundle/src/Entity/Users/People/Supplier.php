@@ -52,7 +52,7 @@ class Supplier extends \CommonBundle\Entity\Users\Person
     }
     
     /**
-     * @return CudiBundle\Entity\Supplier
+     * @return \CudiBundle\Entity\Supplier
      */
     public function getSupplier()
     {
@@ -60,9 +60,9 @@ class Supplier extends \CommonBundle\Entity\Users\Person
     }
     
     /**
-     * @param CudiBundle\Entity\Supplier $supplier
+     * @param \CudiBundle\Entity\Supplier $supplier
      *
-     * @return CudiBundle\Entity\Users\People\Supplier
+     * @return \CudiBundle\Entity\Users\People\Supplier
      */
     public function setSupplier($supplier)
     {

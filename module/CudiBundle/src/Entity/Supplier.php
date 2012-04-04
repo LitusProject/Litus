@@ -22,6 +22,8 @@ namespace CudiBundle\Entity;
 class Supplier
 {
 	/**
+	 * @var integer The ID of this supplier
+	 *
 	 * @Id
 	 * @GeneratedValue
 	 * @Column(type="bigint")
@@ -29,21 +31,29 @@ class Supplier
 	private $id;
 	
 	/**
+	 * @var string The name of this supplier
+	 *
 	 * @Column(type="string")
 	 */
 	private $name;
 	
 	/**
+	 * @var string The phone number of this supplier
+	 *
 	 * @Column(type="string", name="phone_number")
 	 */
 	private $phoneNumber;
 
 	/**
+	 * @var string The address of this supplier
+	 *
 	 * @Column(type="string")
 	 */
 	private $address;
 
 	/**
+	 * @var string The vat number of this supplier
+	 *
 	 * @Column(type="string")
 	 */
 	private $VAT_number;
@@ -89,7 +99,7 @@ class Supplier
     /**
      * @param string
      *
-     * @return CudiBundle\Entity\Supplier
+     * @return \CudiBundle\Entity\Supplier
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -108,7 +118,7 @@ class Supplier
     /**
      * @param string
      *
-     * @return CudiBundle\Entity\Supplier
+     * @return \CudiBundle\Entity\Supplier
      */
     public function setAddress($address)
     {
@@ -127,7 +137,7 @@ class Supplier
     /**
      * @param string
      *
-     * @return CudiBundle\Entity\Supplier
+     * @return \CudiBundle\Entity\Supplier
      */
     public function setVATNumber($VAT)
     {
