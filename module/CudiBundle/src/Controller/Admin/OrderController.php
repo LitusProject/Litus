@@ -52,8 +52,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
 	public function supplierAction()
 	{
-		$supplier = $this->_getSupplier();
-        
+        if (!($supplier = $this->_getSupplier()))
+            return;
+            
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\Order',
             $this->getParam('page'),
@@ -71,7 +72,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function editAction()
 	{
-		$order = $this->_getOrder();
+		if (!($order = $this->_getOrder()))
+		    return;
 
 		return array(
 			'order' => $order,
@@ -125,8 +127,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	{
 		$this->initAjax();
 		
-		$item = $this->_getOrderItem();
-		
+		if (!($item = $this->_getOrderItem()))
+		    return;
+		    
 		$this->getEntityManager()->remove($item);
 		$this->getEntityManager()->flush();
 		
@@ -137,7 +140,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function placeAction()
 	{
-		$order = $this->_getOrder();
+		if (!($order = $this->_getOrder()))
+		    return;
+		    
 		$order->setDate(new \DateTime());
 		
 		$this->getEntityManager()->flush();
@@ -161,7 +166,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function pdfAction()
 	{
-		$order = $this->_getOrder();
+		if (!($order = $this->_getOrder()))
+		    return;
+		    
 		$file = new TmpFile();
 		$document = new OrderPdfGenerator($this->getEntityManager(), $order, $file);
 		$document->generate();
@@ -180,8 +187,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 	
 	public function exportAction()
 	{
-		$order = $this->_getOrder();
-		
+		if (!($order = $this->_getOrder()))
+		    return;
+		    
 		$document = new OrderXmlGenerator($this->getEntityManager(), $order);
 		
 		$headers = new Headers();

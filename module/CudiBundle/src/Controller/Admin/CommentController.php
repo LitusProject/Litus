@@ -28,7 +28,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $article = $this->_getArticle();
+        if (!($article = $this->_getArticle()))
+            return;
         
         $form = new CommentForm();
         
@@ -101,53 +102,6 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     		        FlashMessage::ERROR,
     		        'Error',
     		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
-    }
-    
-    private function _getComment()
-    {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the comment!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Articles\Comment')
-            ->findOneById($this->getParam('id'));
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No commnet with the given id was found!'
     		    )
     		);
     		

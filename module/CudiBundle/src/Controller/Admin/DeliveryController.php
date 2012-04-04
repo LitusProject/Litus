@@ -42,8 +42,9 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 	
 	public function supplierAction()
 	{
-		$supplier = $this->_getSupplier();
-		
+		if (!($supplier = $this->_getSupplier()))
+		    return;
+		    
 		$paginator = $this->paginator()->createFromArray(
 			$this->getEntityManager()
 			    ->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
@@ -128,7 +129,8 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
 	{
 		$this->initAjax();
 		
-		$delivery = $this->_getDeliveryItem();
+		if (!($delivery = $this->_getDeliveryItem()))
+		    return;
 		
 		$delivery->getArticle()->getStockItem()->addNumber(-$delivery->getNumber());
 		$this->getEntityManager()->remove($delivery);
