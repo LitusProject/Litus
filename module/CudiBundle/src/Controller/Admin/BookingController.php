@@ -94,7 +94,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$this->initAjax();
 
-		$booking = $this->_getBooking();
+        if (!($booking = $this->_getBooking()))
+    	    return;
 		
 		$this->getEntityManager()->remove($booking);
 		$this->getEntityManager()->flush();
@@ -180,7 +181,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 	{
 	    $this->initAjax();
 	    
-		$booking = $this->_getBooking();
+		if (!($booking = $this->_getBooking()))
+		    return;
 
         $booking->setStatus('booked');
 		$this->getEntityManager()->flush();

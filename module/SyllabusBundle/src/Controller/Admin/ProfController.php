@@ -28,8 +28,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     public function addAction()
     {
-        $subject = $this->_getSubject();
-        
+        if (!($subject = $this->_getSubject()))
+        	return;
+        	
         $form = new AddForm();
         
         if($this->getRequest()->isPost()) {
@@ -78,8 +79,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
         
-		$mapping = $this->_getMapping();
-        
+        if (!($mapping = $this->_getMapping()))
+        	return;
+        	
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
         

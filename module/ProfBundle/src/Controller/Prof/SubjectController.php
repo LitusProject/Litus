@@ -37,7 +37,8 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
     
     public function subjectAction()
     {
-        $subject = $this->_getSubject();
+        if (!($subject = $this->_getSubject()))
+            return;
         
         $allArticles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\ArticleSubjectMap')

@@ -109,8 +109,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     
     public function editAction()
     {
-        $session = $this->_getSession();
-		
+		if (!($session = $this->_getSession()))
+			return;
+			
 		$form = new SessionCommentForm($session);
 
 		if($this->getRequest()->isPost()) {
@@ -155,8 +156,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editregisterAction()
     {
-        $cashRegister = $this->_getCashRegister();
-        
+        if (!($cashRegister = $this->_getCashRegister()))
+        	return;
+        	
         $session = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Sales\Session')
         	->findOneByCashRegister($cashRegister);
@@ -214,8 +216,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
     public function closeAction()
     {
-        $session = $this->_getSession();
-                
+        if (!($session = $this->_getSession()))
+        	return;
+        	     
         $form = new CashRegisterCloseForm($this->getEntityManager(), $session->getOpenAmount());
 		
 		if($this->getRequest()->isPost()) {

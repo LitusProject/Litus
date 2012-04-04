@@ -28,8 +28,9 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
 {
 	public function addAction()
     {
-        $subject = $this->_getSubject();
-        
+        if (!($subject = $this->_getSubject()))
+            return;
+            
         $form = new AddForm();
         
         if($this->getRequest()->isPost()) {

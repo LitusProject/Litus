@@ -32,8 +32,9 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     
 	public function manageAction()
 	{
-		$article = $this->_getArticle();
-		
+		if (!($article = $this->_getArticle()))
+		    return;
+		    
 		$form = new FileForm();
 		$form->setAction(
 		    $this->url()->fromRoute(
@@ -58,7 +59,8 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 	{
 	    $this->initAjax();
 	    
-	    $article = $this->_getArticle();
+	    if (!($article = $this->_getArticle()))
+	        return;
 	    
 		$form = new FileForm();
 	    $formData = $this->getRequest()->post()->toArray();
@@ -121,8 +123,9 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.file_path');
 			
-		$file = $this->_getFile();
-		
+		if (!($file = $this->_getFile()))
+		    return;
+		    
 		unlink($filePath . $file->getPath());
 		$this->getEntityManager()->remove($file);
 		$this->getEntityManager()->flush();
@@ -138,7 +141,8 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.file_path');
 			
-		$file = $this->_getFile();
+		if (!($file = $this->_getFile()))
+		    return;
 		
 		$headers = new Headers();
 		$headers->addHeaders(array(

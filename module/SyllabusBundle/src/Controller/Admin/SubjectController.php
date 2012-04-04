@@ -26,8 +26,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $study = $this->_getStudy();
-        
+        if (!($study = $this->_getStudy()))
+        	return;
+        	
         return array(
             'study' => $study,
             'mapping' => $this->getEntityManager()
@@ -38,8 +39,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     
     public function subjectAction()
     {
-        $subject = $this->_getSubject();
-        
+        if (!($subject = $this->_getSubject()))
+        	return;
+        	
         return array(
             'subject' => $subject,
             'profs' => $this->getEntityManager()
@@ -55,8 +57,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
         
-        $study = $this->_getStudy();
-        
+        if (!($study = $this->_getStudy()))
+        	return;
+        	
         switch($this->getParam('field')) {
         	case 'name':
         		$subjects = $this->getEntityManager()

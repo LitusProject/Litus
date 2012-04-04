@@ -28,7 +28,8 @@ class ArticleSubjectMapController extends \CommonBundle\Component\Controller\Act
 {
 	public function manageAction()
 	{
-	    $article = $this->_getArticle();
+	    if (!($article = $this->_getArticle()))
+	        return;
 	    
 	    $form = new AddForm();
 	    
@@ -83,7 +84,8 @@ class ArticleSubjectMapController extends \CommonBundle\Component\Controller\Act
     {
         $this->initAjax();
         
-		$mapping = $this->_getMapping();
+		if (!($mapping = $this->_getMapping()))
+		    return;
 
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();

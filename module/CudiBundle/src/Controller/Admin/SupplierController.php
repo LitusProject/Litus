@@ -47,8 +47,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
 
 	public function supplierAction()
 	{
-	    $supplier = $this->_getSupplier();
-	    
+	    if (!($supplier = $this->_getSupplier()))
+	    	return;
+	    	
 		$paginator = $this->paginator()->createFromEntity(
 		    'CudiBundle\Entity\Users\People\Supplier',
 		    $this->getParam('page'),
@@ -110,7 +111,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     
     public function editAction()
     {
-        $supplier = $this->_getSupplier();
+        if (!($supplier = $this->_getSupplier()))
+        	return;
         
         $form = new EditForm(
         	$this->getEntityManager(),
@@ -153,7 +155,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     
     public function addUserAction()
     {
-        $supplier = $this->_getSupplier();
+        if (!($supplier = $this->_getSupplier()))
+        	return;
         
         $form = new AddUserForm(
         	$this->getEntityManager()
@@ -211,8 +214,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     
     public function editUserAction()
     {
-        $user = $this->_getSupplierUser();
-        		
+        if (!($user = $this->_getSupplierUser()))
+        	return;
+        			
         $form = new EditUserForm(
         	$this->getEntityManager(), $user
         );
@@ -258,7 +262,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
 	{
 		$this->initAjax();
 
-		$user = $this->_getSupplierUser();
+		if (!($user = $this->_getSupplierUser()))
+			return;
 
 		$user->disableLogin();
 		$this->getEntityManager()->flush();

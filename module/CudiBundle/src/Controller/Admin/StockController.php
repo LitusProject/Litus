@@ -49,7 +49,8 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 
 	public function editAction()
 	{
-		$item = $this->_getItem();
+		if (!($item = $this->_getItem()))
+			return;
 		
 		$stockForm = new StockForm($item);
 		$orderForm = new OrderForm($this->getEntityManager());
@@ -108,17 +109,32 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 				}
 			} elseif (isset($formData['addDelivery'])) {
 				if ($deliveryForm->isValid($formData)) {
-					$delivery = new DeliveryItem($item->getArticle(), $formData['number']);
-					$this->getEntityManager()->persist($delivery);
-					$this->getEntityManager()->flush();
-
-					$this->flashMessenger()->addMessage(
-		            	new FlashMessage(
-		                	FlashMessage::SUCCESS,
-		                    'SUCCESS',
-		                    'The delivery was successfully added!'
-		                )
-					);
+				    $stock = $this->getEntityManager()
+				        ->getRepository('CudiBundle\Entity\Stock\StockItem')
+				        ->findOneByArticle($item->getArticle())
+				        ->setEntityManager($this->getEntityManager());
+				    
+				    if ($stock->getNumberNotDelivered() >= $formData['number']) {
+    					$delivery = new DeliveryItem($item->getArticle(), $formData['number']);
+    					$this->getEntityManager()->persist($delivery);
+    					$this->getEntityManager()->flush();
+    
+    					$this->flashMessenger()->addMessage(
+    		            	new FlashMessage(
+    		                	FlashMessage::SUCCESS,
+    		                    'SUCCESS',
+    		                    'The delivery was successfully added!'
+    		                )
+    					);
+    				} else {
+    				    $this->flashMessenger()->addMessage(
+    				        new FlashMessage(
+    				            FlashMessage::ERROR,
+    				            'ERROR',
+    				            'The delivery couldn\'t be added, these items where not ordered!'
+    				        )
+    				    );
+    				}
 					
 					$this->redirect()->toRoute(
 						'admin_stock',

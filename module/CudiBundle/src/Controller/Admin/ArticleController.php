@@ -152,7 +152,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
 	public function editAction()
 	{
-		$article = $this->_getArticle();
+		if (!($article = $this->_getArticle()))
+		    return;
 		
 		$form = new EditForm($this->getEntityManager(), $article);
 
@@ -226,7 +227,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$this->initAjax();
 
-		$article = $this->_getArticle();
+		if (!($article = $this->_getArticle()))
+		    return;
 
         $article->setRemoved(true);
 		$this->getEntityManager()->flush();
@@ -281,7 +283,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.file_path');
 			
-		$article = $this->_getArticle();
+		if (!($article = $this->_getArticle()))
+		    return;
 		
 		$form = new NewVersionForm($this->getEntityManager(), $article);
          

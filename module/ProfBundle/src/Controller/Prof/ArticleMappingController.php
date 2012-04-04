@@ -34,7 +34,8 @@ class ArticleMappingController extends \ProfBundle\Component\Controller\ProfCont
     {
     	$this->initAjax();
     	
-		$mapping = $this->_getMapping();
+        if (!($mapping = $this->_getMapping()))
+            return;
         
         $action = new RemoveAction($this->getAuthentication()->getPersonObject(), $mapping);
         $this->getEntityManager()->persist($action);
