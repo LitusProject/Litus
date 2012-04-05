@@ -11,6 +11,7 @@ return array(
                 'prof_prof'              => 'ProfBundle\Controller\Prof\ProfController',
                 'prof_subject'           => 'ProfBundle\Controller\Prof\SubjectController',
                 'prof_file'              => 'ProfBundle\Controller\Prof\FileController',
+                'prof_comment'           => 'ProfBundle\Controller\Prof\CommentController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -158,6 +159,20 @@ return array(
         		),
         		'defaults' => array(
         			'controller' => 'prof_file',
+        			'action'     => 'manage',
+        		),
+        	),
+        ),
+        'prof_comment' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof/comments[/:action[/:id]]',
+        		'constraints' => array(
+        			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof_comment',
         			'action'     => 'manage',
         		),
         	),

@@ -1,5 +1,5 @@
 {% for flashMessage in flashMessenger %}
-	<div class="flashmessage alert alert-{{ flashMessage.getType() }}">
+	<div class="flashmessage alert alert-{{ flashMessage.getType() }} fade">
 		<div class="title">{{ flashMessage.getTitle() }}</div>
 		<div class="content">
 			<p>{{ flashMessage.getMessage()|raw }}</p>

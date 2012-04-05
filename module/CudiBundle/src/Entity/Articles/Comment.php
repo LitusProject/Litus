@@ -64,15 +64,42 @@ class Comment
 	private $person;
 	
 	/**
+	 * @var string The type of the comment
+	 *
+	 * @Column(type="string")
+	 */
+	private $type;
+	
+	/**
+	 * @var array The possible types of a comment
+	 */
+	private static $POSSIBLE_TYPES = array(
+		'external', 'internal'
+	);
+	
+	/**
 	 * @param \CommonBundle\Entity\Users\Person $person
 	 * @param \CudiBundle\Entity\Article $article
 	 * @param string $text
+	 * @param string type
 	 */
-	public function __construct(Person $person, Article $article, $text) {
+	public function __construct(Person $person, Article $article, $text, $type) {
 		$this->person = $person;
 		$this->article = $article;
 		$this->text = $text;
 		$this->date = new \DateTime();
+		
+		if (!self::isValidCommentType($type))
+			throw new \InvalidArgumentException('The comment type is not valid.');
+		$this->type = $type;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public static function isValidCommentType($type)
+	{
+		return in_array($type, self::$POSSIBLE_TYPES);
 	}
 	
 	/**
@@ -121,5 +148,13 @@ class Comment
 	public function getPerson()
 	{
 	    return $this->person;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+	    return $this->type;
 	}
 }

@@ -56,7 +56,9 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
         if (!($article = $this->_getArticle()))
             return;
         
-    	return array();
+    	return array(
+    	    'article' => $article,
+    	);
     }
     
     public function addAction()
