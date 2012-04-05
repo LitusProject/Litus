@@ -1,0 +1,146 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-error fade" id="comment_removed_error">
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while removing the comment.</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="comment_removed_success">
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The comment was succesfully removed.</p>
+    	</div>
+    </div>
+    
+	<div class="page-header">
+	    <h2>Comments</h2>
+	</div>
+	
+	<h3>Article</h3>
+	<p>
+	    Title: <b>{{ article.getTitle() }}</b><br />
+	    Authors: <b>{{ article.getMetaInfo().getAuthors() }}</b><br />
+	    Publisher: <b>{{ article.getMetaInfo().getPublishers() }}</b><br />
+	    Publish Year: <b>{{ article.getMetaInfo().getYearPublished() }}</b><br />
+	    {% if article.getBarcode() %} Barcode: <b>{{ article.getBarcode() }}</b>{% endif %}
+	</p>
+	
+	<table class="table table-bordered table-striped">
+        <tr>
+            <th width="100px">Date</th>
+            <th width="140px">Person</th>
+            <th>Summary</th>
+            <th width="140px">Action</th>
+        </tr>
+
+        {% for comment in comments %}
+            <tr class="item">
+                <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                <td>{{ comment.getPerson().getFullName() }}</td>
+                <td>{{ comment.getSummary() }}</td>
+				<td class="actions">
+					<a href="#" class="btn btn-primary view" data-text="{{ comment.getText() }}">View</a>
+					{% if comment.getPerson().getId() == authenticatedUserObject.getId() %}
+					    <a href="#" class="btn btn-danger delete" data-id="{{ comment.getId() }}">Delete</a>
+					{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pull-right">
+        <a href="#addComment" class="btn btn-success" data-toggle="modal">Add Comment</a>
+    </div>
+    <br class="clear" />
+    
+    <div id="viewComment" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>Article Comment</h3>
+    	</div>
+    	<div class="modal-body">
+    		<p class="text"></p>
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn" data-dismiss="modal">Close</button>
+    	</div>
+    </div>
+    
+    <div id="addComment" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>Article Comment Add</h3>
+    	</div>
+    	<div class="modal-body">
+    		{% autoescape false %}
+    		    {{ form }}
+    		{% endautoescape %}
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-success save">Save</button>
+    		<button class="btn" data-dismiss="modal">Cancel</button>
+    	</div>
+    </div>
+    
+    <div id="removeComment" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>Remove Comment</h3>
+    	</div>
+    	<div class="modal-body">
+    		Are you sure you want to remove your comment?
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-danger confirm">Yes</button>
+    		<button class="btn" data-dismiss="modal">No</button>
+    	</div>
+    </div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .view').click(openViewModal);
+			$('.item .delete').click(openRemoveModal);
+			$('#addComment .save').click(function () {
+			    $('#addComment form').submit();
+			});
+		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var viewComment = $('#viewComment');
+			viewComment.find('.text').html($this.data('text'));
+			viewComment.modal();
+		}
+		
+		function openRemoveModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeComment = $('#removeComment');
+			removeComment.find('.confirm').unbind('click').click(function () {
+				$.post('{{ url('prof_comment', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				    if (data && 'success' == data.status) {
+						$('.flashmessage').removeClass('in');
+						$('#comment_removed_success').addClass('in');
+						$this.parent().parent().remove();
+						removeComment.modal('hide');
+					} else {
+					    errorRemove();
+					}
+				}, 'json').error(errorRemove);
+			});
+			removeComment.modal();
+		}
+		
+		function errorRemove() {
+			$('.flashmessage').removeClass('in');
+			$('#comment_removed_error').addClass('in');
+			$('#removeComment').modal('hide');
+		}
+	</script>
+{% endblock %}

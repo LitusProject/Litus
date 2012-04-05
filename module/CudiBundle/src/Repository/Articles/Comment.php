@@ -26,4 +26,24 @@ class Comment extends EntityRepository
         	
         return $resultSet;
     }
+    
+    public function findAllByArticleAndType(Article $article, $type)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+        	->from('CudiBundle\Entity\Articles\Comment', 'c')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('c.article', ':article'),
+        	        $query->expr()->eq('c.type', ':type')
+        	    )
+        	)
+        	->setParameter('article', $article->getId())
+        	->setParameter('type', $type)
+        	->orderBy('c.date', 'DESC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

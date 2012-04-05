@@ -13,31 +13,31 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Admin;
+namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\Comment,
-    CudiBundle\Form\Admin\Comment\Add as CommentForm;
+    ProfBundle\Form\Prof\Comment\Add as AddForm;
 
 /**
  * CommentController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class CommentController extends \CommonBundle\Component\Controller\ActionController
+class CommentController extends \ProfBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
             return;
         
-        $form = new CommentForm();
+        $form = new AddForm();
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
-				$comment = new Comment($this->getAuthentication()->getPersonObject(), $article, $formData['text'], $formData['type']);
+				$comment = new Comment($this->getAuthentication()->getPersonObject(), $article, $formData['text'], 'external');
 				
 				$this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
@@ -51,7 +51,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
                 );
                 
 				$this->redirect()->toRoute(
-					'admin_comment',
+					'prof_comment',
 					array(
 						'action' => 'manage',
 						'id' => $article->getId(),
@@ -61,14 +61,14 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 				return;
 			}
         }
-        
-        return array(
-        	'article' => $article,
-        	'form' => $form,
-        	'comments' => $this->getEntityManager()
-        	    ->getRepository('CudiBundle\Entity\Articles\Comment')
-        	    ->findAllByArticle($article),
-        );
+                
+    	return array(
+    	    'article' => $article,
+    	    'form' => $form,
+    	    'comments' => $this->getEntityManager()
+    	        ->getRepository('CudiBundle\Entity\Articles\Comment')
+    	        ->findAllByArticleAndType($article, 'external')
+    	);
     }
     
     public function deleteAction()
@@ -77,18 +77,26 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
         
         if (!($comment = $this->_getComment()))
     	    return;
-		
-		$this->getEntityManager()->remove($comment);
-		$this->getEntityManager()->flush();
+    	    
+    	if ($comment->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
+    		return array(
+    		    'result' => (object) array("status" => "error")
+    		);
+    	}
+    	
+    	$this->getEntityManager()->remove($comment);
+    	$this->getEntityManager()->flush();
         
         return array(
             'result' => (object) array("status" => "success")
         );
     }
     
-    private function _getArticle()
+    private function _getArticle($id = null)
     {
-    	if (null === $this->getParam('id')) {
+        $id = $id == null ? $this->getParam('id') : $id;
+        
+    	if (null === $id) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -98,7 +106,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_article',
+    			'prof_article',
     			array(
     				'action' => 'manage'
     			)
@@ -109,9 +117,22 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
+            ->findOneById($id);
     	
-    	if (null === $article) {
+    	$subjects = $this->getEntityManager()
+    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+    	    ->findAllByProf($this->getAuthentication()->getPersonObject());
+    	
+    	foreach($subjects as $subject) {
+    	    $mapping = $this->getEntityManager()
+    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
+    	        ->findOneByArticleAndSubject($article, $subject->getSubject());
+    	    
+    	    if ($mapping)
+    	        break;
+    	}
+    	
+    	if (null === $article || null === $mapping) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -121,7 +142,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_article',
+    			'prof_article',
     			array(
     				'action' => 'manage'
     			)
@@ -145,7 +166,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_article',
+    			'prof_article',
     			array(
     				'action' => 'manage'
     			)
@@ -158,7 +179,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Articles\Comment')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $comment) {
+    	if (null === $comment || null === $this->_getArticle($comment->getArticle()->getId())) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -168,7 +189,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'admin_article',
+    			'prof_article',
     			array(
     				'action' => 'manage'
     			)

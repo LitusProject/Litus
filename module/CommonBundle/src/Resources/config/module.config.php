@@ -94,6 +94,7 @@ return array(
                                     	),
                                     	'options' => array(
                                             'output' => 'admin_css.css',
+                                            'media' => 'print'
                                         ),
                                     ),
                                     'admin_js' => array(

@@ -53,6 +53,14 @@ return array(
 			'@bootstrap_js_dropdown',
 			'@prof_css',
 		),
+		'prof_comment' => array(
+			'@common_jquery',
+			'@bootstrap_css',
+			'@bootstrap_js_dropdown',
+			'@bootstrap_js_transition',
+			'@bootstrap_js_modal',
+			'@prof_css',
+		),
 		'prof_prof' => array(
 			'@common_jquery',
 			'@bootstrap_css',

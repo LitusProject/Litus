@@ -17,6 +17,7 @@ namespace CudiBundle\Form\Admin\Comment;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\TextArea;
 
@@ -29,6 +30,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
              
         $field = new TextArea('text');
         $field->setLabel('Comment')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setMultiOptions(array('internal' => 'Internal', 'external' => 'External'))
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
