@@ -11,7 +11,7 @@
         	    <p>View comments on this article and add one.</p>
         	    <p><a href="{{ url("prof_comment", {"action": "manage", "id": article.getId()}) }}" class="btn">Comments</a></p>
         	{% endif %}
-    	    {% if hasAccess('prof_file', 'manage') %}
+    	    {% if hasAccess('prof_file', 'manage') and article.isInternal() %}
         	    <h3>Files</h3>
         	    <p>Manage the files of this article.</p>
         	    <p><a href="{{ url("prof_file", {"action": "manage", "id": article.getId()}) }}" class="btn">Files</a></p>

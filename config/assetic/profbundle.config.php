@@ -50,7 +50,12 @@ return array(
 		'prof_file' => array(
 			'@common_jquery',
 			'@bootstrap_css',
+			'@common_download_file',
+		    '@common_permanent_modal',
+		    '@common_form_upload_progress',
 			'@bootstrap_js_dropdown',
+			'@bootstrap_js_transition',
+			'@bootstrap_js_modal',
 			'@prof_css',
 		),
 		'prof_comment' => array(

@@ -62,6 +62,13 @@ class File
 	private $internalArticle;
 	
 	/**
+	 * @var boolean The flag whether the file is removed
+	 *
+	 * @Column(type="boolean")
+	 */
+	private $removed = false;
+	
+	/**
 	 * @var boolean The flag whether the file is enabled (for in ProfBundle)
 	 *
 	 * @Column(type="boolean")
@@ -167,8 +174,19 @@ class File
 	}
 	
 	/**
+	 * @param boolean $removed Whether this item is removed or not
+	 *
+	 * @return \CudiBundle\Entity\File
+	 */
+	public function setRemoved($removed)
+	{
+		$this->removed = $removed;
+		return $this;
+	}
+	
+	/**
 	 * @param boolean
-	 * @return \CudiBundle\Entity\Article
+	 * @return \CudiBundle\Entity\File
 	 */
 	public function setEnabled($enabled = true)
 	{

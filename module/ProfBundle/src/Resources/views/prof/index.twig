@@ -2,7 +2,29 @@
 
 {% block content %}
 	{% if authenticated %}
-	    <h2>News</h2>
+	    <h2>Your Recent Activity</h2>
+	    {% for action in actions %}
+	        <div class="action" style="margin: 5px 0;padding: 5px 10px;border-bottom: 1px solid #ccc;width: 500px;">
+	            {% if action.getEntity() == 'article' %}
+	                <div>{{ action.getPerson().getFullName() }} on {{ action.getCreateTime().format('d/m/Y H:i') }}</div>
+	            {% elseif action.getEntity() == 'mapping' %}
+	                <div>{{ action.getPerson().getFullName() }} on {{ action.getCreateTime().format('d/m/Y H:i') }}</div>
+	            {% elseif action.getEntity() == 'file' %}
+	                <div><b>{{ action.getPerson().getFullName() }}</b> {% if action.getAction() == 'add' %}added{% else %}removed{% endif %} a file on <b>{{ action.getCreateTime().format('d/m/Y H:i') }}</b></div>
+                    <div style="padding-left: 30px;color: #999;">
+                        Filename: <b>{{ action.getFile().getName() }}</b><br />
+                        Description: <b>{{ action.getFile().getDescription() }}</b><br />
+                        Status: <b>{% if action.isCompleted() %}
+                                <span class="label label-success">Confirmed</span> by {{ action.getCompletePerson().getFullName() }}
+                            {% elseif action.isRefused() %}
+                                <span class="label label-important">Refused</span> by {{ action.getCompletePerson().getFullName() }}
+                            {% else %}
+                                <span class="label label-warning">Not confirmed</span>
+                            {% endif %}</b>
+                    </div>
+	            {% endif %}
+	        </div>
+	    {% endfor %}
 	{% else %}
 	    <div style="text-align: center;">
 	        <img src="/img/litus.png" alt="Litus" />

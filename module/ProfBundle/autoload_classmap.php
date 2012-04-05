@@ -20,6 +20,7 @@ return array(
     'ProfBundle\Entity\Action\Mapping\Remove'             => __DIR__ . '/src/Entity/Action/Mapping/Remove.php',
     'ProfBundle\Entity\Action'                            => __DIR__ . '/src/Entity/Action.php',
     'ProfBundle\Form\Prof\Comment\Add'                    => __DIR__ . '/src/Form/Prof/Comment/Add.php',
+    'ProfBundle\Form\Prof\File\Add'                       => __DIR__ . '/src/Form/Prof/File/Add.php',
     'ProfBundle\Form\Prof\Mapping\Add'                    => __DIR__ . '/src/Form/Prof/Mapping/Add.php',
     'ProfBundle\Form\Prof\Prof\Add'                       => __DIR__ . '/src/Form/Prof/Prof/Add.php',
     'ProfBundle\Repository\Action\Article\Add'            => __DIR__ . '/src/Repository/Action/Article/Add.php',

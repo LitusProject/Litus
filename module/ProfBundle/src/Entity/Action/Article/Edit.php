@@ -58,4 +58,20 @@ class Edit extends \ProfBundle\Entity\Action
     {
         return $this->article;
     }
+    
+    /**
+     * @return string
+     */
+    public function getEntity()
+    {
+        return 'article';
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return 'edit';
+    }
 }

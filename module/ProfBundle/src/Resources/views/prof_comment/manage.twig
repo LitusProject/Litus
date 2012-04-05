@@ -39,7 +39,7 @@
             <tr class="item">
                 <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
                 <td>{{ comment.getPerson().getFullName() }}</td>
-                <td>{{ comment.getSummary() }}</td>
+                <td>{{ comment.getSummary(70) }}</td>
 				<td class="actions">
 					<a href="#" class="btn btn-primary view" data-text="{{ comment.getText() }}">View</a>
 					{% if comment.getPerson().getId() == authenticatedUserObject.getId() %}
@@ -60,7 +60,7 @@
     		<h3>Article Comment</h3>
     	</div>
     	<div class="modal-body">
-    		<p class="text"></p>
+    		<pre class="text"></pre>
     	</div>
     	<div class="modal-footer">
     		<button class="btn" data-dismiss="modal">Close</button>

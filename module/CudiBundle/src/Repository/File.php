@@ -12,12 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class File extends EntityRepository
 {
-	public function findAllByArticle($article)
+	public function findAllByArticle($article, $enabled = true)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('f')
 			->from('CudiBundle\Entity\File', 'f')
-			->where($query->expr()->eq('f.internalArticle', ':article'))
+			->where(
+			    $query->expr()->andX(
+    			    $enabled ? $query->expr()->eq('f.enabled', 'true') : '1 = 1',
+    			    $query->expr()->eq('f.internalArticle', ':article'),
+    			    $query->expr()->eq('f.removed', 'false')
+    			)
+    		)
 			->setParameter('article', $article->getId())
 			->getQuery()
 			->getResult();

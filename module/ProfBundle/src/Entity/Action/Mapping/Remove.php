@@ -58,4 +58,20 @@ class Remove extends \ProfBundle\Entity\Action
     {
         return $this->mapping;
     }
+    
+    /**
+     * @return string
+     */
+    public function getEntity()
+    {
+        return 'mapping';
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return 'remove';
+    }
 }

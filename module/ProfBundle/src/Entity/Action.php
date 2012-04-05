@@ -32,7 +32,7 @@ use CommonBundle\Entity\Users\Person,
  *      "file_remove"="ProfBundle\Entity\Action\File\Remove",
  * })
  */
-class Action
+abstract class Action
 {
 	/**
 	 * @var integer The ID of this action
@@ -64,6 +64,14 @@ class Action
      * @Column(name="complete_time", type="datetime", nullable=true)
      */
     private $completeTime;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Person The person completed this action
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @JoinColumn(name="completed_person", referencedColumnName="id")
+     */
+    private $completedPerson;
     
     /**
      * @var \DateTime The time this action was completed
@@ -129,4 +137,41 @@ class Action
     {
         return ($this->completeTime !== null);
     }
+    
+    /**
+     * @return boolean
+     */
+    public function isRefused()
+    {
+        return ($this->refuseTime !== null);
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function getCompletePerson()
+    {
+        return $this->completedPerson;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\Users\Person
+     *
+     * @return \ProfBundle\Entity\Action
+     */
+    public function setCompletedPerson(Person $completedPerson)
+    {
+        $this->completedPerson = $completedPerson;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    abstract function getEntity();
+    
+    /**
+     * @return string
+     */
+    abstract function getAction();
 }
