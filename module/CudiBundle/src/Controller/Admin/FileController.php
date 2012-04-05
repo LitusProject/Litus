@@ -118,16 +118,11 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 	public function deleteAction()
 	{
 		$this->initAjax();
-
-		$filePath = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.file_path');
-			
+					
 		if (!($file = $this->_getFile()))
 		    return;
-		    
-		unlink($filePath . $file->getPath());
-		$this->getEntityManager()->remove($file);
+
+		$file->setRemoved(true);
 		$this->getEntityManager()->flush();
 		
 		return array(
@@ -238,11 +233,11 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     
-        $article = $this->getEntityManager()
+        $file = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\File')
             ->findOneById($this->getParam('id'));
     	
-    	if (null === $article) {
+    	if (null === $file) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -261,6 +256,6 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     		return;
     	}
     	
-    	return $article;
+    	return $file;
     }
 }

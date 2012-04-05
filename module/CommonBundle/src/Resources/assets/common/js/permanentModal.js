@@ -5,6 +5,8 @@
     
     var methods = {
         open: function (options) {
+            options = $.extend(defaults, options);
+        
             $(this).on('shown', function () {
             	if (options.closable == true) {
             		$(this).find('.close').show();

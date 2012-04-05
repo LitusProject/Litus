@@ -137,7 +137,7 @@ class Comment
 	/**
 	 * @return string
 	 */
-	public function getSummary($length = 20)
+	public function getSummary($length = 50)
 	{
 	    return substr($this->text, 0, $length) . (strlen($this->text) > $length ? '...' : '');
 	}

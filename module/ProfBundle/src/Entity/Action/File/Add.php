@@ -58,4 +58,20 @@ class Add extends \ProfBundle\Entity\Action
     {
         return $this->file;
     }
+    
+    /**
+     * @return string
+     */
+    public function getEntity()
+    {
+        return 'file';
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return 'add';
+    }
 }

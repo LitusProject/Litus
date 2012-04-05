@@ -71,6 +71,11 @@ return array(
                                             'common/js/socket.js',
                                         ),
                                     ),
+                                    'common_download_file' => array(
+                                        'assets'  => array(
+                                            'common/js/downloadFile.js',
+                                        ),
+                                    ),
                                     'common_typeahead_remote' => array(
                                         'assets'  => array(
                                             'common/js/typeaheadRemote.js',

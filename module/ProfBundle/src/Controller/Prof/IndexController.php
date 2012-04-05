@@ -24,6 +24,12 @@ class IndexController extends \ProfBundle\Component\Controller\ProfController
 {
 	public function indexAction()
 	{
-	    return array();
+	    $actions= $this->getEntityManager()
+	        ->getRepository('ProfBundle\Entity\Action')
+	        ->findByPerson($this->getAuthentication()->getPersonObject());
+	    
+	    return array(
+	        'actions' => $actions,
+	    );
 	}
 }

@@ -47,6 +47,7 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		    '@common_form_upload_progress',
+		    '@common_download_file',
 		    '@common_permanent_modal',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',

@@ -49,7 +49,7 @@
 	            <tr class="item">
 	                <td>{{ file.getName() }}</td>
 	                <td>{{ file.getDescription() }}</td>
-					<td width="140px">
+					<td>
 					    {% if hasAccess('admin_file', 'download') %}
     						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": file.getId()}) }}">Download</a>
     					{% endif %}
@@ -133,18 +133,20 @@
     			        item.append(
     			            $('<td>').html(data.info.name),
     			            $('<td>').html(data.info.description),
-    			            $('<td>').append(
-    			                downloadFile = $('<a>', {class: 'downloadFile view'}).html('Download'),
-    			                deleteFile = $('<a>', {class: 'delete'}).html('Delete')
-    			            )
+    			            actions = $('<td>')
     			        );
     			        
+    			        {% if hasAccess('admin_file', 'download') %}
+    			            actions.append(downloadFile = $('<a>', {class: 'downloadFile view'}).html('Download'));
+    			            downloadFile.downloadFile('{{ url('admin_file', {"action": "download"}) }}/' + data.info.id);
+    			        {% endif %}
+    			        {% if hasAccess('admin_file', 'delete') %}
+    			            actions.append(deleteFile = $('<a>', {class: 'delete'}).html('Delete'));
+    			            deleteFile.data(data.info)
+    			                .click(openDeleteModal);
+    			        {% endif %}
+    			        
     			        $('#articleFiles').append(item);
-    			        
-    			        downloadFile.downloadFile('{{ url('admin_file', {"action": "download"}) }}/' + data.info.id);
-    			        
-    			        deleteFile.data(data.info)
-    			            .click(openDeleteModal);
     			    }
     			    var progressModal = $('#progressModal');
     			    progressModal.permanentModal('hide');
