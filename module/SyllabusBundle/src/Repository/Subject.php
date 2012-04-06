@@ -2,7 +2,9 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Subject
@@ -49,5 +51,26 @@ class Subject extends EntityRepository
         	->getResult();
         
         return $resultSet;
+    }
+    
+    public function findOneByIdAndProf($id, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+            ->innerJoin('m.subject', 's', Join::WITH, $query->expr()->eq('s.id', ':id'))
+            ->where(
+                $query->expr()->eq('m.prof', ':prof')
+            )
+            ->setParameter('id', $id)
+            ->setParameter('prof', $person->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0]->getSubject();
+        
+        return null;
     }
 }

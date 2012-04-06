@@ -38,6 +38,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		$field->setLabel('Article')
 		    ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
 			->setAttrib('id', 'articleSearch')
+			->setAttrib('autocomplete', 'off')
 			->setAttrib('data-provide', 'typeahead')
 			->setRequired();
 		$this->addElement($field);

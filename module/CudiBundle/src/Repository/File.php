@@ -30,4 +30,32 @@ class File extends EntityRepository
 
         return $resultSet;
 	}
+	
+	public function findAllByArticleForProf($article)
+	{
+	    $removed = $this->getEntityManager()
+	        ->getRepository('ProfBundle\Entity\Action\File\Remove')
+	        ->findAllByArticle($article);
+	        
+	    $ids = array(0);   
+	    foreach($removed as $action) {
+	        $ids[] = $action->getFile()->getId();
+	    }
+	    
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('f')
+			->from('CudiBundle\Entity\File', 'f')
+			->where(
+			    $query->expr()->andX(
+    			    $query->expr()->eq('f.internalArticle', ':article'),
+    			    $query->expr()->eq('f.removed', 'false'),
+    			    $query->expr()->notIn('f.id', $ids)
+    			)
+    		)
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+
+        return $resultSet;
+	}
 }

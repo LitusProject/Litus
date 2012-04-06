@@ -15,7 +15,13 @@
  
 namespace ProfBundle\Controller\Prof;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Articles\MetaInfo,
+    CudiBundle\Entity\Articles\Stub,
+    CudiBundle\Entity\Articles\StockArticles\External,
+    CudiBundle\Entity\Articles\StockArticles\Internal,
+    ProfBundle\Entity\Action\Article\Add as AddAction,
+    ProfBundle\Form\Prof\Article\Add as AddForm;
 
 /**
  * ArticleController
@@ -26,26 +32,10 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        $articles = array();
-        
-        $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
-        
-        foreach($subjects as $subject) {
-            $allArticles = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-                ->findAllBySubject($subject->getSubject());
-            
-            foreach($allArticles as $article) {
-                $removeAction = $this->getEntityManager()
-                    ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
-                    ->findOneByMapping($article);
-                if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
-                    $articles[] = $article;
-            }
-        }
-        
+                            
         return array(
             'articles' => $articles,
         );
@@ -63,30 +53,105 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
     
     public function addAction()
     {
-    	return array();
+        $form = new AddForm($this->getEntityManager());
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        	
+        	if ($form->isValid($formData)) {
+        	    $metaInfo = new MetaInfo(
+                    $formData['author'],
+                    $formData['publisher'],
+                    $formData['year_published']
+                );
+				
+				if ($formData['stock']) {
+					if ($formData['internal']) {
+						$binding = $this->getEntityManager()
+							->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+							->findOneById($formData['binding']);
+
+		                $article = new Internal(
+							$this->getEntityManager(),
+		                	$formData['title'],
+	                        $metaInfo,
+	                        0,
+	                        0,
+	                        0,
+		 					null,
+	                        false,
+	                        false,
+	                        null,
+	                        false,
+							0,
+	                        0,
+	                        $binding,
+	                        true,
+	                        $formData['rectoverso'],
+	                        null,
+	                        false
+		                );
+					} else {
+						$article = new External(
+							$this->getEntityManager(),
+		                	$formData['title'],
+	                        $metaInfo,
+	                        0,
+	                        0,
+	                        0,
+							null,
+	                        false,
+	                        false,
+	                        null,
+	                        false
+		           		);
+					}
+				} else {
+					$article = new Stub(
+	                	$formData['title'],
+                        $metaInfo
+	           		);
+				}
+				
+				$article->setEnabled(false);
+					
+				$this->getEntityManager()->persist($metaInfo);
+                $this->getEntityManager()->persist($article);
+                
+                $action = new AddAction($this->getAuthentication()->getPersonObject(), $article);
+                $this->getEntityManager()->persist($action);
+				
+				$this->getEntityManager()->flush();
+				
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully created!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                	'prof_article',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+                
+                return;
+        	}
+        }
+        
+    	return array(
+    	    'form' => $form,
+    	);
     }
     
     public function typeaheadAction()
     {
-        $articles = array();
-        
-        $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
-        
-        foreach($subjects as $subject) {
-            $allArticles = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-                ->findAllBySubject($subject->getSubject());
-            
-            foreach($allArticles as $article) {
-                $removeAction = $this->getEntityManager()
-                    ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
-                    ->findOneByMapping($article);
-                if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
-                    $articles[] = $article->getArticle();
-            }
-        }
         
         $result = array();
         foreach($articles as $article) {
@@ -101,9 +166,11 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
         );
     }
     
-    private function _getArticle()
+    private function _getArticle($id = null)
     {
-    	if (null === $this->getParam('id')) {
+        $id = $id == null ? $this->getParam('id') : $id;
+
+    	if (null === $id) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -124,22 +191,9 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
+            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
     	
-    	$subjects = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findAllByProf($this->getAuthentication()->getPersonObject());
-    	
-    	foreach($subjects as $subject) {
-    	    $mapping = $this->getEntityManager()
-    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-    	        ->findOneByArticleAndSubject($article, $subject->getSubject());
-    	    
-    	    if ($mapping)
-    	        break;
-    	}
-    	
-    	if (null === $article || null === $mapping) {
+    	if (null === $article) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,

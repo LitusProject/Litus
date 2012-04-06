@@ -49,7 +49,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
     /**
      * @var integer The barcode of the article
      *
-     * @Column(type="bigint")
+     * @Column(type="bigint", nullable=true)
      */
     private $barcode;
 
@@ -95,7 +95,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
      * @param boolean $canExpire Whether the article can expire.
      */
-    public function __construct(EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, Supplier $supplier, $canExpire)
+    public function __construct(EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable = false, $unbookable = false, Supplier $supplier = null, $canExpire = false)
     {
         parent::__construct($title, $metaInfo);
 
@@ -184,11 +184,16 @@ abstract class Stock extends \CudiBundle\Entity\Article
      */
 	public function setBarcode($barcode)
 	{
+	    if (null === $barcode) {
+	        $this->barcode = null;
+	        return $this;
+	    }
+	    
 	    if (strlen($barcode) == 13)
 	        $barcode = floor($barcode / 10);
 	    
 	    if (strlen($barcode) != 12)
-	        throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
+	        throw new \InvalidArgumentException('Invalid barcode given');
 	    
 		$this->barcode = $barcode;
 		return $this;
@@ -207,7 +212,7 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	 *
      * @return \CudiBundle\Entity\Articles\Stock
      */
-	public function setSupplier(Supplier $supplier)
+	public function setSupplier(Supplier $supplier = null)
 	{
 		$this->supplier = $supplier;
 		return $this;

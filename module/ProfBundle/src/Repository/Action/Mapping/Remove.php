@@ -3,7 +3,9 @@
 namespace ProfBundle\Repository\Action\Mapping;
 
 use CudiBundle\Entity\ArticleSubjectMap,
-    Doctrine\ORM\EntityRepository;
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Remove
@@ -33,5 +35,18 @@ class Remove extends EntityRepository
         	return $resultSet[0];
         
         return null;
+    }
+    
+    public function findAllBySubject(Subject $subject)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        	->from('ProfBundle\Entity\Action\Mapping\Remove', 'r')
+        	->innerJoin('r.mapping', 'm', Join::WITH, $query->expr()->eq('m.subject', ':subject'))
+        	->setParameter('subject', $subject->getId())
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
     }
 }

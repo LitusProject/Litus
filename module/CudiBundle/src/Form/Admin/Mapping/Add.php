@@ -39,6 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Subject')
 			->setAttrib('size', 70)
 			->setAttrib('id', 'subjectSearch')
+			->setAttrib('autocomplete', 'off')
 			->setAttrib('data-provide', 'typeahead')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));

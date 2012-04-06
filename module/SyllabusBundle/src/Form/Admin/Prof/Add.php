@@ -39,6 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		$field->setLabel('Docent')
 			->setAttrib('size', 70)
 			->setAttrib('id', 'profSearch')
+			->setAttrib('autocomplete', 'off')
 			->setAttrib('data-provide', 'typeahead')
 			->setRequired()
 			->setDecorators(array(new FieldDecorator()));

@@ -24,12 +24,17 @@ class IndexController extends \ProfBundle\Component\Controller\ProfController
 {
 	public function indexAction()
 	{
-	    $actions= $this->getEntityManager()
-	        ->getRepository('ProfBundle\Entity\Action')
-	        ->findByPerson($this->getAuthentication()->getPersonObject());
-	    
+  	    $this->paginator()->setItemsPerPage(5);
+	    $paginator = $this->paginator()->createFromArray(
+	    	$this->getEntityManager()
+	    	    ->getRepository('ProfBundle\Entity\Action')
+	    	    ->findAllByPerson($this->getAuthentication()->getPersonObject()),
+	        $this->getParam('page')
+	    );
+	    	    
 	    return array(
-	        'actions' => $actions,
+	        'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(),
 	    );
 	}
 }

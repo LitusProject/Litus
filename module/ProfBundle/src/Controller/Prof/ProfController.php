@@ -122,13 +122,9 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
     
         $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
+            ->findOneByIdAndProf($this->getParam('id'), $this->getAuthentication()->getPersonObject());
     	
-    	$mapping = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findOneBySubjectAndProf($subject, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $subject || null === $mapping) {
+    	if (null === $subject) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,

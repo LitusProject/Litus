@@ -2,8 +2,10 @@
 
 namespace ProfBundle\Repository\Action\File;
 
-use CudiBundle\Entity\File,
-    Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    CudiBundle\Entity\File,
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Remove
@@ -30,5 +32,18 @@ class Remove extends EntityRepository
         	return $resultSet[0];
         
         return null;
+    }
+    
+    public function findAllByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        	->from('ProfBundle\Entity\Action\File\Remove', 'r')
+        	->innerJoin('r.file', 'f', Join::WITH, $query->expr()->eq('f.internalArticle', ':article'))
+        	->setParameter('article', $article->getId())
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
     }
 }
