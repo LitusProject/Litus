@@ -2,7 +2,8 @@
 
 namespace ProfBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Action
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class Action extends EntityRepository
 {
+    public function findAllByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('ProfBundle\Entity\Action', 'a')
+        	->where(
+        	    $query->expr()->eq('a.person', ':person')
+            )
+        	->setParameter('person', $person->getId())
+        	->orderBy('a.createTime', 'DESC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
 }

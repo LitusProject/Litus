@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityRepository,
 	Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -71,5 +72,88 @@ class Article extends EntityRepository
 			->getResult();
 			
 		return $resultSet;
+	}
+	
+	public function findOneByIdAndProf($id, Person $person)
+	{
+	    $subjects = $this->getEntityManager()
+	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+	        ->findAllByProf($person);
+	     
+        $ids = array(0);   
+	    foreach($subjects as $subject) {
+	        $ids[] = $subject->getSubject()->getId();
+	    }
+	
+	    $query = $this->_em->createQueryBuilder();
+	    $resultSet = $query->select('m')
+	        ->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
+	        ->where(
+	            $query->expr()->andX(
+	                $query->expr()->eq('m.article', ':id'),
+	                $query->expr()->in('m.subject', $ids)
+	            )
+	        )
+	        ->setParameter('id', $id)
+	        ->setMaxResults(1)
+	        ->getQuery()
+	        ->getResult();
+	    
+	    if (isset($resultSet[0]) && (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
+	    	return $resultSet[0]->getArticle();
+	    
+	    return null;
+	}
+	
+	public function findAllByProf(Person $person)
+	{
+	    $subjects = $this->getEntityManager()
+	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+	        ->findAllByProf($person);
+	     
+	    $ids = array(0);   
+	    foreach($subjects as $subject) {
+	        $ids[] = $subject->getSubject()->getId();
+	    }
+	
+	    $query = $this->_em->createQueryBuilder();
+	    $resultSet = $query->select('m')
+	        ->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
+	        ->where(
+                $query->expr()->in('m.subject', $ids)
+	        )
+	        ->getQuery()
+	        ->getResult();
+	    
+	    $ids = array(0);   
+	    foreach($resultSet as $mapping) {
+	        $ids[] = $mapping->getArticle()->getId();
+	    }
+	    
+	    $added = $this->getEntityManager()
+	        ->getRepository('ProfBundle\Entity\Action\Article\Add')
+	        ->findAllByPerson($person);
+	        
+	    foreach($added as $add) {
+	        $ids[] = $add->getArticle()->getId();
+	    }
+	    
+	    $query = $this->_em->createQueryBuilder();
+	    $resultSet = $query->select('a')
+	        ->from('CudiBundle\Entity\Article', 'a')
+	        ->where(
+                $query->expr()->in('a.id', $ids)
+	        )
+	        ->orderBy('a.title', 'ASC')
+	        ->getQuery()
+	        ->getResult();
+	        
+	    $articles = array();
+	    foreach($resultSet as $article) {
+	        if (!$article->isInternal() || $article->isOfficial())
+	            $articles[] = $article;
+	    }
+	    
+	    return $articles;
 	}
 }

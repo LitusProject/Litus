@@ -100,7 +100,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 */
 	public function __construct(
 		EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, 
-		$barcode, $bookable, $unbookable, Supplier $supplier, $canExpire, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor, $frontPageTextColored
+		$barcode, $bookable = false, $unbookable = false, Supplier $supplier = null, $canExpire = false, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $frontPageTextColored
 	) {
 		parent::__construct($entityManager, $title, $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
@@ -229,7 +229,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 *
 	 * @return \CudiBundle\Entity\Articles\StockArticles\Internal
 	 */
-	public function setFrontColor(Color $frontPageColor)
+	public function setFrontColor(Color $frontPageColor = null)
 	{
 		$this->frontPageColor = $frontPageColor;
 		return $this;

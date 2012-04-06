@@ -14,12 +14,17 @@ use CudiBundle\Entity\Article as ArticleEntity,
  */
 class ArticleSubjectMap extends EntityRepository
 {
-    public function findAllByArticle(ArticleEntity $article)
+    public function findAllByArticle(ArticleEntity $article, $enabled = true)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
-        	->where($query->expr()->eq('m.article', ':article'))
+        	->where(
+        	    $query->expr()->andX(
+    			    $enabled ? $query->expr()->eq('m.enabled', 'true') : '1 = 1',
+        	        $query->expr()->eq('m.article', ':article')
+        	    )
+        	)
         	->setParameter('article', $article->getId())
         	->getQuery()
         	->getResult();
@@ -27,17 +32,55 @@ class ArticleSubjectMap extends EntityRepository
         return $resultSet;
     }
     
-    public function findAllBySubject(Subject $subject)
+    public function findAllBySubject(Subject $subject, $enabled = true)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
-        	->where($query->expr()->eq('m.subject', ':subject'))
+        	->where(
+        	    $query->expr()->andX(
+    			    $enabled ? $query->expr()->eq('m.enabled', 'true') : '1 = 1',
+        	        $query->expr()->eq('m.subject', ':subject')
+        	    )
+        	)
         	->setParameter('subject', $subject->getId())
         	->getQuery()
         	->getResult();
         	
         return $resultSet;
+    }
+    
+    public function findAllBySubjectForProf(Subject $subject)
+    {
+        $removed = $this->getEntityManager()
+            ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
+            ->findAllBySubject($subject);
+            
+        $ids = array(0);   
+        foreach($removed as $action) {
+            $ids[] = $action->getMapping()->getId();
+        }
+            
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+       	            $query->expr()->eq('m.subject', ':subject'),
+       	            $query->expr()->notIn('m.id', $ids)
+       	        )
+        	)
+        	->setParameter('subject', $subject->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        $articles = array();
+        foreach($resultSet as $article) {
+            if (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial())
+                $articles[] = $article;
+        }
+        	
+        return $articles;
     }
     
     public function findOneByArticleAndSubject(ArticleEntity $article, Subject $subject)

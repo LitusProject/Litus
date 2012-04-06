@@ -40,18 +40,9 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
         
-        $allArticles = $this->getEntityManager()
+        $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-            ->findAllBySubject($subject);
-        
-        $articles = array();
-        foreach($allArticles as $article) {
-            $removeAction = $this->getEntityManager()
-                ->getRepository('ProfBundle\Entity\Action\Mapping\Remove')
-                ->findOneByMapping($article);
-            if (null === $removeAction && (!$article->getArticle()->isInternal() || $article->getArticle()->isOfficial()))
-                $articles[] = $article;
-        }
+            ->findAllBySubjectForProf($subject);
           
         $profs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -87,13 +78,9 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
     
         $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
-    	
-    	$mapping = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findOneBySubjectAndProf($subject, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $subject || null === $mapping) {
+            ->findOneByIdAndProf($this->getParam('id'), $this->getAuthentication()->getPersonObject());
+
+    	if (null === $subject) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,

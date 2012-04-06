@@ -80,6 +80,19 @@ return array(
         		),
         	),
         ),
+        'prof_paginator' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/prof[/:page]',
+        		'constraints' => array(
+        			'page' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'prof',
+        			'action'     => 'index',
+        		),
+        	),
+        ),
         'prof_auth' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(

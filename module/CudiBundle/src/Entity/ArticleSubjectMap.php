@@ -56,6 +56,13 @@ class ArticleSubjectMap
     private $mandatory;
     
     /**
+     * @var boolean The flag whether the article is enabled (for in ProfBundle)
+     *
+     * @Column(type="boolean")
+     */
+    private $enabled = true;
+    
+    /**
      * @param \CudiBundle\Entity\Article $article
      * @param \SyllabusBundle\Entity\Subject $subject
      * @param boolean $mandatory
@@ -97,5 +104,23 @@ class ArticleSubjectMap
     public function isMandatory()
     {
         return $this->mandatory;
+    }
+    
+    /**
+     * @param boolean
+     * @return \CudiBundle\Entity\ArticleSubjectMap
+     */
+    public function setEnabled($enabled = true)
+    {
+        $this->enabled = $enabled;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 }

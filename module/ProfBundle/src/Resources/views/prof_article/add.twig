@@ -1,5 +1,38 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-	Litus Prof
+	<div class="page-header">
+	    <h2>Add Article</h2>
+	</div>
+	{% autoescape false %}
+	    {{ form }}
+	{% endautoescape %}
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#internal').click(toggleInternal);
+			$('#stock').click(toggleStock);
+			toggleInternal();
+			toggleStock();
+		});
+		
+		function toggleInternal() {
+			if ($('#internal').is(':checked'))
+				$('#internal_form').show();
+			else
+				$('#internal_form').hide();
+		}
+		
+		function toggleStock() {
+			if ($('#stock').is(':checked')) {
+				$('#stock_form').show();
+				toggleInternal();
+			} else {
+				$('#stock_form, #internal_form').hide();
+				$('#internal').removeAttr("checked");
+			}
+		}
+	</script>
 {% endblock %}

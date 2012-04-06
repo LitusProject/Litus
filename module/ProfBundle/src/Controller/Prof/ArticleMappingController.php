@@ -17,6 +17,7 @@ namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\ArticleSubjectMap,
+    ProfBundle\Entity\Action\Mapping\Add as AddAction,
     ProfBundle\Entity\Action\Mapping\Remove as RemoveAction,
     ProfBundle\Form\Prof\Mapping\Add as AddForm;
 
@@ -47,7 +48,12 @@ class ArticleMappingController extends \ProfBundle\Component\Controller\ProfCont
 	    	    
 	    	    if (null === $mapping) {
     	    	    $mapping = new ArticleSubjectMap($article, $subject, $formData['mandatory']);
+    	    	    $mapping->setEnabled(false);
     	    	    $this->getEntityManager()->persist($mapping);
+    	    	    
+    	    	    $action = new AddAction($this->getAuthentication()->getPersonObject(), $mapping);
+    	    	    $this->getEntityManager()->persist($action);
+    	    	    
     	    	    $this->getEntityManager()->flush();
     	    	}
 	    	    
@@ -119,7 +125,7 @@ class ArticleMappingController extends \ProfBundle\Component\Controller\ProfCont
     	$mappingProf = $this->getEntityManager()
     	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
     	    ->findOneBySubjectAndProf($mapping->getSubject(), $this->getAuthentication()->getPersonObject());
-    	
+
     	if (null === $mapping || null === $mappingProf) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -165,13 +171,9 @@ class ArticleMappingController extends \ProfBundle\Component\Controller\ProfCont
     
         $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
+            ->findOneByIdAndProf($this->getParam('id'), $this->getAuthentication()->getPersonObject());
     	
-    	$mapping = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findOneBySubjectAndProf($subject, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $subject || null === $mapping) {
+    	if (null === $subject) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -193,26 +195,34 @@ class ArticleMappingController extends \ProfBundle\Component\Controller\ProfCont
     	return $subject;
     }
     
-    private function _getArticle($id)
+    private function _getArticle($id = null)
     {
+        $id = $id == null ? $this->getParam('id') : $id;
+
+    	if (null === $id) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the article!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'prof_subject',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($id);
+            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
     	
-    	$subjects = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findAllByProf($this->getAuthentication()->getPersonObject());
-    	
-    	foreach($subjects as $subject) {
-    	    $mapping = $this->getEntityManager()
-    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-    	        ->findOneByArticleAndSubject($article, $subject->getSubject());
-    	    
-    	    if ($mapping)
-    	        break;
-    	}
-    	
-    	if (null === $article || null === $mapping) {
+    	if (null === $article) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,

@@ -95,7 +95,7 @@ class CommentController extends \ProfBundle\Component\Controller\ProfController
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
-        
+
     	if (null === $id) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -106,7 +106,7 @@ class CommentController extends \ProfBundle\Component\Controller\ProfController
     		);
     		
     		$this->redirect()->toRoute(
-    			'prof_article',
+    			'prof_subject',
     			array(
     				'action' => 'manage'
     			)
@@ -117,22 +117,9 @@ class CommentController extends \ProfBundle\Component\Controller\ProfController
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($id);
+            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
     	
-    	$subjects = $this->getEntityManager()
-    	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findAllByProf($this->getAuthentication()->getPersonObject());
-    	
-    	foreach($subjects as $subject) {
-    	    $mapping = $this->getEntityManager()
-    	        ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-    	        ->findOneByArticleAndSubject($article, $subject->getSubject());
-    	    
-    	    if ($mapping)
-    	        break;
-    	}
-    	
-    	if (null === $article || null === $mapping) {
+    	if (null === $article) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -142,7 +129,7 @@ class CommentController extends \ProfBundle\Component\Controller\ProfController
     		);
     		
     		$this->redirect()->toRoute(
-    			'prof_article',
+    			'prof_subject',
     			array(
     				'action' => 'manage'
     			)

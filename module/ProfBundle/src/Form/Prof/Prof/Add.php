@@ -37,6 +37,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		$field->setLabel('Docent')
 		    ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
 			->setAttrib('id', 'profSearch')
+			->setAttrib('autocomplete', 'off')
 			->setAttrib('data-provide', 'typeahead')
 			->setRequired();
 		$this->addElement($field);

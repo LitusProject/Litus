@@ -34,31 +34,22 @@ class Add extends \ProfBundle\Entity\Action
 	private $id;
 	
 	/**
-	 * @var \CudiBundle\Entity\Article The article of this action
+	 * @var \CudiBundle\Entity\ArticleSubjectMap The article of this action
 	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\ArticleSubjectMap")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
-	private $article;
-	
-	/**
-	 * @var \SyllabusBundle\Entity\Subject The article of this action
-	 *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $subject;
+	private $mapping;
     
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \CudiBundle\Entity\Article $article
      * @param \SyllabusBundle\Entity\Subject $subject
      */
-    public function __construct(Person $person, Article $article, Subject $subject)
+    public function __construct(Person $person, ArticleSubjectMap $mapping)
     {
         parent::__construct($person);
-    	$this->article = $article;
-    	$this->subject = $subject;
+    	$this->mapping = $mapping;
     }
     
     /**
