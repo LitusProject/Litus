@@ -16,12 +16,16 @@
 namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\Articles\MetaInfo,
     CudiBundle\Entity\Articles\Stub,
     CudiBundle\Entity\Articles\StockArticles\External,
     CudiBundle\Entity\Articles\StockArticles\Internal,
     ProfBundle\Entity\Action\Article\Add as AddAction,
-    ProfBundle\Form\Prof\Article\Add as AddForm;
+    ProfBundle\Entity\Action\Article\Edit as EditAction,
+    ProfBundle\Entity\Action\Article\Edit\Item as EditItem,
+    ProfBundle\Form\Prof\Article\Add as AddForm,
+    ProfBundle\Form\Prof\Article\Edit as EditForm;
 
 /**
  * ArticleController
@@ -35,6 +39,10 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
+            
+        foreach($articles as $article) {
+            $this->applyEditsArticle($article);
+        }
                             
         return array(
             'articles' => $articles,
@@ -46,7 +54,86 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
         if (!($article = $this->_getArticle()))
             return;
         
+        $this->applyEditsArticle($article);
+        
+        $form = new EditForm($this->getEntityManager(), $article);
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        	
+        	if ($form->isValid($formData)) {
+        	    $action = new EditAction($this->getAuthentication()->getPersonObject(), $article);
+        	    $edited = false;
+        	    
+        	    if ($article->getTitle() != $formData['title']) {
+            	    $this->getEntityManager()->persist(
+            	        new EditItem($action, 'title', $formData['title'])
+            	    );
+            	    $edited = true;
+            	}
+            	
+        	    if ($article->getMetaInfo()->getAuthors() != $formData['author']) {
+            	    $this->getEntityManager()->persist(
+            	        new EditItem($action, 'author', $formData['author'])
+            	    );
+            	    $edited = true;
+            	}
+            	if ($article->getMetaInfo()->getPublishers() != $formData['publisher']) {
+            	    $this->getEntityManager()->persist(
+            	        new EditItem($action, 'publisher', $formData['publisher'])
+            	    );
+            	    $edited = true;
+            	}
+            	if ($article->getMetaInfo()->getYearPublished() != $formData['year_published']) {
+            	    $this->getEntityManager()->persist(
+            	        new EditItem($action, 'year_published', $formData['year_published'])
+            	    );
+            	    $edited = true;
+            	}
+				
+				if ($formData['stock']) {
+				    if ($formData['internal']) {
+				        if ($article->getBinding()->getId() != $formData['binding']) {
+				            $this->getEntityManager()->persist(
+				                new EditItem($action, 'binding', $formData['binding'])
+				            );
+                    	    $edited = true;
+				        }
+    					if ($article->isRectoVerso() != $formData['rectoverso']) {
+        					$this->getEntityManager()->persist(
+        					    new EditItem($action, 'rectoverso', $formData['rectoverso'])
+        					);
+                    	    $edited = true;
+        				}
+    				}
+				}
+				
+				if ($edited)
+        	        $this->getEntityManager()->persist($action);
+				
+				$this->getEntityManager()->flush();
+        	    
+        	    $this->flashMessenger()->addMessage(
+        	        new FlashMessage(
+        	            FlashMessage::SUCCESS,
+        	            'SUCCESS',
+        	            'The article was successfully updated!'
+        	        )
+        	    );
+        	    
+        	    $this->redirect()->toRoute(
+        	    	'prof_article',
+        	    	array(
+        	    		'action' => 'manage'
+        	    	)
+        	    );
+        	    
+        	    return;
+        	}
+        }
+        
     	return array(
+    	    'form' => $form,
     	    'article' => $article,
     	);
     }
@@ -155,6 +242,7 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
         
         $result = array();
         foreach($articles as $article) {
+            $this->applyEditsArticle($article);
         	$item = (object) array();
         	$item->id = $article->getId();
         	$item->value = $article->getTitle() . ' - ' . $article->getMetaInfo()->getYearPublished();

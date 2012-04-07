@@ -101,8 +101,10 @@ class Article extends EntityRepository
 	    
 	    if (isset($resultSet[0]) && (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
 	    	return $resultSet[0]->getArticle();
-	    
-	    return null;
+	    	
+        return $this->getEntityManager()
+            ->getRepository('ProfBundle\Entity\Action\Article\Add')
+            ->findOneByIdAndPerson($id, $person);
 	}
 	
 	public function findAllByProf(Person $person)

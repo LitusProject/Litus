@@ -16,6 +16,7 @@
 namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\File,
     ProfBundle\Entity\Action\File\Add as AddAction,
     ProfBundle\Entity\Action\File\Remove as RemoveAction,
@@ -36,6 +37,8 @@ class FileController extends \ProfBundle\Component\Controller\ProfController
         if (!($article = $this->_getArticle()))
             return;
             
+        $this->applyEditsArticle($article);
+
         $files = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\File')
             ->findAllByArticleForProf($article);

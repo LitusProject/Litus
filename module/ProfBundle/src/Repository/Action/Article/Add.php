@@ -28,4 +28,27 @@ class Add extends EntityRepository
         
         return $resultSet;
     }
+    
+    public function findOneByIdAndPerson($id, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('ProfBundle\Entity\Action\Article\Add', 'a')
+        	->where(
+        	    $query->expr()->andX(
+            	    $query->expr()->eq('a.article', ':id'),
+            	    $query->expr()->eq('a.person', ':person')
+            	)
+            )
+        	->setParameter('person', $person->getId())
+        	->setParameter('id', $id)
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0]->getArticle();
+        
+        return null;
+    }
 }

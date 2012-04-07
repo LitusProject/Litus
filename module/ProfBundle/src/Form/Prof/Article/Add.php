@@ -19,10 +19,10 @@ use CommonBundle\Component\Validator\Price as PriceValidator,
 	CommonBundle\Component\Validator\Year as YearValidator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
-	CommonBundle\Component\Form\Bootstrap\Element\Submit,
+	CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 	CommonBundle\Component\Form\Bootstrap\Element\Text,
 	CommonBundle\Component\Form\Bootstrap\Element\Select,
-	CommonBundle\Component\Form\Bootstrap\Element\Checkbox;
+	CommonBundle\Component\Form\Bootstrap\Element\Submit;
 
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
