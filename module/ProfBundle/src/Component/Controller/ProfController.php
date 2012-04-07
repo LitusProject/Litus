@@ -17,6 +17,7 @@ namespace ProfBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Form\Auth\Login as LoginForm,
+    CudiBundle\Entity\Article,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -47,5 +48,28 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
   		
         $e->setResult($result);
         return $result;
+    }
+    
+    protected function applyEditsArticle(Article $article)
+    {
+        $editItems = $this->getEntityManager()
+            ->getRepository('ProfBundle\Entity\Action\Article\Edit\Item')
+            ->findAllByArticle($article);
+        foreach($editItems as $item) {
+            if ($item->getField() == 'title')
+                $article->setTitle($item->getValue());
+            if ($item->getField() == 'author')
+                $article->getMetaInfo()->setAuthors($item->getValue());
+            if ($item->getField() == 'publisher')
+                $article->getMetaInfo()->setPublishers($item->getValue());
+            if ($item->getField() == 'year_published')
+                $article->getMetaInfo()->setYearPublished($item->getValue());
+            if ($item->getField() == 'binding')
+                $article->setBinding($this->getEntityManager()
+                	->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+                	->findOneById($item->getValue()));
+            if ($item->getField() == 'rectoverso')
+                $article->setIsRectoVerso($item->getValue());
+        }
     }
 }

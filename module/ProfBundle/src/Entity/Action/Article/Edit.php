@@ -40,6 +40,13 @@ class Edit extends \ProfBundle\Entity\Action
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $article;
+	
+	/**
+	 * @var array The items
+	 *
+	 * @OneToMany(targetEntity="ProfBundle\Entity\Action\Article\Edit\Item", mappedBy="action")
+	 */
+	private $editItems;
     
     /**
      * @param \CommonBundle\Entity\Users\Person $person

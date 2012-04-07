@@ -16,6 +16,7 @@
 namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\Articles\Comment,
     ProfBundle\Form\Prof\Comment\Add as AddForm;
 
@@ -30,6 +31,8 @@ class CommentController extends \ProfBundle\Component\Controller\ProfController
     {
         if (!($article = $this->_getArticle()))
             return;
+    
+        $this->applyEditsArticle($article);
         
         $form = new AddForm();
         

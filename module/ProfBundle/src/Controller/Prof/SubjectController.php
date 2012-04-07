@@ -15,7 +15,8 @@
  
 namespace ProfBundle\Controller\Prof;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Article;
 
 /**
  * SubjectController
@@ -47,6 +48,9 @@ class SubjectController extends \ProfBundle\Component\Controller\ProfController
         $profs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllBySubject($subject);
+            
+        foreach($articles as $article)
+            $this->applyEditsArticle($article->getArticle());
         
         return array(
             'subject' => $subject,

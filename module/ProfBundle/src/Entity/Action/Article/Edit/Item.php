@@ -35,7 +35,7 @@ class Item
 	/**
 	 * @var \ProfBundle\Entity\Action\Article\Edit The action of this edit item
 	 *
-	 * @ManyToOne(targetEntity="ProfBundle\Entity\Action\Article\Edit")
+	 * @ManyToOne(targetEntity="ProfBundle\Entity\Action\Article\Edit", inversedBy="items")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $action;
@@ -64,5 +64,21 @@ class Item
     	$this->action = $action;
     	$this->field = $field;
     	$this->value = $value;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 }

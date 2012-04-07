@@ -15,6 +15,8 @@
  
 namespace ProfBundle\Controller\Prof;
 
+use CudiBundle\Entity\Article;
+
 /**
  * IndexController
  *
@@ -28,9 +30,18 @@ class IndexController extends \ProfBundle\Component\Controller\ProfController
 	    $paginator = $this->paginator()->createFromArray(
 	    	$this->getEntityManager()
 	    	    ->getRepository('ProfBundle\Entity\Action')
-	    	    ->findAllByPerson($this->getAuthentication()->getPersonObject()),
+	    	    ->findAllActionsBySubjectPerson($this->getAuthentication()->getPersonObject()),
 	        $this->getParam('page')
 	    );
+	    
+	    foreach($paginator as $action) {
+	        if ($action->getEntity() == 'article')
+	            $this->applyEditsArticle($action->getArticle());
+	        if ($action->getEntity() == 'file')
+	            $this->applyEditsArticle($action->getFile()->getInternalArticle());
+	        if ($action->getEntity() == 'mapping')
+	            $this->applyEditsArticle($action->getArticleSubjectMap()->getArticle());
+	    }
 	    	    
 	    return array(
 	        'paginator' => $paginator,

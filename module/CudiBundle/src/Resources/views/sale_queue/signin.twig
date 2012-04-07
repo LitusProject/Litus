@@ -2,6 +2,7 @@
 
 {% block content %}
 	<div class="flashmessage alert alert-error fade" id="add_queue_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
 		<div class="title">Error</div>
 		<div class="content">
 			<p>There are no bookings for you.</p>
@@ -9,6 +10,7 @@
 	</div>
 	
 	<div class="flashmessage alert alert-success fade" id="add_queue_success">
+	    <a class="close" data-dismiss="alert">&times;</a>
 		<div class="title">Success</div>
 		<div class="content">
 			<p>You are succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong></p>
@@ -16,6 +18,7 @@
 	</div>
 	
 	<div class="flashmessage alert alert-error fade" id="socket_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
 		<div class="title">Error</div>
 		<div class="content">
 			<p>The connection with the server is down.</p>

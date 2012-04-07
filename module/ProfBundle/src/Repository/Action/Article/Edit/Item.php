@@ -2,7 +2,9 @@
 
 namespace ProfBundle\Repository\Action\Article\Edit;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Item
@@ -12,4 +14,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class Item extends EntityRepository
 {
+    public function findAllByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+        	->from('ProfBundle\Entity\Action\Article\Edit\Item', 'i')
+        	->innerJoin('i.action', 'a', Join::WITH, $query->expr()->eq('a.article', ':article'))
+        	->setParameter('article', $article->getId())
+        	->orderBy('a.createTime', 'ASC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
 }
