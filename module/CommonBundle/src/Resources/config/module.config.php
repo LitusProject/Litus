@@ -21,6 +21,8 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
+            	'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
+            	
                 'authentication'                   => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
@@ -253,6 +255,16 @@ return array(
                     'action'     => 'index',
                 ),
             ),
+        ),
+        'common_install' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/admin/install/common',
+        		'defaults' => array(
+        			'controller' => 'common_install',
+        			'action'     => 'index',
+        		),
+        	),
         ),
     	'admin_academic' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',

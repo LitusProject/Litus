@@ -31,15 +31,22 @@ use CommonBundle\Component\Acl\Acl,
 class Role
 {
     /**
-     * @var string $name The name of the Role
+     * @var string The name of the role
      *
      * @Id
      * @Column(type="string")
      */
     private $name;
+    
+    /**
+     * @var boolean Whether or not this is a system role
+     *
+     * @Column(type="boolean")
+     */
+    private $system;
 
     /**
-     * @var \CommonBundle\Entity\Acl\Role $parents The parents of this role
+     * @var \CommonBundle\Entity\Acl\Role The role's parents
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
@@ -51,7 +58,7 @@ class Role
     private $parents;
 
     /**
-     * @var \CommonBundle\Entity\Acl\Role $actions The actions that this role can execute
+     * @var \CommonBundle\Entity\Acl\Role The role's actions
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
      * @JoinTable(
@@ -64,12 +71,14 @@ class Role
 
     /**
      * @param string $name The name of the role
+     * @param boolean $system Whether or not this is a system role
      * @param array $parents The role's parents
      * @param array $actions The role's actions
      */
-    public function __construct($name, array $parents = array(), array $actions = array())
+    public function __construct($name, $system = false, array $parents = array(), array $actions = array())
     {
         $this->name = $name;
+        $this->system = $system;
 
         $this->parents = new ArrayCollection($parents);
         $this->actions = new ArrayCollection();
@@ -81,6 +90,14 @@ class Role
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function getSystem()
+    {
+    	return $this->system;
     }
     
     /**

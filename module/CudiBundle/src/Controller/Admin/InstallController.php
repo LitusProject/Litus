@@ -24,11 +24,11 @@ use CommonBundle\Entity\General\Bank\BankDevice,
 	Exception;
 
 /**
- * InstallerController
+ * InstallController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class InstallerController extends \CommonBundle\Component\Controller\ActionController\InstallerController
+class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
 	protected function _initConfig()
 	{
@@ -175,7 +175,7 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	
 	protected function _initAcl()
 	{
-	    $this->installAclStructure(
+	    $this->installAcl(
 	        array(
 	            'cudibundle' => array(
 	                'admin_article' => array(
@@ -230,7 +230,8 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	    $this->installRoles(
 	        array(
     	        'supplier' => array(
-    	            'parent_roles' => array(
+    	        	'system' => true,
+    	            'parents' => array(
     	                'guest',
     	            ),
     	            'actions' => array(
@@ -245,17 +246,6 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
     	                ),
     	            )
     	        ),
-    	        'guest' => array(
-    	            'parent_roles' => array(),
-    	            'actions' => array(
-    	                'supplier' => array(
-    	                	'index'
-    	                ),
-    	                'supplier_auth' => array(
-    	                	'login'
-    	                ),
-    	            )
-    	        )
     	    )
     	);
 	}

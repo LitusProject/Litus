@@ -3,7 +3,8 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'syllabus_install'       => 'SyllabusBundle\Controller\Admin\InstallerController',
+                'syllabus_install'       => 'SyllabusBundle\Controller\Admin\InstallController',
+                
                 'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
                 'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
                 'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',

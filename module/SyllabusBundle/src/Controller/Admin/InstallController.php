@@ -16,11 +16,11 @@
 namespace SyllabusBundle\Controller\Admin;
 
 /**
- * InstallerController
+ * InstallController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class InstallerController extends \CommonBundle\Component\Controller\ActionController\InstallerController
+class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
 	protected function _initConfig()
 	{
@@ -47,7 +47,7 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	
 	protected function _initAcl()
 	{
-	    $this->installAclStructure(
+	    $this->installAcl(
 	        array(
 	            'syllabusbundle' => array(
 	                'admin_study' => array(
@@ -66,11 +66,12 @@ class InstallerController extends \CommonBundle\Component\Controller\ActionContr
 	    $this->installRoles(
 	        array(
 	            'prof' => array(
-	                'parent_roles' => array(
+	            	'system' => true,
+	                'parents' => array(
 	                    'guest',
 	                ),
 	                'actions' => array(
-	                )
+	                ),
 	            )
 	        )
 	    );
