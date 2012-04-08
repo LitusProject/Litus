@@ -55,6 +55,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $editItems = $this->getEntityManager()
             ->getRepository('ProfBundle\Entity\Action\Article\Edit\Item')
             ->findAllByArticle($article);
+            
         foreach($editItems as $item) {
             if ($item->getField() == 'title')
                 $article->setTitle($item->getValue());

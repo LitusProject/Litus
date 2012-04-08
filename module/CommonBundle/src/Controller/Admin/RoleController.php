@@ -164,126 +164,12 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->flush();
     	
     	return array(
-    		'result' => array('status' => 'success'),
+    		'result' => array(
+    			'status' => 'success'
+    		),
     	);
 	}
-	
-	public function loadAction()
-	{
-		$modules = array(
-	        'commonbundle' => array(
-                'admin_auth' => array(
-                	'index', 'authenticate', 'login', 'logout'
-                ),
-                'admin_dashboard' => array(
-                	'index'
-                ),
-                'admin_role' => array(
-                	'index', 'add', 'manage', 'edit', 'delete'
-                ),
-                'admin_user' => array(
-                	'index', 'add', 'manage', 'edit', 'delete'
-                )
-	        )
-		);
 		
-		foreach ($modules as $module => $routesArray) {
-			$repositoryCheck = $this->getEntityManager()
-				->getRepository('CommonBundle\Entity\Acl\Resource')
-				->findOneByName($module);
-	
-			if (null === $repositoryCheck) {
-				$moduleResource = new Resource($module);
-				$this->getEntityManager()->persist($moduleResource);
-			} else {
-	            $moduleResource = $repositoryCheck;
-	        }
-			
-			foreach ($routesArray as $route => $actions) {
-				$repositoryCheck = $this->getEntityManager()
-					->getRepository('CommonBundle\Entity\Acl\Resource')
-					->findOneBy(array('name' => $route, 'parent' => $module));
-	
-				if (null === $repositoryCheck) {
-					$routeResource = new Resource(
-						$route,
-						$moduleResource
-					);
-					$this->getEntityManager()->persist($routeResource);
-				} else {
-	                $routeResource = $repositoryCheck;
-	            }
-				
-				foreach ($actions as $action) {
-					$repositoryCheck = $this->getEntityManager()
-						->getRepository('CommonBundle\Entity\Acl\Action')
-						->findOneBy(array('name' => $action, 'resource' => $route));
-					
-					if (null === $repositoryCheck) {
-						$actionResource = new AclAction(
-							$action,
-							$routeResource
-						);
-						$this->getEntityManager()->persist($actionResource);
-					}
-				}
-			}
-		}
-		$this->getEntityManager()->flush();
-		
-		$repositoryCheck = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\Acl\Role')
-			->findOneByName('guest');
-		
-		if (null === $repositoryCheck) {
-	    	$guestRole = new Role('guest');
-	    	$guestRole->allow(
-				$this->getEntityManager()
-	        		->getRepository('CommonBundle\Entity\Acl\Action')
-	            	->findOneBy(array('name' => 'login', 'resource' => 'admin_auth'))
-			);
-			$guestRole->allow(
-				$this->getEntityManager()
-	        		->getRepository('CommonBundle\Entity\Acl\Action')
-	            	->findOneBy(array('name' => 'authenticate', 'resource' => 'admin_auth'))
-			);
-	    	$this->getEntityManager()->persist($guestRole);
-		}
-		
-		$repositoryCheck = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\Acl\Role')
-			->findOneByName('corporate');
-		
-		if (null === $repositoryCheck) {
-			$corporateRole = new Role(
-				'corporate',
-				array(
-					$guestRole
-				)
-			);
-			$this->getEntityManager()->persist($corporateRole);
-		}
-		
-		$this->getEntityManager()->flush();
-		
-		$this->flashMessenger()->addMessage(
-		    new FlashMessage(
-		        FlashMessage::SUCCESS,
-		        'Succes',
-		        'The ACL information was succesfully loaded into the database!'
-		    )
-		);
-		
-		$this->redirect()->toRoute(
-			'admin_role',
-			array(
-				'action' => 'manage'
-			)
-		);
-		
-		return;
-	}
-	
 	public function _getRole()
 	{
 		if (null === $this->getParam('name')) {

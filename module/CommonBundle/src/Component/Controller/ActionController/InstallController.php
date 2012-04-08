@@ -27,7 +27,7 @@ use CommonBundle\Entity\Acl\Action as AclAction,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class InstallerController extends \CommonBundle\Component\Controller\ActionController
+abstract class InstallController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
 	 * Running all installation methods.
@@ -91,18 +91,20 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	        	->getRepository('CommonBundle\Entity\Acl\Role')
 	        	->findOneByName($roleName);
 	        
-	        
 	        $parents = array();
-	        foreach($config['parent_roles'] as $name) {
+	        foreach($config['parents'] as $name) {
 	            $parents[] = $this->getEntityManager()
 	            	->getRepository('CommonBundle\Entity\Acl\Role')
 	            	->findOneByName($name);
 	        }
 
 	        if (null === $role) {
-	        	$role = new Role($roleName, $parents);
+	        	$role = new Role(
+	        		$roleName, $config['system'], $parents
+	        	);
+	        	
 	        	$this->getEntityManager()->persist($role);
-	        } elseif(sizeof($config['parent_roles']) > 0) {
+	        } elseif(sizeof($config['parents']) > 0) {
 	            $role->setParents($parents);
 	        }
 	        
@@ -111,6 +113,7 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	            	$action = $this->getEntityManager()
 	            		->getRepository('CommonBundle\Entity\Acl\Action')
 	            		->findOneBy(array('name' => $action, 'resource' => $resource));
+	            		
 	            	if (! in_array($action, $role->getActions()))
 	            	    $role->allow($action);
 	            }
@@ -125,7 +128,7 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	 *
 	 * @param array $structure
 	 */
-	protected function installAclStructure($structure = array())
+	protected function installAcl($structure = array())
 	{
 	    foreach ($structure as $module => $routesArray) {
 	    		$repositoryCheck = $this->getEntityManager()
@@ -149,6 +152,7 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	    					$route,
 	    					$moduleResource
 	    				);
+	    				
 	    				$this->getEntityManager()->persist($routeResource);
 	    			} else {
 	                    $routeResource = $repositoryCheck;
@@ -164,6 +168,7 @@ abstract class InstallerController extends \CommonBundle\Component\Controller\Ac
 	    						$action,
 	    						$routeResource
 	    					);
+	    					
 	    					$this->getEntityManager()->persist($actionResource);
 	    				}
 	    			}

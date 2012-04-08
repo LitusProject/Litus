@@ -3,7 +3,8 @@ return array(
 	'di'					=> array(
 		'instance' => array(
 			'alias' => array(
-				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallerController',
+				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallController',
+				
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_article_subject'  => 'CudiBundle\Controller\Admin\ArticleSubjectMapController',
 				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
@@ -15,8 +16,10 @@ return array(
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\SupplierController',
+				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
+				
 				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
 				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
