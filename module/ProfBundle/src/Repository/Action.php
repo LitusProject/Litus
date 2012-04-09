@@ -30,6 +30,54 @@ class Action extends EntityRepository
         return $resultSet;
     }
     
+    public function findAllUncompleted()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('ProfBundle\Entity\Action', 'a')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->isNull('a.refuseTime'),
+        	        $query->expr()->isNull('a.completeTime')
+        	    )
+            )
+        	->orderBy('a.createTime', 'ASC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
+    
+    public function findAllCompleted()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('ProfBundle\Entity\Action', 'a')
+        	->where(
+       	        $query->expr()->isNotNull('a.completeTime')
+            )
+        	->orderBy('a.createTime', 'DESC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
+    
+    public function findAllRefused()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('ProfBundle\Entity\Action', 'a')
+        	->where(
+       	        $query->expr()->isNotNull('a.refuseTime')
+            )
+        	->orderBy('a.createTime', 'DESC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
+    
     public function findAllActionsBySubjectPerson(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -45,12 +93,15 @@ class Action extends EntityRepository
         $subjectIds = array(0);
         foreach($subjects as $subject)
             $subjectIds[] = $subject->getSubject()->getId();
-            
+        
         $query = $this->_em->createQueryBuilder();
         $articles = $query->select('m')
             ->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
             ->where(
-                $query->expr()->in('m.subject', $subjectIds)
+                $query->expr()->andX(
+    			    $query->expr()->eq('m.removed', 'false'),
+                    $query->expr()->in('m.subject', $subjectIds)
+                )
             )
             ->getQuery()
             ->getResult();
@@ -63,8 +114,12 @@ class Action extends EntityRepository
         $articleAdd = $query->select('a')
             ->from('ProfBundle\Entity\Action\Article\Add', 'a')
             ->where(
-                $query->expr()->in('a.article', $articleIds)
+                $query->expr()->orX(
+                    $query->expr()->eq('a.person', ':person'),
+                    $query->expr()->in('a.article', $articleIds)
+                )
             )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         
@@ -76,8 +131,12 @@ class Action extends EntityRepository
         $articleEdit = $query->select('a')
             ->from('ProfBundle\Entity\Action\Article\Edit', 'a')
             ->where(
-                $query->expr()->in('a.article', $articleIds)
+                $query->expr()->orX(
+                    $query->expr()->eq('a.person', ':person'),
+                    $query->expr()->in('a.article', $articleIds)
+                )
             )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         
@@ -88,6 +147,10 @@ class Action extends EntityRepository
         $fileAdd = $query->select('a')
             ->from('ProfBundle\Entity\Action\File\Add', 'a')
             ->innerJoin('a.file', 'f', Join::WITH, $query->expr()->in('f.internalArticle', $articleIds))
+            ->where(
+                $query->expr()->eq('a.person', ':person')
+            )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         
@@ -98,6 +161,10 @@ class Action extends EntityRepository
         $fileRemove = $query->select('a')
             ->from('ProfBundle\Entity\Action\File\Remove', 'a')
             ->innerJoin('a.file', 'f', Join::WITH, $query->expr()->in('f.internalArticle', $articleIds))
+            ->where(
+                $query->expr()->eq('a.person', ':person')
+            )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         
@@ -113,6 +180,10 @@ class Action extends EntityRepository
                     $query->expr()->in('m.subject', $subjectIds)
                 )
             )
+            ->where(
+                $query->expr()->eq('a.person', ':person')
+            )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         
@@ -128,6 +199,10 @@ class Action extends EntityRepository
                     $query->expr()->in('m.subject', $subjectIds)
                 )
             )
+            ->where(
+                $query->expr()->eq('a.person', ':person')
+            )
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
         

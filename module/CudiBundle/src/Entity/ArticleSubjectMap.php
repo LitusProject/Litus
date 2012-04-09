@@ -56,6 +56,13 @@ class ArticleSubjectMap
     private $mandatory;
     
     /**
+     * @var boolean The flag whether the mapping is removed
+     *
+     * @Column(type="boolean")
+     */
+    private $removed = false;
+    
+    /**
      * @var boolean The flag whether the article is enabled (for in ProfBundle)
      *
      * @Column(type="boolean")
@@ -104,6 +111,17 @@ class ArticleSubjectMap
     public function isMandatory()
     {
         return $this->mandatory;
+    }
+    
+    /**
+     * @param boolean $removed Whether this item is removed or not
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setRemoved($removed = true)
+    {
+    	$this->removed = $removed;
+    	return $this;
     }
     
     /**

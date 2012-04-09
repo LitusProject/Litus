@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_action/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+	<div id="controller_action">
+	    <table class="full_width">
+	        <tr>
+	            <th>Person</th>
+	            <th width="160px">Action</th>
+	            <th width="150px">Date</th>
+	            <th width="140px">Actions</th>
+	        </tr>
+	        
+	        {% for action in paginator %}
+	            <tr class="item">
+	                <td>{{ action.getPerson().getFullName() }}</td>
+	                <td>{{ action.getEntity()|capitalize }} {{ action.getAction()|capitalize }}</td>
+	                <td>{{ action.getCreateTime().format('d/m/Y H:i') }}</td>
+	                <td>
+	                    {% if hasAccess('admin_action', 'edit') %}
+	                        <a href="{{ url('admin_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+	                    {% endif %}
+	                </td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}
