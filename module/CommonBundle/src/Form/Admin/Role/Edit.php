@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance

@@ -45,7 +45,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-	public function supplierAction()
+	public function viewAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
 	    	return;

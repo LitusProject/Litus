@@ -278,7 +278,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		);
 	}
 	
-	public function newversionAction()
+	public function newVersionAction()
 	{
 		$filePath = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
@@ -406,7 +406,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
     		    new FlashMessage(
     		        FlashMessage::ERROR,
     		        'Error',
-    		        'No id was given to identify the article!'
+    		        'No ID was given to identify the article!'
     		    )
     		);
     		

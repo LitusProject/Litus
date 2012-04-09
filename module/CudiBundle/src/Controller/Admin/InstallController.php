@@ -179,7 +179,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	        array(
 	            'cudibundle' => array(
 	                'admin_article' => array(
-	                	'add', 'delete', 'edit', 'manage', 'newversion', 'search'
+	                	'add', 'delete', 'edit', 'manage', 'newVersion', 'search'
 	                ),
 	                'admin_booking' => array(
 	                	'add', 'delete', 'manage', 'search', 'unassign'
@@ -200,7 +200,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
 	                ),
 	                'admin_sale' => array(
-	                	'add', 'close', 'edit', 'editregister', 'manage'
+	                	'add', 'close', 'edit', 'editRegister', 'manage'
 	                ),
 	                'admin_stock' => array(
 	                	'edit', 'manage', 'search'
@@ -209,7 +209,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'add', 'addUser', 'deleteUser', 'edit', 'editUser', 'manage', 'search', 'supplier'
 	                ),
 	                'sale_queue' => array(
-	                	'addtoqueue', 'overview', 'signin'
+	                	'overview', 'signin'
 	                ),
 	                'sale_sale' => array(
 	                	'return', 'sale'

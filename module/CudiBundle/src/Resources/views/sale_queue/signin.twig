@@ -48,11 +48,11 @@
 		
 		$.webSocket(
 			{
-				name: 'signinQueue',
+				name: 'signInQueue',
 				url: '{{ socketUrl }}',
 				open: function (e) {
 					$('#socket_error').removeClass('in');
-					$.webSocket('send', {name: 'signinQueue', text: 'initialize: {"saleSession": "{{ session.getId() }}" }'});
+					$.webSocket('send', {name: 'signInQueue', text: 'initialize: {"saleSession": "{{ session.getId() }}" }'});
 				},
 				message: function (e, data) {
 					if (data.queueNumber) {
@@ -85,7 +85,7 @@
 		);
 			
 		function signIn() {
-			$.webSocket('send', {name: 'signinQueue', text: 'action: addToQueue ' + $('#username').val()});
+			$.webSocket('send', {name: 'signInQueue', text: 'action: addToQueue ' + $('#username').val()});
 		}
 	</script>
 {% endblock %}

@@ -15,18 +15,34 @@
  
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Select;
+	Zend\Form\Element\Select,
+	Zend\Form\Element\Submit;
 
-class AddUser extends \CommonBundle\Form\Admin\Academic\Add
+/**
+ * Add a user to the database.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class AddUser extends \CommonBundle\Form\Admin\Person\Add
 {
-
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+	 * @param mixed $opts The validator's options
+	 */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, '', $opts);
         
         $this->removeElement('roles');
-        $this->removeElement('university_identification');
+        
+        $field = new Submit('submit');
+        $field->setLabel('Add')
+            ->setAttrib('class', 'supplier_add')
+            ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
     }
 }

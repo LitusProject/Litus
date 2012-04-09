@@ -58,7 +58,7 @@
     		    </div>
     		</div>
 		{% endif %}
-		{% if hasAccess('admin_article', 'newversion') %}
+		{% if hasAccess('admin_article', 'newVersion') %}
     		<div class="sidebox">
     		    <div class="title">New Version</div>
     		   	<div class="content">
@@ -66,7 +66,7 @@
     		        	<i>Please hit the link below to create a new version of this article!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url('admin_article', {"action": "newversion", "id": article.getId()}) }}">&rarr; New Version</a>
+    		           	<a href="{{ url('admin_article', {"action": "newVersion", "id": article.getId()}) }}">&rarr; New Version</a>
     		        </p>
     		    </div>
     		</div>

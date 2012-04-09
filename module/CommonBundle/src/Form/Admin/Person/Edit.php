@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Form\Admin\Academic;
+namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Entity\Users\Person,
@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Form\Admin\Person\Edit
+abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 {
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -34,18 +34,39 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 	 */
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
-        parent::__construct($entityManager, $person, $opts);
+        parent::__construct($entityManager, $opts);
 
-     	$field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'academic_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
-        
+        $this->removeElement('username');
+        $this->removeElement('credential');
+        $this->removeElement('verify_credential');
+
         $this->populate(
             array(
-                'university_identification' => $person->getUniversityIdentification()
+                'first_name' => $person->getFirstName(),
+                'last_name' => $person->getLastName(),
+                'email' => $person->getEmail(),
+                'telephone' => $person->getPhonenumber(),
+                'sex' => $person->getSex(),
+                'roles' => $this->_createRolesPopulationArray($person->getRoles()),
             )
         );
+    }
+
+	/**
+	 * Returns an array that is in the right format to populate the roles field.
+	 *
+	 * @param array $toles The user's roles
+	 * @return array
+	 */
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem())
+                continue;
+
+            $rolesArray[] = $role->getName();
+        }
+        return $rolesArray;
     }
 }

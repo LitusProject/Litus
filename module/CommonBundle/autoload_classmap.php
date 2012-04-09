@@ -95,6 +95,8 @@ return array(
     'CommonBundle\Form\Admin\Auth\Login'                                               => __DIR__ . '//src/Form/Admin/Auth/Login.php',
     'CommonBundle\Form\Admin\Config\Add'                                               => __DIR__ . '//src/Form/Admin/Config/Add.php',
     'CommonBundle\Form\Admin\Config\Edit'                                              => __DIR__ . '//src/Form/Admin/Config/Edit.php',
+    'CommonBundle\Form\Admin\Person\Add'                                               => __DIR__ . '//src/Form/Admin/Person/Add.php',
+    'CommonBundle\Form\Admin\Person\Edit'                                              => __DIR__ . '//src/Form/Admin/Person/Edit.php',
     'CommonBundle\Form\Admin\Role\Add'                                                 => __DIR__ . '//src/Form/Admin/Role/Add.php',
     'CommonBundle\Form\Admin\Role\Edit'                                                => __DIR__ . '//src/Form/Admin/Role/Edit.php',
     'CommonBundle\Form\Auth\Login'                                                     => __DIR__ . '//src/Form/Auth/Login.php',
