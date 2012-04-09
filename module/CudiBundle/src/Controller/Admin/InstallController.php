@@ -246,6 +246,17 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	                ),
     	            )
     	        ),
+    	        'guest' => array(
+    	            'parent_roles' => array(),
+    	            'actions' => array(
+    	                'supplier' => array(
+    	                    'index'
+    	                ),
+    	                'supplier_auth' => array(
+    	                    'login'
+    	                ),
+    	            )
+    	        ),
     	    )
     	);
 	}
