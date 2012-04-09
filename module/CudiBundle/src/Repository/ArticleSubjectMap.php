@@ -60,7 +60,7 @@ class ArticleSubjectMap extends EntityRepository
             
         $ids = array(0);   
         foreach($removed as $action) {
-            $ids[] = $action->getMapping()->getId();
+            $ids[] = $action->getArticleSubjectMap()->getId();
         }
             
         $query = $this->_em->createQueryBuilder();

@@ -67,7 +67,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 				}
 				
                 $newRole = new Role(
-                	$formData['name'], $parents, $actions
+                	$formData['name'], false, $parents, $actions
                 );
 
                 $this->getEntityManager()->persist($newRole);
@@ -91,7 +91,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
 	public function editAction()
 	{
-		$role = $this->_getRole();
+		if (!($role = $this->_getRole()))
+		    return;
 		
         $form = new EditForm(
         	$this->getEntityManager(), $role
@@ -150,7 +151,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 	{
 	    $this->initAjax();
 	    
-    	$role = $this->_getRole();
+    	if (!($role = $this->_getRole()))
+    	    return;
         
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Person')
