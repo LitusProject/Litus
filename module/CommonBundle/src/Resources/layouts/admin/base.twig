@@ -79,7 +79,7 @@
 		            		</li>
 		                {% endif %}
 		                
-		                {% if hasAccess('admin_study', 'manage') %}
+		                {% if hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Syllabus</b><br />
@@ -95,6 +95,24 @@
 		                		    {% endif %}
 		                		    {% if hasAccess('admin_update_syllabus', 'index') %}
 		                		        <li><a href="{{ url('admin_update_syllabus') }}">Update</a></li>
+		                		    {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+		                
+		                {% if hasAccess('admin_action', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Prof</b><br />
+		                			Actions
+		                		</div>
+		                		<ul
+		                			{% if 'admin_action' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_action', 'manage') %}
+		                		        <li><a href="{{ url('admin_action') }}">Actions</a></li>
 		                		    {% endif %}
 		                		</ul>
 		                	</li>

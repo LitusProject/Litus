@@ -160,7 +160,7 @@ abstract class Article
 	 *
 	 * @return \CudiBundle\Entity\Article
      */
-	public function setRemoved($removed)
+	public function setRemoved($removed = true)
 	{
 		$this->removed = $removed;
 		return $this;

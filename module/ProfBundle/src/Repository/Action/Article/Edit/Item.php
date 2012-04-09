@@ -19,9 +19,17 @@ class Item extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
         	->from('ProfBundle\Entity\Action\Article\Edit\Item', 'i')
-        	->innerJoin('i.action', 'a', Join::WITH, $query->expr()->eq('a.article', ':article'))
+        	->innerJoin('i.action', 'a', Join::WITH, 
+       	        $query->expr()->eq('a.article', ':article')
+        	)
         	->setParameter('article', $article->getId())
         	->orderBy('a.createTime', 'ASC')
+        	->where(
+        	    $query->expr()->andX(
+                	$query->expr()->isNull('a.completeTime'),
+                	$query->expr()->isNull('a.refuseTime')
+                )
+            )
         	->getQuery()
         	->getResult();
         

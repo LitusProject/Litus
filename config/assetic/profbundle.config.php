@@ -20,6 +20,11 @@ return array(
 	    	'@admin_css',
 	    	'@admin_js',
 	    ),
+	    'admin_action' => array(
+	    	'@common_jquery',
+	    	'@admin_css',
+	    	'@admin_js',
+	    ),
 	    'prof' => array(
 			'@common_jquery',
 			'@bootstrap_css',

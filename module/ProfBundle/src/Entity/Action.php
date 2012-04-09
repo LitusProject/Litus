@@ -127,6 +127,25 @@ abstract class Action
     public function setCompleted()
     {
         $this->completeTime = new DateTime();
+        $this->refuseTime = null;
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getRefuseTime()
+    {
+        return $this->refuseTime;
+    }
+    
+    /**
+     * @return \ProfBundle\Entity\Action
+     */
+    public function setRefused()
+    {
+        $this->refuseTime = new DateTime();
+        $this->completeTime = null;
         return $this;
     }
     
@@ -144,6 +163,14 @@ abstract class Action
     public function isRefused()
     {
         return ($this->refuseTime !== null);
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isUnCompleted()
+    {
+        return !$this->isCompleted() && !$this->isRefused();
     }
     
     /**
