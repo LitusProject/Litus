@@ -15,24 +15,36 @@
  
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Entity\Users\Person,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Select;
+	Zend\Form\Element\Select,
+	Zend\Form\Element\Submit;
 
-class EditUser extends \CommonBundle\Form\Admin\Academic\Edit
-{
-
+/**
+ * Edit a user's data.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class EditUser extends \CommonBundle\Form\Admin\Person\Edit
+{	
 	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+	 * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+	 * @param mixed $opts The validator's options
 	 */
-	protected $_entityManager = null;
-
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
         
         $this->removeElement('roles');
-        $this->removeElement('university_identification');
+        
+        $field = new Submit('submit');
+        $field->setLabel('Save')
+            ->setAttrib('class', 'supplier_edit')
+            ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
     }
 }

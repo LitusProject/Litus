@@ -21,8 +21,8 @@
             <tr>
                 <td></td>
                 <td>
-                    {% if hasAccess('admin_sale', 'editregister') %}
-                        <a href="{{ url("admin_sale", {"action": "editregister", "id": session.getOpenAmount().getId()}) }}">(edit)</a></td>
+                    {% if hasAccess('admin_sale', 'editRegister') %}
+                        <a href="{{ url("admin_sale", {"action": "editRegister", "id": session.getOpenAmount().getId()}) }}">(edit)</a></td>
                     {% endif %}
             </tr>
             {% for unit in units %}
@@ -54,8 +54,8 @@
                 <tr>
                     <td></td>
                 	<td>
-                	    {% if hasAccess('admin_sale', 'editregister') %}
-                	        <a href="{{ url("admin_sale", {"action": "editregister", "id": session.getCloseAmount().getId()}) }}">(edit)</a></td>
+                	    {% if hasAccess('admin_sale', 'editRegister') %}
+                	        <a href="{{ url("admin_sale", {"action": "editRegister", "id": session.getCloseAmount().getId()}) }}">(edit)</a></td>
                 	    {% endif %}
                 </tr>
                 {% for unit in units %}

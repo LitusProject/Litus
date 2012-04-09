@@ -154,7 +154,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		);
     }
 
-    public function editregisterAction()
+    public function editRegisterAction()
     {
         if (!($cashRegister = $this->_getCashRegister()))
         	return;

@@ -34,7 +34,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 		);
 	}
 
-    public function signinAction()
+    public function signInAction()
 	{
         $form = new SignInForm();
         

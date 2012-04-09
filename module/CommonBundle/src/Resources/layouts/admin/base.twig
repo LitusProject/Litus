@@ -46,6 +46,31 @@
 	                <div class="title">Divisions</div>
 	                
 	                <ul class="subsubmenu">
+	                	{% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}
+	                	    <li>
+	                	        <div class="subtitle">
+	                	    		<b>Corporate Relations</b><br />
+	                	    		Companies &amp; Contracts
+	                	        </div>
+	                	        
+	                	        <ul
+	                	        	{% if 'admin_company' == getParam('controller') or 'admin_section' == getParam('controller') or 'admin_contract' == getParam('controller') %}
+	                	        		style="display: block;"
+	                	        	{% endif %}
+	                	        >
+	                	            {% if hasAccess('admin_company', 'index') %}
+	                	                <li><a href="{{ url('admin_company') }}">Companies</a></li>
+	                	            {% endif %}
+	                	            {% if hasAccess('admin_section', 'index') %}
+	                	                <li><a href="{{ url('admin_section') }}">Sections</a></li>
+	                	            {% endif %}
+	                	            {% if hasAccess('admin_contract', 'index') %}
+	                	                <li><a href="{{ url('admin_dashboard') }}">Contracts</a></li>
+	                	            {% endif %}
+	                	        </ul>
+	                		</li>
+	                	{% endif %}
+	                
 		                {% if hasAccess('admin_article', 'manage') or hasAccess('admin_booking', 'manage') or hasAccess('admin_sale', 'manage') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_financial', 'manage') %}
 		            		<li>
 		            			<div class="subtitle">
@@ -79,27 +104,6 @@
 		            		</li>
 		                {% endif %}
 		                
-		                {% if hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
-		                	<li>
-		                		<div class="subtitle">
-		                			<b>Syllabus</b><br />
-		                			Studies &amp; Subjects
-		                		</div>
-		                		<ul
-		                			{% if 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') or 'admin_update_syllabus' == getParam('controller') or 'admin_prof' == getParam('controller') %}
-		                				style="display: block;"
-		                			{% endif %}
-		                		>
-		                		    {% if hasAccess('admin_study', 'manage') %}
-		                		        <li><a href="{{ url('admin_study') }}">Studies</a></li>
-		                		    {% endif %}
-		                		    {% if hasAccess('admin_update_syllabus', 'index') %}
-		                		        <li><a href="{{ url('admin_update_syllabus') }}">Update</a></li>
-		                		    {% endif %}
-		                		</ul>
-		                	</li>
-		                {% endif %}
-		                
 		                {% if hasAccess('admin_action', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
@@ -116,31 +120,6 @@
 		                		    {% endif %}
 		                		</ul>
 		                	</li>
-		                {% endif %}
-		                
-		                {% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}
-		                    <li>
-			                    <div class="subtitle">
-		                    		<b>Business Relations</b><br />
-		                    		Companies &amp; Contracts
-			                    </div>
-			                    
-			                    <ul
-			                    	{% if 'admin_company' == getParam('controller') or 'admin_section' == getParam('controller') or 'admin_contract' == getParam('controller') %}
-			                    		style="display: block;"
-			                    	{% endif %}
-			                    >
-			                        {% if hasAccess('admin_company', 'index') %}
-			                            <li><a href="{{ url('admin_company') }}">Companies</a></li>
-			                        {% endif %}
-			                        {% if hasAccess('admin_section', 'index') %}
-			                            <li><a href="{{ url('admin_section') }}">Sections</a></li>
-			                        {% endif %}
-			                        {% if hasAccess('admin_contract', 'index') %}
-			                            <li><a href="{{ url('admin_dashboard') }}">Contracts</a></li>
-			                        {% endif %}
-			                    </ul>
-			            	</li>
 		                {% endif %}
 		                
 		                {% if hasAccess('admin_run', 'index') %}
@@ -160,6 +139,27 @@
 			                        {% endif %}
 			                    </ul>
 			            	</li>
+		                {% endif %}
+		                
+		                {% if hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Syllabus</b><br />
+		                			Studies &amp; Subjects
+		                		</div>
+		                		<ul
+		                			{% if 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') or 'admin_update_syllabus' == getParam('controller') or 'admin_prof' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_study', 'manage') %}
+		                		        <li><a href="{{ url('admin_study') }}">Studies</a></li>
+		                		    {% endif %}
+		                		    {% if hasAccess('admin_update_syllabus', 'index') %}
+		                		        <li><a href="{{ url('admin_update_syllabus') }}">Update</a></li>
+		                		    {% endif %}
+		                		</ul>
+		                	</li>
 		                {% endif %}
 	                </ul>
 	        	</li>
