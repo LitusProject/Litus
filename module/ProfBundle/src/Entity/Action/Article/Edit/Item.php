@@ -15,7 +15,8 @@
  
 namespace ProfBundle\Entity\Action\Article\Edit;
 
-use ProfBundle\Entity\Action\Article\Edit;
+use Doctrine\ORM\EntityManager,
+    ProfBundle\Entity\Action\Article\Edit;
 
 /**
  * @Entity(repositoryClass="ProfBundle\Repository\Action\Article\Edit\Item")
@@ -53,6 +54,11 @@ class Item
 	 * @Column(type="string")
 	 */
 	private $value;
+	
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	private $_entityManager;
     
     /**
      * @param \ProfBundle\Entity\Action\Article\Edit $action
@@ -77,8 +83,85 @@ class Item
     /**
      * @return string
      */
+    public function getFieldName()
+    {
+        switch ($this->field) {
+            case 'title':
+                return 'Title';
+            case 'author':
+                return 'Author';
+            case 'publisher':
+                return 'Publisher';
+            case 'year_published':
+                return 'Year Published';
+            case 'binding':
+                return 'Binding';
+            case 'rectoverso':
+                return 'Recto Verso';
+        }
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCurrentValue()
+    {
+        switch ($this->field) {
+            case 'title':
+                return $this->action->getArticle()->getTitle();
+            case 'author':
+                return $this->action->getArticle()->getMetaInfo()->getAuthors();
+            case 'publisher':
+                return $this->action->getArticle()->getMetaInfo()->getPublishers();
+            case 'year_published':
+                return $this->action->getArticle()->getMetaInfo()->getYearPublished();
+            case 'binding':
+                return $this->action->getArticle()->getBinding()->getName();
+            case 'rectoverso':
+                return $this->action->getArticle()->isRectoVerso() ? 'Yes' : 'No';
+        }
+    }
+    
+    /**
+     * @return string
+     */
     public function getValue()
     {
         return $this->value;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getNewValue()
+    {
+        switch ($this->field) {
+            case 'title':
+                return $this->value;
+            case 'author':
+                return $this->value;
+            case 'publisher':
+                return $this->value;
+            case 'year_published':
+                return $this->value;
+            case 'binding':
+                return $this->_entityManager
+                    ->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+                    ->findOneById($this->value)
+                    ->getName();
+            case 'rectoverso':
+                return $this->value ? 'Yes' : 'No';
+        }
+    }
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \ProfBundle\Entity\Action\Article\Edit\Item
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
     }
 }

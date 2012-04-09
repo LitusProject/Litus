@@ -62,55 +62,74 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
             $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	    $action = new EditAction($this->getAuthentication()->getPersonObject(), $article);
-        	    $edited = false;
-        	    
-        	    if ($article->getTitle() != $formData['title']) {
-            	    $this->getEntityManager()->persist(
-            	        new EditItem($action, 'title', $formData['title'])
-            	    );
-            	    $edited = true;
-            	}
-            	
-        	    if ($article->getMetaInfo()->getAuthors() != $formData['author']) {
-            	    $this->getEntityManager()->persist(
-            	        new EditItem($action, 'author', $formData['author'])
-            	    );
-            	    $edited = true;
-            	}
-            	if ($article->getMetaInfo()->getPublishers() != $formData['publisher']) {
-            	    $this->getEntityManager()->persist(
-            	        new EditItem($action, 'publisher', $formData['publisher'])
-            	    );
-            	    $edited = true;
-            	}
-            	if ($article->getMetaInfo()->getYearPublished() != $formData['year_published']) {
-            	    $this->getEntityManager()->persist(
-            	        new EditItem($action, 'year_published', $formData['year_published'])
-            	    );
-            	    $edited = true;
-            	}
-				
-				if ($formData['stock']) {
-				    if ($formData['internal']) {
-				        if ($article->getBinding()->getId() != $formData['binding']) {
-				            $this->getEntityManager()->persist(
-				                new EditItem($action, 'binding', $formData['binding'])
-				            );
-                    	    $edited = true;
-				        }
-    					if ($article->isRectoVerso() != $formData['rectoverso']) {
-        					$this->getEntityManager()->persist(
-        					    new EditItem($action, 'rectoverso', $formData['rectoverso'])
-        					);
-                    	    $edited = true;
+        	    if ($article->isEnabled()) {
+            	    $action = new EditAction($this->getAuthentication()->getPersonObject(), $article);
+            	    $edited = false;
+            	    
+            	    if ($article->getTitle() != $formData['title']) {
+                	    $this->getEntityManager()->persist(
+                	        new EditItem($action, 'title', $formData['title'])
+                	    );
+                	    $edited = true;
+                	}
+                	
+            	    if ($article->getMetaInfo()->getAuthors() != $formData['author']) {
+                	    $this->getEntityManager()->persist(
+                	        new EditItem($action, 'author', $formData['author'])
+                	    );
+                	    $edited = true;
+                	}
+                	if ($article->getMetaInfo()->getPublishers() != $formData['publisher']) {
+                	    $this->getEntityManager()->persist(
+                	        new EditItem($action, 'publisher', $formData['publisher'])
+                	    );
+                	    $edited = true;
+                	}
+                	if ($article->getMetaInfo()->getYearPublished() != $formData['year_published']) {
+                	    $this->getEntityManager()->persist(
+                	        new EditItem($action, 'year_published', $formData['year_published'])
+                	    );
+                	    $edited = true;
+                	}
+    				
+    				if ($formData['stock']) {
+    				    if ($formData['internal']) {
+    				        if ($article->getBinding()->getId() != $formData['binding']) {
+    				            $this->getEntityManager()->persist(
+    				                new EditItem($action, 'binding', $formData['binding'])
+    				            );
+                        	    $edited = true;
+    				        }
+        					if ($article->isRectoVerso() != $formData['rectoverso']) {
+            					$this->getEntityManager()->persist(
+            					    new EditItem($action, 'rectoverso', $formData['rectoverso'])
+            					);
+                        	    $edited = true;
+            				}
         				}
     				}
+    				
+    				if ($edited)
+            	        $this->getEntityManager()->persist($action);
+				} else {
+				    $article->getMetaInfo()->setAuthors($formData['author'])
+				        ->setPublishers($formData['publisher'])
+				        ->setYearPublished($formData['year_published']);
+				    
+				    $article->setTitle($formData['title']);
+				    
+				    if ($formData['stock']) {
+				        if ($formData['internal']) {
+				            $article->setBinding(
+    				                $this->getEntityManager()
+        				                ->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+        				                ->findOneById($formData['binding'])
+    				            )
+				                ->setIsRectoVerso($formData['rectoverso']);
+				    	}
+				    }
+				    $this->getEntityManager()->persist($article);
 				}
-				
-				if ($edited)
-        	        $this->getEntityManager()->persist($action);
-				
 				$this->getEntityManager()->flush();
         	    
         	    $this->flashMessenger()->addMessage(

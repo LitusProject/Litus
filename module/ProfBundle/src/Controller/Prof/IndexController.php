@@ -26,26 +26,30 @@ class IndexController extends \ProfBundle\Component\Controller\ProfController
 {
 	public function indexAction()
 	{
-  	    $this->paginator()->setItemsPerPage(5);
-	    $paginator = $this->paginator()->createFromArray(
-	    	$this->getEntityManager()
-	    	    ->getRepository('ProfBundle\Entity\Action')
-	    	    ->findAllActionsBySubjectPerson($this->getAuthentication()->getPersonObject()),
-	        $this->getParam('page')
-	    );
-	    
-	    foreach($paginator as $action) {
-	        if ($action->getEntity() == 'article')
-	            $this->applyEditsArticle($action->getArticle());
-	        if ($action->getEntity() == 'file')
-	            $this->applyEditsArticle($action->getFile()->getInternalArticle());
-	        if ($action->getEntity() == 'mapping')
-	            $this->applyEditsArticle($action->getArticleSubjectMap()->getArticle());
-	    }
-	    	    
-	    return array(
-	        'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
-	    );
+	    if ($this->getAuthentication()->isAuthenticated()) {
+      	    $this->paginator()->setItemsPerPage(5);
+    	    $paginator = $this->paginator()->createFromArray(
+    	    	$this->getEntityManager()
+    	    	    ->getRepository('ProfBundle\Entity\Action')
+    	    	    ->findAllActionsBySubjectPerson($this->getAuthentication()->getPersonObject()),
+    	        $this->getParam('page')
+    	    );
+    	    
+    	    foreach($paginator as $action) {
+    	        if ($action->getEntity() == 'article')
+    	            $this->applyEditsArticle($action->getArticle());
+    	        if ($action->getEntity() == 'file')
+    	            $this->applyEditsArticle($action->getFile()->getInternalArticle());
+    	        if ($action->getEntity() == 'mapping')
+    	            $this->applyEditsArticle($action->getArticleSubjectMap()->getArticle());
+    	    }
+    	    	    
+    	    return array(
+    	        'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+    	    );
+        }
+        
+        return array();
 	}
 }

@@ -19,7 +19,12 @@ class Article extends EntityRepository
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
 			->from('CudiBundle\Entity\Article', 'a')
-			->where($query->expr()->eq('a.removed', 'false'))
+			->where(
+			    $query->expr()->andX(
+			        $query->expr()->eq('a.enabled', 'true'),
+			        $query->expr()->eq('a.removed', 'false')
+			    )
+			)
 			->getQuery()
 			->getResult();
 
@@ -33,6 +38,7 @@ class Article extends EntityRepository
 			->from('CudiBundle\Entity\Article', 'a')
 			->where($query->expr()->andX(
 					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
+			        $query->expr()->eq('a.enabled', 'true'),
 					$query->expr()->eq('a.removed', 'false')
 				)
 			)
@@ -50,8 +56,13 @@ class Article extends EntityRepository
 		$resultSet = $query->select('a')
 			->from('CudiBundle\Entity\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.authors'), ':author'))
-			->where($query->expr()->eq('a.removed', 'false'))
-			->setParameter('author', '%'.strtolower($author).'%')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.enabled', 'true'),
+                    $query->expr()->eq('a.removed', 'false')
+                )
+            )
+            ->setParameter('author', '%'.strtolower($author).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()
 			->getResult();
@@ -65,7 +76,12 @@ class Article extends EntityRepository
 		$resultSet = $query->select('a')
 			->from('CudiBundle\Entity\Article', 'a')
 			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'))
-			->where($query->expr()->eq('a.removed', 'false'))
+			->where(
+			    $query->expr()->andX(
+			        $query->expr()->eq('a.enabled', 'true'),
+			        $query->expr()->eq('a.removed', 'false')
+			    )
+			)
 			->setParameter('publisher', '%'.strtolower($publisher).'%')
 			->orderBy('a.title', 'ASC')
 			->getQuery()
@@ -144,7 +160,10 @@ class Article extends EntityRepository
 	    $resultSet = $query->select('a')
 	        ->from('CudiBundle\Entity\Article', 'a')
 	        ->where(
-                $query->expr()->in('a.id', $ids)
+	            $query->expr()->andX(
+	                $query->expr()->eq('a.removed', 'false'),
+                    $query->expr()->in('a.id', $ids)
+	            )
 	        )
 	        ->orderBy('a.title', 'ASC')
 	        ->getQuery()
