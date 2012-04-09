@@ -2,6 +2,7 @@
 return array(
     'ProfBundle\Module'                                   => __DIR__ . '/Module.php',
     'ProfBundle\Component\Controller\ProfController'      => __DIR__ . '/src/Component/Controller/ProfController.php',
+    'ProfBundle\Controller\Admin\ActionController'        => __DIR__ . '/src/Controller/Admin/ActionController.php',
     'ProfBundle\Controller\Admin\InstallerController'     => __DIR__ . '/src/Controller/Admin/InstallerController.php',
     'ProfBundle\Controller\Prof\ArticleController'        => __DIR__ . '/src/Controller/Prof/ArticleController.php',
     'ProfBundle\Controller\Prof\ArticleMappingController' => __DIR__ . '/src/Controller/Prof/ArticleMappingController.php',
@@ -19,6 +20,7 @@ return array(
     'ProfBundle\Entity\Action\Mapping\Add'                => __DIR__ . '/src/Entity/Action/Mapping/Add.php',
     'ProfBundle\Entity\Action\Mapping\Remove'             => __DIR__ . '/src/Entity/Action/Mapping/Remove.php',
     'ProfBundle\Entity\Action'                            => __DIR__ . '/src/Entity/Action.php',
+    'ProfBundle\Form\Admin\Article\Confirm'               => __DIR__ . '/src/Form/Admin/Article/Confirm.php',
     'ProfBundle\Form\Prof\Article\Add'                    => __DIR__ . '/src/Form/Prof/Article/Add.php',
     'ProfBundle\Form\Prof\Article\Edit'                   => __DIR__ . '/src/Form/Prof/Article/Edit.php',
     'ProfBundle\Form\Prof\Comment\Add'                    => __DIR__ . '/src/Form/Prof/Comment/Add.php',

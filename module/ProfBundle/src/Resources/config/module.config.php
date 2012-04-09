@@ -4,6 +4,7 @@ return array(
         'instance' => array(
             'alias' => array(
                 'prof_install'           => 'ProfBundle\Controller\Admin\InstallerController',
+                'admin_action'           => 'ProfBundle\Controller\Admin\ActionController',
                 'prof'      	         => 'ProfBundle\Controller\Prof\IndexController',
                 'prof_auth'      	     => 'ProfBundle\Controller\Prof\AuthController',
                 'prof_article'           => 'ProfBundle\Controller\Prof\ArticleController',
@@ -66,13 +67,26 @@ return array(
         		),
         	),
         ),
+        'admin_action' => array(
+        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+        	'options' => array(
+        		'route' => '/admin/prof/actions[/:action[/:id]]',
+        		'contraints' => array(
+        		    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+        		    'id' => '[0-9]*',
+        		),
+        		'defaults' => array(
+        			'controller' => 'admin_action',
+        			'action'     => 'manage',
+        		),
+        	),
+        ),
         'prof' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
         		'route' => '/prof[/:action]',
         		'constraints' => array(
         			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'session' => '[0-9]*',
         		),
         		'defaults' => array(
         			'controller' => 'prof',
@@ -99,7 +113,6 @@ return array(
         		'route' => '/cudi/prof/auth[/:action]',
         		'constraints' => array(
         			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'session' => '[0-9]*',
         		),
         		'defaults' => array(
         			'controller' => 'prof_auth',

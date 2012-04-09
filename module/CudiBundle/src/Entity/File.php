@@ -178,7 +178,7 @@ class File
 	 *
 	 * @return \CudiBundle\Entity\File
 	 */
-	public function setRemoved($removed)
+	public function setRemoved($removed = true)
 	{
 		$this->removed = $removed;
 		return $this;

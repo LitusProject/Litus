@@ -21,6 +21,7 @@ class ArticleSubjectMap extends EntityRepository
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+    			    $query->expr()->eq('m.removed', 'false'),
     			    $enabled ? $query->expr()->eq('m.enabled', 'true') : '1 = 1',
         	        $query->expr()->eq('m.article', ':article')
         	    )
@@ -39,6 +40,7 @@ class ArticleSubjectMap extends EntityRepository
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+    			    $query->expr()->eq('m.removed', 'false'),
     			    $enabled ? $query->expr()->eq('m.enabled', 'true') : '1 = 1',
         	        $query->expr()->eq('m.subject', ':subject')
         	    )
@@ -66,6 +68,7 @@ class ArticleSubjectMap extends EntityRepository
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+    			    $query->expr()->eq('m.removed', 'false'),
        	            $query->expr()->eq('m.subject', ':subject'),
        	            $query->expr()->notIn('m.id', $ids)
        	        )
@@ -90,6 +93,7 @@ class ArticleSubjectMap extends EntityRepository
         	->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+    			    $query->expr()->eq('m.removed', 'false'),
         	        $query->expr()->eq('m.subject', ':subject'),
         	        $query->expr()->eq('m.article', ':article')
         	    )

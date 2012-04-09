@@ -81,4 +81,12 @@ class Edit extends \ProfBundle\Entity\Action
     {
         return 'edit';
     }
+    
+    /**
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->editItems;
+    }
 }

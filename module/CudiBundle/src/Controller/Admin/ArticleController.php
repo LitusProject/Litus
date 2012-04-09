@@ -140,7 +140,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             'CudiBundle\Entity\Article',
             $this->getParam('page'),
             array(
-                'removed' => false
+                'removed' => false,
+                'enabled' => true
             )
         );
         
