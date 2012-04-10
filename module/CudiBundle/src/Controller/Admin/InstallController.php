@@ -181,11 +181,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                'admin_article' => array(
 	                	'add', 'delete', 'edit', 'manage', 'newVersion', 'search'
 	                ),
+	                'admin_article_subject' => array(
+	                    'delete', 'manage'
+	                ),
 	                'admin_booking' => array(
 	                	'add', 'delete', 'manage', 'search', 'unassign'
 	                ),
 	                'admin_comment' => array(
-	                	'manage'
+	                	'delete', 'manage'
 	                ),
 	                'admin_delivery' => array(
 	                	'add', 'delete', 'manage', 'supplier'
@@ -194,7 +197,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'delete', 'download', 'manage', 'progress', 'upload'
 	                ),
 	                'admin_financial' => array(
-	                	'manage'
+	                	'sales', 'stock', 'supplier', 'manage'
 	                ),
 	                'admin_order' => array(
 	                	'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
@@ -206,7 +209,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'edit', 'manage', 'search'
 	                ),
 	                'admin_supplier' => array(
-	                	'add', 'addUser', 'deleteUser', 'edit', 'editUser', 'manage', 'search', 'supplier'
+	                	'add', 'addUser', 'deleteUser', 'edit', 'editUser', 'manage', 'search', 'view'
 	                ),
 	                'sale_queue' => array(
 	                	'overview', 'signin'
@@ -235,11 +238,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	                'guest',
     	            ),
     	            'actions' => array(
-    	                'supplier' => array(
-    	                	'index'
-    	                ),
     	                'supplier_auth' => array(
-    	                	'login', 'logout'
+    	                	'logout'
     	                ),
     	                'supplier_article' => array(
     	                	'manage'

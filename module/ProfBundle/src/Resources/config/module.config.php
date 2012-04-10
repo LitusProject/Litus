@@ -3,7 +3,7 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'prof_install'           => 'ProfBundle\Controller\Admin\InstallerController',
+                'prof_install'           => 'ProfBundle\Controller\Admin\InstallController',
                 'admin_action'           => 'ProfBundle\Controller\Admin\ActionController',
                 'prof'      	         => 'ProfBundle\Controller\Prof\IndexController',
                 'prof_auth'      	     => 'ProfBundle\Controller\Prof\AuthController',
