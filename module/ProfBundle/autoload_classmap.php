@@ -3,7 +3,7 @@ return array(
     'ProfBundle\Module'                                   => __DIR__ . '/Module.php',
     'ProfBundle\Component\Controller\ProfController'      => __DIR__ . '/src/Component/Controller/ProfController.php',
     'ProfBundle\Controller\Admin\ActionController'        => __DIR__ . '/src/Controller/Admin/ActionController.php',
-    'ProfBundle\Controller\Admin\InstallerController'     => __DIR__ . '/src/Controller/Admin/InstallerController.php',
+    'ProfBundle\Controller\Admin\InstallController'       => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'ProfBundle\Controller\Prof\ArticleController'        => __DIR__ . '/src/Controller/Prof/ArticleController.php',
     'ProfBundle\Controller\Prof\ArticleMappingController' => __DIR__ . '/src/Controller/Prof/ArticleMappingController.php',
     'ProfBundle\Controller\Prof\AuthController'           => __DIR__ . '/src/Controller/Prof/AuthController.php',

@@ -107,7 +107,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-		$user = $this->_getUser();
+		if (!($user = $this->_getUser()))
+		    return;
 		
         $form = new EditForm(
         	$this->getEntityManager(), $user
@@ -164,7 +165,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
     	$this->initAjax();
     
-		$user = $this->_getUser();
+		if (!($user = $this->_getUser()))
+		    return;
         
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')
