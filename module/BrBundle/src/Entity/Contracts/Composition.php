@@ -33,14 +33,21 @@ use BrBundle\Entity\Contract,
 class Composition
 {
     /**
+     * @var string The composition ID
+     *
+     * @Id
+     * @Column(type="bigint")
+     * @GeneratedValue
+     */
+    private $id;
+    
+    /**
      * @var \BrBundle\Entity\Contract The contract this object is a part of
      *
      * @ManyToOne(
      *      targetEntity="BrBundle\Entity\Contract", inversedBy="composition", fetch="EAGER"
      * )
      * @JoinColumn(name="contract", referencedColumnName="id", onDelete="CASCADE")
-     *
-     * @Id
      */
     private $contract;
 
@@ -55,7 +62,6 @@ class Composition
     /**
      * @var int The position number of the section in the contract
      *
-     * @Id
      * @Column(type="integer")
      */
     private $position;
