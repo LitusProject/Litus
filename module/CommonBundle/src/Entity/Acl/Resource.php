@@ -22,10 +22,7 @@ use Doctrine\ORM\EntityManager;
  * form.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Acl\Resource")
- * @Table(
- *      name="acl.resources",
- *      uniqueConstraints={@UniqueConstraint(name="resource_unique_name", columns={"name"})}
- * )
+ * @Table(name="acl.resources")
  */
 class Resource
 {
