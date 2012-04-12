@@ -20,7 +20,7 @@ use CommonBundle\Component\Authentication\Authentication,
 	CommonBundle\Form\Admin\Auth\Login as LoginForm;
 
 /**
- * Authentication controller, providing basic actions like login and logout.
+ * AuthController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

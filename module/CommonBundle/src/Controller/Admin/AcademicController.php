@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Form\Admin\Academic\Edit as EditForm;
 
 /**
- * User management.
+ * AcademicController
  *
  * @autor Pieter Maene <pieter.maene@litus.cc>
  */	

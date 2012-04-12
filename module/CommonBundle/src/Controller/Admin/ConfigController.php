@@ -15,68 +15,49 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use \Admin\Form\Config\Add as AddForm;
-use \Admin\Form\Config\Edit as EditForm;
+use CommonBundle\Entity\General\Config;
 
-use \Litus\Controller\Exception\HasNoAccessException;
-
-use \Litus\Entity\Config\Config;
-
-
-class ConfigController extends \Litus\Controller\Action
+/**
+ * RoleController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class ConfigController extends \CommonBundle\Component\Controller\ActionController
 {
-
+	public function manageAction()
+	{
+		$configValues = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->findAll();
+			
+		$formattedValues = array();
+		foreach($configValues as $entry) {
+			if (strstr($entry->getKey(), Config::$separator)) {
+				$explodedKey = explode(Config::$separator, $entry->getKey());
+				$formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
+					'value' => $entry->getValue(),
+					'fullKey' => $entry->getKey()
+				);
+			} else {
+				$formattedValues[0][$entry->getKey()] = array(
+					'value' => $entry->getValue(),
+					'fullKey' => $entry->getKey()
+				);
+			}
+		}
+		
+		ksort($formattedValues, SORT_STRING);
+		
+		return array(
+			'configValues' => $formattedValues
+		);
+	}	
+	
     public function addAction()
     {
-        $form = new AddForm();
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
-            if($form->isValid($formData)) {
-                $key = $formData['prefix'] . Config::SEPARATOR . $formData['name'];
-
-                $config = new Config($key);
-                $config->setDescription($formData['description'])
-                    ->setValue($formData['value']);
-
-                $this->getEntityManager()->persist($config);
-
-                $this->view->configCreated = true;
-                $form = new AddForm();
-            }
-        }
-        $this->view->form = $form;
     }
 
     public function editAction()
     {
-        /**
-         * @var \Litus\Entity\Config\Config $config
-         */
-        $config = $this->getEntityManager()
-                    ->getRepository('Litus\Entity\Config\Config')
-                    ->find($this->getRequest()->getParam('id'));
-
-        $prefix = $config->getKey();
-        $prefix = preg_split('\\' . Config::SEPARATOR, $prefix);
-        $prefix = $prefix[0];
-
-        if(!$this->broker('hasAccess')->__invoke('admin','config','edit.' . $prefix))
-            throw new HasNoAccessException('You don\'t have the right privileges to edit configurations '
-                    . 'starting with ' . $prefix . '.');
-
-        $form = new EditForm($config);
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-
-            if($form->isValid($formData)) {
-                $config->setValue($formData['value'])
-                    ->setDescription($formData['description']);
-
-                $this->view->configEdited = true;
-            }
-        }
     }
 }

@@ -23,6 +23,12 @@ namespace CommonBundle\Entity\General;
  */
 class Config 
 {
+	/**
+	 * @static
+	 * @var string The separator used to denote the bundles
+	 */
+	public static $separator = '.';
+
     /**
      * @var string The entry's key
      *

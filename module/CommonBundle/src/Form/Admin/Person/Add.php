@@ -111,7 +111,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 				)
 			->setDecorators(array(new FieldDecorator()));
 		$this->addElement($field);
-
+		
         $field = new Multiselect('roles');
         $field->setLabel('Groups')
             ->setMultiOptions($this->_createRolesArray())
