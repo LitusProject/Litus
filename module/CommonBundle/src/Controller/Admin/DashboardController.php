@@ -16,7 +16,7 @@
 namespace CommonBundle\Controller\Admin;
 
 /**
- * Mainly serves the admin dashboard.
+ * DashboardController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

@@ -30,6 +30,13 @@ return array(
 		'admin_auth' => array(
 		    '@common_jquery',
 		),
+		'admin_config' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_dashboard' => array(
 			'@common_jquery',
 		    '@admin_css',

@@ -22,6 +22,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Entity\Acl\Role,
 	CommonBundle\Entity\Acl\Resource;
 
+/**
+ * RoleController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class RoleController extends \CommonBundle\Component\Controller\ActionController
 {
 	public function manageAction()

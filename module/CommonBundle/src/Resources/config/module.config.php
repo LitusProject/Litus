@@ -31,6 +31,7 @@ return array(
 				'index'                            => 'CommonBundle\Controller\IndexController',
 				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
+                'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
                 'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
             ),
@@ -321,6 +322,21 @@ return array(
     	        ),
     	    ),
     	),
+		'admin_config' => array(
+		    'type'    => 'Zend\Mvc\Router\Http\Segment',
+		    'options' => array(
+		        'route'    => '/admin/config[/:action[/:key[/:confirm]]]',
+		        'constraints' => array(
+		        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+		        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
+		        	'confirm' => '[01]',
+		        ),
+		        'defaults' => array(
+		            'controller' => 'admin_config',
+		            'action'     => 'manage',
+		        ),
+		    ),
+		),
     	'admin_dashboard' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
@@ -337,7 +353,7 @@ return array(
     	        'route'    => '/admin/role[/:action[/:name[/:confirm]]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'id'      => '[0-9]*',
+    	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'confirm' => '[01]',
     	        ),
     	        'defaults' => array(

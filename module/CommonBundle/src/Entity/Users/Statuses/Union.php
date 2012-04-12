@@ -30,8 +30,12 @@ class Union
      * @static
      * @var array All the possible status values allowed
      */
-    private static $_possibleStatuses = array(
-    	'member', 'non_member', 'honorary_member', 'supportive_member', 'praesidium'
+    public static $possibleStatuses = array(
+    	'member'            => 'Member',
+    	'non_member'        => 'Non-Member',
+    	'honorary_member'   => 'Honorary Member',
+    	'supportive_member' => 'Supportive Member',
+    	'praesidium'        => 'Praesidium'
     );
 
 	/**
@@ -139,7 +143,7 @@ class Union
      */
     public static function isValidStatus($status)
     {
-        return in_array($status, self::$_possibleStatuses);
+        return array_key_exists($status, self::$possibleStatuses);
     }
 
     /**

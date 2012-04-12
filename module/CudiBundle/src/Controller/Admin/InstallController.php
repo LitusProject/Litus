@@ -247,7 +247,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	            )
     	        ),
     	        'guest' => array(
-    	            'parent_roles' => array(),
+    	        	'system' => true,
+    	            'parents' => array(),
     	            'actions' => array(
     	                'supplier' => array(
     	                    'index'

@@ -17,7 +17,9 @@ namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CommonBundle\Entity\Users\Statuses\University,
 	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Validator\Alnum as AlnumValidator;
@@ -43,7 +45,14 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator());
         $this->addElement($field);
-
+		
+		$field = new Select('university_status');
+		$field->setLabel('University Status')
+			->setRequired()
+			->setMultiOptions(University::$possibleStatuses)
+			->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
+		
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'academic_add')

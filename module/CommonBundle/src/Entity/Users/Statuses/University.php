@@ -30,8 +30,11 @@ class University
      * @static
      * @var array All the possible status values allowed
      */
-    private static $_possibleStatuses = array(
-        'professor', 'student', 'alumnus', 'external_student'
+    public static $possibleStatuses = array(
+        'professor'        => 'Professor',
+        'student'          => 'Student',
+        'alumnus'          => 'Alumnus',
+        'external_student' => 'External Student',
     );
 
     /**
@@ -139,7 +142,7 @@ class University
      */
     public static function isValidStatus($status)
     {
-        return in_array($status, self::$_possibleStatuses);
+        return array_key_exists($status, self::$possibleStatuses);
     }
 
     /**
