@@ -22,28 +22,18 @@ use BrBundle\Entity\Contract,
  * This entity represents the composition of a contract.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
- * @Table(
- *      name="br.contract_compositions",
+ * @Table(name="br.contract_compositions",
  *      uniqueConstraints={
- *          @UniqueConstraint(name="contract_position_unique", columns={"contract", "position"}),
  *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
  *      }
  * )
  */
 class Composition
-{
-    /**
-     * @var string The composition ID
-     *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
-     */
-    private $id;
-    
+{    
     /**
      * @var \BrBundle\Entity\Contract The contract this object is a part of
      *
+     * @Id
      * @ManyToOne(
      *      targetEntity="BrBundle\Entity\Contract", inversedBy="composition", fetch="EAGER"
      * )
@@ -62,6 +52,7 @@ class Composition
     /**
      * @var int The position number of the section in the contract
      *
+     * @Id
      * @Column(type="integer")
      */
     private $position;
@@ -76,14 +67,6 @@ class Composition
         $this->setContract($contract);
         $this->setSection($section);
         $this->setPosition($position);
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
