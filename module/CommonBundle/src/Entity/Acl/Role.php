@@ -23,10 +23,7 @@ use CommonBundle\Component\Acl\Acl,
  * Represents a group of users and is capable of determining which rights those users have.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Acl\Role")
- * @Table(
- *      name="acl.roles",
- *      uniqueConstraints={@UniqueConstraint(name="role_unique_name", columns={"name"})}
- * )
+ * @Table(name="acl.roles")
  */
 class Role
 {
