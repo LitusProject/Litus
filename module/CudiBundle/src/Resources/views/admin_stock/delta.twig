@@ -1,0 +1,70 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	    <h1>General</h1>
+	    <p>Article: <b>{{ item.getArticle().getTitle() }} {% if item.article.getVersionNumber() != 1 %} (v{{ item.article.getVersionNumber() }}) {% endif %}</b></p>
+	    <p>Barcode: <b>{{ item.getArticle().getBarcode() }}</b></p>
+	    <p>Supplier: <b>{{ item.getArticle().getSupplier().getName() }}</b></p>
+	    <br style="clear:both" />
+	    <h1>Delta's</h1>
+    	<table class="full_width">
+        	<tr>
+            	<th>Person</th>
+            	<th width="120px">Date</th>
+            	<th width="80px">Delta</th>
+            	<th width="230px">Comment</th>
+            	<th width="70px">Actions</th>
+			</tr>
+
+	        {% for delta in paginator %}
+	            <tr class="item">
+	                <td>{{ delta.getPerson().getFullName() }}</td>
+	                <td>{{ delta.getDate().format('Y-m-d H:i:s') }}</td>
+	                <td>{{ delta.getDelta() }}</td>
+	                <td>{{ delta.getSummary() }}</td>
+					<td>
+					    <a href="#" class="view" data-text="{{ delta.getComment() }}">View</a>
+	                </td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<div class="modal hide fade" id="viewComment">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delta Comment
+		</div>
+		<div class="modal-body">
+			<pre class="text"></pre>
+	        <br style="clear:both" />
+			<div class="footer">
+				<input type="button" data-dismiss="modal" value="Close">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .view').click(openViewModal);
+		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var viewComment = $('#viewComment');
+			viewComment.find('.text').html($this.data('text'));
+			viewComment.modal();
+		}
+	</script>
+{% endblock %}

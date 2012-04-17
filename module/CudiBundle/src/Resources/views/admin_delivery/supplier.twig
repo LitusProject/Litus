@@ -40,7 +40,7 @@
 		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
 		        	<td>
 		        	    {% if hasAccess('admin_delivery', 'delete') %}
-    		        		<a class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
+    		        		<a href="#" class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
     		        	{% endif %}
 		        	</td>
 		        </tr>
