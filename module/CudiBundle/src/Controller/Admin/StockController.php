@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\DeliveryItem,
+	CudiBundle\Entity\Stock\Delta,
 	CudiBundle\Form\Admin\Delivery\AddDirect as DeliveryForm,
 	CudiBundle\Form\Admin\Order\AddDirect as OrderForm,
 	CudiBundle\Form\Admin\Stock\Update as StockForm,
@@ -61,7 +62,16 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 			
 			if (isset($formData['updateStock'])) {
 				if ($stockForm->isValid($formData)) {
+					$delta = new Delta(
+					    $this->getAuthentication()->getPersonObject(),
+					    $item,
+					    $formData['number'] - $item->getNumberInStock(),
+					    $formData['comment']
+					);
+					$this->getEntityManager()->persist($delta);
+
 					$item->setNumberInStock($formData['number']);
+					
 					$this->getEntityManager()->flush();
 					
 					$this->flashMessenger()->addMessage(
@@ -182,6 +192,25 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 		return array(
 			'result' => $result,
 		);
+	}
+	
+	public function deltaAction()
+	{
+	    if (!($item = $this->_getItem()))
+	        return;
+	        
+	    $paginator = $this->paginator()->createFromEntity(
+	        'CudiBundle\Entity\Stock\Delta',
+	        $this->getParam('page'),
+	        array('stockItem' => $item),
+	        array('date' => 'DESC')
+	    );
+	    
+	    return array(
+	        'item' => $item,
+	    	'paginator' => $paginator,
+	    	'paginationControl' => $this->paginator()->createControl(true)
+	    );
 	}
 	
 	private function _getItem()

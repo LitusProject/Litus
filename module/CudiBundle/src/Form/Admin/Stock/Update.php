@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CudiBundle\Entity\Stock\StockItem,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
+	Zend\Form\Element\TextArea,
 	Zend\Validator\Int as IntValidator;
 	
 class Update extends \CommonBundle\Component\Form\Admin\Form
@@ -33,6 +34,12 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Number')
         	->setRequired()
 			->addValidator(new IntValidator())
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new TextArea('comment');
+        $field->setLabel('Comment')
+        	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
