@@ -47,6 +47,7 @@ class Order extends EntityRepository
 				)
 			)
 			->setParameter('supplier', $supplier->getId())
+			->setMaxResults(1)
 			->getQuery()
 			->getResult();
 			

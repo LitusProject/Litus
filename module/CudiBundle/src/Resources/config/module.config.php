@@ -14,6 +14,7 @@ return array(
 				'admin_order'	         => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
+				'admin_period'	         => 'CudiBundle\Controller\Admin\PeriodController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\SupplierController',
 				
@@ -261,6 +262,49 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_stock',
 					'action'     => 'search',
+				),
+			),
+		),
+		'admin_period' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_period',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_period_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period/search/:id[/:field/:string]',
+				'constraints' => array(
+					'id'     => '[0-9]*',
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_period',
+					'action'     => 'search',
+				),
+			),
+		),
+		'admin_period_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period/view/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_period',
+					'action'     => 'view',
 				),
 			),
 		),

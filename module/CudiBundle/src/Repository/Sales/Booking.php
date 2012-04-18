@@ -58,42 +58,6 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllAssignedByArticle(Article $article, $order = 'DESC')
-	{
-		$query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('b')
-			->from('CudiBundle\Entity\Sales\Booking', 'b')
-			->where($query->expr()->andX(
-					$query->expr()->eq('b.article', ':article'),
-					$query->expr()->eq('b.status', '\'assigned\'')
-				)
-			)
-			->orderBy('b.bookDate', $order)
-			->setParameter('article', $article->getId())
-			->getQuery()
-			->getResult();
-			
-		return $resultSet;
-	}
-	
-	public function findAllSoldByArticle(Article $article, $order = 'DESC')
-	{
-		$query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('b')
-			->from('CudiBundle\Entity\Sales\Booking', 'b')
-			->where($query->expr()->andX(
-					$query->expr()->eq('b.article', ':article'),
-					$query->expr()->eq('b.status', '\'sold\'')
-				)
-			)
-			->orderBy('b.bookDate', $order)
-			->setParameter('article', $article->getId())
-			->getQuery()
-			->getResult();
-			
-		return $resultSet;
-	}
-	
 	public function expireBookings()
 	{
 		$bookings = $this->getEntityManager()

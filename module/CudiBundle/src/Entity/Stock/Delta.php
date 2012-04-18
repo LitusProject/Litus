@@ -51,7 +51,7 @@ class Delta
 	/**
 	 * @var \DateTime The time of the delta
 	 *
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(type="datetime")
 	 */
 	private $date;
 	
@@ -116,7 +116,7 @@ class Delta
 	}
 	
 	/**
-	 * Get the date of this order
+	 * Get the date of this delta
 	 *
 	 * @return \DateTime
 	 */

@@ -119,11 +119,13 @@ class StockItem
 	 */
 	public function getTotalOrdered()
 	{
-		$total = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Stock\Order')
-			->getTotalOrdered($this->article);
+		$period = $this->_entityManager
+			->getRepository('CudiBundle\Entity\Stock\Period')
+			->findOpen();
 		
-		return $total;
+		return $this->_entityManager
+		    ->getRepository('CudiBundle\Entity\Stock\Period')
+		    ->getNbOrderedByArticle($period, $this->article);
 	}
 	
 	/**
@@ -131,7 +133,7 @@ class StockItem
 	 */
 	public function getNumberNotDelivered()
 	{
-		return $this->getTotalOrdered($this->_entityManager) - $this->getTotalDelivered($this->_entityManager);
+		return $this->getTotalOrdered() - $this->getTotalDelivered();
 	}
 	
 	/**
@@ -154,9 +156,13 @@ class StockItem
 	 */
 	public function getTotalDelivered()
 	{
-		return $this->_entityManager
-			->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
-			->getTotalByArticle($this->article);
+	    $period = $this->_entityManager
+	    	->getRepository('CudiBundle\Entity\Stock\Period')
+	    	->findOpen();
+	    
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Stock\Period')
+	        ->getNbDeliveredByArticle($period, $this->article);
 	}
 	
 	/**
@@ -164,15 +170,13 @@ class StockItem
 	 */
 	public function getNumberBooked()
 	{
-		$booked = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Booking')
-			->findAllBookedByArticle($this->article);
-		
-		$number = 0;
-		foreach($booked as $booking)
-			$number += $booking->getNumber();
-		
-		return $number;
+    	$period = $this->_entityManager
+    		->getRepository('CudiBundle\Entity\Stock\Period')
+    		->findOpen();
+    	
+    	return $this->_entityManager
+    	    ->getRepository('CudiBundle\Entity\Stock\Period')
+    	    ->getNbBookedByArticle($period, $this->article);
 	}
 	
 	/**
@@ -180,15 +184,13 @@ class StockItem
 	 */
 	public function getNumberAssigned()
 	{
-		$booked = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Booking')
-			->findAllAssignedByArticle($this->article);
-		
-		$number = 0;
-		foreach($booked as $booking)
-			$number += $booking->getNumber();
-		
-		return $number;
+	    $period = $this->_entityManager
+	    	->getRepository('CudiBundle\Entity\Stock\Period')
+	    	->findOpen();
+	    
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Stock\Period')
+	        ->getNbAssignedByArticle($period, $this->article);
 	}
 	
 	/**
@@ -196,15 +198,13 @@ class StockItem
 	 */
 	public function getNumberSold()
 	{
-		$booked = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Booking')
-			->findAllSoldByArticle($this->article);
+		$period = $this->_entityManager
+			->getRepository('CudiBundle\Entity\Stock\Period')
+			->findOpen();
 		
-		$number = 0;
-		foreach($booked as $booking)
-			$number += $booking->getNumber();
-		
-		return $number;
+		return $this->_entityManager
+		    ->getRepository('CudiBundle\Entity\Stock\Period')
+		    ->getNbSoldByArticle($period, $this->article);
 	}
 	
 	/**
