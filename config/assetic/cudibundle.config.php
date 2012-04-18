@@ -66,6 +66,13 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_period' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_order' => array(
 			'@common_jquery',
 		    '@admin_css',

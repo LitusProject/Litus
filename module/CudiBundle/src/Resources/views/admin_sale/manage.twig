@@ -21,7 +21,7 @@
 		        <tr>
 		            <td>{% if session.getManager() is not sameas(null) %}{{ session.getManager().getUserName() }}{% else %}guest{% endif %}</td>
 		            <td>{% if session.isOpen() %}Yes{% else %}No{% endif %}</td>
-		            <td valign=center>{{ session.getOpenDate().format('Y-m-d H:i') }}</td>
+		            <td>{{ session.getOpenDate().format('Y-m-d H:i') }}</td>
 		            <td>{% if not session.isOpen() %}{{ session.getCloseDate().format('Y-m-d H:i:s')}}{% endif %}</td>
 		            <td>&euro; {% if session.isOpen() %}{{ -session.getOpenAmount().getTotalAmount()/100|number_format(2)}}{% else %}{{ (session.getCloseAmount().getTotalAmount() - session.getOpenAmount().getTotalAmount())/100|number_format(2)}}{% endif %}
 					<td>

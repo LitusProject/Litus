@@ -3,14 +3,17 @@
 
     <nav id="controller_nav">
         <ul>
-        	{% if hasAccess('admin_order', 'index') %}
-                <li><a href="{{ url('admin_order') }}">Orders</a></li>
+            {% if hasAccess('admin_period', 'manage') %}
+                <li><a{% if 'admin_period' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_period') }}">Periods</a></li>
             {% endif %}
-            {% if hasAccess('admin_delivery', 'index') %}
-                <li><a href="{{ url('admin_delivery') }}">Deliveries</a></li>
+        	{% if hasAccess('admin_order', 'manage') %}
+                <li><a{% if 'admin_order' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_order') }}">Orders</a></li>
             {% endif %}
-            {% if hasAccess('admin_stock', 'overview') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
+            {% if hasAccess('admin_delivery', 'manage') %}
+                <li><a{% if 'admin_delivery' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_delivery') }}">Deliveries</a></li>
+            {% endif %}
+            {% if hasAccess('admin_stock', 'manage') %}
+                <li><a{% if 'admin_stock' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>

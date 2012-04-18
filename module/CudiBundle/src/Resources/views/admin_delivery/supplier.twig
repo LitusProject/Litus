@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_delivery/partials/navigation.twig' %}
+	{% include 'admin_stock/partials/navigation.twig' %}
 	
 	{% include 'admin_delivery/partials/suppliers.twig' %}
 
@@ -25,7 +25,7 @@
 		<table>
 		
 		    <tr>
-		        <th width="100px">Date</th>
+		        <th width="110px">Date</th>
 		        <th>Article</th>
 		        <th width="60px">Number</th>
 		        <th width="60px">Price</th>
@@ -34,7 +34,7 @@
 		    
 		    {% for delivery in paginator %}
 		        <tr class="item">
-		        	<td>{{ delivery.getDate().format('Y-m-d H:i:s') }}</td>
+		        	<td>{{ delivery.getDate().format('Y-m-d H:i') }}</td>
 		        	<td>{{ delivery.getArticle().getTitle() }}</td>
 		        	<td>{{ delivery.getNumber() }}</td>
 		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>

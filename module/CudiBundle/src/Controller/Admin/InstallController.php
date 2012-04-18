@@ -202,6 +202,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                'admin_order' => array(
 	                	'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
 	                ),
+	                'admin_period' => array(
+	                    'manage', 'new', 'search', 'view'
+	                ),
 	                'admin_sale' => array(
 	                	'add', 'close', 'edit', 'editRegister', 'manage'
 	                ),

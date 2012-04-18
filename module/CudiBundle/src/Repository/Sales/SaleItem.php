@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * SaleItem
