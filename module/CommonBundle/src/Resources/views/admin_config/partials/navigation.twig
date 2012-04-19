@@ -1,15 +1,12 @@
 <header id="controller_header">
-    <div class="title"><span class="academic">Academic</span></div>
+    <div class="title"><span class="config">Configuration</span></div>
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_config', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_config', {"action": "add"}) }}">Add</a></li>
-            {% endif %}
             {% if hasAccess('admin_config', 'manage') %}
                 <li>
                 	<a 
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %} 
+                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} 
                 		href="{{ url('admin_config', {"action": "manage"}) }}"
                 	>
                 		Manage

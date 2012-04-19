@@ -31,6 +31,9 @@
 		            	{% if hasAccess('admin_index', 'index') %}
 		                    <li><a href="{{ url('admin_dashboard') }}">Dashboard</a></li>
 		                {% endif %}
+		                {% if hasAccess('admin_config', 'index') %}
+		                    <li><a href="{{ url('admin_config') }}">Configuration</a></li>
+		                {% endif %}
 		                {% if hasAccess('admin_academic', 'index') %}
 		                    <li><a href="{{ url('admin_academic') }}">Academic</a></li>
 		                {% endif %}

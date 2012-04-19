@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
- * Add a user to the database.
+ * AddPerson
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -43,7 +43,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
+	 * @param mixed $opts The form's options
 	 */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

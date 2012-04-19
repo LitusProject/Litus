@@ -15,41 +15,59 @@
  
 namespace CommonBundle\Form\Admin\Config;
 
-use CommonBundle\Entity\Public\Config,
-	Zend\Form\Element\Hidden;
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CommonBundle\Entity\General\Config,
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text,
+	Zend\Form\Element\Textarea;
 
 /**
  * Edit a configuration entry.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
-	 * @param mixed $options The form's options
+	 * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing
+	 * @param mixed $opts The form's options
 	 */
-    public function __construct(Config $config, $options = null)
+    public function __construct(Config $entry, $opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($opts);
+		
+		$field = new Text('key');
+		$field->setLabel('Key')
+			->setAttrib('disabled', 'disabled')
+		    ->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
+		
+		if (strlen($entry->getValue()) > 40) {
+	        $field = new Textarea('value');
+	        $field->setLabel('Value')
+	            ->setRequired()
+	            ->setDecorators(array(new FieldDecorator()));
+	        $this->addElement($field);
+	    } else {
+	    	$field = new Text('value');
+	    	$field->setLabel('Value')
+	    	    ->setRequired()
+	    	    ->setDecorators(array(new FieldDecorator()));
+	    	$this->addElement($field);
+	    }
 
+        $field = new Submit('submit');
+        $field->setLabel('Save')
+            ->setAttrib('class', 'config_edit')
+            ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
+		
         $this->populate(
             array(
-                'description' => $config->getDescription(),
-                'value' => $config->getValue()
+            	'key' => $entry->getKey(),
+                'value' => $entry->getValue()
             )
         );
-
-        $field = $this->getElement('submit');
-        $field->setLabel('Edit');
-
-        $field = $this->getElement('prefix');
-        $this->removeElement($field);
-
-        $field = $this->getElement('name');
-        $this->removeElement($field);
-
-        $field = new Hidden('name');
-        $field->setValue($config->getKey());
-        $this->addElement($field);
     }
 }

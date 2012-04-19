@@ -20,7 +20,7 @@ use Zend\Form\Form,
 	Zend\Form\Element\Text;
 
 /**
- * Authentication login form.
+ * AuthLogin
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

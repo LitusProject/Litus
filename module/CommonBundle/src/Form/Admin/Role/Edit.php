@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit;
 
 /**
- * Edit a role's data.
+ * EditRole
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -30,7 +30,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
 	 * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
-	 * @param mixed $opts The validator's options
+	 * @param mixed $opts The form's options
 	 */
     public function __construct(EntityManager $entityManager, Role $role, $opts = null)
     {

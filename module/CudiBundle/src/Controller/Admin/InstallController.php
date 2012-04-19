@@ -57,7 +57,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 				array(
 					'key'         => 'cudi.union_logo',
 					'value'       => 'data/images/logo/logo.jpg',
-					'description' => 'The name of the logo',
+					'description' => 'The path to the logo of the union',
 				),
 				array(
 					'key'         => 'cudi.union_url',
@@ -72,7 +72,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 				array(
 					'key'         => 'cudi.person',
 					'value'       => '1',
-					'description' => 'The id of the person responsible for the cudi',
+					'description' => 'The ID of the person responsible for the cudi',
 				),
 				array(
 					'key'         => 'cudi.delivery_address_name',
@@ -97,22 +97,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 				array(
 					'key'         => 'cudi.billing_address_name',
 					'value'       => 'VTK vzw',
-					'description' => 'The name of the billing address of the cudi',
+					'description' => 'The name of the billing organisation of the cudi',
 				),
 				array(
 					'key'         => 'cudi.billing_address_street',
 					'value'       => 'Studentenwijk Arenberg 6/0',
-					'description' => 'The street of the billing address of the cudi',
+					'description' => 'The street of the billing organisation of the cudi',
 				),
 				array(
 					'key'         => 'cudi.billing_address_city',
 					'value'       => '3001 Heverlee',
-					'description' => 'The city of the billing address of the cudi',
+					'description' => 'The city of the billing organisation of the cudi',
 				),
 				array(
 					'key'         => 'cudi.booking_assigned_mail_subject',
 					'value'       => 'New Assignments',
-					'description' => 'The subject of the mail send by new assignments',
+					'description' => 'The subject of the mail sent by new assignments',
 				),
 				array(
 					'key'         => 'cudi.booking_assigned_mail',
