@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text;
 
 /**
- * Add an ACL role.
+ * AddRole
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -36,7 +36,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 	
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
+	 * @param mixed $opts The form's options
 	 */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

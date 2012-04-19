@@ -15,10 +15,12 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Config;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Form\Admin\Config\Edit as EditForm,
+	CommonBundle\Entity\General\Config;
 
 /**
- * RoleController
+ * ConfigController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -51,13 +53,94 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 		return array(
 			'configValues' => $formattedValues
 		);
-	}	
-	
-    public function addAction()
-    {
-    }
+	}
 
-    public function editAction()
-    {
-    }
+	public function editAction()
+	{
+		if (!($entry = $this->_getEntry()))
+		    return;
+		
+        $form = new EditForm(
+        	$entry
+        );
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+			
+            if ($form->isValid($formData)) {
+            	$entry->setValue($formData['value']);
+            	
+            	$this->getEntityManager()->flush();
+            	
+            	$this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The configuration entry was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_config',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+                
+                return;
+            }
+        }
+        
+        return array(
+        	'entry' => $entry,
+        	'form' => $form
+        );
+	}
+		
+	public function _getEntry()
+	{
+		if (null === $this->getParam('key')) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No key was given to identify the configuration entry!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_config',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+	
+	    $role = $this->getEntityManager()
+	        ->getRepository('CommonBundle\Entity\General\Config')
+	        ->findOneByKey($this->getParam('key'));
+		
+		if (null === $role) {
+			$this->flashMessenger()->addMessage(
+			    new FlashMessage(
+			        FlashMessage::ERROR,
+			        'Error',
+			        'No configuraiton entry with the given key was found!'
+			    )
+			);
+			
+			$this->redirect()->toRoute(
+				'admin_config',
+				array(
+					'action' => 'manage'
+				)
+			);
+			
+			return;
+		}
+		
+		return $role;
+	}
 }
