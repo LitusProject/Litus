@@ -22,6 +22,11 @@ use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
 	Doctrine\ORM\EntityManager;
 	
+/**
+ * Return Booking
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class ReturnBooking extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     public function __construct(EntityManager $entityManager, $opts = null )

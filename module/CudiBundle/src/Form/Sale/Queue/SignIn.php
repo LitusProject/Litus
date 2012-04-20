@@ -18,7 +18,12 @@ namespace CudiBundle\Form\Sale\Queue;
 use CommonBundle\Component\Form\Bootstrap\Element\Reset,
 	CommonBundle\Component\Form\Bootstrap\Element\Button,
 	CommonBundle\Component\Form\Bootstrap\Element\Text;
-	
+
+/**
+ * Sign in to queue
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     public function __construct($opts = null )

@@ -23,9 +23,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text;
 
+/**
+ * Add Supplier
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);

@@ -83,8 +83,7 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 * @param string $title The title of the article
 	 * @param CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
 	 * @param float $purchasePrice The purchase price of this article.
-	 * @param float $sellPrice The sell price of this article for non-members.
-	 * @param float $sellPriceMembers The sell price of this article for members.
+	 * @param float $sellPrice The sell price of this article.
 	 * @param integer $barcode This article's barcode.
 	 * @param boolean $bookable Indicates whether the article can be booked.
 	 * @param boolean $unbookable Indicates whether the article can be unbooked.
@@ -99,10 +98,10 @@ class Internal extends \CudiBundle\Entity\Articles\Stock
 	 * @param boolean $frontPageTextColored
 	 */
 	public function __construct(
-		EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, 
+		EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, 
 		$barcode, $bookable = false, $unbookable = false, Supplier $supplier = null, $canExpire = false, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $frontPageTextColored
 	) {
-		parent::__construct($entityManager, $title, $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable, $unbookable, $supplier, $canExpire);
+		parent::__construct($entityManager, $title, $metaInfo, $purchasePrice, $sellPrice, $barcode, $bookable, $unbookable, $supplier, $canExpire);
 		
 		$this->setNbBlackAndWhite($nbBlackAndWhite)
 			->setNbColored($nbColored)

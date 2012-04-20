@@ -28,6 +28,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Checkbox;
 
+/**
+ * Confirm Article
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**

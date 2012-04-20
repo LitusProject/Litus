@@ -28,9 +28,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Checkbox;
 
-class Add extends \CommonBundle\Component\Form\Admin\Form
+/**
+ * Add Article
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+ class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
@@ -98,15 +102,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         	->addValidator(new PriceValidator());
         $this->addElement($field);
          
-        $field = new Text('sellprice_nomember');
+        $field = new Text('sellprice');
         $field->setLabel('Sell Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
-        $this->addElement($field);
-         
-        $field = new Text('sellprice_member');
-        $field->setLabel('Sell Price (Member)')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new PriceValidator());
@@ -151,8 +148,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		$this->addDisplayGroup(
 			array(
 				'purchase_price',
-				'sellprice_nomember',
-				'sellprice_member',
+				'sellprice',
 				'barcode',
 				'supplier',
 				'bookable',
@@ -282,8 +278,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		
 		if ($article->isStock()) {
 			$data['purchase_price'] =  number_format($article->getPurchasePrice()/100, 2);
-			$data['sellprice_nomember'] = number_format($article->getSellPrice()/100, 2);
-			$data['sellprice_member'] = number_format($article->getSellPriceMembers()/100, 2);
+			$data['sellprice'] = number_format($article->getSellPrice()/100, 2);
 			$data['barcode'] = $article->getBarcode();
 			$data['supplier'] = $article->getSupplier()->getId();
 			$data['bookable'] = $article->isBookable();

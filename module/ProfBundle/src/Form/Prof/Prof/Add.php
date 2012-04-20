@@ -20,9 +20,13 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 	Zend\Form\Element\Hidden,
 	Zend\Validator\Int as IntValidator;
 
+/**
+ * Add Prof
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     public function __construct($options = null)
     {
         parent::__construct($options);

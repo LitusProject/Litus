@@ -23,6 +23,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Checkbox,
 	Zend\Validator\Int as IntValidator;
 
+/**
+ * Add Mapping
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     public function __construct($opts = null)

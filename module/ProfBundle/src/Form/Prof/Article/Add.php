@@ -24,9 +24,13 @@ use CommonBundle\Component\Validator\Price as PriceValidator,
 	CommonBundle\Component\Form\Bootstrap\Element\Select,
 	CommonBundle\Component\Form\Bootstrap\Element\Submit;
 
+/**
+ * Add Article
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */

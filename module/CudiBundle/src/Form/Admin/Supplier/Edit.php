@@ -21,9 +21,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text;
 
+/**
+ * Edit Supplier
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Edit extends \CudiBundle\Form\Admin\Supplier\Add
 {
-
     public function __construct(EntityManager $entityManager, Supplier $supplier, $options = null)
     {
         parent::__construct($entityManager, $options);

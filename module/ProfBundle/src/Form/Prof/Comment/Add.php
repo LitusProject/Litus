@@ -18,9 +18,13 @@ namespace ProfBundle\Form\Prof\Comment;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
 	CommonBundle\Component\Form\Bootstrap\Element\TextArea;
 
+/**
+ * Add Comment
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     public function __construct($options = null)
     {
         parent::__construct($options);

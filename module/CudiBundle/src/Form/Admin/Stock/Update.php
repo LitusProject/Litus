@@ -22,10 +22,14 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text,
 	Zend\Form\Element\TextArea,
 	Zend\Validator\Int as IntValidator;
-	
+
+/**
+ * Update Stock
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */	
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function __construct(StockItem $item, $options = null)
     {
         parent::__construct($options);

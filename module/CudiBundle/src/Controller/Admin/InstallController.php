@@ -17,6 +17,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
 	CommonBundle\Entity\General\Bank\MoneyUnit,
+	CudiBundle\Entity\Articles\Discount\Type as DiscountType,
 	CudiBundle\Entity\Articles\StockArticles\Binding,
 	CudiBundle\Entity\Articles\StockArticles\Color,
 	CudiBundle\Entity\Sales\ServingQueueStatus,
@@ -171,6 +172,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 		$this->_installSupplier();
 		$this->_installBinding();
 		$this->_installColor();
+		$this->_installDiscount();
 	}
 	
 	protected function _initAcl()
@@ -192,6 +194,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                ),
 	                'admin_delivery' => array(
 	                	'add', 'delete', 'manage', 'supplier'
+	                ),
+	                'admin_discount' => array(
+	                	'delete', 'manage'
 	                ),
 	                'admin_file' => array(
 	                	'delete', 'download', 'manage', 'progress', 'upload'
@@ -363,6 +368,22 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 			if (null == $color) {
 				$color = new Color($item);
 				$this->getEntityManager()->persist($color);
+			}
+		}
+		$this->getEntityManager()->flush();
+	}
+	
+	private function _installDiscount()
+	{
+		$types = array('member');
+		
+		foreach($types as $name) {
+			$type = $this->getEntityManager()
+				->getRepository('CudiBundle\Entity\Articles\Discount\Type')
+				->findOneByName($name);
+			if (null == $type) {
+				$type = new DiscountType($name);
+				$this->getEntityManager()->persist($type);
 			}
 		}
 		$this->getEntityManager()->flush();

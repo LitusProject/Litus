@@ -23,6 +23,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Textarea;
 
+/**
+ * Add Sale Session Comment
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class SessionComment extends \CommonBundle\Component\Form\Admin\Form
 {
     public function __construct(Session $session, $options = null)

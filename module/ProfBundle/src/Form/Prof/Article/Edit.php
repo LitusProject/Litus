@@ -19,6 +19,11 @@ use CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
 	CommonBundle\Component\Form\Bootstrap\Element\Submit;
 
+/**
+ * Edit Article
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Edit extends \ProfBundle\Form\Prof\Article\Add
 {
     public function __construct(EntityManager $entityManager, Article $article, $opts = null)

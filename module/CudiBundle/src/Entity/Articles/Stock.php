@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Entity\Articles;
 
-use CudiBundle\Entity\Articles\MetaInfo,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Articles\MetaInfo,
 	CudiBundle\Entity\Stock\StockItem,
 	CudiBundle\Entity\Supplier,
 	Doctrine\ORM\EntityManager;
@@ -38,13 +39,6 @@ abstract class Stock extends \CudiBundle\Entity\Article
      * @Column(name="sell_price", type="bigint")
      */
     private $sellPrice;
-
-    /**
-     * @var integer The sell price of the article for members
-     *
-     * @Column(name="sell_price_members", type="bigint")
-     */
-    private $sellPriceMembers;
 
     /**
      * @var integer The barcode of the article
@@ -87,21 +81,19 @@ abstract class Stock extends \CudiBundle\Entity\Article
      * @param string $title The title of the article
      * @param \CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
      * @param float $purchasePrice The purchase price of this article.
-     * @param float $sellPrice The sell price of this article for non-members.
-     * @param float $sellPriceMembers The sell price of this article for members.
+	 * @param float $sellPrice The sell price of this article.
      * @param integer $barcode This article's barcode.
      * @param boolean $bookable Indicates whether the article can be booked.
      * @param boolean $unbookable Indicates whether the article can be unbooked.
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the stock item.
      * @param boolean $canExpire Whether the article can expire.
      */
-    public function __construct(EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $sellPriceMembers, $barcode, $bookable = false, $unbookable = false, Supplier $supplier = null, $canExpire = false)
+    public function __construct(EntityManager $entityManager, $title, MetaInfo $metaInfo, $purchasePrice, $sellPrice, $barcode, $bookable = false, $unbookable = false, Supplier $supplier = null, $canExpire = false)
     {
         parent::__construct($title, $metaInfo);
 
         $this->setPurchasePrice($purchasePrice)
 			->setSellPrice($sellPrice)
-			->setSellPriceMembers($sellPriceMembers)
 			->setBarcode($barcode)
 			->setSupplier($supplier)
 			->setIsBookable($bookable)
@@ -140,6 +132,28 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	}
 	
 	/**
+	 * @param \CommonBundle\Entity\Users\Person
+	 *
+	 * @return integer
+	 */
+	public function getSellPriceForPerson(EntityManager $entityManager, Person $person)
+	{
+	    if ($person->isMember()) {
+	        $type = $entityManager->getRepository('CudiBundle\Entity\Articles\Discount\Type')
+	            ->findOneByName('member');
+	            
+	        $discount = $entityManager->getRepository('CudiBundle\Entity\Articles\Discount\Discount')
+	            ->findOneByArticleAndType($this, $type);
+	        
+	        if (null == $discount)
+	            return $this->sellPrice;
+	        
+	        return $discount->getArticlePrice();
+	    }
+	    return $this->sellPrice;
+	}
+	
+	/**
      * @param float $sellPrice
 	 *
      * @return \CudiBundle\Entity\Articles\Stock
@@ -147,25 +161,6 @@ abstract class Stock extends \CudiBundle\Entity\Article
 	public function setSellPrice($sellPrice)
 	{
 		$this->sellPrice = $sellPrice*100;
-		return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getSellPriceMembers()
-	{
-		return $this->sellPriceMembers;
-	}
-	
-	/**
-     * @param float $sellPriceMembers
-	 *
-     * @return \CudiBundle\Entity\Articles\Stock
-     */
-	public function setSellPriceMembers($sellPriceMembers)
-	{
-		$this->sellPriceMembers = $sellPriceMembers*100;
 		return $this;
 	}
 	
