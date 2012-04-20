@@ -18,7 +18,9 @@ class Comment extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
         	->from('CudiBundle\Entity\Articles\Comment', 'c')
-        	->where($query->expr()->eq('c.article', ':article'))
+        	->where(
+        	    $query->expr()->eq('c.article', ':article')
+        	)
         	->setParameter('article', $article->getId())
         	->orderBy('c.date', 'DESC')
         	->getQuery()

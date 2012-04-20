@@ -71,6 +71,19 @@ class PeriodController extends \CommonBundle\Component\Controller\ActionControll
         if ($open)
             $open->close();
         
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllByStatus('booked');
+        foreach($bookings as $booking) {
+            $booking->setStatus('expired');
+        }
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllByStatus('assigned');
+        foreach($bookings as $booking) {
+            $booking->setStatus('expired');
+        }
+        
         $new = new Period($this->getAuthentication()->getPersonObject());
         $this->getEntityManager()->persist($new);
         

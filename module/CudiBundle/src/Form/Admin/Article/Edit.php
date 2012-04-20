@@ -21,9 +21,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
 
+/**
+ * Edit Article
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
-	
     public function __construct(EntityManager $entityManager, Article $article, $options = null)
     {
         parent::__construct($entityManager, $options);
@@ -34,11 +38,7 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
         	->setAttrib('disabled', 'disabled')
         	->clearValidators()
         	->setRequired(false);
-        $this->getElement('sellprice_nomember')
-        	->setAttrib('disabled', 'disabled')
-        	->clearValidators()
-        	->setRequired(false);
-        $this->getElement('sellprice_member')
+        $this->getElement('sellprice')
         	->setAttrib('disabled', 'disabled')
         	->clearValidators()
         	->setRequired(false);

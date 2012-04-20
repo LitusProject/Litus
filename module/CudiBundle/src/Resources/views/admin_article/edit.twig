@@ -58,6 +58,19 @@
     		    </div>
     		</div>
 		{% endif %}
+		{% if article.isStock() and hasAccess('admin_discount', 'manage') %}
+			<div class="sidebox">
+			    <div class="title">Manage Discounts</div>
+			   	<div class="content">
+			    	<p>
+			        	<i>Please hit the link below to manage the discounts of this article!</i>
+			        </p>
+			        <p>
+			           	<a href="{{ url('admin_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Discounts</a>
+			        </p>
+			    </div>
+			</div>
+		{% endif %}
 		{% if hasAccess('admin_article', 'newVersion') %}
     		<div class="sidebox">
     		    <div class="title">New Version</div>

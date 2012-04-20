@@ -174,7 +174,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 			)
 		);
 		
-		return array();
+		return;
 	}
 
     public function unassignAction()

@@ -21,9 +21,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
 
+/**
+ * New Version
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class NewVersion extends \CudiBundle\Form\Admin\Article\Add
 {
-
     public function __construct(EntityManager $entityManager, Article $article, $options = null)
     {
         parent::__construct($entityManager, $options);

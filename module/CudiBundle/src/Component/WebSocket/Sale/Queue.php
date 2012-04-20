@@ -16,6 +16,7 @@
 namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\WebSocket\User,
+    CommonBundle\Entity\Users\Person,
 	CudiBundle\Entity\Sales\Booking,
 	CudiBundle\Entity\Sales\SaleItem,
 	CudiBundle\Entity\Sales\ServingQueueItem,
@@ -269,9 +270,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 						'id' => $item->getPerson()->getId(),
 						'name' => $item->getPerson()->getFullName(),
 					),
-					'articles' => $this->_createJsonBooking($this->_entityManager
-						->getRepository('CudiBundle\Entity\Sales\Booking')
-						->findAllOpenByPerson($item->getPerson()), $item->getPerson()->isMember())
+					'articles' => $this->_createJsonBooking(
+					    $this->_entityManager
+    						->getRepository('CudiBundle\Entity\Sales\Booking')
+    						->findAllOpenByPerson($item->getPerson()),
+    					$item->getPerson()
+    				)
 				)
 			)
 		);
@@ -284,13 +288,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	 *
 	 * @return array
 	 */
-	private function _createJsonBooking($items, $member)
+	private function _createJsonBooking($items, Person $person)
 	{
 		$results = array();
 		foreach($items as $item) {
 			$result = (object) array();
 			$result->id = $item->getId();
-			$result->price = $member ? $item->getArticle()->getSellPriceMembers() : $item->getArticle()->getSellPrice();
+			$result->price = $item->getArticle()->getSellPriceForPerson($this->_entityManager, $person);
 			$result->title = $item->getArticle()->getTitle();
 			$result->barcode = $item->getArticle()->getBarcode();
 			$result->author = $item->getArticle()->getMetaInfo()->getAuthors();
@@ -431,7 +435,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 				}
 				
 				$saleItem = new SaleItem(
-				    $booking->getPerson()->isMember() ? $booking->getArticle()->getSellPriceMembers() / 100 : $booking->getArticle()->getSellPrice() / 100,
+				    $booking->getArticle()->getSellPriceForPerson($this->_entityManager, $booking->getPerson())/100,
 				    $booking,
 				    $servingQueueItem
 				);

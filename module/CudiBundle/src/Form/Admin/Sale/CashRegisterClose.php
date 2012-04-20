@@ -19,7 +19,12 @@ use CommonBundle\Entity\General\Bank\CashRegister,
 	CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
-	
+
+/**
+ * Close Cash Register
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class CashRegisterClose extends CashRegisterAdd
 {
     public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $options = null )

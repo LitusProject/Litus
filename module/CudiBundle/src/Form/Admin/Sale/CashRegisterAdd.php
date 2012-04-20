@@ -26,6 +26,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Form,
 	Zend\Validator\Int as IntValidator;
 
+/**
+ * Add Cash Register content
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class CashRegisterAdd extends \CommonBundle\Component\Form\Admin\Form
 {
     public function __construct(EntityManager $entityManager, $options = null )

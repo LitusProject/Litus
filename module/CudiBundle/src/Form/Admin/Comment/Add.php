@@ -21,9 +21,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\TextArea;
 
+/**
+ * Add Comment
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function __construct($options = null)
     {
         parent::__construct($options);

@@ -18,9 +18,13 @@ namespace CudiBundle\Form\Admin\Delivery;
 use Doctrine\ORM\EntityManager,
 	Zend\Form\Form;
 
+/**
+ * Add Delivery Directly
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class AddDirect extends \CudiBundle\Form\Admin\Delivery\Add
 {
-
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($entityManager, $options);

@@ -18,9 +18,13 @@ namespace ProfBundle\Form\Prof\File;
 use CommonBundle\Component\Form\Bootstrap\Element\File as FileElement,
 	CommonBundle\Component\Form\Bootstrap\Element\Text;
 
+/**
+ * Add File
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     public function __construct($options = null)
     {
         parent::__construct($options);

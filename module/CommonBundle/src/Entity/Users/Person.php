@@ -450,11 +450,11 @@ abstract class Person
     */
    public function isMember()
    {
-   	foreach ($this->unionStatuses as $status) {
-   		if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
-   			return true;
-   	}
-   	return false;
+        foreach ($this->unionStatuses as $status) {
+            if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
+                return true;
+        }
+        return false;
    }
    
    /**
