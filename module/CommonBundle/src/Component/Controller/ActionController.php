@@ -194,6 +194,17 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
     
     /**
+     * Singleton implementation for the Mail Transport, retrieved
+     * from the Zend Registry.
+     *
+     * @return \Zend\Mail\Transport
+     */
+    public function getMailTransport()
+    {
+        return $this->getLocator()->get('mail_transport');
+    }
+    
+    /**
      * Gets a parameter from a GET request.  
      * 
      * @param string $param The parameter's key

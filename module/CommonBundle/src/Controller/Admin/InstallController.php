@@ -31,6 +31,29 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         			'value'       => '30',
         			'description' => 'The maximum number of search results shown',
         		),
+        		array(
+        		    'key'         => 'account_deactivated_mail',
+        		    'value'       => 'Dear,
+
+Your account of litus.cc is deactivated.
+Click here to activate it again: http://litus/account/activate/{{ code }}',
+        		    'description' => 'The email send when an account is deactivated',
+        		),
+        		array(
+        		    'key'         => 'account_deactivated_subject',
+        		    'value'       => 'Account deactivated',
+        		    'description' => 'The mail subject when an account is deactivated',
+        		),
+        		array(
+        		    'key'         => 'system_mail_address',
+        		    'value'       => 'info@litus.cc',
+        		    'description' => 'The system mail address',
+        		),
+        		array(
+        		    'key'         => 'system_mail_name',
+        		    'value'       => 'Litus Project',
+        		    'description' => 'The system mail name',
+        		),
         	)
         );
 	}

@@ -54,6 +54,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @var string The cookie suffix that is used to store the session cookie
      */
     private $_cookieSuffix = '';
+    
+    /**
+     * @var \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     */
+    private $_action;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -96,6 +101,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     public function authenticate(Adapter $adapter)
     {
         $result = null;
+        
         if ('' == $this->getIdentity()) {
             $adapterResult = $adapter->authenticate();
 			
@@ -115,6 +121,13 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 );
                 
                 $result = $adapterResult;
+                
+                if (isset($this->_action))
+                    $this->_action->succeededAction($result);
+            } else {
+                $result = $adapterResult;
+                if (isset($this->_action))
+                    $this->_action->failedAction($adapterResult);
             }
         } else {
             $session = $this->_entityManager->getRepository($this->_entityName)->findOneById(
@@ -202,5 +215,16 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         }
         
         return !$this->getStorage()->isEmpty();
+    }
+    
+    /**
+     * @param \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     *
+     * @return \CommonBundle\Component\Authentication\Service\Doctrine
+     */
+    public function setAction(Action $action)
+    {
+        $this->_action = $action;
+        return $this;
     }
 }

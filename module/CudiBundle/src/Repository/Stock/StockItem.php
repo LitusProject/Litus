@@ -6,7 +6,7 @@ use CudiBundle\Entity\Article,
     Doctrine\ORM\EntityRepository,
 	Doctrine\ORM\Query\Expr\Join,
 	Zend\Mail\Message,
-	Zend\Mail\Transport\Sendmail;
+	Zend\Mail\Transport\Smtp;
 
 /**
  * StockItem
@@ -226,7 +226,7 @@ class StockItem extends EntityRepository
 		return $resultSet;
 	}
 
-	public function assignAll()
+	public function assignAll(Smtp $mailTransport)
 	{
 		$items = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
@@ -275,8 +275,6 @@ class StockItem extends EntityRepository
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail_name');
 		
-		$transport = new Sendmail();
-
 		foreach($persons as $person) {
 			$bookings = '';
 			foreach($person['bookings'] as $booking)
@@ -288,7 +286,7 @@ class StockItem extends EntityRepository
 				->addTo($person['person']->getEmail(), $person['person']->getFullName())
 				->setSubject($subject);
 				
-			$transport->send($mail);
+			$mailTransport->send($mail);
 		}
 		
 		return $counter;

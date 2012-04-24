@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Component\Authentication;
 
-use Zend\Authentication\Adapter,
+use CommonBundle\Component\Authentication\Action\Doctrine,
+    Zend\Authentication\Adapter,
 	Zend\Authentication\AuthenticationService;
 
 /**
@@ -62,15 +63,15 @@ class Authentication
 	 */
 	public function authenticate($identity = '', $credential = '')
 	{
-		if (isset($this->_result) && $this->_result->isValid())
+		if (isset($this->_result) && $identity == '')
 			return;
-	
+
 		if ('' != $identity) {
 			$this->_adapter
 				->setIdentity($identity)
 				->setCredential($credential);
 		}
-		
+
 		$this->_result = $this->_service->authenticate($this->_adapter);
 	}
 	
@@ -93,6 +94,9 @@ class Authentication
      */
 	public function isAuthenticated()
 	{
+	    if (isset($this->_result))
+	    	return $this->_result->isValid();
+	    
 		$this->authenticate();
 	
 		if (!isset($this->_result))
