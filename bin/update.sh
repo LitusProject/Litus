@@ -3,7 +3,9 @@
 # A little script that makes it easier to update the application
 #
 
-cd ../
+scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+cd "${scriptDirectory}/../"
 git pull
 
 # Updating the database
