@@ -241,10 +241,11 @@ return array(
 		'admin_booking_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-			'route' => '/admin/booking/search[/:field/:string]',
+			'route' => '/admin/booking/search/:type[/:field/:string]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'type'   => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_booking',

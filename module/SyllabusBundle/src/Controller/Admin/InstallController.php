@@ -41,6 +41,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	    			'value'       => '127.0.0.1',
 	    			'description' => 'The host used for the websocket of the syllabus update',
 	    		),
+	    		array(
+					'key'         => 'search_max_results',
+					'value'       => '30',
+					'description' => 'The maximum number of search results shown',
+				),
 	    	)
 	    );
 	}

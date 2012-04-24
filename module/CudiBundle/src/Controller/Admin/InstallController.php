@@ -163,6 +163,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 					'value'       => '988000000000',
 					'description' => 'The start for a serving queue item barcode',
 				),
+				array(
+					'key'         => 'search_max_results',
+					'value'       => '30',
+					'description' => 'The maximum number of search results shown',
+				),
 			)
 		);
 		
@@ -187,7 +192,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                    'delete', 'manage'
 	                ),
 	                'admin_booking' => array(
-	                	'add', 'delete', 'manage', 'search', 'unassign'
+	                	'add', 'assign', 'assignAll', 'delete', 'inactive', 'manage', 'search', 'unassign'
 	                ),
 	                'admin_comment' => array(
 	                	'delete', 'manage'

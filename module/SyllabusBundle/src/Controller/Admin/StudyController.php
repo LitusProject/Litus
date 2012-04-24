@@ -50,6 +50,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         			->findAllByTitle($this->getParam('string'));
         		break;
         }
+        
+        $numResults = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('search_max_results');
+        
+        array_splice($studies, $numResults);
+        
         $result = array();
         foreach($studies as $study) {
         	$item = (object) array();
