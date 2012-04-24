@@ -74,17 +74,19 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
             		'code' => Result::FAILURE_CREDENTIAL_INVALID,
             		'messages' => array(
             			'Supplied credential is invalid'
-            		)
+            		),
+            		'personObject' => $this->getPersonObject()
             	)
             );	
         }
-        else if (!$this->getPersonObject()->canLogin()) {
+        else if (!$this->getPersonObject()->canLogin() || $this->getPersonObject()->getCode() !== null) {
             $this->setAuthenticationResult(
             	array(
             		'code' => Result::FAILURE,
             		'messages' => array(
             			'The given identity cannot login'
-            		)
+            		),
+            		'personObject' => $this->getPersonObject()
             	)
             );
         } else {

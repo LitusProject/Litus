@@ -16,9 +16,11 @@
 namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Entity\Users\Person,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text;
 
 /**
  * EditPerson
@@ -39,6 +41,12 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         $this->removeElement('username');
         $this->removeElement('credential');
         $this->removeElement('verify_credential');
+        
+        $field = new Text('code');
+        $field->setLabel('Code')
+            ->setAttrib('disabled', 'disabled')
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
         $this->populate(
             array(
@@ -48,6 +56,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
                 'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
                 'roles' => $this->_createRolesPopulationArray($person->getRoles()),
+                'code' => $person->getCode() ? $person->getCode()->getCode() : '',
             )
         );
     }

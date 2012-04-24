@@ -95,8 +95,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail_name');
 		
-		$transport = new Sendmail();
-
 		$bookings = '* ' . $booking->getArticle()->getTitle() . "\r\n";
 	
 		$mail = new Message();
@@ -105,7 +103,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 			->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
 			->setSubject($subject);
 			
-		$transport->send($mail);
+		$this->getMailTransport()->send($mail);
 
         $this->getEntityManager()->flush();
             
@@ -235,7 +233,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$number = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Stock\StockItem')
-			->assignAll();
+			->assignAll($this->getMailTransport());
 		
 		$this->getEntityManager()->flush();
 		

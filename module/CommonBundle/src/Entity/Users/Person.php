@@ -132,6 +132,21 @@ abstract class Person
      * @OrderBy({"time" = "ASC"})
      */
     private $barcodes;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Code A unique code to activate this account
+     *
+     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
+     * @JoinColumn(name="code", referencedColumnName="id")
+     */
+    private $code;
+    
+    /**
+     * @var integer The number of failed logins.
+     *
+     * @Column(name="failed_logins", type="smallint")
+     */
+    private $failedLogins;
 
     /**
      * @param string $username The user's username
@@ -463,5 +478,43 @@ abstract class Person
    public function getBarcode()
    {
        return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
+   }
+   
+   /**
+    * @return \CommonBundle\Entity\Users\Code
+    */
+   public function getCode()
+   {
+       return $this->code;
+   }
+   
+   /**
+    * @param \CommonBundle\Entity\Users\Code|null $code
+    *
+    * @return \CommonBundle\Entity\Users\Person
+    */
+   public function setCode(Code $code = null)
+   {
+       $this->code = $code;
+       return $this;
+   }
+   
+   /**
+    * @return integer
+    */
+   public function getFailedLogins()
+   {
+       return $this->failedLogins;
+   }
+   
+   /**
+    * @param integer $failedLogins
+    *
+    * @return \CommonBundle\Entity\Users\Person
+    */
+   public function setFailedLogins($failedLogins)
+   {
+       $this->failedLogins = $failedLogins;
+       return $this;
    }
 }

@@ -39,7 +39,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 	        parse_str(
 	        	$this->getRequest()->post()->get('formData'), $formData
 	        );
-	        
+
 	        $this->getAuthentication()->authenticate(
 	        	$formData['username'], $formData['password']
 	        );

@@ -24,16 +24,21 @@ return array(
             	'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
             	
                 'authentication'                   => 'CommonBundle\Component\Authentication\Authentication',
+                'authentication_action'            => 'CommonBundle\Component\Authentication\Action\Doctrine',
                 'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
 				
 				'index'                            => 'CommonBundle\Controller\IndexController',
+				'account'                          => 'CommonBundle\Controller\AccountController',
 				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
                 'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
+                
+                'mail_transport'                   => 'Zend\Mail\Transport\Smtp',
+                'mail_smtp'                        => 'Zend\Mail\Transport\SmtpOptions',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -203,6 +208,12 @@ return array(
             		'service' => 'authentication_doctrineservice',
             	),
             ),
+            'authentication_action' => array(
+                'parameters' => array(
+                    'entityManager' => 'doctrine_em',
+                    'mailTransport' => 'mail_transport',
+                )
+            ),
             'authentication_credentialadapter' => array(
             	'parameters' => array(
             		'entityManager'  => 'doctrine_em',
@@ -218,6 +229,7 @@ return array(
             		'storage'       => 'authentication_sessionstorage',
             		'namespace'     => 'Litus_Auth',
             		'cookieSuffix'  => 'Session',
+            		'action'        => 'authentication_action',
             	),
             ),
             'authentication_sessionstorage' => array(
@@ -242,6 +254,19 @@ return array(
             		),
             	),
             ),
+            
+            'mail_transport' => array(
+                'parameters' => array(
+                    'options' => 'mail_smtp',
+                )
+            ),
+            'mail_smtp' => array(
+                'parameters' => array(
+                    'name' => 'smtp.kuleuven.be',
+                    'host' => 'smtp.kuleuven.be',
+                    'port' => 25,
+                ),
+            ),
         ),
     ),
     'routes' => array(
@@ -253,6 +278,20 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'index',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+        'account' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '/account[/:action[/:id]]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'account',
                     'action'     => 'index',
                 ),
             ),
@@ -270,11 +309,10 @@ return array(
     	'admin_academic' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/academic[/:action[/:id[/:confirm]]]',
+    	        'route'    => '/admin/academic[/:action[/:id]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'id'      => '[0-9]*',
-    	        	'confirm' => '[01]',
     	        ),
     	        'defaults' => array(
     	            'controller' => 'admin_academic',
@@ -325,11 +363,10 @@ return array(
 		'admin_config' => array(
 		    'type'    => 'Zend\Mvc\Router\Http\Segment',
 		    'options' => array(
-		        'route'    => '/admin/config[/:action[/:key[/:confirm]]]',
+		        'route'    => '/admin/config[/:action[/:key]]',
 		        'constraints' => array(
 		        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 		        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
-		        	'confirm' => '[01]',
 		        ),
 		        'defaults' => array(
 		            'controller' => 'admin_config',
@@ -350,11 +387,10 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:name[/:confirm]]]',
+    	        'route'    => '/admin/role[/:action[/:name]]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'confirm' => '[01]',
     	        ),
     	        'defaults' => array(
     	            'controller' => 'admin_role',
