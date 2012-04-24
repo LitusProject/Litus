@@ -173,6 +173,13 @@ class StockController extends \CommonBundle\Component\Controller\ActionControlle
 					->findAllByArticleSupplierName($this->getParam('string'));
 				break;
 		}
+		
+		$numResults = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('search_max_results');
+		
+		array_splice($stock, $numResults);
+		
 		$result = array();
 		foreach($stock as $stockItem) {
 			$stockItem->setEntityManager($this->getEntityManager());

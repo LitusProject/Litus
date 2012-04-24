@@ -206,6 +206,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     			break;
     	}
     	
+    	$numResults = $this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('search_max_results');
+    	
+    	array_splice($users, $numResults);
+    	
     	$result = array();
     	foreach($users as $user) {
     		$item = (object) array();

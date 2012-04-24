@@ -19,7 +19,9 @@ use CudiBundle\Entity\Sales\Booking,
 	CudiBundle\Form\Admin\Booking\Add as AddForm,
 	CommonBundle\Component\FlashMessenger\FlashMessage,
 	Doctrine\ORM\EntityManager,
-	Zend\Json\Json;
+	Zend\Json\Json,
+	Zend\Mail\Message,
+	Zend\Mail\Transport\Sendmail;
 
 /**
  * BookingController
@@ -31,16 +33,92 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
 	public function manageAction()
 	{
-		$paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Sales\Booking',
-            $this->getParam('page'),
-            array(),
-            array('bookDate' => 'DESC')
+	    $paginator = $this->paginator()->createFromArray(
+	        $this->getEntityManager()
+	            ->getRepository('CudiBundle\Entity\Sales\Booking')
+	            ->findAllActive(),
+	        $this->getParam('page')
+	    );
+        
+        return array(
+        	'paginator' => $paginator,
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
+    public function inactiveAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllInactive(),
+            $this->getParam('page')
         );
         
         return array(
         	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        	'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
+    public function assignAction()
+    {
+        $this->initAjax();
+        
+        if (!($booking = $this->_getBooking()))
+            return;
+            
+        $stockItem = $booking->getArticle()->getStockItem();
+        $stockItem->setEntityManager($this->getEntityManager());
+        
+        if ($stockItem->getNumberAvailable() <= 0 || $stockItem->getNumberAvailable() < $booking->getNumber()) {
+    		return array(
+    		    'result' => (object) array("status" => "error")
+    		);
+    	}
+    	
+    	$booking->setStatus('assigned');
+    	
+    	$email = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.booking_assigned_mail');
+			
+		$subject = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.booking_assigned_mail_subject');
+			
+		$mailaddress = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.mail');
+			
+		$mailname = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('cudi.mail_name');
+		
+		$transport = new Sendmail();
+
+		$bookings = '* ' . $booking->getArticle()->getTitle() . "\r\n";
+	
+		$mail = new Message();
+		$mail->setBody(str_replace('{{ bookings }}', $bookings, $email))
+			->setFrom($mailaddress, $mailname)
+			->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
+			->setSubject($subject);
+			
+		$transport->send($mail);
+
+        $this->getEntityManager()->flush();
+            
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The booking was successfully assigned!'
+            )
+        );
+        
+        return array(
+            'result' => (object) array("status" => "success")
         );
     }
     
@@ -109,23 +187,32 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 	{
 		$this->initAjax();
 		
+		$active = $this->getParam('type') == 'active';
+		
 		switch($this->getParam('field')) {
 			case 'person':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByPersonName($this->getParam('string'));
+					->findAllByPersonName($this->getParam('string'), $active);
 				break;
 			case 'article':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByArticle($this->getParam('string'));
+					->findAllByArticle($this->getParam('string'), $active);
 				break;
 			case 'status':
 				$bookings = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Booking')
-					->findAllByStatus($this->getParam('string'));
+					->findAllByStatus($this->getParam('string'), $active);
 				break;
 		}
+		
+		$numResults = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('search_max_results');
+		
+		array_splice($bookings, $numResults);
+		
 		$result = array();
 		foreach($bookings as $booking) {
 			$item = (object) array();
@@ -144,7 +231,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 		);
 	}
 	
-	public function assignAction()
+	public function assignAllAction()
 	{
 		$number = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Stock\StockItem')

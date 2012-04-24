@@ -11,3 +11,11 @@
 		{% endautoescape %}
 	</div>
 {% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $('#controller_nav .assignAll').click(openAssignAllModal);
+	    });
+	</script>
+{% endblock %}

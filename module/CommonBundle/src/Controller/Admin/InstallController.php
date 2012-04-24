@@ -24,7 +24,15 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
 	protected function _initConfig()
 	{
-
+	    $this->_installConfig(
+            array(
+                array(
+        			'key'         => 'search_max_results',
+        			'value'       => '30',
+        			'description' => 'The maximum number of search results shown',
+        		),
+        	)
+        );
 	}
 	
 	protected function _initAcl()

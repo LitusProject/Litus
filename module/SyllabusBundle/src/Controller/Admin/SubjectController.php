@@ -72,6 +72,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         	    	->findAllByCodeAndStudy($this->getParam('string'), $study);
         	    break;
         }
+        
+        $numResults = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('search_max_results');
+        
+        array_splice($subjects, $numResults);
+        
         $result = array();
         foreach($subjects as $subject) {
         	$item = (object) array();

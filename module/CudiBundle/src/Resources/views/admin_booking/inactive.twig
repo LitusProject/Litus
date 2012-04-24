@@ -1,0 +1,116 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_booking/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width booking_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The booking was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width booking_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete an booking.</p>
+		</div>
+	</div>
+	<div class="flashmessage success_message full_width booking_unassign_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The booking was successfully unassigned!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width booking_unassign_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to unassign an booking.</p>
+		</div>
+	</div>
+	
+	<div id="controller_action">
+		<div id="booking_search" style="display:none;">
+			<div style="padding:4px;text-align:right">
+				Search: 
+				<select id="searchField">
+					<option value="person">Person</option>
+					<option value="article">Article</option>
+					<option value="status">Status</option>
+				</select>
+				is
+				<input type="text" id="searchString" size="30" />
+			</div>
+			
+			<table class="full_width">
+		    	<tr>
+		        	<th width="90px">Person</th>
+		        	<th>Article</th>
+		        	<th width="50px">Number</th>
+		        	<th width="100px">Book date</th>
+		        	<th width="55px">Status</th>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="default_page">
+			<table class="full_width">
+		        <tr>
+		            <th width="90px">Person</th>
+		            <th>Article</th>
+		            <th width="50px">Number</th>
+		            <th width="100px">Book date</th>
+		            <th width="55px">Status</th>
+		        </tr>
+		        
+		        {% for booking in paginator %}
+		            <tr class="item">
+		                <td>{{ booking.getPerson.getFullName() }}</td>
+		                <td>{{ booking.getArticle().getTitle() }} {% if booking.getArticle().getVersionNumber() != 1 %} (v{{ booking.getArticle().getVersionNumber() }}) {% endif %}</td>
+		                <td>{{ booking.getNumber() }}</td>
+		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
+		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
+		            </tr>
+		        {% endfor %}
+		    </table>
+		
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+   	        $('#controller_nav .assignAll').click(openAssignAllModal);
+		    
+		    {% if hasAccess('admin_booking', 'search') %}
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#booking_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_booking_search', {"type": "inactive"}) }}',
+				display: function (data) {
+					$('#booking_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#booking_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.person + '</td>')
+							.append('<td>' + this.article + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+							.append('<td>' + this.number + '</td>')
+							.append('<td>' + this.bookDate + '</td>')
+							.append('<td class="status">' + ucfirst(this.status) + '</td>');
+					});
+				},
+				clear: function () {
+					$('#booking_search table').find('tr.item').remove();
+				}
+			});
+			{% endif %}
+		});
+		
+		function ucfirst(str) {
+    		return str.slice(0,1).toUpperCase() + str.substring(1);
+		}
+	</script>
+{% endblock %}

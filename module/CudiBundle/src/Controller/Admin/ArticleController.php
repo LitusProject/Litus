@@ -258,6 +258,13 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 					->findAllByPublisher($this->getParam('string'));
 				break;
 		}
+		
+		$numResults = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Config')
+			->getConfigValue('search_max_results');
+		
+		array_splice($articles, $numResults);
+		
 		$result = array();
 		foreach($articles as $article) {
 			$item = (object) array();

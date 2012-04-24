@@ -294,6 +294,13 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         			->findAllBySupplierName($this->getParam('string'));
         		break;
         }
+        
+        $numResults = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('search_max_results');
+        
+        array_splice($suppliers, $numResults);
+        
         $result = array();
         foreach($suppliers as $supplier) {
         	$item = (object) array();

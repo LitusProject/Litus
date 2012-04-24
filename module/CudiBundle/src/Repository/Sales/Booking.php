@@ -26,6 +26,44 @@ class Booking extends EntityRepository
 			
 		return $resultSet;
 	}
+	
+	public function findAllActive()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
+			->where(
+			    $query->expr()->orX(
+			        $query->expr()->eq('b.status', '\'booked\''),
+			        $query->expr()->eq('b.status', '\'assigned\'')
+			    )
+			)
+			->orderBy('b.bookDate', 'DESC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
+	
+	public function findAllInactive()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('b')
+			->from('CudiBundle\Entity\Sales\Booking', 'b')
+			->where(
+			    $query->expr()->not(
+    			    $query->expr()->orX(
+    			        $query->expr()->eq('b.status', '\'booked\''),
+    			        $query->expr()->eq('b.status', '\'assigned\'')
+    			    )
+    			)
+			)
+			->orderBy('b.bookDate', 'DESC')
+			->getQuery()
+			->getResult();
+			
+		return $resultSet;
+	}
 
 	public function findAllBooked($order = 'DESC')
 	{
@@ -117,7 +155,7 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllByPersonName($name)
+	public function findAllByPersonName($name, $active)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
@@ -138,6 +176,17 @@ class Booking extends EntityRepository
 						':name'
 					)
 				))
+			->where(
+			    $active ? $query->expr()->orX(
+			        $query->expr()->eq('b.status', '\'booked\''),
+			        $query->expr()->eq('b.status', '\'assigned\'')
+			    ) : $query->expr()->not(
+    			    $query->expr()->orX(
+    			        $query->expr()->eq('b.status', '\'booked\''),
+    			        $query->expr()->eq('b.status', '\'assigned\'')
+    			    )
+    			)
+			)
 			->setParameter('name', '%'.strtolower($name).'%')
 			->orderBy('b.bookDate', 'DESC')
 			->getQuery()
@@ -146,13 +195,24 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllByArticle($title)
+	public function findAllByArticle($title, $active)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
 			->from('CudiBundle\Entity\Sales\Booking', 'b')
 			->innerJoin('b.article', 'a', Join::WITH, $query->expr()->like($query->expr()->lower('a.title'), ':title'))
 			->setParameter('title', '%'.strtolower($title).'%')
+			->where(
+			    $active ? $query->expr()->orX(
+			        $query->expr()->eq('b.status', '\'booked\''),
+			        $query->expr()->eq('b.status', '\'assigned\'')
+			    ) : $query->expr()->not(
+				    $query->expr()->orX(
+				        $query->expr()->eq('b.status', '\'booked\''),
+				        $query->expr()->eq('b.status', '\'assigned\'')
+				    )
+				)
+			)
 			->orderBy('b.bookDate', 'DESC')
 			->getQuery()
 			->getResult();
@@ -160,12 +220,25 @@ class Booking extends EntityRepository
 		return $resultSet;
 	}
 	
-	public function findAllByStatus($status)
+	public function findAllByStatus($status, $active)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('b')
 			->from('CudiBundle\Entity\Sales\Booking', 'b')
-			->where($query->expr()->like($query->expr()->lower('b.status'), ':status'))
+			->where(
+			    $query->expr()->andX(
+    			    $query->expr()->like($query->expr()->lower('b.status'), ':status'),
+			        $active ? $query->expr()->orX(
+			            $query->expr()->eq('b.status', '\'booked\''),
+			            $query->expr()->eq('b.status', '\'assigned\'')
+			        ) : $query->expr()->not(
+			    	    $query->expr()->orX(
+			    	        $query->expr()->eq('b.status', '\'booked\''),
+			    	        $query->expr()->eq('b.status', '\'assigned\'')
+			    	    )
+			    	)
+			    )
+			)
 			->setParameter('status', '%'.strtolower($status).'%')
 			->orderBy('b.bookDate', 'DESC')
 			->getQuery()

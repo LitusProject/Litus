@@ -245,9 +245,7 @@ class StockItem extends EntityRepository
 			if ($item->getNumberAvailable() <= 0)
 				break;
 				
-			$now = new \DateTime();
 			foreach($bookings as $booking) {
-			    echo $item->getNumberAvailable() . '-';
 				if ($item->getNumberAvailable() < $booking->getNumber())
 					continue;
 				
