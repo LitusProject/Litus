@@ -59,9 +59,10 @@ class Authentication
 	 *
 	 * @param string $identity The provided identity
      * @param string $credential The provided credential
+     * @param boolean $rememberMe Remember this authentication session
      * @return void
 	 */
-	public function authenticate($identity = '', $credential = '')
+	public function authenticate($identity = '', $credential = '', $rememberMe = false)
 	{
 		if (isset($this->_result) && $identity == '')
 			return;
@@ -72,7 +73,7 @@ class Authentication
 				->setCredential($credential);
 		}
 
-		$this->_result = $this->_service->authenticate($this->_adapter);
+		$this->_result = $this->_service->authenticate($this->_adapter, $rememberMe);
 	}
 	
 	/**

@@ -198,7 +198,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                 	'admin_supplier',
                 	array(
-                		'action' => 'supplier',
+                		'action' => 'view',
                 		'id' => $supplier->getId()
                 	)
                 );
@@ -244,7 +244,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                 	'admin_supplier',
                 	array(
-                		'action' => 'supplier',
+                		'action' => 'view',
                 		'id' => $user->getSupplier()->getId()
                 	)
                 );

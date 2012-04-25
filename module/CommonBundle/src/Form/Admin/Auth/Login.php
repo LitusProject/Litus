@@ -15,7 +15,7 @@
  
 namespace CommonBundle\Form\Admin\Auth;
 
-use Zend\Form\Form,
+use Zend\Form\Element\Checkbox,
 	Zend\Form\Element\Password,
 	Zend\Form\Element\Text;
 
@@ -44,6 +44,17 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
         $field = new Password('password');
         $field->setAttrib('placeholder', 'password')
             ->setDecorators(array('ViewHelper', 'Errors'));
+        $this->addElement($field);
+        
+        $field = new Checkbox('remember_me');
+        $field->setLabel('Remember Me')
+            ->setDecorators(
+                array(
+                    array('ViewHelper'),
+                    array('Errors'),
+                    array('Label', array('placement' => 'APPEND'))
+                )
+            );
         $this->addElement($field);
     }
 }
