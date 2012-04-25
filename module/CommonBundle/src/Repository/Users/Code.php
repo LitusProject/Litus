@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Code
@@ -12,4 +13,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class Code extends EntityRepository
 {
+    public function findOneUserByCode($code)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->innerJoin('p.code', 'c', Join::WITH,
+                $query->expr()->andX(
+                    $query->expr()->eq('c.code', ':code'),
+                    $query->expr()->orX(
+                        $query->expr()->gt('c.expireTime', ':now'),
+                        $query->expr()->isNull('c.expireTime')
+                    )
+                )
+            )
+        	->setParameter('code', $code)
+        	->setParameter('now', new \DateTime())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        
+        return null;
+    }
 }
