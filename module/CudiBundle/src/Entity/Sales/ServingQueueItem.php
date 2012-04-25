@@ -16,7 +16,6 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
-	CudiBundle\Entity\Sales\ServingQueueStatus,
 	CudiBundle\Entity\Sales\Session,
 	Doctrine\ORM\EntityManager;
 
@@ -44,10 +43,9 @@ class ServingQueueItem
     private $person;
     
     /**
-     * @var \CudiBundle\Entity\Sales\ServingQueueStatus The status of this serving queue item
+     * @var string The status of this serving queue item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueStatus")
-     * @JoinColumn(name="status", referencedColumnName="id")
+     * @Column(type="string", length=50)
      */
     private $status;
     
@@ -65,6 +63,27 @@ class ServingQueueItem
      * @Column(type="smallint", name="queue_number")
      */
     private $queueNumber;
+    
+    /**
+     * @var \DateTime The time this entity was created
+     *
+     * @Column(type="datetime", name="sign_in_time")
+     */
+    private $signInTime;
+    
+    /**
+     * @var \DateTime The time there was sold to this item
+     *
+     * @Column(type="datetime", name="sold_time", nullable=true)
+     */
+    private $soldTime;
+    
+    /**
+     * @var array The possible states of a booking
+     */
+    private static $POSSIBLE_STATUSES = array(
+    	'signed_in', 'collecting', 'collected', 'selling', 'hold', 'canceled', 'sold'
+    );
 
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager
@@ -73,16 +92,21 @@ class ServingQueueItem
 	 */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
-    	$this->person = $person;
+       	$this->person = $person;
     	$this->session = $session;
-    	
-    	$this->status = $entityManager
-    		->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
-    		->findOneByName('signed_in');
-    		
+    	$this->setStatus('signed_in');
+
     	$this->queueNumber = $entityManager
     		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
     		->getQueueNumber($session);
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidServingQueueStatus($status)
+    {
+    	return in_array($status, self::$POSSIBLE_STATUSES);
     }
 	
 	/**
@@ -102,18 +126,31 @@ class ServingQueueItem
     }
     
     /**
-     * @param \CudiBundle\Entity\Sales\ServingQueueStatus $status
+     * @param string $status
      *
 	 * @return \CudiBundle\Entity\Sales\ServingQueueItem
      */
-    public function setStatus(ServingQueueStatus $status)
+    public function setStatus($status)
     {
+        if (!self::isValidServingQueueStatus($status))
+        	throw new \InvalidArgumentException('The ServingQueueStatus is not valid.');
+        
     	$this->status = $status;
+    	
+    	switch ($status) {
+    	    case 'signed_in':
+    	        $this->signInTime = new \DateTime();
+    	        break;
+    	    case 'sold':
+    	        $this->soldTime = new \DateTime();
+    	        break;
+    	}
+    	
         return $this;
     }
 	
 	/**
-	 * @return \CudiBundle\Entity\Sales\ServingQueueStatus
+	 * @return string
 	 */
     public function getStatus()
     {

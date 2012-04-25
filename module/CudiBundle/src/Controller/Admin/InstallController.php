@@ -171,7 +171,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 			)
 		);
 		
-		$this->_installServingQueueStatus();
 		$this->_installMoneyUnit();
 		$this->_installBankDevice();
 		$this->_installSupplier();
@@ -274,23 +273,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	    )
     	);
 	}
-	
-	private function _installServingQueueStatus()
-	{
-		$statuses = array('signed_in', 'collecting', 'collected', 'selling', 'hold', 'cancelled', 'sold');
 		
-		foreach($statuses as $item) {
-			$status = $this->getEntityManager()
-				->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
-				->findOneByName($item);
-			if (null == $status) {
-				$status = new ServingQueueStatus($item);
-				$this->getEntityManager()->persist($status);
-			}
-		}
-		$this->getEntityManager()->flush();
-	}
-	
 	private function _installMoneyUnit()
 	{
 		$units = array(500, 200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01);

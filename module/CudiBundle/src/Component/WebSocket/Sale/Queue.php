@@ -228,7 +228,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     	
     	if (null == $queueItem) {
     		$queueItem = new ServingQueueItem($this->_entityManager, $person, $session);
-    		
+
     		$this->_entityManager->persist($queueItem);
     		$this->_entityManager->flush();
     	}
@@ -316,17 +316,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	{
 		$repItem = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\ServingQueueItem');
-			
-		$repStatus = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus');
 		
 		return json_encode(
 			(object) array(
 				'queue' => array(
-					'selling' => $this->_createJsonQueue($repItem->findAllByStatus($session, $repStatus->findOneByName('selling'))),
-					'collected' => $this->_createJsonQueue($repItem->findAllByStatus($session, $repStatus->findOneByName('collected'))),
-					'collecting' => $this->_createJsonQueue($repItem->findAllByStatus($session, $repStatus->findOneByName('collecting'))),
-					'signed_in' => $this->_createJsonQueue($repItem->findAllByStatus($session, $repStatus->findOneByName('signed_in'))),
+					'selling' => $this->_createJsonQueue($repItem->findAllByStatus($session, 'selling')),
+					'collected' => $this->_createJsonQueue($repItem->findAllByStatus($session, 'collected')),
+					'collecting' => $this->_createJsonQueue($repItem->findAllByStatus($session, 'collecting')),
+					'signed_in' => $this->_createJsonQueue($repItem->findAllByStatus($session, 'signed_in')),
 				)
 			)
 		);
@@ -366,7 +363,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			$result->id = $item->getId();
 			$result->number = $item->getQueueNumber();
 			$result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
-			$result->status = $item->getStatus()->getName();
+			$result->status = $item->getStatus();
 			$result->locked = isset($this->_lockedItems[$item->getId()]);
 			$results[] = $result;
 		}
@@ -393,11 +390,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		if (!isset($item))
 			return;
 		
-		$item->setStatus(
-			$this->_entityManager
-				->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
-				->findOneByName($status)
-		);
+		$item->setStatus($status);
 		
 		$this->_entityManager->flush();
 	}

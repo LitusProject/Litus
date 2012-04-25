@@ -58,13 +58,6 @@ class SaleItem
 	private $number;
 	
 	/**
-	 * @var \DateTime The time this was sold
-	 *
-	 * @Column(type="datetime")
-	 */
-	private $timestamp;
-	
-	/**
 	 * @var integer The price of the selling
 	 *
 	 * @Column(type="integer")
@@ -97,7 +90,6 @@ class SaleItem
 	    $this->session = $servingQueueItem->getSession();
 	    $this->article = $booking->getArticle();
 	    $this->number = $booking->getNumber();
-	    $this->timestamp = new DateTime();
 	    $this->price = $price * 100;
 	    $this->booking = $booking;
 	    $this->servingQueueItem = $servingQueueItem;
