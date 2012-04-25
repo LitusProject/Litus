@@ -101,6 +101,7 @@ return array(
     'CommonBundle\Form\Admin\Person\Edit'                                              => __DIR__ . '/src/Form/Admin/Person/Edit.php',
     'CommonBundle\Form\Admin\Role\Add'                                                 => __DIR__ . '/src/Form/Admin/Role/Add.php',
     'CommonBundle\Form\Admin\Role\Edit'                                                => __DIR__ . '/src/Form/Admin/Role/Edit.php',
+    'CommonBundle\Form\Auth\Activate'                                                  => __DIR__ . '/src/Form/Auth/Activate.php',
     'CommonBundle\Form\Auth\Login'                                                     => __DIR__ . '/src/Form/Auth/Login.php',
     'CommonBundle\Repository\Acl\Action'                                               => __DIR__ . '/src/Repository/Acl/Action.php',
     'CommonBundle\Repository\Acl\Resource'                                             => __DIR__ . '/src/Repository/Acl/Resource.php',
