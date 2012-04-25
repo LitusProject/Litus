@@ -146,7 +146,7 @@ abstract class Person
      *
      * @Column(name="failed_logins", type="smallint")
      */
-    private $failedLogins;
+    private $failedLogins = 0;
 
     /**
      * @param string $username The user's username

@@ -96,9 +96,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * Authenticates against the supplied adapter
      *
      * @param \Zend\Authentication\Adapter $adapter The supplied adapter
+     * @param boolean $rememberMe Remember this authentication session
+     *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(Adapter $adapter)
+    public function authenticate(Adapter $adapter, $rememberMe = true)
     {
         $result = null;
         
@@ -116,9 +118,15 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 $this->_entityManager->persist($newSession);
 				
                 $this->getStorage()->write($newSession->getId());
-                setcookie(
-                    $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
-                );
+                if ($rememberMe) {
+                    setcookie(
+                        $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
+                    );
+                } else {
+                    setcookie(
+                        $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
+                    );
+                }
                 
                 $result = $adapterResult;
                 
@@ -143,9 +151,15 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
                 if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
-                    setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
-                    );
+                    if ($rememberMe) {
+                        setcookie(
+                            $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
+                        );
+                    } else {
+                        setcookie(
+                            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
+                        );
+                    }
                 }
 
 				$result = new Result(

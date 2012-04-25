@@ -15,8 +15,9 @@
  
 namespace CommonBundle\Form\Auth;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Password,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text;
 
 /**
@@ -47,6 +48,13 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Password('password');
         $field->setLabel('Password')
             ->setRequired(true);
+        $this->addElement($field);
+        
+        $field = new Checkbox('remember_me');
+        $field->setLabel('Remember Me')
+            ->addDecorator('Label', array('placement' => 'APPEND'))
+            ->removeDecorator('div')
+            ->removeDecorator('HtmlTag');
         $this->addElement($field);
         
         $field = new Submit('submit');
