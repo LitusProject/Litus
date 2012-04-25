@@ -95,12 +95,14 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Sales\SaleItem', 'i')
-            ->where(
+            ->innerJoin('i.servingQueueItem', 's', Join::WITH,
                 $query->expr()->andX(
-                    $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->gte('i.timestamp', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('i.timestamp', ':endDate')
+                    $query->expr()->gte('s.soldTime', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('s.soldTime', ':endDate')
                 )
+            )
+            ->where(
+                $query->expr()->eq('i.article', ':article')
             )
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $period->getStartDate());
