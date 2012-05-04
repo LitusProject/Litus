@@ -40,5 +40,18 @@
     	        </div>
     	    </div>
     	{% endif %}
+    	{% if hasAccess('admin_delivery', 'return') %}
+    		<div class="sidebox">
+    	        <div class="title">Return-Delivery</div>
+    	        <div class="content">
+    	            <p>
+    	        		<i>Please hit the link below to return to supplier!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_delivery', {"action": "return"}) }}">&rarr; Return-Delivery</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
 	</aside>
 {% endblock %}
