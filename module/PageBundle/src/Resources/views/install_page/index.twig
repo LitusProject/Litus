@@ -1,0 +1,17 @@
+{% extends 'admin/layout.twig' %}
+
+{% block content %}
+    {% if installerReady %}
+    	<div class="flashmessage alert alert-success fade in">
+    	    <a class="close" data-dismiss="alert">&times;</a>
+    		<div class="title">Success</div>
+    		<div class="content">
+    			<p>The PageBundle was successfully installed.</p>
+    		</div>
+    	</div>
+    {% endif %}
+    
+    <div id="content_controller">
+    
+    </div>
+{% endblock %}

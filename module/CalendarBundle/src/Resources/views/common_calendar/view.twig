@@ -1,0 +1,7 @@
+{% extends 'common/layout.twig' %}
+
+{% block content %}
+    <h1>{{ event.getTitle() }}</h1>
+    <em class="subtitle">{{ dateLocalized(event.getEvent().getStartDate(), 'd MMMM YYYY H:mm') }} @ {{ event.getLocation() }}</em>
+    {{ event.getContent() }}
+{% endblock %}
