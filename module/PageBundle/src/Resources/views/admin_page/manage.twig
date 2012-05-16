@@ -1,0 +1,110 @@
+{% extends 'admin/layout.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success page_removed_success fade">
+    	<a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translator().translate('Success') }}</div>
+    	<div class="content">
+    		<p>{{ translator().translate('The page was successfully removed!') }}</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-danger page_removed_error fade">
+    	<a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translator().translate('Error') }}</div>
+    	<div class="content">
+    		<p>{{ translator().translate('An error occurred while trying to delete the page.') }}</p>
+    	</div>
+    </div>
+    
+    <div class="page-header">
+        <h1>{{ translator().translate('Pages') }}</h1>
+    </div>
+    
+    {% include 'admin_page/partials/navigation.twig' %}
+    
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>{{ translator().translate('Title') }}</th>
+                <th width="150px">{{ translator().translate('Time') }}</th>
+                <th width="160px">{{ translator().translate('Person') }}</th>
+                <th width="180px">{{ translator().translate('Actions') }}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for page in paginator %}
+                <tr class="item">
+                    <td>{{ page.getTitle(language) }}</td>
+                    <td>{{ dateLocalized(page.getUpdateTime(), 'dd/MM/y H:m') }}</td>
+                    <td>{{ page.getUpdatePerson().getFullName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_page', 'edit') %}
+                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>
+                        {% endif %}
+                        {% if hasAccess('admin_page', 'delete') %}
+                            <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="btn btn-danger delete">{{ translator().translate('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+	{% include 'admin/partials/paginationControl.twig' %}
+	
+	<div id="removePage" class="modal fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>{{ translator().translate('Remove Page') }}</h3>
+		</div>
+		<div class="modal-body">
+			<p>
+				{{ translator().translate('You are about to delete the following page') }}: <b class="title"></b>?
+				{{ translator().translate('Please note that this operation cannot be undone!') }}
+			</p>
+			<p>
+				{{ translator().translate('Are you sure you want to continue?') }}
+			</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger delete">{{ translator().translate('Yes') }}</button>
+			<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removePage = $('#removePage');
+			removePage.find('.title').html($(this).data('title'));
+			removePage.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_page', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').removeClass('in');
+    					$('.page_removed_success').addClass('in');
+    					$this.parent().parent().remove();
+    					removePage.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			removePage.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').removeClass('in');
+		    $('.page_removed_error').addClass('in');
+		    $('#removePage').modal('hide');
+		}
+	</script>
+{% endblock %}
