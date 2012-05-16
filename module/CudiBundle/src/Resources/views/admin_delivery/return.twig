@@ -60,13 +60,13 @@
 	<aside>
 		{% if hasAccess('admin_delivery', 'manage') %}
     		<div class="sidebox">
-    	        <div class="title">Return to supplier</div>
+    	        <div class="title">Add Delivery</div>
     	       	<div class="content">
     		    	<p>
-    		        	<i>Please hit the link below to return articles to supplier!</i>
+    		        	<i>Please hit the link below to add a delivery from this supplier!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url("admin_delivery", {"action": "return"}) }}">&rarr; Return-to-supplier</a>
+    		           	<a href="{{ url("admin_delivery", {"action": "add"}) }}">&rarr; Add Delivery</a>
     		        </p>
     		    </div>
     		</div>
