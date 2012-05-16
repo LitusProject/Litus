@@ -17,7 +17,9 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\DeliveryItem,
-	CudiBundle\Form\Admin\Delivery\Add as AddForm;
+	CudiBundle\Entity\Stock\ReturnItem,
+	CudiBundle\Form\Admin\Delivery\Add as AddForm,
+	CudiBundle\Form\Admin\Delivery\Retour as RetourForm;
 
 /**
  * DeliveryController
@@ -100,6 +102,48 @@ class DeliveryController extends \CommonBundle\Component\Controller\ActionContro
         	'form' => $form,
         	'deliveries' => $this->getEntityManager()
         		->getRepository('CudiBundle\Entity\Stock\DeliveryItem')
+        		->findLastNb(25),
+        );
+	}
+	
+	public function returnAction()
+	{
+		$form = new RetourForm($this->getEntityManager());
+		
+		if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+
+            if($form->isValid($formData)) {
+				$article = $this->getEntityManager()
+					->getRepository('CudiBundle\Entity\Stock\StockItem')
+					->findOneByBarcode($formData['stockArticle']);
+				
+			    $item = new ReturnItem($article, $formData['number']);
+				$this->getEntityManager()->persist($item);
+				$this->getEntityManager()->flush();
+				
+				$this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The delivery was successfully added!'
+                    )
+				);
+				
+				$this->redirect()->toRoute(
+					'admin_delivery',
+					array(
+						'action' => 'supplier',
+						'id'     => $article->getSupplier()->getId(),
+					)
+				);
+			}
+        }
+        
+        return array(
+        	'form' => $form,
+        	'deliveries' => $this->getEntityManager()
+        		->getRepository('CudiBundle\Entity\Stock\ReturnItem')
         		->findLastNb(25),
         );
 	}
