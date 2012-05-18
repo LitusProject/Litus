@@ -27,6 +27,7 @@ return array(
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
     'Yes' => 'Yes',
     'No' => 'No',
+    'This news already exists' => 'This news already exists',
     
     'Activities' => 'Activities',
     'Sports' => 'Sports',

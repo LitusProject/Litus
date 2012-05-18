@@ -24,4 +24,5 @@ return array(
     'No event with the given id was found!' => 'Er is geen activiteit gevonden met de opgegeven id!',
     'Content' => 'Inhoud',
     'Save' => 'Opslaan',
+    'This event already exists' => 'Deze activiteit bestaat reeds',
 );

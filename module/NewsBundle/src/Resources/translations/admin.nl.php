@@ -24,6 +24,7 @@ return array(
     'Are you sure you want to continue?' => 'Ben je zeker dat je wil verder gaan?',
     'Yes' => 'Ja',
     'No' => 'Neen',
+    'This news already exists' => 'Het nieuws bestaat reeds',
     
     'Activities' => 'Activiteiten',
     'Sports' => 'Sport',

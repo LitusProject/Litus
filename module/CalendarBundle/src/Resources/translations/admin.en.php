@@ -25,4 +25,5 @@ return array(
     'Title' => 'Title',
     'Content' => 'Content',
     'Save' => 'Save',
+    'This event already exists' => 'This event already exists',
 );

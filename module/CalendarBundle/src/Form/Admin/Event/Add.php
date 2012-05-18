@@ -37,6 +37,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 	private $_entityManager = null;
 	
 	/**
+	 * @var \CalendarBundle\Entity\Nodes\Event
+	 */
+	protected $event;
+	
+	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
 	 * @param mixed $opts The validator's options
 	 */
@@ -121,5 +126,38 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
+    }
+        
+    /**
+     * Validate the form
+     *
+     * @param  array $data
+     * @return boolean
+     */
+    public function isValid($data)
+    {
+        $valid = parent::isValid($data);
+        
+        $form = $this->getSubForm('tab-content');
+        $date = \DateTime::createFromFormat('d/m/Y H:i', $data['start_date']);
+        
+        if ($date) {
+            foreach($this->_getLanguages() as $language) {
+                $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
+                $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
+
+                $event = $this->_entityManager
+                	->getRepository('CalendarBundle\Entity\Nodes\Translation')
+                	->findOneByName($name);
+
+                if (!(null == $event || 
+                    (null != $this->event && null != $event && $event->getEvent() == $this->event))) {
+                    $title->addError('This event already exists');
+                    $valid = false;
+                }
+            }
+        }
+        
+        return $valid;
     }
 }
