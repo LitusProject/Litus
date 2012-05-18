@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     NewsBundle\Entity\Nodes\News;
 
 /**
- * Add a page.
+ * Add a news.
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 {
@@ -34,6 +34,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
 	private $_entityManager = null;
+	
+	/**
+	 * @var \NewsBundle\Entity\Nodes\News
+	 */
+	protected $news;
 	
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -99,5 +104,38 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
+    }
+            
+    /**
+     * Validate the form
+     *
+     * @param  array $data
+     * @return boolean
+     */
+    public function isValid($data)
+    {
+        $valid = parent::isValid($data);
+        
+        $form = $this->getSubForm('tab-content');
+        $date = new \DateTime();
+        
+        if ($date) {
+            foreach($this->_getLanguages() as $language) {
+                $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
+                $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
+
+                $news = $this->_entityManager
+                	->getRepository('NewsBundle\Entity\Nodes\Translation')
+                	->findOneByName($name);
+
+                if (!(null == $news || 
+                    (null != $this->news && null != $news && $news->getNews() == $this->news))) {
+                    $title->addError('This news already exists');
+                    $valid = false;
+                }
+            }
+        }
+        
+        return $valid;
     }
 }

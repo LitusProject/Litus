@@ -1,0 +1,78 @@
+{% extends 'admin/layout.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translator().translate('Gallery') }}</h1>
+    </div>
+    
+    {% include 'admin_gallery/partials/navigation.twig' %}
+    
+    <h2>{{ album.getTitle(language) }}</h2>
+    
+    <div class="pull-right">
+        <a href="{{ url('admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}" class="btn btn-success">{{ translator().translate('Add Photos') }}</a>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>{{ translator().translate('Id') }}</th>
+            <th>{{ translator().translate('Image') }}</th>
+            <th width="30px">{{ translator().translate('Censored') }}</th>
+            <th width="180px">{{ translator().translate('Actions') }}</th>
+        </tr>
+        {% for photo in album.getPhotos() %}
+            <tr class="item">
+                <td>{{ photo.getId() }}</td>
+                <td>{{ photo.getFilePath() }}</td>
+                <td class="center-text">{% if photo.isCensored() %}&times;{% endif %}</td>
+                <td class="actions">
+                    {% if hasAccess('admin_gallery', 'viewPhoto') %}
+                        <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="btn btn-info view">{{ translator().translate('View') }}</a>
+                    {% endif %}
+                    
+                    {% if not photo.isCensored() %}
+                        {% if hasAccess('admin_gallery', 'censorPhoto') %}
+                            <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="btn btn-danger">{{ translator().translate('Censor') }}</a>
+                        {% endif %}
+                    {% else %}
+                        {% if hasAccess('admin_gallery', 'unCensorPhoto') %}
+                            <a href="{{ url('admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="btn btn-danger">{{ translator().translate('Uncensor') }}</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <div id="showPhoto" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>{{ translator().translate('Show Photo') }}</h3>
+    	</div>
+    	<div class="modal-body">
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn" data-dismiss="modal">{{ translator().translate('Close') }}</button>
+    	</div>
+    </div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .view').click(openViewModal);
+		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var showPhoto = $('#showPhoto');
+			showPhoto.find('.modal-body').html('');
+			var photo = $('<img>', {src: $this.data('url')}).load(function () {
+			    $(this).height(300);
+			});
+			showPhoto.find('.modal-body').html(photo).css('text-align', 'center');
+			showPhoto.modal();
+		}
+	</script>
+{% endblock %}

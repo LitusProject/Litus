@@ -35,6 +35,8 @@ class Edit extends Add
         
         $this->removeElement('submit');
         
+        $this->event = $event;
+        
         $field = new Submit('submit');
         $field->setLabel('Save');
         $this->addElement($field);
