@@ -174,7 +174,7 @@ abstract class Article
 	/**
 	 * @param string $authors
 	 *
-	 * @return \CudiBundle\Entity\Articles\MetaInfo
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function setAuthors($authors)
 	{
@@ -193,7 +193,7 @@ abstract class Article
 	/**
 	 * @param string $publishers
 	 *
-	 * @return \CudiBundle\Entity\Articles\MetaInfo
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function setPublishers($publishers)
 	{
@@ -212,7 +212,7 @@ abstract class Article
 	/**
 	 * @param string $yearPublished
 	 *
-	 * @return \CudiBundle\Entity\Articles\MetaInfo
+	 * @return \CudiBundle\Entity\Article
 	 */
 	public function setYearPublished($yearPublished)
 	{
