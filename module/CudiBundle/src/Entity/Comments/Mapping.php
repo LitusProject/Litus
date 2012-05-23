@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity\Comments;
 
-use \CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")

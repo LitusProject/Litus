@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity\Sales\Discounts;
 
-use \CudiBundle\Entity\Sales\Article as Article;
+use CudiBundle\Entity\Sales\Article as Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Template")

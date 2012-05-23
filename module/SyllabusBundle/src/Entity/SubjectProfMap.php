@@ -13,16 +13,16 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Entity\Articles;
+namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article;
+    CommonBundle\Entity\Users\People\Academic;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\AcademicYear")
- * @Table(name="cudi.articles_academic_year")
+ * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectProfMap")
+ * @Table(name="syllabus.subject_prof_map")
  */
-class AcademicYear
+class SubjectProfMap
 {
     /**
      * @var integer The ID of the mapping
@@ -34,13 +34,21 @@ class AcademicYear
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The article of the mapping
+     * @var \CommonBundle\Entity\Users\People\Academic The prof of the mapping
      *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-	 * @JoinColumn(name="article", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+	 * @JoinColumn(referencedColumnName="id")
 	 */
-	private $article;
+	private $prof;
 
+	/**
+	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+	 *
+	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+	 * @JoinColumn(referencedColumnName="id")
+	 */
+	private $subject;
+	
 	/**
 	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
 	 *
@@ -50,12 +58,14 @@ class AcademicYear
 	private $academicYear;
     
     /**
-     * @param \CudiBundle\Entity\Article $article
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \CommonBundle\Entity\Users\People\Academic $prof
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Article $article, AcademicYear $academicYear)
+    public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
     {
-        $this->article = $article;
+        $this->subject = $subject;
+        $this->prof = $prof;
         $this->academicYear = $academicYear;
     }
     
@@ -68,11 +78,19 @@ class AcademicYear
     }
     
     /**
-     * @return \CudiBundle\Entity\Articles\Internal
+     * @return \SyllabusBundle\Entity\Subject
      */
-    public function getArticle()
+    public function getSubject()
     {
-        return $this->article;
+        return $this->subject;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function getProf()
+    {
+        return $this->prof;
     }
     
     /**

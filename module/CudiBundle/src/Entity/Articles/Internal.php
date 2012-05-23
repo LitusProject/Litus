@@ -15,8 +15,8 @@
  
 namespace CudiBundle\Entity\Articles;
 
-use \CudiBundle\Entity\Articles\Options\Binding,
-    \CudiBundle\Entity\Articles\Options\Color;
+use CudiBundle\Entity\Articles\Options\Binding,
+    CudiBundle\Entity\Articles\Options\Color;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")

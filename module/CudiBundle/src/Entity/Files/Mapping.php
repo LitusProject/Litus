@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity\Files;
 
-use \CudiBundle\Entity\Articles\Internal;
+use CudiBundle\Entity\Articles\Internal;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
