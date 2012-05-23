@@ -228,6 +228,37 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         } while(file_exists($filePath . '/' . $album->getId() . $filename));
         
         $image = new Imagick($file->getFileName());
+        
+        $exif = exif_read_data($file->getFileName());
+        
+        switch($exif['Orientation']) {
+            case 1: // nothing
+                break;
+            case 2: // horizontal flip
+                $image->flopImage();
+                break;
+            case 3: // 180 rotate
+                $image->rotateImage(new ImagickPixel(), 180);
+                break;
+            case 4: // vertical flip
+                $image->flipImage();
+                break;
+            case 5: // vertical flip + 90 rotate clockwise
+                $image->flipImage();
+                $image->rotateImage(new ImagickPixel(), 90);
+                break;
+            case 6: // 90 rotate clockwise
+                $image->rotateImage(new ImagickPixel(), 90);
+                break;
+            case 7: // horizontal flip + 90 rotate clockwise
+                $image->flopImage();    
+                $image->rotateImage(new ImagickPixel(), 90);
+                break;
+            case 8:    // 90 rotate counter clockwise
+                $image->rotateImage(new ImagickPixel(), -90);
+                break;
+        }
+        
         $image->scaleImage(640, 480, true);
         $image->writeImage($filePath . '/' . $album->getId() . $filename);
         $image->cropThumbnailImage(150, 150);
