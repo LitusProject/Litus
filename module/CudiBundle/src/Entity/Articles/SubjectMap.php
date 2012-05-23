@@ -20,10 +20,10 @@ use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Subject;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\Subject")
- * @Table(name="cudi.articles_subject")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\SubjectMap")
+ * @Table(name="cudi.articles_subject_map")
  */
-class Subject
+class SubjectMap
 {
     /**
      * @var integer The ID of the mapping

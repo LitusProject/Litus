@@ -82,7 +82,7 @@ abstract class Article
     /**
      * @var integer The ISBN number of this article
      *
-     * @Column(type="int")
+     * @Column(type="bigint")
      */
     private $isbn;
     

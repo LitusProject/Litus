@@ -17,7 +17,7 @@ namespace CudiBundle\Entity\Stock\PeriodValues;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
-    CudiBundle\Entity\Stock\Period
+    CudiBundle\Entity\Stock\Period,
     DateTime;
 
 /**
