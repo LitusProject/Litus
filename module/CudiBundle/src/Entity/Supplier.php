@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity;
 
-use \CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Address;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Supplier")

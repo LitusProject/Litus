@@ -15,8 +15,8 @@
  
 namespace CudiBundle\Entity;
 
-use \CommonBundle\Entity\Users\Person,
-    \DateTime;
+use CommonBundle\Entity\Users\Person,
+    DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Log")

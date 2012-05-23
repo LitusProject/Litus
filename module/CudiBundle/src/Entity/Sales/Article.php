@@ -15,8 +15,8 @@
  
 namespace CudiBundle\Entity\Sales;
 
-use \CudiBundle\Entity\Article as MainArticle,
-    \CudiBundle\Entity\Supplier as Supplier;
+use CudiBundle\Entity\Article as MainArticle,
+    CudiBundle\Entity\Supplier as Supplier;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Article")
@@ -341,7 +341,7 @@ class Article
 	/**
 	 * @return integer
 	 */
-	public function setStockValue()
+	public function getStockValue()
 	{
 	    return $this->stockValue;
 	}
@@ -351,9 +351,20 @@ class Article
 	 *
 	 * @return \CudiBundle\Entity\Sales\Article
 	 */
-	public function getStockValue($stockValue)
+	public function setStockValue($stockValue)
 	{
 	    $this->stockValue = $stockValue;
+	    return $this;
+	}
+	
+	/**
+	 * @param integer $stockValue
+	 *
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function addStockValue($stockValue)
+	{
+	    $this->stockValue += $stockValue;
 	    return $this;
 	}
 	
