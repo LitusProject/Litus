@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Entity\Filesize;
+namespace CudiBundle\Entity\Files;
 
 use CudiBundle\Entity\Articles\Internal as InternalArticle;
 

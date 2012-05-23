@@ -19,10 +19,10 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\AcademicYear")
- * @Table(name="cudi.articles_academic_year")
+ * @Entity(repositoryClass="CudiBundle\Repository\Articles\AcademicYearMap")
+ * @Table(name="cudi.articles_academic_year_map")
  */
-class AcademicYear
+class AcademicYearMap
 {
     /**
      * @var integer The ID of the mapping

@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace CommonBundle\Entity\Nodes;
 
 use CommonBundle\Entity\Users\Person,
@@ -10,14 +10,6 @@ use CommonBundle\Entity\Users\Person,
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Nodes\Node")
  * @Table(name="nodes.node")
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
- *      "page"="PageBundle\Entity\Nodes\Page",
- *      "news"="NewsBundle\Entity\Nodes\News",
- *      "faq"="FAQBundle\Entity\Nodes\FAQ",
- *      "event"="CalendarBundle\Entity\Nodes\Event"
- * })
  */
 abstract class Node
 {

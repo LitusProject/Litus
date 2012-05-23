@@ -44,7 +44,7 @@ class Item
 	 * @var \CudiBundle\Entity\Stock\Orders\Order The order of the item
 	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Stock\Orders\Order", inversedBy="items")
-	 * @JoinColumn(name="order", referencedColumnName="id")
+	 * @JoinColumn(name="order_id", referencedColumnName="id")
 	 */
 	private $order;
 	
