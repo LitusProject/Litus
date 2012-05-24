@@ -28,4 +28,63 @@ class Article extends EntityRepository
 
         return $resultSet;
     }
+    
+    public function findAllByTitle($title)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->where($query->expr()->andX(
+    				$query->expr()->like($query->expr()->lower('a.title'), ':title'),
+    		       $query->expr()->eq('a.isHistory', 'false'),
+    		       $query->expr()->eq('a.isProf', 'false')
+    			)
+    		)
+    		->setParameter('title', '%'.strtolower($title).'%')
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByAuthor($author)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->setParameter('author', '%'.strtolower($author).'%')
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByPublisher($publisher)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->where(
+    		    $query->expr()->andX(
+    		        $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
+    		        $query->expr()->eq('a.isHistory', 'false'),
+    		        $query->expr()->eq('a.isProf', 'false')
+    		    )
+    		)
+    		->setParameter('publisher', '%'.strtolower($publisher).'%')
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
 }

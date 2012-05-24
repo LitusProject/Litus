@@ -39,6 +39,7 @@ return array(
     'CudiBundle\Entity\Supplier'                        => __DIR__ . '/src/Entity/Supplier.php',
     'CudiBundle\Entity\Users\People\Supplier'           => __DIR__ . '/src/Entity/Users/People/Supplier.php',
     'CudiBundle\Form\Admin\Article\Add'                 => __DIR__ . '/src/Form/Admin/Article/Add.php',
+    'CudiBundle\Form\Admin\Article\Edit'                => __DIR__ . '/src/Form/Admin/Article/Edit.php',
     'CudiBundle\Repository\Article'                     => __DIR__ . '/src/Repository/Article.php',
     'CudiBundle\Repository\Articles\AcademicYearMap'    => __DIR__ . '/src/Repository/Articles/AcademicYearMap.php',
     'CudiBundle\Repository\Articles\External'           => __DIR__ . '/src/Repository/Articles/External.php',
