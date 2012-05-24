@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\Stub,
     CudiBundle\Form\Admin\Article\Add as AddForm,
+    CudiBundle\Form\Admin\Article\Edit as EditForm,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -133,19 +134,127 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 		if (!($article = $this->_getArticle()))
 		    return;
         
+        $form = new EditForm($this->getEntityManager(), $article);
+        
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        	
+        	if ($form->isValid($formData)) {
+        	    $article->setTitle($formData['title'])
+        	        ->setAuthors($formData['author'])
+        	        ->setPublishers($formData['publisher'])
+        	        ->setYearPublished($formData['year_published'])
+        	        ->setISBN($formData['isbn'])
+        	        ->setURL($formData['url']);
+        	    
+        	    if ($formData['stock']) {
+					if ($formData['internal']) {
+						$binding = $this->getEntityManager()
+							->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+							->findOneById($formData['binding']);
+
+						$frontPageColor = $this->getEntityManager()
+							->getRepository('CudiBundle\Entity\Articles\Options\Color')
+							->findOneById($formData['front_color']);
+                        
+                        $article->setNbBlackAndWhite($formData['nb_black_and_white'])
+                        	->setNbColored($formData['nb_colored'])
+                        	->setBinding($binding)
+                        	->setIsOfficial($formData['official'])
+                        	->setIsRectoVerso($formData['rectoverso'])
+                        	->setFrontColor($frontPageColor)
+                        	->setFrontPageTextColored($formData['front_text_colored'])
+                        	->setIsPerforated($formData['perforated']);
+					}
+				}      	    
+        	    
+        	    $this->getEntityManager()->flush();
+        	    
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_article',
+                	array(
+                		'action' => 'manage'
+                	)
+                );
+                
+                return;
+        	}
+        }
+        
         return array(
+            'form' => $form,
         	'article' => $article,
         );
 	}
 
     public function deleteAction()
 	{
-	
+	    $this->initAjax();
+	    
+		if (!($article = $this->_getArticle()))
+		    return;
+
+        $article->setIsHistory(true);
+		$this->getEntityManager()->flush();
+        
+        return array(
+            'result' => (object) array("status" => "success")
+        );
 	}
 
 	public function searchAction()
 	{
+	    $this->initAjax();
 	    
+	    switch($this->getParam('field')) {
+	    	case 'title':
+	    		$articles = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Article')
+	    			->findAllByTitle($this->getParam('string'));
+	    		break;
+	    	case 'author':
+	    		$articles = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Article')
+	    			->findAllByAuthor($this->getParam('string'));
+	    		break;
+	    	case 'publisher':
+	    		$articles = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Article')
+	    			->findAllByPublisher($this->getParam('string'));
+	    		break;
+	    }
+	    
+	    $numResults = $this->getEntityManager()
+	    	->getRepository('CommonBundle\Entity\General\Config')
+	    	->getConfigValue('search_max_results');
+	    
+	    array_splice($articles, $numResults);
+	    
+	    $result = array();
+	    foreach($articles as $article) {
+	    	$item = (object) array();
+	    	$item->id = $article->getId();
+	    	$item->title = $article->getTitle();
+	    	$item->author = $article->getAuthors();
+	    	$item->publisher = $article->getPublishers();
+	    	$item->yearPublished = $article->getYearPublished();
+	    	$item->isStock = $article->isStock();
+	    	$item->versionNumber = $article->getVersionNumber();
+	    	$result[] = $item;
+	    }
+	    
+	    return array(
+	    	'result' => $result,
+	    );
 	}
 	
 	public function newVersionAction()
