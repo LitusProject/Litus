@@ -245,6 +245,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setFrontPageTextColored($frontPageTextColored)
     {
     	$this->frontPageTextColored = $frontPageTextColored;
+    	return $this;
     }
     
     /**
@@ -272,5 +273,37 @@ class Internal extends \CudiBundle\Entity\Article
     {
     	$this->isPerforated = $isPerforated;
     	return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isStub()
+    {
+        return false;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isStock()
+    {
+        return true;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isExternal()
+    {
+        return false;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isInternal()
+    {
+        return true;
     }
 }

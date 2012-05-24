@@ -64,6 +64,7 @@ return array(
     'CommonBundle\Component\Util\Xml\Object'                                           => __DIR__ . '/src/Component/Util/Xml/Object.php',
     'CommonBundle\Component\Validator\PhoneNumber'                                     => __DIR__ . '/src/Component/Validator/PhoneNumber.php',
     'CommonBundle\Component\Validator\Price'                                           => __DIR__ . '/src/Component/Validator/Price.php',
+    'CommonBundle\Component\Validator\Uri'                                             => __DIR__ . '/src/Component/Validator/Uri.php',
     'CommonBundle\Component\Validator\Username'                                        => __DIR__ . '/src/Component/Validator/Username.php',
     'CommonBundle\Component\Validator\ValidUsername'                                   => __DIR__ . '/src/Component/Validator/ValidUsername.php',
     'CommonBundle\Component\Validator\Year'                                            => __DIR__ . '/src/Component/Validator/Year.php',

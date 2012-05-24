@@ -1,6 +1,8 @@
 <?php
 return array(
     'CudiBundle\Module'                                 => __DIR__ . '/Module.php',
+    'CudiBundle\Controller\Admin\ArticleController'     => __DIR__ . '/src/Controller/Admin/ArticleController.php',
+    'CudiBundle\Controller\Admin\InstallController'     => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'CudiBundle\Entity\Article'                         => __DIR__ . '/src/Entity/Article.php',
     'CudiBundle\Entity\Articles\AcademicYearMap'        => __DIR__ . '/src/Entity/Articles/AcademicYearMap.php',
     'CudiBundle\Entity\Articles\External'               => __DIR__ . '/src/Entity/Articles/External.php',
@@ -36,6 +38,7 @@ return array(
     'CudiBundle\Entity\Stock\PeriodValues\Start'        => __DIR__ . '/src/Entity/Stock/PeriodValues/Start.php',
     'CudiBundle\Entity\Supplier'                        => __DIR__ . '/src/Entity/Supplier.php',
     'CudiBundle\Entity\Users\People\Supplier'           => __DIR__ . '/src/Entity/Users/People/Supplier.php',
+    'CudiBundle\Form\Admin\Article\Add'                 => __DIR__ . '/src/Form/Admin/Article/Add.php',
     'CudiBundle\Repository\Article'                     => __DIR__ . '/src/Repository/Article.php',
     'CudiBundle\Repository\Articles\AcademicYearMap'    => __DIR__ . '/src/Repository/Articles/AcademicYearMap.php',
     'CudiBundle\Repository\Articles\External'           => __DIR__ . '/src/Repository/Articles/External.php',
