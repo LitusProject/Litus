@@ -54,13 +54,6 @@ class File
 	private $description;
 	
 	/**
-	 * @var boolean The flag whether the file is just created by a prof
-	 *
-	 * @Column(type="boolean")
-	 */
-	private $isProf;
-	
-	/**
 	 * @param string $path The path to the file
 	 * @param string $name The name of the file
 	 * @param string $description The description of the file
@@ -69,8 +62,7 @@ class File
 	{
 		$this->setPath($path)
 		    ->setName($name)
-		    ->setDescription($description)
-		    ->setIsProf(false);
+		    ->setDescription($description);
 	}
 	
 	/** 
@@ -136,16 +128,5 @@ class File
 	{
 		$this->description = $description;
 		return $this;
-	}
-	
-	/**
-	 * @param boolean $isProf
-	 *
-	 * @return \CudiBundle\Entity\Files\File
-	 */
-	public function setIsProf($isProf)
-	{
-	    $this->isProf = $isProf;
-	    return $this;
 	}
 }

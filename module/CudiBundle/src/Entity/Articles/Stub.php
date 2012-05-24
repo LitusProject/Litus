@@ -21,4 +21,19 @@ namespace CudiBundle\Entity\Articles;
  */
 class Stub extends \CudiBundle\Entity\Article
 {
+    /**
+     * @return boolean
+     */
+    public function isStub()
+    {
+        return true;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isStock()
+    {
+        return false;
+    }
 }

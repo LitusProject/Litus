@@ -15,6 +15,8 @@
  
 namespace CudiBundle\Entity;
 
+use DateTime;
+
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Article")
  * @Table(name="cudi.articles")
@@ -314,4 +316,14 @@ abstract class Article
 	    $this->isProf = $isProf;
 	    return $this;
 	}
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isStub();
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isStock();
 }

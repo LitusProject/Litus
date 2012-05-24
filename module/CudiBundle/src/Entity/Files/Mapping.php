@@ -56,6 +56,13 @@ class Mapping
     private $printable;
     
     /**
+     * @var boolean The flag whether the file is just created by a prof
+     *
+     * @Column(type="boolean")
+     */
+    private $isProf;
+    
+    /**
      * @param \CudiBundle\Entity\Articles\Internal $article
      * @param \CudiBundle\Entity\Files\File $file
      * @param boolean $printable
@@ -64,7 +71,8 @@ class Mapping
     {
         $this->article = $article;
         $this->file = $file;
-        $this->setPrintable($printable);
+        $this->setPrintable($printable)
+            ->setIsProf(false);
     }
     
     /**
@@ -108,5 +116,16 @@ class Mapping
     {
     	$this->removed = $removed;
     	return $this;
+    }
+    
+    /**
+     * @param boolean $isProf
+     *
+     * @return \CudiBundle\Entity\Files\Mapping
+     */
+    public function setIsProf($isProf)
+    {
+        $this->isProf = $isProf;
+        return $this;
     }
 }
