@@ -36,7 +36,7 @@ class History
 	/**
 	 * @var \CudiBundle\Entity\Article The newest version of the two
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
      * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
@@ -44,7 +44,7 @@ class History
 	/**
 	 * @var \CudiBundle\Entity\Article The oldest version of the two
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Article", cascade={"persist"})
      * @JoinColumn(name="precursor", referencedColumnName="id")
 	 */
 	private $precursor;
@@ -52,13 +52,53 @@ class History
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The entitymanager
 	 * @param \CudiBundle\Entity\Article $article The new version of the article
-	 * @param \CudiBundle\Entity\Article $precursor The previous version of the article
 	 */
-	public function __construct(EntityManager $entityManager, Article $article, Article $precursor)
+	public function __construct(EntityManager $entityManager, Article $article)
 	{
-		$article->setVersionNumber($precursor->getVersionNumber()+1);
+	    if ($article->isStock()) {
+	    	if ($article->isInternal()) {
+	    		$this->precursor = new Internal(
+	    		    $article->getTitle(),
+	    		    $article->getAuthors(),
+	    		    $article->getPublishers(),
+	    		    $article->getYearPublished(),
+	    		    $article->getISBN(),
+	    		    $article->getURL(),
+	    			$article->getNbBlackAndWhite(),
+	                $article->getNbColored(),
+	                $article->getBinding(),
+	                $article->isOfficial(),
+	                $article->isRectoVerso(),
+	                $article->getFrontColor(),
+	                $article->getFrontPageTextColored(),
+	                $article->isPerforated()
+	            );
+	    	} else {
+	    		$this->precursor = new External(
+	            	$article->getTitle(),
+	            	$article->getAuthors(),
+	            	$article->getPublishers(),
+	            	$article->getYearPublished(),
+	            	$article->getISBN(),
+	            	$article->getURL()
+	       		);
+	    	}
+	    } else {
+	    	$this->precursor = new Stub(
+	        	$article->getTitle(),
+	        	$article->getAuthors(),
+	        	$article->getPublishers(),
+	        	$article->getYearPublished(),
+	        	$article->getISBN(),
+	        	$article->getURL()
+	    	);
+	    }
+	    // TODO: duplicate mappings (file, comments, ...)
+	    $this->precursor->setVersionNumber($article->getVersionNumber())
+	        ->setIsHistory(true);
+	    
+		$article->setVersionNumber($article->getVersionNumber()+1);
 		
 		$this->article = $article;
-		$this->precursor = $precursor;
 	}
 }

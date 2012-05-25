@@ -17,6 +17,48 @@
 			{{ form }}
 		{% endautoescape %}
 	</div>
+	
+	<aside>
+	    {% if hasAccess('admin_article_subject', 'manage') %}
+	    	<div class="sidebox">
+	    	    <div class="title">TODO: Manage Subject Mapping</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to manage the mapping of this article to subjects!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="{{ url('admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
+		{% if article.isInternal() and hasAccess('admin_file', 'manage') %}
+			<div class="sidebox">
+		        <div class="title">TODO: Manage Files</div>
+		       	<div class="content">
+			    	<p>
+			        	<i>Please hit the link below to manage the files of this article!</i>
+			        </p>
+			        <p>
+			           	<a href="{{ url('admin_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
+			        </p>
+			    </div>
+			</div>
+		{% endif %}
+		{% if hasAccess('admin_comment', 'manage') %}
+			<div class="sidebox">
+			    <div class="title">TODO: Manage Comments</div>
+			   	<div class="content">
+			    	<p>
+			        	<i>Please hit the link below to manage the comments of this article!</i>
+			        </p>
+			        <p>
+			           	<a href="{{ url('admin_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+			        </p>
+			    </div>
+			</div>
+		{% endif %}
+	</aside>
 {% endblock %}
 
 {% block controller_script %}

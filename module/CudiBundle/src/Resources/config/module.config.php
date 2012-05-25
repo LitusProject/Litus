@@ -145,7 +145,7 @@ return array(
 		'admin_comment' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/comment[/:action[/:id]]',
+				'route' => '/admin/comment[/:action[/:id[/:article]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
