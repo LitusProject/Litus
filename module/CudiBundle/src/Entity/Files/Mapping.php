@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Entity\Files;
 
-use CudiBundle\Entity\Articles\Internal;
+use CudiBundle\Entity\Articles\Internal as InternalArticle;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
@@ -63,11 +63,11 @@ class Mapping
     private $isProf;
     
     /**
-     * @param \CudiBundle\Entity\Articles\Internal $article
-     * @param \CudiBundle\Entity\Files\File $file
-     * @param boolean $printable
+     * @param \CudiBundle\Entity\Articles\Internal $article The article of the mapping
+     * @param \CudiBundle\Entity\Files\File $file The file of the mapping
+     * @param boolean $printable Flag whether the file is the printable one or not
      */
-    public function __construct(Article $article, File $file, $printable)
+    public function __construct(InternalArticle $article, File $file, $printable)
     {
         $this->article = $article;
         $this->file = $file;
@@ -114,7 +114,7 @@ class Mapping
      */
     public function setPrintable($printable)
     {
-    	$this->removed = $removed;
+    	$this->printable = $printable;
     	return $this;
     }
     
