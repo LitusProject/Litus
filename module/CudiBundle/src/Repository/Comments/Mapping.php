@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Comments;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    CudiBundle\Entity\Comments\Comment as CommentEntity,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Mapping
@@ -12,4 +14,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class Mapping extends EntityRepository
 {
+    public function findOneByArticleAndComment(Article $article, CommentEntity $comment)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('m')
+			->from('CudiBundle\Entity\Comments\Mapping', 'm')
+			->where(
+			    $query->expr()->andX(
+    			    $query->expr()->eq('m.article', ':article'),
+    			    $query->expr()->eq('m.comment', ':comment')
+    			)
+			)
+			->setParameter('article', $article->getId())
+			->setParameter('comment', $comment->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+			return $resultSet[0];
+		
+		return null;
+    }
 }

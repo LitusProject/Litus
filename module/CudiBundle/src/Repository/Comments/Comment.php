@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Comments;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Comment
@@ -12,4 +13,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class Comment extends EntityRepository
 {
+    public function findAllByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('m')
+			->from('CudiBundle\Entity\Comments\Mapping', 'm')
+			->where(
+			    $query->expr()->eq('m.article', ':article')
+			)
+			->setParameter('article', $article->getId())
+			->getQuery()
+			->getResult();
+			
+		$comments = array();
+		foreach($resultSet as $mapping)
+		    $comments[] = $mapping->getComment();
+
+        return $comments;
+    }
 }

@@ -18,6 +18,7 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
+    CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\Stub,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm,
@@ -141,7 +142,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	    $article->setTitle($formData['title'])
+        	    $history = new History($this->getEntityManager(), $article);
+				$this->getEntityManager()->persist($history);
+        	    
+           	    $article->setTitle($formData['title'])
         	        ->setAuthors($formData['author'])
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
@@ -255,11 +259,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	    return array(
 	    	'result' => $result,
 	    );
-	}
-	
-	public function newVersionAction()
-	{
-	    
 	}
     
     private function _getArticle()
