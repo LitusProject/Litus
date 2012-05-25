@@ -30,6 +30,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 		$this->_installConfig(
 	        array(
 	            array(
+	            	'key'         => 'cudi.file_path',
+	            	'value'       => 'data/cudi/files',
+	            	'description' => 'The path to the cudi article files',
+	            ),
+	            array(
 	            	'key'         => 'search_max_results',
 	            	'value'       => '30',
 	            	'description' => 'The maximum number of search results shown',

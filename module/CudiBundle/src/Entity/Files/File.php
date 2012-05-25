@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Entity\Files;
 
-use CudiBundle\Entity\Articles\Internal as InternalArticle;
+use CudiBundle\Entity\Articles\Internal as InternalArticle,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Files\File")
@@ -54,15 +55,20 @@ class File
 	private $description;
 	
 	/**
+     * @param \Doctrine\ORM\EntityManager $entityManager
 	 * @param string $path The path to the file
 	 * @param string $name The name of the file
 	 * @param string $description The description of the file
+	 * @param \CudiBundle\Entity\Article $article The article of the file
+     * @param boolean $printable Flag whether the file is the printable one or not
 	 */
-	public function __construct($path, $name, $description)
+	public function __construct(EntityManager $entityManager, $path, $name, $description, InternalArticle $article, $printable)
 	{
 		$this->setPath($path)
 		    ->setName($name)
 		    ->setDescription($description);
+		    
+		$entityManager->persist(new Mapping($article, $this, $printable));
 	}
 	
 	/** 

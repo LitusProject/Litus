@@ -39,16 +39,16 @@
 	            <th width="140px">Action</th>
 	        </tr>
 	
-	        {% for comment in comments %}
+	        {% for mapping in mappings %}
 	            <tr class="item">
-	                <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
-	                <td>{{ comment.getPerson().getFullName() }}</td>
-	                <td>{{ comment.getSummary() }}</td>
-	                <td>{{ comment.getType()|capitalize }}</td>
+	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
+	                <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
+	                <td>{{ mapping.getComment().getSummary() }}</td>
+	                <td>{{ mapping.getComment().getType()|capitalize }}</td>
 					<td>
-						<a href="#" class="view" data-text="{{ comment.getText() }}">View</a>
+						<a href="#" class="view" data-text="{{ mapping.getComment().getText() }}">View</a>
 						{% if hasAccess('admin_comment', 'delete') %}
-						    <a href="#" class="delete" data-id="{{ comment.getId() }}" data-author="{{ comment.getPerson().getFullName() }}">Delete</a>						    
+						    <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-author="{{ mapping.getComment().getPerson().getFullName() }}">Delete</a>						    
 						{% endif %}
 	                </td>
 	            </tr>

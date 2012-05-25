@@ -33,9 +33,9 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
         if (!($article = $this->_getArticle()))
             return;
             
-        $comments = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Comment')
-            ->findAllByArticle($article);
+        $mappings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->findByArticle($article);
         
         $form = new AddForm();
         
@@ -77,7 +77,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
         return array(
             'article' => $article,
             'form' => $form,
-            'comments' => $comments,
+            'mappings' => $mappings,
         );
     }
     
@@ -85,15 +85,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
         
-        if (!($comment = $this->_getComment()))
+        if (!($mapping = $this->_getCommentMapping()))
     	    return;
-    	    
-    	if (!($article = $this->_getArticle($this->getParam('article'))))
-    	    return;
-    	
-    	$mapping = $this->getEntityManager()
-    	    ->getRepository('CudiBundle\Entity\Comments\Mapping')
-    	    ->findOneByArticleAndComment($article, $comment);
     	
     	$this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
@@ -152,7 +145,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     	return $article;
     }
     
-    private function _getComment()
+    private function _getCommentMapping()
     {
     	if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
@@ -174,7 +167,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     	}
     
         $comment = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Comment')
+            ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findOneById($this->getParam('id'));
     	
     	if (null === $comment) {

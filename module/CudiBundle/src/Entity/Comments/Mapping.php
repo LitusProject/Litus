@@ -19,7 +19,7 @@ use CudiBundle\Entity\Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")
- * @Table(name="cudi.commentss_mapping")
+ * @Table(name="cudi.comments_mapping")
  */
 class Mapping
 {

@@ -73,7 +73,9 @@ class Comment
 	/**
      * @throws \InvalidArgumentException
      *
+     * @param \Doctrine\ORM\EntityManager $entityManager
 	 * @param \CommonBundle\Entity\Users\Person $person The person that created the comment
+	 * @param \CudiBundle\Entity\Article $article The article of the comment
 	 * @param string $text The content of the comment
 	 * @param string $type The type of the comment
 	 */
