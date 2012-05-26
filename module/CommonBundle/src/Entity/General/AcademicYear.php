@@ -52,6 +52,9 @@ class AcademicYear
 	 */
 	public function __construct($startDate, $endDate)
 	{
+	    $startDate->setTime(0, 0);
+	    $endDate->setTime(0, 0);
+	    
 	    $this->startDate = $startDate;
 	    $this->endDate = $endDate;
 	}

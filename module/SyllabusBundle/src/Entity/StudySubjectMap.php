@@ -15,6 +15,8 @@
  
 namespace SyllabusBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear;
+
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\StudySubjectMap")
  * @Table(name="syllabus.study_subject_map")
