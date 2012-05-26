@@ -118,6 +118,8 @@ return array(
     'CommonBundle\Repository\Acl\Action'                                               => __DIR__ . '/src/Repository/Acl/Action.php',
     'CommonBundle\Repository\Acl\Resource'                                             => __DIR__ . '/src/Repository/Acl/Resource.php',
     'CommonBundle\Repository\Acl\Role'                                                 => __DIR__ . '/src/Repository/Acl/Role.php',
+    'CommonBundle\Repository\General\AcademicYear'                                     => __DIR__ . '/src/Repository/General/AcademicYear.php',
+    'CommonBundle\Repository\General\Address'                                          => __DIR__ . '/src/Repository/General/Address.php',
     'CommonBundle\Repository\General\Bank\BankDevice\Amount'                           => __DIR__ . '/src/Repository/General/Bank/BankDevice/Amount.php',
     'CommonBundle\Repository\General\Bank\BankDevice'                                  => __DIR__ . '/src/Repository/General/Bank/BankDevice.php',
     'CommonBundle\Repository\General\Bank\CashRegister'                                => __DIR__ . '/src/Repository/General/Bank/CashRegister.php',
