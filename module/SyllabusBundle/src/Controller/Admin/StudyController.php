@@ -15,7 +15,8 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * StudyController
@@ -26,14 +27,23 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+    
         $paginator = $this->paginator()->createFromArray(
         	$this->getEntityManager()
-        	    ->getRepository('SyllabusBundle\Entity\Study')
-        	    ->findAll(),
+        	    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+        	    ->findByAcademicYear($academicYear),
             $this->getParam('page')
         );
         
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+        
         return array(
+            'academicYears' => $academicYears,
+            'currentAcademicYear' => $academicYear,
         	'paginator' => $paginator,
         	'paginationControl' => $this->paginator()->createControl(true)
         );
@@ -43,11 +53,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
         
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
         switch($this->getParam('field')) {
         	case 'name':
-        		$studies = $this->getEntityManager()
-        			->getRepository('SyllabusBundle\Entity\Study')
-        			->findAllByTitle($this->getParam('string'));
+        		$mappings = $this->getEntityManager()
+        			->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+        			->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
         		break;
         }
         
@@ -55,19 +68,54 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('search_max_results');
         
-        array_splice($studies, $numResults);
+        array_splice($mappings, $numResults);
         
         $result = array();
-        foreach($studies as $study) {
+        foreach($mappings as $mapping) {
         	$item = (object) array();
-        	$item->id = $study->getId();
-        	$item->title = $study->getFullTitle();
-        	$item->phase = $study->getPhase();
+        	$item->id = $mapping->getStudy()->getId();
+        	$item->title = $mapping->getStudy()->getFullTitle();
+        	$item->phase = $mapping->getStudy()->getPhase();
         	$result[] = $item;
         }
         
         return array(
         	'result' => $result,
         );
+    }
+    
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+    		$start = AcademicYear::getStartOfAcademicYear();
+    	} else {
+    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+    	}
+    	$start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+    	
+    	if (null === $academicYear) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No academic year was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $academicYear;
     }
 }

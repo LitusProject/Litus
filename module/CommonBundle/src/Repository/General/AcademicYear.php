@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class AcademicYear extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('y')
+        	->from('CommonBundle\Entity\General\AcademicYear', 'y')
+        	->orderBy('y.startDate')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
 }

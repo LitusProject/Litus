@@ -2,7 +2,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
     Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
     
@@ -14,7 +15,7 @@ use CommonBundle\Entity\Users\People\Academic,
  */
 class SubjectProfMap extends EntityRepository
 {
-    public function findOneBySubjectAndProf(SubjectEntity $subject, Academic $prof)
+    public function findOneBySubjectAndProfAndAcademicYear(SubjectEntity $subject, Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -22,11 +23,13 @@ class SubjectProfMap extends EntityRepository
         	->where(
         	    $query->expr()->andX(
         	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.prof', ':prof')
+        	        $query->expr()->eq('m.prof', ':prof'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
         	    )
         	)
         	->setParameter('subject', $subject->getId())
         	->setParameter('prof', $prof->getId())
+        	->setParameter('academicYear', $academicYear->getId())
         	->setMaxResults(1)
         	->getQuery()
         	->getResult();
@@ -35,5 +38,24 @@ class SubjectProfMap extends EntityRepository
         	return $resultSet[0];
         
         return null;
+    }
+    
+    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.subject', ':subject'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('subject', $subject->getId())
+        	->setParameter('academicYear', $academicYear->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Subject
@@ -12,4 +14,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class Subject extends EntityRepository
 {
+    public function findAllByNameAndAcademicYearTypeAhead($name, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+        	->innerJoin('m.subject', 's', Join::WITH, 
+        	    $query->expr()->orX(
+        	        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+        	        $query->expr()->like($query->expr()->lower('s.code'), ':name')
+        	    )
+        	)
+        	->where(
+        	    $query->expr()->eq('m.academicYear', ':academicYear')
+        	)
+        	->setParameter('name', strtolower($name) . '%')
+        	->setParameter('academicYear', $academicYear->getId())
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
+    }
 }
