@@ -31,6 +31,7 @@ class Study extends EntityRepository
         	->setParameter('title', $title)
         	->setParameter('phase', $phase)
         	->setParameter('language', $language)
+        	->setMaxResults(1)
     		->getQuery()
     		->getResult();
 
@@ -59,6 +60,7 @@ class Study extends EntityRepository
         	->setParameter('title', $title)
         	->setParameter('phase', $phase)
         	->setParameter('language', $language)
+        	->setMaxResults(1)
     		->getQuery()
     		->getResult();
 

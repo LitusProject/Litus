@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Articles;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Article,
     Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
@@ -14,6 +15,31 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class SubjectMap extends EntityRepository
 {
+    public function findOneByArticleAndSubjectAndAcademicYear(Article $article, SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.article', ':article'),
+        	        $query->expr()->eq('m.subject', ':subject'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('article', $article->getId())
+        	->setParameter('subject', $subject->getId())
+        	->setParameter('academicYear', $academicYear->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        	
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
+    }
+    
     public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -26,6 +52,25 @@ class SubjectMap extends EntityRepository
         	    )
         	)
         	->setParameter('subject', $subject->getId())
+        	->setParameter('academicYear', $academicYear->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.article', ':article'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('article', $article->getId())
         	->setParameter('academicYear', $academicYear->getId())
         	->getQuery()
         	->getResult();
