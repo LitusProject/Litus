@@ -13,43 +13,6 @@ use Doctrine\ORM\EntityRepository,
  */
 class Study extends EntityRepository
 {
-    public function findAll()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-       	            $query->expr()->notIn('s.id', $this->_findParentIds())
-        	    )
-        	)
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
-    
-    private function _findParentIds()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('DISTINCT IDENTITY(s.parent)')
-            ->from('SyllabusBundle\Entity\Study', 's')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->isNotNull('s.parent')
-                )
-            )
-            ->getQuery()
-            ->getResult();
-            
-        $ids = array(0);
-        foreach($resultSet as $id)
-            $ids[] = $id[1];
-
-        return $ids;
-    }
-    
     public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
     {
         if (! is_numeric($phase))
@@ -60,7 +23,6 @@ class Study extends EntityRepository
         	->from('SyllabusBundle\Entity\Study', 's')
         	->where(
         	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
         	        $query->expr()->eq('s.title', ':title'),
         	        $query->expr()->eq('s.phase', ':phase'),
         	        $query->expr()->eq('s.language', ':language')
@@ -88,7 +50,6 @@ class Study extends EntityRepository
         	->from('SyllabusBundle\Entity\Study', 's')
         	->where(
         	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
         	        $query->expr()->eq('s.title', ':title'),
         	        $query->expr()->eq('s.phase', ':phase'),
         	        $query->expr()->eq('s.language', ':language'),
@@ -105,31 +66,5 @@ class Study extends EntityRepository
     		return $resultSet[0];
     	
     	return null;
-    }
-    
-    public function findAllByTitle($title)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-                    $query->expr()->notIn('s.id', $this->_findParentIds())
-        	    )
-        	)
-        	->getQuery()
-        	->getResult();
-        	
-        $result = array();
-        
-        $title = strtolower($title);
-        
-        foreach($resultSet as $study) {
-            if (strpos(strtolower($study->getFullTitle()), $title) !== false)
-                $result[] = $study;
-        }
-        
-        return $result;
     }
 }

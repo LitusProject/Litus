@@ -82,4 +82,12 @@ class AcademicYear
     {
         return $this->endDate;
     }
+    
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->startDate->format('Y') . '-' . $this->endDate->format('Y');
+    }
 }

@@ -60,13 +60,6 @@ class Study
     private $parent;
     
     /**
-     * @var boolean Flag whether this study is active
-     *
-     * @Column(type="boolean")
-     */
-    private $active;
-    
-    /**
      * @param string $title
      * @param string $subTitle
      * @param integer $phase
@@ -78,7 +71,6 @@ class Study
     	$this->phase = $phase;
     	$this->language = $language;
     	$this->parent = $parent;
-    	$this->active = true;
     }
     
     /**

@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Articles;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * SubjectMap
@@ -12,4 +14,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubjectMap extends EntityRepository
 {
+    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.subject', ':subject'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('subject', $subject->getId())
+        	->setParameter('academicYear', $academicYear->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

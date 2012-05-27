@@ -13,14 +13,13 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Entity\Articles;
+namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\AcademicYearMap")
- * @Table(name="cudi.articles_academic_year_map")
+ * @Entity(repositoryClass="SyllabusBundle\Repository\AcademicYearMap")
+ * @Table(name="syllabus.studies_academic_year_map")
  */
 class AcademicYearMap
 {
@@ -34,12 +33,12 @@ class AcademicYearMap
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The article of the mapping
+     * @var \SyllabusBundle\Entity\Study The study of the mapping
      *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-	 * @JoinColumn(name="article", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+	 * @JoinColumn(name="study", referencedColumnName="id")
 	 */
-	private $article;
+	private $study;
 
 	/**
 	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
@@ -50,12 +49,12 @@ class AcademicYearMap
 	private $academicYear;
     
     /**
-     * @param \CudiBundle\Entity\Article $article
+     * @param \SyllabusBundle\Entity\Study $study
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
-    public function __construct(Article $article, AcademicYear $academicYear)
+    public function __construct(Study $study, AcademicYear $academicYear)
     {
-        $this->article = $article;
+        $this->study = $study;
         $this->academicYear = $academicYear;
     }
     
@@ -68,11 +67,11 @@ class AcademicYearMap
     }
     
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return \SyllabusBundle\Entity\Study
      */
-    public function getArticle()
+    public function getStudy()
     {
-        return $this->article;
+        return $this->study;
     }
     
     /**

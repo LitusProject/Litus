@@ -97,35 +97,62 @@ class AcademicYear
     {
         if ($date === null) {
             $date = new DateTime('now');
+            $currentDate = new DateTime('now');
         } else {
-            $date = new DateTime(
+            $currentDate = new DateTime(
             	$date->format(DateTime::ISO8601)
             );
         }
-            
+                    
         if (($delta === null) || !is_numeric($delta))
             $delta = 0;
 
-        $christmas = new DateTime(
-        	($date->format('y')) . '-12-25'
-        );
-
-        $weekDay = $christmas->format('N');
+        do {
+            $christmas = new DateTime(
+            	($currentDate->format('y')) . '-12-25'
+            );
+    
+            $weekDay = $christmas->format('N');
+            
+            // Saturday or Sunday
+            if ($weekDay > 5) {
+                $christmas->modify('-' . ($weekDay - 1) . ' days');
+                $christmas->modify('+1 week');
+            } else {
+                $christmas->modify('-' . ($weekDay - 1) . ' days');
+            }
+    
+            // One semester is 13 weeks long
+            $christmas->sub(new DateInterval(
+            	'P' . (13 * 7) . 'D'
+            ));
+            
+            $currentDate = clone $date;
+            $currentDate->sub(
+                new DateInterval('P1Y')
+            );
+        } while($christmas > $date);
+                
+        $christmas->sub(new DateInterval(
+        	'P' . $delta . 'D'
+        ));
         
-        // Saturday or Sunday
-        if ($weekDay > 5) {
-            $christmas->modify('-' . ($weekDay - 1) . ' days');
-            $christmas->modify('+1 week');
-        } else {
-            $christmas->modify('-' . ($weekDay - 1) . ' days');
-        }
-
-        // One semester is 13 weeks long
-        $dateInterval = new DateInterval(
-        	'P' . (13 * 7 + $delta) . 'D'
+        return $christmas;
+    }
+    
+    /**
+     * Returns the start of the Academic year for the given Academic year.
+     *
+     * @static
+     * @param string $academicYear The academic year in yyzz format
+     * @return \DateTime
+     */
+    public static function getDateTime($academicYear)
+    {
+        $startYear = new DateTime(
+            (substr($academicYear, 0, (strpos($academicYear, '-') === false ? 2 : 4))) . '-12-1'
         );
-        
-        return $christmas->sub($dateInterval);
+        return self::getStartOfAcademicYear($startYear);
     }
 
     /**
