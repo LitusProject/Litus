@@ -6,7 +6,7 @@ return array(
 				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallController',
 				
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
-				'admin_article_subject'  => 'CudiBundle\Controller\Admin\ArticleSubjectMapController',
+				'admin_article_subject'  => 'CudiBundle\Controller\Admin\SubjectMapController',
 				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
 				'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_file'	         => 'CudiBundle\Controller\Admin\FileController',
@@ -131,10 +131,11 @@ return array(
 		'admin_article_subject'=> array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article/subject[/:action[/:id]]',
+				'route' => '/admin/article/subject[/:action[/:id]][/:academicyear]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
 				),
 				'defaults' => array(
 					'controller' => 'admin_article_subject',

@@ -18,18 +18,31 @@ class Subject extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, 
-        	    $query->expr()->orX(
-        	        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
-        	        $query->expr()->like($query->expr()->lower('s.code'), ':name')
-        	    )
-        	)
-        	->where(
-        	    $query->expr()->eq('m.academicYear', ':academicYear')
-        	)
-        	->setParameter('name', strtolower($name) . '%')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
         	->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+            
+        $ids = array();
+        foreach($resultSet as $subject)
+            $ids[] = $subject->getSubject()->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Subject', 's')
+        	->where(
+        	    $query->expr()->andX(
+            	    $query->expr()->orX(
+            	        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+            	        $query->expr()->like($query->expr()->lower('s.code'), ':name')
+            	    ),
+            	    $query->expr()->in('s.id', $ids)
+            	)
+        	)
+        	->setParameter('name', strtolower(trim($name)) . '%')
         	->getQuery()
         	->getResult();
         

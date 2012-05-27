@@ -127,11 +127,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($academicYear = $this->_getAcademicYear()))
         	return;
-
+        
         $subjects = $this->getEntityManager()
         	->getRepository('SyllabusBundle\Entity\Subject')
         	->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
-        
+
         $result = array();
         foreach($subjects as $subject) {
         	$item = (object) array();

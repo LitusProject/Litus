@@ -1,0 +1,127 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_article/partials/navigation.twig' %}
+		
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width mapping_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The mapping was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width mapping_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete the mapping.</p>
+		</div>
+	</div>
+	
+	{% include 'admin_article_subject/partials/years.twig' %}
+
+	<div id="controller_action">
+		<h1>Article</h1>
+		
+		<p>Title: <b>{{ article.getTitle() }}</b></p>
+		<p>Author: <b>{{ article.getAuthors() }}</b></p>
+		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
+		<br />
+		
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+		<br style="clear:both"/>
+			
+		<table class="full_width" id="articleSubjects">
+	        <tr>
+	            <th width="90px">Code</th>
+	            <th>Name</th>
+	            <th width="80px">Semester</th>
+	            <th width="80px">Credits</th>
+	            <th width="80px">Mandatory</th>
+	            <th width="80px">Actions</th>
+	        </tr>
+	
+	        {% for mapping in mappings %}
+	            <tr class="item">
+	                <td>{{ mapping.getSubject().getCode() }}</td>
+	                <td>{{ mapping.getSubject().getName() }}</td>
+	                <td>{{ mapping.getSubject().getSemester() }}</td>
+	                <td>{{ mapping.getSubject().getCredits() }}</td>
+	                <td>{{ mapping.isMandatory() }}</td>
+					<td>
+						<a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
+	                </td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+	</div>
+	
+	<div class="modal hide fade" id="removeMapping">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Mapping Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following mapping: <b class="articleTitle"></b> with <b class="subjectName"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+			
+			$('#subjectSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#subjectId').val($(this).data('value').id);
+			    } else {
+			        $('#subjectId').val('');
+			    }
+			});
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeMapping = $('#removeMapping');
+			removeMapping.find('.articleTitle').html($(this).data('article'));
+			removeMapping.find('.subjectName').html($(this).data('subject'));
+			removeMapping.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				    if (data && 'success' == data.status) {
+						$('.flashmessage').addClass('hide');
+						$('.mapping_removed_success').removeClass('hide');
+						$this.parent().parent().remove();
+						removeMapping.modal('hide');
+					} else {
+					    errorRemove();
+					}
+				}, 'json').error(errorRemove);
+			});
+			removeMapping.modal();
+		}
+		
+		function errorRemove() {
+			$('.flashmessage').addClass('hide');
+			$('.mapping_removed_error').removeClass('hide');
+			$('#removeMapping').modal('hide');
+		}
+	</script>
+{% endblock %}
