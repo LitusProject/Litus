@@ -128,6 +128,14 @@ class SubjectMap
     }
     
     /**
+     * @return boolean
+     */
+    public function isProf()
+    {
+        return $this->isProf;
+    }
+    
+    /**
      * @param boolean $isProf
      *
      * @return \CudiBundle\Entity\Article

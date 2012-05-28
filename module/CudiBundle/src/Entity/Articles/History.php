@@ -16,6 +16,9 @@
 namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Article,
+    CudiBundle\Entity\Articles\SubjectMap as SubjectMapping,
+    CudiBundle\Entity\Comments\Mapping as CommentMapping,
+    CudiBundle\Entity\Files\Mapping as FileMapping,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -93,9 +96,33 @@ class History
 	        	$article->getURL()
 	    	);
 	    }
-	    // TODO: duplicate mappings (file, comments, ...)
+
 	    $this->precursor->setVersionNumber($article->getVersionNumber())
 	        ->setIsHistory(true);
+	        
+	    $mappings = $entityManager
+	        ->getRepository('CudiBundle\Entity\Comments\Mapping')
+	        ->findByArticle($article);
+	    foreach($mappings as $mapping)
+	        $entityManager->persist(new CommentMapping($this->precursor, $mapping->getComment()));
+	        
+	    $mappings = $entityManager
+	        ->getRepository('CudiBundle\Entity\Files\Mapping')
+	        ->findByArticle($article);
+	    foreach($mappings as $mapping) {
+	        $new = new FileMapping($this->precursor, $mapping->getFile(), $mapping->isPrintable());
+	        $new->setIsProf($mapping->isProf());
+	        $entityManager->persist($new);
+	    }
+	    
+	    $mappings = $entityManager
+	        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+	        ->findByArticle($article);
+	    foreach($mappings as $mapping) {
+	        $new = new SubjectMapping($this->precursor, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
+	        $new->setIsProf($mapping->isProf());
+	        $entityManager->persist($new);
+	    }
 	    
 		$article->setVersionNumber($article->getVersionNumber()+1);
 		

@@ -102,7 +102,7 @@ class Mapping
     /**
      * @return boolean
      */
-    public function printable()
+    public function isPrintable()
     {
         return $this->printable;
     }
@@ -116,6 +116,14 @@ class Mapping
     {
     	$this->printable = $printable;
     	return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isProf()
+    {
+        return $this->isProf;
     }
     
     /**
