@@ -62,6 +62,18 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	    $this->installAcl(
 	        array(
 	            'syllabusbundle' => array(
+	                'admin_prof' => array(
+	                    'add', 'delete', 'typeahead'
+	                ),
+	                'admin_study' => array(
+	                	'manage', 'search'
+	                ),
+	                'admin_subject' => array(
+	                	'manage', 'search', 'subject', 'typeahead'
+	                ),
+	                'admin_update_syllabus' => array(
+	                	'index', 'xml'
+	                ),
 	            )
 	        )
 	    );
