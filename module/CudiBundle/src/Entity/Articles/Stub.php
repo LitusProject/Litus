@@ -22,6 +22,21 @@ namespace CudiBundle\Entity\Articles;
 class Stub extends \CudiBundle\Entity\Article
 {
     /**
+     * @return \CudiBundle\Entity\Article
+     */
+    public function duplicate()
+    {
+        return new Stub(
+            $this->getTitle(),
+            $this->getAuthors(),
+            $this->getPublishers(),
+            $this->getYearPublished(),
+            $this->getISBN(),
+            $this->getURL()
+        );
+    }
+    
+    /**
      * @return boolean
      */
     public function isStub()

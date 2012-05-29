@@ -15,16 +15,18 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class SubjectMap extends EntityRepository
 {
-    public function findOneByArticleAndSubjectAndAcademicYear(Article $article, SubjectEntity $subject, AcademicYear $academicYear)
+    public function findOneByArticleAndSubjectAndAcademicYear(Article $article, SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+        	        $query->expr()->eq('m.removed', 'false'),
         	        $query->expr()->eq('m.article', ':article'),
         	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	        $query->expr()->eq('m.academicYear', ':academicYear'),
+        	        $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
         	    )
         	)
         	->setParameter('article', $article->getId())
@@ -40,15 +42,17 @@ class SubjectMap extends EntityRepository
         return null;
     }
     
-    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear)
+    public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+        	        $query->expr()->eq('m.removed', 'false'),
         	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	        $query->expr()->eq('m.academicYear', ':academicYear'),
+        	        $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
         	    )
         	)
         	->setParameter('subject', $subject->getId())
@@ -59,15 +63,17 @@ class SubjectMap extends EntityRepository
         return $resultSet;
     }
     
-    public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear)
+    public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
+        	        $query->expr()->eq('m.removed', 'false'),
         	        $query->expr()->eq('m.article', ':article'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	        $query->expr()->eq('m.academicYear', ':academicYear'),
+        	        $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
         	    )
         	)
         	->setParameter('article', $article->getId())

@@ -1,0 +1,61 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+	{% if authenticated %}
+	    <h2>Your Recent Activity</h2>
+	    <div class="row">
+    	    {% for action in paginator %}
+    	        <div class="action span8">
+    	            {% if action.getEntityName() == 'article' %}
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% if action.getAction() == 'add' %}added{% else %}edited{% endif %} an article on <b>{{ action.getTimestamp().format('d/m/Y H:i') }}</b></div>
+    	                <div class="info">
+    	                    Article: <b>{{ action.getEntity().getTitle() }}</b><br />
+    	                    Status: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">Confirmed</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% elseif action.isRefused() %}
+                                    <span class="label label-important">Refused</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% else %}
+                                    <span class="label label-warning">Not confirmed</span>
+                                {% endif %}</b>
+                        </div>
+    	            {% elseif action.getEntityName() == 'mapping' %}
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% if action.getAction() == 'add' %}added{% else %}removed{% endif %} an article - subject map on <b>{{ action.getTimestamp().format('d/m/Y H:i') }}</b></div>
+                        <div class="info">
+                            Subject: <b>{{ action.getEntity().getSubject().getName() }}</b><br />
+                            Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
+                            Status: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">Confirmed</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% elseif action.isRefused() %}
+                                    <span class="label label-important">Refused</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% else %}
+                                    <span class="label label-warning">Not confirmed</span>
+                                {% endif %}</b>
+                        </div>
+    	            {% elseif action.getEntityName() == 'file' %}
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% if action.getAction() == 'add' %}added{% else %}removed{% endif %} a file on <b>{{ action.getTimestamp().format('d/m/Y H:i') }}</b></div>
+                        <div class="info">
+                            Filename: <b>{{ action.getEntity().getFile().getName() }}</b><br />
+                            Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
+                            Status: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">Confirmed</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% elseif action.isRefused() %}
+                                    <span class="label label-important">Refused</span> by {{ action.getCompletePerson().getFullName() }}
+                                {% else %}
+                                    <span class="label label-warning">Not confirmed</span>
+                                {% endif %}</b>
+                        </div>
+                    {% endif %}
+    	        </div>
+    	    {% endfor %}
+    	    
+    	    <div class="span8">
+    	        {% include 'prof/partials/paginationControl.twig' %}
+    	    </div>
+	    </div>
+	{% else %}
+	    <div style="text-align: center;">
+	        <img src="/img/litus.png" alt="Litus" />
+	        <h3>Please login to get access to these pages.</h3>
+	    </div>
+	{% endif %}
+{% endblock %}

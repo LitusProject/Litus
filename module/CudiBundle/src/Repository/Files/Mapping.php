@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Files;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Mapping
@@ -12,4 +13,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class Mapping extends EntityRepository
 {
+    public function findAllByArticle(Article $article, $isProf = false)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\Files\Mapping', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.removed', 'false'),
+        	        $query->expr()->eq('m.article', ':article'),
+        	        $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
+        	    )
+        	)
+        	->setParameter('article', $article->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

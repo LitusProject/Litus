@@ -16,7 +16,8 @@
 namespace ProfBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="ProfBundle\Repository\Action")
@@ -46,6 +47,20 @@ class Action
 	 * @Column(name="entity_id", type="integer")
 	 */
 	private $entityId;
+	
+	/**
+	 * @var integer The previous entity id
+	 *
+	 * @Column(name="previous_id", type="integer", nullable=true)
+	 */
+	private $previousId;
+	
+	/**
+	 * @var string The action type
+	 *
+	 * @Column(type="string")
+	 */
+	private $action;
 	
     /**
      * @var \DateTime The time this action was executed
@@ -84,16 +99,25 @@ class Action
      */
     private $refuseDate;
     
+    /** 
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+    
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person executed this action
      * @param string $entity The entity name
      * @param integer $entityId The entity id
+     * @param string $action The action type
+     * @param integer $previousId The previous entity id
      */
-    public function __construct(Person $person, $entity, $entityId)
+    public function __construct(Person $person, $entity, $entityId, $action, $previousId = null)
     {
     	$this->person = $person;
     	$this->entity = $entity;
     	$this->entityId = $entityId;
+    	$this->previousId = $previousId;
+    	$this->action = $action;
     	$this->timestamp = new DateTime();
     }
     
@@ -108,9 +132,28 @@ class Action
     /**
      * @return string
      */
-    public function getEntity()
+    public function getEntityName()
     {
         return $this->entity;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getEntity()
+    {
+        if ('article' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneById($this->entityId);
+        elseif ('file' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->findOneById($this->entityId);
+        elseif ('mapping' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findOneById($this->entityId);
     }
     
     /**
@@ -119,6 +162,33 @@ class Action
     public function getEntityId()
     {
         return $this->entityId;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getPreviousEntity()
+    {
+        if ('article' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneById($this->previousId);
+        elseif ('file' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->findOneById($this->previousId);
+        elseif ('mapping' == $this->entity)
+            return $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findOneById($this->previousId);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
     }
     
     /**
@@ -162,20 +232,20 @@ class Action
     }
     
     /**
-     * @param \CommonBundle\Entity\Users\Person
+     * @param \CommonBundle\Entity\Users\Person $completedPerson
      *
      * @return \ProfBundle\Entity\Action
      */
     public function setCompleted(Person $completedPerson)
     {
         $this->completedPerson = $completedPerson;
-        $this->completeDate = new DateTime();
+        $this->confirmDate = new DateTime();
         $this->refuseDate = null;
         return $this;
     }
     
     /**
-     * @param \CommonBundle\Entity\Users\Person
+     * @param \CommonBundle\Entity\Users\Person $completedPerson
      *
      * @return \ProfBundle\Entity\Action
      */
@@ -183,7 +253,7 @@ class Action
     {
         $this->completedPerson = $completedPerson;
         $this->refuseDate = new DateTime();
-        $this->completeDate = null;
+        $this->confirmDate = null;
         return $this;
     }
     
@@ -192,7 +262,7 @@ class Action
      */
     public function isCompleted()
     {
-        return ($this->completeDate !== null);
+        return ($this->confirmDate !== null);
     }
     
     /**
@@ -209,5 +279,16 @@ class Action
     public function isUnCompleted()
     {
         return !$this->isCompleted() && !$this->isRefused();
+    }
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \ProfBundle\Entity\Action
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
     }
 }

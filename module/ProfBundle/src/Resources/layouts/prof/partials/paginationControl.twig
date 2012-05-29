@@ -2,7 +2,7 @@
 	{% set paginationParams = {} %}
 {% endif %}
 
-{% if 0 != paginationControl.pages.pageCount %}
+{% if 1 < paginationControl.pages.pageCount %}
     <div class="pagination pagination-centered">
         <ul>
             <li {% if paginationControl.pages.previous is sameas(null) %}class="disabled"{% endif %}>
