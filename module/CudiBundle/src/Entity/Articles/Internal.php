@@ -276,6 +276,29 @@ class Internal extends \CudiBundle\Entity\Article
     }
     
     /**
+     * @return \CudiBundle\Entity\Article
+     */
+    public function duplicate()
+    {
+        return new Internal(
+            $this->getTitle(),
+            $this->getAuthors(),
+            $this->getPublishers(),
+            $this->getYearPublished(),
+            $this->getISBN(),
+            $this->getURL(),
+            $this->getNbBlackAndWhite(),
+            $this->getNbColored(),
+            $this->getBinding(),
+            $this->isOfficial(),
+            $this->isRectoVerso(),
+            $this->getFrontColor(),
+            $this->getFrontPageTextColored(),
+            $this->isPerforated()
+        );
+    }
+    
+    /**
      * @return boolean
      */
     public function isStub()

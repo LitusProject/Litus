@@ -63,6 +63,13 @@ class Mapping
     private $isProf;
     
     /**
+     * @var boolean The flag whether the file is removed
+     *
+     * @Column(type="boolean")
+     */
+    private $removed;
+    
+    /**
      * @param \CudiBundle\Entity\Articles\Internal $article The article of the mapping
      * @param \CudiBundle\Entity\Files\File $file The file of the mapping
      * @param boolean $printable Flag whether the file is the printable one or not
@@ -73,6 +80,7 @@ class Mapping
         $this->file = $file;
         $this->setPrintable($printable)
             ->setIsProf(false);
+        $this->removed = false;
     }
     
     /**
@@ -134,6 +142,15 @@ class Mapping
     public function setIsProf($isProf)
     {
         $this->isProf = $isProf;
+        return $this;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Files\Mapping
+     */
+    public function setRemoved()
+    {
+        $this->removed = true;
         return $this;
     }
 }

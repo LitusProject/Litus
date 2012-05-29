@@ -73,6 +73,13 @@ class SubjectMap
     private $isProf;
     
     /**
+     * @var boolean The flag whether the file is removed
+     *
+     * @Column(type="boolean")
+     */
+    private $removed;
+    
+    /**
      * @param \CudiBundle\Entity\Article $article The article of the mapping
      * @param \SyllabusBundle\Entity\Subject $subject The subject of the mapping
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
@@ -85,6 +92,7 @@ class SubjectMap
         $this->academicYear = $academicYear;
         $this->mandatory = $mandatory;
         $this->setIsProf(false);
+        $this->removed = false;
     }
     
     /**
@@ -143,6 +151,15 @@ class SubjectMap
     public function setIsProf($isProf)
     {
         $this->isProf = $isProf;
+        return $this;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Articles\SubjectMap
+     */
+    public function setRemoved()
+    {
+        $this->removed = true;
         return $this;
     }
 }

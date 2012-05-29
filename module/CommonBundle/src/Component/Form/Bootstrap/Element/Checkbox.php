@@ -26,7 +26,6 @@ class Checkbox extends \Zend\Form\Element\Checkbox
 	/**
      * Load default decorators
      *
-     * @todo Change errors decorator to be awesomeness.
      * @return CommonBundle\Component\Form\Bootstrap\Element
      */
     public function loadDefaultDecorators()

@@ -307,6 +307,14 @@ abstract class Article
 	}
 	
 	/**
+	 * @return boolean
+	 */
+	public function isProf()
+	{
+	    return $this->isProf;
+	}
+	
+	/**
 	 * @param boolean $isProf
 	 *
 	 * @return \CudiBundle\Entity\Article
@@ -316,6 +324,11 @@ abstract class Article
 	    $this->isProf = $isProf;
 	    return $this;
 	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Article
+	 */
+	abstract public function duplicate();
 	
 	/**
 	 * @return boolean

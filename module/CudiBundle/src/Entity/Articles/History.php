@@ -58,44 +58,7 @@ class History
 	 */
 	public function __construct(EntityManager $entityManager, Article $article)
 	{
-	    if ($article->isStock()) {
-	    	if ($article->isInternal()) {
-	    		$this->precursor = new Internal(
-	    		    $article->getTitle(),
-	    		    $article->getAuthors(),
-	    		    $article->getPublishers(),
-	    		    $article->getYearPublished(),
-	    		    $article->getISBN(),
-	    		    $article->getURL(),
-	    			$article->getNbBlackAndWhite(),
-	                $article->getNbColored(),
-	                $article->getBinding(),
-	                $article->isOfficial(),
-	                $article->isRectoVerso(),
-	                $article->getFrontColor(),
-	                $article->getFrontPageTextColored(),
-	                $article->isPerforated()
-	            );
-	    	} else {
-	    		$this->precursor = new External(
-	            	$article->getTitle(),
-	            	$article->getAuthors(),
-	            	$article->getPublishers(),
-	            	$article->getYearPublished(),
-	            	$article->getISBN(),
-	            	$article->getURL()
-	       		);
-	    	}
-	    } else {
-	    	$this->precursor = new Stub(
-	        	$article->getTitle(),
-	        	$article->getAuthors(),
-	        	$article->getPublishers(),
-	        	$article->getYearPublished(),
-	        	$article->getISBN(),
-	        	$article->getURL()
-	    	);
-	    }
+	    $this->precursor = $article->duplicate();
 
 	    $this->precursor->setVersionNumber($article->getVersionNumber())
 	        ->setIsHistory(true);
@@ -106,18 +69,20 @@ class History
 	    foreach($mappings as $mapping)
 	        $entityManager->persist(new CommentMapping($this->precursor, $mapping->getComment()));
 	        
+	    // TODO: check with just edited by prof
 	    $mappings = $entityManager
 	        ->getRepository('CudiBundle\Entity\Files\Mapping')
-	        ->findByArticle($article);
+	        ->findAllByArticle($article, true);
 	    foreach($mappings as $mapping) {
 	        $new = new FileMapping($this->precursor, $mapping->getFile(), $mapping->isPrintable());
 	        $new->setIsProf($mapping->isProf());
 	        $entityManager->persist($new);
 	    }
 	    
+	    // TODO: check with just edited by prof
 	    $mappings = $entityManager
 	        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-	        ->findByArticle($article);
+	        ->findByArticle($article, true);
 	    foreach($mappings as $mapping) {
 	        $new = new SubjectMapping($this->precursor, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
 	        $new->setIsProf($mapping->isProf());

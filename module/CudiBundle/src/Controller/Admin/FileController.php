@@ -28,7 +28,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class FileController extends \CommonBundle\Component\Controller\ActionController
 {
-    
 	public function manageAction()
 	{
 		if (!($article = $this->_getArticle()))
@@ -36,7 +35,7 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
 		
 		$mappings = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Files\Mapping')
-		    ->findByArticle($article);
+		    ->findAllByArticle($article);
 		
 		$form = new AddForm();
 		$form->setAction(
