@@ -38,7 +38,7 @@
 		            <th width="80px">Actions</th>
 		        </tr>
 		        
-		        {% for mapping in profs %}
+		        {% for mapping in profMappings %}
 		            <tr class="item">
 		                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
 		                <td>{{ mapping.getProf().getFullName() }}</td>
@@ -60,12 +60,12 @@
 		            <th width="60px">Type</th>
 		        </tr>
 		        
-		        {% for mapping in articles %}
+		        {% for mapping in articleMappings %}
 		            <tr class="item">
-		                <td>{{ mapping.getArticle().getTitle() }} {% if mapping.getArticle().getVersionNumber() != 1 %} (v{{ mapping.getArticle().getVersionNumber() }}) {% endif %}</td>
-		                <td>{{ mapping.getArticle().getMetaInfo().getAuthors() }}</td>
-		                <td>{{ mapping.getArticle().getMetaInfo().getPublishers() }}</td>
-		                <td>{{ mapping.getArticle().getMetaInfo().getYearPublished() }}</td>
+		                <td>{{ mapping.getArticle().getTitle() }}</td>
+		                <td>{{ mapping.getArticle().getAuthors() }}</td>
+		                <td>{{ mapping.getArticle().getPublishers() }}</td>
+		                <td>{{ mapping.getArticle().getYearPublished() }}</td>
 		                <td>{% if mapping.getArticle().isStock() %} Stock {% else %} Stub {% endif %}</td>
 		            </tr>
 		        {% endfor %}

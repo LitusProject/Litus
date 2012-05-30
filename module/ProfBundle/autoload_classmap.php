@@ -13,6 +13,8 @@ return array(
     'ProfBundle\Controller\Prof\ProfController'           => __DIR__ . '/src/Controller/Prof/ProfController.php',
     'ProfBundle\Controller\Prof\SubjectController'        => __DIR__ . '/src/Controller/Prof/SubjectController.php',
     'ProfBundle\Entity\Action'                            => __DIR__ . '/src/Entity/Action.php',
+    'ProfBundle\Form\Admin\Article\Confirm'               => __DIR__ . '/src/Form/Admin/Article/Confirm.php',
+    'ProfBundle\Form\Admin\File\Confirm'                  => __DIR__ . '/src/Form/Admin/File/Confirm.php',
     'ProfBundle\Form\Prof\Article\Add'                    => __DIR__ . '/src/Form/Prof/Article/Add.php',
     'ProfBundle\Form\Prof\Article\Edit'                   => __DIR__ . '/src/Form/Prof/Article/Edit.php',
     'ProfBundle\Form\Prof\Comment\Add'                    => __DIR__ . '/src/Form/Prof/Comment/Add.php',

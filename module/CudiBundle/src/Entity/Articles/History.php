@@ -55,39 +55,14 @@ class History
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The entitymanager
 	 * @param \CudiBundle\Entity\Article $article The new version of the article
+	 * @param \CudiBundle\Entity\Article $precursor The old version of the article
 	 */
-	public function __construct(EntityManager $entityManager, Article $article)
+	public function __construct(EntityManager $entityManager, Article $article, Article $precursor = null)
 	{
-	    $this->precursor = $article->duplicate();
+	    $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
 
 	    $this->precursor->setVersionNumber($article->getVersionNumber())
 	        ->setIsHistory(true);
-	        
-	    $mappings = $entityManager
-	        ->getRepository('CudiBundle\Entity\Comments\Mapping')
-	        ->findByArticle($article);
-	    foreach($mappings as $mapping)
-	        $entityManager->persist(new CommentMapping($this->precursor, $mapping->getComment()));
-	        
-	    // TODO: check with just edited by prof
-	    $mappings = $entityManager
-	        ->getRepository('CudiBundle\Entity\Files\Mapping')
-	        ->findAllByArticle($article, true);
-	    foreach($mappings as $mapping) {
-	        $new = new FileMapping($this->precursor, $mapping->getFile(), $mapping->isPrintable());
-	        $new->setIsProf($mapping->isProf());
-	        $entityManager->persist($new);
-	    }
-	    
-	    // TODO: check with just edited by prof
-	    $mappings = $entityManager
-	        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-	        ->findByArticle($article, true);
-	    foreach($mappings as $mapping) {
-	        $new = new SubjectMapping($this->precursor, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
-	        $new->setIsProf($mapping->isProf());
-	        $entityManager->persist($new);
-	    }
 	    
 		$article->setVersionNumber($article->getVersionNumber()+1);
 		

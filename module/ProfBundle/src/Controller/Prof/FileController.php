@@ -139,6 +139,7 @@ class FileController extends \ProfBundle\Component\Controller\ProfController
     		$mapping = $this->getEntityManager()
     			->getRepository('CudiBundle\Entity\Files\Mapping')
     			->findOneByFile($file);
+    		$mapping->setIsProf(true);
     		
     		$action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'add');
     		$this->getEntityManager()->persist($action);

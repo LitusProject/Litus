@@ -42,7 +42,7 @@
 	        <tr>
 	            <th width="200px">Name</th>
 	            <th>Description</th>
-	            <th width="150px">Action</th>
+	            <th width="210px">Action</th>
 	        </tr>
 	
 	        {% for mapping in mappings %}
@@ -52,6 +52,9 @@
 					<td>
 					    {% if hasAccess('admin_file', 'download') %}
     						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
+    					{% endif %}
+    					{% if hasAccess('admin_file', 'edit') %}
+    						<a href="{{ url('admin_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
     					{% endif %}
     					{% if hasAccess('admin_file', 'delete') %}
 		                    <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">Delete</a>

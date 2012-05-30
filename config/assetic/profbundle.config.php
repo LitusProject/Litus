@@ -24,6 +24,7 @@ return array(
 	    	'@common_jquery',
 	    	'@admin_css',
 	    	'@admin_js',
+		    '@common_download_file',
 	    ),
 	    'prof' => array(
 			'@common_jquery',

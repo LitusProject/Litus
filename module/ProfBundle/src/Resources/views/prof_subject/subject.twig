@@ -15,6 +15,20 @@
     		<p>The mapping between this subject and the article was succesfully removed.</p>
     	</div>
     </div>
+    <div class="flashmessage alert alert-error fade" id="prof_removed_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while removing the mapping between this subject and the docent.</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="prof_removed_success">
+        <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The mapping between this subject and the docent was succesfully removed.</p>
+    	</div>
+    </div>
     
     <div class="page-header">
         <h2>Subject</h2>
@@ -65,12 +79,18 @@
         <tr>
             <th width="90px">Identification</th>
             <th>Name</th>
+            <th width="90px">Actions</th>
         </tr>
         
         {% for mapping in profMappings %}
             <tr class="item">
                 <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
                 <td>{{ mapping.getProf().getFullName() }}</td>
+                <td class="actions">
+                    {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedUserObject.getId() %}
+                        <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">Remove</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </table>
@@ -94,15 +114,30 @@
     		<button class="btn" data-dismiss="modal">No</button>
     	</div>
     </div>
+    
+    <div id="modalRemoveProf" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>Remove Docent</h3>
+    	</div>
+    	<div class="modal-body">
+    		Are you sure you want to remove the following docent: <b><span class="profName"></span></b>?
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-danger confirm">Yes</button>
+    		<button class="btn" data-dismiss="modal">No</button>
+    	</div>
+    </div>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-		    $('.removeArticle').click(openRemoveModal);
+		    $('.removeArticle').click(openRemoveArticleModal);
+		    $('.removeProf').click(openRemoveProfModal);
 		});
 		
-		function openRemoveModal(e) {
+		function openRemoveArticleModal(e) {
 		    var $this = $(this);
 		    
 		    e.preventDefault();
@@ -116,17 +151,44 @@
 		    			$this.parent().parent().remove();
 		    			removeArticle.modal('hide');
 		    		} else {
-		    		    errorRemove();
+		    		    errorRemoveArticle();
 		    		}
-		    	}, 'json').error(errorRemove);
+		    	}, 'json').error(errorRemoveArticle);
 		    });
 		    removeArticle.modal();
 		}
 		
-		function errorRemove() {
+		function errorRemoveArticle() {
 		    $('.flashmessage').removeClass('in');
 		    $('#article_removed_error').addClass('in');
 		    $('#modalRemoveArticle').modal('hide');
+		}
+		
+		function openRemoveProfModal(e) {
+		    var $this = $(this);
+		    
+		    e.preventDefault();
+		    var removeProf = $('#modalRemoveProf');
+		    removeProf.find('.profName').html($(this).data('name'));
+		    removeProf.find('.confirm').unbind('click').click(function () {
+		    	$.post('{{ url('prof_prof', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+		    	    if (data && 'success' == data.status) {
+		    			$('.flashmessage').removeClass('in');
+		    			$('#prof_removed_success').addClass('in');
+		    			$this.parent().parent().remove();
+		    			removeProf.modal('hide');
+		    		} else {
+		    		    errorRemoveProf();
+		    		}
+		    	}, 'json').error(errorRemoveProf);
+		    });
+		    removeProf.modal();
+		}
+		
+		function errorRemoveProf() {
+		    $('.flashmessage').removeClass('in');
+		    $('#prof_removed_error').addClass('in');
+		    $('#modalRemoveProf').modal('hide');
 		}
 	</script>
 {% endblock %}
