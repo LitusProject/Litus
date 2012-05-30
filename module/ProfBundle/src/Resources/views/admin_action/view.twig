@@ -87,6 +87,10 @@
 	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
 	        Filename: <b>{{ action.getEntity().getFile().getName() }}</b><br />
 	        Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
+	        <br />
+	        {% if hasAccess('admin_file', 'download') %}
+	        	<input type="button" class="downloadFile" data-file="{{ url('admin_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download" />
+	        {% endif %}
 	    {% endif %}
 	</div>
 	
@@ -118,4 +122,14 @@
     	    </div>
     	{% endif %}
 	</aside>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.downloadFile').each(function () {
+				$(this).downloadFile($(this).data('file'));
+			});
+		});
+	</script>
 {% endblock %}

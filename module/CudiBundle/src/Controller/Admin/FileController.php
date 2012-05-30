@@ -18,6 +18,7 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Files\File,
 	CudiBundle\Form\Admin\File\Add as AddForm,
+	CudiBundle\Form\Admin\File\Edit as EditForm,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
 	Zend\Http\Headers;
 
@@ -122,6 +123,49 @@ class FileController extends \CommonBundle\Component\Controller\ActionController
     	        ),
     	    );
     	}
+	}
+	
+	public function editAction()
+	{
+	    if (!($mapping = $this->_getFileMapping()))
+	        return;
+	        
+	    $form = new EditForm($mapping);
+	    
+	    if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        	
+        	if ($form->isValid($formData)) {
+        	    $mapping->setPrintable($formData['printable'])
+        	        ->getFile()->setDescription($formData['description']);
+        	    
+        	    $this->getEntityManager()->flush();
+        	    
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The file was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_file',
+                	array(
+                		'action' => 'manage',
+                		'id' => $mapping->getArticle()->getId(),
+                	)
+                );
+                
+                return;
+        	}
+        }
+	            
+	    return array(
+	        'form' => $form,
+	        'file' => $mapping->getFile(),
+	        'article' => $mapping->getArticle(),
+	    );
 	}
 	
 	public function deleteAction()

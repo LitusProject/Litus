@@ -71,7 +71,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             
         return array(
             'subject' => $subject,
-            'profs' => $profs,
+            'profMappings' => $profs,
+            'articleMappings' => $articles,
             'currentAcademicYear' => $academicYear,
             'academicYears' => $academicYears,
         );

@@ -40,6 +40,30 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	    $this->installAcl(
 	        array(
 	            'profbundle' => array(
+	                'admin_action' => array(
+	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
+	                ),
+	                'prof' => array(
+	                    'index'
+	                ),
+	                'prof_article' => array(
+	                    'add', 'edit', 'manage', 'typeahead'
+	                ),
+	                'prof_article_mapping' => array(
+	                    'add', 'delete'
+	                ),
+	                'prof_comment' => array(
+	                    'delete', 'manage'
+	                ),
+	                'prof_file' => array(
+	                    'delete', 'download', 'manage', 'progress', 'upload'
+	                ),
+	                'prof_prof' => array(
+	                    'add', 'delete', 'typeahead'
+	                ),
+	                'prof_subject' => array(
+	                    'manage', 'subject'
+	                ),
 	            )
 	        )
 	    );

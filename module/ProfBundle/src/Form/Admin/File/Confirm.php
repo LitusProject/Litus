@@ -13,25 +13,23 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\File;
+namespace ProfBundle\Form\Admin\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
 	CudiBundle\Entity\Files\Mapping as FileMapping,
 	Zend\Form\Element\Checkbox,
-	Zend\Form\Element\File as FileElement,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text;
 
 /**
- * Add File
+ * Confirm File add action
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+    public function __construct(FileMapping $mapping, $options = null)
     {
         parent::__construct($options);
                 
@@ -44,31 +42,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
-        $field = new FileElement('file');
-        $field->setLabel('File')
-        	->setAttrib('size', 70)
-        	->setRequired()
-        	->setDecorators(array(new FileDecorator()));
-        $this->addElement($field);
-        
         $field = new Checkbox('printable');
         $field->setLabel('Printable')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Submit('submit');
-        $field->setLabel('Add')
+        $field->setLabel('Confirm')
                 ->setAttrib('class', 'file_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+    
+        $this->populateFromFile($mapping);
     }
     
     public function populateFromFile(FileMapping $mapping)
     {
     	$this->populate(
     	    array(
-    		    'description' => $mapping->getFile()->getDescription(),
-    		    'printable' => $mapping->isPrintable()
+    		'description' => $mapping->getFile()->getDescription()
     	    )
     	);
     }

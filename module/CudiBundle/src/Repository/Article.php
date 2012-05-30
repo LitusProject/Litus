@@ -124,7 +124,7 @@ class Article extends EntityRepository
                 ->getRepository('ProfBundle\Entity\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
             
-            if (null !== $edited) {
+            if (isset($edited[0])) {
                 $ids[] = $edited[0]->getEntityId();
             } else {
                 $ids[] = $add->getEntityId();

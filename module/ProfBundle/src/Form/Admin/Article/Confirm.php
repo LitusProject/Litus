@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Article;
+namespace ProfBundle\Form\Admin\Article;
 	
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
@@ -28,18 +28,18 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Text;
 
 /**
- * Add Article
+ * Confirm Article add action
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
- class Add extends \CommonBundle\Component\Form\Admin\Form
+ class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
 	protected $_entityManager = null;
 
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, Article $article, $opts = null)
     {
         parent::__construct($opts);
         
@@ -192,10 +192,12 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	        ->removeDecorator('DtDdWrapper');
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
+        $field->setLabel('Confirm')
                 ->setAttrib('class', 'article_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+
+        $this->populateFromArticle($article);
     }
 	
 	private function _getBindings()
@@ -238,13 +240,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 			$data['internal'] = $article->isInternal();
 			
 			if ($article->isInternal()) {
-				$data['nb_black_and_white'] = $article->getNbBlackAndWhite();
-				$data['nb_colored'] = $article->getNbColored();
 				$data['binding'] = $article->getBinding()->getId();
 				$data['official'] = $article->isOfficial();
 				$data['rectoverso'] = $article->isRectoVerso();
-				$data['front_color'] = $article->getFrontColor()->getId();
-				$date['front_text_colored'] = $article->getFrontPageTextColored();
 				$data['perforated'] = $article->isPerforated();
 			}
 		}

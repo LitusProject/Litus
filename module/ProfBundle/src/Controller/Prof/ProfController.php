@@ -75,6 +75,27 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
         );
     }
     
+    public function deleteAction()
+    {
+    	$this->initAjax();
+    	
+        if (!($mapping = $this->_getMapping()))
+            return;
+        
+        if ($mapping->getProf()->getId() == $this->getAuthentication()->getPersonObject()->getId()) {
+            return array(
+                'result' => (object) array("status" => "error")
+            );
+        }
+        
+        $this->getEntityManager()->remove($mapping);
+    	$this->getEntityManager()->flush();
+        
+        return array(
+            'result' => (object) array("status" => "success")
+        );
+    }
+    
     public function typeaheadAction()
     {
         $docents = array_merge(
@@ -99,9 +120,11 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
         );
     }
     
-    private function _getSubject()
+    private function _getSubject($id = null)
     {
-        if (null === $this->getParam('id')) {
+        $id = $id == null ? $this->getParam('id') : $id;
+
+        if (null === $id) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -123,7 +146,7 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id'),
+                $id,
                 $this->getAuthentication()->getPersonObject(),
                 $this->_getAcademicYear()
             );
@@ -149,5 +172,52 @@ class ProfController extends \ProfBundle\Component\Controller\ProfController
     	}
     	
     	return $mapping->getSubject();
+    }
+    
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the mapping!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'prof_subject',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findOneById($this->getParam('id'));
+
+    	if (null === $mapping || null === $this->_getSubject($mapping->getSubject()->getId())) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No mapping with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'prof_subject',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $mapping;
     }
 }

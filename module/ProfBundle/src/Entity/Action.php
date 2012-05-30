@@ -157,6 +157,17 @@ class Action
     }
     
     /**
+     * @param integer $entityId
+     *
+     * @return \ProfBundle\Entity\Action
+     */
+    public function setEntityId($entityId)
+    {
+        $this->entityId = $entityId;
+        return $this;
+    }
+    
+    /**
      * @return integer
      */
     public function getEntityId()
@@ -181,6 +192,17 @@ class Action
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                 ->findOneById($this->previousId);
+    }
+    
+    /**
+     * @param integer $previousId
+     *
+     * @return \ProfBundle\Entity\Action
+     */
+    public function setPreviousId($previousId)
+    {
+        $this->previousId = $previousId;
+        return $this;
     }
     
     /**

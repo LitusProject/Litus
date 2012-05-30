@@ -45,6 +45,7 @@ return array(
     'CudiBundle\Form\Admin\Article\Edit'                => __DIR__ . '/src/Form/Admin/Article/Edit.php',
     'CudiBundle\Form\Admin\Comment\Add'                 => __DIR__ . '/src/Form/Admin/Comment/Add.php',
     'CudiBundle\Form\Admin\File\Add'                    => __DIR__ . '/src/Form/Admin/File/Add.php',
+    'CudiBundle\Form\Admin\File\Edit'                   => __DIR__ . '/src/Form/Admin/File/Edit.php',
     'CudiBundle\Form\Admin\Mapping\Add'                 => __DIR__ . '/src/Form/Admin/Mapping/Add.php',
     'CudiBundle\Repository\Article'                     => __DIR__ . '/src/Repository/Article.php',
     'CudiBundle\Repository\Articles\AcademicYearMap'    => __DIR__ . '/src/Repository/Articles/AcademicYearMap.php',
