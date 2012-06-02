@@ -78,9 +78,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         	->addValidator(new UriValidator());
         $this->addElement($field);
 
-		$field = new Checkbox('stock');
-        $field->setLabel('Stock Article');
-        $this->addElement($field);
+		$field = new Checkbox('internal');
+		$field->setLabel('Internal Article');
+		$this->addElement($field);
 
 		$this->addDisplayGroup(
 			array(
@@ -90,28 +90,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 				'year_published',
 				'isbn',
 				'url',
-				'stock',
+				'internal',
 		    ),
 		    'article_form'
 		);
 		$this->getDisplayGroup('article_form')
 		   	->setLegend('Article')
 		    ->setAttrib('id', 'article_form')
-		    ->removeDecorator('DtDdWrapper');
-         
-        $field = new Checkbox('internal');
-        $field->setLabel('Internal Article');
-        $this->addElement($field);
-		
-		$this->addDisplayGroup(
-			array(
-				'internal'
-			),
-			'stock_form'
-		);
-		$this->getDisplayGroup('stock_form')
-		   	->setLegend('Stock Article')
-		    ->setAttrib('id', 'stock_form')
 		    ->removeDecorator('DtDdWrapper');
 
 		$field = new Select('binding');
@@ -170,12 +155,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 			'year_published' => $article->getYearPublished(),
 			'isbn' => $article->getISBN(),
 			'url' => $article->getURL(),
-			'stock' => $article->isStock()
+			'internal' => $article->isInternal()
 		);
-		
-		if ($article->isStock()) {
-			$data['internal'] = $article->isInternal();
-		}
 		
 		if ($article->isInternal()) {
 			$data['binding'] = $article->getBinding()->getId();
@@ -188,18 +169,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 	
 	public function isValid($data)
 	{
-		if (!$data['stock']) {
-			$validatorsStock = array();
-			$requiredStock = array();
-		    
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				$validatorsStock[$formElement->getName()] = $formElement->getValidators();
-				$requiredStock[$formElement->getName()] = $formElement->isRequired();
-				$formElement->clearValidators()
-					->setRequired(false);
-			}
-		}
-		
 		if (!$data['internal']) {
 			$validatorsInternal = array();
 			$requiredInternal = array();
@@ -213,15 +182,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		}
 		
 		$isValid = parent::isValid($data);
-		
-		if (!$data['stock']) {
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				if (array_key_exists ($formElement->getName(), $validatorsStock))
-		 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
-				if (array_key_exists ($formElement->getName(), $requiredStock))
-					$formElement->setRequired($requiredStock[$formElement->getName()]);
-			}
-		}
 		
 		if (!$data['internal']) {
 			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {

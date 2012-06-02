@@ -57,25 +57,23 @@
 	                    <td>{{ action.getPreviousEntity().getURL() }}</td>
 	                    <td>{{ action.getEntity().getURL() }}</td>
 	                </tr>
-	                {% if action.getEntity().isStock() %}
-	                    {% if action.getEntity().isInternal() %}
-	                        <tr>
-	                            <td>Binding</td>
-	                            <td>{{ action.getPreviousEntity().getBinding().getName() }}</td>
-	                            <td>{{ action.getEntity().getBinding().getName() }}</td>
-	                        </tr>
-	                        <tr>
-	                            <td>Binding</td>
-	                            <td>{% if action.getPreviousEntity().isRecoverso() %}Yes{% else %}No{% endif %}</td>
-	                            <td>{% if action.getEntity().getBinding().isRecoverso() %}Yes{% else %}No{% endif %}</td>
-	                        </tr>
-	                        <tr>
-	                            <td>Binding</td>
-	                            <td>{% if action.getPreviousEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
-	                            <td>{% if action.getEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
-	                        </tr>
-	                    {% endif %}
-	                {% endif %}
+                    {% if action.getEntity().isInternal() %}
+                        <tr>
+                            <td>Binding</td>
+                            <td>{{ action.getPreviousEntity().getBinding().getName() }}</td>
+                            <td>{{ action.getEntity().getBinding().getName() }}</td>
+                        </tr>
+                        <tr>
+                            <td>Binding</td>
+                            <td>{% if action.getPreviousEntity().isRecoverso() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().getBinding().isRecoverso() %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Binding</td>
+                            <td>{% if action.getPreviousEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                    {% endif %}
     	        </table>
 	        {% endif %}
 	    {% elseif action.getEntityName() == 'mapping' %}

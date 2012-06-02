@@ -18,8 +18,6 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Comments\Comment,
     CudiBundle\Form\Admin\Comment\Add as AddForm;
-    //CudiBundle\Entity\Articles\Comment,
-    //CudiBundle\Form\Admin\Comment\Add as CommentForm;
 
 /**
  * CommentController

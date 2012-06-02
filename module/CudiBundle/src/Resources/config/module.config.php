@@ -8,8 +8,9 @@ return array(
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_article_subject'  => 'CudiBundle\Controller\Admin\SubjectMapController',
 				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
-				'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_file'	         => 'CudiBundle\Controller\Admin\FileController',
+				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+				/*'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'         => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	         => 'CudiBundle\Controller\Admin\OrderController',
@@ -24,7 +25,7 @@ return array(
 				
 				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
-				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
+				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',*/
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -128,6 +129,33 @@ return array(
 				),
 			),
 		),
+		'admin_article_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/article/manage[/:page]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_article',
+					'action'     => 'manage',
+				), 
+			),
+		),
+		'admin_article_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/article/search[/:field[/:string]]',
+				'constraints' => array(
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_article',
+					'action'     => 'search',
+				),
+			),
+		),
 		'admin_article_subject'=> array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -157,20 +185,6 @@ return array(
 				),
 			),
 		),
-		'admin_discount' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/discount[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_discount',
-					'action'     => 'manage',
-				),
-			),
-		),
 		'admin_file' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -185,30 +199,31 @@ return array(
 				),
 			),
 		),
-		'admin_article_paginator' => array(
+		'admin_sales_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article/manage[/:page]',
+				'route' => '/admin/sales/article[/:action[/:id]]',
 				'constraints' => array(
-					'page' => '[0-9]*',
-                ),
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
 				'defaults' => array(
-					'controller' => 'admin_article',
+					'controller' => 'admin_sales_article',
 					'action'     => 'manage',
-				), 
+				),
 			),
 		),
-		'admin_article_search' => array(
+		/*'admin_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article/search[/:field[/:string]]',
+				'route' => '/admin/discount[/:action[/:id]]',
 				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-                ),
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
 				'defaults' => array(
-					'controller' => 'admin_article',
-					'action'     => 'search',
+					'controller' => 'admin_discount',
+					'action'     => 'manage',
 				),
 			),
 		),
@@ -226,7 +241,7 @@ return array(
 				),
 			),
 		),
-		'admin_article_paginator' => array(
+		'admin_booking_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/booking/manage[/:page]',
@@ -534,6 +549,6 @@ return array(
 					'action'     => 'manage',
 				),
 			),
-		),
+		),*/
 	),
 );

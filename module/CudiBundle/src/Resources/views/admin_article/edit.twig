@@ -19,6 +19,19 @@
 	</div>
 	
 	<aside>
+	    {% if hasAccess('admin_sales_article', 'manage') %}
+	    	<div class="sidebox">
+	    	    <div class="title">Create Sale Article</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to create a sale article for this!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
 	    {% if hasAccess('admin_article_subject', 'manage') %}
 	    	<div class="sidebox">
 	    	    <div class="title">Manage Subject Mapping</div>
@@ -66,10 +79,7 @@
 		$(document).ready(function () {
 			$('#internal').click(toggleInternal)
 				.parent().parent().hide();
-			$('#stock').click(toggleStock)
-				.parent().parent().hide();
 			toggleInternal();
-			toggleStock();
 		});
 		
 		function toggleInternal() {
@@ -77,16 +87,6 @@
 				$('#internal_form').show();
 			else
 				$('#internal_form').hide();
-		}
-		
-		function toggleStock() {
-			if ($('#stock').is(':checked')) {
-				$('#stock_form').show();
-				toggleInternal();
-			} else {
-				$('#stock_form, #internal_form').hide();
-				$('#internal').removeAttr("checked");
-			}
 		}
 	</script>
 {% endblock %}

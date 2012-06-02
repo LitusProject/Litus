@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class Article extends EntityRepository
 {
+    public function findOneByBarcode($barcode)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('CudiBundle\Entity\Sales\Article', 'a')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('a.isHistory', 'false'),
+        	        $query->expr()->eq('a.barcode', ':barcode')
+        	    )
+        	)
+        	->setParameter('barcode', $barcode)
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        	
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
+    }
 }

@@ -19,10 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\History,
-    CudiBundle\Entity\Articles\Stub,
     CudiBundle\Form\Admin\Article\Add as AddForm,
-    CudiBundle\Form\Admin\Article\Edit as EditForm,
-	Doctrine\ORM\EntityManager;
+    CudiBundle\Form\Admin\Article\Edit as EditForm;
 
 /**
  * ArticleController
@@ -55,44 +53,33 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	    if ($formData['stock']) {
-					if ($formData['internal']) {
-						$binding = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-							->findOneById($formData['binding']);
+				if ($formData['internal']) {
+					$binding = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+						->findOneById($formData['binding']);
 
-						$frontColor = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Color')
-							->findOneById($formData['front_color']);
+					$frontColor = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Color')
+						->findOneById($formData['front_color']);
 
-		                $article = new Internal(
-							$formData['title'],
-							$formData['author'],
-							$formData['publisher'],
-							$formData['year_published'],
-							$formData['isbn'],
-							$formData['url'],
-							$formData['nb_black_and_white'],
-	                        $formData['nb_colored'],
-	                        $binding,
-	                        $formData['official'],
-	                        $formData['rectoverso'],
-	                        $frontColor,
-	                        $formData['front_text_colored'],
-	                        $formData['perforated']
-		                );
-					} else {
-						$article = new External(
-		                	$formData['title'],
-		                	$formData['author'],
-		                	$formData['publisher'],
-		                	$formData['year_published'],
-		                	$formData['isbn'],
-		                	$formData['url']
-		           		);
-					}
+	                $article = new Internal(
+						$formData['title'],
+						$formData['author'],
+						$formData['publisher'],
+						$formData['year_published'],
+						$formData['isbn'],
+						$formData['url'],
+						$formData['nb_black_and_white'],
+                        $formData['nb_colored'],
+                        $binding,
+                        $formData['official'],
+                        $formData['rectoverso'],
+                        $frontColor,
+                        $formData['front_text_colored'],
+                        $formData['perforated']
+	                );
 				} else {
-					$article = new Stub(
+					$article = new External(
 	                	$formData['title'],
 	                	$formData['author'],
 	                	$formData['publisher'],
@@ -152,26 +139,24 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         	        ->setISBN($formData['isbn'])
         	        ->setURL($formData['url']);
         	    
-        	    if ($formData['stock']) {
-					if ($formData['internal']) {
-						$binding = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-							->findOneById($formData['binding']);
+				if ($article->isInternal()) {
+					$binding = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+						->findOneById($formData['binding']);
 
-						$frontPageColor = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Color')
-							->findOneById($formData['front_color']);
-                        
-                        $article->setNbBlackAndWhite($formData['nb_black_and_white'])
-                        	->setNbColored($formData['nb_colored'])
-                        	->setBinding($binding)
-                        	->setIsOfficial($formData['official'])
-                        	->setIsRectoVerso($formData['rectoverso'])
-                        	->setFrontColor($frontPageColor)
-                        	->setFrontPageTextColored($formData['front_text_colored'])
-                        	->setIsPerforated($formData['perforated']);
-					}
-				}      	    
+					$frontPageColor = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Color')
+						->findOneById($formData['front_color']);
+                    
+                    $article->setNbBlackAndWhite($formData['nb_black_and_white'])
+                    	->setNbColored($formData['nb_colored'])
+                    	->setBinding($binding)
+                    	->setIsOfficial($formData['official'])
+                    	->setIsRectoVerso($formData['rectoverso'])
+                    	->setFrontColor($frontPageColor)
+                    	->setFrontPageTextColored($formData['front_text_colored'])
+                    	->setIsPerforated($formData['perforated']);
+				}
         	    
         	    $this->getEntityManager()->flush();
         	    
@@ -251,7 +236,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 	    	$item->author = $article->getAuthors();
 	    	$item->publisher = $article->getPublishers();
 	    	$item->yearPublished = $article->getYearPublished();
-	    	$item->isStock = $article->isStock();
+	    	$item->isInternal = $article->isInternal();
 	    	$item->versionNumber = $article->getVersionNumber();
 	    	$result[] = $item;
 	    }

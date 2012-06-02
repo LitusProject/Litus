@@ -17,10 +17,7 @@
 		$(document).ready(function () {
 			$('#internal').click(toggleInternal)
 				.parent().parent().hide();
-			$('#stock').click(toggleStock)
-				.parent().parent().hide();
 			toggleInternal();
-			toggleStock();
 		});
 		
 		function toggleInternal() {
@@ -28,16 +25,6 @@
 				$('#internal_form').show();
 			else
 				$('#internal_form').hide();
-		}
-		
-		function toggleStock() {
-			if ($('#stock').is(':checked')) {
-				$('#stock_form').show();
-				toggleInternal();
-			} else {
-				$('#stock_form, #internal_form').hide();
-				$('#internal').removeAttr("checked");
-			}
 		}
 	</script>
 {% endblock %}

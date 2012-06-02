@@ -13,14 +13,14 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Entity\Articles;
+namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article;
+    CudiBundle\Entity\Sales\Article;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\AcademicYearMap")
- * @Table(name="cudi.articles_academic_year_map")
+ * @Entity(repositoryClass="CudiBundle\Repository\Sales\AcademicYearMap")
+ * @Table(name="cudi.sales_academic_year_map")
  */
 class AcademicYearMap
 {
@@ -34,9 +34,9 @@ class AcademicYearMap
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The article of the mapping
+     * @var \CudiBundle\Entity\Sales\Article The article of the mapping
      *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
 	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
@@ -50,7 +50,7 @@ class AcademicYearMap
 	private $academicYear;
     
     /**
-     * @param \CudiBundle\Entity\Article $article
+     * @param \CudiBundle\Entity\Sales\Article $article
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
     public function __construct(Article $article, AcademicYear $academicYear)
@@ -68,7 +68,7 @@ class AcademicYearMap
     }
     
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return \CudiBundle\Entity\Sales\Article
      */
     public function getArticle()
     {

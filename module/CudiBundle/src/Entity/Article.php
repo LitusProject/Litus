@@ -23,7 +23,6 @@ use DateTime;
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
- *      "stub"="CudiBundle\Entity\Articles\Stub",
  *      "external"="CudiBundle\Entity\Articles\External",
  *      "internal"="CudiBundle\Entity\Articles\Internal"}
  * )
@@ -333,10 +332,10 @@ abstract class Article
 	/**
 	 * @return boolean
 	 */
-	abstract public function isStub();
+	abstract public function isExternal();
 	
 	/**
 	 * @return boolean
 	 */
-	abstract public function isStock();
+	abstract public function isInternal();
 }

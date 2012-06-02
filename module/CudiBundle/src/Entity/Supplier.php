@@ -59,20 +59,20 @@ class Supplier
 	 *
 	 * @Column(type="string")
 	 */
-	private $VAT_number;
+	private $vatNumber;
 	
 	/**
 	 * @param string $name
 	 * @param string $phoneNumber
 	 * @param \CommonBundle\Entity\General\Address $address
-	 * @param string $VAT
+	 * @param string $vatNumber
 	 */
-	public function __construct($name, $phoneNumber, Address $address, $VAT)
+	public function __construct($name, $phoneNumber, Address $address, $vatNumber)
 	{
 		$this->setName($name)
 		    ->setPhoneNumber($phoneNumber)
 		    ->setAddress($address)
-		    ->setVATNumber($VAT);
+		    ->setVatNumber($vatNumber);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ class Supplier
     }
     
     /**
-     * @param string
+     * @param string $phoneNumber
      *
      * @return \CudiBundle\Entity\Supplier
      */
@@ -123,7 +123,7 @@ class Supplier
      *
      * @return \CudiBundle\Entity\Supplier
      */
-    public function setAddress(Adress $address)
+    public function setAddress(Address $address)
     {
         $this->address = $address;
         return $this;
@@ -132,19 +132,19 @@ class Supplier
     /**
      * @return string
      */
-    public function getVATNumber()
+    public function getVatNumber()
     {
-        return $this->VAT_number;
+        return $this->vatNumber;
     }
     
     /**
-     * @param string
+     * @param string $vatNumber
      *
      * @return \CudiBundle\Entity\Supplier
      */
-    public function setVATNumber($VAT)
+    public function setVatNumber($vatNumber)
     {
-        $this->VAT_number = $VAT;
+        $this->vatNumber = $vatNumber;
         return $this;
     }
 }

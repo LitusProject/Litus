@@ -17,7 +17,6 @@ namespace ProfBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
-    CudiBundle\Entity\Articles\Stub,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
     ProfBundle\Entity\Action,
@@ -50,40 +49,29 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
             $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	    if ($formData['stock']) {
-					if ($formData['internal']) {
-						$binding = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-							->findOneById($formData['binding']);
+				if ($formData['internal']) {
+					$binding = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+						->findOneById($formData['binding']);
 
-		                $article = new Internal(
-							$formData['title'],
-							$formData['author'],
-							$formData['publisher'],
-							$formData['year_published'],
-							$formData['isbn'],
-							$formData['url'],
-							0,
-	                        0,
-	                        $binding,
-	                        true,
-	                        $formData['rectoverso'],
-	                        null,
-	                        false,
-	                        $formData['perforated']
-		                );
-					} else {
-						$article = new External(
-		                	$formData['title'],
-		                	$formData['author'],
-		                	$formData['publisher'],
-		                	$formData['year_published'],
-		                	$formData['isbn'],
-		                	$formData['url']
-		           		);
-					}
+	                $article = new Internal(
+						$formData['title'],
+						$formData['author'],
+						$formData['publisher'],
+						$formData['year_published'],
+						$formData['isbn'],
+						$formData['url'],
+						0,
+                        0,
+                        $binding,
+                        true,
+                        $formData['rectoverso'],
+                        null,
+                        false,
+                        $formData['perforated']
+	                );
 				} else {
-					$article = new Stub(
+					$article = new External(
 	                	$formData['title'],
 	                	$formData['author'],
 	                	$formData['publisher'],
@@ -168,22 +156,20 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
                 	    $edited = true;
                 	}
     				
-    				if ($formData['stock']) {
-    				    if ($formData['internal']) {
-    				        if ($article->getBinding()->getId() != $formData['binding']) {
-                	            $duplicate->setBinding($this->getEntityManager()
-                	            	->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
-                	            	->findOneById($formData['binding']));
-                        	    $edited = true;
-    				        }
-        					if ($article->isRectoVerso() != $formData['rectoverso']) {
-                	            $duplicate->setIsRectoVerso($formData['rectoverso']);
-                        	    $edited = true;
-            				}
-            				if ($article->isPerforated() != $formData['perforated']) {
-                	            $duplicate->setIsPerforated($formData['perforated']);
-            				    $edited = true;
-            				}
+				    if ($formData['internal']) {
+				        if ($article->getBinding()->getId() != $formData['binding']) {
+            	            $duplicate->setBinding($this->getEntityManager()
+            	            	->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+            	            	->findOneById($formData['binding']));
+                    	    $edited = true;
+				        }
+    					if ($article->isRectoVerso() != $formData['rectoverso']) {
+            	            $duplicate->setIsRectoVerso($formData['rectoverso']);
+                    	    $edited = true;
+        				}
+        				if ($article->isPerforated() != $formData['perforated']) {
+            	            $duplicate->setIsPerforated($formData['perforated']);
+        				    $edited = true;
         				}
     				}
     				
@@ -200,17 +186,15 @@ class ArticleController extends \ProfBundle\Component\Controller\ProfController
 				        ->setISBN($formData['isbn'])
 				        ->setURL($formData['url']);
 				    				    
-				    if ($formData['stock']) {
-				        if ($formData['internal']) {
-				            $article->setBinding(
-    				                $this->getEntityManager()
-        				                ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-        				                ->findOneById($formData['binding'])
-    				            )
-				                ->setIsRectoVerso($formData['rectoverso'])
-				                ->setIsPerforated($formData['perforated']);
-				    	}
-				    }
+			        if ($formData['internal']) {
+			            $article->setBinding(
+				                $this->getEntityManager()
+    				                ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+    				                ->findOneById($formData['binding'])
+				            )
+			                ->setIsRectoVerso($formData['rectoverso'])
+			                ->setIsPerforated($formData['perforated']);
+			    	}
 				}
 				$this->getEntityManager()->flush();
         	    
