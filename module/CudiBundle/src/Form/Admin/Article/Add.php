@@ -19,7 +19,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Validator\Uri as UriValidator,
 	CommonBundle\Component\Validator\Year as YearValidator,
-	CudiBundle\Component\Validator\ISBN as ISBNValidator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Checkbox,
@@ -87,10 +86,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         	->addValidator(new UriValidator());
         $this->addElement($field);
 
-		$field = new Checkbox('stock');
-        $field->setLabel('Stock Article')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+		$field = new Checkbox('internal');
+		$field->setLabel('Internal Article')
+			->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
 
 		$this->addDisplayGroup(
 			array(
@@ -100,29 +99,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 				'year_published',
 				'isbn',
 				'url',
-				'stock'
+				'internal'
 		    ),
 		    'article_form'
 		);
 		$this->getDisplayGroup('article_form')
 		   	->setLegend('Article')
 		    ->setAttrib('id', 'article_form')
-		    ->removeDecorator('DtDdWrapper');
-         
-        $field = new Checkbox('internal');
-        $field->setLabel('Internal Article')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-		
-		$this->addDisplayGroup(
-			array(
-				'internal'
-			),
-			'stock_form'
-		);
-		$this->getDisplayGroup('stock_form')
-		   	->setLegend('Stock Article')
-		    ->setAttrib('id', 'stock_form')
 		    ->removeDecorator('DtDdWrapper');
 
 		$field = new Text('nb_black_and_white');
@@ -231,22 +214,18 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 			'year_published' => $article->getYearPublished(),
 			'isbn' => $article->getISBN(),
 			'url' => $article->getURL(),
-			'stock' => $article->isStock()
+			'internal' => $article->isInternal()
 		);
 		
-		if ($article->isStock()) {
-			$data['internal'] = $article->isInternal();
-			
-			if ($article->isInternal()) {
-				$data['nb_black_and_white'] = $article->getNbBlackAndWhite();
-				$data['nb_colored'] = $article->getNbColored();
-				$data['binding'] = $article->getBinding()->getId();
-				$data['official'] = $article->isOfficial();
-				$data['rectoverso'] = $article->isRectoVerso();
-				$data['front_color'] = $article->getFrontColor()->getId();
-				$date['front_text_colored'] = $article->getFrontPageTextColored();
-				$data['perforated'] = $article->isPerforated();
-			}
+		if ($article->isInternal()) {
+			$data['nb_black_and_white'] = $article->getNbBlackAndWhite();
+			$data['nb_colored'] = $article->getNbColored();
+			$data['binding'] = $article->getBinding()->getId();
+			$data['official'] = $article->isOfficial();
+			$data['rectoverso'] = $article->isRectoVerso();
+			$data['front_color'] = $article->getFrontColor()->getId();
+			$date['front_text_colored'] = $article->getFrontPageTextColored();
+			$data['perforated'] = $article->isPerforated();
 		}
 						
 		$this->populate($data);
@@ -254,18 +233,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	
 	public function isValid($data)
 	{
-		if (!$data['stock']) {
-			$validatorsStock = array();
-			$requiredStock = array();
-		    
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				$validatorsStock[$formElement->getName()] = $formElement->getValidators();
-				$requiredStock[$formElement->getName()] = $formElement->isRequired();
-				$formElement->clearValidators()
-					->setRequired(false);
-			}
-		}
-		
 		if (!$data['internal']) {
 			$validatorsInternal = array();
 			$requiredInternal = array();
@@ -279,15 +246,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 		}
 		
 		$isValid = parent::isValid($data);
-		
-		if (!$data['stock']) {
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				if (array_key_exists ($formElement->getName(), $validatorsStock))
-		 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
-				if (array_key_exists ($formElement->getName(), $requiredStock))
-					$formElement->setRequired($requiredStock[$formElement->getName()]);
-			}
-		}
 		
 		if (!$data['internal']) {
 			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {

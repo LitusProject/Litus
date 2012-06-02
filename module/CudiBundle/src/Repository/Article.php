@@ -146,7 +146,7 @@ class Article extends EntityRepository
             
         $articles = array();
         foreach($resultSet as $article) {
-            if (!$article->isStock() || !$article->isInternal() || $article->isOfficial())
+            if (!$article->isInternal() || $article->isOfficial())
                 $articles[] = $article;
         }
         
@@ -179,7 +179,7 @@ class Article extends EntityRepository
             ->getResult();
         
         if (isset($resultSet[0]) &&
-                (!$resultSet[0]->getArticle()->isStock() || !$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
+                (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
         	return $resultSet[0]->getArticle();
         	
         $actions = $this->getEntityManager()

@@ -301,22 +301,6 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @return boolean
      */
-    public function isStub()
-    {
-        return false;
-    }
-    
-    /**
-     * @return boolean
-     */
-    public function isStock()
-    {
-        return true;
-    }
-    
-    /**
-     * @return boolean
-     */
     public function isExternal()
     {
         return false;

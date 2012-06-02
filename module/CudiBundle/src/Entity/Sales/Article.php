@@ -16,7 +16,8 @@
 namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Article as MainArticle,
-    CudiBundle\Entity\Supplier as Supplier;
+    CudiBundle\Entity\Supplier as Supplier,
+    DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Article")
@@ -142,13 +143,14 @@ class Article
             ->setBarcode($barcode)
             ->setPurchasePrice($purchasePrice)
             ->setSellPrice($sellPrice)
-            ->setBookable($bookable)
-            ->setUnbookable($unbookable)
+            ->setIsBookable($bookable)
+            ->setIsUnbookable($unbookable)
             ->setSupplier($supplier)
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
             ->setIsHistory(false);
         $this->timestamp = new DateTime();
+        $this->stockValue = 0;
     }
     
     /**
@@ -220,7 +222,7 @@ class Article
 	 */
 	public function setPurchasePrice($purchasePrice)
 	{
-		$this->purchasePrice = $purchasePrice*100;
+		$this->purchasePrice = $purchasePrice * 100;
 		return $this;
 	}
 	
@@ -239,7 +241,7 @@ class Article
 	 */
 	public function setSellPrice($sellPrice)
 	{
-		$this->sellPrice = $sellPrice*100;
+		$this->sellPrice = $sellPrice * 100;
 		return $this;
 	}
 	

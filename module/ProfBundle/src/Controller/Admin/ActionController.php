@@ -144,17 +144,15 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
                     ->setURL($duplicate->getURL())
                     ->setIsProf(false);
                 
-                if ($current->isStock()) {
-                    if ($current->isInternal()) {
-                        $current->setBinding($edited->getBinding())
-                            ->setIsRectoVerso($edited->isRectoVerso())
-                            ->setIsPerforated($edited->isPerforated());
-                            
-                        $edited->setBinding($duplicate->getBinding())
-                            ->setIsRectoVerso($duplicate->isRectoVerso())
-                            ->setIsPerforated($duplicate->isPerforated());
-                	}
-                }
+                if ($current->isInternal()) {
+                    $current->setBinding($edited->getBinding())
+                        ->setIsRectoVerso($edited->isRectoVerso())
+                        ->setIsPerforated($edited->isPerforated());
+                        
+                    $edited->setBinding($duplicate->getBinding())
+                        ->setIsRectoVerso($duplicate->isRectoVerso())
+                        ->setIsPerforated($duplicate->isPerforated());
+            	}
                 
                 $history = new History($this->getEntityManager(), $current, $edited);
                 $this->getEntityManager()->persist($history);
@@ -223,25 +221,23 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         	        ->setISBN($formData['isbn'])
         	        ->setURL($formData['url']);
         	    
-        	    if ($formData['stock']) {
-					if ($formData['internal']) {
-						$binding = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-							->findOneById($formData['binding']);
+				if ($formData['internal']) {
+					$binding = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+						->findOneById($formData['binding']);
 
-						$frontPageColor = $this->getEntityManager()
-							->getRepository('CudiBundle\Entity\Articles\Options\Color')
-							->findOneById($formData['front_color']);
-                        
-                        $action->getEntity()->setNbBlackAndWhite($formData['nb_black_and_white'])
-                        	->setNbColored($formData['nb_colored'])
-                        	->setBinding($binding)
-                        	->setIsOfficial($formData['official'])
-                        	->setIsRectoVerso($formData['rectoverso'])
-                        	->setFrontColor($frontPageColor)
-                        	->setFrontPageTextColored($formData['front_text_colored'])
-                        	->setIsPerforated($formData['perforated']);
-					}
+					$frontPageColor = $this->getEntityManager()
+						->getRepository('CudiBundle\Entity\Articles\Options\Color')
+						->findOneById($formData['front_color']);
+                    
+                    $action->getEntity()->setNbBlackAndWhite($formData['nb_black_and_white'])
+                    	->setNbColored($formData['nb_colored'])
+                    	->setBinding($binding)
+                    	->setIsOfficial($formData['official'])
+                    	->setIsRectoVerso($formData['rectoverso'])
+                    	->setFrontColor($frontPageColor)
+                    	->setFrontPageTextColored($formData['front_text_colored'])
+                    	->setIsPerforated($formData['perforated']);
 				}
 				
 				$action->getEntity()->setIsProf(false);
