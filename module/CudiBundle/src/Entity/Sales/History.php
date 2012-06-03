@@ -15,8 +15,7 @@
  
 namespace CudiBundle\Entity\Sales;
 
-use CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Sales\Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\History")
@@ -44,21 +43,24 @@ class History
 	/**
 	 * @var \CudiBundle\Entity\Sales\Article The oldest version of the two
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Article", cascade={"persist"})
      * @JoinColumn(name="precursor", referencedColumnName="id")
 	 */
 	private $precursor;
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The entitymanager
 	 * @param \CudiBundle\Entity\Sales\Article $article The new version of the article
-	 * @param \CudiBundle\Entity\Sales\Article $precursor The previous version of the article
+	 * @param \CudiBundle\Entity\Sales\Article $precursor The old version of the article
 	 */
-	public function __construct(EntityManager $entityManager, Article $article, Article $precursor)
+	public function __construct(Article $article, Article $precursor = null)
 	{
-		$article->setVersionNumber($precursor->getVersionNumber()+1);
+	    $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
+
+	    $this->precursor->setVersionNumber($article->getVersionNumber())
+	        ->setIsHistory(true);
+	    
+		$article->setVersionNumber($article->getVersionNumber()+1);
 		
 		$this->article = $article;
-		$this->precursor = $precursor;
 	}
 }

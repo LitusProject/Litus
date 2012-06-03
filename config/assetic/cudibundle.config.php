@@ -56,6 +56,8 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
 		),
 		/*'admin_discount' => array(
 			'@common_jquery',

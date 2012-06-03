@@ -129,7 +129,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->post()->toArray();
         	
         	if ($form->isValid($formData)) {
-        	    $history = new History($this->getEntityManager(), $article);
+        	    $history = new History($article);
 				$this->getEntityManager()->persist($history);
         	    
            	    $article->setTitle($formData['title'])
@@ -242,7 +242,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$item->publisher = $article->getPublishers();
 	    	$item->yearPublished = $article->getYearPublished();
 	    	$item->isInternal = $article->isInternal();
-	    	$item->versionNumber = $article->getVersionNumber();
 	    	$result[] = $item;
 	    }
 	    

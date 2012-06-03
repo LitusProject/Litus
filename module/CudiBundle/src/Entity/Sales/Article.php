@@ -425,4 +425,22 @@ class Article
 	{
 	    return $this->discounts;
 	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function duplicate()
+	{
+	    return new Article(
+	        $this->getMainArticle(),
+	        $this->getBarcode(),
+	        $this->getPurchasePrice(),
+	        $this->getSellPrice(),
+	        $this->isBookable(),
+	        $this->isUnbookable(),
+	        $this->getSupplier(),
+	        $this->canExpire(),
+	        $this->getAcademicYear()
+	    );
+	}
 }
