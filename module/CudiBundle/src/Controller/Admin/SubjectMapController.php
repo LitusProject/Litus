@@ -16,7 +16,6 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Form\Admin\Mapping\Add as AddForm;
 
@@ -25,7 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SubjectMapController extends \CommonBundle\Component\Controller\ActionController
+class SubjectMapController extends \CudiBundle\Component\Controller\ActionController
 {
 	public function manageAction()
 	{
@@ -198,40 +197,5 @@ class SubjectMapController extends \CommonBundle\Component\Controller\ActionCont
     	}
     	
     	return $article;
-    }
-    
-    private function _getAcademicYear()
-    {
-        if (null === $this->getParam('academicyear')) {
-    		$start = AcademicYear::getStartOfAcademicYear();
-    	} else {
-    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-    	}
-    	$start->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
-    	
-    	if (null === $academicYear) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No academic year was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_study',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $academicYear;
     }
 }

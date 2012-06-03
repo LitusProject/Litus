@@ -8,7 +8,7 @@
 	<div id="controller_action">
 		<h1>Article</h1>
 		
-		<p>Title: <b>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</b></p>
+		<p>Title: <b>{{ article.getTitle() }}</b></p>
 		<p>Author: <b>{{ article.getAuthors() }}</b></p>
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
@@ -19,18 +19,30 @@
 	</div>
 	
 	<aside>
-	    {% if hasAccess('admin_sales_article', 'manage') %}
-	    	<div class="sidebox">
-	    	    <div class="title">Create Sale Article</div>
-	    	   	<div class="content">
-	    	    	<p>
-	    	        	<i>Please hit the link below to create a sale article for this!</i>
-	    	        </p>
-	    	        <p>
-	    	           	<a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
-	    	        </p>
-	    	    </div>
-	    	</div>
+	    {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
+	        <div class="sidebox">
+	            <div class="title">Edit Sale Article</div>
+	           	<div class="content">
+	            	<p>
+	                	<i>Please hit the link below to edit the sale article for this!</i>
+	                </p>
+	                <p>
+	                   	<a href="{{ url('admin_sales_article', {"action": "edit", "id": saleArticle.getId()}) }}">&rarr; Edit Sale Article</a>
+	                </p>
+	            </div>
+	        </div>
+	    {% elseif saleArticle is null and hasAccess('admin_sales_article', 'add') %}
+	        <div class="sidebox">
+	            <div class="title">Create Sale Article</div>
+	           	<div class="content">
+	            	<p>
+	                	<i>Please hit the link below to create a sale article for this!</i>
+	                </p>
+	                <p>
+	                   	<a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}">&rarr; Create Sale Article</a>
+	                </p>
+	            </div>
+	        </div>
 	    {% endif %}
 	    {% if hasAccess('admin_article_subject', 'manage') %}
 	    	<div class="sidebox">

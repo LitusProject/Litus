@@ -1,6 +1,7 @@
 <?php
 return array(
     'CudiBundle\Module'                                   => __DIR__ . '/Module.php',
+    'CudiBundle\Component\Controller\ActionController'    => __DIR__ . '/src/Component/Controller/ActionController.php',
     'CudiBundle\Component\Validator\UniqueArticleBarcode' => __DIR__ . '/src/Component/Validator/UniqueArticleBarcode.php',
     'CudiBundle\Controller\Admin\ArticleController'       => __DIR__ . '/src/Controller/Admin/ArticleController.php',
     'CudiBundle\Controller\Admin\CommentController'       => __DIR__ . '/src/Controller/Admin/CommentController.php',
@@ -20,7 +21,6 @@ return array(
     'CudiBundle\Entity\Files\File'                        => __DIR__ . '/src/Entity/Files/File.php',
     'CudiBundle\Entity\Files\Mapping'                     => __DIR__ . '/src/Entity/Files/Mapping.php',
     'CudiBundle\Entity\Log'                               => __DIR__ . '/src/Entity/Log.php',
-    'CudiBundle\Entity\Sales\AcademicYearMap'             => __DIR__ . '/src/Entity/Sales/AcademicYearMap.php',
     'CudiBundle\Entity\Sales\Article'                     => __DIR__ . '/src/Entity/Sales/Article.php',
     'CudiBundle\Entity\Sales\Booking'                     => __DIR__ . '/src/Entity/Sales/Booking.php',
     'CudiBundle\Entity\Sales\Discounts\Discount'          => __DIR__ . '/src/Entity/Sales/Discounts/Discount.php',

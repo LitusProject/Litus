@@ -24,6 +24,7 @@ class Article extends EntityRepository
 			        $query->expr()->eq('a.isProf', 'false')
 			    )
 			)
+			->orderBy('a.title', 'ASC')
 			->getQuery()
 			->getResult();
 

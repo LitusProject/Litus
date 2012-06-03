@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ArticleController extends \CommonBundle\Component\Controller\ActionController
+class ArticleController extends \CudiBundle\Component\Controller\ActionController
 {
 
     public function manageAction()
@@ -179,9 +179,14 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         	}
         }
         
+        $saleArticle = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByArticleAndAcademicYear($article, $this->_getAcademicYear());
+        
         return array(
             'form' => $form,
         	'article' => $article,
+        	'saleArticle' => $saleArticle,
         );
 	}
 

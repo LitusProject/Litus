@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Entity\Sales;
 
-use CudiBundle\Entity\Article as MainArticle,
+use CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime;
 
@@ -98,6 +99,14 @@ class Article
 	 * @Column(type="boolean")
 	 */
 	private $canExpire;
+	
+	/**
+	 * @var \CommonBundle\Entity\General\AcademicYear The year of the article
+	 *
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+	 * @JoinColumn(name="academic_year", referencedColumnName="id")
+	 */
+	private $academicYear;
     
     /**
      * @var integer The version number of this article
@@ -137,7 +146,7 @@ class Article
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
      * @param boolean $canExpire Flag whether the aritcle can expire
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire)
+    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, Supplier $supplier, $canExpire, AcademicYear $academicYear)
     {
         $this->setMainArticle($mainArticle)
             ->setBarcode($barcode)
@@ -148,7 +157,8 @@ class Article
             ->setSupplier($supplier)
             ->setCanExpire($canExpire)
             ->setVersionNumber(1)
-            ->setIsHistory(false);
+            ->setIsHistory(false)
+            ->setAcademicYear($academicYear);
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
@@ -319,6 +329,25 @@ class Article
 	{
 		$this->canExpire = $canExpire;
 		return $this;
+	}
+	
+	/**
+	 * @return \CommonBundle\Entity\General\AcademicYear
+	 */
+	public function getAcademicYear()
+	{
+	    return $this->academicYear;
+	}
+	
+	/**
+	 * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+	 *
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function setAcademicYear(AcademicYear $academicYear)
+	{
+	    $this->academicYear = $academicYear;
+	    return $this;
 	}
 	
 	/**
