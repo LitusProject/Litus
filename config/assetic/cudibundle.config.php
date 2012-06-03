@@ -59,6 +59,18 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_supplier' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
+		'admin_supplier_user' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		/*'admin_discount' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -107,13 +119,6 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
-		),
-		'admin_supplier' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
 		),
 		'admin_financial' => array(
 			'@common_jquery',

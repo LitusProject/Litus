@@ -13,16 +13,19 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Comment;
+namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Select,
+	CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
+	CudiBundle\Entity\Files\Mapping as FileMapping,
+	Zend\Form\Element\Checkbox,
+	Zend\Form\Element\File as FileElement,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\TextArea;
+	Zend\Form\Element\Text;
 
 /**
- * Add Comment
+ * Add File
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -31,24 +34,42 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-             
-        $field = new TextArea('text');
-        $field->setLabel('Comment')
+                
+        $this->setAttrib('id', 'uploadFile');
+     
+        $field = new Text('description');
+        $field->setLabel('Description')
+			->setAttrib('size', 70)
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setMultiOptions(array('internal' => 'Internal', 'external' => 'External'))
+        $field = new FileElement('file');
+        $field->setLabel('File')
+        	->setAttrib('size', 70)
         	->setRequired()
+        	->setDecorators(array(new FileDecorator()));
+        $this->addElement($field);
+        
+        $field = new Checkbox('printable');
+        $field->setLabel('Printable')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'comment_add')
+                ->setAttrib('class', 'file_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+    }
+    
+    public function populateFromFile(FileMapping $mapping)
+    {
+    	$this->populate(
+    	    array(
+    		    'description' => $mapping->getFile()->getDescription(),
+    		    'printable' => $mapping->isPrintable()
+    	    )
+    	);
     }
 }

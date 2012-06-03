@@ -47,6 +47,18 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	
 	protected function _initAcl()
 	{
+	    $this->installRoles(
+	        array(
+	            'supplier' => array(
+	            	'system' => true,
+	                'parents' => array(
+	                    'guest',
+	                ),
+	                'actions' => array(
+	                )
+	            ),
+	        )
+	    );
 	}
 	
 	private function _installBinding()

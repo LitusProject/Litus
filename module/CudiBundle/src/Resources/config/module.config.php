@@ -6,10 +6,12 @@ return array(
 				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallController',
 				
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
-				'admin_article_subject'  => 'CudiBundle\Controller\Admin\SubjectMapController',
-				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
-				'admin_file'	         => 'CudiBundle\Controller\Admin\FileController',
+				'admin_article_subject'  => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
+				'admin_comment'	         => 'CudiBundle\Controller\Admin\Article\CommentController',
+				'admin_file'	         => 'CudiBundle\Controller\Admin\Article\FileController',
 				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
+				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
 				/*'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'         => 'CudiBundle\Controller\Admin\DeliveryController',
@@ -18,7 +20,6 @@ return array(
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
 				'admin_period'	         => 'CudiBundle\Controller\Admin\PeriodController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
-				'admin_supplier'	     => 'CudiBundle\Controller\Admin\SupplierController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
@@ -238,6 +239,60 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
 					'action'     => 'search',
+				),
+			),
+		),
+		'admin_supplier' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_supplier_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/manage[/:page]',
+				'constraints' => array(
+				    'page' => '[0-9]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_supplier',
+					'action'     => 'manage',
+				), 
+			),
+		),
+		'admin_supplier_user' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/user[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier_user',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_supplier_user_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/user/manage/page[/:page]',
+				'constraints' => array(
+				    'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier_user',
+					'action'     => 'manage',
 				),
 			),
 		),
@@ -477,34 +532,6 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_sale',
 					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_supplier' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_supplier',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_supplier_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier/search[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_supplier',
-					'action'     => 'search',
 				),
 			),
 		),

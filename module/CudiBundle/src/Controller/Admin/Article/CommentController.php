@@ -13,11 +13,11 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Admin;
+namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Comments\Comment,
-    CudiBundle\Form\Admin\Comment\Add as AddForm;
+    CudiBundle\Form\Admin\Article\Comment\Add as AddForm;
 
 /**
  * CommentController

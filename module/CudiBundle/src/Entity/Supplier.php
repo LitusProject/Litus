@@ -49,7 +49,7 @@ class Supplier
 	/**
 	 * @var \CommonBundle\Entity\General\Address The address of the supplier
 	 *
-	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
 	 * @JoinColumn(name="address", referencedColumnName="id")
 	 */
 	private $address;
@@ -89,6 +89,17 @@ class Supplier
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @param string $name
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
     
     /**

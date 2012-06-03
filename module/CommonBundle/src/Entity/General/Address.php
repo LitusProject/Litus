@@ -23,6 +23,71 @@ namespace CommonBundle\Entity\General;
  */
 class Address 
 {
+	/**
+	 * @static
+	 * @var array All the allowed country values
+	 */
+	public static $countries = array(
+		'Americas' => array(
+			'CA' => 'Canada',
+			'US' => 'United States',
+		),
+		'Europe' => array(
+			'AL' => 'Albania',
+			'AD' => 'Andorra',
+			'AT' => 'Austria',
+			'BY' => 'Belarus',
+			'BE' => 'Belgium',
+			'BA' => 'Bosnia and Herzegovina',
+			'BG' => 'Bulgaria',
+			'HR' => 'Croatia',
+			'CY' => 'Cyprus',
+			'CZ' => 'Czech Republic',
+			'DK' => 'Denmark',
+			'DD' => 'East Germany',
+			'EE' => 'Estonia',
+			'FO' => 'Faroe Islands',
+			'FI' => 'Finland',
+			'FR' => 'France',
+			'DE' => 'Germany',
+			'GI' => 'Gibraltar',
+			'GR' => 'Greece',
+			'GG' => 'Guernsey',
+			'HU' => 'Hungary',
+			'IS' => 'Iceland',
+			'IE' => 'Ireland',
+			'IM' => 'Isle of Man',
+			'IT' => 'Italy',
+			'JE' => 'Jersey',
+			'LV' => 'Latvia',
+			'LI' => 'Liechtenstein',
+			'LT' => 'Lithuania',
+			'LU' => 'Luxembourg',
+			'MK' => 'Macedonia',
+			'MT' => 'Malta',
+			'MD' => 'Moldova',
+			'MC' => 'Monaco',
+			'ME' => 'Montenegro',
+			'NL' => 'Netherlands',
+			'NO' => 'Norway',
+			'PL' => 'Poland',
+			'PT' => 'Portugal',
+			'RO' => 'Romania',
+			'RU' => 'Russia',
+			'SM' => 'San Marino',
+			'RS' => 'Serbia',
+			'CS' => 'Serbia and Montenegro',
+			'SK' => 'Slovakia',
+			'SI' => 'Slovenia',
+			'ES' => 'Spain',
+			'SE' => 'Sweden',
+			'CH' => 'Switzerland',
+			'UA' => 'Ukraine',
+			'GB' => 'United Kingdom',
+			'VA' => 'Vatican City',
+		),
+	);
+
     /**
      * @var integer The ID of the address 
      *
@@ -76,11 +141,11 @@ class Address
 	 */
 	public function __construct($street, $number, $postal, $city, $country)
 	{
-	    $this->street = $street;
-	    $this->number = $number;
-	    $this->postal = $postal;
-	    $this->city = $city;
-	    $this->country = $country;
+	    $this->setStreet($street)
+	        ->setNumber($number)
+	        ->setPostal($postal)
+	        ->setCity($city)
+	        ->setCountry($country);
 	}
 	
 	/**
@@ -170,9 +235,21 @@ class Address
 	/**
 	 * @return string
 	 */
-	public function getCountry()
+	public function getCountryCode()
 	{
 	    return $this->country;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getCountry()
+	{
+	    foreach(self::$countries as $continent) {
+	        if (array_key_exists($this->country, $continent))
+	            return $continent[$this->country];
+	    }
+	    return '';
 	}
 	
 	/**
@@ -182,7 +259,24 @@ class Address
 	 */
 	public function setCountry($country)
 	{
-	    $this->country = $country;
+		if (self::isValidCountry($country))
+			$this->country = $country;
+	    
 	    return $this;
+	}
+	
+	/**
+	 * Checks whether the given status is valid.
+	 *
+	 * @param $status string A status
+	 * @return bool
+	 */
+	public static function isValidCountry($country)
+	{
+	    foreach(self::$countries as $continent) {
+    	    if (array_key_exists($country, $continent))
+    	        return true;
+    	}
+    	return false;
 	}
 }

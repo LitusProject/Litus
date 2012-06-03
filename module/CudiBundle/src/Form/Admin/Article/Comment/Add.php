@@ -13,52 +13,41 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Mapping;
+namespace CudiBundle\Form\Admin\Article\Comment;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Hidden,
+	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Checkbox,
-	Zend\Validator\Int as IntValidator;
+	Zend\Form\Element\TextArea;
 
 /**
- * Add Mapping
+ * Add Comment
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($opts = null)
+    public function __construct($options = null)
     {
-        parent::__construct($opts);
-                 
-        $field = new Hidden('subject_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'subjectId');
-        $this->addElement($field);
-         
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-			->setAttrib('size', 70)
-			->setAttrib('id', 'subjectSearch')
-			->setAttrib('autocomplete', 'off')
-			->setAttrib('data-provide', 'typeahead')
+        parent::__construct($options);
+             
+        $field = new TextArea('text');
+        $field->setLabel('Comment')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory')
+        
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setMultiOptions(array('internal' => 'Internal', 'external' => 'External'))
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-
+        
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'article_subject_mapping_add')
+                ->setAttrib('class', 'comment_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
