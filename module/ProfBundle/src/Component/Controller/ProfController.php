@@ -15,8 +15,11 @@
  
 namespace ProfBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
+    DateInterval,
+    DateTime,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -53,6 +56,15 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
    		$start = AcademicYear::getStartOfAcademicYear();
     	$start->setTime(0, 0);
+    	    	
+    	$now = new DateTime();
+    	$profStart = new DateTime($this->getEntityManager()
+    		->getRepository('CommonBundle\Entity\General\Config')
+    		->getConfigValue('cudi.prof_start_academic_year'));
+    	if ($now > $profStart) {
+    	    $start->add(new DateInterval('P1Y2M'));
+    	    $start = AcademicYear::getStartOfAcademicYear($start);
+    	}
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -76,7 +88,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     		
     		return;
     	}
-    	
+
     	return $academicYear;
     }
 }
