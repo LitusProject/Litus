@@ -238,17 +238,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	case 'title':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByTitle($this->getParam('string'));
+	    			->findAllByTitleAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
 	    		break;
 	    	case 'author':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByAuthor($this->getParam('string'));
+	    			->findAllByAuthorAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
 	    		break;
 	    	case 'publisher':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByPublisher($this->getParam('string'));
+	    			->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
 	    		break;
 	    }
 	    

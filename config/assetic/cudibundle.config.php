@@ -144,7 +144,7 @@ return array(
 			'@queue_js',
 			'@bootstrap_js_alert',
 			'@common_socket',
-		),
+		),*/
 		'supplier' => array(
 			'@common_jquery',
 			'@bootstrap_css',
@@ -158,7 +158,7 @@ return array(
 			'@bootstrap_js_dropdown',
 			'@bootstrap_js_alert',
 			'@supplier_css',
-		),*/
+		),
 	),
 	'routes' => array(),
 );

@@ -22,11 +22,11 @@ return array(
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
-				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
+				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',*/
 				
 				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
-				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',*/
+				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -218,9 +218,10 @@ return array(
 		'admin_sales_article_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/article/manage[/:page]',
+				'route' => '/admin/sales/article/manage[/:page][/:academicyear]',
 				'constraints' => array(
 					'page' => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
 		        ),
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
@@ -231,10 +232,11 @@ return array(
 		'admin_sales_article_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/article/search[/:field[/:string]]',
+				'route' => '/admin/sales/article/:academicyear/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
 		        ),
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
@@ -562,7 +564,7 @@ return array(
 					'action'     => 'index',
 				),
 			),
-		),
+		),*/
 		'supplier' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -604,6 +606,6 @@ return array(
 					'action'     => 'manage',
 				),
 			),
-		),*/
+		),
 	),
 );
