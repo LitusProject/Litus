@@ -13,11 +13,11 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Admin;
+namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
-    CudiBundle\Form\Admin\Mapping\Add as AddForm;
+    CudiBundle\Form\Admin\Article\Mapping\Add as AddForm;
 
 /**
  * SubjectMapController

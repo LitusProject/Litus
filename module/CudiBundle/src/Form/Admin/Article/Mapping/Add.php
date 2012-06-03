@@ -13,63 +13,53 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\File;
+namespace CudiBundle\Form\Admin\Article\Mapping;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
-	CudiBundle\Entity\Files\Mapping as FileMapping,
-	Zend\Form\Element\Checkbox,
-	Zend\Form\Element\File as FileElement,
+	Zend\Form\Element\Hidden,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+	Zend\Form\Element\Text,
+	Zend\Form\Element\Checkbox,
+	Zend\Validator\Int as IntValidator;
 
 /**
- * Add File
+ * Add Mapping
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+    public function __construct($opts = null)
     {
-        parent::__construct($options);
-                
-        $this->setAttrib('id', 'uploadFile');
-     
-        $field = new Text('description');
-        $field->setLabel('Description')
+        parent::__construct($opts);
+                 
+        $field = new Hidden('subject_id');
+        $field->setRequired()
+            ->addValidator(new IntValidator())
+            ->setAttrib('id', 'subjectId');
+        $this->addElement($field);
+         
+        $field = new Text('subject');
+        $field->setLabel('Subject')
 			->setAttrib('size', 70)
+			->setAttrib('id', 'subjectSearch')
+			->setAttrib('autocomplete', 'off')
+			->setAttrib('data-provide', 'typeahead')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
-        $field = new FileElement('file');
-        $field->setLabel('File')
-        	->setAttrib('size', 70)
+         
+        $field = new Checkbox('mandatory');
+        $field->setLabel('Mandatory')
         	->setRequired()
-        	->setDecorators(array(new FileDecorator()));
-        $this->addElement($field);
-        
-        $field = new Checkbox('printable');
-        $field->setLabel('Printable')
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'file_add')
+                ->setAttrib('class', 'article_subject_mapping_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-    }
-    
-    public function populateFromFile(FileMapping $mapping)
-    {
-    	$this->populate(
-    	    array(
-    		    'description' => $mapping->getFile()->getDescription(),
-    		    'printable' => $mapping->isPrintable()
-    	    )
-    	);
     }
 }

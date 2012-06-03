@@ -13,12 +13,12 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Admin;
+namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Files\File,
-	CudiBundle\Form\Admin\File\Add as AddForm,
-	CudiBundle\Form\Admin\File\Edit as EditForm,
+	CudiBundle\Form\Admin\Article\File\Add as AddForm,
+	CudiBundle\Form\Admin\Article\File\Edit as EditForm,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
 	Zend\Http\Headers;
 
