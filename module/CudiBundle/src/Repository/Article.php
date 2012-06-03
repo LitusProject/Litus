@@ -57,7 +57,7 @@ class Article extends EntityRepository
     		->from('CudiBundle\Entity\Article', 'a')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
+                    $query->expr()->like($query->expr()->lower('a.authors'), ':author'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.isProf', 'false')
                 )
@@ -77,7 +77,7 @@ class Article extends EntityRepository
     		->from('CudiBundle\Entity\Article', 'a')
     		->where(
     		    $query->expr()->andX(
-    		        $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
+    		        $query->expr()->like($query->expr()->lower('a.publishers'), ':publisher'),
     		        $query->expr()->eq('a.isHistory', 'false'),
     		        $query->expr()->eq('a.isProf', 'false')
     		    )

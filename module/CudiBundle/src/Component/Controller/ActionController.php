@@ -56,4 +56,14 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     	
     	return $academicYear;
     }
+    
+    protected function _getCurrentAcademicYear()
+    {
+    	$start = AcademicYear::getStartOfAcademicYear();
+    	$start->setTime(0, 0);
+
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+    }
 }

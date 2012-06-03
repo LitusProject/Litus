@@ -214,6 +214,33 @@ return array(
 				),
 			),
 		),
+		'admin_sales_article_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article/manage[/:page]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'manage',
+				), 
+			),
+		),
+		'admin_sales_article_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article/search[/:field[/:string]]',
+				'constraints' => array(
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'search',
+				),
+			),
+		),
 		/*'admin_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(

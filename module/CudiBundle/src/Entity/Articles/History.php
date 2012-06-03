@@ -18,8 +18,7 @@ namespace CudiBundle\Entity\Articles;
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Articles\SubjectMap as SubjectMapping,
     CudiBundle\Entity\Comments\Mapping as CommentMapping,
-    CudiBundle\Entity\Files\Mapping as FileMapping,
-	Doctrine\ORM\EntityManager;
+    CudiBundle\Entity\Files\Mapping as FileMapping;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\History")
@@ -53,11 +52,10 @@ class History
 	private $precursor;
 	
 	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The entitymanager
 	 * @param \CudiBundle\Entity\Article $article The new version of the article
 	 * @param \CudiBundle\Entity\Article $precursor The old version of the article
 	 */
-	public function __construct(EntityManager $entityManager, Article $article, Article $precursor = null)
+	public function __construct(Article $article, Article $precursor = null)
 	{
 	    $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
 

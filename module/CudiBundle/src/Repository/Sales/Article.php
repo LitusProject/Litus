@@ -89,4 +89,69 @@ class Article extends EntityRepository
         
         return null;
     }
+    
+    public function findAllByTitle($title)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Sales\Article', 'a')
+    		->innerJoin('a.mainArticle', 'm')
+    		->where($query->expr()->andX(
+    		        $query->expr()->like($query->expr()->lower('m.title'), ':title'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
+    			)
+    		)
+    		->setParameter('title', '%'.strtolower($title).'%')
+    		->orderBy('m.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByAuthor($author)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
+                )
+            )
+            ->setParameter('author', '%'.strtolower($author).'%')
+    		->orderBy('m.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByPublisher($publisher)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->innerJoin('a.mainArticle', 'm')
+    		->where(
+    		    $query->expr()->andX(
+    		        $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
+    		        $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+    		        $query->expr()->eq('m.isProf', 'false')
+    		    )
+    		)
+    		->setParameter('publisher', '%'.strtolower($publisher).'%')
+    		->orderBy('m.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
 }
