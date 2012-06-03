@@ -31,6 +31,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            	'value'       => 'http://www.vtk.be',
 	            	'description' => 'The URL of the union',
 	            ),
+	            array(
+	                'key'         => 'cudi.prof_start_academic_year',
+	                'value'       => '2012-8-1 0:0:0',
+	                'description' => 'The start date of the academic year for a prof',
+	            ),
 	    	)
 	    );
 	}
