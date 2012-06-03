@@ -195,6 +195,27 @@ return array(
                                             'bootstrap/js/bootstrap-typeahead.js'
                                         ),
                                     ),
+                                    'site_css' => array(
+                                    	'assets' => array(
+                                    		'site/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'site_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'site_css.css',
+                                            'media' => 'print'
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),
@@ -270,7 +291,7 @@ return array(
         ),
     ),
     'routes' => array(
-        'home' => array(
+        'index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '/',
