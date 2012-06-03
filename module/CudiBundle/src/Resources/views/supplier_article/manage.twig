@@ -1,0 +1,25 @@
+{% extends 'supplier/base.twig' %}
+
+{% block content %}
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Title</th>
+            <th width="120px">Authors</th>
+            <th width="220px">Publisher</th>
+            <th width="80px">Publish Year</th>
+            <th width="100px">Barcode</th>
+            <th width="70px">In Stock</th>
+        </tr>
+        
+    	{% for article in articles %}
+    	    <tr>
+    	        <td>{{ article.getMainArticle().getTitle() }}</td>
+    	        <td>{{ article.getMainArticle().getAuthors() }}</td>
+    	        <td>{{ article.getMainArticle().getPublishers() }}</td>
+    	        <td>{{ article.getMainArticle().getYearPublished() }}</td>
+    	        <td>{{ article.getBarcode() }}</td>
+    	        <td>{{ article.getStockValue() }}</td>
+    	    </tr>
+    	{% endfor %}
+    </table>
+{% endblock %}

@@ -2,6 +2,7 @@
 return array(
     'CudiBundle\Module'                                        => __DIR__ . '/Module.php',
     'CudiBundle\Component\Controller\ActionController'         => __DIR__ . '/src/Component/Controller/ActionController.php',
+    'CudiBundle\Component\Controller\SupplierController'       => __DIR__ . '/src/Component/Controller/SupplierController.php',
     'CudiBundle\Component\Validator\UniqueArticleBarcode'      => __DIR__ . '/src/Component/Validator/UniqueArticleBarcode.php',
     'CudiBundle\Controller\Admin\Article\CommentController'    => __DIR__ . '/src/Controller/Admin/Article/CommentController.php',
     'CudiBundle\Controller\Admin\Article\FileController'       => __DIR__ . '/src/Controller/Admin/Article/FileController.php',
@@ -11,6 +12,9 @@ return array(
     'CudiBundle\Controller\Admin\Sales\ArticleController'      => __DIR__ . '/src/Controller/Admin/Sales/ArticleController.php',
     'CudiBundle\Controller\Admin\Supplier\SupplierController'  => __DIR__ . '/src/Controller/Admin/Supplier/SupplierController.php',
     'CudiBundle\Controller\Admin\Supplier\UserController'      => __DIR__ . '/src/Controller/Admin/Supplier/UserController.php',
+    'CudiBundle\Controller\Supplier\ArticleController'         => __DIR__ . '/src/Controller/Supplier/ArticleController.php',
+    'CudiBundle\Controller\Supplier\AuthController'            => __DIR__ . '/src/Controller/Supplier/AuthController.php',
+    'CudiBundle\Controller\Supplier\IndexController'           => __DIR__ . '/src/Controller/Supplier/IndexController.php',
     'CudiBundle\Entity\Article'                                => __DIR__ . '/src/Entity/Article.php',
     'CudiBundle\Entity\Articles\External'                      => __DIR__ . '/src/Entity/Articles/External.php',
     'CudiBundle\Entity\Articles\History'                       => __DIR__ . '/src/Entity/Articles/History.php',

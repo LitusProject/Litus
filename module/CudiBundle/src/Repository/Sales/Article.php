@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as ArticleEntity,
+    CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -90,7 +91,7 @@ class Article extends EntityRepository
         return null;
     }
     
-    public function findAllByTitle($title)
+    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear)
     {
     	$query = $this->_em->createQueryBuilder();
     	$resultSet = $query->select('a')
@@ -99,11 +100,13 @@ class Article extends EntityRepository
     		->where($query->expr()->andX(
     		        $query->expr()->like($query->expr()->lower('m.title'), ':title'),
                     $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false')
     			)
     		)
     		->setParameter('title', '%'.strtolower($title).'%')
+			->setParameter('academicYear', $academicYear->getId())
     		->orderBy('m.title', 'ASC')
     		->getQuery()
     		->getResult();
@@ -111,21 +114,23 @@ class Article extends EntityRepository
     	return $resultSet;
     }
     
-    public function findAllByAuthor($author)
+    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear)
     {
     	$query = $this->_em->createQueryBuilder();
     	$resultSet = $query->select('a')
-    		->from('CudiBundle\Entity\Article', 'a')
+    		->from('CudiBundle\Entity\Sales\Article', 'a')
     		->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
                     $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
                     $query->expr()->eq('m.isProf', 'false')
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
+			->setParameter('academicYear', $academicYear->getId())
     		->orderBy('m.title', 'ASC')
     		->getQuery()
     		->getResult();
@@ -133,25 +138,51 @@ class Article extends EntityRepository
     	return $resultSet;
     }
     
-    public function findAllByPublisher($publisher)
+    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear)
     {
     	$query = $this->_em->createQueryBuilder();
     	$resultSet = $query->select('a')
-    		->from('CudiBundle\Entity\Article', 'a')
+    		->from('CudiBundle\Entity\Sales\Article', 'a')
     		->innerJoin('a.mainArticle', 'm')
     		->where(
     		    $query->expr()->andX(
     		        $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
     		        $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.academicYear', ':academicYear'),
                     $query->expr()->eq('m.isHistory', 'false'),
     		        $query->expr()->eq('m.isProf', 'false')
     		    )
     		)
     		->setParameter('publisher', '%'.strtolower($publisher).'%')
+			->setParameter('academicYear', $academicYear->getId())
     		->orderBy('m.title', 'ASC')
     		->getQuery()
     		->getResult();
     		
     	return $resultSet;
+    }
+    
+    public function findAllBySupplierAndAcademicYear(Supplier $supplier, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('CudiBundle\Entity\Sales\Article', 'a')
+        	->innerJoin('a.mainArticle', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('a.supplier', ':supplier'),
+        	        $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+        	        $query->expr()->eq('m.isProf', 'false')
+        	    )
+        	)
+        	->setParameter('supplier', $supplier->getId())
+			->setParameter('academicYear', $academicYear->getId())
+        	->orderBy('m.title', 'ASC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
     }
 }
