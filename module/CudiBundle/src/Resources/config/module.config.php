@@ -202,10 +202,11 @@ return array(
 		'admin_sales_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/article[/:action[/:id]]',
+				'route' => '/admin/sales/article[/:action[/:id]][/:academicyear]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_article',

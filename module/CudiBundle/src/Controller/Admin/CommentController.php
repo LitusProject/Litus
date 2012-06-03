@@ -24,7 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class CommentController extends \CommonBundle\Component\Controller\ActionController
+class CommentController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {

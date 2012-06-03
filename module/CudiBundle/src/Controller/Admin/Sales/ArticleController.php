@@ -24,19 +24,25 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ArticleController extends \CommonBundle\Component\Controller\ActionController
+class ArticleController extends \CudiBundle\Component\Controller\ActionController
 {
-
     public function manageAction()
     {
+        $academicYear = $this->_getAcademicYear();
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Article')
-                ->findAll(),
+                ->findAllByAcademicYear($academicYear),
             $this->getParam('page')
         );
         
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+            
         return array(
+            'academicYears' => $academicYears,
+            'currentAcademicYear' => $academicYear,
         	'paginator' => $paginator,
         	'paginationControl' => $this->paginator()->createControl(true)
         );
@@ -65,8 +71,9 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         	        $formData['bookable'],
         	        $formData['unbookable'],
         	        $supplier,
-        	        $formData['can_expire']
-        	        );
+        	        $formData['can_expire'],
+        	        $this->_getAcademicYear()
+        	    );
         	    
         	    $this->getEntityManager()->persist($saleArticle);
         	    

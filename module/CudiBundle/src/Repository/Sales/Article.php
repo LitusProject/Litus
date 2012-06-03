@@ -2,7 +2,10 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Article as ArticleEntity,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Article
@@ -12,18 +15,71 @@ use Doctrine\ORM\EntityRepository;
  */
 class Article extends EntityRepository
 {
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('CudiBundle\Entity\Sales\Article', 'a')
+			->innerJoin('a.mainArticle', 'm')
+			->where(
+			    $query->expr()->andX(
+			        $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.academicYear', ':academicYear')
+			    )
+			)
+			->setParameter('academicYear', $academicYear->getId())
+			->orderBy('m.title', 'ASC')
+			->getQuery()
+			->getResult();
+
+        return $resultSet;
+    }
+    
+    public function findOneByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('a')
+			->from('CudiBundle\Entity\Sales\Article', 'a')
+			->where(
+			    $query->expr()->andX(
+			        $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.mainArticle', ':article'),
+			        $query->expr()->eq('a.academicYear', ':academicYear')
+			    )
+			)
+			->setParameter('article', $article->getId())
+			->setParameter('academicYear', $academicYear->getId())
+        	->setMaxResults(1)
+			->getQuery()
+			->getResult();
+
+       if (isset($resultSet[0]))
+           return $resultSet[0];
+       
+       return null;
+    }
+    
     public function findOneByBarcode($barcode)
     {
+   		$start = AcademicYearUtil::getStartOfAcademicYear();
+    	$start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+            	
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
         	->from('CudiBundle\Entity\Sales\Article', 'a')
         	->where(
         	    $query->expr()->andX(
         	        $query->expr()->eq('a.isHistory', 'false'),
-        	        $query->expr()->eq('a.barcode', ':barcode')
+        	        $query->expr()->eq('a.barcode', ':barcode'),
+			        $query->expr()->eq('a.academicYear', ':academicYear')
         	    )
         	)
         	->setParameter('barcode', $barcode)
+			->setParameter('academicYear', $academicYear->getId())
         	->setMaxResults(1)
         	->getQuery()
         	->getResult();
