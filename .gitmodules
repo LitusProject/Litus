@@ -13,3 +13,6 @@
 [submodule "module/CommonBundle/src/Resources/assets/bootstrap"]
 	path = module/CommonBundle/src/Resources/assets/bootstrap
 	url = git://github.com/twitter/bootstrap.git
+[submodule "vendor/EdpMarkdown"]
+	path = vendor/EdpMarkdown
+	url = git://github.com/EvanDotPro/EdpMarkdown.git

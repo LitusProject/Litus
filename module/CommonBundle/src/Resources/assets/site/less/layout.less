@@ -1,0 +1,228 @@
+/**
+ * Layout
+ *
+ * Copyright 2011 Litus
+ *
+ * Author: Kristof Mariën <kristof.marien@litus.cc>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ */
+ 
+ body {
+     background: #252525;
+ }
+ 
+ header {
+     padding-top: 40px;
+     .verticalGradient(@cHeaderDark, @cHeaderLight);
+     margin-bottom: 15px;
+     
+     h1 {
+         color: @cWhite;
+         text-shadow: 0 1px 1px rgba(0,0,0,.3);
+         padding-bottom: 20px;
+     }
+     
+     .inner {
+     	background: transparent url(/_site/img/grid-18px.png) top center;
+     	padding: 45px 0 10px 0;
+     	.box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
+     }
+     
+     .carousel {
+         img {
+             width: 940px;
+             height: 150px;
+         }
+     }
+ }
+ 
+ .navbar {
+ 	.auth-nav {
+ 	    #accountDropdown {
+ 	        .profile-wrapper {
+ 	            height: 18px;
+ 	            display: block;
+ 	            position: relative;
+ 	            float: left;
+ 	        }
+ 	        
+ 	        .profile {
+ 	            margin: -2px 4px 0 0;
+ 	            background: transparent url(../img/profile.png) 0 0;
+ 	            display: inline-block;
+ 	            width: 21px;
+ 	            height: 22px;
+ 	        }
+ 	        
+ 	        &:hover,
+ 	        &.open {
+ 	            .profile {
+ 	                background-position: 0 -30px;
+ 	            }
+ 	        }
+ 	        
+ 	        .fullName {
+ 	            display: block;
+ 	        }
+ 	        
+ 	        .metadata {
+ 	            display: block;
+ 	            font-size: 12px;
+ 	            color: @cGray;
+ 	        }
+ 	    }
+ 	
+ 	    #loginDropdown {
+ 	        li {
+ 	            padding: 10px;
+ 	            
+ 	            input[type="checkbox"],
+ 	            label {
+ 	                margin: 0;
+ 	            }
+ 	        }
+ 	    }
+ 	}
+ }
+ 
+ .navbar-inner-clean {
+ 	min-height: @navbarHeight;
+ 	padding-left:  20px;
+ 	padding-right: 20px;
+ 	background-color: @navbarBackgroundHighlight;
+ 	.box-shadow(~"0 1px 3px rgba(0,0,0,.25)");
+ }
+ 
+ .navbar .nav > li > a {
+   float: none;
+   // Vertically center the text given @navbarHeight
+   @elementHeight: 20px;
+   padding: ((@navbarHeight - @elementHeight) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
+   line-height: 19px;
+   color: @navbarLinkColor;
+   text-decoration: none;
+   text-shadow: none !important;
+ }
+ 
+ .navbar .nav > li > a:hover {
+   background-color: @navbarLinkBackgroundHover; // "transparent" is default to differentiate :hover from .active
+   color: @navbarLinkColorHover;
+   text-decoration: none;
+ }
+ 
+ .navbar .nav .active > a,
+ .navbar .nav .active > a:hover {
+	@elementHeight: 28px;
+	@elementMargin: 4px;
+	padding: ((@navbarHeight - @elementHeight - @elementMargin) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
+	margin: @elementMargin 0;
+	line-height: 19px;
+	color: @navbarLinkColorActive;
+	text-decoration: none;
+	background-color: @navbarLinkBackgroundActive;
+	.border-radius(4px);
+	border: 1px solid @grayLight;
+ }
+ 
+ .navbar .nav li.dropdown .dropdown-toggle .caret,
+ .navbar .nav li.dropdown.open .caret {
+   	border-top-color: @navbarLinkColorActive;
+   	border-bottom-color: @navbarLinkColorActive;
+ }
+ 
+ .carousel-control {
+ 	top: 50%;
+ }
+ 
+ #page {
+     background: #eee;
+     padding-bottom: 30px;
+     
+     #content {
+ 	    .container {
+ 	    	padding: 20px 40px 20px 40px;
+ 	    }
+ 	    
+     	.headingIcon {
+     		float: left;
+     		margin: 7px 10px 0 0;
+     		opacity: .8;
+     	}
+     	
+     	.item {
+     		margin-top: 10px;
+     		position: static;
+     		
+     		min-height: 75px;
+     	
+     		.date {
+     			position: absolute;
+     		
+     			text-transform: uppercase;
+     			width: auto !important;
+     			display: inline-block;
+ 				
+ 				margin: 0;
+ 				font-family: @headingsFontFamily;
+ 				font-weight: @headingsFontWeight;
+ 				font-size: 18px;
+ 				color: @headingsColor;
+ 				text-rendering: optimizelegibility;
+     		
+     			&.calendar {
+     				margin-left: -45px !important;
+     				margin-top: 21px;
+     				
+     				.rotate(-90deg);
+     			}
+     			
+     			&.news {
+     				margin-right: 45px !important;
+     				margin-top: 21px;
+ 					right: 0;
+ 					
+ 					.rotate(90deg);
+     			}
+     		}
+     	}
+     }
+     
+     p {
+     	text-align: justify;
+     }
+ }
+ 
+ footer {
+ 	margin-bottom: 20px;
+     color: #fff;
+     
+     .light {
+     	margin-bottom: 10px;
+     	padding: 16px 0 16px 0;
+     	background: #333;
+     }
+     
+     .container {
+     	color: @headingsColor;
+     
+     	.title {
+     		font-family: @headingsFontFamily;
+     		font-weight: @headingsFontWeight;
+     		font-size: 18px;
+     		text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+     		
+     		color: #000;
+     		
+     		line-height: 40px;
+     	}
+     
+ 	    .social {
+ 	    	float: right;
+ 	    	
+ 	    	img {
+ 	    		height: 32px;		
+ 	    	}
+ 	    }
+ 	}
+ }
+ 
