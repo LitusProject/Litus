@@ -20,7 +20,7 @@ use CommonBundle\Entity\Users\Person,
 	DateTime;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Order")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Order")
  * @Table(name="cudi.stock_order", indexes={@index(name="stock_order_time", columns={"date_created"})})
  */
 class Order
@@ -74,9 +74,10 @@ class Order
 	/**
 	 * @param \CudiBundle\Entity\Supplier $supplier The supplier of this order
 	 */
-	public function __construct(Supplier $supplier)
+	public function __construct(Supplier $supplier, Person $person)
 	{
 		$this->supplier = $supplier;
+		$this->person = $person;
 		$this->dateCreated = new DateTime();
 	}
 	
@@ -106,7 +107,7 @@ class Order
 	public function getPrice()
 	{
 		$price = 0;
-		foreach($this->orderItems as $item)
+		foreach($this->items as $item)
 			$price += $item->getPrice();
 		return $price;
 	}
@@ -159,7 +160,7 @@ class Order
 	 */
 	public function isOrdered()
 	{
-		return null !== $this->date;
+		return null !== $this->dateOrdered;
 	}
 	
 	/**

@@ -20,7 +20,7 @@ class Item extends EntityRepository
 		$resultSet = $query->select('i')
 			->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
 			->innerJoin('i.order', 'o', Join::WITH,
-			    $query->expr()->isNull('o.date')
+			    $query->expr()->isNull('o.dateCreated')
 			)
 			->where(
 			    $query->expr()->andX(
