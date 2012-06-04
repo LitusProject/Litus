@@ -2,9 +2,12 @@
 
 namespace CudiBundle\Repository\Stock\Orders;
 
-use CudiBundle\Entity\Sales\Article,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Orders\Item as ItemEntity,
     CudiBundle\Entity\Stock\Orders\Order as OrderEntity,
+    CudiBundle\Entity\Stock\Period,
+    CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,14 +18,40 @@ use CudiBundle\Entity\Sales\Article,
  */
 class Order extends EntityRepository
 {
-    public function findOneOpenBySupplier($supplier)
+    public function findAllBySupplierAndPeriod(Supplier $supplier, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$query->select('o')
+			->from('CudiBundle\Entity\Stock\Orders\Order', 'o')
+			->where(
+			    $query->expr()->andX(
+					$query->expr()->eq('o.supplier', ':supplier'),
+					$query->expr()->gt('o.dateCreated', ':startDate'),
+					$period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+				)
+			)
+			->setParameter('supplier', $supplier->getId())
+			->setParameter('startDate', $period->getStartDate())
+			->orderBy('o.dateCreated', 'DESC');
+		
+		if (!$period->isOpen())
+		    $query->setParameter('endDate', $period->getEndDate());	
+		
+		$resultSet = $query->getQuery()
+			->getResult();
+			
+		return $resultSet;
+    }
+    
+    public function findOneOpenBySupplier(Supplier $supplier)
 	{
 		$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('o')
 			->from('CudiBundle\Entity\Stock\Orders\Order', 'o')
-			->where($query->expr()->andX(
+			->where(
+			    $query->expr()->andX(
 					$query->expr()->eq('o.supplier', ':supplier'),
-					$query->expr()->isNull('o.date')
+					$query->expr()->isNull('o.dateOrdered')
 				)
 			)
 			->setParameter('supplier', $supplier->getId())
@@ -36,7 +65,7 @@ class Order extends EntityRepository
         return null;
 	}
     	
-    public function addNumberByArticle(Article $article, $number)
+    public function addNumberByArticle(Article $article, $number, Person $person)
     {
         $item = $this->_em
             ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
@@ -47,7 +76,7 @@ class Order extends EntityRepository
         } else {
         	$order = $this->findOneOpenBySupplier($article->getSupplier());
         	if (null === $order) {
-        		$order = new OrderEntity($article->getSupplier());
+        		$order = new OrderEntity($article->getSupplier(), $person);
                 $this->_em->persist($order);
         	}
         	

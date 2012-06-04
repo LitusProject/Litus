@@ -1,0 +1,57 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin_order/partials/suppliers.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+    
+	<div id="controller_action">
+		<table>
+		
+		    <tr>
+		        <th width="120px">Date</th>
+		        <th>Person</th>
+		        <th width="80px">Price</th>
+		        <th width="70px">Actions</th>
+		    </tr>
+		    
+		    {% for order in paginator %}
+		        <tr>
+		            <td>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i') }}{% else %}(new){% endif %}</td>
+		            <td>{{ order.getPerson().getFullName() }}</td>
+		            <td>&euro; {{ (order.getPrice()/100)|number_format(2) }}</td>
+					<td>
+					    {% if hasAccess('admin_order', 'edit') %}
+    						{% if order.isPlaced() %}
+    							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>
+    						{% else %}
+    							<a href="{{ url('admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+    						{% endif %}
+    					{% endif %}
+					</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+		{% set paginationParams = {"id": supplier.getId()} %}
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<aside>
+	    {% if hasAccess('admin_order', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Order</div>
+    	        <div class="content">
+    	            <p>
+    	                <i>Please hit the link below to add a new order item!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
+	</aside>
+{% endblock %}

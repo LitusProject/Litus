@@ -35,7 +35,7 @@ class History
 	/**
 	 * @var \CudiBundle\Entity\Sales\Article The newest version of the two
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
      * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
@@ -43,7 +43,7 @@ class History
 	/**
 	 * @var \CudiBundle\Entity\Sales\Article The oldest version of the two
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Article", cascade={"persist"})
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article", cascade={"persist"})
      * @JoinColumn(name="precursor", referencedColumnName="id")
 	 */
 	private $precursor;
