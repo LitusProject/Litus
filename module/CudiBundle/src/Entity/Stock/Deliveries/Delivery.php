@@ -20,7 +20,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Delivery")
- * @Table(name="cudi.stock_delivery")
+ * @Table(name="cudi.stock_delivery", indexes={@index(name="stock_delivery_time", columns={"timestamp"})})
  */
 class Delivery
 {

@@ -32,6 +32,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         $academicYear = $this->_getAcademicYear();
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Article')

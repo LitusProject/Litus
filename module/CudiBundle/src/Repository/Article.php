@@ -37,9 +37,9 @@ class Article extends EntityRepository
     	$resultSet = $query->select('a')
     		->from('CudiBundle\Entity\Article', 'a')
     		->where($query->expr()->andX(
-    				$query->expr()->like($query->expr()->lower('a.title'), ':title'),
-    		       $query->expr()->eq('a.isHistory', 'false'),
-    		       $query->expr()->eq('a.isProf', 'false')
+    		        $query->expr()->like($query->expr()->lower('a.title'), ':title'),
+    		        $query->expr()->eq('a.isHistory', 'false'),
+    		        $query->expr()->eq('a.isProf', 'false')
     			)
     		)
     		->setParameter('title', '%'.strtolower($title).'%')

@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
- * @Table(name="cudi.sales_booking")
+ * @Table(name="cudi.sales_booking", indexes={@index(name="sales_booking_time", columns={"bookDate"})})
  */
 class Booking
 {

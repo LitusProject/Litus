@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Order")
- * @Table(name="cudi.stock_order")
+ * @Table(name="cudi.stock_order", indexes={@index(name="stock_order_time", columns={"date_created"})})
  */
 class Order
 {

@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Stock\PeriodValues;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Stock\Period,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Start
@@ -12,4 +14,35 @@ use Doctrine\ORM\EntityRepository;
  */
 class Start extends EntityRepository
 {
+    public function findOneByArticleAndPeriod(Article $article, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('v')
+			->from('CudiBundle\Entity\Stock\PeriodValues\Start', 'v')
+			->where(
+			    $query->expr()->andX(
+			        $query->expr()->eq('v.article', ':article'),
+			        $query->expr()->eq('v.period', ':period')
+			    )
+			)
+			->setParameter('article', $article->getId())
+			->setParameter('period', $period->getId())
+        	->setMaxResults(1)
+			->getQuery()
+			->getResult();
+
+       if (isset($resultSet[0]))
+           return $resultSet[0];
+       
+       return null;
+    }
+    
+    public function findValueByArticleAndPeriod(Article $article, Period $period)
+    {
+        $value = $this->findOneByArticleAndPeriod($article, $period);
+        
+        if (null == $value)
+            return 0;
+        return $value->getValue();
+    }
 }
