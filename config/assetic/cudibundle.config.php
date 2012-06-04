@@ -71,6 +71,20 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_stock' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
+		'admin_stock_period' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		/*'admin_discount' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -79,20 +93,6 @@ return array(
 		    '@bootstrap_js_modal',
 		),
 		'admin_booking' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
-		'admin_stock' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
-		'admin_period' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',

@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Retour")
- * @Table(name="cudi.sales_retour")
+ * @Table(name="cudi.sales_retour", indexes={@index(name="sales_retour_time", columns={"timestamp"})})
  */
 class Retour
 {
@@ -37,6 +37,7 @@ class Retour
 	/**
 	 * @var \DateTime The time the retour item was created
 	 *
+	 * @Index
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;

@@ -21,7 +21,7 @@ use CudiBundle\Entity\Sales\Article,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
- * @Table(name="cudi.sales_saleitem")
+ * @Table(name="cudi.sales_saleitem", indexes={@index(name="sales_saleitem_time", columns={"timestamp"})})
  */
 class SaleItem
 {
@@ -37,6 +37,7 @@ class SaleItem
 	/**
 	 * @var \DateTime The time the sale item was created
 	 *
+	 * @Index
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;

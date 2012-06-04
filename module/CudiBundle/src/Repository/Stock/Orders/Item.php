@@ -2,7 +2,9 @@
 
 namespace CudiBundle\Repository\Stock\Orders;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityRepository,
+	Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Item
@@ -12,4 +14,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class Item extends EntityRepository
 {
+    public function findOneOpenByArticle(Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('i')
+			->from('CudiBundle\Entity\Stock\Orders\Item', 'i')
+			->innerJoin('i.order', 'o', Join::WITH,
+			    $query->expr()->isNull('o.date')
+			)
+			->where(
+			    $query->expr()->andX(
+				    $query->expr()->eq('i.article', ':article')
+			    )
+			)
+			->setParameter('article', $article->getId())
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

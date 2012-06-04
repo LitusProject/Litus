@@ -12,14 +12,14 @@ return array(
 				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
 				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
+				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
+				'admin_stock_period'	 => 'CudiBundle\Controller\Admin\Stock\PeriodController',
 				/*'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_delivery'         => 'CudiBundle\Controller\Admin\DeliveryController',
 				'admin_order'	         => 'CudiBundle\Controller\Admin\OrderController',
 				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
-				'admin_period'	         => 'CudiBundle\Controller\Admin\PeriodController',
-				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',*/
@@ -149,7 +149,7 @@ return array(
 				'route' => '/admin/article/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'string' => '[%a-zA-Z0-9_-]*',
 		        ),
 				'defaults' => array(
 					'controller' => 'admin_article',
@@ -235,7 +235,7 @@ return array(
 				'route' => '/admin/sales/article/:academicyear/search[/:field[/:string]]',
 				'constraints' => array(
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'string' => '[%a-zA-Z0-9_-]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
 		        ),
 				'defaults' => array(
@@ -298,6 +298,103 @@ return array(
 				),
 			),
 		),
+		'admin_stock' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/manage[/:page]',
+				'constraints' => array(
+					'page'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/search[/:field/:string]',
+				'constraints' => array(
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock',
+					'action'     => 'search',
+				),
+			),
+		),
+		'admin_stock_period' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_period_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period/manage[/:page]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_period_search' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period/search/:id[/:field/:string]',
+				'constraints' => array(
+					'id'     => '[0-9]*',
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'search',
+				),
+			),
+		),
+		'admin_stock_period_view_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/period/view/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'view',
+				),
+			),
+		),
 		/*'admin_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -351,77 +448,6 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_booking',
 					'action'     => 'search',
-				),
-			),
-		),
-		'admin_stock' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/search[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_period' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_period_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period/search/:id[/:field/:string]',
-				'constraints' => array(
-					'id'     => '[0-9]*',
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_period_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period/view/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'view',
 				),
 			),
 		),
