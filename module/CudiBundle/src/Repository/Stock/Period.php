@@ -188,12 +188,34 @@ class Period extends EntityRepository
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
         
-        $resultSet = $query->getQuery()
+        $delivered = $query->getQuery()
+            ->getSingleScalarResult();
+            
+        $query = $this->_em->createQueryBuilder();
+        $query->select('SUM(r.number)')
+            ->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('r.timestamp', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('r.timestamp', ':endDate'),
+                    $query->expr()->eq('r.article', ':article')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate())
+            ->setParameter('article', $article->getId());
+        
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());
+        
+        $retour = $query->getQuery()
             ->getSingleScalarResult();
         
-        if (null !== $resultSet)
-            return $resultSet;
-        return 0;
+        if (null === $delivered)
+            $delivered = 0;
+        if (null === $retour)
+            $retour = 0;
+            
+        return $delivered - $retour;
     }
     
     public function getNbOrdered(PeriodEntity $period, Article $article)
