@@ -49,26 +49,26 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
         
-        $previous->setEntityManager($this->getEntityManager());
-        
-        if ($previous)
-            $previous->close();
-        
         $new = new Period($this->getAuthentication()->getPersonObject());
         $this->getEntityManager()->persist($new);
         
-        $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findAllArticlesByPeriod($previous);
-        foreach($articles as $article) {
-            $value = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\PeriodValues\Start')
-                    ->findValueByArticleAndPeriod($article, $previous)
-                + $previous->getNbDelivered($article)
-                - $previous->getNbSold($article);
-
-            $start = new StartValue($article, $new, ($value < 0 ? 0 : $value));
-            $this->getEntityManager()->persist($start);
+        if ($previous) {
+            $previous->setEntityManager($this->getEntityManager());
+            $previous->close();
+            
+            $articles = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findAllArticlesByPeriod($previous);
+            foreach($articles as $article) {
+                $value = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\PeriodValues\Start')
+                        ->findValueByArticleAndPeriod($article, $previous)
+                    + $previous->getNbDelivered($article)
+                    - $previous->getNbSold($article);
+    
+                $start = new StartValue($article, $new, ($value < 0 ? 0 : $value));
+                $this->getEntityManager()->persist($start);
+            }
         }
 
         $this->getEntityManager()->flush();

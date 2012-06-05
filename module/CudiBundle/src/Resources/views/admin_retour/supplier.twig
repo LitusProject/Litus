@@ -1,0 +1,124 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width retour_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The retour was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width retour_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete a retour.</p>
+		</div>
+	</div>
+
+	{% include 'admin_retour/partials/suppliers.twig' %}
+	
+	<div id="controller_action">
+		<h1>Supplier: {{ supplier.getName() }}</h1>
+		
+		<table>
+		
+		    <tr>
+		        <th width="110px">Date</th>
+		        <th>Article</th>
+		        <th width="60px">Number</th>
+		        <th width="60px">Price</th>
+		        <th width="70px">Actions</th>
+		    </tr>
+		    
+		    {% for retour in paginator %}
+		        <tr class="item">
+		        	<td>{{ retour.getTimestamp().format('Y-m-d H:i') }}</td>
+		        	<td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
+		        	<td>{{ retour.getNumber() }}</td>
+		            <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
+		        	<td>
+		        	    {% if hasAccess('admin_retour', 'delete') %}
+    		        		<a href="#" class="delete" data-id="{{ retour.getId() }}" data-title="{{ retour.getArticle().getMainArticle().getTitle() }}" data-number="{{ retour.getNumber() }}">Delete</a>
+    		        	{% endif %}
+		        	</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+		
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<aside>
+	    {% if hasAccess('admin_retour', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Retour</div>
+    	        <div class="content">
+    	            <p>
+    	        		<i>Please hit the link below to add a retour!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
+	</aside>
+	
+	<div class="modal hide fade" id="removeRetour">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Retour Delete
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following retour: <b class="articleTitle"></b>: (x <span class="retourNumber"></span>)!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removeRetour = $('#removeRetour');
+			removeRetour.find('.articleTitle').html($(this).data('title'));
+			removeRetour.find('.retourNumber').html($(this).data('number'));
+			removeRetour.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_retour', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.retour_removed_success').removeClass('hide');
+    					$this.parent().parent().remove();
+    					removeRetour.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			removeRetour.modal();
+		}
+		
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.retour_removed_error').removeClass('hide');
+		    $('#removeRetour').modal('hide');
+		}
+	</script>
+{% endblock %}

@@ -57,13 +57,32 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     	return $academicYear;
     }
     
-    protected function _getCurrentAcademicYear()
+    protected function _getActiveStockPeriod()
     {
-    	$start = AcademicYear::getStartOfAcademicYear();
-    	$start->setTime(0, 0);
-
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+            
+        if (null === $period) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'There is no active stock period!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+            	'admin_stock_period',
+            	array(
+            		'action' => 'manage'
+            	)
+            );
+            
+            return;
+        }
+        
+        $period->setEntityManager($this->getEntityManager());
+        return $period;
     }
 }

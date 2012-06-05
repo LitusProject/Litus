@@ -21,34 +21,33 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Component\Document\Generator\OrderXml as OrderXmlGenerator,
 	CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
 	Zend\Http\Headers;
-/*	CommonBundle\Component\Util\File as FileUtil,
-	CommonBundle\Component\Util\Xml\XmlGenerator,
-	CommonBundle\Component\Util\Xml\XmlObject,
-	CudiBundle\Component\Document\Generator\OrderPdf as OrderPdfGenerator,
-	CudiBundle\Entity\Stock\Order,
-	CudiBundle\Entity\Stock\OrderItem,
-	CudiBundle\Form\Admin\Order\Add as AddForm,
-	Zend\Pdf\Page as PdfPage,
-	Zend\Pdf\PdfDocument;*/
 
 /**
  * OrderController
  * 
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class OrderController extends \CommonBundle\Component\Controller\ActionController
+class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
-
     public function manageAction()
 	{
 		$paginator = $this->paginator()->createFromEntity(
 		    'CudiBundle\Entity\Supplier',
-		    $this->getParam('page')
+		    $this->getParam('page'),
+		    array(),
+		    array(
+		        'name' => 'ASC'
+		    )
 		);
+		
+		$suppliers = $this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Supplier')
+			->findAll();
 		
 		return array(
 			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true)
+			'paginationControl' => $this->paginator()->createControl(true),
+			'suppliers' => $suppliers,
 		);
     }
 
@@ -57,9 +56,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($supplier = $this->_getSupplier()))
             return;
             
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
+        if (!($period = $this->_getActiveStockPeriod()))
+            return;
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -134,8 +132,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 			}
         }
         
+        $suppliers = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Supplier')
+        	->findAll();
+        
         return array(
         	'form' => $form,
+        	'suppliers' => $suppliers,
         );
 	}
 	

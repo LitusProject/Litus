@@ -111,8 +111,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	public function populateFromArticle(Article $article)
 	{
 		$this->populate(array(
-			'purchase_price' => $article->getPurchasePrice()/100,
-			'sell_price' => $article->getSellPrice()/100,
+			'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
+			'sell_price' => number_format($article->getSellPrice()/100, 2),
 			'barcode' => $article->getBarcode(),
 			'supplier' => $article->getSupplier()->getId(),
 			'bookable' => $article->isBookable(),

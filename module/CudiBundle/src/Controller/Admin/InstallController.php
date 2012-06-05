@@ -102,6 +102,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 		
 		$this->_installAddresses();
 		$this->_installBinding();
+		$this->_installAcademicYear();
 		$this->_installColor();
 	}
 	
@@ -151,6 +152,29 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 			}
 		}
 		$this->getEntityManager()->flush();
+	}
+	
+	private function _installAcademicYear()
+	{
+	    $now = new DateTime('now');
+	    $startAcademicYear = AcademicYear::getStartOfAcademicYear(
+            $now
+        );
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($startAcademicYear);
+
+        if (null === $academicYear) {
+            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                $now->add(
+                    new DateInterval('P1Y')
+                )
+            );
+            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $this->getEntityManager()->persist($academicYear);
+            $this->getEntityManager()->flush();
+        }
 	}
 	
 	private function _installAddresses()

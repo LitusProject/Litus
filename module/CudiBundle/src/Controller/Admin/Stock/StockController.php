@@ -31,30 +31,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-            
-        if (null === $period) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'There is no active stock period!'
-                )
-            );
-            
-            $this->redirect()->toRoute(
-            	'admin_stock_period',
-            	array(
-            		'action' => 'manage'
-            	)
-            );
-            
+        if (!($period = $this->_getActiveStockPeriod()))
             return;
-        }
-        
-        $period->setEntityManager($this->getEntityManager());
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -72,11 +50,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function searchAction()
     {
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-            
-        $period->setEntityManager($this->getEntityManager());
+        if (!($period = $this->_getActiveStockPeriod()))
+            return;
             
         switch($this->getParam('field')) {
         	case 'title':
@@ -122,10 +97,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function editAction()
     {
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-        $period->setEntityManager($this->getEntityManager());
+        if (!($period = $this->_getActiveStockPeriod()))
+            return;
         
         if (!($article = $this->_getArticle()))
             return;
@@ -234,10 +207,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function deltaAction()
     {
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-        $period->setEntityManager($this->getEntityManager());
+        if (!($period = $this->_getActiveStockPeriod()))
+            return;
         
         if (!($article = $this->_getArticle()))
             return;

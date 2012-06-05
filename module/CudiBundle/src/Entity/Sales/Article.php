@@ -434,8 +434,8 @@ class Article
 	    return new Article(
 	        $this->getMainArticle(),
 	        $this->getBarcode(),
-	        $this->getPurchasePrice(),
-	        $this->getSellPrice(),
+	        $this->getPurchasePrice()/100,
+	        $this->getSellPrice()/100,
 	        $this->isBookable(),
 	        $this->isUnbookable(),
 	        $this->getSupplier(),

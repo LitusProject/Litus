@@ -71,22 +71,14 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByStartDate($start);
     	
     	if (null === $academicYear) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No academic year was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
+    	    $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+    	        $now->add(
+    	            new DateInterval('P1Y')
+    	        )
+    	    );
+    	    $academicYear = new AcademicYearEntity($start, $endAcademicYear);
+    	    $this->getEntityManager()->persist($academicYear);
+    	    $this->getEntityManager()->flush();
     	}
 
     	return $academicYear;
