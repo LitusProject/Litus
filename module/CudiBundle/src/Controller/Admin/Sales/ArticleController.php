@@ -158,7 +158,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         return array(
             'form' => $form,
-            'article' => $saleArticle->getMainArticle(),
+            'article' => $saleArticle,
         );
 	}
 	
