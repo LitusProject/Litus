@@ -21,7 +21,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Form\Element\TextArea,
-	Zend\Validator\Int as IntValidator;
+	Zend\Validator\Int as IntValidator,
+	Zend\Validator\GreaterThan as GreaterThanValidator;
 
 /**
  * Update Stock
@@ -38,6 +39,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Number')
         	->setRequired()
 			->addValidator(new IntValidator())
+			->addValidator(new GreaterThanValidator(0))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         

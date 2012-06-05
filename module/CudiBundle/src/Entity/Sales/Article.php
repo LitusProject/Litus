@@ -384,7 +384,7 @@ class Article
 	 */
 	public function setStockValue($stockValue)
 	{
-	    $this->stockValue = $stockValue;
+	    $this->stockValue = $stockValue < 0 ? 0 : $stockValue;
 	    return $this;
 	}
 	
@@ -395,7 +395,7 @@ class Article
 	 */
 	public function addStockValue($stockValue)
 	{
-	    $this->stockValue += $stockValue;
+	    $this->setStockValue($this->stockValue + $stockValue);
 	    return $this;
 	}
 	

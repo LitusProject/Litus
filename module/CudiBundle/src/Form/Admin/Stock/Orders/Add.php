@@ -21,7 +21,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
-	Zend\Validator\Int as IntValidator;
+	Zend\Validator\Int as IntValidator,
+	Zend\Validator\GreaterThan as GreaterThanValidator;
 
 /**
  * Add Order
@@ -46,6 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Number')
         	->setRequired()
         	->addValidator(new IntValidator())
+			->addValidator(new GreaterThanValidator(0))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
