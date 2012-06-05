@@ -33,23 +33,30 @@ class Template
     private $id;
     
     /**
+     * @var string The name of the discount template
+     *
+     * @Column(type="string")
+     */
+    private $name;
+    
+    /**
      * @var integer The value of the discount
      *
-     * @Column(type="bigint", nullable=true)
+     * @Column(type="bigint")
      */
     private $value;
     
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      */
     private $method;
     
     /**
      * @var string The type of discount (member, acco)
      *
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      */
     private $type;
     
@@ -58,9 +65,12 @@ class Template
      * @param string The method of the discount
      * @param string The type of the discount
      */
-    public function __construct($value, $method, $type)
+    public function __construct($name, $value, $method, $type)
     {
-        $this->article = $article;
+        $this->name = $name;
+        $this->value = $value * 100;
+        $this->method = $method;
+        $this->type = $type;
     }
     
     /**
@@ -69,6 +79,14 @@ class Template
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
     
     /**

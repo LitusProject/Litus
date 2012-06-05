@@ -70,6 +70,20 @@ class Discount
     private $article;
     
     /**
+     * @var array The possible types of a discount
+     */
+    private static $POSSIBLE_TYPES = array(
+    	'member', 'acco'
+    );
+    
+    /**
+     * @var array The possible methods of a discount
+     */
+    private static $POSSIBLE_METHODS = array(
+    	'percentage', 'fixed', 'override'
+    );
+    
+    /**
      * @param \CudiBundle\Entity\Sales\Article The article of the discount
      */
     public function __construct(Article $article)
@@ -92,6 +106,8 @@ class Discount
     }
     
     /**
+     * @throws \InvalidArgumentException
+     *
      * @param integer The value of the discount
      * @param string The method of the discount
      * @param string The type of the discount
@@ -100,10 +116,33 @@ class Discount
      */
     public function setDiscount($value, $method, $type)
     {
-        $this->value = $value;
+        if (!self::isValidDiscountType($type))
+        	throw new \InvalidArgumentException('The discount type is not valid.');
+        	
+        if (!self::isValidDiscountMethod($method))
+        	throw new \InvalidArgumentException('The discount method is not valid.');
+        
+        $this->template = null;
+        $this->value = $value * 100;
         $this->method = $method;
         $this->type = $type;
         return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidDiscountType($type)
+    {
+    	return in_array($type, self::$POSSIBLE_TYPES);
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidDiscountMethod($method)
+    {
+    	return in_array($method, self::$POSSIBLE_METHODS);
     }
     
     /**
@@ -127,7 +166,7 @@ class Discount
      */
     public function getValue()
     {
-        if (isset($this->type) && $this->type != 'override')
+        if (!isset($this->value))
             return $this->template->getValue();
         return $this->value;
     }
@@ -137,7 +176,7 @@ class Discount
      */
     public function getMethod()
     {
-        if (isset($this->type) && $this->type != 'override')
+        if (!isset($this->method))
             return $this->template->getMethod();
         return $this->method;
     }
@@ -147,9 +186,9 @@ class Discount
      */
     public function getType()
     {
-        if (isset($this->type))
-            return $this->type;
-        return $this->template->getType();
+        if (!isset($this->type))
+            return $this->template->getType();
+        return $this->type;
     }
     
     /**
