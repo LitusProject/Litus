@@ -57,7 +57,7 @@
 	    	    </div>
 	    	</div>
 	    {% endif %}
-		{% if article.isInternal() and hasAccess('admin_file', 'manage') %}
+		{% if article.isInternal() and hasAccess('admin_article_file', 'manage') %}
 			<div class="sidebox">
 		        <div class="title">Manage Files</div>
 		       	<div class="content">
@@ -65,12 +65,12 @@
 			        	<i>Please hit the link below to manage the files of this article!</i>
 			        </p>
 			        <p>
-			           	<a href="{{ url('admin_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
+			           	<a href="{{ url('admin_article_file', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Files</a>
 			        </p>
 			    </div>
 			</div>
 		{% endif %}
-		{% if hasAccess('admin_comment', 'manage') %}
+		{% if hasAccess('admin_article_comment', 'manage') %}
 			<div class="sidebox">
 			    <div class="title">Manage Comments</div>
 			   	<div class="content">
@@ -78,7 +78,7 @@
 			        	<i>Please hit the link below to manage the comments of this article!</i>
 			        </p>
 			        <p>
-			           	<a href="{{ url('admin_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
+			           	<a href="{{ url('admin_article_comment', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Comments</a>
 			        </p>
 			    </div>
 			</div>

@@ -61,7 +61,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 );
                 
 				$this->redirect()->toRoute(
-					'admin_comment',
+					'admin_article_comment',
 					array(
 						'action' => 'manage',
 						'id' => $article->getId(),

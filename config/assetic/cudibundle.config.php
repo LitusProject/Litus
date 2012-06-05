@@ -35,14 +35,14 @@ return array(
 		    '@bootstrap_js_modal',
 			'@common_typeahead_remote',
 		),
-		'admin_comment' => array(
+		'admin_article_comment' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
-		'admin_file' => array(
+		'admin_article_file' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -53,6 +53,13 @@ return array(
 		    '@bootstrap_js_modal',
 		),
 		'admin_sales_article' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
+		'admin_sales_discount' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -85,7 +92,7 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
-		'admin_order' => array(
+		'admin_stock_order' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -94,7 +101,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		'admin_delivery' => array(
+		'admin_stock_delivery' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -102,7 +109,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		'admin_retour' => array(
+		'admin_stock_retour' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -110,13 +117,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		/*'admin_discount' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
+		/*
 		'admin_booking' => array(
 			'@common_jquery',
 		    '@admin_css',

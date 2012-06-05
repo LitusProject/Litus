@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	{% include 'admin_order/partials/suppliers.twig' %}
+	{% include 'admin_stock_order/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		<h1>Order</h1>
@@ -38,7 +38,7 @@
 					<td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
 					<td>{{ item.getNumber() }}</td>
 					<td>
-						{% if not order.isPlaced() and hasAccess('admin_order', 'delete') %}
+						{% if not order.isPlaced() and hasAccess('admin_stock_order', 'delete') %}
 		        			<a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
 						{% endif %}
 					</td>
@@ -49,7 +49,7 @@
 	
 	<aside>
 		{% if not order.isOrdered() %}
-		    {% if hasAccess('admin_order', 'place') %}
+		    {% if hasAccess('admin_stock_order', 'place') %}
     			<div class="sidebox">
     		        <div class="title">Place Order</div>
     		        <div class="content">
@@ -57,12 +57,12 @@
     		                <i>Please hit the link below to place this order!</i>
     		            </p>
     		            <p>
-    		                <a href="{{ url('admin_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
+    		                <a href="{{ url('admin_stock_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
     		            </p>
     		        </div>
     		    </div>
     		{% endif %}
-    		{% if hasAccess('admin_order', 'add') %}
+    		{% if hasAccess('admin_stock_order', 'add') %}
     			<div class="sidebox">
     		        <div class="title">New Order Item</div>
     		        <div class="content">
@@ -70,13 +70,13 @@
     		                <i>Please hit the link below to add a new order item!</i>
     		            </p>
     		            <p>
-    		                <a href="{{ url('admin_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    		                <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
     		            </p>
     		        </div>
     		    </div>
     		{% endif %}
 		{% else %}
-		    {% if hasAccess('admin_order', 'pdf') %}
+		    {% if hasAccess('admin_stock_order', 'pdf') %}
     			<div class="sidebox">
     		        <div class="title">Print Order</div>
     		        <div class="content">
@@ -89,7 +89,7 @@
     		        </div>
     		    </div>
 		    {% endif %}
-		    {% if hasAccess('admin_order', 'export') %}
+		    {% if hasAccess('admin_stock_order', 'export') %}
     		    <div class="sidebox">
     		        <div class="title">Export Order</div>
     		        <div class="content">
@@ -130,8 +130,8 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('#exportOrder').downloadFile('{{ url('admin_order', {"action": "export", "id": order.getId()}) }}');
-			$('#printOrder').downloadFile('{{ url('admin_order', {"action": "pdf", "id": order.getId()}) }}');
+			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');
+			$('#printOrder').downloadFile('{{ url('admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
 
 			$('.item .delete').click(openModal);
 		});
@@ -144,7 +144,7 @@
 			removeOrder.find('.articleTitle').html($(this).data('title'));
 			removeOrder.find('.orderNumber').html($(this).data('number'));
 			removeOrder.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_order', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_order', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.order_removed_success').removeClass('hide');

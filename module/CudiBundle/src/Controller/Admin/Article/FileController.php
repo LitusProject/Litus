@@ -41,7 +41,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		$form = new AddForm();
 		$form->setAction(
 		    $this->url()->fromRoute(
-		        'admin_file',
+		        'admin_article_file',
 		        array(
 		            'action' => 'upload',
 		            'id' => $article->getId(),
@@ -150,7 +150,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_file',
+                	'admin_article_file',
                 	array(
                 		'action' => 'manage',
                 		'id' => $mapping->getArticle()->getId(),

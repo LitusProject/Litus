@@ -31,7 +31,7 @@
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
 		
-		{% if hasAccess('admin_file', 'upload') %}
+		{% if hasAccess('admin_article_file', 'upload') %}
     		{% autoescape false %}
     			{{ form }}
     		{% endautoescape %}
@@ -50,13 +50,13 @@
 	                <td>{{ mapping.getFile().getName() }}</td>
 	                <td>{{ mapping.getFile().getDescription() }}</td>
 					<td>
-					    {% if hasAccess('admin_file', 'download') %}
-    						<a href="#" class="downloadFile view" data-file="{{ url('admin_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
+					    {% if hasAccess('admin_article_file', 'download') %}
+    						<a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
     					{% endif %}
-    					{% if hasAccess('admin_file', 'edit') %}
-    						<a href="{{ url('admin_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
+    					{% if hasAccess('admin_article_file', 'edit') %}
+    						<a href="{{ url('admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
     					{% endif %}
-    					{% if hasAccess('admin_file', 'delete') %}
+    					{% if hasAccess('admin_article_file', 'delete') %}
 		                    <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">Delete</a>
 		                {% endif %}
 	                </td>
@@ -111,7 +111,7 @@
 			});
 			
 			$('#uploadFile').formUploadProgress({
-			    url: '{{ url('admin_file', {"action": "progress"}) }}',
+			    url: '{{ url('admin_article_file', {"action": "progress"}) }}',
 			    name: '{{ uploadProgressId }}',
 			    uploadProgressName: '{{ uploadProgressName }}',
 			    interval: 1000,
@@ -139,11 +139,11 @@
     			            actions = $('<td>')
     			        );
     			        
-    			        {% if hasAccess('admin_file', 'download') %}
+    			        {% if hasAccess('admin_article_file', 'download') %}
     			            actions.append(downloadFile = $('<a>', {class: 'downloadFile view'}).html('Download'));
-    			            downloadFile.downloadFile('{{ url('admin_file', {"action": "download"}) }}/' + data.info.id);
+    			            downloadFile.downloadFile('{{ url('admin_article_file', {"action": "download"}) }}/' + data.info.id);
     			        {% endif %}
-    			        {% if hasAccess('admin_file', 'delete') %}
+    			        {% if hasAccess('admin_article_file', 'delete') %}
     			            actions.append(deleteFile = $('<a>', {class: 'delete'}).html('Delete'));
     			            deleteFile.data(data.info)
     			                .click(openDeleteModal);
@@ -177,7 +177,7 @@
 			removeFile.find('.fileName').html($(this).data('name'));
 			removeFile.find('.fileDescription').html($(this).data('description'));
 			removeFile.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.file_removed_success').removeClass('hide');

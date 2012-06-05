@@ -121,7 +121,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 				);
 				
 				$this->redirect()->toRoute(
-					'admin_order',
+					'admin_stock_order',
 					array(
 						'action' => 'edit',
 						'id' => $item->getOrder()->getId(),
@@ -175,7 +175,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		);
 			
 		$this->redirect()->toRoute(
-			'admin_order',
+			'admin_stock_order',
 			array(
 				'action' => 'edit',
 				'id' => $order->getId(),
@@ -242,7 +242,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)
@@ -265,7 +265,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)
@@ -289,7 +289,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)
@@ -312,7 +312,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)
@@ -336,7 +336,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)
@@ -359,7 +359,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_order',
+				'admin_stock_order',
 				array(
 					'action' => 'manage'
 				)

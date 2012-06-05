@@ -5,7 +5,7 @@
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
-	{% include 'admin_delivery/partials/suppliers.twig' %}
+	{% include 'admin_stock_delivery/partials/suppliers.twig' %}
 
 	<div id="controller_action">
     	{% autoescape false %}
@@ -40,7 +40,7 @@
 	</div>
 	
 	<aside>
-		{% if hasAccess('admin_delivery', 'manage') %}
+		{% if hasAccess('admin_stock_delivery', 'manage') %}
     		<div class="sidebox">
     	        <div class="title">Overview deliveries</div>
     	       	<div class="content">
@@ -48,7 +48,7 @@
     		        	<i>Please hit the link below to view all deliveries!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url("admin_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
+    		           	<a href="{{ url("admin_stock_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
     		        </p>
     		    </div>
     		</div>

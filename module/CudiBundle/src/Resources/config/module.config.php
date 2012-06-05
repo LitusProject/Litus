@@ -7,18 +7,18 @@ return array(
 				
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
 				'admin_article_subject'  => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
-				'admin_comment'	         => 'CudiBundle\Controller\Admin\Article\CommentController',
-				'admin_file'	         => 'CudiBundle\Controller\Admin\Article\FileController',
+				'admin_article_comment'  => 'CudiBundle\Controller\Admin\Article\CommentController',
+				'admin_article_file'	 => 'CudiBundle\Controller\Admin\Article\FileController',
 				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+				'admin_sales_discount'   => 'CudiBundle\Controller\Admin\Sales\DiscountController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
 				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
 				'admin_stock_period'	 => 'CudiBundle\Controller\Admin\Stock\PeriodController',
-				'admin_delivery'         => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
-				'admin_retour'           => 'CudiBundle\Controller\Admin\Stock\RetourController',
-				'admin_order'	         => 'CudiBundle\Controller\Admin\Stock\OrderController',
-				/*'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
-				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
+				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
+				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
+				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
+				/*'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
 				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
 				
@@ -173,30 +173,30 @@ return array(
 				),
 			),
 		),
-		'admin_comment' => array(
+		'admin_article_comment' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/comment[/:action[/:id[/:article]]]',
+				'route' => '/admin/article/comment[/:action[/:id[/:article]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_comment',
+					'controller' => 'admin_article_comment',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_file' => array(
+		'admin_article_file' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/file[/:action[/:id]]',
+				'route' => '/admin/article/file[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_file',
+					'controller' => 'admin_article_file',
 					'action'     => 'manage',
 				),
 			),
@@ -242,6 +242,20 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
 					'action'     => 'search',
+				),
+			),
+		),
+		'admin_sales_discount' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/discount[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_discount',
+					'action'     => 'manage',
 				),
 			),
 		),
@@ -396,7 +410,7 @@ return array(
 				),
 			),
 		),
-		'admin_order' => array(
+		'admin_stock_order' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/order[/:action[/:id]]',
@@ -405,12 +419,12 @@ return array(
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_order',
+					'controller' => 'admin_stock_order',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_order_paginator' => array(
+		'admin_stock_order_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/order/supplier/:id[/:page]',
@@ -419,12 +433,12 @@ return array(
 					'page' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_order',
+					'controller' => 'admin_stock_order',
 					'action'     => 'supplier',
 				),
 			),
 		),
-		'admin_delivery' => array(
+		'admin_stock_delivery' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/delivery[/:action[/:id]]',
@@ -433,12 +447,12 @@ return array(
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_delivery',
+					'controller' => 'admin_stock_delivery',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_delivery_paginator' => array(
+		'admin_stock_delivery_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/delivery/:id[/:page]',
@@ -447,12 +461,12 @@ return array(
 					'page' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_delivery',
+					'controller' => 'admin_stock_delivery',
 					'action'     => 'supplier',
 				),
 			),
 		),
-		'admin_retour' => array(
+		'admin_stock_retour' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/retour[/:action[/:id]]',
@@ -461,12 +475,12 @@ return array(
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_retour',
+					'controller' => 'admin_stock_retour',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_retour_paginator' => array(
+		'admin_stock_retour_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/stock/retour/:id[/:page]',
@@ -475,7 +489,7 @@ return array(
 					'page' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_retour',
+					'controller' => 'admin_stock_retour',
 					'action'     => 'supplier',
 				),
 			),
