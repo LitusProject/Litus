@@ -8,6 +8,9 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
+		<form action="" method="post">
+		    <textarea id="editor"></textarea>
+		</form>
 	</div>
 	
 	<aside>
@@ -38,4 +41,17 @@
 	        </div>
 	    </div>
 	</aside>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $('#editor').gollum({
+	            uploadURL: '/php/fileUpload.php',
+	            progressURL: '/php/fileProgress.php',
+	            uploadProgressName: 'test_one',
+	            progressId: 1,
+	        });
+	    });
+	</script>
 {% endblock %}
