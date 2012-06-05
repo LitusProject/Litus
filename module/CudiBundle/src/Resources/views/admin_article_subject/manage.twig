@@ -48,7 +48,7 @@
 	                <td>{{ mapping.getSubject().getName() }}</td>
 	                <td>{{ mapping.getSubject().getSemester() }}</td>
 	                <td>{{ mapping.getSubject().getCredits() }}</td>
-	                <td>{{ mapping.isMandatory() }}</td>
+	                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
 					<td>
 						<a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
 	                </td>

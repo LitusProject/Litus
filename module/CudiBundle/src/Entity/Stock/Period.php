@@ -140,9 +140,10 @@ class Period
 	 */
 	public function getNbDelivered(Article $article)
 	{
-	    return $this->_entityManager
+	    $value = $this->_entityManager
 	        ->getRepository('CudiBundle\Entity\Stock\Period')
 	        ->getNbDelivered($this, $article);
+	    return $value < 0 ? 0 : $value;
 	}
 	
 	/** 
