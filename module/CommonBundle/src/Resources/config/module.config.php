@@ -89,6 +89,7 @@ return array(
                                             'common/js/typeaheadRemote.js',
                                         ),
                                     ),
+                                    
                                     'admin_css' => array(
                                     	'assets' => array(
                                     		'admin/less/admin.less',
@@ -115,6 +116,29 @@ return array(
                                             'admin/js/*.js',
                                         ),
                                     ),
+                                    
+                                    'site_css' => array(
+                                    	'assets' => array(
+                                    		'site/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'site_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'site_css.css',
+                                            'media' => 'print'
+                                        ),
+                                    ),
+                                    
                                     'bootstrap_css' => array(
                                     	'assets' => array(
                                     		'bootstrap/less/bootstrap.less',
@@ -137,83 +161,74 @@ return array(
                                     ),
                                     'bootstrap_js_alert' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-alert.js'
+                                            'bootstrap/js/bootstrap-alert.js',
                                         ),
                                     ),
                                     'bootstrap_js_button' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-button.js'
+                                            'bootstrap/js/bootstrap-button.js',
                                         ),
                                     ),
                                     'bootstrap_js_carousel' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-carousel.js'
+                                            'bootstrap/js/bootstrap-carousel.js',
                                         ),
                                     ),
                                     'bootstrap_js_collapse' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-collapse.js'
+                                            'bootstrap/js/bootstrap-collapse.js',
                                         ),
                                     ),
                                     'bootstrap_js_dropdown' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-dropdown.js'
+                                            'bootstrap/js/bootstrap-dropdown.js',
                                         ),
                                     ),
                                     'bootstrap_js_modal' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-modal.js'
+                                            'bootstrap/js/bootstrap-modal.js',
                                         ),
                                     ),
                                     'bootstrap_js_popover' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-popover.js'
+                                            'bootstrap/js/bootstrap-popover.js',
                                         ),
                                     ),
                                     'bootstrap_js_scrollspy' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-scrollspy.js'
+                                            'bootstrap/js/bootstrap-scrollspy.js',
                                         ),
                                     ),
                                     'bootstrap_js_tab' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-tab.js'
+                                            'bootstrap/js/bootstrap-tab.js',
                                         ),
                                     ),
                                     'bootstrap_js_tooltip' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-tooltip.js'
+                                            'bootstrap/js/bootstrap-tooltip.js',
                                         ),
                                     ),
                                     'bootstrap_js_transition' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-transition.js'
+                                            'bootstrap/js/bootstrap-transition.js',
                                         ),
                                     ),
                                     'bootstrap_js_typeahead' => array(
                                         'assets' => array(
-                                            'bootstrap/js/bootstrap-typeahead.js'
+                                            'bootstrap/js/bootstrap-typeahead.js',
                                         ),
                                     ),
-                                    'site_css' => array(
-                                    	'assets' => array(
-                                    		'site/less/base.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'site_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => true,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
-                                            'output' => 'site_css.css',
-                                            'media' => 'print'
+                                    
+                                    'gollum_css' => array(
+                                        'assets' => array(
+                                            'gollum/css/editor.css'
+                                        ),
+                                    ),
+                                    'gollum_js' => array(
+                                        'assets' => array(
+                                            'gollum/js/editor.js',
+                                            'gollum/js/markdown.js',
                                         ),
                                     ),
                                 ),
