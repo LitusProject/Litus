@@ -13,15 +13,15 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Entity\Sales;
+namespace CudiBundle\Entity\Stock\Deliveries;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Retour")
- * @Table(name="cudi.sales_retour", indexes={@index(name="sales_retour_time", columns={"timestamp"})})
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Retour")
+ * @Table(name="cudi.stock_deliveries_retour", indexes={@index(name="stock_delviveries_retour_time", columns={"timestamp"})})
  */
 class Retour
 {
@@ -41,6 +41,13 @@ class Retour
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;
+	
+	/**
+	 * @var integer The number of the retour
+	 *
+	 * @Column(type="integer")
+	 */
+	private $number;
 	
 	/**
 	 * @var \CudiBundle\Entity\Sales\Article The article of the retour
@@ -67,15 +74,18 @@ class Retour
 	
 	/**
 	 * @param \CudiBundle\Entity\Sales\Article $article The article of the retour
+	 * @param integer $number The number of the retour
 	 * @param \CommonBundle\Entity\Users\Person $person The person of the retour
 	 * @param string $comment The comment of the retour
 	 */
-	public function __construct(Article $article, Person $person, $comment)
+	public function __construct(Article $article, $number, Person $person, $comment)
 	{
 	    $this->article = $article;
 	    $this->person = $person;
+	    $this->number = $number;
 	    $this->comment = $comment;
 	    $this->timestamp = new DateTime();
+		$article->addStockValue(-$number);
 	}
 	
 	/**
@@ -111,10 +121,26 @@ class Retour
 	}
 	
 	/**
+	 * @return integer
+	 */
+	public function getNumber()
+	{
+		return $this->number;
+	}
+	
+	/**
 	 * @return string
 	 */
 	public function getComment()
 	{
 		return $this->comment;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getPrice()
+	{
+		return $this->article->getPurchasePrice() * $this->number;
 	}
 }

@@ -15,6 +15,7 @@ return array(
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
 				'admin_stock_period'	 => 'CudiBundle\Controller\Admin\Stock\PeriodController',
 				'admin_delivery'         => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
+				'admin_retour'           => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_order'	         => 'CudiBundle\Controller\Admin\Stock\OrderController',
 				/*'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
 				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
@@ -342,7 +343,7 @@ return array(
 		'admin_stock_period' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/period[/:action[/:id]]',
+				'route' => '/admin/stock/period[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
@@ -356,7 +357,7 @@ return array(
 		'admin_stock_period_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/period/manage[/:page]',
+				'route' => '/admin/stock/period/manage[/:page]',
 				'constraints' => array(
 					'page' => '[0-9]*',
 				),
@@ -369,7 +370,7 @@ return array(
 		'admin_stock_period_search' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/period/search/:id[/:field/:string]',
+				'route' => '/admin/stock/period/search/:id[/:field/:string]',
 				'constraints' => array(
 					'id'     => '[0-9]*',
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -384,7 +385,7 @@ return array(
 		'admin_stock_period_view_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/period/view/:id[/:page]',
+				'route' => '/admin/stock/period/view/:id[/:page]',
 				'constraints' => array(
 					'id'   => '[0-9]*',
 					'page' => '[0-9]*',
@@ -398,7 +399,7 @@ return array(
 		'admin_order' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/order[/:action[/:id]]',
+				'route' => '/admin/stock/order[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
@@ -412,7 +413,7 @@ return array(
 		'admin_order_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/order/supplier/:id[/:page]',
+				'route' => '/admin/stock/order/supplier/:id[/:page]',
 				'constraints' => array(
 					'id'   => '[0-9]*',
 					'page' => '[0-9]*',
@@ -426,7 +427,7 @@ return array(
 		'admin_delivery' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/delivery[/:action[/:id]]',
+				'route' => '/admin/stock/delivery[/:action[/:id]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
@@ -440,13 +441,41 @@ return array(
 		'admin_delivery_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/delivery/:id[/:page]',
+				'route' => '/admin/stock/delivery/:id[/:page]',
 				'constraints' => array(
 					'id'   => '[0-9]*',
 					'page' => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_delivery',
+					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_retour' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/retour[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_retour',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_retour_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/retour/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_retour',
 					'action'     => 'supplier',
 				),
 			),

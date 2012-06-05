@@ -17,7 +17,9 @@ namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
 	CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Component\Util\File,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
 	Zend\Cache\StorageFactory,
 	Zend\Mvc\MvcEvent,
 	Zend\Paginator\Paginator,
@@ -214,5 +216,34 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function getParam($param, $default = null)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
+    }
+    
+    /**
+     * Get the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function _getCurrentAcademicYear()
+    {
+    	$start = AcademicYear::getStartOfAcademicYear();
+    	$start->setTime(0, 0);
+    	
+    	$academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+
+        if (null === $academicYear) {
+    	    $now = new DateTime();
+            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                $now->add(
+                    new DateInterval('P1Y')
+                )
+            );
+            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $this->getEntityManager()->persist($academicYear);
+            $this->getEntityManager()->flush();
+        }
+
+        return $academicYear;
     }
 }

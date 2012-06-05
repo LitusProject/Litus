@@ -102,6 +102,14 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
+		'admin_retour' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		    '@supplier_nav',
+		),
 		/*'admin_discount' => array(
 			'@common_jquery',
 		    '@admin_css',
