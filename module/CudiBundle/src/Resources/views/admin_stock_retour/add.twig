@@ -5,7 +5,7 @@
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
-	{% include 'admin_retour/partials/suppliers.twig' %}
+	{% include 'admin_stock_retour/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		{% autoescape false %}
@@ -40,7 +40,7 @@
 	</div>
 	
 	<aside>
-		{% if hasAccess('admin_retour', 'manage') %}
+		{% if hasAccess('admin_stock_retour', 'manage') %}
     		<div class="sidebox">
     	        <div class="title">Overview retours</div>
     	       	<div class="content">
@@ -48,7 +48,7 @@
     		        	<i>Please hit the link below to view all retours!</i>
     		        </p>
     		        <p>
-    		           	<a href="{{ url("admin_retour", {"action": "manage"}) }}">&rarr; Overview Retours</a>
+    		           	<a href="{{ url("admin_stock_retour", {"action": "manage"}) }}">&rarr; Overview Retours</a>
     		        </p>
     		    </div>
     		</div>

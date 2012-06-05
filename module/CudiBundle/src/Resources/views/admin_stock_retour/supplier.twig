@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	{% include 'admin_retour/partials/suppliers.twig' %}
+	{% include 'admin_stock_retour/partials/suppliers.twig' %}
 	
 	<div id="controller_action">
 		<h1>Supplier: {{ supplier.getName() }}</h1>
@@ -39,7 +39,7 @@
 		        	<td>{{ retour.getNumber() }}</td>
 		            <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
 		        	<td>
-		        	    {% if hasAccess('admin_retour', 'delete') %}
+		        	    {% if hasAccess('admin_stock_retour', 'delete') %}
     		        		<a href="#" class="delete" data-id="{{ retour.getId() }}" data-title="{{ retour.getArticle().getMainArticle().getTitle() }}" data-number="{{ retour.getNumber() }}">Delete</a>
     		        	{% endif %}
 		        	</td>
@@ -51,7 +51,7 @@
 	</div>
 	
 	<aside>
-	    {% if hasAccess('admin_retour', 'add') %}
+	    {% if hasAccess('admin_stock_retour', 'add') %}
     		<div class="sidebox">
     	        <div class="title">New Retour</div>
     	        <div class="content">
@@ -59,7 +59,7 @@
     	        		<i>Please hit the link below to add a retour!</i>
     	            </p>
     	            <p>
-    	                <a href="{{ url('admin_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
+    	                <a href="{{ url('admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
     	            </p>
     	        </div>
     	    </div>
@@ -101,7 +101,7 @@
 			removeRetour.find('.articleTitle').html($(this).data('title'));
 			removeRetour.find('.retourNumber').html($(this).data('number'));
 			removeRetour.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_retour', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.retour_removed_success').removeClass('hide');

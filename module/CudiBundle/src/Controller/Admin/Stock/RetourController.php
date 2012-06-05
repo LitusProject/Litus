@@ -105,7 +105,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 				);
 				
 				$this->redirect()->toRoute(
-					'admin_retour',
+					'admin_stock_retour',
 					array(
 						'action' => 'supplier',
 						'id'     => $article->getSupplier()->getId(),
@@ -159,7 +159,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_retour',
+				'admin_stock_retour',
 				array(
 					'action' => 'manage'
 				)
@@ -182,7 +182,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_retour',
+				'admin_stock_retour',
 				array(
 					'action' => 'manage'
 				)
@@ -206,7 +206,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_retour',
+				'admin_stock_retour',
 				array(
 					'action' => 'manage'
 				)
@@ -229,7 +229,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 			);
 			
 			$this->redirect()->toRoute(
-				'admin_retour',
+				'admin_stock_retour',
 				array(
 					'action' => 'manage'
 				)
