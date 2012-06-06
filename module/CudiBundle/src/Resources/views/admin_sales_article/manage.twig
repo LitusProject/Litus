@@ -77,7 +77,7 @@
 		        {% endfor %}
 		    </table>
 	
-	        {% set paginationParams = {'academicyear': currentAcademicYear.getCode() } %}
+	        {% set paginationParams = {'academicyear': activeAcademicYear.getCode() } %}
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>

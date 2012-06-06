@@ -15,10 +15,13 @@
  
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Address,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Config,
     CudiBundle\Entity\Articles\Options\Binding,
 	CudiBundle\Entity\Articles\Options\Color,
+	DateTime,
 	Exception;
 
 /**
@@ -56,6 +59,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            	'key'         => 'cudi.mail',
 	            	'value'       => 'cudi@vtk.be',
 	            	'description' => 'The mail address of cudi',
+	            ),
+	            array(
+	            	'key'         => 'cudi.mail_name',
+	            	'value'       => 'VTK Cursusdienst',
+	            	'description' => 'The name of the mail sender',
 	            ),
 	            array(
 	            	'key'         => 'union_short_name',
@@ -97,6 +105,24 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            	'value'       => 'VTK vzw',
 	            	'description' => 'The name of the billing organisation of the cudi',
 	            ),
+	            array(
+	            	'key'         => 'cudi.reservation_expire_time',
+	            	'value'       => 'P2W',
+	            	'description' => 'The time after which a reservation expires',
+	            ),
+	            array(
+    				'key'         => 'cudi.booking_assigned_mail_subject',
+    				'value'       => 'New Assignments',
+    				'description' => 'The subject of the mail sent by new assignments',
+    			),
+    			array(
+    				'key'         => 'cudi.booking_assigned_mail',
+    				'value'       => 'Dear,
+			
+The following bookings are assigned to you:
+{{ bookings }}',
+    				'description' => 'The mail sent when a booking is assigned'
+    			),
 			)
 		);
 		

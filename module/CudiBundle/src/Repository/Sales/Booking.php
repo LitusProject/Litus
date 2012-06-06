@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Stock\Period,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Booking
@@ -12,4 +13,59 @@ use Doctrine\ORM\EntityRepository;
  */
 class Booking extends EntityRepository
 {
+    public function findAllActiveByPeriod(Period $period)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+    		->where(
+    		    $query->expr()->andX(
+        		    $query->expr()->orX(
+        		        $query->expr()->eq('b.status', '\'booked\''),
+        		        $query->expr()->eq('b.status', '\'assigned\'')
+        		    ),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+    		)
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    		if (!$period->isOpen())
+    		    $query->setParameter('endDate', $period->getEndDate());
+    		
+		$resultSet = $query->orderBy('b.bookDate', 'DESC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllInactiveByPeriod(Period $period)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+    		->where(
+    		    $query->expr()->andX(
+    		        $query->expr()->not(
+            		    $query->expr()->orX(
+            		        $query->expr()->eq('b.status', '\'booked\''),
+            		        $query->expr()->eq('b.status', '\'assigned\'')
+            		    )
+        		    ),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+    		)
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    		if (!$period->isOpen())
+    		    $query->setParameter('endDate', $period->getEndDate());
+    		
+    	$resultSet = $query->orderBy('b.bookDate', 'DESC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
 }
