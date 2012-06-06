@@ -76,7 +76,7 @@
 				searchDiv: $('#subject_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_subject_search', {"id": study.getId(), "academicyear": currentAcademicYear.getCode()}) }}',
+				url: '{{ url('admin_subject', {'action': 'search', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
 				display: function (data) {
 					$('#subject_search table').find('tr.item').remove();
 					$(data).each(function () {

@@ -47,30 +47,17 @@ return array(
         'admin_study' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
-        		'route' => '/admin/syllabus/study[/:action[/:id]][/:academicyear]',
+        		'route' => '/admin/syllabus/study[/:action[/:id][/:academicyear][/:field/:string]]',
         		'constraints' => array(
         			'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
         			'id'      => '[0-9]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
+    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
         		),
         		'defaults' => array(
         			'controller' => 'admin_study',
         			'action'     => 'manage',
-        		),
-        	),
-        ),
-        'admin_study_search' => array(
-        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-        	'options' => array(
-        	'route' => '/admin/syllabus/study/search/:academicyear[/:field/:string]',
-        		'constraints' => array(
-        			'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-        		),
-        		'defaults' => array(
-        			'controller' => 'admin_study',
-        			'action'     => 'search',
         		),
         	),
         ),
@@ -91,31 +78,17 @@ return array(
         'admin_subject' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
-        		'route' => '/admin/syllabus/subject[/:action[/:id]][/:academicyear]',
+        		'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string]]',
         		'constraints' => array(
         			'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
         			'id'      => '[0-9]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
+        			'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
         		),
         		'defaults' => array(
         			'controller' => 'admin_subject',
         			'action'     => 'manage',
-        		),
-        	),
-        ),
-        'admin_subject_search' => array(
-        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-        	'options' => array(
-        	'route' => '/admin/syllabus/subject/:id/search/:academicyear[/:field/:string]',
-        		'constraints' => array(
-        		    'id'     => '[0-9]*',
-        			'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-        		),
-        		'defaults' => array(
-        			'controller' => 'admin_subject',
-        			'action'     => 'search',
         		),
         	),
         ),

@@ -70,7 +70,7 @@
 				searchDiv: $('#stock_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_stock_period_search', {"id": period.getId()}) }}',
+				url: '{{ url('admin_stock_period', {'action': 'search', 'id': period.getId()}) }}',
 				display: function (data) {
 					$('#stock_search table').find('tr.item').remove();
 					$(data).each(function () {

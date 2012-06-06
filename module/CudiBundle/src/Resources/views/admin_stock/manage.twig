@@ -71,7 +71,7 @@
 				searchDiv: $('#stock_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_stock_search') }}',
+				url: '{{ url('admin_stock', {'action': 'search'}) }}',
 				display: function (data) {
 					$('#stock_search table').find('tr.item').remove();
 					$(data).each(function () {
