@@ -66,6 +66,13 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_sales_booking' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
+		),
 		'admin_supplier' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -117,15 +124,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		/*
-		'admin_booking' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
-		'admin_sale' => array(
+		/*'admin_sale' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',

@@ -63,7 +63,7 @@
 				searchDiv: $('#study_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_study_search', {'academicyear': '2012-2013'}) }}',
+				url: '{{ url('admin_study', {'action': 'search', 'academicyear': '2012-2013'}) }}',
 				display: function (data) {
 					$('#study_search table').find('tr.item').remove();
 					$(data).each(function () {

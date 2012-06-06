@@ -11,6 +11,7 @@ return array(
 				'admin_article_file'	 => 'CudiBundle\Controller\Admin\Article\FileController',
 				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
 				'admin_sales_discount'   => 'CudiBundle\Controller\Admin\Sales\DiscountController',
+				'admin_sales_booking'	 => 'CudiBundle\Controller\Admin\Sales\BookingController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
 				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
@@ -18,8 +19,7 @@ return array(
 				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
-				/*'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
-				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
+				/*'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
 				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
@@ -120,10 +120,12 @@ return array(
 		'admin_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article[/:action[/:id]]',
+				'route' => '/admin/article[/:action[/:id][/:field/:string]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
@@ -142,20 +144,6 @@ return array(
 					'controller' => 'admin_article',
 					'action'     => 'manage',
 				), 
-			),
-		),
-		'admin_article_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/search[/:field[/:string]]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[%a-zA-Z0-9_-]*',
-		        ),
-				'defaults' => array(
-					'controller' => 'admin_article',
-					'action'     => 'search',
-				),
 			),
 		),
 		'admin_article_subject'=> array(
@@ -204,11 +192,13 @@ return array(
 		'admin_sales_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/article[/:action[/:id]][/:academicyear]',
+				'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/:field/:string]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
+    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
@@ -230,21 +220,6 @@ return array(
 				), 
 			),
 		),
-		'admin_sales_article_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/article/:academicyear/search[/:field[/:string]]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[%a-zA-Z0-9_-]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-		        ),
-				'defaults' => array(
-					'controller' => 'admin_sales_article',
-					'action'     => 'search',
-				),
-			),
-		),
 		'admin_sales_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -255,6 +230,36 @@ return array(
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_discount',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_booking' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/booking[/:action[/:id][:type[/:field/:string]]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_booking',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_booking_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/booking/manage[/:page]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_booking',
 					'action'     => 'manage',
 				),
 			),
@@ -316,10 +321,12 @@ return array(
 		'admin_stock' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock[/:action[/:id]]',
+				'route' => '/admin/stock[/:action[/:id][/:field/:string]]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
+					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock',
@@ -340,27 +347,15 @@ return array(
 				),
 			),
 		),
-		'admin_stock_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/search[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'search',
-				),
-			),
-		),
 		'admin_stock_period' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/period[/:action[/:id]]',
+				'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock_period',
@@ -378,21 +373,6 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_stock_period',
 					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_period_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/period/search/:id[/:field/:string]',
-				'constraints' => array(
-					'id'     => '[0-9]*',
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_period',
-					'action'     => 'search',
 				),
 			),
 		),
@@ -495,63 +475,7 @@ return array(
 				),
 			),
 		),
-		/*'admin_discount' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/discount[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_discount',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_booking' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/booking[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_booking',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_booking_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/booking/manage[/:page]',
-				'constraints' => array(
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_booking',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_booking_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-			'route' => '/admin/booking/search/:type[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-					'type'   => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_booking',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_financial' => array(
+		/*'admin_financial' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/admin/financial[/:action[/:id]]',

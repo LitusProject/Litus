@@ -106,7 +106,7 @@
 				searchDiv: $('#article_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_article_search') }}',
+				url: '{{ url('admin_article', {'action': 'search'}) }}',
 				display: function (data) {
 					$('#article_search table').find('tr.item').remove();
 					$(data).each(function () {
