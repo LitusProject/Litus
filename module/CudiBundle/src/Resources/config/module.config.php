@@ -237,10 +237,11 @@ return array(
 		'admin_sales_booking' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/booking[/:action[/:id][:type[/:field/:string]]]',
+				'route' => '/admin/sales/booking[/:action[/:id][/period/:period][:type[/:field/:string]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+					'period'  => '[0-9]*',
 					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
 					'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',

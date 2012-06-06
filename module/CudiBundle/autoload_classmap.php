@@ -65,6 +65,7 @@ return array(
     'CudiBundle\Form\Admin\Sales\Article\Activate'             => __DIR__ . '/src/Form/Admin/Sales/Article/Activate.php',
     'CudiBundle\Form\Admin\Sales\Article\Add'                  => __DIR__ . '/src/Form/Admin/Sales/Article/Add.php',
     'CudiBundle\Form\Admin\Sales\Article\Edit'                 => __DIR__ . '/src/Form/Admin/Sales/Article/Edit.php',
+    'CudiBundle\Form\Admin\Sales\Booking\Add'                  => __DIR__ . '/src/Form/Admin/Sales/Booking/Add.php',
     'CudiBundle\Form\Admin\Sales\Discounts\Add'                => __DIR__ . '/src/Form/Admin/Sales/Discounts/Add.php',
     'CudiBundle\Form\Admin\Stock\Deliveries\Add'               => __DIR__ . '/src/Form/Admin/Stock/Deliveries/Add.php',
     'CudiBundle\Form\Admin\Stock\Deliveries\AddDirect'         => __DIR__ . '/src/Form/Admin/Stock/Deliveries/AddDirect.php',

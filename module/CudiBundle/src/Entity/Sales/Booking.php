@@ -17,6 +17,8 @@ namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
 	CudiBundle\Entity\Sales\Article,
+	DateInterval,
+	DateTime,
 	Doctrine\ORM\EntityManager;
 
 /**
@@ -124,15 +126,15 @@ class Booking
 		$this->setArticle($article)
 		    ->setNumber($number)
 		    ->setStatus($status);
-		$this->bookDate = new \DateTime();
+		$this->bookDate = new DateTime();
 		
 		if ($article->canExpire()) {
 			$expireTime = $entityManager
 	            ->getRepository('CommonBundle\Entity\General\Config')
 	            ->getConfigValue('cudi.reservation_expire_time');
 	
-			$now = new \DateTime();
-			$this->expirationDate = $now->add(new \DateInterval($expireTime));
+			$now = new DateTime();
+			$this->expirationDate = $now->add(new DateInterval($expireTime));
 			
 		}
 	}
@@ -234,23 +236,23 @@ class Booking
 			throw new \InvalidArgumentException('The BookingStatus is not valid.');
 		
 		if ($status == 'booked') {
-		    $this->bookDate = new \DateTime();
+		    $this->bookDate = new DateTime();
 		    $this->assignmentDate = null;
 		    $this->saleDate = null;
 		    $this->cancelationDate = null;
 		} elseif ($status == 'assigned') {
-			$this->assignmentDate = new \DateTime();
+			$this->assignmentDate = new DateTime();
 			$this->saleDate = null;
 			$this->cancelationDate = null;
 		} elseif ($status == 'sold') {
-			$this->saleDate = new \DateTime();
+			$this->saleDate = new DateTime();
 			$this->cancelationDate = null;
 		} elseif ($status == 'expired') {
 		    $this->saleDate = null;
 		    $this->cancelationDate = null;
 		} elseif ($status == 'canceled') {
 		    $this->saleDate = null;
-		    $this->cancelationDate = new \DateTime();
+		    $this->cancelationDate = new DateTime();
 		}
 		
 		$this->status = $status;
@@ -262,6 +264,6 @@ class Booking
 	 */
 	public function isExpired()
 	{
-		return $this->expirationDate < new \DateTime();
+		return $this->expirationDate < new DateTime();
 	}
 }

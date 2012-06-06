@@ -15,6 +15,18 @@ use CudiBundle\Entity\Sales\Article,
  */
 class Period extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('p')
+			->from('CudiBundle\Entity\Stock\Period', 'p')
+			->orderBy('p.startDate', 'DESC')
+			->getQuery()
+			->getResult();
+       
+       return $resultSet;
+    }
+        
     public function findOneActive()
     {
         $query = $this->_em->createQueryBuilder();
