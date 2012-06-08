@@ -245,6 +245,80 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'result' => (object) array("status" => "success")
         );
 	}
+	
+	public function assignAllAction()
+	{
+	    $number = $this->getEntityManager()
+			->getRepository('CudiBundle\Entity\Sales\Booking')
+			->assignAll($this->getMailTransport());
+				
+		if (0 == $number)
+			$message = 'No booking could be assigned!';
+		elseif (1 == $number)
+			$message = 'There is <b>one</b> booking assigned!';
+		else
+			$message = 'There are <b>' . $number . '</b> bookings assigned!';
+		
+		$this->flashMessenger()->addMessage(
+    		new FlashMessage(
+        		FlashMessage::SUCCESS,
+            	'SUCCESS',
+            	$message
+        	)
+    	);
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return;
+	}
+	
+	public function searchAction()
+	{
+	    $this->initAjax();
+	    
+	    if (!($activePeriod = $this->_getPeriod()))
+	        return;
+	    	    
+	    switch($this->getParam('field')) {
+	    	case 'person':
+	    		$bookings = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Sales\Booking')
+	    			->findAllByPersonNameAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+	    		break;
+	    	case 'article':
+	    		$bookings = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Sales\Booking')
+	    			->findAllByArticleAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+	    		break;
+	    	case 'status':
+	    		$bookings = $this->getEntityManager()
+	    			->getRepository('CudiBundle\Entity\Sales\Booking')
+	    			->findAllByStatusAndTypeAndPeriod($this->getParam('string'), $this->getParam('type'), $activePeriod);
+	    		break;
+	    }
+	    
+	    $numResults = $this->getEntityManager()
+	    	->getRepository('CommonBundle\Entity\General\Config')
+	    	->getConfigValue('search_max_results');
+	    
+	    array_splice($bookings, $numResults);
+	    
+	    $result = array();
+	    foreach($bookings as $booking) {
+	    	$item = (object) array();
+	    	$item->id = $booking->getId();
+	    	$item->person = $booking->getPerson()->getFullName();
+	    	$item->article = $booking->getArticle()->getMainArticle()->getTitle();
+	    	$item->number = $booking->getNumber();
+	    	$item->bookDate = $booking->getBookDate()->format('d/m/Y H:i');
+	    	$item->status = ucfirst($booking->getStatus());
+	    	$result[] = $item;
+	    }
+	    
+	    return array(
+	    	'result' => $result,
+	    );
+	}
     
     private function _getPeriod()
     {
