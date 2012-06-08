@@ -48,9 +48,9 @@
 	    	<div style="padding:4px;text-align:right">
 	    		Search: 
 	    		<select id="searchField">
-	    			<option value="title">Article</option>
-	    			<option value="author">Person</option>
-	    			<option value="publisher">Status</option>
+	    			<option value="article">Article</option>
+	    			<option value="person">Person</option>
+	    			<option value="status">Status</option>
 	    		</select>
 	    		is
 	    		<input type="text" id="searchString" size="30" />
@@ -163,13 +163,58 @@
 	</div>
 {% endblock %}
 
-
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('.item .delete').click(openRemoveModal);
-			$('.item .assign').click(openAssignModal);
-			$('.item .unassign').click(openUnassignModal);
+		    $('#controller_nav .assignAll').click(openAssignAllModal);
+            $('.item .delete').click(openRemoveModal);
+            $('.item .assign').click(openAssignModal);
+            $('.item .unassign').click(openUnassignModal);
+		    
+		    {% if hasAccess('admin_sales_booking', 'search') %}
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#booking_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'active'}) }}',
+				display: function (data) {
+					$('#booking_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#booking_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.person + '</td>')
+							.append('<td>' + this.article + '</td>')
+							.append('<td>&times;' + this.number + '</td>')
+							.append('<td>' + this.bookDate + '</td>')
+							.append('<td class="status">' + this.status + '</td>')
+							.append(actions = $('<td>'));
+						{% if hasAccess('admin_sales_booking', 'unassign') %}
+						if ('assigned' == this.status.toLowerCase())
+							actions.append(button = $('<a href="#" class="edit unassign">Unassign</a>'));
+						{% endif %}
+						{% if hasAccess('admin_sales_booking', 'assign') %}
+						if ('booked' == this.status.toLowerCase())
+							actions.append(button = $('<a href="#" class="edit assign">Assign</a>'));
+						{% endif %}
+						{% if hasAccess('admin_sales_booking', 'delete') %}
+						if ('booked' == this.status.toLowerCase())
+							actions.append(button = $('<a href="#" class="delete">Delete</a>'));
+						{% endif %}
+						actions.find('a').data({
+							id: this.id,
+							person: this.person,
+							title: this.article,
+						});
+					});
+					$('#booking_search .delete').click(openRemoveModal);
+					$('#booking_search .unassign').click(openUnassignModal);
+					$('#booking_search .assign').click(openAssignModal);
+				},
+				clear: function () {
+					$('#booking_search table').find('tr.item').remove();
+				}
+			});
+			{% endif %}
 		});
 		
 		function openRemoveModal(e) {

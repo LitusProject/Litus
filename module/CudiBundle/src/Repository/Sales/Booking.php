@@ -2,8 +2,12 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use CudiBundle\Entity\Stock\Period,
-    Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sales\Article as ArticleEntity,
+    CudiBundle\Entity\Stock\Period,
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join,
+    Zend\Mail\Message,
+    Zend\Mail\Transport;
 
 /**
  * Booking
@@ -67,5 +71,299 @@ class Booking extends EntityRepository
     		->getResult();
     		
     	return $resultSet;
+    }
+    
+    public function findAllByPersonNameAndTypeAndPeriod($person, $type, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->innerJoin('b.person', 'p', Join::WITH,
+        	    $query->expr()->orX(
+        			$query->expr()->like(
+        				$query->expr()->concat(
+        					$query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+        					$query->expr()->lower('p.lastName')
+        				),
+        				':name'
+        			),
+        			$query->expr()->like(
+        				$query->expr()->concat(
+        					$query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+        					$query->expr()->lower('p.firstName')
+        				),
+        				':name'
+        			)
+        		)
+        	)
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->orX(
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'active\'', ':type'),
+        	                $query->expr()->orX(
+        	                    $query->expr()->eq('b.status', '\'booked\''),
+        	                    $query->expr()->eq('b.status', '\'assigned\'')
+        	                )
+        	            ),
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'inactive\'', ':type'),
+        	                $query->expr()->not(
+            	                $query->expr()->orX(
+            	                    $query->expr()->eq('b.status', '\'booked\''),
+            	                    $query->expr()->eq('b.status', '\'assigned\'')
+            	                )
+            	            )
+        	            )
+        	        ),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+			->setParameter('name', '%'.strtolower($person).'%')
+        	->setParameter('type', $type)
+        	->setParameter('startDate', $period->getStartDate());
+        	
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+        	
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByArticleAndTypeAndPeriod($article, $type, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->innerJoin('b.article', 'a')
+        	->innerJoin('a.mainArticle', 'm', Join::WITH,
+        	    $query->expr()->like($query->expr()->lower('m.title'), ':article')
+        	)
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->orX(
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'active\'', ':type'),
+        	                $query->expr()->orX(
+        	                    $query->expr()->eq('b.status', '\'booked\''),
+        	                    $query->expr()->eq('b.status', '\'assigned\'')
+        	                )
+        	            ),
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'inactive\'', ':type'),
+        	                $query->expr()->not(
+            	                $query->expr()->orX(
+            	                    $query->expr()->eq('b.status', '\'booked\''),
+            	                    $query->expr()->eq('b.status', '\'assigned\'')
+            	                )
+            	            )
+        	            )
+        	        ),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+    		->setParameter('article', '%'.strtolower($article).'%')
+        	->setParameter('type', $type)
+        	->setParameter('startDate', $period->getStartDate());
+        	
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+        	
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByStatusAndTypeAndPeriod($status, $type, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->orX(
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'active\'', ':type'),
+        	                $query->expr()->orX(
+        	                    $query->expr()->eq('b.status', '\'booked\''),
+        	                    $query->expr()->eq('b.status', '\'assigned\'')
+        	                )
+        	            ),
+        	            $query->expr()->andX(
+        	                $query->expr()->eq('\'inactive\'', ':type'),
+        	                $query->expr()->not(
+            	                $query->expr()->orX(
+            	                    $query->expr()->eq('b.status', '\'booked\''),
+            	                    $query->expr()->eq('b.status', '\'assigned\'')
+            	                )
+            	            )
+        	            )
+        	        ),
+            	    $query->expr()->like($query->expr()->lower('b.status'), ':status'),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+    		->setParameter('status', '%'.strtolower($status).'%')
+        	->setParameter('type', $type)
+        	->setParameter('startDate', $period->getStartDate());
+        	
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+        	
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllBookedArticles()
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+            
+        $query = $this->_em->createQueryBuilder();
+        $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        		    $query->expr()->eq('b.status', '\'booked\''),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+        	->setParameter('startDate', $period->getStartDate());
+        	
+        	if (!$period->isOpen())
+        	    $query->setParameter('endDate', $period->getEndDate());
+        	
+        $resultSet = $query->orderBy('b.bookDate', 'DESC')
+        	->getQuery()
+        	->getResult();
+        	
+        $articles = array();
+        foreach($resultSet as $booking)
+            $articles[$booking->getArticle()->getId()] = $booking->getArticle();
+        	
+        return $articles;
+    }
+    
+    public function findAllBookedByArticleAndPeriod(ArticleEntity $article, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+                $query->expr()->andX(
+        			$query->expr()->eq('b.article', ':article'),
+        			$query->expr()->eq('b.status', '\'booked\''),
+        			$query->expr()->gt('b.bookDate', ':startDate'),
+        			$period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+        	->setParameter('article', $article->getId())
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+    		
+    	$resultSet = $query->orderBy('b.bookDate', 'ASC')
+    	    ->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function assignAll(Transport $mailTransport)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+            
+        $period->setEntityManager($this->getEntityManager());
+            
+        $articles = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Sales\Booking')
+        	->findAllBookedArticles();
+
+        $counter = 0;
+        
+        $persons = array();
+        
+        foreach($articles as $article) {
+            $available = $article->getStockValue() - $period->getNbAssigned($article);
+        	if ($available <= 0)
+        		break;
+        		
+        	$bookings = $this->getEntityManager()
+        		->getRepository('CudiBundle\Entity\Sales\Booking')
+        		->findAllBookedByArticleAndPeriod($article, $period);
+        		
+        	foreach($bookings as $booking) {
+        	    $counter++;
+        	    
+        		if ($available < $booking->getNumber()) {
+        		    $new = new Booking(
+        		    	$this->getEntityManager(),
+        		    	$booking->getPerson(),
+        		    	$booking->getArticle(),
+        		    	'booked',
+        		    	$booking->getNumber() - $available
+        		    );
+        		    
+        		    $booking->setNumber($available);
+        		}
+        		
+   		        $booking->setStatus('assigned');
+        		
+        		if (!isset($persons[$booking->getPerson()->getId()]))
+        			$persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+        		
+        		$persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
+        	}
+        }
+        $this->getEntityManager()->flush();
+        
+        $email = $this->_em
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('cudi.booking_assigned_mail');
+        	
+        $subject = $this->_em
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('cudi.booking_assigned_mail_subject');
+        	
+        $mailaddress = $this->_em
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('cudi.mail');
+        	
+        $mailname = $this->_em
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('cudi.mail_name');
+        
+        foreach($persons as $person) {
+        	$bookings = '';
+        	foreach($person['bookings'] as $booking)
+        		$bookings .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . "\r\n";
+        
+        	$mail = new Message();
+        	$mail->setBody(str_replace('{{ bookings }}', $bookings, $email))
+        		->setFrom($mailaddress, $mailname)
+        		->addTo($person['person']->getEmail(), $person['person']->getFullName())
+        		->setSubject($subject);
+        		
+		    // TODO: activate this	
+        	//$mailTransport->send($mail);
+        }
+        
+        return $counter;
     }
 }
