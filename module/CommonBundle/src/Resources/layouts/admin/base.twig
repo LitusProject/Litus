@@ -74,14 +74,14 @@
 	                		</li>
 	                	{% endif %}
 	                
-		                {% if hasAccess('admin_article', 'manage') or hasAccess('admin_booking', 'manage') or hasAccess('admin_sale', 'manage') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_financial', 'manage') %}
+		                {% if hasAccess('admin_article', 'manage') or hasAccess('admin_sales_article', 'manage') or hasAccess('admin_sales_booking', 'manage') or hasAccess('admin_sales_session', 'manage') or hasAccess('admin_sales_financial', 'manage') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_prof_action', 'manage') %}
 		            		<li>
 		            			<div class="subtitle">
 			            			<b>CuDi</b><br />
 			            			Articles, Stock &amp; Financial
 			            		</div>
 		            			<ul
-		            				{% if 'admin_article' == getParam('controller') or 'admin_article_subject' == getParam('controller') or 'admin_article_comment' == getParam('controller') or 'admin_article_file' == getParam('controller') or 'admin_sales_article' == getParam('controller') or 'admin_sales_discount' == getParam('controller') or 'admin_sales_booking' == getParam('controller') or 'admin_sales_session' == getParam('controller') or 'admin_sales_financial' == getParam('controller') or 'admin_supplier' == getParam('controller') or 'admin_supplier_user' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_stock_period' == getParam('controller') or 'admin_stock_order' == getParam('controller') or 'admin_stock_delivery' == getParam('controller') or 'admin_stock_retour' == getParam('controller') %}
+		            				{% if 'admin_article' == getParam('controller') or 'admin_article_subject' == getParam('controller') or 'admin_article_comment' == getParam('controller') or 'admin_article_file' == getParam('controller') or 'admin_sales_article' == getParam('controller') or 'admin_sales_discount' == getParam('controller') or 'admin_sales_booking' == getParam('controller') or 'admin_sales_session' == getParam('controller') or 'admin_sales_financial' == getParam('controller') or 'admin_supplier' == getParam('controller') or 'admin_supplier_user' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_stock_period' == getParam('controller') or 'admin_stock_order' == getParam('controller') or 'admin_stock_delivery' == getParam('controller') or 'admin_stock_retour' == getParam('controller') or 'admin_prof_action' == getParam('controller') %}
 		            					style="display: block;"
 		            				{% endif %}
 		            			>
@@ -106,26 +106,11 @@
 		            			    {% if hasAccess('admin_supplier', 'manage') %}
 		            			        <li><a href="{{ url('admin_supplier') }}">Supplier</a></li>
 		            			    {% endif %}
+		            			    {% if hasAccess('admin_prof_action', 'manage') %}
+		            			        <li><a href="{{ url('admin_action') }}">Prof Actions</a></li>
+		            			    {% endif %}
 		            			</ul>
 		            		</li>
-		                {% endif %}
-		                
-		                {% if hasAccess('admin_action', 'manage') %}
-		                	<li>
-		                		<div class="subtitle">
-		                			<b>Prof</b><br />
-		                			Actions
-		                		</div>
-		                		<ul
-		                			{% if 'admin_action' == getParam('controller') %}
-		                				style="display: block;"
-		                			{% endif %}
-		                		>
-		                		    {% if hasAccess('admin_action', 'manage') %}
-		                		        <li><a href="{{ url('admin_action') }}">Actions</a></li>
-		                		    {% endif %}
-		                		</ul>
-		                	</li>
 		                {% endif %}
 		                
 		                {% if hasAccess('admin_run', 'index') %}
