@@ -31,7 +31,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SessionController extends \CommonBundle\Component\Controller\ActionController
+class SessionController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {

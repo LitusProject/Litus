@@ -78,6 +78,11 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_sales_financial' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 		'admin_supplier' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -129,11 +134,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		/*'admin_financial' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		),
+		/*
 		'sale_sale' => array(
 			'@common_jquery',
 			'@bootstrap_css',
