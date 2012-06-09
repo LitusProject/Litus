@@ -112,8 +112,8 @@ class QueueItem
     	$this->setStatus('signed_in');
 
     	$this->queueNumber = $entityManager
-    		->getRepository('CudiBundle\Entity\Sales\ServingQueueItem')
-    		->getQueueNumber($session);
+    		->getRepository('CudiBundle\Entity\Sales\QueueItem')
+    		->getNextQueueNumber($session);
     }
     
     /**

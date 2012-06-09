@@ -83,6 +83,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            	'description' => 'The path to the logo of the union',
 	            ),
 	            array(
+	            	'key'         => 'union_url',
+	            	'value'       => 'http://www.vtk.be',
+	            	'description' => 'The URL of the union',
+	            ),
+	            array(
 	            	'key'         => 'cudi.name',
 	            	'value'       => 'Cudi',
 	            	'description' => 'The name of the cudi',
@@ -124,6 +129,26 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 The following bookings are assigned to you:
 {{ bookings }}',
     				'description' => 'The mail sent when a booking is assigned'
+    			),
+    			array(
+    				'key'         => 'cudi.queue_item_barcode_prefix',
+    				'value'       => '988000000000',
+    				'description' => 'The start for a serving queue item barcode',
+    			),
+    			array(
+    				'key'         => 'cudi.queue_socket_port',
+    				'value'       => '8899',
+    				'description' => 'The port used for the websocket of the queue',
+    			),
+    			array(
+    				'key'         => 'cudi.queue_socket_remote_host',
+    				'value'       => '127.0.0.1',
+    				'description' => 'The remote host for the websocket of the queue',
+    			),
+    			array(
+    				'key'         => 'cudi.queue_socket_host',
+    				'value'       => '127.0.0.1',
+    				'description' => 'The host used for the websocket of the queue',
     			),
 			)
 		);

@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use CudiBundle\Entity\Sales\Article as ArticleEntity,
+use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     Doctrine\ORM\EntityRepository,
@@ -279,6 +280,64 @@ class Booking extends EntityRepository
     		
     	$resultSet = $query->orderBy('b.bookDate', 'ASC')
     	    ->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllAssignedByPerson(Person $person)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+            
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        			$query->expr()->eq('b.person', ':person'),
+        			$query->expr()->eq('b.status', '\'assigned\''),
+        			$query->expr()->gt('b.bookDate', ':startDate'),
+        			$period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+        	->setParameter(':person', $person->getId())
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+    		
+    	$resultSet = $query->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllOpenByPerson(Person $person)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+            
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where($query->expr()->andX(
+        			$query->expr()->eq('b.person', ':person'),
+        			$query->expr()->neq('b.status', '\'sold\''),
+        			$query->expr()->neq('b.status', '\'expired\''),
+        			$query->expr()->gt('b.bookDate', ':startDate'),
+        			$period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+        	)
+        	->setParameter(':person', $person->getId())
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    	if (!$period->isOpen())
+    	    $query->setParameter('endDate', $period->getEndDate());
+    		
+    	$resultSet = $query->getQuery()
         	->getResult();
         	
         return $resultSet;

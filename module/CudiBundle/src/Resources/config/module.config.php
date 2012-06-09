@@ -21,10 +21,9 @@ return array(
 				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
-				/*
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
-				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',*/
+				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
 				
 				'supplier_index'         => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
@@ -505,7 +504,7 @@ return array(
 				),
 			),
 		),
-		/*'sale_queue' => array(
+		'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/cudi/queue[/:action]/:session',
@@ -532,7 +531,7 @@ return array(
 					'action'     => 'index',
 				),
 			),
-		),*/
+		),
 		'supplier_index' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
