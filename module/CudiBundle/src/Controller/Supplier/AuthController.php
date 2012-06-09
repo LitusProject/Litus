@@ -58,7 +58,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 		            
         $this->redirect()->toRoute(
-        	'supplier'
+        	'supplier_index'
         );
         
         return;
@@ -77,7 +77,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'supplier'
+        	'supplier_index'
         );
 
         return;

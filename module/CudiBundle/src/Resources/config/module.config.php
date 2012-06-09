@@ -12,6 +12,7 @@ return array(
 				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
 				'admin_sales_discount'   => 'CudiBundle\Controller\Admin\Sales\DiscountController',
 				'admin_sales_booking'	 => 'CudiBundle\Controller\Admin\Sales\BookingController',
+				'admin_sales_session'    => 'CudiBundle\Controller\Admin\Sales\SessionController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
 				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
@@ -19,13 +20,12 @@ return array(
 				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
-				/*'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
-				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
+				/*'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',*/
 				
-				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
+				'supplier_index'         => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
 				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
             ),
@@ -261,6 +261,20 @@ return array(
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_booking',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_session' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/session[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_session',
 					'action'     => 'manage',
 				),
 			),
@@ -518,20 +532,6 @@ return array(
 				),
 			),
 		),
-		'admin_sale' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sale[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sale',
-					'action'     => 'manage',
-				),
-			),
-		),
 		'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -560,7 +560,7 @@ return array(
 				),
 			),
 		),*/
-		'supplier' => array(
+		'supplier_index' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/cudi/supplier[/:action]',
@@ -569,7 +569,7 @@ return array(
 					'session' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'supplier',
+					'controller' => 'supplier_index',
 					'action'     => 'index',
 				),
 			),

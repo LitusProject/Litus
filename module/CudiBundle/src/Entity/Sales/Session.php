@@ -53,17 +53,17 @@ class Session
 	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister open status
 	 *
 	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
-	 * @JoinColumn(name="open_amount", referencedColumnName="id")
+	 * @JoinColumn(name="open_register", referencedColumnName="id")
 	 */
-	private $openAmount;
+	private $openRegister;
 	
 	/**
 	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister close status
 	 *
 	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
-	 * @JoinColumn(name="close_amount", referencedColumnName="id")
+	 * @JoinColumn(name="close_register", referencedColumnName="id")
 	 */
-	private $closeAmount;
+	private $closeRegister;
 	
 	/**
 	 * @var \CommonBundle\Entity\Users\Person The person responsible for the sale session
@@ -86,14 +86,14 @@ class Session
 	private $_entityManager;
 	
 	/**
-	 * @param \CommonBundle\Entity\General\Bank\CashRegister $openAmount The cash register contents at the start of the session
+	 * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
 	 * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
 	 * @param string $comment
 	 */
-	public function __construct(CashRegister $openAmount, Person $manager, $comment = '')
+	public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
 	{
 		$this->openDate = new \DateTime();
-		$this->openAmount = $openAmount;
+		$this->openRegister = $openRegister;
 		$this->comment = $comment;
 		$this->manager = $manager;
 	}
@@ -146,28 +146,28 @@ class Session
 	/**
 	 * @return \CommonBundle\Entity\General\Bank\CashRegister
 	 */
-	public function getOpenAmount()
+	public function getOpenRegister()
 	{
-		return $this->openAmount;
+		return $this->openRegister;
 	}
 
 	/**
-	 * @param \CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 * @param \CommonBundle\Entity\General\Bank\CashRegister $closeRegister
 	 *
 	 * @return \CudiBundle\Entity\Sales\Session
 	 */
-	public function setCloseAmount(CashRegister $closeAmount)
+	public function setCloseRegister(CashRegister $closeRegister)
 	{
-		$this->closeAmount = $closeAmount;
+		$this->closeRegister = $closeRegister;
 		return $this;
 	}
 	
 	/**
-	 * @return \CommonBundle\Entity\General\Bank\CashRegister $closeAmount
+	 * @return \CommonBundle\Entity\General\Bank\CashRegister
 	 */
-	public function getCloseAmount()
+	public function getCloseRegister()
 	{
-		return $this->closeAmount;
+		return $this->closeRegister;
 	}
 
 	/**
@@ -208,53 +208,5 @@ class Session
 	        return false;
 	    
 	    return true;
-	}
-	
-	
-    /**
-     * Calculates the theoretical revenue of a given session --
-     * that is, the revenue expected on the basis of sold stock items
-     *
-     * @return integer
-     */
-    public function getTheoreticalRevenue()
-    {
-        return $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sales\Session')
-            ->getTheoreticalRevenue($this);
-    }
-    
-    /**
-     * Calculates the actual revenue of a given session --
-     * that is, the register difference between opening and closure of
-     * a session
-     *
-     * @return integer
-     */
-    public function getActualRevenue()
-    {
-        if ($this->isOpen())
-            return 0;
-        
-        $closeamount = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-            ->findOneById($this->getCloseAmount());
-        
-        $openamount = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-            ->findOneById($this->getOpenAmount());
-        
-        return $closeamount->getTotalAmount() - $openamount->getTotalAmount();
-    }
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
-	 * @return \CudiBundle\Entity\Sales\Session
-	 */
-	public function setEntityManager(EntityManager $entityManager)
-	{
-		$this->_entityManager = $entityManager;
-		return $this;
 	}
 }

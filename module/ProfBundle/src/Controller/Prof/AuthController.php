@@ -58,7 +58,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 		            
         $this->redirect()->toRoute(
-        	'prof'
+        	'prof_index'
         );
         
         return;
@@ -77,7 +77,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'prof'
+        	'prof_index'
         );
 
         return;
