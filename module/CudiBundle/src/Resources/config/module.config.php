@@ -13,6 +13,7 @@ return array(
 				'admin_sales_discount'   => 'CudiBundle\Controller\Admin\Sales\DiscountController',
 				'admin_sales_booking'	 => 'CudiBundle\Controller\Admin\Sales\BookingController',
 				'admin_sales_session'    => 'CudiBundle\Controller\Admin\Sales\SessionController',
+				'admin_sales_financial'  => 'CudiBundle\Controller\Admin\Sales\FinancialController',
 				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
 				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
 				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
@@ -20,7 +21,7 @@ return array(
 				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
-				/*'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
+				/*
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',*/
@@ -279,6 +280,20 @@ return array(
 				),
 			),
 		),
+		'admin_sales_financial' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/financial[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_financial',
+					'action'     => 'sales',
+				),
+			),
+		),
 		'admin_supplier' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -490,49 +505,7 @@ return array(
 				),
 			),
 		),
-		/*'admin_financial' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_financial',
-					'action'     => 'sales',
-				),
-			),
-		),
-		'admin_financial_stock' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_financial',
-					'action'     => 'stock',
-				),
-			),
-		),
-		'admin_financial_supplier' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_financial',
-					'action'     => 'supplier',
-				),
-			),
-		),
-		'sale_queue' => array(
+		/*'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/cudi/queue[/:action]/:session',

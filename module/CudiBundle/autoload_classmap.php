@@ -16,6 +16,7 @@ return array(
     'CudiBundle\Controller\Admin\Sales\ArticleController'      => __DIR__ . '/src/Controller/Admin/Sales/ArticleController.php',
     'CudiBundle\Controller\Admin\Sales\BookingController'      => __DIR__ . '/src/Controller/Admin/Sales/BookingController.php',
     'CudiBundle\Controller\Admin\Sales\DiscountController'     => __DIR__ . '/src/Controller/Admin/Sales/DiscountController.php',
+    'CudiBundle\Controller\Admin\Sales\FinancialController'    => __DIR__ . '/src/Controller/Admin/Sales/FinancialController.php',
     'CudiBundle\Controller\Admin\Sales\SessionController'      => __DIR__ . '/src/Controller/Admin/Sales/SessionController.php',
     'CudiBundle\Controller\Admin\Stock\DeliveryController'     => __DIR__ . '/src/Controller/Admin/Stock/DeliveryController.php',
     'CudiBundle\Controller\Admin\Stock\OrderController'        => __DIR__ . '/src/Controller/Admin/Stock/OrderController.php',

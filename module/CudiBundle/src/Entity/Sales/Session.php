@@ -199,4 +199,43 @@ class Session
 	    
 	    return true;
 	}
+	
+	/**
+	 * Calculates the theoretical revenue of a given session --
+	 * that is, the revenue expected on the basis of sold stock items
+	 *
+	 * @return integer
+	 */
+	public function getTheoreticalRevenue()
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Sales\Session')
+	        ->getTheoreticalRevenue($this);
+	}
+	
+	/**
+	 * Calculates the actual revenue of a given session --
+	 * that is, the register difference between opening and closure of
+	 * a session
+	 *
+	 * @return integer
+	 */
+	public function getActualRevenue()
+	{
+	    if ($this->isOpen())
+	        return 0;
+	    
+	    return $this->closeRegister->getTotalAmount() - $this->openRegister->getTotalAmount();
+	}
+	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return \CudiBundle\Entity\Sales\Session
+	 */
+	public function setEntityManager(EntityManager $entityManager)
+	{
+		$this->_entityManager = $entityManager;
+		return $this;
+	}
 }
