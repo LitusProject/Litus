@@ -26,7 +26,7 @@ return array(
 	    	'@admin_js',
 		    '@common_download_file',
 	    ),
-	    'prof' => array(
+	    'prof_index' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',

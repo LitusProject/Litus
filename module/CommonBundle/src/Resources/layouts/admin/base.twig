@@ -81,11 +81,11 @@
 			            			Articles, Stock &amp; Financial
 			            		</div>
 		            			<ul
-		            				{% if 'admin_article' == getParam('controller') or 'admin_article_subject' == getParam('controller') or 'admin_article_comment' == getParam('controller') or 'admin_article_file' == getParam('controller') or 'admin_sales_article' == getParam('controller') or 'admin_sales_discount' == getParam('controller') or 'admin_sales_booking' == getParam('controller') or 'admin_supplier' == getParam('controller') or 'admin_supplier_user' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_stock_period' == getParam('controller') or 'admin_stock_order' == getParam('controller') or 'admin_stock_delivery' == getParam('controller') or 'admin_stock_retour' == getParam('controller') %}
+		            				{% if 'admin_article' == getParam('controller') or 'admin_article_subject' == getParam('controller') or 'admin_article_comment' == getParam('controller') or 'admin_article_file' == getParam('controller') or 'admin_sales_article' == getParam('controller') or 'admin_sales_discount' == getParam('controller') or 'admin_sales_booking' == getParam('controller') or 'admin_sales_session' == getParam('controller') or 'admin_supplier' == getParam('controller') or 'admin_supplier_user' == getParam('controller') or 'admin_stock' == getParam('controller') or 'admin_stock_period' == getParam('controller') or 'admin_stock_order' == getParam('controller') or 'admin_stock_delivery' == getParam('controller') or 'admin_stock_retour' == getParam('controller') %}
 		            					style="display: block;"
 		            				{% endif %}
 		            			>
-		            			{# or 'admin_sale' == getParam('controller') or 'admin_financial' == getParam('controller') #}
+		            			{# or 'admin_financial' == getParam('controller') #}
 		            			    {% if hasAccess('admin_article', 'manage') %}
 		            			        <li><a href="{{ url('admin_article') }}">Articles</a></li>
 		            			    {% endif %}
@@ -95,16 +95,16 @@
 		            			    {% if hasAccess('admin_sales_booking', 'manage') %}
 		            			        <li><a href="{{ url('admin_sales_booking') }}">Bookings</a></li>
 		            			    {% endif %}
+		            			    {% if hasAccess('admin_sales_session', 'manage') %}
+		            			        <li><a href="{{ url('admin_sales_session') }}">Sale sessions</a></li>
+		            			    {% endif %}
 		            			    {% if hasAccess('admin_stock', 'manage') %}
 		            			        <li><a href="{{ url('admin_stock') }}">Stock</a></li>
 		            			    {% endif %}
 		            			    {% if hasAccess('admin_supplier', 'manage') %}
 		            			        <li><a href="{{ url('admin_supplier') }}">Supplier</a></li>
 		            			    {% endif %}
-		            			    {#% if hasAccess('admin_sale', 'manage') %}
-		            			        <li><a href="{{ url('admin_sale') }}">Sale</a></li>
-		            			    {% endif %}
-		            			    {% if hasAccess('admin_financial', 'manage') %}
+		            			    {#% if hasAccess('admin_financial', 'manage') %}
 		            			        <li><a href="{{ url('admin_financial') }}">Financial</a></li>
 		            			    {% endif %#}
 		            			</ul>

@@ -73,6 +73,11 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
+		'admin_sales_session' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 		'admin_supplier' => array(
 			'@common_jquery',
 		    '@admin_css',
@@ -124,12 +129,7 @@ return array(
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
 		),
-		/*'admin_sale' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		),
-		'admin_financial' => array(
+		/*'admin_financial' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
@@ -154,7 +154,7 @@ return array(
 			'@bootstrap_js_alert',
 			'@common_socket',
 		),*/
-		'supplier' => array(
+		'supplier_index' => array(
 			'@common_jquery',
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
