@@ -65,7 +65,7 @@
 		                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
 						    {% if hasAccess('admin_article', 'delete') %}
-		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getMetaInfo().getAuthors() }}">Delete</a>
+		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getAuthors() }}">Delete</a>
 		                    {% endif %}
 		                </td>
 		            </tr>

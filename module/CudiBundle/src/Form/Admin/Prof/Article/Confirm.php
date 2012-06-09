@@ -1,0 +1,260 @@
+<?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
+namespace CudiBundle\Form\Admin\Prof\Article;
+	
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+	CommonBundle\Component\Validator\Uri as UriValidator,
+	CommonBundle\Component\Validator\Year as YearValidator,
+	CudiBundle\Component\Validator\ISBN as ISBNValidator,
+	CudiBundle\Entity\Article,
+	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Checkbox,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
+
+/**
+ * Confirm Article add action
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+ class Confirm extends \CommonBundle\Component\Form\Admin\Form
+{
+	/**
+	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
+	 */
+	protected $_entityManager = null;
+
+    public function __construct(EntityManager $entityManager, Article $article, $opts = null)
+    {
+        parent::__construct($opts);
+        
+       	$this->_entityManager = $entityManager;
+         
+        $field = new Text('title');
+        $field->setLabel('Title')
+			->setAttrib('size', 70)
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+         
+        $field = new Text('author');
+        $field->setLabel('Author')
+			->setAttrib('size', 60)
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+         
+        $field = new Text('publisher');
+        $field->setLabel('Publisher')
+			->setAttrib('size', 40)
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+         
+        $field = new Text('year_published');
+        $field->setLabel('Year Published')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+			->addValidator('int')
+        	->addValidator(new YearValidator());
+        $this->addElement($field);
+        
+        $field = new Text('isbn');
+        $field->setLabel('ISBN')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator('isbn');
+        $this->addElement($field);
+        
+        $field = new Text('url');
+        $field->setLabel('URL')
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator(new UriValidator());
+        $this->addElement($field);
+
+		$field = new Checkbox('internal');
+		$field->setLabel('Internal Article')
+			->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
+
+		$this->addDisplayGroup(
+			array(
+				'title',
+		        'author',
+		        'publisher',
+				'year_published',
+				'isbn',
+				'url',
+				'internal'
+		    ),
+		    'article_form'
+		);
+		$this->getDisplayGroup('article_form')
+		   	->setLegend('Article')
+		    ->setAttrib('id', 'article_form')
+		    ->removeDecorator('DtDdWrapper');
+
+		$field = new Text('nb_black_and_white');
+	    $field->setLabel('Number of B/W Pages')
+	        ->setRequired()
+	        ->addValidator('int')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+
+	    $field = new Text('nb_colored');
+	    $field->setLabel('Number of Colored Pages')
+	        ->setRequired()
+	        ->addValidator('int')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+
+		$field = new Select('binding');
+	    $field->setLabel('Binding')
+	       	->setRequired()
+			->setMultiOptions($this->_getBindings())
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+
+	    $field = new Checkbox('official');
+	    $field->setLabel('Official')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+
+	    $field = new Checkbox('rectoverso');
+	    $field->setLabel('Recto Verso')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+
+		$field = new Select('front_color');
+	    $field->setLabel('Front Page Color')
+	      	->setRequired()
+			->setMultiOptions($this->_getColors())
+	       	->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+	    
+	    $field = new Checkbox('front_text_colored');
+	    $field->setLabel('Front Page Text Colored')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+	    
+	    $field = new Checkbox('perforated');
+	    $field->setLabel('Perforated')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+		
+		$this->addDisplayGroup(
+		            array(
+		                'nb_black_and_white',
+		                'nb_colored',
+		                'binding',
+						'official',
+						'rectoverso',
+						'front_color',
+						'front_text_colored',
+						'perforated',
+		            ),
+		            'internal_form'
+		        );
+		$this->getDisplayGroup('internal_form')
+	    	->setLegend('Internal Article')
+	        ->setAttrib('id', 'internal_form')
+	        ->removeDecorator('DtDdWrapper');
+
+        $field = new Submit('submit');
+        $field->setLabel('Confirm')
+                ->setAttrib('class', 'article_add')
+                ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
+
+        $this->populateFromArticle($article);
+    }
+	
+	private function _getBindings()
+	{
+		$bindings = $this->_entityManager
+	    	->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+			->findAll();
+		$bindingOptions = array();
+		foreach($bindings as $item)
+			$bindingOptions[$item->getId()] = $item->getName();
+		
+		return $bindingOptions;
+	}
+	
+	private function _getColors()
+	{
+		$colors = $this->_entityManager
+			->getRepository('CudiBundle\Entity\Articles\Options\Color')
+			->findAll();
+		$colorOptions = array();
+		foreach($colors as $item)
+			$colorOptions[$item->getId()] = $item->getName();
+		
+		return $colorOptions;
+	}
+	
+	public function populateFromArticle(Article $article)
+	{
+		$data = array(
+			'title' => $article->getTitle(),
+			'author' => $article->getAuthors(),
+			'publisher' => $article->getPublishers(),
+			'year_published' => $article->getYearPublished(),
+			'isbn' => $article->getISBN(),
+			'url' => $article->getURL(),
+			'internal' => $article->isInternal()
+		);
+		
+		if ($article->isInternal()) {
+			$data['binding'] = $article->getBinding()->getId();
+			$data['official'] = $article->isOfficial();
+			$data['rectoverso'] = $article->isRectoVerso();
+			$data['perforated'] = $article->isPerforated();
+		}
+						
+		$this->populate($data);
+	}
+	
+	public function isValid($data)
+	{
+		if (!$data['internal']) {
+			$validatorsInternal = array();
+			$requiredInternal = array();
+		    
+			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
+				$validatorsInternal[$formElement->getName()] = $formElement->getValidators();
+				$requiredInternal[$formElement->getName()] = $formElement->isRequired();
+				$formElement->clearValidators()
+					->setRequired(false);
+			}
+		}
+		
+		$isValid = parent::isValid($data);
+		
+		if (!$data['internal']) {
+			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
+				if (array_key_exists ($formElement->getName(), $validatorsInternal))
+		 			$formElement->setValidators($validatorsInternal[$formElement->getName()]);
+				if (array_key_exists ($formElement->getName(), $requiredInternal))
+					$formElement->setRequired($requiredInternal[$formElement->getName()]);
+			}
+		}
+		
+		return $isValid;
+	}
+}

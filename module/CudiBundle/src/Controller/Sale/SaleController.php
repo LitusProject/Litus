@@ -39,6 +39,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     
     public function returnAction()
     {
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($this->getParam('session'));
+            
     	$form = new ReturnSaleForm($this->getEntityManager());
     	
     	if($this->getRequest()->isPost()) {
@@ -60,14 +64,15 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     			if ($booking) {
     			    $saleItem = $this->getEntityManager()
 			            ->getRepository('CudiBundle\Entity\Sales\SaleItem')
-			            ->findOneByBooking($booking);
-
-			        if ($saleItem->getNumber() == 1) {
-			        	$this->getEntityManager()->remove($saleItem);
-			        } else {
-			        	$saleItem->setNumber($saleItem->getNumber() - 1);
-			        }
-    			    $this->getEntityManager()->flush();
+			            ->findOneByPersonAndArticle($person, $article);
+                    
+                    if ($saleItem) {
+    			        if ($saleItem->getNumber() == 1) {
+    			        	$this->getEntityManager()->remove($saleItem);
+    			        } else {
+    			        	$saleItem->setNumber($saleItem->getNumber() - 1);
+    			        }
+    			    }
     			    
     				if ($booking->getNumber() == 1) {
     					$this->getEntityManager()->remove($booking);
@@ -100,6 +105,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				'sale_sale',
     				array(
     					'action' => 'return',
+    					'session' => $session->getId(),
     				)
     			);
     			
