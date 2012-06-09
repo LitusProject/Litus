@@ -26,4 +26,33 @@ class Academic extends \CommonBundle\Repository\Users\Person
 		
 		return $resultSet;
 	}
+	
+	public function findOneByUsername($username)
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultSet = $query->select('p')
+			->from('CommonBundle\Entity\Users\People\Academic', 'p')
+			->where(
+			    $query->expr()->orX(
+    			    $query->expr()->eq('p.username', ':username'),
+    			    $query->expr()->eq('p.universityIdentification', ':username')
+			    )
+			)
+			->setParameter('username', $username)
+			->setMaxResults(1)
+			->getQuery()
+			->getResult();
+		
+		if (isset($resultSet[0]))
+	        return $resultSet[0];
+	    
+	    $barcode = $this->_em
+	        ->getRepository('CommonBundle\Entity\Users\Barcode')
+	        ->findOneByBarcode($username);
+	    
+	    if ($barcode)
+	        return $barcode->getPerson();
+	    
+	    return null;
+	}
 }

@@ -88,7 +88,7 @@ class SaleItem
 	 */
 	public function __construct(Article $article, $number, $price, QueueItem $queueItem)
 	{
-	    $this->session = $servingQueueItem->getSession();
+	    $this->session = $queueItem->getSession();
 	    $this->article = $article;
 	    $this->number = $number;
 	    $this->price = $price * 100;
