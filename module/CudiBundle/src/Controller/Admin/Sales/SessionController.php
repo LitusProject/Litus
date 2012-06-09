@@ -15,17 +15,15 @@
  
 namespace CudiBundle\Controller\Admin\Sales;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
-/*	CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
-	CommonBundle\Entity\General\Bank\CashRegister,
-	CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
-	CudiBundle\Entity\Sales\Session,
-	CudiBundle\Form\Admin\Sale\CashRegisterAdd as CashRegisterAddForm,
-	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
-	CudiBundle\Form\Admin\Sale\CashRegisterClose as CashRegisterCloseForm,
-	CudiBundle\Form\Admin\Sale\SessionComment as SessionCommentForm,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder;*/
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
+    CommonBundle\Entity\General\Bank\CashRegister,
+    CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
+    CudiBundle\Entity\Sales\Session,
+    CudiBundle\Form\Admin\Sales\Session\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Session\Edit as EditForm,
+    CudiBundle\Form\Admin\Sales\Session\Close as CloseForm,
+    CudiBundle\Form\Admin\Sales\Session\Comment as CommentForm;
 
 /**
  * SessionController
@@ -52,7 +50,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
     
     public function addAction()
     {
-        /*$form = new CashRegisterAddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -91,7 +89,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
                 );
 				
 				$this->redirect()->toRoute(
-					'admin_sale',
+					'admin_sales_session',
 					array(
 						'action' => 'edit',
 						'id' => $session->getId(),
@@ -104,15 +102,15 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         
         return array(
         	'form' => $form,
-        );*/
+        );
     }
     
     public function editAction()
     {
-		/*if (!($session = $this->_getSession()))
+		if (!($session = $this->_getSession()))
 			return;
 			
-		$form = new SessionCommentForm($session);
+		$form = new CommentForm($session);
 
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -131,7 +129,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 				);
                 
                 $this->redirect()->toRoute(
-                	'admin_sale',
+                	'admin_sales_session',
                 	array(
                 		'action' => 'edit',
                 		'id' => $session->getId(),
@@ -142,28 +140,32 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 			}
 		}
 		
+		$units = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+		    ->findAll();
+		    
+		$devices = $this->getEntityManager()
+			->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+			->findAll();
+		
 		return array(
 			'session' => $session,
-			'units'   => $this->getEntityManager()
-			    ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
-			    ->findAll(),
-			'devices' => $this->getEntityManager()
-				->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
-				->findAll(),
+			'units'   => $units,
+			'devices' => $devices,
 			'form' => $form,
-		);*/
+		);
     }
 
     public function editRegisterAction()
     {
-        /*if (!($cashRegister = $this->_getCashRegister()))
+        if (!($cashRegister = $this->_getCashRegister()))
         	return;
         	
         $session = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Sales\Session')
         	->findOneByCashRegister($cashRegister);
 
-        $form = new CashRegisterEditForm($this->getEntityManager(), $cashRegister);
+        $form = new EditForm($this->getEntityManager(), $cashRegister);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -198,7 +200,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
                 );
                 
                 $this->redirect()->toRoute(
-                	'admin_sale',
+                	'admin_sales_session',
                 	array(
                 		'action' => 'edit',
                 		'id' => $session->getId(),
@@ -211,15 +213,16 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         
         return array(
         	'form' => $form,
-        );*/
+        	'session' => $session,
+        );
     }
 
     public function closeAction()
     {
-        /*if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession()))
         	return;
         	     
-        $form = new CashRegisterCloseForm($this->getEntityManager(), $session->getOpenAmount());
+        $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 		
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -247,8 +250,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 					->getRepository('CudiBundle\Entity\Sales\Booking')
 					->expireBookings();
 				
-				$session->setCloseAmount($cashRegister)
-					->setCloseDate(new \DateTime());
+				$session->close($cashRegister);
 				
 				$this->getEntityManager()->persist($cashRegister);
 				$this->getEntityManager()->flush();
@@ -262,7 +264,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 				);
 				
                	$this->redirect()->toRoute(
-               		'admin_sale',
+               		'admin_sales_session',
                		array(
                			'action' => 'edit',
                			'id' => $session->getId(),
@@ -275,7 +277,8 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 		
 		return array(
 			'form' => $form,
-		);*/
+			'session' => $session,
+		);
     }
     
     private function _getSession()
