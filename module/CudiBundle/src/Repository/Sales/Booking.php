@@ -4,6 +4,7 @@ namespace CudiBundle\Repository\Sales;
 
 use CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Stock\Period,
+    DateTime,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
     Zend\Mail\Message,
@@ -365,5 +366,25 @@ class Booking extends EntityRepository
         }
         
         return $counter;
+    }
+    
+    public function expireBookings()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $bookings = $query->select('b')
+        	->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        		    $query->expr()->eq('b.status', '\'assigned\''),
+        		    $query->expr()->lt('b.expirationDate', ':now')
+        		)
+        	)
+        	->setParameter('now', new DateTime())
+        	->getQuery()
+        	->getResult();
+                
+        foreach($bookings as $booking) {
+       		$booking->setStatus('expired');
+        }
     }
 }

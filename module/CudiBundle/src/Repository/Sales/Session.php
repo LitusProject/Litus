@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository\Sales;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\Bank\CashRegister,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Session
@@ -12,4 +13,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class Session extends EntityRepository
 {
+    public function findOneByCashRegister(CashRegister $cashRegister)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('CudiBundle\Entity\Sales\Session', 's')
+        	->where($query->expr()->orX(
+        			$query->expr()->eq('s.openRegister', ':register'),
+        			$query->expr()->eq('s.closeRegister', ':register')
+        		)
+        	)
+        	->setParameter('register', $cashRegister->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
+    }
 }

@@ -18,6 +18,8 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\General\Bank\BankDevice,
+    CommonBundle\Entity\General\Bank\MoneyUnit,
     CommonBundle\Entity\General\Config,
     CudiBundle\Entity\Articles\Options\Binding,
 	CudiBundle\Entity\Articles\Options\Color,
@@ -130,6 +132,8 @@ The following bookings are assigned to you:
 		$this->_installBinding();
 		$this->_installAcademicYear();
 		$this->_installColor();
+		$this->_installMoneyUnit();
+		$this->_installBankDevice();
 	}
 	
 	protected function _initAcl()
@@ -240,5 +244,37 @@ The following bookings are assigned to you:
 	    	$config->setDescription('The billing address of the cudi');
 	    	$this->getEntityManager()->persist($config);
 	    }
+	}
+	
+	private function _installMoneyUnit()
+	{
+		$units = array(500, 200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01);
+		
+		foreach($units as $item) {
+			$unit = $this->getEntityManager()
+				->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+				->findOneByUnit($item);
+			if (null == $unit) {
+				$unit = new MoneyUnit($item);
+				$this->getEntityManager()->persist($unit);
+			}
+		}
+		$this->getEntityManager()->flush();
+	}
+	
+	private function _installBankDevice()
+	{
+		$bankdevices = array('Device 1', 'Device 2');
+		
+		foreach($bankdevices as $item) {
+			$bankdevice = $this->getEntityManager()
+				->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+				->findOneByName($item);
+			if (null == $bankdevice) {
+				$bankdevice = new BankDevice($item);
+				$this->getEntityManager()->persist($bankdevice);
+			}
+		}
+		$this->getEntityManager()->flush();
 	}
 }

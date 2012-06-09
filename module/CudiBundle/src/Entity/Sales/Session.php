@@ -125,17 +125,6 @@ class Session
 	}
 	
 	/**
-	 * @param \DateTime $closeDate
-	 *
-	 * @return \CudiBundle\Entity\Sales\Session
-	 */
-	public function setCloseDate($closeDate)
-	{
-		$this->closeDate = $closeDate;
-		return $this;
-	}
-	
-	/**
 	 * @return DateTime
 	 */
 	public function getCloseDate()
@@ -156,9 +145,10 @@ class Session
 	 *
 	 * @return \CudiBundle\Entity\Sales\Session
 	 */
-	public function setCloseRegister(CashRegister $closeRegister)
+	public function close(CashRegister $closeRegister)
 	{
 		$this->closeRegister = $closeRegister;
+		$this->closeDate = new DateTime();
 		return $this;
 	}
 	
