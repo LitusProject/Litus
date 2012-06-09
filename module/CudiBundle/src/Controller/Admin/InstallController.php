@@ -150,6 +150,11 @@ The following bookings are assigned to you:
     				'value'       => '127.0.0.1',
     				'description' => 'The host used for the websocket of the queue',
     			),
+    			array(
+    			    'key'         => 'cudi.prof_start_academic_year',
+    			    'value'       => '2012-8-1 0:0:0',
+    			    'description' => 'The start date of the academic year for a prof',
+    			),
 			)
 		);
 		
@@ -163,9 +168,48 @@ The following bookings are assigned to you:
 	
 	protected function _initAcl()
 	{
+	    $this->installAcl(
+	        array(
+	            'cudibundle' => array(
+	                'admin_prof_action' => array(
+	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
+	                ),
+	                'prof_index' => array(
+	                    'index'
+	                ),
+	                'prof_article' => array(
+	                    'add', 'edit', 'manage', 'typeahead'
+	                ),
+	                'prof_article_mapping' => array(
+	                    'add', 'delete'
+	                ),
+	                'prof_comment' => array(
+	                    'delete', 'manage'
+	                ),
+	                'prof_file' => array(
+	                    'delete', 'download', 'manage', 'progress', 'upload'
+	                ),
+	                'prof_prof' => array(
+	                    'add', 'delete', 'typeahead'
+	                ),
+	                'prof_subject' => array(
+	                    'manage', 'subject'
+	                ),
+	            )
+	        )
+	    );
+	    
 	    $this->installRoles(
 	        array(
 	            'supplier' => array(
+	            	'system' => true,
+	                'parents' => array(
+	                    'guest',
+	                ),
+	                'actions' => array(
+	                )
+	            ),
+	            'prof' => array(
 	            	'system' => true,
 	                'parents' => array(
 	                    'guest',

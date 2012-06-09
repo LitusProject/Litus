@@ -21,6 +21,7 @@ return array(
 				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
+				'admin_prof_action'      => 'CudiBundle\Controller\Admin\Prof\ActionController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
@@ -28,6 +29,15 @@ return array(
 				'supplier_index'         => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
 				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
+				
+				'prof_index'      	     => 'CudiBundle\Controller\Prof\IndexController',
+				'prof_auth'      	     => 'CudiBundle\Controller\Prof\AuthController',
+				'prof_article'           => 'CudiBundle\Controller\Prof\ArticleController',
+				'prof_article_mapping'   => 'CudiBundle\Controller\Prof\ArticleMappingController',
+				'prof_prof'              => 'CudiBundle\Controller\Prof\ProfController',
+				'prof_subject'           => 'CudiBundle\Controller\Prof\SubjectController',
+				'prof_file'              => 'CudiBundle\Controller\Prof\FileController',
+				'prof_comment'           => 'CudiBundle\Controller\Prof\CommentController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -89,6 +99,26 @@ return array(
                                     'sale_js' => array(
                                         'assets'  => array(
                                             'sale/js/*.js',
+                                        ),
+                                    ),
+                                    'prof_css' => array(
+                                    	'assets' => array(
+                                    		'prof/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'prof_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'prof_css.css',
                                         ),
                                     ),
                                 ),
@@ -504,6 +534,20 @@ return array(
 				),
 			),
 		),
+		'admin_prof_action' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/prof/actions[/:action[/:id]]',
+				'contraints' => array(
+				    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+				    'id' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_prof_action',
+					'action'     => 'manage',
+				),
+			),
+		),
 		'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -574,5 +618,154 @@ return array(
 				),
 			),
 		),
+	    'prof_index' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof[/:action]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_index',
+	    			'action'     => 'index',
+	    		),
+	    	),
+	    ),
+	    'prof_paginator' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof[/:page]',
+	    		'constraints' => array(
+	    			'page' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_index',
+	    			'action'     => 'index',
+	    		),
+	    	),
+	    ),
+	    'prof_auth' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/auth[/:action]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_auth',
+	    			'action'     => 'login',
+	    		),
+	    	),
+	    ),
+	    'prof_subject' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/subject[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_subject',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_article' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_article_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article',
+	    			'action'     => 'typeahead',
+	    		),
+	    	),
+	    ),
+	    'prof_article_mapping' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article/mapping[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article_mapping',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_file' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/files[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_file',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_comment' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/comments[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_comment',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_prof' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/prof[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_prof',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/prof/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_prof',
+	    			'action'     => 'typeahead',
+	    		),
+	    	),
+	    ),
 	),
 );

@@ -117,12 +117,12 @@ class Article extends EntityRepository
             $ids[] = $mapping->getArticle()->getId();
         
         $added = $this->getEntityManager()
-            ->getRepository('ProfBundle\Entity\Action')
+            ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndActionAndPerson('article', 'add', $person);
             
         foreach($added as $add) {
             $edited = $this->getEntityManager()
-                ->getRepository('ProfBundle\Entity\Action')
+                ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
             
             if (isset($edited[0])) {
@@ -184,7 +184,7 @@ class Article extends EntityRepository
         	return $resultSet[0]->getArticle();
         	
         $actions = $this->getEntityManager()
-            ->getRepository('ProfBundle\Entity\Action')
+            ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndEntityIdAndPerson('article', $id, $person);
         
         if (isset($actions[0]))

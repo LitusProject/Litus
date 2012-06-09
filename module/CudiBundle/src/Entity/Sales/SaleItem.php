@@ -129,6 +129,18 @@ class SaleItem
 	}
 	
 	/**
+	 * @param integer $number
+	 *
+	 * @return \CudiBundle\Entity\Sales\SaleItem
+	 */
+	public function setNumber($number)
+	{
+	    $this->price = round($this->price * $number / $this->number);
+		$this->number = $number;
+		return $this;
+	}
+	
+	/**
 	 * @return integer
 	 */
 	public function getNumber()
