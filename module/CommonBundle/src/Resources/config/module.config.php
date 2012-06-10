@@ -159,6 +159,26 @@ return array(
                                             'output' => 'bootstrap_css.css',
                                         ),
                                     ),
+                                    'bootstrap_responsive_css' => array(
+                                    	'assets' => array(
+                                    		'bootstrap/less/responsive.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'bootstrap_responsive_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => false,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'bootstrap_responsive_css.css',
+                                        ),
+                                    ),
                                     'bootstrap_js_alert' => array(
                                         'assets' => array(
                                             'bootstrap/js/bootstrap-alert.js',
@@ -345,43 +365,19 @@ return array(
     	'admin_academic' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/academic[/:action[/:id]]',
+    	        'route'    => '/admin/academic[/:action[/:id]][/page/:page][/:field/:string]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'id'      => '[0-9]*',
+    				'page'    => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
     	        ),
     	        'defaults' => array(
     	            'controller' => 'admin_academic',
     	            'action'     => 'manage',
     	        ),
     	    ),
-    	),
-    	'admin_academic_paginator' => array(
-    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-    		'options' => array(
-    			'route' => '/admin/academic/manage[/:page]',
-    			'constraints' => array(
-    				'page' => '[0-9]*',
-    			),
-    			'defaults' => array(
-    				'controller' => 'admin_academic',
-    				'action'     => 'manage',
-    			),
-    		),
-    	),
-    	'admin_academic_search' => array(
-    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-    		'options' => array(
-    			'route' => '/admin/academic/search[/:field[/:string]]',
-    			'constraints' => array(
-    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-    	        ),
-    			'defaults' => array(
-    				'controller' => 'admin_academic',
-    				'action'     => 'search',
-    			),
-    		),
     	),
     	'admin_auth' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
@@ -423,29 +419,17 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:name]]',
+    	        'route'    => '/admin/role[/:action[/:name]][/page/:page]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'page'    => '[0-9]*',
     	        ),
     	        'defaults' => array(
     	            'controller' => 'admin_role',
     	            'action'     => 'manage',
     	        ),
     	    ),
-    	),
-    	'admin_role_paginator' => array(
-    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-    		'options' => array(
-    			'route' => '/admin/role/manage[/:page]',
-    			'constraints' => array(
-    				'page' => '[0-9]*',
-    			),
-    			'defaults' => array(
-    				'controller' => 'admin_role',
-    				'action'     => 'manage',
-    			),
-    		),
     	),
 	),
 );
