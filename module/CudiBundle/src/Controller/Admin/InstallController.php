@@ -23,6 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Config,
     CudiBundle\Entity\Articles\Options\Binding,
 	CudiBundle\Entity\Articles\Options\Color,
+	DateInterval,
 	DateTime,
 	Exception;
 
