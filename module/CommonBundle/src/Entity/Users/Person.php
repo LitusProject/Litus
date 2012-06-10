@@ -17,6 +17,7 @@ namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Acl\Role,
+ 	CommonBundle\Entity\General\Address,
  	CommonBundle\Entity\Users\Credential,
 	Doctrine\Common\Collections\ArrayCollection;
 
@@ -95,9 +96,10 @@ abstract class Person
     private $email;
 
     /**
-     * @var string The users address
+     * @var \CommonBundle\Entity\General\Address The address of the supplier
      *
-     * @Column(type="text", nullable=true)
+     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
@@ -371,22 +373,17 @@ abstract class Person
     }
 
     /**
-     * @param string $address
+     * @param \CommonBundle\Entity\General\Address $address
      * @return \CommonBundle\Entity\Users\Person
-     * @throws \InvalidArgumentException
      */
-    public function setAddress($address)
+    public function setAddress(Address $address)
     {
-        if ((null === $address) || !is_string($address))
-            throw new \InvalidArgumentException('Invalid address');
-            
         $this->address = $address;
-        
         return $this;
     }
 
     /**
-     * @return string
+     * @return \CommonBundle\Entity\General\Address
      */
     public function getAddress()
     {

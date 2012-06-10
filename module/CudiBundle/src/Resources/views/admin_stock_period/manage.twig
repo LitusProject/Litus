@@ -18,7 +18,7 @@
 	        
 	        {% for period in paginator %}
 	            <tr>
-	                <td>{{ period.getPerson().getUserName() }}</td>
+	                <td>{{ period.getPerson().getFullName() }}</td>
 	                <td>{% if period.isOpen() %}Yes{% else %}No{% endif %}</td>
 	                <td>{{ period.getStartDate().format('Y-m-d H:i') }}</td>
 	                <td>{% if not period.isOpen() %}{{ period.getEndDate().format('Y-m-d H:i')}}{% endif %}</td>
