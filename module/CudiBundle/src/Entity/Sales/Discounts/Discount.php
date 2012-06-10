@@ -198,4 +198,21 @@ class Discount
     {
         return $this->article;
     }
+    
+    /**
+     * @param integer $price
+     *
+     * @return integer
+     */
+    public function apply($price)
+    {
+        switch ($this->getMethod()) {
+            case 'percentage':
+                return round($price * (10000 - $this->getValue()) / 10000);
+            case 'fixed':
+                return $price - $this->getValue();
+            case 'override':
+                return $this->getValue();
+        }
+    }
 }

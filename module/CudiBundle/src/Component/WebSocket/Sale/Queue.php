@@ -99,6 +99,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		
 		if (isset($key)) {
 			unset($this->_lockedItems[$key]);
+			parent::onClose($user, $statusCode, $reason);
 			$this->sendQueueToAll();
 		}
 	}
@@ -269,6 +270,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 					'person' => (object) array(
 						'id' => $item->getPerson()->getId(),
 						'name' => $item->getPerson()->getFullName(),
+						'member' => $item->getPerson()->isMember(),
 					),
 					'articles' => $this->_createJsonBooking(
 					    $this->_entityManager
@@ -292,14 +294,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	{
 		$results = array();
 		foreach($items as $item) {
-			$result = (object) array();
-			$result->id = $item->getId();
-			$result->price = $item->getArticle()->getSellPrice();
-			$result->title = $item->getArticle()->getMainArticle()->getTitle();
-			$result->barcode = $item->getArticle()->getBarcode();
-			$result->author = $item->getArticle()->getMainArticle()->getAuthors();
-			$result->number = $item->getNumber();
-			$result->status = $item->getStatus();
+			$result = (object) array(
+			    'id' => $item->getId(),
+			    'price' => $item->getArticle()->getSellPrice(),
+			    'title' => $item->getArticle()->getMainArticle()->getTitle(),
+			    'barcode' => $item->getArticle()->getBarcode(),
+			    'author' => $item->getArticle()->getMainArticle()->getAuthors(),
+			    'number' => $item->getNumber(),
+			    'status' => $item->getStatus(),
+			    'discounts' => array(),
+			);
+			foreach($item->getArticle()->getDiscounts() as $discount)
+			    $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
 			$results[] = $result;
 		}
 		return $results;
@@ -427,10 +433,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 						->setStatus('sold');
 				}
 				
+				$price = $booking->getArticle()->getSellPrice();
+				foreach($booking->getArticle()->getDiscounts() as $discount) {
+				    if ($discount->getType() == $data->discount) {
+				        if ($discount->getType() == 'member' && !$booking->getPerson()->isMember())
+				            continue;
+				        $price = $discount->apply($booking->getArticle()->getSellPrice());
+				    }
+				}
+				
 				$saleItem = new SaleItem(
 				    $booking->getArticle(),
 				    $currentNumber,
-				    $booking->getArticle()->getSellPrice()/100,
+				    $price * $currentNumber / 100,
 				    $queueItem
 				);
 				$this->_entityManager->persist($saleItem);
