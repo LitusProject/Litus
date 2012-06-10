@@ -13,12 +13,12 @@
         
     	{% for article in articles %}
     	    <tr>
-    	        <td>{{ article.getArticle().getTitle() }}</td>
-    	        <td>{{ article.getArticle().getMetaInfo().getAuthors() }}</td>
-    	        <td>{{ article.getArticle().getMetaInfo().getPublishers() }}</td>
-    	        <td>{{ article.getArticle().getMetaInfo().getYearPublished() }}</td>
-    	        <td>{{ article.getArticle().getBarcode() }}</td>
-    	        <td>{{ article.getNumberAvailable() }}</td>
+    	        <td>{{ article.getMainArticle().getTitle() }}</td>
+    	        <td>{{ article.getMainArticle().getAuthors() }}</td>
+    	        <td>{{ article.getMainArticle().getPublishers() }}</td>
+    	        <td>{{ article.getMainArticle().getYearPublished() }}</td>
+    	        <td>{{ article.getBarcode() }}</td>
+    	        <td>{{ article.getStockValue() }}</td>
     	    </tr>
     	{% endfor %}
     </table>

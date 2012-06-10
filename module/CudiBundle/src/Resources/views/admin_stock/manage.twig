@@ -21,11 +21,10 @@
 			<table class="full_width">
 		    	<tr>
 		        	<th>Article</th>
-		        	<th width="90px">Supplier</th>
-		        	<th width="80px">In stock</th>
-		        	<th width="95px">Wait delivery</th>
-		        	<th width="85px">Queue order</th>
-		        	<th width="60px">Booked</th>
+		        	<th width="100px">Supplier</th>
+		        	<th width="95px">In stock</th>
+	            	<th width="95px">Not delivered</th>
+		        	<th width="95px">Reserved</th>
 		        	<th width="70px">Actions</th>
 				</tr>
 			</table>
@@ -35,25 +34,23 @@
 	    	<table class="full_width">
 	        	<tr>
 	            	<th>Article</th>
-	            	<th width="90px">Supplier</th>
-	            	<th width="80px">In stock</th>
-	            	<th width="95px">Wait delivery</th>
-	            	<th width="85px">Queue order</th>
-	            	<th width="60px">Booked</th>
+	            	<th width="100px">Supplier</th>
+	            	<th width="95px">In stock</th>
+	            	<th width="95px">Not delivered</th>
+	            	<th width="95px">Reserved</th>
 	            	<th width="70px">Actions</th>
 				</tr>
 	
-		        {% for item in paginator %}
+		        {% for article in paginator %}
 		            <tr>
-		                <td>{{ item.getArticle().getTitle() }} {% if item.getArticle().getVersionNumber() != 1 %} (v{{ item.getArticle().getVersionNumber() }}) {% endif %}</td>
-		                <td>{{ item.getArticle().getSupplier().getName() }}</td>
-		                <td>{{ item.getNumberInStock() }}</td>
-		                <td>{{ item.getNumberNotDelivered() }}</td>
-		                <td>{{ item.getNumberQueueOrder() }}</td>
-		                <td>{{ item.getNumberBooked() + item.getNumberAssigned() }}</td>
+		                <td>{{ article.getMainArticle().getTitle() }}</td>
+		                <td>{{ article.getSupplier().getName() }}</td>
+		                <td>{{ article.getStockValue() }}</td>
+		                <td>{% if period.getNbOrdered(article) - period.getNbDelivered(article) < 0 %}0{% else %}{{ period.getNbOrdered(article) - period.getNbDelivered(article) }}{% endif %}</td>
+		                <td>{{ period.getNbBooked(article) + period.getNbAssigned(article) }}</td>
 						<td>
 						    {% if hasAccess('admin_stock', 'edit') %}
-							    <a href="{{ url('admin_stock', {"action": "edit", "id": item.getId()}) }}" class="edit">Edit</a>
+							    <a href="{{ url('admin_stock', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 							{% endif %}
 		                </td>
 		            </tr>
@@ -74,17 +71,16 @@
 				searchDiv: $('#stock_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_stock_search') }}',
+				url: '{{ url('admin_stock', {'action': 'search'}) }}',
 				display: function (data) {
 					$('#stock_search table').find('tr.item').remove();
 					$(data).each(function () {
 						$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+						row.append('<td>' + this.title  + '</td>')
 							.append('<td>' + this.supplier + '</td>')
-							.append('<td>' + this.numberInStock + '</td>')
-							.append('<td>' + this.numberNotDelivered + '</td>')
-							.append('<td>' + this.numberQueueOrder + '</td>')
-							.append('<td>' + this.numberBookedAssigned + '</td>')
+							.append('<td>' + this.nbInStock + '</td>')
+							.append('<td>' + this.nbNotDelivered + '</td>')
+							.append('<td>' + this.nbReserved + '</td>')
 							.append('<td><a href="{{ url('admin_stock', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a></td>');
 					});
 				}

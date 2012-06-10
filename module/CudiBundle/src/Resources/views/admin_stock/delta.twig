@@ -7,9 +7,9 @@
 
 	<div id="controller_action">
 	    <h1>General</h1>
-	    <p>Article: <b>{{ item.getArticle().getTitle() }} {% if item.article.getVersionNumber() != 1 %} (v{{ item.article.getVersionNumber() }}) {% endif %}</b></p>
-	    <p>Barcode: <b>{{ item.getArticle().getBarcode() }}</b></p>
-	    <p>Supplier: <b>{{ item.getArticle().getSupplier().getName() }}</b></p>
+	    <p>Article: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+	    <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
+	    <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
 	    <br style="clear:both" />
 	    <h1>Delta's</h1>
     	<table class="full_width">
@@ -24,8 +24,8 @@
 	        {% for delta in paginator %}
 	            <tr class="item">
 	                <td>{{ delta.getPerson().getFullName() }}</td>
-	                <td>{{ delta.getDate().format('Y-m-d H:i:s') }}</td>
-	                <td>{{ delta.getDelta() }}</td>
+	                <td>{{ delta.getTimestamp().format('Y-m-d H:i:s') }}</td>
+	                <td>{{ delta.getValue() }}</td>
 	                <td>{{ delta.getSummary() }}</td>
 					<td>
 					    <a href="#" class="view" data-text="{{ delta.getComment() }}">View</a>

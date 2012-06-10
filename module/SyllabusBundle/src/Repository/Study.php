@@ -13,69 +13,6 @@ use Doctrine\ORM\EntityRepository,
  */
 class Study extends EntityRepository
 {
-    public function findAllStudies()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-       	            $query->expr()->notIn('s.id', $this->_findParentStudiesIds())
-        	    )
-        	)
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
-    
-    public function findAllByTitle($title)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-                    $query->expr()->notIn('s.id', $this->_findParentStudiesIds())
-        	    )
-        	)
-        	->getQuery()
-        	->getResult();
-        	
-        $result = array();
-        
-        $title = strtolower($title);
-        
-        foreach($resultSet as $study) {
-            if (strpos(strtolower($study->getFullTitle()), $title) !== false)
-                $result[] = $study;
-        }
-        
-        return $result;
-    }
-    
-    private function _findParentStudiesIds()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('DISTINCT IDENTITY(s.parent)')
-            ->from('SyllabusBundle\Entity\Study', 's')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->isNotNull('s.parent')
-                )
-            )
-            ->getQuery()
-            ->getResult();
-            
-        $ids = array(0);
-        foreach($resultSet as $id)
-            $ids[] = $id[1];
-
-        return $ids;
-    }
-    
     public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
     {
         if (! is_numeric($phase))
@@ -88,12 +25,13 @@ class Study extends EntityRepository
         	    $query->expr()->andX(
         	        $query->expr()->eq('s.title', ':title'),
         	        $query->expr()->eq('s.phase', ':phase'),
-        	        $query->expr()->eq('s.language', ':language')        	        
+        	        $query->expr()->eq('s.language', ':language')
         	    )
         	)
         	->setParameter('title', $title)
         	->setParameter('phase', $phase)
         	->setParameter('language', $language)
+        	->setMaxResults(1)
     		->getQuery()
     		->getResult();
 
@@ -116,12 +54,13 @@ class Study extends EntityRepository
         	        $query->expr()->eq('s.title', ':title'),
         	        $query->expr()->eq('s.phase', ':phase'),
         	        $query->expr()->eq('s.language', ':language'),
-        	        ($parent ? $query->expr()->eq('s.parent', $parent->getId()) : $query->expr()->isNull('s.parent'))       	        
+        	        ($parent ? $query->expr()->eq('s.parent', $parent->getId()) : $query->expr()->isNull('s.parent'))
         	    )
         	)
         	->setParameter('title', $title)
         	->setParameter('phase', $phase)
         	->setParameter('language', $language)
+        	->setMaxResults(1)
     		->getQuery()
     		->getResult();
 
@@ -130,5 +69,4 @@ class Study extends EntityRepository
     	
     	return null;
     }
-    
 }

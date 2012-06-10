@@ -18,14 +18,13 @@ namespace CudiBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\Generator,
 	CommonBundle\Component\Util\Xml\Object,
-	CudiBundle\Entity\Stock\Order,
-	CudiBundle\Entity\Stock\OrderItem,
+	CudiBundle\Entity\Stock\Orders\Order,
+	CudiBundle\Entity\Stock\Orders\Item,
 	Doctrine\ORM\EntityManager,
 	ZipArchive;
 
 class OrderXml
 {
-
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
 	 */
@@ -61,23 +60,27 @@ class OrderXml
 			
 		$zip = new ZipArchive();
 		
-		foreach($this->_order->getOrderItems() as $item) {
-			if (!$item->getArticle()->isInternal())
+		foreach($this->_order->getItems() as $item) {
+			if (!$item->getArticle()->getMainArticle()->isInternal())
 				continue;
 			
 			$zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
 			$xmlFile = new TmpFile();
 			$this->generateXml($item, $xmlFile);
 			
+			$mappings = $this->_entityManager
+			    ->getRepository('CudiBundle\Entity\Files\Mapping')
+			    ->findAllByArticle($item->getArticle()->getMainArticle());
+			
 			$zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
-			foreach($item->getArticle()->getFiles($this->_entityManager) as $file)
-				$zip->addFile($filePath . $file->getPath(), $file->getName());
+		    foreach($mappings as $mapping)
+				$zip->addFile($filePath . $mapping->getFile()->getPath(), $mapping->getFile()->getName());
 			
 			$zip->close();
 		}
 	}
 	
-    private function generateXml(OrderItem $item, TmpFile $tmpFile)
+    private function generateXml(Item $item, TmpFile $tmpFile)
     {
     	$configs = $this->_entityManager
     		->getRepository('CommonBundle\Entity\General\Config');
@@ -86,12 +89,15 @@ class OrderXml
 		
 		$attachments = array();
 		$num = 1;
-		foreach($item->getArticle()->getFiles($this->_entityManager) as $file) {
+		$mappings = $this->_entityManager
+		    ->getRepository('CudiBundle\Entity\Files\Mapping')
+		    ->findAllByArticle($item->getArticle()->getMainArticle());
+		foreach($mappings as $mapping) {
 			$attachments[] = new Object(
 				'Attachment',
 				array(
 					'AttachmentKey' => 'File' . $num++,
-					'FileName' => $file->getName()
+					'FileName' => $mapping->getFile()->getName()
 				),
 				null
 			);
@@ -107,7 +113,7 @@ class OrderXml
 					new Object(
 						'LastUsedValue',
 						null,
-						$item->getArticle()->getTitle()
+						$item->getArticle()->getMainArticle()->getTitle()
 					)
 				)
 			),
@@ -160,7 +166,7 @@ class OrderXml
 					new Object(
 						'LastUsedValue',
 						null,
-						$item->getArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
+						$item->getArticle()->getMainArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
 					)
 				)
 			),
@@ -173,7 +179,7 @@ class OrderXml
 					new Object(
 						'LastUsedValue',
 						null,
-						(string) $item->getArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
+						(string) $item->getArticle()->getMainArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
 					)
 				)
 			),
@@ -241,7 +247,7 @@ class OrderXml
         			new Object(
         				'Job',
         				array(
-        					'JobID' => 'vtk-' . $this->_order->getDate()->format('YmdHi') . '-'
+        					'JobID' => 'vtk-' . $this->_order->getDateOrdered()->format('YmdHi') . '-'
         				),
         				array(
 	        				new Object(

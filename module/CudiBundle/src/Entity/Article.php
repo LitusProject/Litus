@@ -15,8 +15,7 @@
  
 namespace CudiBundle\Entity;
 
-use DateTime,
-	CudiBundle\Entity\Articles\MetaInfo;
+use DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Article")
@@ -24,9 +23,8 @@ use DateTime,
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
- *      "stub"="CudiBundle\Entity\Articles\Stub",
- *      "external"="CudiBundle\Entity\Articles\StockArticles\External",
- *      "internal"="CudiBundle\Entity\Articles\StockArticles\Internal"}
+ *      "external"="CudiBundle\Entity\Articles\External",
+ *      "internal"="CudiBundle\Entity\Articles\Internal"}
  * )
  */
 abstract class Article
@@ -46,67 +44,94 @@ abstract class Article
      * @Column(type="string")
      */
     private $title;
-
+    
     /**
-     * @var \CudiBundle\Entity\Articles\MetaInfo The metainfo of this article
+     * @var string The authors of the article
      *
-     * @OneToOne(targetEntity="CudiBundle\Entity\Articles\MetaInfo")
-     * @JoinColumn(name="metainfo", referencedColumnName="id")
+     * @Column(type="string")
      */
-    private $metaInfo;
-
+    private $authors;
+    
+    /**
+     * @var string The publishers of the article
+     *
+     * @Column(type="string")
+     */
+    private $publishers;
+    
+    /**
+     * @var integer The year the article was published
+     *
+     * @Column(name="year_published", type="integer", length=4)
+     */
+    private $yearPublished;
+    
     /**
      * @var \DateTime The time the article was created
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-
-	/**
-	 * @var boolean The flag whether the article is removed
-	 *
-	 * @Column(type="boolean")
-	 */
-	private $removed = false;
-	
-	/**
-	 * @var \CudiBundle\Entity\Stock\StockItem The reference to a stock item
-	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Stock\StockItem", mappedBy="article")
-	 */
-	private $stockItem;
-	
-	/**
-	 * @var integer The version number of this article
-	 * 
-	 * @Column(name="version_number", type="smallint", nullable=true)
-	 */
-	private $versionNumber = 1;
-	
-	/**
-	 * @var boolean The flag whether the article is enabled (for in ProfBundle)
-	 *
-	 * @Column(type="boolean")
-	 */
-	private $enabled = true;
-
+    
+    /**
+     * @var integer The version number of this article
+     * 
+     * @Column(name="version_number", type="smallint", nullable=true)
+     */
+    private $versionNumber;
+    
+    /**
+     * @var integer The ISBN number of this article
+     *
+     * @Column(type="bigint")
+     */
+    private $isbn;
+    
+    /**
+     * @var string The url with a link to extra information of this article
+     *
+     * @Column(type="string", nullable=true)
+     */
+    private $url;
+    
+    /**
+     * @var boolean The flag whether the article is old or not
+     *
+     * @Column(name="is_history", type="boolean")
+     */
+    private $isHistory;
+    
+    /**
+     * @var boolean The flag whether the article is just created by a prof
+     *
+     * @Column(type="boolean")
+     */
+    private $isProf;
+    
     /**
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
-     * @param \CudiBundle\Entity\Articles\MetaInfo $metaInfo An unlinked metainfo object to link to this article.
+     * @param string $authors The authors of the article
+     * @param string $publishers The publishers of the article
+     * @param integer $yearPublished The year the article was published
+     * @param integer $isbn The isbn of the article
+     * @param string|null $url The url of the article
      */
-    public function __construct($title, MetaInfo $metaInfo)
+    public function __construct($title, $authors, $publishers, $yearPublished, $isbn, $url = null)
     {
-        if ($metaInfo->getArticle() != null)
-            throw new \InvalidArgumentException('The meta info is not valid.');
-
-        $this->setTitle($title);
-        $this->metaInfo = $metaInfo;
-        $metaInfo->setArticle($this);
+        $this->setTitle($title)
+            ->setAuthors($authors)
+            ->setPublishers($publishers)
+            ->setYearPublished($yearPublished)
+            ->setVersionNumber(1)
+            ->setISBN($isbn)
+            ->setURL($url)
+            ->setIsHistory(false)
+            ->setIsProf(false);
         $this->timestamp = new DateTime();
     }
-
+    
     /**
      * @return integer
      */
@@ -138,51 +163,70 @@ abstract class Article
 		$this->title = $title;
 		return $this;
 	}
-
-    /**
-     * @return \CudiBundle\Entity\Articles\MetaInfo
-     */
-    public function getMetaInfo()
-    {
-        return $this->metaInfo;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
 	
 	/**
-     * @param boolean $removed Whether this item is removed or not
+	 * @return string
+	 */
+	public function getAuthors()
+	{
+		return $this->authors;
+	}
+	
+	/**
+	 * @param string $authors
 	 *
 	 * @return \CudiBundle\Entity\Article
-     */
-	public function setRemoved($removed = true)
+	 */
+	public function setAuthors($authors)
 	{
-		$this->removed = $removed;
+		$this->authors = $authors;
 		return $this;
 	}
 	
 	/**
-	 * @return \CudiBundle\Entity\Stock\StockItem
+	 * @return string
 	 */
-	public function getStockItem()
+	public function getPublishers()
 	{
-		return $this->stockItem;
+		return $this->publishers;
 	}
 	
 	/**
-	 * @param integer $versionNumber The version number of this article
+	 * @param string $publishers
 	 *
 	 * @return \CudiBundle\Entity\Article
 	 */
-	public function setVersionNumber($versionNumber)
+	public function setPublishers($publishers)
 	{
-		$this->versionNumber = $versionNumber;
+		$this->publishers = $publishers;
 		return $this;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getYearPublished()
+	{
+		return $this->yearPublished;
+	}
+	
+	/**
+	 * @param string $yearPublished
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setYearPublished($yearPublished)
+	{
+		$this->yearPublished = $yearPublished;
+		return $this;
+	}
+	
+	/**
+	 * @return \DateTime
+	 */
+	public function getTimestamp()
+	{
+	    return $this->timestamp;
 	}
 	
 	/**
@@ -190,34 +234,108 @@ abstract class Article
 	 */
 	public function getVersionNumber()
 	{
-		return $this->versionNumber;
+	    return $this->versionNumber;
 	}
 	
 	/**
-	 * @param boolean
+	 * @param integer $versionNumber
+	 *
 	 * @return \CudiBundle\Entity\Article
 	 */
-	public function setEnabled($enabled = true)
+	public function setVersionNumber($versionNumber)
 	{
-	    $this->enabled = $enabled;
+	    $this->versionNumber = $versionNumber;
+	    return $this;
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getISBN()
+	{
+	    return $this->isbn;
+	}
+	
+	/**
+	 * @param integer $isbn
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setISBN($isbn)
+	{
+	    $this->isbn = $isbn;
+	    return $this;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getURL()
+	{
+	    return $this->url;
+	}
+	
+	/**
+	 * @param string $url
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setURL($url)
+	{
+	    $this->url = $url;
 	    return $this;
 	}
 	
 	/**
 	 * @return boolean
 	 */
-	public function isEnabled()
+	public function isHistory()
 	{
-	    return $this->enabled;
+	    return $this->isHistory;
+	}
+	
+	/**
+	 * @param boolean $isHistory
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setIsHistory($isHistory)
+	{
+	    $this->isHistory = $isHistory;
+	    return $this;
 	}
 	
 	/**
 	 * @return boolean
 	 */
-	abstract public function isInternal();
+	public function isProf()
+	{
+	    return $this->isProf;
+	}
+	
+	/**
+	 * @param boolean $isProf
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setIsProf($isProf)
+	{
+	    $this->isProf = $isProf;
+	    return $this;
+	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Article
+	 */
+	abstract public function duplicate();
 	
 	/**
 	 * @return boolean
 	 */
-	abstract public function isStock();
+	abstract public function isExternal();
+	
+	/**
+	 * @return boolean
+	 */
+	abstract public function isInternal();
 }

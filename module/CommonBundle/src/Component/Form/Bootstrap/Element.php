@@ -29,7 +29,6 @@ class Element extends \Zend\Form\Element
     /**
      * Load default decorators
      *
-     * @todo Change errors decorator to be awesomeness.
      * @return CommonBundle\Component\Form\Bootstrap\Element
      */
     public function loadDefaultDecorators()

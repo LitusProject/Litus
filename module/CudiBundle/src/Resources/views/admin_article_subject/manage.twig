@@ -17,12 +17,14 @@
 		</div>
 	</div>
 	
+	{% include 'admin_article_subject/partials/years.twig' %}
+
 	<div id="controller_action">
 		<h1>Article</h1>
 		
-		<p>Title: <b>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</b></p>
-		<p>Author: <b>{{ article.getMetaInfo().getAuthors() }}</b></p>
-		<p>Publisher: <b>{{ article.getMetaInfo().getPublishers() }}</b></p>
+		<p>Title: <b>{{ article.getTitle() }}</b></p>
+		<p>Author: <b>{{ article.getAuthors() }}</b></p>
+		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
 		
 		{% autoescape false %}
@@ -40,15 +42,15 @@
 	            <th width="80px">Actions</th>
 	        </tr>
 	
-	        {% for subject in subjects %}
+	        {% for mapping in mappings %}
 	            <tr class="item">
-	                <td>{{ subject.getSubject().getCode() }}</td>
-	                <td>{{ subject.getSubject().getName() }}</td>
-	                <td>{{ subject.getSubject().getSemester() }}</td>
-	                <td>{{ subject.getSubject().getCredits() }}</td>
-	                <td>{{ subject.isMandatory() }}</td>
+	                <td>{{ mapping.getSubject().getCode() }}</td>
+	                <td>{{ mapping.getSubject().getName() }}</td>
+	                <td>{{ mapping.getSubject().getSemester() }}</td>
+	                <td>{{ mapping.getSubject().getCredits() }}</td>
+	                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
 					<td>
-						<a href="#" class="delete" data-id="{{ subject.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ subject.getSubject().getName() }}">Delete</a>
+						<a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
 	                </td>
 	            </tr>
 	        {% endfor %}
@@ -83,7 +85,7 @@
 			
 			$('#subjectSearch').typeaheadRemote(
 			    {
-			        source: '{{ url("admin_subject_typeahead")}}',
+			        source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
 			    }
 			).change(function (e) {
 			    if ($(this).data('value')) {

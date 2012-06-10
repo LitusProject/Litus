@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_sales_article/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+	<div id="controller_action">
+		<h1>Article</h1>
+		
+		<p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+		<p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+		<p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+		<br />
+		
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+	</div>
+	
+	<aside>
+	    {% if hasAccess('admin_sales_discount', 'manage') %}
+	    	<div class="sidebox">
+	    	    <div class="title">Manage Article Discounts</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to manage the discounts of this article!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="{{ url('admin_sales_discount', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Article Discount</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
+	</aside>
+{% endblock %}

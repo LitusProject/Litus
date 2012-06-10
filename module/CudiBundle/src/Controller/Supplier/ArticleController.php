@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Controller\Supplier;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * ArticleController
@@ -27,14 +28,21 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
     public function manageAction()
     {
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\StockItem')
-            ->findAllByArticleSupplier($this->getSupplier());
-        
-        foreach($articles as $article)
-        	$article->setEntityManager($this->getEntityManager());
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->_getCurrentAcademicYear());
         
     	return array(
     	    'articles' => $articles
     	);
+    }
+    
+    private function _getCurrentAcademicYear()
+    {
+    	$start = AcademicYear::getStartOfAcademicYear();
+    	$start->setTime(0, 0);
+
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
     }
 }

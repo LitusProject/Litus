@@ -5,6 +5,8 @@
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
+	{% include 'admin_study/partials/years.twig' %}
+
 	<div id="controller_action">
 	    <div id="study_search" style="display:none;">
 	    	<div style="padding:4px;text-align:right">
@@ -33,19 +35,20 @@
 		            <th width="80px">Actions</th>
 		        </tr>
 		        
-		        {% for study in paginator %}
+		        {% for mapping in paginator %}
 		            <tr class="item">
-		                <td>{{ study.getFullTitle() }}</td>
-		                <td>{{ study.getPhase() }}</td>
+		                <td>{{ mapping.getStudy().getFullTitle() }}</td>
+		                <td>{{ mapping.getStudy().getPhase() }}</td>
 		                <td>
 		                    {% if hasAccess('admin_subject', 'manage') %}
-		                        <a href="{{ url('admin_subject', {"id": study.getId()}) }}" class="view">View</a>
+		                        <a href="{{ url('admin_subject', {"id": mapping.getStudy().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
 		                    {% endif %}
 		                </td>
 		            </tr>
 		        {% endfor %}
 		    </table>
-	
+	        
+	        {% set paginationParams = {'academicyear': currentAcademicYear.getCode() } %}
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
@@ -60,7 +63,7 @@
 				searchDiv: $('#study_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_study_search') }}',
+				url: '{{ url('admin_study', {'action': 'search', 'academicyear': '2012-2013'}) }}',
 				display: function (data) {
 					$('#study_search table').find('tr.item').remove();
 					$(data).each(function () {
@@ -72,7 +75,7 @@
 							);
 							
 							{% if hasAccess('admin_subject', 'manage') %}
-							    actions.append('<a href="{{ url('admin_subject', {"action": "manage"}) }}/' + this.id + '" class="view">View</a>')
+							    actions.append('<a href="{{ url('admin_subject') }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 							{% endif %}
 					});
 				},

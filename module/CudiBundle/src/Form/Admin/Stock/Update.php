@@ -17,11 +17,12 @@ namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CudiBundle\Entity\Stock\StockItem,
+	CudiBundle\Entity\Sales\Article,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Form\Element\TextArea,
-	Zend\Validator\Int as IntValidator;
+	Zend\Validator\Int as IntValidator,
+	Zend\Validator\GreaterThan as GreaterThanValidator;
 
 /**
  * Update Stock
@@ -30,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */	
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(StockItem $item, $options = null)
+    public function __construct(Article $article, $options = null)
     {
         parent::__construct($options);
 		
@@ -38,6 +39,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Number')
         	->setRequired()
 			->addValidator(new IntValidator())
+			->addValidator(new GreaterThanValidator(0))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
@@ -54,7 +56,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
         
         $this->populate(array(
-        		'number' => $item->getNumberInStock()
+        		'number' => $article->getStockValue()
         	)
         );
     }

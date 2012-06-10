@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Component\Validator;
 
-use CudiBundle\Entity\Article,
+use CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager;
 
 class Discount extends \Zend\Validator\AbstractValidator
@@ -67,14 +67,10 @@ class Discount extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
-        
-        $type = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Articles\Discount\Type')
-            ->findOneById($value); 
 		
 		$discount = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Articles\Discount\Discount')
-			->findOneByArticleAndType($this->_article, $type);
+			->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+			->findOneByArticleAndType($this->_article, $value);
 		
         if (null === $discount)
             return true;

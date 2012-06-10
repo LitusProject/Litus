@@ -22,7 +22,7 @@ namespace SyllabusBundle\Entity;
 class Study
 {
 	/**
-	 * @var integer The ID of this study
+	 * @var integer The ID of the study
 	 *
 	 * @Id
 	 * @GeneratedValue
@@ -31,35 +31,28 @@ class Study
 	private $id;
 
     /**
-     * @var string The title of this study
+     * @var string The title of the study
      *
      * @Column(type="string")
      */
     private $title;
 
     /**
-     * @var integer The phase number of this study
+     * @var integer The phase number of the study
      *
      * @Column(type="smallint")
      */
     private $phase;
     
     /**
-     * @var string The language of this study
+     * @var string The language of the study
      *
      * @Column(type="string", length=2)
      */
     private $language;
-
-    /**
-     * @var boolean Flag whether this study is active
-     *
-     * @Column(type="boolean")
-     */
-    private $active;
     
     /**
-     * @var \SyllabusBundle\Entity\Study The parent study of this study
+     * @var \SyllabusBundle\Entity\Study The parent study of the study
      *
      * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
      * @JoinColumn(name="parent", referencedColumnName="id")
@@ -77,7 +70,6 @@ class Study
     	$this->title = $title;
     	$this->phase = $phase;
     	$this->language = $language;
-    	$this->active = true;
     	$this->parent = $parent;
     }
     
@@ -127,25 +119,6 @@ class Study
     public function getLanguage()
     {
         return $this->language;
-    }
-    
-    /**
-     * @param boolean $flag
-     *
-     * @return \SyllabusBundle\Entity\Study
-     */
-    public function setActive($flag = true)
-    {
-        $this->active = $flag;
-        return $this;
-    }
-    
-    /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
     }
     
     /**

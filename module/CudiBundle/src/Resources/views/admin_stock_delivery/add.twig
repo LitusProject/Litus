@@ -1,0 +1,57 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_stock/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+	
+	{% include 'admin_stock_delivery/partials/suppliers.twig' %}
+
+	<div id="controller_action">
+    	{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+		
+		<br style="clear:both"/>
+			
+		<h1>Last deliveries</h1>
+		<table>
+	    
+	        <tr>
+				<th width="110px">Date</th>
+				<th>Article</th>
+				<th width="60px">Number</th>
+				<th width="60px">Price</th>
+				<th width="120px">Person</th>
+	        </tr>
+	        
+	        {% for delivery in deliveries %}
+	
+	            <tr>
+	                <td>{{ delivery.getTimestamp().format('Y-m-d H:i') }}</td>
+	                <td>{{ delivery.getArticle().getMainArticle().getTitle() }}</td>
+	                <td>{{ delivery.getNumber() }}</td>
+	                <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
+	                <td>{{ delivery.getPerson().getFullName() }}</td>
+	            </tr>
+	    
+	        {% endfor %}
+	    </table>
+	</div>
+	
+	<aside>
+		{% if hasAccess('admin_stock_delivery', 'manage') %}
+    		<div class="sidebox">
+    	        <div class="title">Overview deliveries</div>
+    	       	<div class="content">
+    		    	<p>
+    		        	<i>Please hit the link below to view all deliveries!</i>
+    		        </p>
+    		        <p>
+    		           	<a href="{{ url("admin_stock_delivery", {"action": "manage"}) }}">&rarr; Overview Deliveries</a>
+    		        </p>
+    		    </div>
+    		</div>
+		{% endif %}
+	</aside>
+{% endblock %}

@@ -96,7 +96,7 @@ class User
 	 */
 	public function write($data)
 	{
-		return socket_write($this->_socket, $data, strlen($data));
+	    return socket_write($this->_socket, $data, strlen($data));
 	}
 	
 	/**

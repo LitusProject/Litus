@@ -42,9 +42,10 @@ class Supplier extends \CommonBundle\Entity\Users\Person
      * @param string $lastName The user's last name
      * @param string $email The user's e-mail address
      * @param string $phoneNumber The user's phone number
-     * @param $sex string The users sex
+     * @param string $sex The users sex
+     * @param \CudiBundle\Entity\Supplier $supplier The supplier
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, SupplierEntity $supplier)
+    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
     {
         parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
         

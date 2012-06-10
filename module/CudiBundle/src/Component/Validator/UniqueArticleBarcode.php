@@ -52,6 +52,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     	parent::__construct($opts);
     	
     	$this->_entityManager = $entityManager;
+    	$this->_ignoreIds = $ignoreIds;
     }
 
 
@@ -73,7 +74,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 		}
 		
 		$article = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Stock\StockItem')
+			->getRepository('CudiBundle\Entity\Sales\Article')
 			->findOneByBarcode($value);
 
        	if (null === $article || in_array($article->getId(), $this->_ignoreIds))

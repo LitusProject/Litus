@@ -16,7 +16,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CudiBundle\Entity\Sales\ServingQueueItem,
+	CudiBundle\Entity\Sales\QueueItem,
 	CudiBundle\Form\Sale\Queue\SignIn as SignInForm;
 
 /**

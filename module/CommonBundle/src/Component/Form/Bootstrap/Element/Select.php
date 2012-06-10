@@ -28,7 +28,6 @@ class Select extends \Zend\Form\Element\Select
     /**
      * Load default decorators
      *
-     * @todo Change errors decorator to be awesomeness.
      * @return CommonBundle\Component\Form\Bootstrap\Element
      */
     public function loadDefaultDecorators()

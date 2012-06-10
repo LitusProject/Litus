@@ -15,8 +15,6 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
-use SyllabusBundle\Component\XMLParser\Study as StudyParser;
-
 /**
  * UpdateController
  *

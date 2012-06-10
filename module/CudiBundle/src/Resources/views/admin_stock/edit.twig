@@ -7,23 +7,23 @@
 
 	<div id="controller_action">
 		<h1>General</h1>
-		<p>Article: <b>{{ item.getArticle().getTitle() }} {% if item.article.getVersionNumber() != 1 %} (v{{ item.article.getVersionNumber() }}) {% endif %}</b></p>
-		<p>Barcode: <b>{{ item.getArticle().getBarcode() }}</b></p>
-		<p>Supplier: <b>{{ item.getArticle().getSupplier().getName() }}</b></p>
+		<p>Article: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+		<p>Barcode: <b>{{ article.getBarcode() }}</b></p>
+		<p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
 		<br style="clear:both" />
 		<h1>Orders</h1>
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">{{ item.getTotalOrdered() }}</td>
+				<td style="width:30%">{{ period.getNbOrdered(article) }}</td>
 			</tr>
 			<tr>
 				<td>Not delivered</td>
-				<td style="width:30%">{{ item.getNumberNotDelivered() }}</td>
+				<td style="width:30%">{% if period.getNbOrdered(article) - period.getNbDelivered(article) < 0 %}0{% else %}{{ period.getNbOrdered(article) - period.getNbDelivered(article) }}{% endif %}</td>
 			</tr>
 			<tr>
 				<td>Queue</td>
-				<td style="width:30%">{{ item.getNumberQueueOrder() }}</td>
+				<td style="width:30%">{{ period.getNbQueueOrder(article) }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -35,7 +35,7 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">{{ item.getTotalDelivered() }}</td>
+				<td style="width:30%">{{ period.getNbDelivered(article) }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -47,11 +47,11 @@
 		<table class="half_width">
 			<tr>
 				<td>Number assigned</td>
-				<td style="width:30%">{{ item.getNumberAssigned() }}</td>
+				<td style="width:30%">{{ period.getNbAssigned(article) }}</td>
 			</tr>
 			<tr>
 				<td>Number not assigned</td>
-				<td style="width:30%">{{ item.getNumberBooked() }}</td>
+				<td style="width:30%">{{ period.getNbBooked(article) }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -59,7 +59,7 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">{{ item.getNumberSold() }}</td>
+				<td style="width:30%">{{ period.getNbSold(article) }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -67,7 +67,7 @@
 		<table class="half_width">
 			<tr>
 				<td>Total</td>
-				<td style="width:30%">{{ item.getNumberInStock() }}</td>
+				<td style="width:30%">{{ article.getStockValue() }}</td>
 			</tr>
 		</table>
 		<br style="clear:both" />
@@ -85,7 +85,7 @@
 		                <i>Please hit the link below to view the delta's!</i>
 		            </p>
 		            <p>
-		                <a href="{{ url('admin_stock', {"action": "delta", "id": item.getId()}) }}">&rarr; View Delta's</a>
+		                <a href="{{ url('admin_stock', {"action": "delta", "id": article.getId()}) }}">&rarr; View Delta's</a>
 		            </p>
 		        </div>
 		    </div>

@@ -15,18 +15,18 @@
  
 namespace CudiBundle\Entity\Sales;
 
-use CudiBundle\Entity\Sales\Booking,
-    CudiBundle\Entity\Sales\ServingQueueItem,
+use CudiBundle\Entity\Sales\Article,
+    CudiBundle\Entity\Sales\QueueItem,
     DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
- * @Table(name="cudi.sales_saleitem")
+ * @Table(name="cudi.sales_saleitem", indexes={@index(name="sales_saleitem_time", columns={"timestamp"})})
  */
 class SaleItem
 {
 	/**
-	 * @var integer The ID of this sale item
+	 * @var integer The ID of the sale item
 	 *
 	 * @Id
 	 * @GeneratedValue
@@ -35,18 +35,26 @@ class SaleItem
 	private $id;
 	
 	/**
-	 * @var \CudiBundle\Entity\Sales\Session The session of this sale item
+	 * @var \DateTime The time the sale item was created
+	 *
+	 * @Index
+	 * @Column(type="datetime")
+	 */
+	private $timestamp;
+	
+	/**
+	 * @var \CudiBundle\Entity\Sales\Session The session of the sale item
 	 *
 	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
-	 * @JoinColumn(name="session_id", referencedColumnName="id")
+	 * @JoinColumn(name="session", referencedColumnName="id")
 	 */
 	private $session;
 	
 	/**
-	 * @var \CudiBundle\Entity\Article The article of this sale item
+	 * @var \CudiBundle\Entity\Sales\Article The article of the sale item
 	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-	 * @JoinColumn(name="article_id", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+	 * @JoinColumn(name="article", referencedColumnName="id")
 	 */
 	private $article;
 	
@@ -65,34 +73,71 @@ class SaleItem
 	private $price;
 	
 	/**
-	 * @var \CudiBundle\Entity\Sales\Booking The booking belonging to this sale item
+	 * @var \CudiBundle\Entity\Sales\QueueItem The queue item belonging to the sale item
 	 *
-	 * @OneToOne(targetEntity="CudiBundle\Entity\Sales\Booking")
-	 * @JoinColumn(name="booking", referencedColumnName="id")
+	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\QueueItem")
+	 * @JoinColumn(name="queue_item", referencedColumnName="id")
 	 */
-	private $booking;
+	private $queueItem;
 	
 	/**
-	 * @var \CudiBundle\Entity\Sales\ServingQueueItem The queue item belonging to this sale item
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\ServingQueueItem")
-	 * @JoinColumn(name="serving_queue_item", referencedColumnName="id")
-	 */
-	private $servingQueueItem;
-	
-	/**
+	 * @param \CudiBundle\Entity\Sales\Article $article
+	 * @param integer $number
 	 * @param integer $price
-	 * @param \CudiBundle\Entity\Sales\Booking $booking
-	 * @param \CudiBundle\Entity\Sales\ServingQueueItem $servingQueueItem
+	 * @param \CudiBundle\Entity\Sales\QueueItem $queueItem
 	 */
-	public function __construct($price, Booking $booking, ServingQueueItem $servingQueueItem)
+	public function __construct(Article $article, $number, $price, QueueItem $queueItem)
 	{
-	    $this->session = $servingQueueItem->getSession();
-	    $this->article = $booking->getArticle();
-	    $this->number = $booking->getNumber();
+	    $this->session = $queueItem->getSession();
+	    $this->article = $article;
+	    $this->number = $number;
 	    $this->price = $price * 100;
-	    $this->booking = $booking;
-	    $this->servingQueueItem = $servingQueueItem;
+	    $this->queueItem = $queueItem;
+	    $this->timestamp = new DateTime();
+	}
+	
+	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+	    return $this->id;
+	}
+	
+	/**
+	 * @return \DateTime
+	 */
+	public function getTimestamp()
+	{
+	    return $this->timestamp;
+	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Sales\Session
+	 */
+	public function getSession()
+	{
+	    return $this->session;
+	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function getArticle()
+	{
+	    return $this->article;
+	}
+	
+	/**
+	 * @param integer $number
+	 *
+	 * @return \CudiBundle\Entity\Sales\SaleItem
+	 */
+	public function setNumber($number)
+	{
+	    $this->price = round($this->price * $number / $this->number);
+		$this->number = $number;
+		return $this;
 	}
 	
 	/**
@@ -104,13 +149,26 @@ class SaleItem
 	}
 	
 	/**
-	 * @param integer $number
-	 * 
-	 * @return \CudiBundle\Entity\Sales\SaleItem
+	 * @return integer
 	 */
-	public function setNumber($number)
+	public function getPrice()
 	{
-		$this->number = $number;
-		return $this;
+		return $this->price;
+	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Sales\QueueItem
+	 */
+	public function getQueueItem()
+	{
+		return $this->queueItem;
+	}
+	
+	/**
+	 * @return \CommonBundle\Entity\Users\person
+	 */
+	public function getPerson()
+	{
+		return $this->queueItem->getPerson();
 	}
 }

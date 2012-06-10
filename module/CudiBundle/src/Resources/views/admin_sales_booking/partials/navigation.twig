@@ -1,0 +1,54 @@
+<header id="controller_header">
+    <div class="title"><span class="bookings">Bookings</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_sales_booking', 'assignAll') %}
+                <li><a href="#" class="assignAll">Assign All</a></li>
+            {% endif %}
+            {% if hasAccess('admin_sales_booking', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('admin_sales_booking', 'inactive') %}
+                <li><a {% if 'inactive' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "inactive"}) }}">Inactive</a></li>
+            {% endif %}
+            {% if hasAccess('admin_sales_booking', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "manage"}) }}">Active</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<div class="modal hide fade" id="assignAllBooking">
+	<div class="modal-header">
+		<span>Litus Admin</span>
+		/Booking Assign All
+	</div>
+	<div class="modal-body">
+		<p>
+			You are about to assign all the possible bookings!
+		</p>
+		<p>
+			Are you sure you want to continue?
+		</p>
+		<div class="footer">
+			<input type="button" class="delete" value="Yes">
+			<input type="button" class="cancel" data-dismiss="modal" value="No">
+		</div>
+	</div>
+</div>
+
+{% block controller_script %}
+	<script type="text/javascript">
+	    function openAssignAllModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var assignAllBooking = $('#assignAllBooking');
+			assignAllBooking.find('.delete').unbind('click').click(function () {
+			    window.location.href = '{{ url('admin_sales_booking', {"action": "assignAll"})}}';
+			});
+			assignAllBooking.modal();
+		}
+	</script>
+{% endblock %}

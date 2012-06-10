@@ -16,9 +16,9 @@
 		<div class="container">
 			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
 			<ul class="nav">
-				{% if hasAccess('supplier', 'index') %}
-					<li {% if 'index' == getParam('action') and 'supplier' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("supplier") }}">Home</a>
+				{% if hasAccess('supplier_index', 'index') %}
+					<li {% if 'index' == getParam('action') and 'supplier_index' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("supplier_index") }}">Home</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('supplier_article', 'manage') %}

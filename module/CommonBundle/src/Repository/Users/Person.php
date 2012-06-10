@@ -70,7 +70,9 @@ class Person extends EntityRepository
     	$query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('p')
 			->from('CommonBundle\Entity\Users\Person', 'p')
-			->where($query->expr()->eq('p.username', ':username'))
+			->where(
+			    $query->expr()->eq('p.username', ':username')
+			)
 			->setParameter('username', $username)
 			->setMaxResults(1)
 			->getQuery()
