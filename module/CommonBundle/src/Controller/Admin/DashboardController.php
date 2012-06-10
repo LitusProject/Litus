@@ -23,8 +23,14 @@ namespace CommonBundle\Controller\Admin;
 class DashboardController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function indexAction()
-    {    
+    {
+        $profActions = $this->getEntityManager()
+        	    ->getRepository('CudiBundle\Entity\Prof\Action')
+        	    ->findAllUncompleted();
+        array_splice($profActions, 10);
+        
         return array(
+            'profActions' => $profActions,
         	'versions' => array(
         		'php' => phpversion(),
         		'zf' => \Zend\Version::VERSION,

@@ -8,6 +8,30 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
+        {% if hasAccess('admin_prof_action', 'manage') %}
+            <h1>Last Prof Actions</h1>
+    	    <table>
+    	        <tr>
+    	            <th>Person</th>
+    	            <th width="160px">Action</th>
+    	            <th width="150px">Date</th>
+    	            <th width="140px">Actions</th>
+    	        </tr>
+    	        
+    	        {% for action in profActions %}
+    	            <tr class="item">
+    	                <td>{{ action.getPerson().getFullName() }}</td>
+    	                <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
+    	                <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
+    	                <td>
+    	                    {% if hasAccess('admin_prof_action', 'edit') %}
+    	                        <a href="{{ url('admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+    	                    {% endif %}
+    	                </td>
+    	            </tr>
+    	        {% endfor %}
+    	    </table>
+	    {% endif %}
 	</div>
 	
 	<aside>
@@ -38,17 +62,4 @@
 	        </div>
 	    </div>
 	</aside>
-{% endblock %}
-
-{% block controller_script %}
-	<script type="text/javascript">
-	    $(document).ready(function () {
-	        $('#editor').gollum({
-	            uploadURL: '/php/fileUpload.php',
-	            progressURL: '/php/fileProgress.php',
-	            uploadProgressName: 'test_one',
-	            progressId: 1,
-	        });
-	    });
-	</script>
 {% endblock %}
