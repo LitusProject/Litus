@@ -20,7 +20,7 @@ namespace SyllabusBundle\Controller\Admin;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class UpdateController extends \CommonBundle\Component\Controller\ActionController
+class UpdateController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
     public function indexAction()

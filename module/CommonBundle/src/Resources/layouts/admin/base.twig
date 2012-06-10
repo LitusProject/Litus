@@ -113,24 +113,6 @@
 		            		</li>
 		                {% endif %}
 		                
-		                {% if hasAccess('admin_action', 'manage') %}
-		                	<li>
-		                		<div class="subtitle">
-		                			<b>Prof</b><br />
-		                			Actions
-		                		</div>
-		                		<ul
-		                			{% if 'admin_action' == getParam('controller') %}
-		                				style="display: block;"
-		                			{% endif %}
-		                		>
-		                		    {% if hasAccess('admin_action', 'manage') %}
-		                		        <li><a href="{{ url('admin_action') }}">Actions</a></li>
-		                		    {% endif %}
-		                		</ul>
-		                	</li>
-		                {% endif %}
-		                
 		                {% if hasAccess('admin_news', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">

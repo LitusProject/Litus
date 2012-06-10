@@ -34,20 +34,12 @@ return array(
     'CommonBundle\Component\Form\Admin\Decorator\DivSpanWrapper'                       => __DIR__ . '/src/Component/Form/Admin/Decorator/DivSpanWrapper.php',
     'CommonBundle\Component\Form\Admin\Decorator\FieldDecorator'                       => __DIR__ . '/src/Component/Form/Admin/Decorator/FieldDecorator.php',
     'CommonBundle\Component\Form\Admin\Decorator\FileDecorator'                        => __DIR__ . '/src/Component/Form/Admin/Decorator/FileDecorator.php',
-<<<<<<< HEAD
     'CommonBundle\Component\Form\Admin\Decorator\TabsDecorator'                        => __DIR__ . '/src/Component/Form/Admin/Decorator/TabDecorator.php',
     'CommonBundle\Component\Form\Admin\Element\Tabs'                                   => __DIR__ . '/src/Component/Form/Admin/Element/Tabs.php',
     'CommonBundle\Component\Form\Admin\Form\SubForm\TabContent'                        => __DIR__ . '/src/Component/Form/Admin/Form/SubForm/TabContent.php',
     'CommonBundle\Component\Form\Admin\Form\SubForm\TabPane'                           => __DIR__ . '/src/Component/Form/Admin/Form/SubForm/TabPane.php',
     'CommonBundle\Component\Form\Admin\Form\Tabbable'                                  => __DIR__ . '/src/Component/Form/Admin/Form/Tabbable.php',
-=======
-    'CommonBundle\Component\Form\Bootstrap\Decorator\FormTabs'                         => __DIR__ . '/src/Component/Form/Admin/Decorator/FormTabs.php',
-    'CommonBundle\Component\Form\Bootstrap\Element\Tabs'                               => __DIR__ . '/src/Component/Form/Admin/Element/Tabs.php',
-    'CommonBundle\Component\Form\Bootstrap\Form\Tabbable'                              => __DIR__ . '/src/Component/Form/Admin/Form/Tabbable.php',
->>>>>>> cudi
     'CommonBundle\Component\Form\Admin\Form'                                           => __DIR__ . '/src/Component/Form/Admin/Form.php',
-    'CommonBundle\Component\Form\Bootstrap\SubForm\TabContent'                         => __DIR__ . '/src/Component/Form/Admin/SubForm/TabContent.php',
-    'CommonBundle\Component\Form\Bootstrap\SubForm\TabPane'                            => __DIR__ . '/src/Component/Form/Admin/SubForm/TabPane.php',
     'CommonBundle\Component\Form\Admin\SubForm'                                        => __DIR__ . '/src/Component/Form/Admin/SubForm.php',
     'CommonBundle\Component\Form\Bootstrap\Decorator\Errors'                           => __DIR__ . '/src/Component/Form/Bootstrap/Decorator/Errors.php',
     'CommonBundle\Component\Form\Bootstrap\DisplayGroup\Actions'                       => __DIR__ . '/src/Component/Form/Bootstrap/DisplayGroup/Actions.php',
@@ -98,10 +90,7 @@ return array(
     'CommonBundle\Entity\Acl\Action'                                                   => __DIR__ . '/src/Entity/Acl/Action.php',
     'CommonBundle\Entity\Acl\Resource'                                                 => __DIR__ . '/src/Entity/Acl/Resource.php',
     'CommonBundle\Entity\Acl\Role'                                                     => __DIR__ . '/src/Entity/Acl/Role.php',
-<<<<<<< HEAD
-=======
     'CommonBundle\Entity\General\AcademicYear'                                         => __DIR__ . '/src/Entity/General/AcademicYear.php',
->>>>>>> cudi
     'CommonBundle\Entity\General\Address'                                              => __DIR__ . '/src/Entity/General/Address.php',
     'CommonBundle\Entity\General\Bank\BankDevice\Amount'                               => __DIR__ . '/src/Entity/General/Bank/BankDevice/Amount.php',
     'CommonBundle\Entity\General\Bank\BankDevice'                                      => __DIR__ . '/src/Entity/General/Bank/BankDevice.php',
@@ -133,10 +122,7 @@ return array(
     'CommonBundle\Repository\Acl\Action'                                               => __DIR__ . '/src/Repository/Acl/Action.php',
     'CommonBundle\Repository\Acl\Resource'                                             => __DIR__ . '/src/Repository/Acl/Resource.php',
     'CommonBundle\Repository\Acl\Role'                                                 => __DIR__ . '/src/Repository/Acl/Role.php',
-<<<<<<< HEAD
-=======
     'CommonBundle\Repository\General\AcademicYear'                                     => __DIR__ . '/src/Repository/General/AcademicYear.php',
->>>>>>> cudi
     'CommonBundle\Repository\General\Address'                                          => __DIR__ . '/src/Repository/General/Address.php',
     'CommonBundle\Repository\General\Bank\BankDevice\Amount'                           => __DIR__ . '/src/Repository/General/Bank/BankDevice/Amount.php',
     'CommonBundle\Repository\General\Bank\BankDevice'                                  => __DIR__ . '/src/Repository/General/Bank/BankDevice.php',

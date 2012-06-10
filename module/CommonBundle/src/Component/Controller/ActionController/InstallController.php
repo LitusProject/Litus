@@ -27,7 +27,7 @@ use CommonBundle\Entity\Acl\Action as AclAction,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class InstallController extends \CommonBundle\Component\Controller\ActionController
+abstract class InstallController extends AdminController
 {
 	/**
 	 * Running all installation methods.

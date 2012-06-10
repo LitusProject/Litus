@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Admin;
+namespace CudiBundle\Controller\Admin\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
@@ -25,7 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ActionController extends \CommonBundle\Component\Controller\ActionController
+class ActionController extends \CudiController\Component\Controller\ActionController
 {
     public function manageAction()
     {
