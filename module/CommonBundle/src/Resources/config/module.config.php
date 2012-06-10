@@ -159,6 +159,26 @@ return array(
                                             'output' => 'bootstrap_css.css',
                                         ),
                                     ),
+                                    'bootstrap_responsive_css' => array(
+                                    	'assets' => array(
+                                    		'bootstrap/less/responsive.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'bootstrap_responsive_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => false,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'bootstrap_responsive_css.css',
+                                        ),
+                                    ),
                                     'bootstrap_js_alert' => array(
                                         'assets' => array(
                                             'bootstrap/js/bootstrap-alert.js',

@@ -12,7 +12,6 @@
  }
  
  header {
-     padding-top: 40px;
      .verticalGradient(@cHeaderDark, @cHeaderLight);
      margin-bottom: 15px;
      
@@ -20,6 +19,7 @@
          color: @cWhite;
          text-shadow: 0 1px 1px rgba(0,0,0,.3);
          padding-bottom: 20px;
+         padding-left: 20px;
      }
      
      .inner {
@@ -36,7 +36,35 @@
      }
  }
  
+ @media (max-width: 767px) {
+     body {
+         padding-left: 0;
+         padding-right: 0;
+     }
+ }
+ 
  .navbar {
+     .title {
+       float: left;
+       padding: 8px 20px 12px;
+       font-size: 20px;
+       font-weight: 200;
+       line-height: 1;
+       color: @cWhite;
+       
+       &:hover {
+           text-decoration: none;
+       }
+     }
+     
+     ul {
+         padding: 0 20px;
+     }
+     
+     .btn-navbar {
+         .buttonBackground(@navbarBackgroundHighlight, @navbarBackground)
+     }
+     
  	.auth-nav {
  	    #accountDropdown {
  	        .profile-wrapper {
@@ -96,6 +124,10 @@
              }
          }
  	 }
+ }
+ 
+ .navbar-fixed-top {
+     margin-bottom: 0px !important;
  }
  
  .navbar-inner-clean {
@@ -220,6 +252,7 @@
      }
      
      .container {
+         padding: 0 20px;
      	color: @headingsColor;
      
      	.title {
