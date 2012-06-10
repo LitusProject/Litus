@@ -69,3 +69,25 @@
         -o-transform: rotate(@degrees);
            transform: rotate(@degrees);
 }
+
+.buttonBackground(@startColor, @endColor) {
+  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
+  .gradientBar(@startColor, @endColor);
+
+  // in these cases the gradient won't cover the background, so we override
+  &:hover, &:active, &.active, &.disabled, &[disabled] {
+    background-color: @endColor;
+  }
+
+  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
+  &:active,
+  &.active {
+    background-color: darken(@endColor, 10%) e("\9");
+  }
+}
+
+.gradientBar(@primaryColor, @secondaryColor) {
+  .verticalGradient(@primaryColor, @secondaryColor);
+  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
