@@ -31,7 +31,7 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
 	 */
     public function __construct($opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($opts);
 
         $this->setAttrib('id', 'login');
 

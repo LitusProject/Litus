@@ -31,9 +31,9 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 	 * @param string $action
 	 * @param mixed $options The form's options
 	 */
-    public function __construct($action = '', $options = null)
+    public function __construct($action = '', $opts = null)
     {
-        parent::__construct($options);
+        parent::__construct($opts);
 
         $this->setAction($action);
 
