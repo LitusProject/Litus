@@ -95,7 +95,7 @@
 		            			        <li><a href="{{ url('admin_sales_booking') }}">Bookings</a></li>
 		            			    {% endif %}
 		            			    {% if hasAccess('admin_sales_session', 'manage') %}
-		            			        <li><a href="{{ url('admin_sales_session') }}">Sale sessions</a></li>
+		            			        <li><a href="{{ url('admin_sales_session') }}">Sale Sessions</a></li>
 		            			    {% endif %}
 		            			    {% if hasAccess('admin_sales_financial', 'manage') %}
 		            			        <li><a href="{{ url('admin_sales_financial') }}">Financial</a></li>
@@ -104,7 +104,7 @@
 		            			        <li><a href="{{ url('admin_stock') }}">Stock</a></li>
 		            			    {% endif %}
 		            			    {% if hasAccess('admin_supplier', 'manage') %}
-		            			        <li><a href="{{ url('admin_supplier') }}">Supplier</a></li>
+		            			        <li><a href="{{ url('admin_supplier') }}">Suppliers</a></li>
 		            			    {% endif %}
 		            			    {% if hasAccess('admin_prof_action', 'manage') %}
 		            			        <li><a href="{{ url('admin_prof_action') }}">Prof Actions</a></li>

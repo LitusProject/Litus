@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
