@@ -15,7 +15,6 @@ use CommonBundle\Entity\Users\Person,
  * @DiscriminatorMap({
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Nodes\News",
- *      "faq"="FAQBundle\Entity\Nodes\FAQ",
  *      "event"="CalendarBundle\Entity\Nodes\Event"
  * })
  */

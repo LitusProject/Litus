@@ -12,24 +12,21 @@
  *
  * @license http://litus.cc/LICENSE
  */
-
-namespace CommonBundle\Controller\Admin;
-
-/**
- * DashboardController
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-class DashboardController extends \CommonBundle\Component\Controller\ActionController\AdminController
-{
-    public function indexAction()
-    {    
-        return array(
-        	'versions' => array(
-        		'php' => phpversion(),
-        		'zf' => \Zend\Version::VERSION,
-        		'doctrine' => \Doctrine\Common\Version::VERSION
-        	)
-        );
-    }
-}
+ 
+return array(
+	'controllers'  => array(
+		'news_install' => array(
+			'@common_jquery',
+			'@admin_css',
+			'@admin_js',
+		),
+	
+		'admin_news' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		    '@bootstrap_js_tab',
+		),
+	),
+	'routes' => array(),
+);

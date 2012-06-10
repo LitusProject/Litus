@@ -148,7 +148,7 @@ a.function-help:hover span { background-position: -405px -28px; }
   .gollum-editor-help-list {
     display: block;
     float: left;
-    height: 13em;
+    height: 15em;
     list-style-type: none;
     overflow: auto;
     margin: 0;
@@ -210,7 +210,7 @@ a.function-help:hover span { background-position: -405px -28px; }
   .gollum-editor-help-wrapper {
     background: #fff;
     overflow: auto;
-    height: 13em;
+    height: 15em;
     padding: 1em;
   }
 

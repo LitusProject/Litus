@@ -13,30 +13,32 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Component\Form\Bootstrap\SubForm;
+namespace CommonBundle\Component\Form\Admin\Form\SubForm;
 
 /**
- * Add tab pane sub form
+ * Add tab content sub form
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabPane extends \Zend\Form\SubForm
+class TabContent extends \Zend\Form\SubForm
 {
     /**
-     * Constructor
+     * Load the default decorators
      *
-     * Registers form view helper as decorator
-     *
-     * @param mixed $options
-     * @return void
+     * @return \CommonBundle\Component\Form\Admin\Form\SubForm\TabContent
      */
-    public function __construct($options = null)
+    public function loadDefaultDecorators()
     {
-        parent::__construct($options);
-        
-        $this->clearDecorators();
-        $this->addDecorator('FormElements')
-             ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab-pane', 'id' => $options));
+        if ($this->loadDefaultDecoratorsIsDisabled()) {
+            return $this;
+        }
+
+        $decorators = $this->getDecorators();
+        if (empty($decorators)) {
+            $this->addDecorator('FormElements')
+            	->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_content'));
+        }
+        return $this;
     }
     
     /**

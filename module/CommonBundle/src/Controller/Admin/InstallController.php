@@ -37,7 +37,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
 Your account of litus.cc is deactivated.
 Click here to activate it again: http://litus/account/activate/{{ code }}',
-        		    'description' => 'The email send when an account is deactivated',
+        		    'description' => 'The email sent when an account is deactivated',
         		),
         		array(
         		    'key'         => 'account_deactivated_subject',

@@ -125,6 +125,24 @@
 		                	</li>
 		                {% endif %}
 		                
+		                {% if hasAccess('admin_news', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Site</b><br />
+		                			News &amp; Calendar
+		                		</div>
+		                		<ul
+		                			{% if 'admin_action' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_news', 'manage') %}
+		                		        <li><a href="{{ url('admin_news') }}">News</a></li>
+		                		    {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+		                
 		                {% if hasAccess('admin_run', 'index') %}
 		                    <li>
 			                    <div class="subtitle">

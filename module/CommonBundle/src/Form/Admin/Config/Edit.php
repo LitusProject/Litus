@@ -23,9 +23,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Textarea;
 
 /**
- * Edit a configuration entry.
+ * Edit Configuration
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {

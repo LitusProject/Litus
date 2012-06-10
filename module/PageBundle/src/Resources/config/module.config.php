@@ -19,10 +19,11 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'install_page'  => 'PageBundle\Controller\Admin\InstallController',
-                'admin_page'    => 'PageBundle\Controller\Admin\PageController',
+                'page_install' => 'PageBundle\Controller\Admin\InstallController',
+                
+                'admin_page'   => 'PageBundle\Controller\Admin\PageController',
 
-                'common_page'   => 'PageBundle\Controller\PageController',
+                'page'   	   => 'PageBundle\Controller\PageController',
             ),
             
             'doctrine_config' => array(
@@ -32,33 +33,31 @@ return array(
                 	),
                 ),
             ),
-            
-            'translator' => array(
-            	'parameters' => array(
-        		    'adapter' => 'ArrayAdapter',
-        			'translations' => array(
-        				'page_admin_en' => array(
-                			'content' => __DIR__ . '/../translations/admin.en.php',
-                			'locale' => 'en',
-                		),
-                		'page_admin_nl' => array(
-                			'content' => __DIR__ . '/../translations/admin.nl.php',
-                			'locale' => 'nl',
-                		),
-            		),
-            	),
-            ),
         ),
     ),
     'routes' => array(
-        'install_page' => array(
+    	'page' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '[/:language]/page[/:id]',
+    	        'constraints' => array(
+    	        	'id'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	            'language' => '[a-zA-Z][a-zA-Z_-]*',
+    	        ),
+    	        'defaults' => array(
+    	            'controller' => 'page',
+    	            'action'     => 'view',
+    	        ),
+    	    ),
+    	),
+        'page_install' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin/install/page',
                 'constraints' => array(
                 ),
                 'defaults' => array(
-                    'controller' => 'install_page',
+                    'controller' => 'page_install',
                     'action'     => 'index',
                 ),
             ),
@@ -77,19 +76,5 @@ return array(
                 ),
             ),
         ),
-        /*'common_page' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '[/:language]/page[/:id]',
-                'constraints' => array(
-                	'id'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'common_page',
-                    'action'     => 'view',
-                ),
-            ),
-        ),*/
 	),
 );

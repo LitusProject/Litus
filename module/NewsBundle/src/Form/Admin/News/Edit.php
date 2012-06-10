@@ -50,6 +50,6 @@ class Edit extends Add
         
         $this->setActionsGroup(array('submit'));
         
-        $this->populateFromNews($news);
+        $this->_populateFromNews($news);
     }
 }

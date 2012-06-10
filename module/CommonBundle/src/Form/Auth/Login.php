@@ -53,8 +53,8 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Checkbox('remember_me');
         $field->setLabel('Remember Me')
             ->addDecorator('Label', array('placement' => 'APPEND'))
-            ->removeDecorator('div')
-            ->removeDecorator('HtmlTag');
+            ->addDecorator('HtmlTag', array('class' => 'remember_me'))
+            ->removeDecorator('div');
         $this->addElement($field);
         
         $field = new Submit('submit');

@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
- * AddPerson
+ * Add Person
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

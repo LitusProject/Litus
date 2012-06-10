@@ -45,9 +45,17 @@ class Company
 	/**
 	 * @var string The company's VAT number
 	 *
-	 * @Column(type="string", length=14)
+	 * @Column(type="string", name="vat_number")
 	 */
 	private $vatNumber;
+	
+	/**
+	 * @var \CommonBundle\Entity\General\Address The address of the company
+	 *
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+	 * @JoinColumn(name="address", referencedColumnName="id")
+	 */
+	private $address;
 	
 	/**
 	 * @var bool Whether or not this is an active company

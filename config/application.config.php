@@ -16,6 +16,7 @@
 return array(
     'modules' => array(
     	'AsseticBundle',
+    	'EdpMarkdown',
     	'MistDoctrine',
     	'ZfTwig',
     	
@@ -25,6 +26,10 @@ return array(
         'CudiBundle',
         'SyllabusBundle',
         'ProfBundle',
+        
+        'CalendarBundle',
+        'NewsBundle',
+        'PageBundle',
     ),
     'module_listener_options' => array( 
         'config_cache_enabled' 	=> false,

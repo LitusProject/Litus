@@ -43,20 +43,14 @@
     				        Aanmelden <span class="caret"></span>
     			        </a>
     			        <ul class="dropdown-menu">
+    			        	<li style="text-align: center;">
+    			        		<button class="btn btn-info" href="">KU Leuven</button>
+    			        	</li>
+    			        	<li class="divider"></li>
     			            <li>
-    			                <form id="login" enctype="application/x-www-form-urlencoded" method="post" class="form-inline" action="/cudi/prof/auth">
-                                    <div class="control-group"><label for="username" class="control-label required">Gebruikersnaam</label>
-                                    <div class="controls">
-                                    <input type="text" name="username" id="username" value="" required="true"></div></div>
-                                    <div class="control-group"><label for="password" class="control-label required">Wachtwoord</label>
-                                    <div class="controls">
-                                    <input type="password" name="password" id="password" value="" required="true"></div></div>
-                                    
-                                    <input type="hidden" name="remember_me" value="0"><input type="checkbox" name="remember_me" id="remember_me" value="1">
-                                    <label for="remember_me" class="optional">Onthoud Mij</label>
-                                    
-                                    <input type="submit" name="submit" id="submit" value="Aanmelden" class="btn pull-right">
-                                </form>
+    			                {% autoescape false %}
+    			                	{{ loginForm }}
+    			                {% endautoescape %}
     			            </li>
     			        </ul>
     				</li>
@@ -106,7 +100,7 @@
 				    		<span class="date calendar">10 Mei</span>
 					    		
 					    	<p>
-					    		<i class="icon-time"></i> 11:00&mdash;Event<br />
+					    		<i class="icon-time"></i> <a href="#" rel="popover" data-original-title="AfrekeningsTD" data-content="And here's some amazing content. It's very engaging right?">18:00&mdash;AfrekeningsTD</a><br />
 					    		<i class="icon-time"></i><br />
 					    		<i class="icon-time"></i><br />
 					    		<i class="icon-time"></i><br />
@@ -141,7 +135,7 @@
 				   
 				   	<div class="span6">
 				   		<img class="headingIcon" src="/_site/img/glyphicons-news.png">
-				    	<h2>News</h2>
+				    	<h2>{{ translator().translate('News') }}</h2>
 				    		
 				    	<div class="item">
 				    		<span class="date news">10 Mei</span>
@@ -190,9 +184,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.dropdown form').on('click', function (e) {
-                e.stopPropagation()
+                e.stopPropagation();
             });
+            
             $('.carousel').carousel();
+            
+            $('a[rel=popover]').popover().click(function(e) {
+            	e.preventDefault();
+            });
         });
     </script>
 

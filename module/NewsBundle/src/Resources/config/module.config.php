@@ -19,10 +19,10 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'install_news'  => 'NewsBundle\Controller\Admin\InstallController',
+                'news_install' => 'NewsBundle\Controller\Admin\InstallController',
                 'admin_news'   => 'NewsBundle\Controller\Admin\NewsController',
 
-                'common_news'   => 'NewsBundle\Controller\NewsController',
+                'news'         => 'NewsBundle\Controller\NewsController',
             ),
             
             'doctrine_config' => array(
@@ -37,14 +37,6 @@ return array(
             	'parameters' => array(
         		    'adapter' => 'ArrayAdapter',
         			'translations' => array(
-        				'news_admin_en' => array(
-                			'content' => __DIR__ . '/../translations/admin.en.php',
-                			'locale' => 'en',
-                		),
-                		'news_admin_nl' => array(
-                			'content' => __DIR__ . '/../translations/admin.nl.php',
-                			'locale' => 'nl',
-                		),
                 		'news_common_en' => array(
                 			'content' => __DIR__ . '/../translations/common.en.php',
                 			'locale' => 'en',
@@ -59,14 +51,14 @@ return array(
         ),
     ),
     'routes' => array(
-        'install_news' => array(
+        'news_install' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin/install/news',
                 'constraints' => array(
                 ),
                 'defaults' => array(
-                    'controller' => 'install_news',
+                    'controller' => 'news_install',
                     'action'     => 'index',
                 ),
             ),
@@ -74,7 +66,7 @@ return array(
         'admin_news' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/admin/content/news[/:action[/:id]]',
+                'route'    => '/admin/site/news[/:action[/:id]]',
                 'constraints' => array(
                 	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                 	'id'      => '[0-9]*',
@@ -85,20 +77,20 @@ return array(
                 ),
             ),
         ),
-        /*'common_news' => array(
+        'news' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route'    => '[/:language]/news[/:action[/:name]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'name'  => '[a-zA-Z0-9_-]*',
+                	'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                	'name'     => '[a-zA-Z0-9_-]*',
                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'common_news',
+                    'controller' => 'news',
                     'action'     => 'overview',
                 ),
             ),
-        ),*/
+        ),
 	),
 );
