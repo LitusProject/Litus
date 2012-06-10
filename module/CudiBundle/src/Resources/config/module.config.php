@@ -150,30 +150,18 @@ return array(
 		'admin_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article[/:action[/:id][/:field/:string]]',
+				'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
 					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string'  => '[%a-zA-Z0-9_-]*',
+					'page'    => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
 					'action'     => 'manage',
 				),
-			),
-		),
-		'admin_article_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/manage[/:page]',
-				'constraints' => array(
-					'page' => '[0-9]*',
-		        ),
-				'defaults' => array(
-					'controller' => 'admin_article',
-					'action'     => 'manage',
-				), 
 			),
 		),
 		'admin_article_subject'=> array(
@@ -222,32 +210,19 @@ return array(
 		'admin_sales_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/:field/:string]]',
+				'route' => '/admin/sales/article[/:action[/:id][/page/:page][/:academicyear][/:field/:string]]',
 				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
+					'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'           => '[0-9]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
-    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string' => '[%a-zA-Z0-9_-]*',
+    				'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string'       => '[%a-zA-Z0-9_-]*',
+					'page'         => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_article',
 					'action'     => 'manage',
 				),
-			),
-		),
-		'admin_sales_article_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/article/manage[/:page][/:academicyear]',
-				'constraints' => array(
-					'page' => '[0-9]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-		        ),
-				'defaults' => array(
-					'controller' => 'admin_sales_article',
-					'action'     => 'manage',
-				), 
 			),
 		),
 		'admin_sales_discount' => array(
@@ -267,7 +242,7 @@ return array(
 		'admin_sales_booking' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/booking[/:action[/:id][/period/:period][:type[/:field/:string]]]',
+				'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][:type[/:field/:string]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
@@ -275,19 +250,7 @@ return array(
 					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
 					'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_booking',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_booking_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/booking/manage[/:page]',
-				'constraints' => array(
-					'page' => '[0-9]*',
+					'page'    => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_booking',
@@ -298,10 +261,11 @@ return array(
 		'admin_sales_session' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/session[/:action[/:id]]',
+				'route' => '/admin/sales/session[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_session',
@@ -312,10 +276,11 @@ return array(
 		'admin_sales_financial' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/sales/financial[/:action[/:id]]',
+				'route' => '/admin/sales/financial[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_sales_financial',
@@ -326,50 +291,26 @@ return array(
 		'admin_supplier' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/supplier[/:action[/:id]]',
+				'route' => '/admin/supplier[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_supplier',
 					'action'     => 'manage',
 				),
-			),
-		),
-		'admin_supplier_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier/manage[/:page]',
-				'constraints' => array(
-				    'page' => '[0-9]*',
-		        ),
-				'defaults' => array(
-					'controller' => 'admin_supplier',
-					'action'     => 'manage',
-				), 
 			),
 		),
 		'admin_supplier_user' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/supplier/user[/:action[/:id]]',
+				'route' => '/admin/supplier/user[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_supplier_user',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_supplier_user_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier/user/manage/page[/:page]',
-				'constraints' => array(
-				    'page' => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_supplier_user',
@@ -380,25 +321,13 @@ return array(
 		'admin_stock' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock[/:action[/:id][/:field/:string]]',
+				'route' => '/admin/stock[/:action[/:id][/:field/:string]][/page/:page]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/manage[/:page]',
-				'constraints' => array(
-					'page'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock',
@@ -409,81 +338,43 @@ return array(
 		'admin_stock_period' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]]',
+				'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]][/page/:page]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
 					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string'  => '[%a-zA-Z0-9_-]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock_period',
 					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_period_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/period/manage[/:page]',
-				'constraints' => array(
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_period',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_period_view_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/period/view/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_period',
-					'action'     => 'view',
 				),
 			),
 		),
 		'admin_stock_order' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/order[/:action[/:id]]',
+				'route' => '/admin/stock/order[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock_order',
 					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_order_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/order/supplier/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_order',
-					'action'     => 'supplier',
 				),
 			),
 		),
 		'admin_stock_delivery' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/delivery[/:action[/:id]]',
+				'route' => '/admin/stock/delivery[/:action[/:id]][/page/:page]',
 				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_stock_delivery',
@@ -491,24 +382,10 @@ return array(
 				),
 			),
 		),
-		'admin_stock_delivery_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/delivery/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_delivery',
-					'action'     => 'supplier',
-				),
-			),
-		),
 		'admin_stock_retour' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/retour[/:action[/:id]]',
+				'route' => '/admin/stock/retour[/:action[/:id]][/page/:page]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
@@ -520,27 +397,14 @@ return array(
 				),
 			),
 		),
-		'admin_stock_retour_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/retour/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_retour',
-					'action'     => 'supplier',
-				),
-			),
-		),
 		'admin_prof_action' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/prof/actions[/:action[/:id]]',
+				'route' => '/admin/prof/actions[/:action[/:id]][/page/:page]',
 				'contraints' => array(
 				    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-				    'id' => '[0-9]*',
+				    'id'     => '[0-9]*',
+					'page'   => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_prof_action',
@@ -621,22 +485,10 @@ return array(
 	    'prof_index' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof[/:action]',
+	    		'route' => '/cudi/prof[/:action][/page/:page]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_index',
-	    			'action'     => 'index',
-	    		),
-	    	),
-	    ),
-	    'prof_paginator' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '/cudi/prof[/:page]',
-	    		'constraints' => array(
-	    			'page' => '[0-9]*',
+					'page'   => '[0-9]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_index',
