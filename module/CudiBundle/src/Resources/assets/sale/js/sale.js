@@ -84,7 +84,11 @@
 	
 	function _conclude ($this) {
 	    var settings = $this.data('saleSettings');
-	    var data = {id: settings.data.sale.id, articles: {}};
+	    var data = {
+	        id: settings.data.sale.id,
+	        discount: $this.find('.discounts input:checked').data('type'),
+	        articles: {}
+	    };
 	    $this.find('.articles tr:not(.inactive)').each(function () {
 	    	data.articles[$(this).data('info').id] = $(this).data('info').currentNumber;
 	    });
@@ -104,7 +108,7 @@
 	    			$('<span>', {class: 'currentNumber'}).html('0'),
 	    			'/' + data.number
 	    		),
-	    		$('<td>').append('&euro; ' + (data.price / 100).toFixed(2)),
+	    		$('<td class="price">').append('&euro; ' + (0).toFixed(2)),
 	    		actions = $('<td>', {class: 'actions'})
 	    	);
 	    
@@ -149,6 +153,10 @@
 	        $(this).find('#payedMoney').focus();
 	    });
 	    
+	    $this.find('.discounts input').unbind('change').change(function () {
+	        _updatePrices($this);
+	    });
+	    
 	    $this.find('.concludeSelling').unbind('click').click(function () {
 	    	$this.find('#modalConcludeSelling').modal()
 	    	    .find('#payedMoney').calculateChange({
@@ -161,7 +169,13 @@
 	    	});
 	    });
 	    
-	    $this.find('.name').html(settings.data.sale.person.name);
+	    $this.find('.customer .name').html(settings.data.sale.person.name);
+	    if (settings.data.sale.person.member) {
+	        $this.find('.discounts #discount_member').attr('checked', true);
+	    } else {
+	        $this.find('.discounts #discount_member').prop('disabled', true);
+	        $this.find('.discounts #discount_none').attr('checked', true);
+	    }
 	    $this.find('#totalMoney').html('0.00').data('value', 0);
 	    
 	    var articles = $this.find('.articles');
@@ -171,6 +185,7 @@
 	    	articles.append(_createRow(this, settings.statusTranslate));
 	    });
 	    
+	    _updatePrices($this);
 	    _addActions($this);
 	}
 	
@@ -190,11 +205,22 @@
 		_updateTotalPrice($this);
 	}
 	
+	function _updatePrices ($this) {
+	    var type = $this.find('.discounts input:checked').data('type');
+	    $this.find('.articles tr').each(function () {
+	        var data = $(this).data('info');
+            price = data.discounts[type] !== undefined ? data.discounts[type] : data.price;
+	        $(this).find('.price').html('&euro; ' + (price / 100).toFixed(2));
+	        $(this).data('info').currentPrice = price;
+	    });
+	    _updateTotalPrice($this);
+	}
+	
 	function _updateTotalPrice ($this) {
 	    var total = 0;
 	    $this.find('.articles').find('tr:not(.inactive)').each(function () {
 	    	var data = $(this).data('info');
-	    	total += data.currentNumber * data.price;
+	    	total += data.currentNumber * data.currentPrice;
 	    });
 	    $this.find('#totalMoney').html((total / 100).toFixed(2)).data('value', total).change();
 	}
