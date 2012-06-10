@@ -107,7 +107,7 @@
 				searchDiv: $('#student_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_academic_search') }}',
+				url: '{{ url('admin_academic', {'action': 'search'}) }}',
 				display: function (data) {
 					$('#student_search table').find('tr.item').remove();
 					$(data).each(function () {

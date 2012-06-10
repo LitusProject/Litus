@@ -47,27 +47,14 @@ return array(
         'admin_study' => array(
         	'type'    => 'Zend\Mvc\Router\Http\Segment',
         	'options' => array(
-        		'route' => '/admin/syllabus/study[/:action[/:id][/:academicyear][/:field/:string]]',
+        		'route' => '/admin/syllabus/study[/:action[/:id][/:academicyear][/page/:page][/:field/:string]]',
         		'constraints' => array(
-        			'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-        			'id'      => '[0-9]*',
+        			'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'id'           => '[0-9]*',
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
-    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-        		),
-        		'defaults' => array(
-        			'controller' => 'admin_study',
-        			'action'     => 'manage',
-        		),
-        	),
-        ),
-        'admin_study_paginator' => array(
-        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-        	'options' => array(
-        		'route' => '/admin/syllabus/study/manage[/:academicyear][/:page]',
-        		'constraints' => array(
-        			'page'      => '[0-9]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+    				'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string'       => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'page'         => '[0-9]*',
         		),
         		'defaults' => array(
         			'controller' => 'admin_study',

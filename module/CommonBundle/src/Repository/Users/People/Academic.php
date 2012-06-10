@@ -12,6 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class Academic extends \CommonBundle\Repository\Users\Person
 {
+    public function findAllByUsername($username)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('p')
+    		->from('CommonBundle\Entity\Users\People\Academic', 'p')
+    		->where(
+    			$query->expr()->like('p.username', ':username')
+    		)
+    		->setParameter('username', '%' . strtolower($username) . '%')
+    		->getQuery()
+    		->getResult();
+    	
+    	return $resultSet;
+    }
+    
 	public function findAllByUniversityIdentification($universityIdentification)
 	{
 		$query = $this->_em->createQueryBuilder();
