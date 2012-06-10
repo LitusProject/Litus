@@ -16,6 +16,7 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Form\Admin\Prof\Add as AddForm;
 
@@ -30,6 +31,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($subject = $this->_getSubject()))
         	return;
+        
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
         	
         $form = new AddForm();
         
@@ -43,10 +51,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 	    	        
 	    	    $mapping = $this->getEntityManager()
 	    	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	    	        ->findOneBySubjectAndProf($subject, $docent);
+	    	        ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 	    	    
 	    	    if (null === $mapping) {
-    	    	    $mapping = new SubjectProfMap($subject, $docent);
+    	    	    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
     	    	    $this->getEntityManager()->persist($mapping);
     	    	    $this->getEntityManager()->flush();
     	    	}
@@ -64,12 +72,15 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 	array(
                 		'action' => 'subject',
                 		'id' => $subject->getId(),
+                		'academicyear' => $academicYear->getCode(),
                 	)
                 );
 	        }
 	    }
         
         return array(
+            'academicYears' => $academicYears,
+            'currentAcademicYear' => $academicYear,
             'subject' => $subject,
             'form' => $form,
         );
@@ -206,5 +217,40 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     	}
     	
     	return $mapping;
+    }
+    
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+    		$start = AcademicYear::getStartOfAcademicYear();
+    	} else {
+    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+    	}
+    	$start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+    	
+    	if (null === $academicYear) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No academic year was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $academicYear;
     }
 }

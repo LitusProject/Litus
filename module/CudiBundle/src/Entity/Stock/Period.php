@@ -16,7 +16,7 @@
 namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
-    CudiBundle\Entity\Article,
+    CudiBundle\Entity\Sales\Article,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -36,7 +36,7 @@ class Period
 	private $id;
 	
 	/**
-	 * @var \CommonBundle\Entity\Users\Person The person who created this period
+	 * @var \CommonBundle\Entity\Users\Person The person who created the period
 	 *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
      * @JoinColumn(name="person", referencedColumnName="id")
@@ -63,7 +63,7 @@ class Period
 	private $_entityManager;
 	
 	/**
-	 * @param \CommonBundle\Entity\Users\Person $person The person who created this period
+	 * @param \CommonBundle\Entity\Users\Person $person The person who created the period
 	 */
 	public function __construct(Person $person)
 	{
@@ -72,7 +72,7 @@ class Period
 	}
 	
 	/**
-	 * Get the id of this delta
+	 * Get the id of this period
 	 *
 	 * @return integer
 	 */
@@ -82,8 +82,6 @@ class Period
 	}
 	
 	/**
-	 * Get the person of this delta
-	 *
 	 * @return \CommonBundle\Entity\Users\Person
 	 */
 	public function getPerson()
@@ -92,8 +90,6 @@ class Period
 	}
 	
 	/**
-	 * Get the start date of this period
-	 *
 	 * @return \DateTime
 	 */
 	public function getStartDate()
@@ -102,8 +98,6 @@ class Period
 	}
 	
 	/**
-	 * Get the end date of this period
-	 *
 	 * @return \DateTime
 	 */
 	public function getEndDate()
@@ -139,20 +133,21 @@ class Period
 	    return $this;
 	}
 	
-	/**
-	 * @param \CudiBundle\Entity\Article
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
 	 *
 	 * @return integer
 	 */
 	public function getNbDelivered(Article $article)
 	{
-	    return $this->_entityManager
+	    $value = $this->_entityManager
 	        ->getRepository('CudiBundle\Entity\Stock\Period')
-	        ->getNbDeliveredByArticle($this, $article);
+	        ->getNbDelivered($this, $article);
+	    return $value < 0 ? 0 : $value;
 	}
 	
-	/**
-	 * @param \CudiBundle\Entity\Article
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
 	 *
 	 * @return integer
 	 */
@@ -160,11 +155,11 @@ class Period
 	{
 	    return $this->_entityManager
 	        ->getRepository('CudiBundle\Entity\Stock\Period')
-	        ->getNbOrderedByArticle($this, $article);
+	        ->getNbOrdered($this, $article);
 	}
 	
-	/**
-	 * @param \CudiBundle\Entity\Article
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
 	 *
 	 * @return integer
 	 */
@@ -172,6 +167,42 @@ class Period
 	{
 	    return $this->_entityManager
 	        ->getRepository('CudiBundle\Entity\Stock\Period')
-	        ->getNbSoldByArticle($this, $article);
+	        ->getNbSold($this, $article);
+	}
+	
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
+	 *
+	 * @return integer
+	 */
+	public function getNbBooked(Article $article)
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Stock\Period')
+	        ->getNbBooked($this, $article);
+	}
+	
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
+	 *
+	 * @return integer
+	 */
+	public function getNbAssigned(Article $article)
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Stock\Period')
+	        ->getNbAssigned($this, $article);
+	}
+	
+	/** 
+	 * @param \CudiBundle\Entity\Sales\Article $article
+	 *
+	 * @return integer
+	 */
+	public function getNbQueueOrder(Article $article)
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Stock\Period')
+	        ->getNbQueueOrder($this, $article);
 	}
 }

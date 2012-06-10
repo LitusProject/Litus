@@ -47,7 +47,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		
 		$result['unionUrl'] = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.union_url');
+			->getConfigValue('union_url');
   		
         $e->setResult($result);
         return $result;

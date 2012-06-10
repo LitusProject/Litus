@@ -1,0 +1,114 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+    {{ headMeta() }}
+	{{ headTitle('Litus Prof', 'PREPEND') }}
+	
+	{{ headLink() }}   
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+			<ul class="nav">
+				{% if hasAccess('prof_index', 'index') %}
+					<li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_index") }}">Home</a>
+					</li>
+				{% endif %}
+				{% if hasAccess('prof_subject', 'manage') %}
+					<li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_subject") }}">Subjects</a>
+					</li>
+				{% endif %}
+				{% if hasAccess('prof_article', 'manage') %}
+					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("prof_article") }}">Articles</a>
+					</li>
+				{% endif %}
+			</ul>
+			<ul class="nav pull-right auth-nav">
+			    {% if authenticated %}
+			        <li class="dropdown" id="accountDropdown">
+			            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			                <span class="profile-wrapper">
+			                    <i class="profile"></i>
+			                </span>
+			                <span class="caret"></span>
+			            </a> 
+			            <ul class="dropdown-menu">
+			                <li>
+			                    <a href="">
+			                        <b class="fullName">{{ authenticatedUserObject.getFullName() }}</b>
+			                        <small class="metadata">{{ authenticatedUserObject.getUniversityIdentification() }}</small>
+			                    </a>
+			                </li>
+			                <li class="divider"></li>
+			                <li>
+			                    <a href="{{ url("prof_auth", {"action": "logout"}) }}">Logout</a>
+			                </li>
+			            </ul>
+			        </li>
+			    {% else %}
+				    <li class="dropdown" id="loginDropdown">
+				        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				            Login <span class="caret"></span>
+			            </a>
+			            <ul class="dropdown-menu">
+			                <li>
+			                    {% autoescape false %}
+			                        {{ loginForm }}
+			                    {% endautoescape %}
+			                </li>
+			            </ul>
+				    </li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<header>
+	<div class="inner">
+		<div class="container">
+			<h1>Litus Prof</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container">
+	{% include 'prof/partials/flashMessenger.twig' %}
+
+	<div id="content_controller">
+	    {% block content %} {% endblock %}
+	</div>
+	
+	<footer>
+	    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+	
+		{% if 'development' == environment %}
+		    <span class="development_information">
+		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+		    </span>
+		{% endif %}
+	</footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block controller_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown form').on('click', function (e) {
+                e.stopPropagation()
+            });
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>

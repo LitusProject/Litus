@@ -40,19 +40,21 @@
             e.preventDefault();
             
             settings.onSubmit();
-            
-            _load($this);
-            
+                        
             $this.ajaxSubmit({
                 dataType: 'json',
                 success: settings.onSubmitted,
                 error: settings.onError,
             });
+            
+            _load($this);
         });
     }
     
     function _load($this) {
         var settings = $this.data('formUploadProgress');
+        if (!settings)
+            return;
         
         $.post(settings.url, {upload_id: settings.name}, function (data) {
             if (!data)

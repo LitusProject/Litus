@@ -1,0 +1,38 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+	<div class="page-header">
+	    <h2>Articles</h2>
+	</div>
+	<table class="table table-bordered table-striped">
+	    <tr>
+	        <th>Title</th>
+	        <th width="120px">Authors</th>
+	        <th width="220px">Publisher</th>
+	        <th width="80px">Publish Year</th>
+	        <th width="100px">ISBN</th>
+	        <th width="90px">Actions</th>
+	    </tr>
+	    
+		{% for article in articles %}
+		    <tr>
+		        <td>{{ article.getTitle() }}</td>
+		        <td>{{ article.getAuthors() }}</td>
+		        <td>{{ article.getPublishers() }}</td>
+		        <td>{{ article.getYearPublished() }}</td>
+		        <td>{{ article.getISBN() }}</td>
+		        <td class="actions">
+		            {% if hasAccess('prof_article', 'edit') %}
+		                <a href="{{ url("prof_article", {"action": "edit", "id": article.getId()}) }}" class="btn btn-primary">Edit</a>
+		            {% endif %}
+		        </td>
+		    </tr>
+		{% endfor %}
+	</table>
+	<div class="pull-right">
+	    {% if hasAccess("prof_article", "add") %}
+	        <a href="{{ url("prof_article", {"action": "add"}) }}" class="btn btn-success" data-toggle="modal">Create Article</a>
+	    {% endif %}
+	</div>
+	<br class="clear" />
+{% endblock %}

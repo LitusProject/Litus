@@ -15,7 +15,8 @@
  
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\Users\People\Academic;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic;
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectProfMap")
@@ -24,7 +25,7 @@ use CommonBundle\Entity\Users\People\Academic;
 class SubjectProfMap
 {
     /**
-     * @var integer The ID of this mapping
+     * @var integer The ID of the mapping
      *
 	 * @Id
 	 * @GeneratedValue
@@ -33,7 +34,7 @@ class SubjectProfMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The prof of this mapping
+     * @var \CommonBundle\Entity\Users\People\Academic The prof of the mapping
      *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
 	 * @JoinColumn(referencedColumnName="id")
@@ -41,21 +42,31 @@ class SubjectProfMap
 	private $prof;
 
 	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of this mapping
+	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
 	 *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(referencedColumnName="id")
 	 */
 	private $subject;
+	
+	/**
+	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+	 *
+	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+	 * @JoinColumn(name="academic_year", referencedColumnName="id")
+	 */
+	private $academicYear;
     
     /**
      * @param \SyllabusBundle\Entity\Subject $subject
      * @param \CommonBundle\Entity\Users\People\Academic $prof
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Subject $subject, Academic $prof)
+    public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
     {
         $this->subject = $subject;
         $this->prof = $prof;
+        $this->academicYear = $academicYear;
     }
     
     /**
@@ -80,5 +91,13 @@ class SubjectProfMap
     public function getProf()
     {
         return $this->prof;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 }

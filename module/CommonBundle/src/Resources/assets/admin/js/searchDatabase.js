@@ -13,7 +13,7 @@
 		opts = $.extend(defaults, opts);
 	
 		$(document).keydown(function (e) {
-			if (70 == e.keyCode && e.metaKey) {
+			if (70 == e.keyCode && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
 				if (opts.searchDiv.is(':visible')) {
 					opts.searchDiv.hide();

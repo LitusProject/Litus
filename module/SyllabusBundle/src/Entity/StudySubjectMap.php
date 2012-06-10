@@ -15,6 +15,8 @@
  
 namespace SyllabusBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear;
+
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\StudySubjectMap")
  * @Table(name="syllabus.study_subject_map")
@@ -22,7 +24,7 @@ namespace SyllabusBundle\Entity;
 class StudySubjectMap
 {
     /**
-     * @var integer The ID of this mapping
+     * @var integer The ID of the mapping
      *
 	 * @Id
 	 * @GeneratedValue
@@ -31,7 +33,7 @@ class StudySubjectMap
     private $id;
 
     /**
-     * @var \SyllabusBundle\Entity\Study The study of this mapping
+     * @var \SyllabusBundle\Entity\Study The study of the mapping
      *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
 	 * @JoinColumn(referencedColumnName="id")
@@ -39,7 +41,7 @@ class StudySubjectMap
 	private $study;
 
 	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of this mapping
+	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
 	 *
 	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
 	 * @JoinColumn(referencedColumnName="id")
@@ -47,22 +49,32 @@ class StudySubjectMap
 	private $subject;
 
     /**
-     * @var boolean Flag whether this subject is mandatory
+     * @var boolean Flag whether the subject is mandatory
      *
      * @Column(type="boolean")
      */
     private $mandatory;
     
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+    
+    /**
      * @param \SyllabusBundle\Entity\Study $study
      * @param \SyllabusBundle\Entity\Subject $subject
      * @param boolean $mandatory
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Study $study, Subject $subject, $mandatory)
+    public function __construct(Study $study, Subject $subject, $mandatory, AcademicYear $academicYear)
     {
         $this->study = $study;
         $this->subject = $subject;
         $this->mandatory = $mandatory;
+        $this->academicYear = $academicYear;
     }
     
     /**
@@ -95,5 +107,13 @@ class StudySubjectMap
     public function isMandatory()
     {
         return $this->mandatory;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 }

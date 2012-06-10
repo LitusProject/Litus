@@ -331,6 +331,7 @@ class Server
 	 */
 	protected function onClose(User $user, $statusCode, $reason)
 	{
+	    $this->_removeUserSocket($user->getSocket());
 	}
 	
 	/**

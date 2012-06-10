@@ -1,0 +1,23 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_sales_booking/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% include 'admin_sales_booking/partials/periods.twig' %}
+
+	<div id="controller_action">
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $('#controller_nav .assignAll').click(openAssignAllModal);
+	    });
+	</script>
+{% endblock %}

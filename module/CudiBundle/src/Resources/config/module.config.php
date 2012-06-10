@@ -6,25 +6,38 @@ return array(
 				'cudi_install'		     => 'CudiBundle\Controller\Admin\InstallController',
 				
 				'admin_article'	         => 'CudiBundle\Controller\Admin\ArticleController',
-				'admin_article_subject'  => 'CudiBundle\Controller\Admin\ArticleSubjectMapController',
-				'admin_comment'	         => 'CudiBundle\Controller\Admin\CommentController',
-				'admin_discount'         => 'CudiBundle\Controller\Admin\DiscountController',
-				'admin_file'	         => 'CudiBundle\Controller\Admin\FileController',
-				'admin_booking'	         => 'CudiBundle\Controller\Admin\BookingController',
-				'admin_delivery'         => 'CudiBundle\Controller\Admin\DeliveryController',
-				'admin_order'	         => 'CudiBundle\Controller\Admin\OrderController',
-				'admin_sale'             => 'CudiBundle\Controller\Admin\SaleController',
-				'admin_financial'        => 'CudiBundle\Controller\Admin\FinancialController',
-				'admin_period'	         => 'CudiBundle\Controller\Admin\PeriodController',
-				'admin_stock'	         => 'CudiBundle\Controller\Admin\StockController',
-				'admin_supplier'	     => 'CudiBundle\Controller\Admin\SupplierController',
+				'admin_article_subject'  => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
+				'admin_article_comment'  => 'CudiBundle\Controller\Admin\Article\CommentController',
+				'admin_article_file'	 => 'CudiBundle\Controller\Admin\Article\FileController',
+				'admin_sales_article'    => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+				'admin_sales_discount'   => 'CudiBundle\Controller\Admin\Sales\DiscountController',
+				'admin_sales_booking'	 => 'CudiBundle\Controller\Admin\Sales\BookingController',
+				'admin_sales_session'    => 'CudiBundle\Controller\Admin\Sales\SessionController',
+				'admin_sales_financial'  => 'CudiBundle\Controller\Admin\Sales\FinancialController',
+				'admin_supplier'	     => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
+				'admin_supplier_user'    => 'CudiBundle\Controller\Admin\Supplier\UserController',
+				'admin_stock'	         => 'CudiBundle\Controller\Admin\Stock\StockController',
+				'admin_stock_period'	 => 'CudiBundle\Controller\Admin\Stock\PeriodController',
+				'admin_stock_delivery'   => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
+				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
+				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
+				'admin_prof_action'      => 'CudiBundle\Controller\Admin\Prof\ActionController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
 				
-				'supplier'               => 'CudiBundle\Controller\Supplier\IndexController',
+				'supplier_index'         => 'CudiBundle\Controller\Supplier\IndexController',
 				'supplier_article'       => 'CudiBundle\Controller\Supplier\ArticleController',
 				'supplier_auth'          => 'CudiBundle\Controller\Supplier\AuthController',
+				
+				'prof_index'      	     => 'CudiBundle\Controller\Prof\IndexController',
+				'prof_auth'      	     => 'CudiBundle\Controller\Prof\AuthController',
+				'prof_article'           => 'CudiBundle\Controller\Prof\ArticleController',
+				'prof_article_mapping'   => 'CudiBundle\Controller\Prof\ArticleMappingController',
+				'prof_prof'              => 'CudiBundle\Controller\Prof\ProfController',
+				'prof_subject'           => 'CudiBundle\Controller\Prof\SubjectController',
+				'prof_file'              => 'CudiBundle\Controller\Prof\FileController',
+				'prof_comment'           => 'CudiBundle\Controller\Prof\CommentController',
             ),
             'assetic_configuration'          => array(
                 'parameters' => array(
@@ -88,6 +101,26 @@ return array(
                                             'sale/js/*.js',
                                         ),
                                     ),
+                                    'prof_css' => array(
+                                    	'assets' => array(
+                                    		'prof/less/base.less',
+                                    	),
+                                    	'filters' => array(
+                                    		'prof_less' => array(
+                                    			'name' => 'LessFilter',
+                                    			'parameters' => array(
+                                    				'nodeBin'   => '/usr/local/bin/node',
+                                    				'nodePaths' => array(
+                                    					'/usr/local/lib/node_modules',
+                                    				),
+                                    				'compress'  => true,
+                                    			),
+                                    		),
+                                    	),
+                                    	'options' => array(
+                                            'output' => 'prof_css.css',
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),
@@ -117,69 +150,15 @@ return array(
 		'admin_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article[/:action[/:id]]',
+				'route' => '/admin/article[/:action[/:id][/:field/:string]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'admin_article',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_article_subject'=> array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/subject[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_article_subject',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_comment' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/comment[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_comment',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_discount' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/discount[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_discount',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_file' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/file[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_file',
 					'action'     => 'manage',
 				),
 			),
@@ -190,249 +169,157 @@ return array(
 				'route' => '/admin/article/manage[/:page]',
 				'constraints' => array(
 					'page' => '[0-9]*',
-                ),
+		        ),
 				'defaults' => array(
 					'controller' => 'admin_article',
 					'action'     => 'manage',
 				), 
 			),
 		),
-		'admin_article_search' => array(
+		'admin_article_subject'=> array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/article/search[/:field[/:string]]',
+				'route' => '/admin/article/subject[/:action[/:id]][/:academicyear]',
 				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-                ),
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+				),
 				'defaults' => array(
-					'controller' => 'admin_article',
-					'action'     => 'search',
+					'controller' => 'admin_article_subject',
+					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_booking' => array(
+		'admin_article_comment' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/booking[/:action[/:id]]',
+				'route' => '/admin/article/comment[/:action[/:id[/:article]]]',
 				'constraints' => array(
 					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_booking',
+					'controller' => 'admin_article_comment',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_article_paginator' => array(
+		'admin_article_file' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/booking/manage[/:page]',
+				'route' => '/admin/article/file[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_article_file',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_article' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/:field/:string]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+    				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+    				'string' => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_article_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article/manage[/:page][/:academicyear]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'manage',
+				), 
+			),
+		),
+		'admin_sales_discount' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/discount[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_discount',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_booking' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/booking[/:action[/:id][/period/:period][:type[/:field/:string]]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+					'period'  => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+					'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_booking',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_sales_booking_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/booking/manage[/:page]',
 				'constraints' => array(
 					'page' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_booking',
+					'controller' => 'admin_sales_booking',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_booking_search' => array(
+		'admin_sales_session' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-			'route' => '/admin/booking/search/:type[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-					'type'   => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_booking',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_stock' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock[/:action[/:id]]',
+				'route' => '/admin/sales/session[/:action[/:id]]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_stock',
+					'controller' => 'admin_sales_session',
 					'action'     => 'manage',
 				),
 			),
 		),
-		'admin_stock_search' => array(
+		'admin_sales_financial' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/stock/search[/:field/:string]',
-				'constraints' => array(
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_period' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_period_search' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period/search/:id[/:field/:string]',
-				'constraints' => array(
-					'id'     => '[0-9]*',
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'search',
-				),
-			),
-		),
-		'admin_period_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/period/view/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_period',
-					'action'     => 'view',
-				),
-			),
-		),
-		'admin_order' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/order[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_order',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_order_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/order/supplier/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_order',
-					'action'     => 'supplier',
-				),
-			),
-		),
-		'admin_delivery' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/delivery[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_delivery',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_delivery_paginator' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/delivery/:id[/:page]',
-				'constraints' => array(
-					'id'   => '[0-9]*',
-					'page' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_delivery',
-					'action'     => 'supplier',
-				),
-			),
-		),
-		'admin_financial' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
+				'route' => '/admin/sales/financial[/:action[/:id]]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'id'     => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_financial',
+					'controller' => 'admin_sales_financial',
 					'action'     => 'sales',
-				),
-			),
-		),
-		'admin_financial_stock' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_financial',
-					'action'     => 'stock',
-				),
-			),
-		),
-		'admin_financial_supplier' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/financial[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_financial',
-					'action'     => 'supplier',
-				),
-			),
-		),
-		'admin_sale' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sale[/:action[/:id]]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sale',
-					'action'     => 'manage',
 				),
 			),
 		),
@@ -450,17 +337,214 @@ return array(
 				),
 			),
 		),
-		'admin_supplier_search' => array(
+		'admin_supplier_paginator' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/admin/supplier/search[/:field/:string]',
+				'route' => '/admin/supplier/manage[/:page]',
 				'constraints' => array(
+				    'page' => '[0-9]*',
+		        ),
+				'defaults' => array(
+					'controller' => 'admin_supplier',
+					'action'     => 'manage',
+				), 
+			),
+		),
+		'admin_supplier_user' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/user[/:action[/:id]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier_user',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_supplier_user_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/supplier/user/manage/page[/:page]',
+				'constraints' => array(
+				    'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_supplier_user',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock[/:action[/:id][/:field/:string]]',
+				'constraints' => array(
+					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'     => '[0-9]*',
 					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
 				),
 				'defaults' => array(
-					'controller' => 'admin_supplier',
-					'action'     => 'search',
+					'controller' => 'admin_stock',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/manage[/:page]',
+				'constraints' => array(
+					'page'     => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_period' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'string'  => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_period_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/period/manage[/:page]',
+				'constraints' => array(
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_period_view_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/period/view/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_period',
+					'action'     => 'view',
+				),
+			),
+		),
+		'admin_stock_order' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/order[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_order',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_order_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/order/supplier/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_order',
+					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_stock_delivery' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/delivery[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_delivery',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_delivery_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/delivery/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_delivery',
+					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_stock_retour' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/retour[/:action[/:id]]',
+				'constraints' => array(
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'id'      => '[0-9]*',
+					'page'    => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_retour',
+					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_stock_retour_paginator' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/retour/:id[/:page]',
+				'constraints' => array(
+					'id'   => '[0-9]*',
+					'page' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_retour',
+					'action'     => 'supplier',
+				),
+			),
+		),
+		'admin_prof_action' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/prof/actions[/:action[/:id]]',
+				'contraints' => array(
+				    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+				    'id' => '[0-9]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_prof_action',
+					'action'     => 'manage',
 				),
 			),
 		),
@@ -492,7 +576,7 @@ return array(
 				),
 			),
 		),
-		'supplier' => array(
+		'supplier_index' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
 				'route' => '/cudi/supplier[/:action]',
@@ -501,7 +585,7 @@ return array(
 					'session' => '[0-9]*',
 				),
 				'defaults' => array(
-					'controller' => 'supplier',
+					'controller' => 'supplier_index',
 					'action'     => 'index',
 				),
 			),
@@ -534,5 +618,154 @@ return array(
 				),
 			),
 		),
+	    'prof_index' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof[/:action]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_index',
+	    			'action'     => 'index',
+	    		),
+	    	),
+	    ),
+	    'prof_paginator' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof[/:page]',
+	    		'constraints' => array(
+	    			'page' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_index',
+	    			'action'     => 'index',
+	    		),
+	    	),
+	    ),
+	    'prof_auth' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/auth[/:action]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_auth',
+	    			'action'     => 'login',
+	    		),
+	    	),
+	    ),
+	    'prof_subject' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/subject[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_subject',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_article' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_article_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article',
+	    			'action'     => 'typeahead',
+	    		),
+	    	),
+	    ),
+	    'prof_article_mapping' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/article/mapping[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_article_mapping',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_file' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/files[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_file',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_comment' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/comments[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_comment',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_prof' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/prof[/:action[/:id]]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id' => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_prof',
+	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/prof/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_prof',
+	    			'action'     => 'typeahead',
+	    		),
+	    	),
+	    ),
 	),
 );

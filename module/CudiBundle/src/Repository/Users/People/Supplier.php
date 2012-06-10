@@ -2,8 +2,7 @@
 
 namespace CudiBundle\Repository\Users\People;
 
-use Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Supplier
@@ -13,71 +12,4 @@ use Doctrine\ORM\EntityRepository,
  */
 class Supplier extends EntityRepository
 {
-    public function findAllByUsername($username)
-    {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('s')
-    		->from('CudiBundle\Entity\Users\People\Supplier', 's')
-    		->where($query->expr()->andX(
-    				$query->expr()->like($query->expr()->lower('s.username'), ':username'),
-    				$query->expr()->eq('s.canLogin', 'true')
-    			)
-    		)
-    		->setParameter('username', '%'.strtolower($username).'%')
-    		->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
-    }
-    
-    public function findAllByName($name)
-    {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('s')
-    		->from('CudiBundle\Entity\Users\People\Supplier', 's')
-    		->where($query->expr()->andX(
-    				$query->expr()->orX(
-    					$query->expr()->like(
-    						$query->expr()->concat(
-    							$query->expr()->lower($query->expr()->concat('s.firstName', "' '")),
-    							$query->expr()->lower('s.lastName')
-    						),
-    						':name'
-    					),
-    					$query->expr()->like(
-    						$query->expr()->concat(
-    							$query->expr()->lower($query->expr()->concat('s.lastName', "' '")),
-    							$query->expr()->lower('s.firstName')
-    						),
-    						':name'
-    					)
-    				),
-    				$query->expr()->eq('s.canLogin', 'true')
-    			)
-    		)
-    		->setParameter('name', '%'.strtolower($name).'%')
-    		->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
-    }
-    
-    public function findAllBySupplierName($name)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('CudiBundle\Entity\Users\People\Supplier', 's')
-        	->innerJoin('s.supplier', 'su', Join::WITH, 
-        	    $query->expr()->like(
-        	        $query->expr()->lower('su.name'),
-        	        ':name'
-        	    )
-        	)
-        	->where($query->expr()->eq('s.canLogin', 'true'))
-        	->setParameter('name', '%'.strtolower($name).'%')
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
 }

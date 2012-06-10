@@ -1,9 +1,0 @@
-<header id="controller_sub_header">
-	<nav id="controller_sub_nav">
-        <ul id="supplier_nav">
-            {% for supplier in suppliers %}
-                <li><a {% if supplier.getId() == getParam('id') %} class="active" {% endif %}href="{{ url("admin_delivery", {"action": "supplier", "id": supplier.getId()}) }}">{{ supplier.getName() }}</a></li>
-            {% endfor %}
-        </ul>
-    </nav>
-</header>

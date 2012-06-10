@@ -55,17 +55,17 @@
 		        
 		        {% for article in paginator %}
 		            <tr class="item">
-		                <td>{{ article.getTitle() }} {% if article.getVersionNumber() != 1 %} (v{{ article.getVersionNumber() }}) {% endif %}</td>
-		                <td>{{ article.getMetaInfo().getAuthors() }}</td>
-		                <td>{{ article.getMetaInfo().getPublishers() }}</td>
-		                <td>{{ article.getMetaInfo().getYearPublished() }}</td>
-		                <td>{% if article.isStock() %} Stock {% else %} Stub {% endif %}</td>
+		                <td>{{ article.getTitle() }}</td>
+		                <td>{{ article.getAuthors() }}</td>
+		                <td>{{ article.getPublishers() }}</td>
+		                <td>{{ article.getYearPublished() }}</td>
+		                <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
 						<td>
 						    {% if hasAccess('admin_article', 'edit') %}
 		                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
 						    {% if hasAccess('admin_article', 'delete') %}
-		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getMetaInfo().getAuthors() }}">Delete</a>
+		                        <a href="#" class="delete" data-id="{{ article.getId() }}" data-title="{{ article.getTitle() }}" data-authors="{{ article.getAuthors() }}">Delete</a>
 		                    {% endif %}
 		                </td>
 		            </tr>
@@ -106,16 +106,16 @@
 				searchDiv: $('#article_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_article_search') }}',
+				url: '{{ url('admin_article', {'action': 'search'}) }}',
 				display: function (data) {
 					$('#article_search table').find('tr.item').remove();
 					$(data).each(function () {
 						$('#article_search table').append(row = $('<tr>', {class: 'item'}));
-						row.append('<td>' + this.title + (this.versionNumber != 1 ? ' (v' + this.versionNumber + ')' : '') + '</td>')
+						row.append('<td>' + this.title + '</td>')
 							.append('<td>' + this.author + '</td>')
 							.append('<td>' + this.publisher + '</td>')
 							.append('<td>' + this.yearPublished + '</td>')
-							.append('<td>' + (this.isStock ? 'Stock' : 'Stub') + '</td>')
+							.append('<td>' + (this.isInternal ? 'Internal' : 'External') + '</td>')
 							.append(
 								actions = $('<td>')
 							);

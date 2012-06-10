@@ -5,6 +5,8 @@
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
+	{% include 'admin_study/partials/years.twig' %}
+
 	<div id="controller_action">
 	    <h1>Study</h1>
 	    
@@ -47,16 +49,16 @@
 		            <th width="80px">Actions</th>
 		        </tr>
 		        
-		        {% for subject in mapping %}
+		        {% for mapping in mappings %}
 		            <tr class="item">
-		                <td>{{ subject.getSubject().getCode() }}</td>
-		                <td>{{ subject.getSubject().getName() }}</td>
-		                <td>{{ subject.getSubject().getSemester() }}</td>
-		                <td>{{ subject.getSubject().getCredits() }}</td>
-		                <td>{% if subject.isMandatory() %}yes{% else %}no{% endif %}</td>
+		                <td>{{ mapping.getSubject().getCode() }}</td>
+		                <td>{{ mapping.getSubject().getName() }}</td>
+		                <td>{{ mapping.getSubject().getSemester() }}</td>
+		                <td>{{ mapping.getSubject().getCredits() }}</td>
+		                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
 		                <td>
 		                    {% if hasAccess('admin_subject', 'subject') %}
-		                        <a href="{{ url('admin_subject', {"action": "subject", "id": subject.getSubject().getId()}) }}" class="view">View</a>
+		                        <a href="{{ url('admin_subject', {"action": "subject", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
 		                    {% endif %}
 		                </td>
 		            </tr>
@@ -74,7 +76,7 @@
 				searchDiv: $('#subject_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_subject_search', {"id": study.getId()}) }}',
+				url: '{{ url('admin_subject', {'action': 'search', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
 				display: function (data) {
 					$('#subject_search table').find('tr.item').remove();
 					$(data).each(function () {
@@ -86,7 +88,7 @@
 							.append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
 							.append(actions = $('<td>'));
 						{% if hasAccess('admin_prof', 'subject') %}
-						    actions.append('<a href="{{ url('admin_prof', {"action": "subject"}) }}/' + this.id + '" class="view">View</a>')
+						    actions.append('<a href="{{ url('admin_subject', {"action": "subject"}) }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 						{% endif %}
 					});
 				},

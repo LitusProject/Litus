@@ -14,19 +14,17 @@
  */
  
 namespace CudiBundle\Form\Admin\Article;
-
+	
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
+	CommonBundle\Component\Validator\Uri as UriValidator,
 	CommonBundle\Component\Validator\Year as YearValidator,
-	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
-	CudiBundle\Component\Validator\Barcode as BarcodeValidator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Checkbox;
+	Zend\Form\Element\Checkbox,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add Article
@@ -74,11 +72,24 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 			->addValidator('int')
         	->addValidator(new YearValidator());
         $this->addElement($field);
-
-		$field = new Checkbox('stock');
-        $field->setLabel('Stock Article')
-        	->setDecorators(array(new FieldDecorator()));
+        
+        $field = new Text('isbn');
+        $field->setLabel('ISBN')
+        	->setRequired()
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator('isbn');
         $this->addElement($field);
+        
+        $field = new Text('url');
+        $field->setLabel('URL')
+        	->setDecorators(array(new FieldDecorator()))
+        	->addValidator(new UriValidator());
+        $this->addElement($field);
+
+		$field = new Checkbox('internal');
+		$field->setLabel('Internal Article')
+			->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
 
 		$this->addDisplayGroup(
 			array(
@@ -86,81 +97,15 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 		        'author',
 		        'publisher',
 				'year_published',
-				'stock'
+				'isbn',
+				'url',
+				'internal'
 		    ),
 		    'article_form'
 		);
 		$this->getDisplayGroup('article_form')
 		   	->setLegend('Article')
 		    ->setAttrib('id', 'article_form')
-		    ->removeDecorator('DtDdWrapper');
-         
-        $field = new Text('purchase_price');
-        $field->setLabel('Purchase Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
-        $this->addElement($field);
-         
-        $field = new Text('sellprice');
-        $field->setLabel('Sell Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
-        $this->addElement($field);
-		
-		$field = new Text('barcode');
-        $field->setLabel('Barcode')
-            ->setAttrib('class', 'disableEnter')
-        	->setRequired()
-        	->addValidator(new BarcodeValidator())
-        	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-		
-        $field = new Select('supplier');
-        $field->setLabel('Supplier')
-        	->setRequired()
-			->setMultiOptions($this->_getSuppliers())
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-         
-        $field = new Checkbox('bookable');
-        $field->setLabel('Bookable')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-         
-        $field = new Checkbox('unbookable');
-        $field->setLabel('Unbookable')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-		$field = new Checkbox('can_expire');
-        $field->setLabel('Can Expire')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-         
-        $field = new Checkbox('internal');
-        $field->setLabel('Internal Article')
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-		
-		$this->addDisplayGroup(
-			array(
-				'purchase_price',
-				'sellprice',
-				'barcode',
-				'supplier',
-				'bookable',
-				'unbookable',
-				'can_expire',
-				'internal'
-			),
-			'stock_form'
-		);
-		$this->getDisplayGroup('stock_form')
-		   	->setLegend('Stock Article')
-		    ->setAttrib('id', 'stock_form')
 		    ->removeDecorator('DtDdWrapper');
 
 		$field = new Text('nb_black_and_white');
@@ -205,6 +150,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	    $field->setLabel('Front Page Text Colored')
 	        ->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
+	    
+	    $field = new Checkbox('perforated');
+	    $field->setLabel('Perforated')
+	        ->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
 		
 		$this->addDisplayGroup(
 		            array(
@@ -214,7 +164,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 						'official',
 						'rectoverso',
 						'front_color',
-						'front_text_colored'
+						'front_text_colored',
+						'perforated',
 		            ),
 		            'internal_form'
 		        );
@@ -229,23 +180,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-
-	private function _getSuppliers()
-	{
-		$suppliers = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Supplier')
-			->findAll();
-		$supplierOptions = array();
-		foreach($suppliers as $item)
-			$supplierOptions[$item->getId()] = $item->getName();
-		
-		return $supplierOptions;
-	}
 	
 	private function _getBindings()
 	{
 		$bindings = $this->_entityManager
-	    	->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+	    	->getRepository('CudiBundle\Entity\Articles\Options\Binding')
 			->findAll();
 		$bindingOptions = array();
 		foreach($bindings as $item)
@@ -257,7 +196,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	private function _getColors()
 	{
 		$colors = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Articles\StockArticles\Color')
+			->getRepository('CudiBundle\Entity\Articles\Options\Color')
 			->findAll();
 		$colorOptions = array();
 		foreach($colors as $item)
@@ -270,22 +209,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	{
 		$data = array(
 			'title' => $article->getTitle(),
-			'author' => $article->getMetaInfo()->getAuthors(),
-			'publisher' => $article->getMetaInfo()->getPublishers(),
-			'year_published' => $article->getMetaInfo()->getYearPublished(),
-			'stock' => $article->isStock()
+			'author' => $article->getAuthors(),
+			'publisher' => $article->getPublishers(),
+			'year_published' => $article->getYearPublished(),
+			'isbn' => $article->getISBN(),
+			'url' => $article->getURL(),
+			'internal' => $article->isInternal()
 		);
-		
-		if ($article->isStock()) {
-			$data['purchase_price'] =  number_format($article->getPurchasePrice()/100, 2);
-			$data['sellprice'] = number_format($article->getSellPrice()/100, 2);
-			$data['barcode'] = $article->getBarcode();
-			$data['supplier'] = $article->getSupplier()->getId();
-			$data['bookable'] = $article->isBookable();
-			$data['unbookable'] = $article->isUnbookable();
-			$data['can_expire'] = $article->canExpire();
-			$data['internal'] = $article->isInternal();
-		}
 		
 		if ($article->isInternal()) {
 			$data['nb_black_and_white'] = $article->getNbBlackAndWhite();
@@ -294,6 +224,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 			$data['official'] = $article->isOfficial();
 			$data['rectoverso'] = $article->isRectoVerso();
 			$data['front_color'] = $article->getFrontColor()->getId();
+			$date['front_text_colored'] = $article->getFrontPageTextColored();
+			$data['perforated'] = $article->isPerforated();
 		}
 						
 		$this->populate($data);
@@ -301,18 +233,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	
 	public function isValid($data)
 	{
-		if (!$data['stock']) {
-			$validatorsStock = array();
-			$requiredStock = array();
-		    
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				$validatorsStock[$formElement->getName()] = $formElement->getValidators();
-				$requiredStock[$formElement->getName()] = $formElement->isRequired();
-				$formElement->clearValidators()
-					->setRequired(false);
-			}
-		}
-		
 		if (!$data['internal']) {
 			$validatorsInternal = array();
 			$requiredInternal = array();
@@ -326,15 +246,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 		}
 		
 		$isValid = parent::isValid($data);
-		
-		if (!$data['stock']) {
-			foreach ($this->getDisplayGroup('stock_form')->getElements() as $formElement) {
-				if (array_key_exists ($formElement->getName(), $validatorsStock))
-		 			$formElement->setValidators($validatorsStock[$formElement->getName()]);
-				if (array_key_exists ($formElement->getName(), $requiredStock))
-					$formElement->setRequired($requiredStock[$formElement->getName()]);
-			}
-		}
 		
 		if (!$data['internal']) {
 			foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {

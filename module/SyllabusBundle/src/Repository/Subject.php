@@ -2,7 +2,7 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
@@ -14,63 +14,38 @@ use CommonBundle\Entity\Users\Person,
  */
 class Subject extends EntityRepository
 {
-    public function findAllByName($name)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Subject', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-                    $query->expr()->like($query->expr()->lower('s.name'), ':name')
-        	    )
-        	)
-        	->setParameter('name', '%' . strtolower($name) . '%')
-        	->getQuery()
-        	->getResult();
-        
-        return $resultSet;
-    }
-    
-    public function findAllByNameTypeAhead($name)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Subject', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-            	    $query->expr()->orX(
-                        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
-                        $query->expr()->like($query->expr()->lower('s.code'), ':name')
-                    )
-        	    )
-        	)
-        	->setParameter('name', strtolower($name) . '%')
-        	->getQuery()
-        	->getResult();
-        
-        return $resultSet;
-    }
-    
-    public function findOneByIdAndProf($id, Person $person)
+    public function findAllByNameAndAcademicYearTypeAhead($name, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH, $query->expr()->eq('s.id', ':id'))
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->where(
-                $query->expr()->eq('m.prof', ':prof')
+                $query->expr()->eq('m.academicYear', ':academicYear')
             )
-            ->setParameter('id', $id)
-            ->setParameter('prof', $person->getId())
-            ->setMaxResults(1)
+        	->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
+            
+        $ids = array();
+        foreach($resultSet as $subject)
+            $ids[] = $subject->getSubject()->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('SyllabusBundle\Entity\Subject', 's')
+        	->where(
+        	    $query->expr()->andX(
+            	    $query->expr()->orX(
+            	        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+            	        $query->expr()->like($query->expr()->lower('s.code'), ':name')
+            	    ),
+            	    $query->expr()->in('s.id', $ids)
+            	)
+        	)
+        	->setParameter('name', strtolower(trim($name)) . '%')
+        	->getQuery()
+        	->getResult();
         
-        if (isset($resultSet[0]))
-        	return $resultSet[0]->getSubject();
-        
-        return null;
+        return $resultSet;
     }
 }

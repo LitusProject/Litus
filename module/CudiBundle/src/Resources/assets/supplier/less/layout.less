@@ -5,13 +5,10 @@
  *
  * Author: Kristof Mariën <kristof.marien@litus.cc>
  */
- 
- body {
- }
- 
+  
  header {
- 	padding-top: 40px;
- 	.verticalGradient(@cSupplierDark, @cSupplierLight);
+    padding-top: 40px;
+    .verticalGradient(@cSupplierDark, @cSupplierLight);
  	margin-bottom: 15px;
  	
  	h1 {
@@ -69,12 +66,20 @@
  	    }
  	
  	    #loginDropdown {
- 	        li {
- 	            padding: 10px;
- 	            
- 	            input[type="checkbox"],
- 	            label {
- 	                margin: 0;
+ 	        ul {
+ 	            padding-bottom: 10px;
+ 	            li {
+ 	                padding: 10px;
+ 	                
+ 	                input[type="checkbox"],
+ 	                label {
+ 	                    margin: 0;
+ 	                }
+ 	                
+ 	                .remember_me {
+ 	                    float: left;
+ 	                    margin-top: 8px;
+ 	                }
  	            }
  	        }
  	    }

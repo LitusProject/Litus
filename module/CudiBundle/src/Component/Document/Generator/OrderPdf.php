@@ -18,12 +18,16 @@ namespace CudiBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\Generator,
 	CommonBundle\Component\Util\Xml\Object,
-	CudiBundle\Entity\Stock\Order,
+	CudiBundle\Entity\Stock\Orders\Order,
 	Doctrine\ORM\EntityManager;
 
+/**
+ * OrderPdf
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
-	
 	/**
 	 * @var \CudiBundle\Entity\Stock\Order
 	 */
@@ -60,31 +64,29 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
     	$configs = $this->getConfigRepository();
     	
         $now = new \DateTime();
-        $union_short_name = $configs->getConfigValue('cudi.union_short_name');
-        $union_name = $configs->getConfigValue('cudi.union_name');
-        $logo = $configs->getConfigValue('cudi.union_logo');
+        $union_short_name = $configs->getConfigValue('union_short_name');
+        $union_name = $configs->getConfigValue('union_name');
+        $logo = $configs->getConfigValue('union_logo');
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
         	->getRepository('CommonBundle\Entity\Users\Person')
         	->findOneById($configs->getConfigValue('cudi.person'));
 
-        $delivery_address = array(
-        	'name' => $configs->getConfigValue('cudi.delivery_address_name'),
-        	'street' => $configs->getConfigValue('cudi.delivery_address_street'),
-        	'city' => $configs->getConfigValue('cudi.delivery_address_city'),
-        	'extra' => $configs->getConfigValue('cudi.delivery_address_extra'),
-        );
-        $billing_address = array(
-        	'name' => $configs->getConfigValue('cudi.billing_address_name'),
-        	'street' => $configs->getConfigValue('cudi.billing_address_street'),
-        	'city' => $configs->getConfigValue('cudi.billing_address_city'),
-        );
+        $delivery_address_name = $configs->getConfigValue('cudi.delivery_address_name');
+        $delivery_address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Address')
+            ->findOneById($configs->getConfigValue('cudi.delivery_address'));
+        $delivery_address_extra = $configs->getConfigValue('cudi.delivery_address_extra');
+        $billing_address_name = $configs->getConfigValue('cudi.billing_address_name');
+        $billing_address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Address')
+            ->findOneById($configs->getConfigValue('cudi.billing_address'));
         
         $external_items = array();
         $internal_items = array();
-        foreach($this->_order->getOrderItems() as $item) {
-        	if ($item->getArticle()->isInternal()) {
+        foreach($this->_order->getItems() as $item) {
+        	if ($item->getArticle()->getMainArticle()->isInternal()) {
         		$internal_items[] = new Object(
         			'internal_item',
         			null,
@@ -97,22 +99,22 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         				new Object(
         					'title',
         					null,
-        					$item->getArticle()->getTitle()
+        					$item->getArticle()->getMainArticle()->getTitle()
         				),
         				new Object(
         					'recto_verso',
         					null,
-        					$item->getArticle()->isRectoVerso() ? '1' : '0'
+        					$item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0'
         				),
         				new Object(
         					'binding',
         					null,
-        					$item->getArticle()->getBinding()->getName()
+        					$item->getArticle()->getMainArticle()->getBinding()->getName()
         				),
         				new Object(
         					'nb_pages',
         					null,
-        					(string) $item->getArticle()->getNbPages()
+        					(string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored())
         				),
         				new Object(
         				    'number',
@@ -134,17 +136,17 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         				new Object(
         					'title',
         					null,
-        					$item->getArticle()->getTitle()
+        					$item->getArticle()->getMainArticle()->getTitle()
         				),
         				new Object(
         					'author',
         					null,
-        					$item->getArticle()->getMetaInfo()->getAuthors()
+        					$item->getArticle()->getMainArticle()->getAuthors()
         				),
         				new Object(
         					'publisher',
         					null,
-        					$item->getArticle()->getMetaInfo()->getPublishers()
+        					$item->getArticle()->getMainArticle()->getPublishers()
         				),
         				new Object(
         				    'number',
@@ -206,22 +208,22 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         					 		new Object(
         					 			'name',
         					 			null,
-        					 			$delivery_address['name']
+        					 			$delivery_address_name
         					 		),
         					 		new Object(
         					 			'street',
         					 			null,
-        					 			$delivery_address['street']
+        					 			$delivery_address->getStreet() . ' ' . $delivery_address->getNumber()
         					 		),
         					 		new Object(
         					 			'city',
         					 			null,
-        					 			$delivery_address['city']
+        					 			$delivery_address->getPostal() . ' ' . $delivery_address->getCity()
         					 		),
         					 		new Object(
         					 			'extra',
         					 			null,
-        					 			$delivery_address['extra']
+        					 			$delivery_address_extra
         					 		)
         					 	)
         					 ),
@@ -232,7 +234,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         					 		new Object(
         					 			'name',
         					 			null,
-        					 			$billing_address['name']
+        					 			$billing_address_name
         					 		),
         					 		new Object(
         					 			'person',
@@ -242,12 +244,12 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         					 		new Object(
         					 			'street',
         					 			null,
-        					 			$billing_address['street']
+        					 			$billing_address->getStreet() . ' ' . $billing_address->getNumber()
         					 		),
         					 		new Object(
         					 			'city',
         					 			null,
-        					 			$billing_address['city']
+        					 			$billing_address->getPostal() . ' ' . $billing_address->getCity()
         					 		)
         					 	)
         					 )

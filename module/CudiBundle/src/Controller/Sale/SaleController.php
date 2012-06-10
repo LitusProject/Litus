@@ -16,7 +16,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CudiBundle\Form\Sale\Sale\ReturnBooking;
+	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm;
 
 /**
  * SaleController
@@ -27,17 +27,23 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 {
     public function saleAction()
     {
+        $barcodePrefix = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('cudi.queue_item_barcode_prefix');
+        
     	return array(
     		'socketUrl' => $this->getSocketUrl(),
-    		'barcodePrefix' => $this->getEntityManager()
-    			->getRepository('CommonBundle\Entity\General\Config')
-    			->getConfigValue('cudi.serving_queue_barcode_prefix')
+    		'barcodePrefix' => $barcodePrefix,
     	);
     }
     
     public function returnAction()
     {
-    	$form = new ReturnBooking($this->getEntityManager());
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($this->getParam('session'));
+            
+    	$form = new ReturnSaleForm($this->getEntityManager());
     	
     	if($this->getRequest()->isPost()) {
     	    $formData = $this->getRequest()->post()->toArray();
@@ -48,7 +54,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				->findOneByUsername($formData['username']);
     				
     			$article = $this->getEntityManager()
-    				->getRepository('CudiBundle\Entity\Stock\StockItem')
+    				->getRepository('CudiBundle\Entity\Sales\Article')
     				->findOneByBarcode($formData['article']);
     		
     			$booking = $this->getEntityManager()
@@ -56,20 +62,17 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				->findOneSoldByPersonAndArticle($person, $article);
     			
     			if ($booking) {
-    			    $soldStatus = $this->getEntityManager()
-    			    	->getRepository('CudiBundle\Entity\Sales\ServingQueueStatus')
-    			    	->findOneByName('sold');
-    			    	
-			        $saleItem = $this->getEntityManager()
+    			    $saleItem = $this->getEntityManager()
 			            ->getRepository('CudiBundle\Entity\Sales\SaleItem')
-			            ->findOneByBooking($booking);
-
-			        if ($saleItem->getNumber() == 1) {
-			        	$this->getEntityManager()->remove($saleItem);
-			        } else {
-			        	$saleItem->setNumber($saleItem->getNumber() - 1);
-			        }
-    			    $this->getEntityManager()->flush();
+			            ->findOneByPersonAndArticle($person, $article);
+                    
+                    if ($saleItem) {
+    			        if ($saleItem->getNumber() == 1) {
+    			        	$this->getEntityManager()->remove($saleItem);
+    			        } else {
+    			        	$saleItem->setNumber($saleItem->getNumber() - 1);
+    			        }
+    			    }
     			    
     				if ($booking->getNumber() == 1) {
     					$this->getEntityManager()->remove($booking);
@@ -77,11 +80,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     					$booking->setNumber($booking->getNumber() - 1);
     				}
     				
-    				$item = $this->getEntityManager()
-    					->getRepository('CudiBundle\Entity\Stock\StockItem')
-    					->findOneByArticle($article);
-    				
-    				$item->setNumberInStock($item->getNumberInStock() + 1);
+    				$article->setStockValue($article->getStockValue() + 1);
     				
     				$this->getEntityManager()->flush();
     				
@@ -89,7 +88,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				    new FlashMessage(
     				        FlashMessage::SUCCESS,
     				        'SUCCESS',
-    				        'The booking was successfully returned!'
+    				        'The sale was successfully returned!'
     				    )
     				);
     			} else {
@@ -97,7 +96,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				    new FlashMessage(
     				        FlashMessage::ERROR,
     				        'ERROR',
-    				        'The booking could not be returned!'
+    				        'The sale could not be returned!'
     				    )
     				);
     			}
@@ -106,6 +105,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				'sale_sale',
     				array(
     					'action' => 'return',
+    					'session' => $session->getId(),
     				)
     			);
     			

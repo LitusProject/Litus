@@ -3,8 +3,7 @@
 namespace CudiBundle\Repository;
 
 use CommonBundle\Entity\Users\Person,
-    Doctrine\ORM\EntityRepository,
-	Doctrine\ORM\Query\Expr\Join;
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Article
@@ -14,167 +13,184 @@ use CommonBundle\Entity\Users\Person,
  */
 class Article extends EntityRepository
 {
-	public function findAll()
-	{
-		$query = $this->_em->createQueryBuilder();
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
 		$resultSet = $query->select('a')
 			->from('CudiBundle\Entity\Article', 'a')
 			->where(
 			    $query->expr()->andX(
-			        $query->expr()->eq('a.enabled', 'true'),
-			        $query->expr()->eq('a.removed', 'false')
+			        $query->expr()->eq('a.isHistory', 'false'),
+			        $query->expr()->eq('a.isProf', 'false')
 			    )
 			)
+			->orderBy('a.title', 'ASC')
 			->getQuery()
 			->getResult();
 
         return $resultSet;
-	}
-	
-	public function findAllByTitle($title)
-	{
-		$query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('a')
-			->from('CudiBundle\Entity\Article', 'a')
-			->where($query->expr()->andX(
-					$query->expr()->like($query->expr()->lower('a.title'), ':title'),
-			        $query->expr()->eq('a.enabled', 'true'),
-					$query->expr()->eq('a.removed', 'false')
-				)
-			)
-			->setParameter('title', '%'.strtolower($title).'%')
-			->orderBy('a.title', 'ASC')
-			->getQuery()
-			->getResult();
-			
-		return $resultSet;
-	}
-	
-	public function findAllByAuthor($author)
-	{
-		$query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('a')
-			->from('CudiBundle\Entity\Article', 'a')
-			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.authors'), ':author'))
+    }
+    
+    public function findAllByTitle($title)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->where($query->expr()->andX(
+    		        $query->expr()->like($query->expr()->lower('a.title'), ':title'),
+    		        $query->expr()->eq('a.isHistory', 'false'),
+    		        $query->expr()->eq('a.isProf', 'false')
+    			)
+    		)
+    		->setParameter('title', '%'.strtolower($title).'%')
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByAuthor($author)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('a.enabled', 'true'),
-                    $query->expr()->eq('a.removed', 'false')
+                    $query->expr()->like($query->expr()->lower('a.authors'), ':author'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
-			->orderBy('a.title', 'ASC')
-			->getQuery()
-			->getResult();
-			
-		return $resultSet;
-	}
-	
-	public function findAllByPublisher($publisher)
-	{
-		$query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('a')
-			->from('CudiBundle\Entity\Article', 'a')
-			->innerJoin('a.metaInfo', 'm', Join::WITH, $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'))
-			->where(
-			    $query->expr()->andX(
-			        $query->expr()->eq('a.enabled', 'true'),
-			        $query->expr()->eq('a.removed', 'false')
-			    )
-			)
-			->setParameter('publisher', '%'.strtolower($publisher).'%')
-			->orderBy('a.title', 'ASC')
-			->getQuery()
-			->getResult();
-			
-		return $resultSet;
-	}
-	
-	public function findOneByIdAndProf($id, Person $person)
-	{
-	    $subjects = $this->getEntityManager()
-	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	        ->findAllByProf($person);
-	     
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByPublisher($publisher)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('a')
+    		->from('CudiBundle\Entity\Article', 'a')
+    		->where(
+    		    $query->expr()->andX(
+    		        $query->expr()->like($query->expr()->lower('a.publishers'), ':publisher'),
+    		        $query->expr()->eq('a.isHistory', 'false'),
+    		        $query->expr()->eq('a.isProf', 'false')
+    		    )
+    		)
+    		->setParameter('publisher', '%'.strtolower($publisher).'%')
+    		->orderBy('a.title', 'ASC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByProf(Person $person)
+    {
+        $subjects = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findByProf($person);
+         
         $ids = array(0);   
-	    foreach($subjects as $subject) {
-	        $ids[] = $subject->getSubject()->getId();
-	    }
-	
-	    $query = $this->_em->createQueryBuilder();
-	    $resultSet = $query->select('m')
-	        ->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
-	        ->where(
-	            $query->expr()->andX(
-	                $query->expr()->eq('m.article', ':id'),
-	                $query->expr()->in('m.subject', $ids)
-	            )
-	        )
-	        ->setParameter('id', $id)
-	        ->setMaxResults(1)
-	        ->getQuery()
-	        ->getResult();
-	    
-	    if (isset($resultSet[0]) && (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
-	    	return $resultSet[0]->getArticle();
-	    	
-        return $this->getEntityManager()
-            ->getRepository('ProfBundle\Entity\Action\Article\Add')
-            ->findOneByIdAndPerson($id, $person);
-	}
-	
-	public function findAllByProf(Person $person)
-	{
-	    $subjects = $this->getEntityManager()
-	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	        ->findAllByProf($person);
-	     
-	    $ids = array(0);   
-	    foreach($subjects as $subject) {
-	        $ids[] = $subject->getSubject()->getId();
-	    }
-	
-	    $query = $this->_em->createQueryBuilder();
-	    $resultSet = $query->select('m')
-	        ->from('CudiBundle\Entity\ArticleSubjectMap', 'm')
-	        ->where(
-                $query->expr()->in('m.subject', $ids)
-	        )
-	        ->getQuery()
-	        ->getResult();
-	    
-	    $ids = array(0);   
-	    foreach($resultSet as $mapping) {
-	        $ids[] = $mapping->getArticle()->getId();
-	    }
-	    
-	    $added = $this->getEntityManager()
-	        ->getRepository('ProfBundle\Entity\Action\Article\Add')
-	        ->findAllByPerson($person);
-	        
-	    foreach($added as $add) {
-	        $ids[] = $add->getArticle()->getId();
-	    }
-	    
-	    $query = $this->_em->createQueryBuilder();
-	    $resultSet = $query->select('a')
-	        ->from('CudiBundle\Entity\Article', 'a')
-	        ->where(
-	            $query->expr()->andX(
-	                $query->expr()->eq('a.removed', 'false'),
+        foreach($subjects as $subject)
+            $ids[] = $subject->getSubject()->getId();
+    
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.removed', 'false'),
+                    $query->expr()->in('m.subject', $ids)
+                )
+            )
+            ->getQuery()
+            ->getResult();
+        
+        $ids = array(0);
+        foreach($resultSet as $mapping)
+            $ids[] = $mapping->getArticle()->getId();
+        
+        $added = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Prof\Action')
+            ->findAllByEntityAndActionAndPerson('article', 'add', $person);
+            
+        foreach($added as $add) {
+            $edited = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
+            
+            if (isset($edited[0])) {
+                $ids[] = $edited[0]->getEntityId();
+            } else {
+                $ids[] = $add->getEntityId();
+            }   
+        }
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->in('a.id', $ids)
-	            )
-	        )
-	        ->orderBy('a.title', 'ASC')
-	        ->getQuery()
-	        ->getResult();
-	        
-	    $articles = array();
-	    foreach($resultSet as $article) {
-	        if (!$article->isInternal() || $article->isOfficial())
-	            $articles[] = $article;
-	    }
-	    
-	    return $articles;
-	}
+                )
+            )
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
+        $articles = array();
+        foreach($resultSet as $article) {
+            if (!$article->isInternal() || $article->isOfficial())
+                $articles[] = $article;
+        }
+        
+        return $articles;
+    }
+    
+    public function findOneByIdAndProf($id, Person $person)
+    {
+        $subjects = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findByProf($person);
+         
+        $ids = array(0);   
+        foreach($subjects as $subject)
+            $ids[] = $subject->getSubject()->getId();
+    
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.removed', 'false'),
+                    $query->expr()->eq('m.article', ':id'),
+                    $query->expr()->in('m.subject', $ids)
+                )
+            )
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+        
+        if (isset($resultSet[0]) &&
+                (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
+        	return $resultSet[0]->getArticle();
+        	
+        $actions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Prof\Action')
+            ->findAllByEntityAndEntityIdAndPerson('article', $id, $person);
+        
+        if (isset($actions[0]))
+            return $actions[0]->setEntityManager($this->_em)
+                ->getEntity();
+            
+        return null;
+    }
 }

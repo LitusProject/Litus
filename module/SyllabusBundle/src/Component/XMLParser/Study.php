@@ -15,14 +15,19 @@
  
 namespace SyllabusBundle\Component\XMLParser;
 
-use CommonBundle\Entity\Users\Credential,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\Users\Code,
     CommonBundle\Entity\Users\People\Academic,
+    DateTime,
     Doctrine\ORM\EntityManager,
     SimpleXMLElement,
+    SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
     Zend\Dom\Query as DomQuery;
 
@@ -47,6 +52,11 @@ class Study
      * @var array
      */
     private $_callback;
+    
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
@@ -62,6 +72,25 @@ class Study
         $this->_callback('load_xml', 'SC_51016934.xml');
         
         $xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
+        
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear(
+            new DateTime(substr($xml->properties->academiejaar, 0, 4) . '-12-25 0:0')
+        );
+        $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($startAcademicYear);
+
+        if (null === $academicYear) {
+            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                new DateTime((substr($xml->properties->academiejaar, 0, 4) + 1) . '-12-25 0:0')
+            );
+            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $entityManager->persist($academicYear);
+        }
+        $this->_academicYear = $academicYear;
+        
+        $this->_callback('cleanup', '');
+
+        $this->_removeMappings();
         
         $this->_createSubjects(
             $xml->data->sc->cg, 
@@ -143,11 +172,10 @@ class Study
 		                }
 		            }
 		            $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
-		            $this->_removeSubjectMapping($study);
+		            $this->getEntityManager()->persist(new AcademicYearMap($study, $this->_academicYear));
 		        }
 		    } else {
 		        $studies[$phaseNumber][0] = $mainStudy;
-                $this->_removeSubjectMapping($mainStudy);
 		    }
 		}
 		return $studies;
@@ -191,7 +219,6 @@ class Study
                         $subject = new SubjectEntity($code, trim((string) $subjectData->titel), (int) $subjectData->periode, (int) $subjectData->pts);
                         $this->getEntityManager()->persist($subject);
                     }
-                    $this->_removeProfMapping($subject);
                     $this->_createProf($subject, $subjectData->docenten->children());
                     
                     $mandatory = $subjectData->attributes()->verplicht == 'J' ? true : false;
@@ -200,11 +227,11 @@ class Study
                         $phaseNumber = (int) $phase;
                         if (is_array($activeStudies[$phaseNumber])) {
                             foreach($activeStudies[$phaseNumber] as $activeStudy) {
-                                $map = new StudySubjectMap($activeStudy, $subject, $mandatory);
+                                $map = new StudySubjectMap($activeStudy, $subject, $mandatory, $this->_academicYear);
                                 $this->getEntityManager()->persist($map);
                             }
                         } else {
-                            $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory);
+                            $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory, $this->_academicYear);
                             $this->getEntityManager()->persist($map);
                         }
                     }
@@ -248,6 +275,18 @@ class Study
                         $info['phone'],
                         null,
                         $identification);
+                    
+                    do {
+                    	$code = md5(uniqid(rand(), true));
+                    	$found = $this->_entityManager
+                    	    ->getRepository('CommonBundle\Entity\Users\Code')
+                    	    ->findOneByCode($code);
+                    } while(isset($found));
+                    
+                    $code = new Code($code);
+                    $this->getEntityManager()->persist($code);
+                    $prof->setCode($code);
+                    
                     $this->getEntityManager()->persist($prof);
                     $this->_profs[$identification] = $prof;
                 }
@@ -255,30 +294,33 @@ class Study
             
             $map = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-                ->findOneBySubjectAndProf($subject, $prof);
+                ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->_academicYear);
             if (null == $map) {
-                $map = new SubjectProfMap($subject, $prof);
+                $map = new SubjectProfMap($subject, $prof, $this->_academicYear);
                 $this->getEntityManager()->persist($map);
-                $this->getEntityManager()->flush();
             }
         }
     }
     
-    private function _removeSubjectMapping($study)
+    private function _removeMappings()
     {
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findByStudy($study);
+            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->findByAcademicYear($this->_academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
-    }
-    
-    private function _removeProfMapping($subject)
-    {
+                    
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findByAcademicYear($this->_academicYear);
+
+        foreach($mapping as $map)
+            $this->getEntityManager()->remove($map);
+            
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findBySubject($subject);
+            ->findByAcademicYear($this->_academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);

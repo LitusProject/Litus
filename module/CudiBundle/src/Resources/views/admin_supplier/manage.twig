@@ -11,6 +11,8 @@
 		        <thead>
 		            <tr>
 		                <th>Name</th>
+		                <th width="150px">Phone Number</th>
+		                <th width="200px">City</th>
 		            	<th width="200px">Actions</th>
 		            </tr>
 		        </thead>
@@ -19,12 +21,14 @@
 		            {% for supplier in paginator %}
 		                <tr>
 		                    <td>{{ supplier.getName() }}</td>
+		                    <td>{{ supplier.getPhoneNumber() }}</td>
+		                    <td>{{ supplier.getAddress().getCity() }}</td>
 		            		<td>
 		            		    {% if hasAccess('admin_supplier', 'edit') %}
 		            			    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
 		            			{% endif %}
-		            			{% if hasAccess('admin_supplier', 'supplier') %}
-		            			    <a href="{{ url('admin_supplier', {"action": "view", "id": supplier.getId()}) }}" class="view">View</a>
+		            			{% if hasAccess('admin_supplier_user', 'manage') %}
+		            			    <a href="{{ url('admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}" class="view">Users</a>
 		            			{% endif %}
 		            		</td>
 		                </tr>

@@ -1,7 +1,7 @@
 (function ($) {
     var defaults = {
         url: '',
-        saleSession: 0,
+        session: 0,
         errorDialog: null,
         barcodePrefix: 0,
         statusTranslate: function () {},
@@ -85,7 +85,7 @@
         		url: options.url,
         		open: function (e) {
         			options.errorDialog.removeClass('in');
-					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "saleSession": "' + options.saleSession + '" }'});
+					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '" }'});
         		},
         		message: function (e, data) {
         			options.errorDialog.removeClass('in');

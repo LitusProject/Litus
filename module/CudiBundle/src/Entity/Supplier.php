@@ -15,6 +15,8 @@
  
 namespace CudiBundle\Entity;
 
+use CommonBundle\Entity\General\Address;
+
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Supplier")
  * @Table(name="cudi.supplier")
@@ -22,7 +24,7 @@ namespace CudiBundle\Entity;
 class Supplier
 {
 	/**
-	 * @var integer The ID of this supplier
+	 * @var integer The ID of the supplier
 	 *
 	 * @Id
 	 * @GeneratedValue
@@ -31,45 +33,46 @@ class Supplier
 	private $id;
 	
 	/**
-	 * @var string The name of this supplier
+	 * @var string The name of the supplier
 	 *
 	 * @Column(type="string")
 	 */
 	private $name;
 	
 	/**
-	 * @var string The phone number of this supplier
+	 * @var string The phone number of the supplier
 	 *
 	 * @Column(type="string", name="phone_number")
 	 */
 	private $phoneNumber;
 
 	/**
-	 * @var string The address of this supplier
+	 * @var \CommonBundle\Entity\General\Address The address of the supplier
 	 *
-	 * @Column(type="string")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+	 * @JoinColumn(name="address", referencedColumnName="id")
 	 */
 	private $address;
 
 	/**
-	 * @var string The vat number of this supplier
+	 * @var string The vat number of the supplier
 	 *
 	 * @Column(type="string")
 	 */
-	private $VAT_number;
+	private $vatNumber;
 	
 	/**
 	 * @param string $name
 	 * @param string $phoneNumber
-	 * @param string $address
-	 * @param string $VAT
+	 * @param \CommonBundle\Entity\General\Address $address
+	 * @param string $vatNumber
 	 */
-	public function __construct($name, $phoneNumber, $address, $VAT)
+	public function __construct($name, $phoneNumber, Address $address, $vatNumber)
 	{
-		$this->name = $name;
-		$this->phoneNumber = $phoneNumber;
-		$this->address = $address;
-		$this->VAT_number = $VAT;
+		$this->setName($name)
+		    ->setPhoneNumber($phoneNumber)
+		    ->setAddress($address)
+		    ->setVatNumber($vatNumber);
 	}
 	
 	/**
@@ -89,6 +92,17 @@ class Supplier
     }
     
     /**
+     * @param string $name
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+    
+    /**
      * @return string
      */
     public function getPhoneNumber()
@@ -97,7 +111,7 @@ class Supplier
     }
     
     /**
-     * @param string
+     * @param string $phoneNumber
      *
      * @return \CudiBundle\Entity\Supplier
      */
@@ -108,7 +122,7 @@ class Supplier
     }
     
     /**
-     * @return string
+     * @return \CommonBundle\Entity\General\Address
      */
     public function getAddress()
     {
@@ -116,11 +130,11 @@ class Supplier
     }
     
     /**
-     * @param string
+     * @param \CommonBundle\Entity\General\Address $address
      *
      * @return \CudiBundle\Entity\Supplier
      */
-    public function setAddress($address)
+    public function setAddress(Address $address)
     {
         $this->address = $address;
         return $this;
@@ -129,19 +143,19 @@ class Supplier
     /**
      * @return string
      */
-    public function getVATNumber()
+    public function getVatNumber()
     {
-        return $this->VAT_number;
+        return $this->vatNumber;
     }
     
     /**
-     * @param string
+     * @param string $vatNumber
      *
      * @return \CudiBundle\Entity\Supplier
      */
-    public function setVATNumber($VAT)
+    public function setVatNumber($vatNumber)
     {
-        $this->VAT_number = $VAT;
+        $this->vatNumber = $vatNumber;
         return $this;
     }
 }

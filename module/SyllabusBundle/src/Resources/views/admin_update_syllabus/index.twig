@@ -89,6 +89,7 @@
 		});
 		
 		function translateStatus(status) {
+		    console.log(status);
 		    var text = '';
 		    switch(status.type) {
 		        case 'done':
@@ -96,6 +97,9 @@
 		            break;
 		        case 'load_xml':
 		            text += 'Loading XML';
+		            break;
+		        case 'cleanup':
+		            text += 'Clean up database';
 		            break;
 		        case 'create_studies':
 		            text += 'Creating Studies';

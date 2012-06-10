@@ -15,6 +15,11 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    DateInterval,
+    DateTime;
+
 /**
  * InstallController
  *
@@ -48,6 +53,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 				),
 	    	)
 	    );
+	    
+	    $this->_installAcademicYear();
 	}
 	
 	protected function _initAcl()
@@ -62,7 +69,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'manage', 'search'
 	                ),
 	                'admin_subject' => array(
-	                	'articles', 'manage', 'search', 'subject', 'typeahead'
+	                	'manage', 'search', 'subject', 'typeahead'
 	                ),
 	                'admin_update_syllabus' => array(
 	                	'index', 'xml'
@@ -83,5 +90,28 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            )
 	        )
 	    );
+	}
+	
+	private function _installAcademicYear()
+	{
+	    $now = new DateTime('now');
+	    $startAcademicYear = AcademicYear::getStartOfAcademicYear(
+            $now
+        );
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($startAcademicYear);
+
+        if (null === $academicYear) {
+            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                $now->add(
+                    new DateInterval('P1Y')
+                )
+            );
+            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $this->getEntityManager()->persist($academicYear);
+            $this->getEntityManager()->flush();
+        }
 	}
 }

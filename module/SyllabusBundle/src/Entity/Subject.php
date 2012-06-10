@@ -22,7 +22,7 @@ namespace SyllabusBundle\Entity;
 class Subject
 {
 	/**
-	 * @var integer The ID of this subject
+	 * @var integer The ID of the subject
 	 *
 	 * @Id
 	 * @GeneratedValue
@@ -31,39 +31,32 @@ class Subject
 	private $id;
 
     /**
-     * @var string The code of this subject
+     * @var string The code of the subject
      *
      * @Column(type="string")
      */
     private $code;
 
     /**
-     * @var string The name of this subject
+     * @var string The name of the subject
      *
      * @Column(type="string")
      */
     private $name;
 
     /**
-     * @var integer The semester number of this subject
+     * @var integer The semester number of the subject
      *
      * @Column(type="smallint")
      */
     private $semester;
     
     /**
-     * @var integer The credits of this subject
+     * @var integer The credits of the subject
      *
      * @Column(type="smallint")
      */
     private $credits;
-    
-    /**
-     * @var boolean Flag whether this study is active
-     *
-     * @Column(type="boolean")
-     */
-    private $active;
     
     /**
      * @param string $code
@@ -77,7 +70,6 @@ class Subject
         $this->name = $name;
         $this->semester = $semester;
         $this->credits = $credits;
-        $this->active = true;
     }
     
     /**
@@ -118,24 +110,5 @@ class Subject
     public function getCredits()
     {
         return $this->credits;
-    }
-    
-    /**
-     * @param boolean $flag
-     *
-     * @return \SyllabusBundle\Entity\Study
-     */
-    public function setActive($flag = true)
-    {
-        $this->active = $flag;
-        return $this;
-    }
-    
-    /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
     }
 }

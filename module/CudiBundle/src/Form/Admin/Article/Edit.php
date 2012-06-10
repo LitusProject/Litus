@@ -16,7 +16,6 @@
 namespace CudiBundle\Form\Admin\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit;
@@ -34,22 +33,8 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
 
         $this->removeElement('submit');
         
-        $this->getElement('purchase_price')
-        	->setAttrib('disabled', 'disabled')
-        	->clearValidators()
-        	->setRequired(false);
-        $this->getElement('sellprice')
-        	->setAttrib('disabled', 'disabled')
-        	->clearValidators()
-        	->setRequired(false);
-        $this->getElement('barcode')
-        	->setAttrib('disabled', 'disabled')
-        	->clearValidators()
-        	->addValidator(new UniqueArticleBarcodeValidator($entityManager, array($article->getId())))
-        	->setRequired(false);
-        
 		$field = new Submit('submit');
-        $field->setLabel('Edit')
+        $field->setLabel('Save')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);

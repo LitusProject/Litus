@@ -15,7 +15,8 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * SubjectController
@@ -28,12 +29,23 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($study = $this->_getStudy()))
         	return;
-        	
+        
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
+        $mappings = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findAllByStudyAndAcademicYear($study, $academicYear);
+        
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+            
         return array(
             'study' => $study,
-            'mapping' => $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                ->findAllByStudy($study)
+            'mappings' => $mappings,
+            'currentAcademicYear' => $academicYear,
+            'academicYears' => $academicYears,
         );
     }
     
@@ -41,15 +53,28 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($subject = $this->_getSubject()))
         	return;
-        	
+        
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+
+        $profs = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findAllBySubjectAndAcademicYear($subject, $academicYear);
+            
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+            ->findAllBySubjectAndAcademicYear($subject, $academicYear);
+            
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+            
         return array(
             'subject' => $subject,
-            'profs' => $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-                ->findAllBySubject($subject),
-            'articles' => $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\ArticleSubjectMap')
-                ->findAllBySubject($subject)
+            'profMappings' => $profs,
+            'articleMappings' => $articles,
+            'currentAcademicYear' => $academicYear,
+            'academicYears' => $academicYears,
         );
     }
     
@@ -60,16 +85,19 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         if (!($study = $this->_getStudy()))
         	return;
         	
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+
         switch($this->getParam('field')) {
         	case 'name':
         		$subjects = $this->getEntityManager()
         			->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-        			->findAllByNameAndStudy($this->getParam('string'), $study);
+        			->findAllByNameAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
         		break;
         	case 'code':
         	    $subjects = $this->getEntityManager()
         	    	->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-        	    	->findAllByCodeAndStudy($this->getParam('string'), $study);
+        	    	->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
         	    break;
         }
         
@@ -98,10 +126,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     
     public function typeaheadAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
         $subjects = $this->getEntityManager()
         	->getRepository('SyllabusBundle\Entity\Subject')
-        	->findAllByNameTypeAhead($this->getParam('string'));
-        
+        	->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
         $result = array();
         foreach($subjects as $subject) {
         	$item = (object) array();
@@ -207,5 +238,40 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     	}
     	
     	return $study;
+    }
+    
+    private function _getAcademicYear()
+    {
+        if (null === $this->getParam('academicyear')) {
+    		$start = AcademicYear::getStartOfAcademicYear();
+    	} else {
+    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+    	}
+    	$start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByStartDate($start);
+    	
+    	if (null === $academicYear) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No academic year was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_study',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $academicYear;
     }
 }

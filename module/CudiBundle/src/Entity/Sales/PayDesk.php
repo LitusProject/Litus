@@ -22,7 +22,7 @@ namespace CudiBundle\Entity\Sales;
 class PayDesk
 {
 	/**
-	 * @var integer The ID of this paydesk
+	 * @var integer The ID of the paydesk
 	 *
 	 * @Id
 	 * @GeneratedValue
@@ -31,16 +31,40 @@ class PayDesk
 	private $id;
 	
 	/**
-	 * @var string The name of this paydesk
+	 * @var string The name of the paydesk
 	 *
 	 * @Column(type="string")
 	 */
 	private $name;
 	
 	/**
-	 * @var boolean Flag whether this paydesk is active
+	 * @var string The code of the paydesk
 	 *
-	 * @Column(type="boolean")
+	 * @Column(type="string")
 	 */
-	private $active;
+	private $code;
+	
+	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+	    return $this->id;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+	    return $this->name;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getCode()
+	{
+	    return $this->code;
+	}
 }

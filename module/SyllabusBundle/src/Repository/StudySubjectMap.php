@@ -2,10 +2,10 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
-    SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Subject as SubjectEntity;
+    SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * StudySubjectMap
@@ -15,92 +15,80 @@ use Doctrine\ORM\EntityRepository,
  */
 class StudySubjectMap extends EntityRepository
 {
-    public function findAllByStudy(StudyEntity $study)
+    public function findAllByStudyAndAcademicYear(StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
         
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, $query->expr()->eq('s.active', 'true'))
-        	->where($query->expr()->in('m.study', $parentIds))
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
-    
-    public function findAllByNameAndStudy($name, StudyEntity $study)
-    {
-        $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
-            $parentIds[] = $parent->getId();
-        }
-        
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, 
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-        	        $query->expr()->like($query->expr()->lower('s.name'), ':name')
-        	    )
-        	)
-        	->where($query->expr()->in('m.study', $parentIds))
-        	->setParameter('name', '%' . strtolower($name) . '%')
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
-    
-    public function findAllByCodeAndStudy($code, StudyEntity $study)
-    {
-        $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
-            $parentIds[] = $parent->getId();
-        }
-        
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, 
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.active', 'true'),
-        	        $query->expr()->like($query->expr()->lower('s.code'), ':code')
-        	    )
-        	)
-        	->where($query->expr()->in('m.study', $parentIds))
-        	->setParameter('code', '%' . strtolower($code) . '%')
-        	->getQuery()
-        	->getResult();
-        	
-        return $resultSet;
-    }
-    
-    public function findOneBySubjectAndStudy(SubjectEntity $subject, StudyEntity $study)
-    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
         	->where(
         	    $query->expr()->andX(
-        	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.study', ':study')
+        	        $query->expr()->in('m.study', $parentIds),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
         	    )
         	)
-        	->setParameter('subject', $subject->getId())
-        	->setParameter('study', $study->getId())
-        	->setMaxResults(1)
-    		->getQuery()
-    		->getResult();
-    	
-    	if (isset($resultSet[0]))
-    		return $resultSet[0];
-    	
-    	return null;
+        	->setParameter('academicYear', $academicYear)
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByNameAndStudyAndAcademicYear($name, StudyEntity $study, AcademicYear $academicYear)
+    {
+        $parentIds = array($study->getId());
+        foreach($study->getParents() as $parent) {
+            $parentIds[] = $parent->getId();
+        }
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+        	->innerJoin('m.subject', 's', Join::WITH, 
+        	    $query->expr()->like($query->expr()->lower('s.name'), ':name')
+        	)
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->in('m.study', $parentIds),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('name', '%' . strtolower($name) . '%')
+        	->setParameter('academicYear', $academicYear)
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
+    public function findAllByCodeAndStudy($code, StudyEntity $study, AcademicYear $academicYear)
+    {
+        $parentIds = array($study->getId());
+        foreach($study->getParents() as $parent) {
+            $parentIds[] = $parent->getId();
+        }
+        
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+        	->innerJoin('m.subject', 's', Join::WITH, 
+        	    $query->expr()->like($query->expr()->lower('s.code'), ':code')
+        	)
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->in('m.study', $parentIds),
+        	        $query->expr()->eq('m.academicYear', ':academicYear')
+        	    )
+        	)
+        	->setParameter('code', '%' . strtolower($code) . '%')
+        	->setParameter('academicYear', $academicYear)
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
     }
 }

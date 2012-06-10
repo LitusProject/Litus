@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_article/partials/navigation.twig' %}
+		
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<h1>Article</h1>
+		
+		<p>Title: <b>{{ article.getTitle() }}</b></p>
+		<p>Author: <b>{{ article.getAuthors() }}</b></p>
+		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
+		<br />
+
+		<h2>File</h2>
+		<p>Name: <b>{{ file.getName() }}</b></p>
+		{% if hasAccess('admin_article_file', 'download') %}
+			<input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download" />
+		{% endif %}
+		
+		{% autoescape false %}
+			{{ form }}
+		{% endautoescape %}
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.downloadFile').each(function () {
+				$(this).downloadFile($(this).data('file'));
+			});
+		});
+	</script>
+{% endblock %}
