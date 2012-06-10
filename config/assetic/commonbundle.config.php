@@ -42,11 +42,6 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
-		    '@common_form_upload_progress',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		    '@gollum_css',
-		    '@gollum_js',
 		),
 		'admin_role' => array(
 			'@common_jquery',

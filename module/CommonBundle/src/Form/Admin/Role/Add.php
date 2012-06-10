@@ -25,7 +25,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text;
 
 /**
- * AddRole
+ * Add Role
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {

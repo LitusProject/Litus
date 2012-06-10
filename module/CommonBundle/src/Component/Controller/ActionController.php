@@ -74,10 +74,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $result['flashMessenger'] = $this->flashMessenger();
         
         $result['authenticatedUser'] = $authenticatedUser;
-  		$result['now'] = array(
-  			'iso8601' => date('c', time()),
-  			'display' => date('l, F j Y, H:i', time())
-  		);
   		
   		$result['environment'] = getenv('APPLICATION_ENV');
   		$result['developmentInformation'] = array(
@@ -116,6 +112,19 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
     	$view = $this->getLocator()->get('view');
     	
+    	// DateLocalized View Helper
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
+    	);
+		
+    	// GetParam View Helper
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
+    	);
+    	$view->plugin('getParam')->setRouteMatch(
+    		$this->getEvent()->getRouteMatch()
+    	);
+    	
     	// HasAccess View Helper
     	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
@@ -124,14 +133,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     		new HasAccess(
     			$this->_getAcl(), $this->getAuthentication()
     		)
-    	);
-    	
-    	// GetParam View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-    	);
-    	$view->plugin('getParam')->setRouteMatch(
-    		$this->getEvent()->getRouteMatch()
     	);
     }
     

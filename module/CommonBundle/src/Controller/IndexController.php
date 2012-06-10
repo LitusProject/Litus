@@ -20,7 +20,7 @@ namespace CommonBundle\Controller;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class IndexController extends \CommonBundle\Component\Controller\ActionController
+class IndexController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function indexAction()
     {

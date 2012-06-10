@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Validator\Alnum as AlnumValidator;
 
 /**
- * AddUser
+ * Add Academic
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

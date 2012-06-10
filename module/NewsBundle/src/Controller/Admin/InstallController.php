@@ -33,7 +33,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                'admin_news' => array(
 	                    'add', 'delete', 'edit', 'manage'
 	                ),
-	            )
+	            ),
 	        )
 	    );
 	    
@@ -45,18 +45,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	                'common_news' => array(
     	                	'overview', 'view'
     	                ),
-    	            )
-    	        ),
-    	        'sudo' => array(
-    	            'parent_roles' => array(
-    	                'guest'
     	            ),
-    	            'actions' => array(
-    	                'admin_news' => array(
-    	                    'add', 'delete', 'edit', 'manage'
-    	                ),
-    	            )
-    	        )
+    	        ),
     	    )
     	);
 	}

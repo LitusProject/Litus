@@ -13,14 +13,14 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Component\Form\Bootstrap\Form;
+namespace CommonBundle\Component\Form\Admin\Form;
 /**
  * Extending Zend's form component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabbable extends \CommonBundle\Component\Form\Bootstrap\Form
+class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
 	 * @param mixed $options The form's options

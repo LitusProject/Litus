@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Submit;
 
 /**
- * EditRole
+ * Edit Role
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

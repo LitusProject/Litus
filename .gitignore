@@ -8,4 +8,6 @@
 
 # Cached data doesn't have to be versioned
 data/cache
+data/proxies
+
 public/_assetic

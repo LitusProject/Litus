@@ -20,16 +20,16 @@ use Zend\Form\Element\Checkbox,
 	Zend\Form\Element\Text;
 
 /**
- * AuthLogin
+ * Login
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Login extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
-	 * @param mixed $options The form's options
+	 * @param mixed $opts The form's options
 	 */
-    public function __construct($options = null)
+    public function __construct($opts = null)
     {
         parent::__construct($options);
 

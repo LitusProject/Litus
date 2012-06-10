@@ -22,9 +22,9 @@
 /**
  * @namespace
  */
-namespace CommonBundle\Component\Form\Bootstrap\Decorator;
+namespace CommonBundle\Component\Form\Admin\Decorator;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Tabs,
+use CommonBundle\Component\Form\Admin\Element\Tabs,
     Zend\Form\Decorator\HtmlTag;
 
 /**
@@ -45,7 +45,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Tabs,
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class FormTabs extends \Zend\Form\Decorator\AbstractDecorator
+class TabsDecorator extends \Zend\Form\Decorator\AbstractDecorator
 {
     /**
      * Render form elements
@@ -66,7 +66,7 @@ class FormTabs extends \Zend\Form\Decorator\AbstractDecorator
             $attribs['id'] = $name;
         }
         if (!array_key_exists('class', $attribs)) {
-            $attribs['class'] = 'nav nav-pills';
+            $attribs['class'] = 'tabs';
         }
         if (!array_key_exists('tag', $attribs)) {
             $attribs['tag'] = 'ul';

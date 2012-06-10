@@ -24,7 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ConfigController extends \CommonBundle\Component\Controller\ActionController
+class ConfigController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 	public function manageAction()
 	{

@@ -13,9 +13,9 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form\Admin\Element;
 
-use \CommonBundle\Component\Form\Bootstrap\Decorator\FormTabs as FormTabsHelper;
+use \CommonBundle\Component\Form\Admin\Decorator\TabsDecorator as TabsDecorator;
 
 /**
  * Tabs
@@ -39,7 +39,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
     	parent::__construct($spec, $options);
     	$this->setDecorators(
     	    array(
-    	        new FormTabsHelper()
+    	        new TabsDecorator()
     	    )
     	);
     }
@@ -47,7 +47,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
     /**
      * @param array $tabs
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return \CommonBundle\Component\Form\Admin\Element\Tabs
      */
     public function setTabs($tabs = array())
     {
@@ -66,7 +66,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
     /**
      * @param array $tab
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return \CommonBundle\Component\Form\Admin\Element\Tabs
      */
     public function addTab($tab)
     {

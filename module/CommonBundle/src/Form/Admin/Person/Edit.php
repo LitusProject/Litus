@@ -23,7 +23,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Text;
 
 /**
- * EditPerson
+ * Edit Person
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

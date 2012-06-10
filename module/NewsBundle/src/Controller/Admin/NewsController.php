@@ -46,7 +46,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     ->findAll();
                 
                 foreach($languages as $language) {
-                    $translation = new Translation($news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
+                    $translation = new Translation(
+                    	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                    );
                     $this->getEntityManager()->persist($translation);
                     
                     if ($language->getAbbrev() == 'en')
@@ -54,13 +56,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 $this->getEntityManager()->flush();
-                
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'News added: ' . $title
-                );
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -110,7 +105,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                         $translation->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
-                        $translation = new Translation($page, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
+                        $translation = new Translation(
+                        	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                        );
                         $this->getEntityManager()->persist($translation);
                     }
                     
@@ -119,13 +116,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 $this->getEntityManager()->flush();
-                
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'News edited: ' . $title
-                );
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -161,17 +151,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($news);
         
         $this->getEntityManager()->flush();
-        
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'News deleted: ' . $news->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
-                )
-        );
     	
     	return array(
     		'result' => array(
