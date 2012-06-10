@@ -37,7 +37,6 @@ class SaleItem
 	/**
 	 * @var \DateTime The time the sale item was created
 	 *
-	 * @Index
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;

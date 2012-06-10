@@ -37,7 +37,6 @@ class Retour
 	/**
 	 * @var \DateTime The time the retour item was created
 	 *
-	 * @Index
 	 * @Column(type="datetime")
 	 */
 	private $timestamp;
