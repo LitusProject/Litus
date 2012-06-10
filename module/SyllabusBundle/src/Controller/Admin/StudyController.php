@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class StudyController extends \CommonBundle\Component\Controller\ActionController
+class StudyController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {

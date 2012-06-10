@@ -20,7 +20,7 @@ use CommonBundle\Component\Util\AcademicYear;
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ActionController extends \CommonBundle\Component\Controller\ActionController
+class ActionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     protected function _getAcademicYear()
     {

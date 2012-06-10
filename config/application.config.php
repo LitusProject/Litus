@@ -25,7 +25,6 @@ return array(
         'BrBundle',
         'CudiBundle',
         'SyllabusBundle',
-        'ProfBundle',
         
         'CalendarBundle',
         'NewsBundle',
