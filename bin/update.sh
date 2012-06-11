@@ -7,6 +7,7 @@ scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 cd "${scriptDirectory}/../"
 git pull
+git submodule update
 
 # Updating the database
 bin/MistDoctrine/doctrine orm:schema-tool:update --force
