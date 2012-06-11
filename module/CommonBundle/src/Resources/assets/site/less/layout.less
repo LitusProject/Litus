@@ -36,6 +36,31 @@
      }
  }
  
+@media (min-width: 1200px) {
+
+  // Fixed grid
+  #grid > .core(@gridColumnWidth, @gridGutterWidth);
+
+  // Fluid grid
+  #grid > .fluid(@fluidGridColumnWidth, @fluidGridGutterWidth);
+
+  // Input grid
+  #grid > .input(@gridColumnWidth, @gridGutterWidth);
+
+  // Thumbnails
+  .thumbnails {
+    margin-left: -@gridGutterWidth;
+  }
+  .thumbnails > li {
+    margin-left: @gridGutterWidth;
+  }
+  .row-fluid .thumbnails {
+    margin-left: 0;
+  }
+
+}
+
+ 
  @media (max-width: 767px) {
      body {
          padding-left: 0;
