@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
     CudiBundle\Entity\Articles\History,
+    CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Form\Admin\Article\Add as AddForm,
     CudiBundle\Form\Admin\Article\Edit as EditForm;
 
@@ -48,6 +49,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
+        $academicYear = $this->_getAcademicYear();
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -91,6 +93,20 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 				
 				$this->getEntityManager()->persist($article);
 				
+				$subject = $this->getEntityManager()
+				    ->getRepository('SyllabusBundle\Entity\Subject')
+				    ->findOneById($formData['subject_id']);
+				    
+				$mapping = $this->getEntityManager()
+				    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+				    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
+				
+				if (null === $mapping) {
+				    $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
+				    $this->getEntityManager()->persist($mapping);
+				    $this->getEntityManager()->flush();
+				}
+				
 				$this->getEntityManager()->flush();
 				
 				$this->flashMessenger()->addMessage(
@@ -114,6 +130,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         return array(
             'form' => $form,
+            'currentAcademicYear' => $academicYear,
         );
     }
     

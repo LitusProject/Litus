@@ -18,6 +18,18 @@
 		$(document).ready(function () {
 			$('#internal').click(toggleInternal);
 			toggleInternal();
+			
+			$('#subjectSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#subjectId').val($(this).data('value').id);
+			    } else {
+			        $('#subjectId').val('');
+			    }
+			});
 		});
 		
 		function toggleInternal() {

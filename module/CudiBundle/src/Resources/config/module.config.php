@@ -523,6 +523,19 @@ return array(
 	    		),
 	    	),
 	    ),
+	    'prof_subject_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/subject/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_subject',
+	    			'action'     => 'typeahead',
+	    		),
+	    	),
+	    ),
 	    'prof_article' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(

@@ -32,6 +32,9 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
         if (!($subject = $this->_getSubject()))
             return;
             
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+            
         $form = new AddForm();
         
         if($this->getRequest()->isPost()) {
@@ -43,10 +46,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
 	    	         
 	    	    $mapping = $this->getEntityManager()
 	    	        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-	    	        ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $this->_getAcademicYear(), true);
+	    	        ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear, true);
 	    	    
 	    	    if (null === $mapping) {
-    	    	    $mapping = new SubjectMap($article, $subject, $this->_getAcademicYear(), $formData['mandatory']);
+    	    	    $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
     	    	    $mapping->setIsProf(true);
     	    	    $this->getEntityManager()->persist($mapping);
     	    	    
@@ -115,6 +118,9 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     
     private function _getMapping()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+        	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -140,7 +146,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     	
     	$mappingProf = $this->getEntityManager()
     	    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-    	    ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $this->_getAcademicYear());
+    	    ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
 
     	if (null === $mapping || null === $mappingProf) {
     		$this->flashMessenger()->addMessage(
@@ -166,6 +172,9 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     
     private function _getSubject()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+        	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -190,7 +199,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id'),
                 $this->getAuthentication()->getPersonObject(),
-                $this->_getAcademicYear()
+                $academicYear
             );
 
     	if (null === $mapping) {
