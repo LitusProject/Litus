@@ -41,7 +41,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
             
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
@@ -68,8 +69,33 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         );
     }
     
+    public function typeaheadAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
+        $subjects = $this->getEntityManager()
+        	->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        	->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
+
+        $result = array();
+        foreach($subjects as $subject) {
+        	$item = (object) array();
+        	$item->id = $subject->getSubject()->getId();
+        	$item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+        }
+    
     private function _getSubject()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+        	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -94,7 +120,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id'),
                 $this->getAuthentication()->getPersonObject(),
-                $this->_getAcademicYear()
+                $academicYear
             );
 
     	if (null === $mapping) {

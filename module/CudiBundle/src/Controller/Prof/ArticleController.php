@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Entity\Articles\External,
     CudiBundle\Entity\Articles\Internal,
+    CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
     CudiBundle\Form\Prof\Article\Edit as EditForm;
@@ -43,6 +44,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     
     public function addAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+        	
         $form = new AddForm($this->getEntityManager());
         
         if($this->getRequest()->isPost()) {
@@ -87,6 +91,33 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 
                 $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'add');
                 $this->getEntityManager()->persist($action);
+                
+                $subject = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->findOneBySubjectIdAndProfAndAcademicYear(
+                        $formData['subject_id'],
+                        $this->getAuthentication()->getPersonObject(),
+                        $academicYear
+                    );
+                
+                $mapping = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject->getSubject(), $academicYear, true);
+                
+                if (null === $mapping) {
+                    $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                    $mapping->setIsProf(true);
+                    $this->getEntityManager()->persist($mapping);
+                    
+                    $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
+                    $this->getEntityManager()->persist($action);
+                } else {
+                    $actions = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Prof\Action')
+                        ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+                    foreach ($actions as $action)
+                        $this->getEntityManager()->remove($action);
+                }
 				
 				$this->getEntityManager()->flush();
 				

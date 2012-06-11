@@ -22,7 +22,9 @@ use CommonBundle\Component\Validator\Uri as UriValidator,
 	CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 	CommonBundle\Component\Form\Bootstrap\Element\Text,
 	CommonBundle\Component\Form\Bootstrap\Element\Select,
-	CommonBundle\Component\Form\Bootstrap\Element\Submit;
+	CommonBundle\Component\Form\Bootstrap\Element\Submit,
+	Zend\Form\Element\Hidden,
+	Zend\Validator\Int as IntValidator;
 
 /**
  * Add Article
@@ -125,7 +127,40 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 	    	->setLegend('Internal Article')
 	        ->setAttrib('id', 'internal_form')
 	        ->removeDecorator('DtDdWrapper');
-
+	        
+	    $field = new Hidden('subject_id');
+	    $field->setRequired()
+	        ->addValidator(new IntValidator())
+	        ->setAttrib('id', 'subjectId');
+	    $this->addElement($field);
+	     
+	    $field = new Text('subject');
+	    $field->setLabel('Subject')
+	    	->setAttrib('size', 70)
+	    	->setAttrib('id', 'subjectSearch')
+	    	->setAttrib('autocomplete', 'off')
+	    	->setAttrib('data-provide', 'typeahead')
+	    	->setRequired();
+	    $this->addElement($field);
+	     
+	    $field = new Checkbox('mandatory');
+	    $field->setLabel('Mandatory')
+	    	->setRequired();
+	    $this->addElement($field);
+	    
+	    $this->addDisplayGroup(
+	                array(
+	                    'subject_id',
+	                    'subject',
+	                    'mandatory',
+	                ),
+	                'subject_form'
+	            );
+	    $this->getDisplayGroup('subject_form')
+	    	->setLegend('Subject Mapping')
+	        ->setAttrib('id', 'subject_form')
+	        ->removeDecorator('DtDdWrapper');
+	    
         $field = new Submit('submit');
         $field->setLabel('Add')
                 ->setAttrib('class', 'btn btn-primary');

@@ -14,6 +14,18 @@
 		$(document).ready(function () {
 			$('#internal').click(toggleInternal);
 			toggleInternal();
+			
+			$('#subjectSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("prof_subject_typeahead")}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#subjectId').val($(this).data('value').id);
+			    } else {
+			        $('#subjectId').val('');
+			    }
+			});
 		});
 		
 		function toggleInternal() {

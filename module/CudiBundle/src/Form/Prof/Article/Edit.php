@@ -32,6 +32,9 @@ class Edit extends Add
          
         $this->removeElement('submit');
         
+        $this->getDisplayGroup('subject_form')->clearElements();
+        $this->removeDisplayGroup('subject_form');
+        
         $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'btn btn-primary');
