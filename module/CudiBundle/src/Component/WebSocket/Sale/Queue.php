@@ -267,6 +267,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			(object) array(
 				'sale' => (object) array(
 					'id' => $item->getId(),
+					'comment' => $item->getComment(),
 					'person' => (object) array(
 						'id' => $item->getPerson()->getId(),
 						'name' => $item->getPerson()->getFullName(),
