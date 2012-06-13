@@ -8,7 +8,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-        {% if hasAccess('admin_prof_action', 'manage') %}
+        {% if hasAccess('admin_prof_action', 'manage') and profActions|length > 0 %}
             <h1>Last Prof Actions</h1>
     	    <table>
     	        <tr>

@@ -112,32 +112,19 @@
     				</div>
     			</div>
 			{% endif %}
-			{% if hasAccess('sale_queue', 'signin') %}
-    			<div class="sidebox">
-    				<div class="title">Queue Sign-in</div>
-    				<div class="content">
-    					<p>
-    						<i>Please hit the link below to open queue sign-in page!</i>
-    					</p>
-    					<p>
-    						<a href="{{ url("sale_queue", {"action": "signin", "session": session.getId()}) }}">&rarr; Queue Sign-in</a>
-    					</p>
-    				</div>
-    			</div>
-			{% endif %}
-			{% if hasAccess('sale_queue', 'overview') %}
-    			<div class="sidebox">
-    				<div class="title">Queue Overview</div>
-    				<div class="content">
-    					<p>
-    						<i>Please hit the link below to go to the queue overview page!</i>
-    					</p>
-    					<p>
-    						<a href="{{ url("sale_queue", {"action": "overview", "session": session.getId()}) }}">&rarr; Queue Overview</a>
-    					</p>
-    				</div>
-    			</div>
-    		{% endif %}
+		{% endif %}
+		{% if hasAccess('admin_sales_session', 'queueItems') %}
+			<div class="sidebox">
+				<div class="title">Queue Items</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to view the queue items!</i>
+					</p>
+					<p>
+						<a href="{{ url("admin_sales_session", {"action": "queueItems", "id": session.getId()}) }}">&rarr; Queue Items</a>
+					</p>
+				</div>
+			</div>
 		{% endif %}
 	</aside>
 	

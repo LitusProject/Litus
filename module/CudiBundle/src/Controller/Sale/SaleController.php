@@ -37,6 +37,19 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     	);
     }
     
+    public function saveCommentAction()
+    {
+        if (!($queueItem = $this->_getQueueItem()))
+            return;
+
+        $queueItem->setComment($this->getRequest()->post()->get('comment'));
+        $this->getEntityManager()->flush();
+    
+        return array(
+            'result' => (object) array("status" => "success")
+        );
+    }
+    
     public function returnAction()
     {
         $session = $this->getEntityManager()
@@ -116,5 +129,52 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     	return array(
     		'form' => $form,
     	);
+    }
+    
+    private function _getQueueItem()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No ID was given to identify the queue item!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'sale_sale',
+    			array(
+    				'action' => 'sale'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $queueItem = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $queueItem) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No queue item with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'sale_sale',
+    			array(
+    				'action' => 'sale'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $queueItem;
     }
 }

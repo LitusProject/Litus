@@ -281,6 +281,21 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 		);
     }
     
+    public function queueItemsAction()
+    {
+        if (!($session = $this->_getSession()))
+        	return;
+        	
+        $items = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findBySession($session);
+        	
+        return array(
+            'session' => $session,
+            'items' => $items,
+        );
+    }
+    
     private function _getSession()
     {
     	if (null === $this->getParam('id')) {
