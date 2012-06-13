@@ -27,6 +27,9 @@
 			_clear($(this));
 			
 			$('body').unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
+			    if (e.target.is('input'))
+			        return;
+			    
 				if (_isNumericKey(e.which)) {
 				    e.preventDefault();
 				    _append($this, _getNumericValue(e.which));
@@ -36,7 +39,6 @@
 				} else {
 					_clear($this);
 				}
-				
 			});
 			
 			return this
