@@ -1,13 +1,9 @@
-{% if paginationParams is sameas(null) %}
-	{% set paginationParams = {} %}
-{% endif %}
-
 {% if 0 != paginationControl.pages.pageCount %}
     <table class="pagination {% if paginationControl.fullWidth %} full_width {% endif %}">
         <tr>
             <td>
                 {% if paginationControl.pages.previous is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.first}|merge(paginationParams)) }}">&larr; First</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.first}|merge(paginationControl.matchedRouteParams)) }}">&larr; First</a>
                 {% else %}
                     {% if 1 != paginationControl.pages.pageCount and 1 != paginationControl.pages.current %}
                         &larr; First
@@ -15,7 +11,7 @@
                 {% endif %}
 
 				{% if paginationControl.pages.previous is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationParams)) }}">&laquo; Previous</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationControl.matchedRouteParams)) }}">&laquo; Previous</a>
                 {% endif %}
             </td>
 
@@ -25,11 +21,11 @@
 
             <td>
                 {% if paginationControl.pages.next is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationParams)) }}">Next &raquo;</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">Next &raquo;</a>
                 {% endif %}
 
                 {% if paginationControl.pages.next is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.last}|merge(paginationParams)) }}">Last &rarr;</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.last}|merge(paginationControl.matchedRouteParams)) }}">Last &rarr;</a>
                 {% else %}
                     {% if 1 != paginationControl.pages.pageCount and paginationControl.pages.current != paginationControl.pages.pageCount %}
                         Last &rarr;

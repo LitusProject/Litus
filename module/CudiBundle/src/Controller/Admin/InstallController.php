@@ -172,11 +172,56 @@ The following bookings are assigned to you:
 	    $this->installAcl(
 	        array(
 	            'cudibundle' => array(
+	                'admin_article' => array(
+	                    'add', 'delete', 'edit', 'manage', 'search'
+	                ),
+	                'admin_article_comment' => array(
+	                    'delete', 'manage'
+	                ),
+	                'admin_article_file' => array(
+	                    'delete', 'download', 'edit', 'manage', 'progress', 'upload'
+	                ),
+	                'admin_article_subject' => array(
+	                    'delete', 'manage'
+	                ),
 	                'admin_prof_action' => array(
 	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
 	                ),
-	                'prof_index' => array(
-	                    'index'
+	                'admin_sales_article' => array(
+	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf'
+	                ),
+	                'admin_sales_booking' => array(
+	                    'add', 'assign', 'delete', 'inactive', 'manage', 'search', 'unassign'
+	                ),
+	                'admin_sales_discount' => array(
+	                    'delete', 'manage'
+	                ),
+	                'admin_sales_financial' => array(
+	                    'deliveries', 'retours', 'sales', 'stock', 'supplier'
+	                ),
+	                'admin_sales_session' => array(
+	                    'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems'
+	                ),
+	                'admin_stock' => array(
+	                    'delta', 'edit', 'manage', 'search'
+	                ),
+	                'admin_stock_delivery' => array(
+	                    'add', 'delete', 'manage', 'supplier'
+	                ),
+	                'admin_stock_order' => array(
+	                    'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
+	                ),
+	                'admin_stock_period' => array(
+	                    'manage', 'new', 'search', 'view'
+	                ),
+	                'admin_stock_retour' => array(
+	                    'add', 'delete', 'manage', 'supplier'
+	                ),
+	                'admin_supplier' => array(
+	                    'add', 'edit', 'manage'
+	                ),
+	                'admin_supplier_user' => array(
+	                    'add', 'delete', 'edit', 'manage'
 	                ),
 	                'prof_article' => array(
 	                    'add', 'edit', 'manage', 'typeahead'
@@ -190,11 +235,26 @@ The following bookings are assigned to you:
 	                'prof_file' => array(
 	                    'delete', 'download', 'manage', 'progress', 'upload'
 	                ),
+	                'prof_index' => array(
+	                    'index'
+	                ),
 	                'prof_prof' => array(
 	                    'add', 'delete', 'typeahead'
 	                ),
 	                'prof_subject' => array(
-	                    'manage', 'subject'
+	                    'manage', 'subject', 'typeahead'
+	                ),
+	                'sale_queue' => array(
+	                    'overview', 'signin'
+	                ),
+	                'sale_sale' => array(
+	                    'return', 'sale', 'saveComment'
+	                ),
+	                'supplier_article' => array(
+	                    'manage'
+	                ),
+	                'supplier_index' => array(
+	                    'index'
 	                ),
 	            )
 	        )
@@ -208,6 +268,12 @@ The following bookings are assigned to you:
 	                    'guest',
 	                ),
 	                'actions' => array(
+	                    'supplier_article' => array(
+	                        'manage'
+	                    ),
+	                    'supplier_index' => array(
+	                        'index'
+	                    ),
 	                )
 	            ),
 	            'prof' => array(
@@ -216,6 +282,27 @@ The following bookings are assigned to you:
 	                    'guest',
 	                ),
 	                'actions' => array(
+	                    'prof_article' => array(
+	                        'add', 'edit', 'manage', 'typeahead'
+	                    ),
+	                    'prof_article_mapping' => array(
+	                        'add', 'delete'
+	                    ),
+	                    'prof_comment' => array(
+	                        'delete', 'manage'
+	                    ),
+	                    'prof_file' => array(
+	                        'delete', 'download', 'manage', 'progress', 'upload'
+	                    ),
+	                    'prof_index' => array(
+	                        'index'
+	                    ),
+	                    'prof_prof' => array(
+	                        'add', 'delete', 'typeahead'
+	                    ),
+	                    'prof_subject' => array(
+	                        'manage', 'subject', 'typeahead'
+	                    ),
 	                )
 	            ),
 	        )

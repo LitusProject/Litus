@@ -106,6 +106,7 @@ return array(
     'CudiBundle\Form\Prof\File\Add'                            => __DIR__ . '/src/Form/Prof/File/Add.php',
     'CudiBundle\Form\Prof\Mapping\Add'                         => __DIR__ . '/src/Form/Prof/Mapping/Add.php',
     'CudiBundle\Form\Prof\Prof\Add'                            => __DIR__ . '/src/Form/Prof/Prof/Add.php',
+    'CudiBundle\Form\Prof\Subject\Enrollment'                  => __DIR__ . '/src/Form/Prof/Subject/Enrollment.php',
     'CudiBundle\Form\Sale\Queue\SignIn'                        => __DIR__ . '/src/Form/Sale/Queue/SignIn.php',
     'CudiBundle\Form\Sale\Sale\ReturnSale'                     => __DIR__ . '/src/Form/Sale/Sale/ReturnSale.php',
     'CudiBundle\Repository\Article'                            => __DIR__ . '/src/Repository/Article.php',

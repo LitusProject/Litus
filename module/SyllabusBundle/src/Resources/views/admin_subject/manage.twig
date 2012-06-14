@@ -28,11 +28,12 @@
 	    	
 	    	<table class="full_width">
 	        	<tr>
-	        	    <th width="90px">Code</th>
+	        	    <th width="80px">Code</th>
 	        	    <th>Name</th>
-	        	    <th width="80px">Semester</th>
-	        	    <th width="80px">Credits</th>
+	        	    <th width="70px">Semester</th>
+	        	    <th width="60px">Credits</th>
 	        	    <th width="80px">Mandatory</th>
+	        	    <th width="70px">Students</th>
 		            <th width="80px">Actions</th>
 	        	</tr>
 	    	</table>
@@ -41,11 +42,12 @@
 		<div id="default_page">
 			<table class="full_width">
 		        <tr>
-		            <th width="90px">Code</th>
+		            <th width="80px">Code</th>
 		            <th>Name</th>
-		            <th width="80px">Semester</th>
-		            <th width="80px">Credits</th>
+		            <th width="70px">Semester</th>
+		            <th width="60px">Credits</th>
 		            <th width="80px">Mandatory</th>
+		            <th width="70px">Students</th>
 		            <th width="80px">Actions</th>
 		        </tr>
 		        
@@ -56,6 +58,7 @@
 		                <td>{{ mapping.getSubject().getSemester() }}</td>
 		                <td>{{ mapping.getSubject().getCredits() }}</td>
 		                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
+		                <td>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</td>
 		                <td>
 		                    {% if hasAccess('admin_subject', 'subject') %}
 		                        <a href="{{ url('admin_subject', {"action": "subject", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>

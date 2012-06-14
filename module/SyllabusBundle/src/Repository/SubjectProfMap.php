@@ -82,4 +82,38 @@ class SubjectProfMap extends EntityRepository
         	
         return $resultSet;
     }
+    
+    public function findAllByNameAndProfAndAcademicYearTypeAhead($name, Academic $prof, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+        	->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+            
+        $ids = array();
+        foreach($resultSet as $subject)
+            $ids[] = $subject->getSubject()->getId();
+            
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.prof', ':prof'),
+        	        $query->expr()->eq('m.academicYear', ':academicYear'),
+        	        $query->expr()->in('m.subject', $ids)
+        	    )
+        	)
+        	->setParameter('prof', $prof->getId())
+        	->setParameter('academicYear', $academicYear->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

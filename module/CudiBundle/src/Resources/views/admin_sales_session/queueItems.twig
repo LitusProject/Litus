@@ -1,0 +1,60 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_sales_session/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	    <table class="full_width" id="articleComments">
+            <tr>
+                <th width="100px">Date</th>
+                <th width="140px">Person</th>
+                <th width="80px">Status</th>
+                <th width="140px">Action</th>
+            </tr>
+    
+            {% for item in items %}
+                <tr class="item">
+                    <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
+                    <td>{{ item.getPerson().getFullName() }}</td>
+                    <td>{{ item.getStatus()|capitalize }}</td>
+    				<td>
+    					<a href="#" class="view" data-text="{{ item.getComment() }}">Comments</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+	</div>
+	
+	<div class="modal hide fade" id="viewComment">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Queue Item Comment
+		</div>
+		<div class="modal-body">
+			<pre class="text"></pre>
+	        <br style="clear:both" />
+			<div class="footer">
+				<input type="button" data-dismiss="modal" value="Close">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .view').click(openViewModal);
+		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var viewComment = $('#viewComment');
+			viewComment.find('.text').html($this.data('text'));
+			viewComment.modal();
+		}
+	</script>
+{% endblock %}

@@ -8,6 +8,20 @@
 			<p>An error occurred while loading the queue.</p>
 		</div>
 	</div>
+	<div class="flashmessage alert alert-success fade" id="comment_saved_success">
+	    <a class="close" data-dismiss="alert">&times;</a>
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The comment was successfully saved.</p>
+		</div>
+	</div>
+	<div class="flashmessage alert alert-error fade" id="comment_saved_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while saving the comment.</p>
+		</div>
+	</div>
 	
 	<div id="sale">
 		<div class="row wrapper">
@@ -15,6 +29,10 @@
 				<div class="row title">Current customer:</div>
 				<div class="row name">&nbsp;</div>
 				<div class="row actions">
+					<button class="btn btn-info addComment">
+					    <i class="icon-comment icon-white"></i>
+					    Comment
+					</button>
 					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
 					    <i class="icon-eye-open icon-white"></i>
 					    Queue - F8
@@ -161,11 +179,28 @@
 			</button>
 		</div>
 	</div>
+	<div id="modalAddComment" class="modal fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Comments</h3>
+		</div>
+		<div class="modal-body">
+			<textarea style="width: 97%;" rows="10"></textarea> 
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary save" data-dismiss="modal">Save</button>
+			<button class="btn" data-dismiss="modal">Close</button>
+		</div>
+	</div>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    $('.addComment').click(function () {
+		        $('#modalAddComment').modal();
+		    });
+		    
 			$('.showQueue').click(function () {
 				$('#queueModal').permanentModal('open', {closable: true});
 			});
@@ -223,6 +258,19 @@
 							}
 						}
 					});
+							
+					$('#modalAddComment textarea').val(data.sale.comment);
+					$('#modalAddComment .save').click(function () {
+					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}/' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function  (data) {
+					        if (data && 'success' == data.status) {
+					    		$('.flashmessage').removeClass('in');
+					    		$('#comment_saved_success').addClass('in');
+					    		$('#modalAddComment').modal('hide');
+					    	} else {
+					    	    errorSaveComment();
+					    	}
+					    }, 'json').error(errorSaveComment);
+					});
 				},
 				closeSale: function () {
 					$('#sale').sale('close');
@@ -230,7 +278,13 @@
 				isSelling: function () {
 				    return $('#sale').data('saleSettings') ? true : false;
 				}
-			});		
+			});
 		});
+		
+		function errorSaveComment() {
+			$('.flashmessage').removeClass('in');
+			$('#comment_saved_error').addClass('in');
+			$('#modalAddComment').modal('hide');
+		}
 	</script>
 {% endblock %}

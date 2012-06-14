@@ -22,9 +22,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CudiBundle\Entity\Article,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Checkbox,
+	Zend\Form\Element\Hidden,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\Form\Element\Text,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Article
@@ -172,6 +174,41 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 		$this->getDisplayGroup('internal_form')
 	    	->setLegend('Internal Article')
 	        ->setAttrib('id', 'internal_form')
+	        ->removeDecorator('DtDdWrapper');
+	        
+	    $field = new Hidden('subject_id');
+	    $field->setRequired()
+	        ->addValidator(new IntValidator())
+	        ->setAttrib('id', 'subjectId');
+	    $this->addElement($field);
+	     
+	    $field = new Text('subject');
+	    $field->setLabel('Subject')
+	    	->setAttrib('size', 70)
+	    	->setAttrib('id', 'subjectSearch')
+	    	->setAttrib('autocomplete', 'off')
+	    	->setAttrib('data-provide', 'typeahead')
+	    	->setRequired()
+	    	->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+	     
+	    $field = new Checkbox('mandatory');
+	    $field->setLabel('Mandatory')
+	    	->setRequired()
+	    	->setDecorators(array(new FieldDecorator()));
+	    $this->addElement($field);
+	    
+	    $this->addDisplayGroup(
+	                array(
+	                    'subject_id',
+	                    'subject',
+	                    'mandatory',
+	                ),
+	                'subject_form'
+	            );
+	    $this->getDisplayGroup('subject_form')
+	    	->setLegend('Subject Mapping')
+	        ->setAttrib('id', 'subject_form')
 	        ->removeDecorator('DtDdWrapper');
 
         $field = new Submit('submit');

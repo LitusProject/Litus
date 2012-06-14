@@ -15,6 +15,8 @@
  
 namespace SyllabusBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear;
+
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\Subject")
  * @Table(name="syllabus.subject")
@@ -57,6 +59,13 @@ class Subject
      * @Column(type="smallint")
      */
     private $credits;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The enrollments of the subject
+     *
+     * @OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
+     */
+    private $enrollments;
     
     /**
      * @param string $code
@@ -110,5 +119,33 @@ class Subject
     public function getCredits()
     {
         return $this->credits;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     *
+     * @return integer
+     */
+    public function getNbEnrollment(AcademicYear $academicYear)
+    {
+        foreach($this->enrollments as $enrollment) {
+            if ($enrollment->getAcademicYear() == $academicYear)
+                return $enrollment->getNumber();
+        }
+        return 0;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     *
+     * @return \SyllabusBundle\Entity\StudentEnrollment
+     */
+    public function getEnrollment(AcademicYear $academicYear)
+    {
+        foreach($this->enrollments as $enrollment) {
+            if ($enrollment->getAcademicYear() == $academicYear)
+                return $enrollment;
+        }
+        return null;
     }
 }

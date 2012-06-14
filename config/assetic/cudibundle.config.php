@@ -26,6 +26,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@common_typeahead_remote',
 		),
 		'admin_article_subject' => array(
 			'@common_jquery',
@@ -77,6 +78,8 @@ return array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',
+		    '@bootstrap_js_transition',
+		    '@bootstrap_js_modal',
 		),
 		'admin_sales_financial' => array(
 			'@common_jquery',
@@ -195,6 +198,7 @@ return array(
 			'@bootstrap_css',
 			'@bootstrap_js_dropdown',
 			'@bootstrap_js_alert',
+			'@common_typeahead_remote',
 			'@prof_css',
 		),
 		'prof_article_mapping' => array(
