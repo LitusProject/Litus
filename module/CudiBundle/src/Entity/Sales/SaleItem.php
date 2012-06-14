@@ -17,7 +17,8 @@ namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Sales\QueueItem,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
@@ -83,15 +84,23 @@ class SaleItem
 	 * @param \CudiBundle\Entity\Sales\Article $article
 	 * @param integer $number
 	 * @param integer $price
-	 * @param \CudiBundle\Entity\Sales\QueueItem $queueItem
+	 * @param \CudiBundle\Entity\Sales\QueueItem|null $queueItem
+	 * @param \Doctrine\ORM\EntityManager|null $entityManager
 	 */
-	public function __construct(Article $article, $number, $price, QueueItem $queueItem)
+	public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, EntityManager $entityManager = null)
 	{
-	    $this->session = $queueItem->getSession();
+	    if (null == $queueItem) {
+	        if (null == $entityManager)
+	            throw new \InvalidArgumentException('EntityManager must be set');
+	        $this->session = $entityManager->getRepository('CudiBundle\Entity\Sales\Session')
+	            ->getLast();
+	    } else {
+	        $this->queueItem = $queueItem;
+	        $this->session = $queueItem->getSession();
+	    }
 	    $this->article = $article;
 	    $this->number = $number;
 	    $this->price = $price * 100;
-	    $this->queueItem = $queueItem;
 	    $this->timestamp = new DateTime();
 	}
 	

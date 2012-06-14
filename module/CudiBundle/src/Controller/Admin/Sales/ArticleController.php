@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Entity\Sales\Article as SaleArticle,
-    CudiBundle\Entity\Sales\History;
+    CudiBundle\Entity\Sales\History,
+    CudiBundle\Entity\Sales\SaleItem;
 
 /**
  * ArticleController
@@ -273,6 +274,35 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    return array(
 	    	'result' => $result,
 	    );
+	}
+	
+	public function sellProfAction()
+	{
+	    if (!($saleArticle = $this->_getSaleArticle()))
+	        return;
+	    
+	    $saleItem = new SaleItem(
+	        $saleArticle,
+	        1,
+	        0,
+	        null,
+	        $this->getEntityManager()
+	    );
+	    $this->getEntityManager()->persist($saleItem);
+	    
+	    $saleArticle->setStockValue($saleArticle->getStockValue() - 1);
+	    
+	    $this->getEntityManager()->flush();    
+	    
+	    $this->flashMessenger()->addMessage(
+    		new FlashMessage(
+        		FlashMessage::SUCCESS,
+            	'SUCCESS',
+            	'The article is successfully sold to a prof'
+        	)
+    	);
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
 	}
     
     private function _getSaleArticle()
