@@ -94,7 +94,7 @@
     						<i>Please hit the link below to close this sale session!</i>
     					</p>
     					<p>
-    						<a href="{{ url("admin_sales_session", {"action": "close", "id": session.getId()}) }}">&rarr; Close</a>
+    						<a href="#" class="closeSession">&rarr; Close</a>
     					</p>
     				</div>
     			</div>
@@ -112,32 +112,58 @@
     				</div>
     			</div>
 			{% endif %}
-			{% if hasAccess('sale_queue', 'signin') %}
-    			<div class="sidebox">
-    				<div class="title">Queue Sign-in</div>
-    				<div class="content">
-    					<p>
-    						<i>Please hit the link below to open queue sign-in page!</i>
-    					</p>
-    					<p>
-    						<a href="{{ url("sale_queue", {"action": "signin", "session": session.getId()}) }}">&rarr; Queue Sign-in</a>
-    					</p>
-    				</div>
-    			</div>
-			{% endif %}
-			{% if hasAccess('sale_queue', 'overview') %}
-    			<div class="sidebox">
-    				<div class="title">Queue Overview</div>
-    				<div class="content">
-    					<p>
-    						<i>Please hit the link below to go to the queue overview page!</i>
-    					</p>
-    					<p>
-    						<a href="{{ url("sale_queue", {"action": "overview", "session": session.getId()}) }}">&rarr; Queue Overview</a>
-    					</p>
-    				</div>
-    			</div>
-    		{% endif %}
+		{% endif %}
+		{% if hasAccess('admin_sales_session', 'queueItems') %}
+			<div class="sidebox">
+				<div class="title">Queue Items</div>
+				<div class="content">
+					<p>
+						<i>Please hit the link below to view the queue items!</i>
+					</p>
+					<p>
+						<a href="{{ url("admin_sales_session", {"action": "queueItems", "id": session.getId()}) }}">&rarr; Queue Items</a>
+					</p>
+				</div>
+			</div>
 		{% endif %}
 	</aside>
+	
+	<div class="modal hide fade" id="closeSession">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Close Session
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to close the current sale session!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="yes" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.closeSession').click(openModal);
+        });
+        
+        function openModal(e) {
+        	var $this = $(this);
+        	
+        	e.preventDefault();
+        	var closeSession = $('#closeSession');
+        	closeSession.find('.yes').unbind('click').click(function () {
+        	    window.location.href = '{{ url("admin_sales_session", {"action": "close", "id": session.getId()}) }}';
+        	});
+        	closeSession.modal();
+        }
+    </script>
 {% endblock %}

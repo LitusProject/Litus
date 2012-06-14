@@ -32,5 +32,55 @@
 	    	    </div>
 	    	</div>
 	    {% endif %}
+	    {% if hasAccess('admin_sales_article', 'sellProf') %}
+	    	<div class="sidebox">
+	    	    <div class="title">Sell Prof Version</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to sell an article to a prof!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="#" class="sellProfVersion">&rarr; Sell Prof Version</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
 	</aside>
+	
+	<div class="modal hide fade" id="sellProfVersion">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Sell Prof Version
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to sell an article to a prof!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="sell" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block controller_script %}
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $('.sellProfVersion').click(openSellProfModal);
+	    });
+	    function openSellProfModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var assignAllBooking = $('#sellProfVersion');
+			assignAllBooking.find('.sell').unbind('click').click(function () {
+			    window.location.href = '{{ url('admin_sales_article', {"action": "sellProf", "id": article.getId()})}}';
+			});
+			assignAllBooking.modal();
+		}
+	</script>
 {% endblock %}

@@ -52,4 +52,20 @@ class Session extends EntityRepository
 
         return $resultSet;
     }
+    
+    public function getLast()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+        	->from('CudiBundle\Entity\Sales\Session', 's')
+        	->setMaxResults(1)
+        	->orderBy('s.openDate', 'DESC')
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+        
+        return null;
+    }
 }

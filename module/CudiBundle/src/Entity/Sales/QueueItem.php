@@ -119,7 +119,7 @@ class QueueItem
     /**
      * @return boolean
      */
-    public static function isValidServingQueueStatus($status)
+    public static function isValidQueueStatus($status)
     {
     	return in_array($status, self::$POSSIBLE_STATUSES);
     }
@@ -175,12 +175,12 @@ class QueueItem
     /**
      * @param string $status
      *
-     * @return \CudiBundle\Entity\Sales\ServingQueueItem
+     * @return \CudiBundle\Entity\Sales\QueueItem
      */
     public function setStatus($status)
     {
-        if (!self::isValidServingQueueStatus($status))
-        	throw new \InvalidArgumentException('The ServingQueueStatus is not valid.');
+        if (!self::isValidQueueStatus($status))
+        	throw new \InvalidArgumentException('The QueueStatus is not valid.');
         
     	$this->status = $status;
     	
@@ -210,6 +210,17 @@ class QueueItem
     public function getSoldTime()
     {
         return $this->soldTime;
+    }
+    
+    /**
+     * @param string $comment
+     * 
+     * @return \CudiBundle\Entity\Sales\QueueItem
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
     }
     
     /**

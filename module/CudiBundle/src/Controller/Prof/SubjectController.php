@@ -16,7 +16,9 @@
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article;
+    CudiBundle\Entity\Article,
+    CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
+    SyllabusBundle\Entity\StudentEnrollment;
 
 /**
  * SubjectController
@@ -27,12 +29,16 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        	
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->_getAcademicYear());
         
     	return array(
     	    'subjects' => $subjects,
+            'academicYear' => $academicYear,
     	);
     }
     
@@ -41,7 +47,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
             
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
@@ -61,15 +68,78 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
         
+        $enrollment = $subject->getEnrollment($academicYear);
+        $enrollmentForm = new EnrollmentForm($enrollment);
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+        	
+        	if ($enrollmentForm->isValid($formData)) {
+        	    if ($enrollment) {
+        	        $enrollment->setNumber($formData['students']);
+        	    } else {
+        	        $enrollment = new StudentEnrollment($subject, $academicYear, $formData['students']);
+        	        $this->getEntityManager()->persist($enrollment);
+        	    }
+        	    
+        	    $this->getEntityManager()->flush();
+        	    
+        	    $this->flashMessenger()->addMessage(
+        	        new FlashMessage(
+        	            FlashMessage::SUCCESS,
+        	            'SUCCESS',
+        	            'The student enrollment was successfully updated!'
+        	        )
+        	    );
+        	    
+        	    $this->redirect()->toRoute(
+        	    	'prof_subject',
+        	    	array(
+        	    		'action' => 'subject',
+        	    		'id' => $subject->getId(),
+        	    	)
+        	    );
+        	    
+        	    return;
+        	}
+        }
+        
         return array(
             'subject' => $subject,
+            'academicYear' => $academicYear,
             'articleMappings' => $articleMappings,
             'profMappings' => $profMappings,
+            'enrollmentForm' => $enrollmentForm,
         );
     }
     
+    public function typeaheadAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        
+        $subjects = $this->getEntityManager()
+        	->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        	->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
+
+        $result = array();
+        foreach($subjects as $subject) {
+        	$item = (object) array();
+        	$item->id = $subject->getSubject()->getId();
+        	$item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+        }
+    
     private function _getSubject()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return;
+        	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
@@ -94,7 +164,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id'),
                 $this->getAuthentication()->getPersonObject(),
-                $this->_getAcademicYear()
+                $academicYear
             );
 
     	if (null === $mapping) {

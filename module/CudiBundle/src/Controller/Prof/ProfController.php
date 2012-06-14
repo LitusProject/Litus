@@ -31,6 +31,9 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
             
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+            
         $form = new AddForm();
         
         if($this->getRequest()->isPost()) {
@@ -43,10 +46,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 	    	        
 	    	    $mapping = $this->getEntityManager()
 	    	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	    	        ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $this->_getAcademicYear());
+	    	        ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 	    	    
 	    	    if (null === $mapping) {
-    	    	    $mapping = new SubjectProfMap($subject, $docent, $this->_getAcademicYear());
+    	    	    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
     	    	    $this->getEntityManager()->persist($mapping);
     	    	    $this->getEntityManager()->flush();
     	    	}
@@ -122,6 +125,9 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     
     private function _getSubject($id = null)
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+        	return
+        	
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
@@ -148,7 +154,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $id,
                 $this->getAuthentication()->getPersonObject(),
-                $this->_getAcademicYear()
+                $academicYear
             );
             
     	

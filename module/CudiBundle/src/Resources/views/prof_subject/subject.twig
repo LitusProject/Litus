@@ -38,8 +38,14 @@
 	    Code: <b>{{ subject.getCode() }}</b><br />
 	    Name: <b>{{ subject.getName() }}</b><br />
 	    Semester: <b>{{ subject.getSemester() }}</b><br />
-	    Credits: <b>{{ subject.getCredits() }}</b>
+	    Credits: <b>{{ subject.getCredits() }}</b><br />
+	    Students: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
 	</p>
+	
+	<h3>Number of students:</h3>
+	{% autoescape false %}
+    	{{ enrollmentForm }}
+    {% endautoescape %}
     
     <h3>Articles:</h3>
     <table class="table table-bordered table-striped">

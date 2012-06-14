@@ -1,13 +1,9 @@
-{% if paginationParams is sameas(null) %}
-	{% set paginationParams = {} %}
-{% endif %}
-
 {% if 1 < paginationControl.pages.pageCount %}
     <div class="pagination pagination-centered">
         <ul>
             <li {% if paginationControl.pages.previous is sameas(null) %}class="disabled"{% endif %}>
                 {% if paginationControl.pages.previous is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationParams)) }}">&larr;</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationControl.matchedRouteParams)) }}">&larr;</a>
                 {% else %}
                     <a href="#">&larr;</a>
                 {% endif %}
@@ -17,7 +13,7 @@
                 {% if paginationControl.pages.current - 4 <= 1 %}
                     {% for i in 1 .. 9 %}
                         <li {% if paginationControl.pages.current == i %}class="active"{% endif %}>
-                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationParams)) }}">{{ i }}</a>
+                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationControl.matchedRouteParams)) }}">{{ i }}</a>
                         </li>
                     {% endfor %}
                     <li class="disabled">
@@ -29,7 +25,7 @@
                     </li>
                     {% for i in paginationControl.pages.pageCount - 8 .. paginationControl.pages.pageCount %}
                         <li {% if paginationControl.pages.current == i %}class="active"{% endif %}>
-                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationParams)) }}">{{ i }}</a>
+                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationControl.matchedRouteParams)) }}">{{ i }}</a>
                         </li>
                     {% endfor %}
                 {% else %}
@@ -38,7 +34,7 @@
                     </li>
                     {% for i in paginationControl.pages.current - 4 .. paginationControl.pages.current + 4 %}
                         <li {% if paginationControl.pages.current == i %}class="active"{% endif %}>
-                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationParams)) }}">{{ i }}</a>
+                            <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationControl.matchedRouteParams)) }}">{{ i }}</a>
                         </li>
                     {% endfor %}
                     <li class="disabled">
@@ -48,14 +44,14 @@
             {% else %}
                 {% for i in paginationControl.pages.first .. paginationControl.pages.last %}
                     <li {% if paginationControl.pages.current == i %}class="active"{% endif %}>
-                        <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationParams)) }}">{{ i }}</a>
+                        <a href="{{ url(paginationControl.matchedRouteName, {"page": i}|merge(paginationControl.matchedRouteParams)) }}">{{ i }}</a>
                     </li>
                 {% endfor %}
             {% endif %}
             
             <li {% if paginationControl.pages.next is sameas(null) %}class="disabled"{% endif %}>
                 {% if paginationControl.pages.next is not sameas(null) %}
-                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationParams)) }}">&rarr;</a>
+                    <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">&rarr;</a>
                 {% else %}
                     <a href="#">&rarr;</a>
                 {% endif %}

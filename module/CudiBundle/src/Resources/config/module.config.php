@@ -429,10 +429,11 @@ return array(
 		'sale_sale' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/sale[/:action]/:session',
+				'route' => '/cudi/sale[/:action]/:session[/:id]',
 				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
+					'id'      => '[0-9]*',
 				),
 				'defaults' => array(
 					'controller' => 'sale_sale',
@@ -520,6 +521,19 @@ return array(
 	    		'defaults' => array(
 	    			'controller' => 'prof_subject',
 	    			'action'     => 'manage',
+	    		),
+	    	),
+	    ),
+	    'prof_subject_typeahead' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/cudi/prof/subject/typeahead[/:string]',
+	    		'constraints' => array(
+	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'prof_subject',
+	    			'action'     => 'typeahead',
 	    		),
 	    	),
 	    ),

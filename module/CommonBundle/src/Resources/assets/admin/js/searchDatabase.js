@@ -49,7 +49,7 @@
 						dataType: 'json',
 						success: opts.display
 					});
-				}, 100));
+				}, 200));
 			});
 		});
 	};
