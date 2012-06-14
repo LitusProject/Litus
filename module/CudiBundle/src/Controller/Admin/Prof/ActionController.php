@@ -17,8 +17,8 @@ namespace CudiBundle\Controller\Admin\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
-    CudiBundle\Form\Admin\Article\Confirm as ArticleForm,
-    CudiBundle\Form\Admin\File\Confirm as FileForm;
+    CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
+    CudiBundle\Form\Admin\Prof\File\Confirm as FileForm;
 
 /**
  * ActionController
@@ -134,7 +134,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->setPublishers($edited->getPublishers())
                     ->setYearPublished($edited->getYearPublished())
                     ->setISBN($edited->getISBN())
-                    ->setURL($edited->getURL());
+                    ->setURL($edited->getURL())
+                    ->setIsDownloadable($edited->isDownloadable())
+                    ->setType($edited->getType());
                     
                 $edited->setTitle($duplicate->getTitle())
                     ->setAuthors($duplicate->getAuthors())
@@ -219,7 +221,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
         	        ->setISBN($formData['isbn'])
-        	        ->setURL($formData['url']);
+        	        ->setURL($formData['url'])
+        	        ->setIsDownloadable($formData['downloadable'])
+        	        ->setType($formData['type']);
         	    
 				if ($formData['internal']) {
 					$binding = $this->getEntityManager()

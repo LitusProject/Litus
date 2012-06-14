@@ -32,7 +32,9 @@ class External extends \CudiBundle\Entity\Article
             $this->getPublishers(),
             $this->getYearPublished(),
             $this->getISBN(),
-            $this->getURL()
+            $this->getURL(),
+            $this->getType(),
+            $this->isDownloadable()
         );
     }
     

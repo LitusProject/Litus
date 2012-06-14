@@ -87,6 +87,18 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator(new UriValidator());
         $this->addElement($field);
+        
+        $field = new Checkbox('downloadable');
+        $field->setLabel('Downloadable')
+        	->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new Select('type');
+        $field->setLabel('Type')
+           	->setRequired()
+        	->setMultiOptions(array('common' => 'Common', 'exercises' => 'Exercises', 'handbook' => 'Handbook', 'slides' => 'Slides', 'student' => 'Student'))
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
 		$field = new Checkbox('internal');
 		$field->setLabel('Internal Article')
@@ -101,7 +113,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 				'year_published',
 				'isbn',
 				'url',
-				'internal'
+				'downloadable',
+				'type',
+				'internal',
 		    ),
 		    'article_form'
 		);
@@ -251,6 +265,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 			'year_published' => $article->getYearPublished(),
 			'isbn' => $article->getISBN(),
 			'url' => $article->getURL(),
+			'downloadable' => $article->isDownloadable(),
+			'type' => $article->getType(),
 			'internal' => $article->isInternal()
 		);
 		

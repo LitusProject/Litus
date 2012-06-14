@@ -32,7 +32,8 @@ class Edit extends Add
          
         $this->removeElement('submit');
         
-        $this->getDisplayGroup('subject_form')->clearElements();
+        foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
+            $this->removeElement($element->getName());
         $this->removeDisplayGroup('subject_form');
         
         $field = new Submit('submit');

@@ -45,10 +45,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     public function addAction()
     {
         if (!($academicYear = $this->_getAcademicYear()))
-        	return
-        	
+        	return;
+
         $form = new AddForm($this->getEntityManager());
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
         	
@@ -65,6 +65,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 						$formData['year_published'],
 						$formData['isbn'],
 						$formData['url'],
+						$formData['type'],
+						$formData['downloadable'],
 						0,
                         0,
                         $binding,
@@ -81,7 +83,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 	                	$formData['publisher'],
 	                	$formData['year_published'],
 	                	$formData['isbn'],
-	                	$formData['url']
+	                	$formData['url'],
+	                	$formData['type'],
+	                	$formData['downloadable']
 	           		);
 				}
 				
@@ -186,6 +190,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	    $duplicate->setURL($formData['url']);
                 	    $edited = true;
                 	}
+                	if ($article->isDownloadable() != $formData['downloadable']) {
+                	    $duplicate->setIsDownloadable($formData['downloadable']);
+                	    $edited = true;
+                	}
+                	if ($article->getType() != $formData['type']) {
+                	    $duplicate->setType($formData['type']);
+                	    $edited = true;
+                	}
     				
 				    if ($formData['internal']) {
 				        if ($article->getBinding()->getId() != $formData['binding']) {
@@ -215,7 +227,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 				        ->setYearPublished($formData['year_published'])
 				        ->setTitle($formData['title'])
 				        ->setISBN($formData['isbn'])
-				        ->setURL($formData['url']);
+				        ->setURL($formData['url'])
+				        ->setIsDownloadable($formData['downloadable'])
+				        ->setType($formData['type']);
 				    				    
 			        if ($formData['internal']) {
 			            $article->setBinding(

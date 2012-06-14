@@ -57,6 +57,16 @@
 	                    <td>{{ action.getPreviousEntity().getURL() }}</td>
 	                    <td>{{ action.getEntity().getURL() }}</td>
 	                </tr>
+	                <tr>
+	                    <td>Downloadable</td>
+	                    <td>{% if action.getPreviousEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
+	                    <td>{% if action.getEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
+	                </tr>
+	                <tr>
+	                    <td>Type</td>
+	                    <td>{{ action.getPreviousEntity().getType()|capitalize }}</td>
+	                    <td>{{ action.getEntity().getType()|capitalize }}</td>
+	                </tr>
                     {% if action.getEntity().isInternal() %}
                         <tr>
                             <td>Binding</td>

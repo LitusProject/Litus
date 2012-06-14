@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($opts);
         
        	$this->_entityManager = $entityManager;
-         
+
         $field = new Text('title');
         $field->setLabel('Title')
 			->setAttrib('size', 70)
@@ -79,6 +79,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('URL')
         	->addValidator(new UriValidator());
         $this->addElement($field);
+        
+        $field = new Checkbox('downloadable');
+        $field->setLabel('Downloadable');
+        $this->addElement($field);
+        
+        $field = new Select('type');
+        $field->setLabel('Type')
+           	->setRequired()
+        	->setMultiOptions(array('common' => 'Common', 'exercises' => 'Exercises', 'handbook' => 'Handbook', 'slides' => 'Slides', 'student' => 'Student'));
+        $this->addElement($field);
 
 		$field = new Checkbox('internal');
 		$field->setLabel('Internal Article');
@@ -92,6 +102,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 				'year_published',
 				'isbn',
 				'url',
+				'downloadable',
+				'type',
 				'internal',
 		    ),
 		    'article_form'
@@ -190,6 +202,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 			'year_published' => $article->getYearPublished(),
 			'isbn' => $article->getISBN(),
 			'url' => $article->getURL(),
+			'downloadable' => $article->isDownloadable(),
+			'type' => $article->getType(),
 			'internal' => $article->isInternal()
 		);
 		
