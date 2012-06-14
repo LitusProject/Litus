@@ -71,6 +71,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 						$formData['year_published'],
 						$formData['isbn'],
 						$formData['url'],
+						$formData['type'],
+						$formData['downloadable'],
 						$formData['nb_black_and_white'],
                         $formData['nb_colored'],
                         $binding,
@@ -87,7 +89,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	                	$formData['publisher'],
 	                	$formData['year_published'],
 	                	$formData['isbn'],
-	                	$formData['url']
+	                	$formData['url'],
+	                	$formData['type'],
+	                	$formData['downloadable']
 	           		);
 				}
 				
@@ -141,10 +145,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $form = new EditForm($this->getEntityManager(), $article);
         
-        
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+
         	if ($form->isValid($formData)) {
         	    $history = new History($article);
 				$this->getEntityManager()->persist($history);
@@ -154,7 +157,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
         	        ->setISBN($formData['isbn'])
-        	        ->setURL($formData['url']);
+        	        ->setURL($formData['url'])
+        	        ->setIsDownloadable($formData['downloadable'])
+        	        ->setType($formData['type']);
         	    
 				if ($article->isInternal()) {
 					$binding = $this->getEntityManager()

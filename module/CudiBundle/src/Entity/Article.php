@@ -109,6 +109,27 @@ abstract class Article
     private $isProf;
     
     /**
+     * @var boolean The flag whether the article is downloadable
+     *
+     * @Column(type="boolean")
+     */
+    private $downloadable;
+    
+    /**
+     * @var string The article type
+     *
+     * @Column(type="string")
+     */
+    private $type;
+    
+    /**
+     * @var array The possible types of an article
+     */
+    private static $POSSIBLE_TYPES = array(
+    	'exercises', 'slides', 'student', 'common', 'handbook'
+    );
+    
+    /**
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
@@ -117,8 +138,10 @@ abstract class Article
      * @param integer $yearPublished The year the article was published
      * @param integer $isbn The isbn of the article
      * @param string|null $url The url of the article
+     * @param string $type The article type
+     * @param boolean $downloadable The flag whether the article is downloadable
      */
-    public function __construct($title, $authors, $publishers, $yearPublished, $isbn, $url = null)
+    public function __construct($title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable)
     {
         $this->setTitle($title)
             ->setAuthors($authors)
@@ -128,8 +151,18 @@ abstract class Article
             ->setISBN($isbn)
             ->setURL($url)
             ->setIsHistory(false)
-            ->setIsProf(false);
+            ->setIsProf(false)
+            ->setType($type)
+            ->setIsDownloadable($downloadable);
         $this->timestamp = new DateTime();
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidArticleType($type)
+    {
+    	return in_array($type, self::$POSSIBLE_TYPES);
     }
     
     /**
@@ -321,6 +354,44 @@ abstract class Article
 	public function setIsProf($isProf)
 	{
 	    $this->isProf = $isProf;
+	    return $this;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function isDownloadable()
+	{
+	    return $this->downloadable;
+	}
+	
+	/**
+	 * @param boolean $downloadable
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setIsDownloadable($downloadable)
+	{
+	    $this->downloadable = $downloadable;
+	    return $this;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+	    return $this->type;
+	}
+	
+	/**
+	 * @param string $type
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setType($type)
+	{
+	    $this->type = $type;
 	    return $this;
 	}
 	

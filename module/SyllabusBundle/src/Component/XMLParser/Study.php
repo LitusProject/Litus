@@ -177,6 +177,7 @@ class Study
 		    } else {
 		        $studies[$phaseNumber][0] = $mainStudy;
 		    }
+		    $this->getEntityManager()->flush();
 		}
 		return $studies;
     }
@@ -235,6 +236,7 @@ class Study
                             $this->getEntityManager()->persist($map);
                         }
                     }
+                    $this->getEntityManager()->flush();
                 }
             }
             
@@ -299,6 +301,7 @@ class Study
                 $map = new SubjectProfMap($subject, $prof, $this->_academicYear);
                 $this->getEntityManager()->persist($map);
             }
+            $this->getEntityManager()->flush();
         }
     }
     
