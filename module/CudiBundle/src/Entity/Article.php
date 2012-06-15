@@ -125,8 +125,12 @@ abstract class Article
     /**
      * @var array The possible types of an article
      */
-    private static $POSSIBLE_TYPES = array(
-    	'exercises', 'slides', 'student', 'common', 'handbook'
+    public static $POSSIBLE_TYPES = array(
+    	'common' => 'Common',
+    	'exercises' => 'Exercises',
+    	'slides' => 'Slides',
+    	'student' => 'Student',
+    	'textbook' => 'Textbook',
     );
     
     /**
@@ -162,7 +166,7 @@ abstract class Article
      */
     public static function isValidArticleType($type)
     {
-    	return in_array($type, self::$POSSIBLE_TYPES);
+    	return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
     
     /**

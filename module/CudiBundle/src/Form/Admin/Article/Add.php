@@ -96,7 +96,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $field = new Select('type');
         $field->setLabel('Type')
            	->setRequired()
-        	->setMultiOptions(array('common' => 'Common', 'exercises' => 'Exercises', 'handbook' => 'Handbook', 'slides' => 'Slides', 'student' => 'Student'))
+        	->setMultiOptions(Article::$POSSIBLE_TYPES)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

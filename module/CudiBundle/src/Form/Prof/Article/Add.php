@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Select('type');
         $field->setLabel('Type')
            	->setRequired()
-        	->setMultiOptions(array('common' => 'Common', 'exercises' => 'Exercises', 'handbook' => 'Handbook', 'slides' => 'Slides', 'student' => 'Student'));
+        	->setMultiOptions(Article::$POSSIBLE_TYPES);
         $this->addElement($field);
 
 		$field = new Checkbox('internal');
