@@ -262,10 +262,6 @@ class Study
                     
                     $prof = new Academic(
                         $identification,
-                        new Credential(
-                            'sha512',
-                            sha1(uniqid())
-                        ),
                         array(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\Acl\Role')
