@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
+    DateInterval,
 	Zend\Mail\Message;
 
 /**
@@ -144,25 +145,50 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
     
+    public function editAction()
+    {
+        if (!($booking = $this->_getBooking()))
+            return;
+            
+        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+            return;
+        
+        if (!($activePeriod = $this->_getPeriod()))
+            return;
+            
+        $periods = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findAll();
+            
+        return array(
+            'periods' => $periods,
+            'activePeriod' => $activePeriod,
+            'currentPeriod' => $currentPeriod,
+            'booking' => $booking,
+        );
+    }
+    
     public function deleteAction()
     {
-        $this->initAjax();
-        
         if (!($booking = $this->_getBooking()))
     	    return;
 		
 		$this->getEntityManager()->remove($booking);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The booking was successfully removed!'
+            )
         );
+        
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
     }
     
     public function assignAction()
     {
-        $this->initAjax();
-        
         if (!($booking = $this->_getBooking()))
             return;
             
@@ -218,24 +244,69 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
         
-        return array(
-            'result' => (object) array("status" => "success")
-        );
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
     }
     
     public function unassignAction()
 	{
-	    $this->initAjax();
-	    
-		if (!($booking = $this->_getBooking()))
+	    if (!($booking = $this->_getBooking()))
 		    return;
 
         $booking->setStatus('booked');
 		$this->getEntityManager()->flush();
+		    
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'The booking was successfully unassigned!'
+		    )
+		);
+		
+		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function expireAction()
+	{
+	    if (!($booking = $this->_getBooking()))
+		    return;
+
+        $booking->setStatus('expired');
+		$this->getEntityManager()->flush();
+		    
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'The booking was successfully expired!'
+		    )
+		);
+		
+		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function extendAction()
+	{
+	    if (!($booking = $this->_getBooking()))
+		    return;
         
-        return array(
-            'result' => (object) array("status" => "success")
-        );
+        $extendTime = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.reservation_extend_time');
+        
+        $date = clone $booking->getExpirationDate();
+		$booking->setExpirationDate($date->add(new DateInterval($extendTime)));
+		$this->getEntityManager()->flush();
+		
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'The booking was successfully extended!'
+		    )
+		);
+		
+		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
 	}
 	
 	public function assignAllAction()

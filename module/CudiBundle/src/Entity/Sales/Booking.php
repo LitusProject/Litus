@@ -40,7 +40,7 @@ class Booking
 	 * @var \CommonBundle\Entity\Users\Person The person of the booking
 	 *
 	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-	 * @JoinColumn(name="person_id", referencedColumnName="id")
+	 * @JoinColumn(name="person", referencedColumnName="id")
 	 */
 	private $person;
 	
@@ -69,35 +69,35 @@ class Booking
 	/**
 	 * @var \DateTime The time the booking will expire
 	 *
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(name="expirationdate", type="datetime", nullable=true)
 	 */
 	private $expirationDate;
 	
 	/**
 	 * @var \DateTime The time the booking was assigned
 	 *
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(name="assignmentdate", type="datetime", nullable=true)
 	 */
 	private $assignmentDate;
 	
 	/**
 	 * @var \DateTime The time the booking was made
 	 *
-	 * @Column(type="datetime")
+	 * @Column(name="bookdate", type="datetime")
 	 */
 	private $bookDate;
 	
 	/**
 	 * @var \DateTime The time the booking was sold
 	 *
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(name="saledate", type="datetime", nullable=true)
 	 */
 	private $saleDate;
 	
 	/**
 	 * @var \DateTime The time the booking was canceled
 	 *
-	 * @Column(type="datetime", nullable=true)
+	 * @Column(name="cancelationdate", type="datetime", nullable=true)
 	 */
 	private $cancelationDate;
 	
@@ -135,7 +135,6 @@ class Booking
 	
 			$now = new DateTime();
 			$this->expirationDate = $now->add(new DateInterval($expireTime));
-			
 		}
 	}
 	
@@ -215,6 +214,17 @@ class Booking
 	public function getStatus()
 	{
 		return $this->status;
+	}
+	
+	/**
+	 * @param \DateTime $expirationDate
+	 * 
+	 * @return \CudiBundle\Entity\Sales\Booking
+	 */
+	public function setExpirationDate(DateTime $expirationDate)
+	{
+		$this->expirationDate = $expirationDate;
+		return $this;
 	}
 	
 	/**
