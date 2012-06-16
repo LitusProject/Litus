@@ -119,6 +119,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            	'description' => 'The time after which a reservation expires',
 	            ),
 	            array(
+	            	'key'         => 'cudi.reservation_extend_time',
+	            	'value'       => 'P2W',
+	            	'description' => 'The time a reservation can be extended',
+	            ),
+	            array(
     				'key'         => 'cudi.booking_assigned_mail_subject',
     				'value'       => 'New Assignments',
     				'description' => 'The subject of the mail sent by new assignments',
@@ -199,7 +204,7 @@ VTK Cudi
 	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf'
 	                ),
 	                'admin_sales_booking' => array(
-	                    'add', 'assign', 'delete', 'inactive', 'manage', 'search', 'unassign'
+	                    'add', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'search', 'unassign'
 	                ),
 	                'admin_sales_discount' => array(
 	                    'delete', 'manage'
