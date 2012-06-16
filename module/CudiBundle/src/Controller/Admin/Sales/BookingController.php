@@ -16,6 +16,7 @@
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
 	Zend\Mail\Message;
@@ -189,7 +190,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     	
     	$booking->setStatus('assigned');
     	
-    	$email = $this->getEntityManager()
+    	$message = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.booking_assigned_mail');
 			
@@ -197,24 +198,15 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.booking_assigned_mail_subject');
 			
-		$mailaddress = $this->getEntityManager()
+		$mailAddress = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail');
 			
-		$mailname = $this->getEntityManager()
+		$mailName = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('cudi.mail_name');
 		
-		$bookings = '* ' . $booking->getArticle()->getMainArticle()->getTitle() . "\r\n";
-	
-		$mail = new Message();
-		$mail->setBody(str_replace('{{ bookings }}', $bookings, $email))
-			->setFrom($mailaddress, $mailname)
-			->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
-			->setSubject($subject);
-		
-		// TODO: activate this	
-		//$this->getMailTransport()->send($mail);
+        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson(), $message, $subject, $mailAddress, $mailName);
 
         $this->getEntityManager()->flush();
             
