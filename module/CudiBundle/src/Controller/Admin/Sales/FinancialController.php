@@ -16,13 +16,6 @@
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage;
-	/*CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
-	CommonBundle\Entity\General\Bank\CashRegister,
-	CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
-	CudiBundle\Entity\Sales\Session,
-	CudiBundle\Form\Admin\Sale\CashRegisterEdit as CashRegisterEditForm,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder*/;
 
 /**
  * FinancialController
