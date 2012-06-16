@@ -16,8 +16,8 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CommonBundle\Entity\Users\Credential,
 	CommonBundle\Entity\Users\People\Academic,
+	CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
 	CommonBundle\Form\Admin\Academic\Add as AddForm,
 	CommonBundle\Form\Admin\Academic\Edit as EditForm;
 
@@ -65,10 +65,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $newUser = new Academic(
                     $formData['username'],
-                    new Credential(
-                        'sha512',
-                        $formData['credential']
-                    ),
                     $roles,
                     $formData['first_name'],
                     $formData['last_name'],
@@ -77,6 +73,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 					$formData['sex'],
 					$formData['university_identification']
                 );
+                
+                $newUser->addUniversityStatus(
+                	new UniversityStatus(
+                		$newUser,
+                		$formData['university_status']
+                	)
+                );
+                
                 $this->getEntityManager()->persist($newUser);                
                 $this->getEntityManager()->flush();
                 

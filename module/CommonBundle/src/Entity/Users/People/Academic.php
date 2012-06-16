@@ -15,7 +15,9 @@
  
 namespace CommonBundle\Entity\Users\People;
 
-use CommonBundle\Entity\Users\Credential,
+use CommonBundle\Component\Util\AcademicYear,
+	CommonBundle\Entity\Users\Credential,
+	CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
 	Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -57,13 +59,12 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person")
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist"})
      */
     private $universityStatuses;
 
     /**
      * @param string $username The user's username
-     * @param \CommonBundle\Entity\Users\Credential $credential The user's credential
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
@@ -72,9 +73,9 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param string $sex The user's sex
      * @param string $universityIdentification The user's university identification
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
+    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
+        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
 		$this->setUniversityIdentification($universityIdentification);
 		
@@ -171,5 +172,36 @@ class Academic extends \CommonBundle\Entity\Users\Person
     public function getPhotoPath()
     {
         return $this->photoPath;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
+	 * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function addUniversityStatus(UniversityStatus $universityStatus)
+    {	
+    	$this->universityStatuses->add($universityStatus);
+    	
+    	return $this;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
+     * @throws \RuntimeException
+     */
+    public function canHaveUniversityStatus()
+    {
+    	if ($this->universityStatuses->count() > 1) {
+	    	if ($this->universityStatuses->exists(
+	    		function($key, $value) {
+	    			if ($value->getYear() == AcademicYear::getShortAcademicYear())
+	    				return true;
+	    		}
+	    	)) {
+	    		return false;
+	    	}
+	    }
+	    
+	    return true;
     }
 }

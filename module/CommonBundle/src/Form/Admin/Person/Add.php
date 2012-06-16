@@ -59,19 +59,6 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
             ->addValidator(new UsernameValidator($this->_entityManager));
         $this->addElement($field);
 
-        $field = new Password('credential');
-        $field->setLabel('Password')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-        $field = new Password('verify_credential');
-        $field->setLabel('Repeat Password')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new IdenticalValidator('credential'));
-        $this->addElement($field);
-
 		$field = new Text('first_name');
         $field->setLabel('First Name')
             ->setRequired()
