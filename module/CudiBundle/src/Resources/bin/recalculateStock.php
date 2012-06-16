@@ -49,7 +49,7 @@ $diConfig->configure($diContainer);
 $em = $diContainer->get('doctrine_em');
 
 $rules = array(
-    'run|r'        => 'Run the socket',
+    'run|r' => 'Run the Socket',
 );
 
 try {
