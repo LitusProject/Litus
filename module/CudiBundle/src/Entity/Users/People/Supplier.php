@@ -36,7 +36,6 @@ class Supplier extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $username The user's username
-     * @param \CommonBundle\Entity\Users\Credential $credential The user's credential
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
@@ -45,9 +44,9 @@ class Supplier extends \CommonBundle\Entity\Users\Person
      * @param string $sex The users sex
      * @param \CudiBundle\Entity\Supplier $supplier The supplier
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
+    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
+        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
         
         $this->supplier = $supplier;
     }

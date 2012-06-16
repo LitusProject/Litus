@@ -65,10 +65,6 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             if ($form->isValid($formData)) {
                 $newUser = new SupplierPerson(
                     $formData['username'],
-                    new Credential(
-                        'sha512',
-                        $formData['credential']
-                    ),
                     array(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
