@@ -77,7 +77,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 					$formData['sex'],
 					$supplier
                 );
+                $newUser->activate($this->getEntityManager(), $this->getMailTransport());
                 $this->getEntityManager()->persist($newUser);
+                exit;
                 $this->getEntityManager()->flush();
                 
                 $this->flashMessenger()->addMessage(

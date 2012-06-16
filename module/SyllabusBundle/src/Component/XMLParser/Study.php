@@ -18,7 +18,6 @@ namespace SyllabusBundle\Component\XMLParser;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Credential,
-    CommonBundle\Entity\Users\Code,
     CommonBundle\Entity\Users\People\Academic,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -29,7 +28,8 @@ use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
-    Zend\Dom\Query as DomQuery;
+    Zend\Dom\Query as DomQuery,
+    Zend\Mail\Transport;
 
 /**
  * Study
@@ -42,6 +42,11 @@ class Study
      * @var Doctrine\ORM\EntityManager
      */
     private $_entityManager;
+    
+    /** 
+     * @var \Zend\Mail\Transport
+     */
+    private $_mailTransport;
     
     /**
      * @var array
@@ -63,9 +68,10 @@ class Study
      * @param string $xmlPath
      * @param array $callback
      */
-    public function __construct(EntityManager $entityManager, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, Transport $mailTransport, $xmlPath, $callback)
     {
         $this->_entityManager = $entityManager;
+        $this->_mailTransport = $mailTransport;
         $this->_prof = array();
         $this->_callback = $callback;
         
@@ -274,16 +280,7 @@ class Study
                         null,
                         $identification);
                     
-                    do {
-                    	$code = md5(uniqid(rand(), true));
-                    	$found = $this->_entityManager
-                    	    ->getRepository('CommonBundle\Entity\Users\Code')
-                    	    ->findOneByCode($code);
-                    } while(isset($found));
-                    
-                    $code = new Code($code);
-                    $this->getEntityManager()->persist($code);
-                    $prof->setCode($code);
+                    $prof->activate($this->getEntityManager(), $this->_mailTransport);
                     
                     $this->getEntityManager()->persist($prof);
                     $this->_profs[$identification] = $prof;

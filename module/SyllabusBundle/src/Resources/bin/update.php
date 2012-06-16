@@ -46,8 +46,6 @@ $diContainer->instanceManager()->addTypePreference('Zend\Di\Locator', $diContain
 $diConfig = new \Zend\Di\Configuration($config->di);
 $diConfig->configure($diContainer);
 
-$em = $diContainer->get('doctrine_em');
-
 $rules = array(
     'run|r' => 'Run the Socket',
 );
@@ -61,6 +59,6 @@ try {
 }
 
 if (isset($opts->r)) {
-	$update = new \SyllabusBundle\Component\WebSocket\Syllabus\Update($diContainer->get('doctrine_em'));
+	$update = new \SyllabusBundle\Component\WebSocket\Syllabus\Update($diContainer->get('doctrine_em'), $diContainer->get('mail_transport'));
 	$update->process();
 }

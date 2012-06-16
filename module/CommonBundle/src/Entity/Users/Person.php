@@ -18,8 +18,12 @@ namespace CommonBundle\Entity\Users;
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Acl\Role,
  	CommonBundle\Entity\General\Address,
+ 	CommonBundle\Entity\Users\Code,
  	CommonBundle\Entity\Users\Credential,
-	Doctrine\Common\Collections\ArrayCollection;
+	Doctrine\Common\Collections\ArrayCollection,
+	Doctrine\ORM\EntityManager,
+    Zend\Mail\Message,
+    Zend\Mail\Transport;
 
 /**
  * This is the entity for a person.
@@ -455,61 +459,107 @@ abstract class Person
         return $this;
     }
     
-   /**
-    * @return boolean
-    */
-   public function isMember()
-   {
+    /**
+     * @return boolean
+     */
+    public function isMember()
+    {
         foreach ($this->unionStatuses as $status) {
             if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
                 return true;
         }
         return false;
-   }
-   
-   /**
-    * @return \CommonBundle\Entity\Users\Barcode
-    */
-   public function getBarcode()
-   {
-       return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
-   }
-   
-   /**
-    * @return \CommonBundle\Entity\Users\Code
-    */
-   public function getCode()
-   {
-       return $this->code;
-   }
-   
-   /**
-    * @param \CommonBundle\Entity\Users\Code|null $code
-    *
-    * @return \CommonBundle\Entity\Users\Person
-    */
-   public function setCode(Code $code = null)
-   {
-       $this->code = $code;
-       return $this;
-   }
-   
-   /**
-    * @return integer
-    */
-   public function getFailedLogins()
-   {
-       return $this->failedLogins;
-   }
-   
-   /**
-    * @param integer $failedLogins
-    *
-    * @return \CommonBundle\Entity\Users\Person
-    */
-   public function setFailedLogins($failedLogins)
-   {
-       $this->failedLogins = $failedLogins;
-       return $this;
-   }
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\Users\Barcode
+     */
+    public function getBarcode()
+    {
+        return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\Users\Code
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\Users\Code|null $code
+     *
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function setCode(Code $code = null)
+    {
+        $this->code = $code;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getFailedLogins()
+    {
+        return $this->failedLogins;
+    }
+    
+    /**
+     * @param integer $failedLogins
+     *
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function setFailedLogins($failedLogins)
+    {
+        $this->failedLogins = $failedLogins;
+        return $this;
+    }
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function activate(EntityManager $entityManager, Transport $mailTransport)
+    {
+        do {
+            $code = md5(uniqid(rand(), true));
+            $found = $entityManager
+                ->getRepository('CommonBundle\Entity\Users\Code')
+                ->findOneByCode($code);
+        } while(isset($found));
+        
+        $code = new Code($code);
+        $entityManager->persist($code);
+        $this->setCode($code);
+        
+        $message = $entityManager
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('account_activated_mail');
+        	
+        $subject = $entityManager
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('account_activated_subject');
+        	
+        $mailAddress = $entityManager
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('system_mail_address');
+        	
+        $mailName = $entityManager
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('system_mail_name');
+        
+        $mail = new Message();
+        $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($this->getEmail(), $this->getFullName())
+            ->setSubject($subject);
+
+        // TODO: activate this	
+        //$mailTransport->send($mail);
+        
+        return $this;
+    }
 }
