@@ -4,42 +4,6 @@
 	{% include 'admin_sales_booking/partials/navigation.twig' %}
 	
 	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width booking_removed_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The booking was successfully removed!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width booking_removed_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to delete a booking.</p>
-		</div>
-	</div>
-	<div class="flashmessage success_message full_width booking_assign_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The booking was successfully assigned!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width booking_assign_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to assign the booking.</p>
-		</div>
-	</div>
-	<div class="flashmessage success_message full_width booking_unassign_success hide">
-		<div class="title">Success</div>
-		<div class="content">
-			<p>The booking was successfully unassigned!</p>
-		</div>
-	</div>
-	<div class="flashmessage error_message full_width booking_unassign_error hide">
-		<div class="title">Error</div>
-		<div class="content">
-			<p>An error occurred while trying to unassign a booking.</p>
-		</div>
-	</div>
 	
 	{% include 'admin_sales_booking/partials/periods.twig' %}
 
@@ -63,7 +27,7 @@
 		            <th width="30px">&nbsp;</th>
 	            	<th width="100px">Date</th>
 	            	<th width="55px">Status</th>
-	            	<th width="130px">Actions</th>
+	            	<th width="90px">Actions</th>
 	    		</tr>
 	    	</table>
 	    </div>
@@ -76,7 +40,7 @@
 		            <th width="30px">&nbsp;</th>
 		            <th width="100px">Date</th>
 		            <th width="55px">Status</th>
-		            <th width="130px">Actions</th>
+		            <th width="90px">Actions</th>
 		        </tr>
 		        
 		        {% for booking in paginator %}
@@ -87,14 +51,8 @@
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
 		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
 		                <td>
-		                    {% if booking.getStatus() == 'booked' and hasAccess('admin_sales_booking', 'assign') %}
-		                    	<a href="#" class="edit assign" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">Assign</a>
-		                    {% endif %}
-		                	{% if booking.getStatus() == 'assigned' and hasAccess('admin_sales_booking', 'unassign') %}
-		                    	<a href="#" class="edit unassign" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">Unassign</a>
-		                	{% endif %}
-		                	{% if booking.getStatus() == 'booked' and hasAccess('admin_sales_booking', 'delete') %}
-		                		<a href="#" class="delete" data-id="{{ booking.getId() }}" data-person="{{ booking.getPerson.getFullName() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">Delete</a>
+		                    {% if hasAccess('admin_sales_booking', 'edit') %}
+		                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
 		                </td>
 		            </tr>
@@ -104,71 +62,12 @@
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
-	
-	<div class="modal hide fade" id="removeBooking">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Booking Delete
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following booking of <b class="bookingPerson"></b>: <b class="bookingTitle"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
-	<div class="modal hide fade" id="assignBooking">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Booking Assign
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to assign the following booking of <b class="bookingPerson"></b>: <b class="bookingTitle"></b>!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
-	<div class="modal hide fade" id="unassignBooking">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Booking Unassign
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to unassign the following booking of <b class="bookingPerson"></b>: <b class="bookingTitle"></b>!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
 {% endblock %}
 
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('#controller_nav .assignAll').click(openAssignAllModal);
-            $('.item .delete').click(openRemoveModal);
-            $('.item .assign').click(openAssignModal);
-            $('.item .unassign').click(openUnassignModal);
 		    
 		    {% if hasAccess('admin_sales_booking', 'search') %}
 			$.searchDatabase({
@@ -187,27 +86,10 @@
 							.append('<td>' + this.bookDate + '</td>')
 							.append('<td class="status">' + this.status + '</td>')
 							.append(actions = $('<td>'));
-						{% if hasAccess('admin_sales_booking', 'unassign') %}
-						if ('assigned' == this.status.toLowerCase())
-							actions.append(button = $('<a href="#" class="edit unassign">Unassign</a>'));
+						{% if hasAccess('admin_sales_booking', 'edit') %}
+							actions.append(button = $('<a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>'));
 						{% endif %}
-						{% if hasAccess('admin_sales_booking', 'assign') %}
-						if ('booked' == this.status.toLowerCase())
-							actions.append(button = $('<a href="#" class="edit assign">Assign</a>'));
-						{% endif %}
-						{% if hasAccess('admin_sales_booking', 'delete') %}
-						if ('booked' == this.status.toLowerCase())
-							actions.append(button = $('<a href="#" class="delete">Delete</a>'));
-						{% endif %}
-						actions.find('a').data({
-							id: this.id,
-							person: this.person,
-							title: this.article,
-						});
 					});
-					$('#booking_search .delete').click(openRemoveModal);
-					$('#booking_search .unassign').click(openUnassignModal);
-					$('#booking_search .assign').click(openAssignModal);
 				},
 				clear: function () {
 					$('#booking_search table').find('tr.item').remove();
@@ -215,95 +97,5 @@
 			});
 			{% endif %}
 		});
-		
-		function openRemoveModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var removeBooking = $('#removeBooking');
-			removeBooking.find('.bookingPerson').html($(this).data('person'));
-			removeBooking.find('.bookingTitle').html($(this).data('title'));
-			removeBooking.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_booking', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.booking_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
-    					removeBooking.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeBooking.modal();
-		}
-		
-		function errorRemove() {
-    		$('.flashmessage').addClass('hide');
-    		$('.booking_removed_error').removeClass('hide');
-    		$('#removeBooking').modal('hide');
-		}
-		
-		function openAssignModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var assignBooking = $('#assignBooking');
-			assignBooking.find('.bookingPerson').html($(this).data('person'));
-			assignBooking.find('.bookingTitle').html($(this).data('title'));
-			assignBooking.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_booking', {"action": "assign"})}}/' + $this.data('id'), function  (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.booking_assign_success').removeClass('hide');
-    				    var button = $('<a href="#" class="edit unassign">Unassign</a>').data($this.data()).click(openUnassignModal);
-    					$this.parent().parent().find('.status').html('Booked');
-    					$this.parent().html(button);
-    					assignBooking.modal('hide');
-    				} else {
-    				    errorAssign();
-    				}
-				}, 'json').error(errorAssign);
-			});
-			assignBooking.modal();
-		}
-		
-		function errorAssign() {
-		    $('.flashmessage').addClass('hide');
-		    $('.booking_assign_error').removeClass('hide');
-		    $('#assignBooking').modal('hide');
-		}
-		
-		function openUnassignModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var unassignBooking = $('#unassignBooking');
-			unassignBooking.find('.bookingPerson').html($(this).data('person'));
-			unassignBooking.find('.bookingTitle').html($(this).data('title'));
-			unassignBooking.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_booking', {"action": "unassign"})}}/' + $this.data('id'), function  (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.booking_unassign_success').removeClass('hide');
-    					$this.parent().parent().find('.status').html('Booked');
-    					$this.parent().html('').append(
-    					    $('<a href="#" class="edit assign">Assign</a>').data($this.data()).click(openAssignModal),
-    					    $('<a href="#" class="delete">Delete</a>').data($this.data()).click(openRemoveModal)
-    					);
-    					unassignBooking.modal('hide');
-    				} else {
-    				    errorUnassign();
-    				}
-				}, 'json').error(errorUnassign);
-			});
-			unassignBooking.modal();
-		}
-		
-		function errorUnassign() {
-		    $('.flashmessage').addClass('hide');
-		    $('.booking_unassign_error').removeClass('hide');
-		    $('#unassignBooking').modal('hide');
-		}
 	</script>
 {% endblock %}
