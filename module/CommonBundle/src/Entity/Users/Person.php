@@ -152,7 +152,6 @@ abstract class Person
 
     /**
      * @param string $username The user's username
-     * @param \CommonBundle\Entity\Users\Credential $credential The user's credential
      * @param array $roles The user's roles
      * @param string $firstName The user's first name
      * @param string $lastName The user's last name
@@ -160,10 +159,9 @@ abstract class Person
      * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex ('m' or 'f')
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
+    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
     {
         $this->setUsername($username);
-        $this->setCredential($credential);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setEmail($email);
