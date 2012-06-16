@@ -128,7 +128,15 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     				'value'       => 'Dear,
 			
 The following bookings are assigned to you:
-{{ bookings }}',
+{{ bookings }}
+
+These reservations will expire after the first sale session after it\'s expiration date.
+
+Please cancel a reservation if you don\'t need the article, this way we can help other students.
+
+VTK Cudi
+
+-- This is an automatically generated email, please do not reply --',
     				'description' => 'The mail sent when a booking is assigned'
     			),
     			array(

@@ -3,12 +3,12 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\Users\Person,
+    CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
-    Zend\Mail\Message,
     Zend\Mail\Transport;
 
 /**
@@ -417,7 +417,7 @@ class Booking extends EntityRepository
         }
         $this->getEntityManager()->flush();
         
-        $email = $this->_em
+        $message = $this->_em
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('cudi.booking_assigned_mail');
         	
@@ -425,28 +425,16 @@ class Booking extends EntityRepository
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('cudi.booking_assigned_mail_subject');
         	
-        $mailaddress = $this->_em
+        $mailAddress = $this->_em
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('cudi.mail');
         	
-        $mailname = $this->_em
+        $mailName = $this->_em
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('cudi.mail_name');
         
-        foreach($persons as $person) {
-        	$bookings = '';
-        	foreach($person['bookings'] as $booking)
-        		$bookings .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . "\r\n";
-        
-        	$mail = new Message();
-        	$mail->setBody(str_replace('{{ bookings }}', $bookings, $email))
-        		->setFrom($mailaddress, $mailname)
-        		->addTo($person['person']->getEmail(), $person['person']->getFullName())
-        		->setSubject($subject);
-        		
-		    // TODO: activate this	
-        	//$mailTransport->send($mail);
-        }
+        foreach($persons as $person)
+            BookingMail::sendMail($mailTransport, $person['bookings'], $person['person'], $message, $subject, $mailAddress, $mailName);
         
         return $counter;
     }
