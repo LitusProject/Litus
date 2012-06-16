@@ -54,6 +54,19 @@ Click here to activate it again: http://litus/account/activate/{{ code }}',
         		    'value'       => 'Litus Project',
         		    'description' => 'The system mail name',
         		),
+        		array(
+        		    'key'         => 'account_activated_mail',
+        		    'value'       => 'Dear {{ name }},
+
+An account for you is created on litus.cc with username {{ username }}.
+Click here to activate it: http://litus/account/activate/{{ code }}',
+        		    'description' => 'The email sent when an account is deactivated',
+        		),
+        		array(
+        		    'key'         => 'account_activated_subject',
+        		    'value'       => 'Account created',
+        		    'description' => 'The mail subject when an account is deactivated',
+        		),
         	)
         );
 	}

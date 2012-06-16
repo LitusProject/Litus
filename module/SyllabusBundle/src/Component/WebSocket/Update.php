@@ -17,7 +17,8 @@ namespace SyllabusBundle\Component\WebSocket\Syllabus;
 
 use CommonBundle\Component\WebSocket\User,
 	Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\XMLParser\Study as StudyParser;
+    SyllabusBundle\Component\XMLParser\Study as StudyParser,
+    Zend\Mail\Transport;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -27,9 +28,14 @@ use CommonBundle\Component\WebSocket\User,
 class Update extends \CommonBundle\Component\WebSocket\Server
 {
 	/**
-	 * @var Doctrine\ORM\EntityManager
+	 * @var \Doctrine\ORM\EntityManager
 	 */
 	private $_entityManager;
+	
+	/** 
+	 * @var \Zend\Mail\Transport
+	 */
+	private $_mailTransport;
 	
 	/**
 	 * @var string
@@ -41,7 +47,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 	 * @param string $address The url for the websocket master socket
 	 * @param integer $port The port to listen on
 	 */
-	public function __construct(EntityManager $entityManager)
+	public function __construct(EntityManager $entityManager, Transport $mailTransport)
 	{
 	    $address = $entityManager
     		->getRepository('CommonBundle\Entity\General\Config')
@@ -53,6 +59,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     	parent::__construct($address, $port);
 	    	
 	    $this->_entityManager = $entityManager;
+	    $this->_mailTransport = $mailTransport;
 	}
 
 	/**
@@ -66,7 +73,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 		if (strpos($data, 'update') === 0 && 'done' == $this->_status) {
 			$this->_entityManager->clear();
 		    $this->_status = 'updating';
-			new StudyParser($this->_entityManager, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));
+			new StudyParser($this->_entityManager, $this->_mailTransport, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));
 			$this->callback('done');
 			$this->_status = 'done';
 		}
