@@ -169,6 +169,21 @@ VTK Cudi
     			    'value'       => '2012-8-1 0:0:0',
     			    'description' => 'The start date of the academic year for a prof',
     			),
+    			array(
+    			    'key'         => 'cudi.price_page_black_and_white',
+    			    'value'       => '10',
+    			    'description' => 'The price of a black and white page',
+    			),
+    			array(
+    			    'key'         => 'cudi.price_page_color',
+    			    'value'       => '15',
+    			    'description' => 'The price of a colored page',
+    			),
+    			array(
+    			    'key'         => 'cudi.price_perforated',
+    			    'value'       => '50',
+    			    'description' => 'The price of a perforated article',
+    			),
 			)
 		);
 		

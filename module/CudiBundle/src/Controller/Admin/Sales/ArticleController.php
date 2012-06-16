@@ -61,6 +61,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $form = new AddForm($this->getEntityManager());
         
+        if ($article->isInternal()) {
+            $priceBW = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_page_black_and_white') / 100;
+            $priceColor = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_page_color') / 100;
+            $pricePerforated = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_perforated') / 100;
+            $precalculatedPrice = $article->getNbBlackAndWhite() * $priceBW
+                + $article->getNbColored() * $priceColor
+                + ($article->isPerforated() ? $pricePerforated : 0 );
+        } else {
+            $precalculatedPrice = 0;
+        }
+        
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
         	
@@ -107,6 +124,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return array(
             'form' => $form,
             'article' => $article,
+            'precalculatedPrice' => $precalculatedPrice,
         );
     }
     
@@ -116,6 +134,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 		    return;
         
         $form = new EditForm($this->getEntityManager(), $saleArticle);
+        
+        if ($saleArticle->getMainArticle()->isInternal()) {
+            $priceBW = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_page_black_and_white') / 100;
+            $priceColor = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_page_color') / 100;
+            $pricePerforated = $this->getEntityManager()
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('cudi.price_perforated') / 100;
+            $precalculatedPrice = $saleArticle->getMainArticle()->getNbBlackAndWhite() * $priceBW
+                + $saleArticle->getMainArticle()->getNbColored() * $priceColor
+                + ($saleArticle->getMainArticle()->isPerforated() ? $pricePerforated : 0);
+        } else {
+            $precalculatedPrice = 0;
+        }
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -160,6 +195,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return array(
             'form' => $form,
             'article' => $saleArticle,
+            'precalculatedPrice' => $precalculatedPrice,
         );
 	}
 	
