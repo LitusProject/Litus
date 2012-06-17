@@ -27,7 +27,9 @@
     
     var methods = {
     	init : function (options) {
-    	    _init($(this), options);
+    	    this.each(function () {
+    	        _init($(this), options);
+    	    });
     		return this;
     	},
     	replaceSelection: function (replaceText) {
