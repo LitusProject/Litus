@@ -11,7 +11,8 @@
                 <th width="100px">Date</th>
                 <th width="140px">Person</th>
                 <th width="80px">Status</th>
-                <th width="140px">Action</th>
+                <th width="80px">Pay Method</th>
+                <th width="70px">Action</th>
             </tr>
     
             {% for item in items %}
@@ -19,6 +20,7 @@
                     <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
                     <td>{{ item.getPerson().getFullName() }}</td>
                     <td>{{ item.getStatus()|capitalize }}</td>
+                    <td>{{ item.getPayMethod() }}</td>
     				<td class="actions">
     					<a href="#" class="view" data-text="{{ item.getComment() }}">Comments</a>
                     </td>
