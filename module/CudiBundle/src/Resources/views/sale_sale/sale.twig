@@ -91,6 +91,23 @@
 			<tbody class="articles"></tbody>
 		</table>
 		
+		<div id="modalChoosePayDesk" class="modal fade">
+			<div class="modal-header">
+				<h3>Choose PayDesk</h3>
+			</div>
+			<div class="modal-body">
+			    {% for payDesk in payDesks %}
+    				<div class="span2">
+    				    <h3>{{ payDesk.getName() }}</h3>
+    				    <br>
+    				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
+    				</div>
+    			{% endfor %}
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+		
 		<div id="modalCancelSelling" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
@@ -129,6 +146,15 @@
                             <div class="input-prepend">
                                 <span class="add-on">&euro;</span>
                                 <span class="input-large uneditable-input" id="changeMoney">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Pay Method: </label>
+                        <div class="controls">
+                            <div class="btn-group" id="payMethod" data-toggle="buttons-radio">
+                              <button class="btn active" type="button" data-key="114" data-method="cash">Cash - F3</button>
+                              <button class="btn" type="button" data-key="115" data-method="bank">Bank - F4</button>
                             </div>
                         </div>
                     </div>
@@ -197,6 +223,13 @@
 {% block controller_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    $('#modalChoosePayDesk button').click(function () {
+		        $('#modalChoosePayDesk').permanentModal('hide');
+		        $('#queueList').showQueue('setPayDesk', $(this).data('code'));
+		        $('#queueModal').permanentModal('open');
+		    });
+		    $('#modalChoosePayDesk').permanentModal('open');
+
 		    $('.addComment').click(function () {
 		        $('#modalAddComment').modal();
 		    });
@@ -223,7 +256,7 @@
 			            $('#sale').sale('gotBarcode', value);
 			        }
 			    });
-			}).permanentModal('open');
+			});
 						
 			$('#queueList').showQueue({
 				url: '{{ socketUrl }}',

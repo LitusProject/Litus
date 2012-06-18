@@ -37,7 +37,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Hidden('subject_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
-            ->setAttrib('id', 'subjectId');
+            ->setAttrib('id', 'subjectId')
+            ->clearDecorators()
+            ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
          
         $field = new Text('subject');

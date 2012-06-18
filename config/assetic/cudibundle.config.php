@@ -73,6 +73,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@common_jquery_form',
 		),
 		'admin_sales_session' => array(
 			'@common_jquery',
@@ -151,6 +152,7 @@ return array(
 			'@queue_js',
 			'@bootstrap_js_transition',
 			'@bootstrap_js_modal',
+			'@bootstrap_js_button',
 			'@bootstrap_js_alert',
 			'@common_permanent_modal',
 			'@common_socket',

@@ -13,7 +13,7 @@
 	<div class="flashmessage error_message full_width file_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while trying to delete an file.</p>
+			<p>An error occurred while trying to delete a file.</p>
 		</div>
 	</div>
 	<div class="flashmessage success_message full_width file_uploaded hide">
@@ -122,17 +122,18 @@
 			    },
 			    onSubmitted: function (data) {
 			        if (data.errors) {
-			            $('.file_uploaded').hide();
+    			        $('.flashmessage').addClass('hide');
     			        $('#uploadFile').find('ul.errors').remove();
     			        for(element in data.errors) {
     			            var list = $('<ul>', {class: 'errors'})
-    			            for (error in data[element])
-    			                list.append($('<li>').html(data[element][error]));
+    			            for (error in data.errors[element])
+    			                list.append($('<li>').html(data.errors[element][error]));
     			            $('#uploadFile').find('#' + element).parent().parent().after(list);
     			        }
     			    } else if (data.info) {
     			        $('#uploadFile').resetForm();
-    			        $('.file_uploaded').show();
+        			    $('.flashmessage').addClass('hide');
+    			        $('.file_uploaded').removeClass('hide');
     			        
     			        var item = $('<tr>', {class: 'item'});
     			        item.append(
@@ -157,12 +158,12 @@
     			    progressModal.permanentModal('hide');
 			    },
 			    onSubmit: function () {
-			        $('.file_uploaded').hide();
+    			    $('.flashmessage').addClass('hide');
 			        var progressModal = $('#progressModal');
 			        progressModal.permanentModal('open');
 			    },
 			    onError: function () {
-			        $('.file_uploaded').hide();
+    			    $('.flashmessage').addClass('hide');
 			        var progressModal = $('#progressModal');
 			        progressModal.permanentModal('hide');
 			    }
