@@ -55,7 +55,7 @@ return array(
                                 'collections' => array(
                                 	'common_jquery' => array(
                                 	    'assets'  => array(
-                                	        'common/js/jquery-1.7.1.min.js',
+                                	        'common/js/jquery-1.7.2.min.js',
                                 	    ),
                                 	),
                                 	'common_jqueryui' => array(

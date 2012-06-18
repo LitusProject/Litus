@@ -191,3 +191,38 @@
       background-image: linear-gradient(@angle, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
     }
 }
+
+#popoverArrow {
+    .top(@arrowWidth: 5px, @color: @cBlack) {
+        bottom: 0;
+        left: 50%;
+        margin-left: -@arrowWidth;
+        border-left: @arrowWidth solid transparent;
+        border-right: @arrowWidth solid transparent;
+        border-top: @arrowWidth solid @color;
+    }
+    .left(@arrowWidth: 5px, @color: @cBlack) {
+        top: 50%;
+        right: 0;
+        margin-top: -@arrowWidth;
+        border-top: @arrowWidth solid transparent;
+        border-bottom: @arrowWidth solid transparent;
+        border-left: @arrowWidth solid @color;
+    }
+    .bottom(@arrowWidth: 5px, @color: @cBlack) {
+        top: 0;
+        left: 50%;
+        margin-left: -@arrowWidth;
+        border-left: @arrowWidth solid transparent;
+        border-right: @arrowWidth solid transparent;
+        border-bottom: @arrowWidth solid @color;
+    }
+    .right(@arrowWidth: 5px, @color: @cBlack) {
+        top: 50%;
+        left: 0;
+        margin-top: -@arrowWidth;
+        border-top: @arrowWidth solid transparent;
+        border-bottom: @arrowWidth solid transparent;
+        border-right: @arrowWidth solid @color;
+    }
+}
