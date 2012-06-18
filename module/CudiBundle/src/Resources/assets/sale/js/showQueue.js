@@ -15,7 +15,7 @@
             _gotBarcode($(this), value);
             return this;
         },
-    	init : function (options) {
+    	init: function (options) {
     	    var settings = $.extend(defaults, options);
     	    
     	    $(this).data('showQueueSettings', settings);
@@ -23,7 +23,12 @@
     	    _init($(this));
     	    
     	    return this;
-        }
+        },
+        setPayDesk: function (payDesk) {
+            _setPayDesk($(this), payDesk);
+            
+            return this;
+        },
     }
     
     $.fn.showQueue = function (method) {
@@ -86,6 +91,9 @@
         		open: function (e) {
         			options.errorDialog.removeClass('in');
 					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '" }'});
+					console.log($this.data('payDesk'));
+					if ($this.data('payDesk'))
+					    _setPayDesk($this, $this.data('payDesk'));
         		},
         		message: function (e, data) {
         			options.errorDialog.removeClass('in');
@@ -112,12 +120,21 @@
     	$.webSocket('send', {name: 'showQueue', text: text});
     }
     
+    function _setPayDesk ($this, payDesk) {
+        _sendToSocket('action: setPayDesk ' + payDesk);
+        $this.data('payDesk', payDesk);
+    }
+    
     function _showQueueItem ($this, item) {
         var options = $this.data('showQueueSettings');
 
 		var row = $('<tr>').append(
 			$('<td>', {'class': 'number'}).html(item.number),
-			$('<td>', {'class': 'name'}).html(item.name ? item.name : 'guest ' + item.id),
+			$('<td>', {'class': 'name'}).append(
+			    (item.name ? item.name : 'guest ' + item.id),
+			    ' ',
+			    (item.payDesk ? $('<span>', {class: 'label label-info'}).html(item.payDesk) : '')
+			),
 			$('<td>', {'class': 'status'}).html(options.statusTranslate(item.status)),
 			actions = $('<td>', {'class': 'actions'})
 		).data('info', item);

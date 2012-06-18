@@ -32,9 +32,14 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('cudi.queue_item_barcode_prefix');
         
+        $payDesks = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+            ->findAll();
+        
     	return array(
     		'socketUrl' => $this->getSocketUrl(),
     		'barcodePrefix' => $barcodePrefix,
+    		'payDesks' => $payDesks,
     	);
     }
     

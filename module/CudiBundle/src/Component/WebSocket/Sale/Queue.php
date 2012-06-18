@@ -140,7 +140,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 				$this->_updateItemStatus($params, 'signed_in');
 				break;
 			case 'startSelling':
-				$this->_updateItemStatus($params, 'selling');
+				$this->_updateItemStatus($params, 'selling', $user);
 				$this->sendText($user, $this->_getSaleInfo($user, $params));
 				break;
 			case 'cancelSelling':
@@ -152,6 +152,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			case 'concludeSelling':
 				$this->_concludeSelling(json_decode($params));
 				break;
+			case 'setPayDesk':
+			    $user->setExtraData('payDesk', trim($params));
+			    break;
 		}
 		
 		$this->sendQueueToAll();
@@ -372,6 +375,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			$result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
 			$result->status = $item->getStatus();
 			$result->locked = isset($this->_lockedItems[$item->getId()]);
+			if ($item->getPayDesk())
+			    $result->payDesk = $item->getPayDesk()->getCode();
 			$results[] = $result;
 		}
 		return $results;
@@ -382,10 +387,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	 *
 	 * @param int $itemId
 	 * @param string $status
+	 * @param CommonBundle\Component\WebSocket\User|null $user
 	 *
 	 * @return array
 	 */
-	private function _updateItemStatus($itemId, $status)
+	private function _updateItemStatus($itemId, $status, User $user = null)
 	{
 		if (!is_numeric($itemId))
 			return;
@@ -396,6 +402,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			
 		if (!isset($item))
 			return;
+		
+		if ('selling' == $status && isset($user))
+		    $item->setPayDesk($this->_entityManager
+		        ->getRepository('CudiBundle\Entity\Sales\PayDesk')
+		        ->findOneByCode($user->getExtraData('payDesk')));
 		
 		$item->setStatus($status);
 		
