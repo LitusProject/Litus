@@ -159,12 +159,21 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $periods = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
+                
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sales\Booking')
+                ->findAllByPersonAndPeriod($booking->getPerson(), $activePeriod),
+            $this->getParam('page')
+        );
             
         return array(
             'periods' => $periods,
             'activePeriod' => $activePeriod,
             'currentPeriod' => $currentPeriod,
             'booking' => $booking,
+            'paginator' => $paginator,
+            'paginationControl' => $this->paginator()->createControl(),
         );
     }
     
