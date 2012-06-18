@@ -27,6 +27,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	    $this->_installConfig(
             array(
                 array(
+                    'key'         => 'common.profile_path',
+                    'value'       => 'data/images/profile',
+                    'description' => 'The path for profile photo\'s',
+                ),
+                array(
         			'key'         => 'search_max_results',
         			'value'       => '30',
         			'description' => 'The maximum number of search results shown',
