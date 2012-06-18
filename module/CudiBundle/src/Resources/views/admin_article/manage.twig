@@ -33,11 +33,10 @@
 			<table class="full_width manage">
 	        	<tr>
 	            	<th>Title</th>
-	            	<th width="100px">Author</th>
-	            	<th width="180px">Publisher</th>
+	            	<th width="200px">Author</th>
 	            	<th width="50px">Year</th>
 	            	<th width="60px">Type</th>
-	            	<th width="80px">Action</th>
+	            	<th width="70px">Action</th>
 				</tr>
 			</table>
 		</div>
@@ -46,18 +45,16 @@
 			<table class="full_width manage">
 		        <tr>
 		            <th>Title</th>
-		            <th width="100px">Author</th>
-		            <th width="180px">Publisher</th>
+		            <th width="200px">Author</th>
 		            <th width="50px">Year</th>
 					<th width="60px">Type</th>
-		            <th width="80px">Action</th>
+		            <th width="70px">Action</th>
 		        </tr>
 		        
 		        {% for article in paginator %}
 		            <tr class="item">
 		                <td>{{ article.getTitle() }}</td>
 		                <td>{{ article.getAuthors() }}</td>
-		                <td>{{ article.getPublishers() }}</td>
 		                <td>{{ article.getYearPublished() }}</td>
 		                <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
 						<td class="actions">
@@ -113,7 +110,6 @@
 						$('#article_search table').append(row = $('<tr>', {class: 'item'}));
 						row.append('<td>' + this.title + '</td>')
 							.append('<td>' + this.author + '</td>')
-							.append('<td>' + this.publisher + '</td>')
 							.append('<td>' + this.yearPublished + '</td>')
 							.append('<td>' + (this.isInternal ? 'Internal' : 'External') + '</td>')
 							.append(

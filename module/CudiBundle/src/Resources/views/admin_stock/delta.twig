@@ -12,7 +12,7 @@
 	    <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
 	    <br style="clear:both" />
 	    <h1>Delta's</h1>
-    	<table class="full_width">
+    	<table class="full_width manage">
         	<tr>
             	<th>Person</th>
             	<th width="120px">Date</th>
@@ -27,7 +27,7 @@
 	                <td>{{ delta.getTimestamp().format('Y-m-d H:i:s') }}</td>
 	                <td>{{ delta.getValue() }}</td>
 	                <td>{{ delta.getSummary() }}</td>
-					<td>
+					<td class="actions">
 					    <a href="#" class="view" data-text="{{ delta.getComment() }}">View</a>
 	                </td>
 	            </tr>

@@ -18,28 +18,28 @@
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
 	    	
-	    	<table class="full_width">
+	    	<table class="full_width manage">
 	        	<tr>
 	        	    <th>Name</th>
 	        	    <th width="50px">Phase</th>
-	        	    <th width="80px">Actions</th>
+	        	    <th width="70px">Actions</th>
 	        	</tr>
 	    	</table>
 	    </div>
 	    
 		<div id="default_page">
-			<table class="full_width">
+			<table class="full_width manage">
 		        <tr>
 		            <th>Name</th>
 		            <th width="50px">Phase</th>
-		            <th width="80px">Actions</th>
+		            <th width="70px">Actions</th>
 		        </tr>
 		        
 		        {% for mapping in paginator %}
 		            <tr class="item">
 		                <td>{{ mapping.getStudy().getFullTitle() }}</td>
 		                <td>{{ mapping.getStudy().getPhase() }}</td>
-		                <td>
+		                <td class="actions">
 		                    {% if hasAccess('admin_subject', 'manage') %}
 		                        <a href="{{ url('admin_subject', {"id": mapping.getStudy().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
 		                    {% endif %}
@@ -70,13 +70,14 @@
 						row.append('<td>' + this.title + '</td>')
 							.append('<td>' + this.phase + '</td>')
 							.append(
-								actions = $('<td>')
+								actions = $('<td>', {'class': 'actions'})
 							);
 							
 							{% if hasAccess('admin_subject', 'manage') %}
 							    actions.append('<a href="{{ url('admin_subject') }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 							{% endif %}
 					});
+					$('#study_search table').change();
 				},
 				clear: function () {
 					$('#study_search table').find('tr.item').remove();

@@ -6,12 +6,12 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
 	<div id="controller_action">
-	    <table class="full_width">
+	    <table class="full_width manage">
 	        <tr>
 	            <th>Person</th>
 	            <th width="160px">Action</th>
 	            <th width="150px">Date</th>
-	            <th width="140px">Actions</th>
+	            <th width="100px">Actions</th>
 	        </tr>
 	        
 	        {% for action in paginator %}
@@ -19,7 +19,7 @@
 	                <td>{{ action.getPerson().getFullName() }}</td>
 	                <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
 	                <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
-	                <td>
+	                <td class="actions">
 	                    {% if hasAccess('admin_prof_action', 'edit') %}
 	                        <a href="{{ url('admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
 	                    {% endif %}

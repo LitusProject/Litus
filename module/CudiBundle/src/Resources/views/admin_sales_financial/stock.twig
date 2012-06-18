@@ -6,7 +6,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-		<table class="full_width">
+		<table class="full_width manage">
 		
 		    <tr>
 		        <th>Article</th>
@@ -26,7 +26,7 @@
 		            <td>&euro; {{ (article.getPurchasePrice()/100)|number_format(2) }}</td>
 		            <td>&euro; {{ (article.getSellPrice()*article.getStockValue()/100)|number_format(2) }}</td>
 		            <td>&euro; {{ (article.getPurchasePrice()*article.getStockValue()/100)|number_format(2) }}</td>
-		            <td>
+		            <td class="actions">
 					    {% if hasAccess('admin_stock', 'edit') %}
     					    <a href="{{ url("admin_stock", {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
     					{% endif %}

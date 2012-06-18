@@ -32,18 +32,18 @@
 	    
 		<div>
 		    <h1>Docents</h1>
-			<table>
+			<table class="manage">
 		        <tr>
 		            <th width="90px">Identification</th>
 		            <th>Name</th>
-		            <th width="80px">Actions</th>
+		            <th width="70px">Actions</th>
 		        </tr>
 		        
 		        {% for mapping in profMappings %}
 		            <tr class="item">
 		                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
 		                <td>{{ mapping.getProf().getFullName() }}</td>
-		                <td>
+		                <td class="actions">
 		                    {% if hasAccess('admin_prof', 'delete') %}
 		                        <a href="#" data-id="{{ mapping.getId() }}" data-docent="{{ mapping.getProf().getFullName() }}" data-subject="{{ subject.getName() }}" class="delete">Delete</a>
 		                    {% endif %}

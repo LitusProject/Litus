@@ -20,7 +20,7 @@
 	{% include 'admin_stock_retour/partials/suppliers.twig' %}
 	
 	<div id="controller_action">
-		<table>
+		<table class="manage">
 		
 		    <tr>
 		        <th width="110px">Date</th>
@@ -36,7 +36,7 @@
 		        	<td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
 		        	<td>{{ retour.getNumber() }}</td>
 		            <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
-		        	<td>
+		        	<td class="actions">
 		        	    {% if hasAccess('admin_stock_retour', 'delete') %}
     		        		<a href="#" class="delete" data-id="{{ retour.getId() }}" data-title="{{ retour.getArticle().getMainArticle().getTitle() }}" data-number="{{ retour.getNumber() }}">Delete</a>
     		        	{% endif %}

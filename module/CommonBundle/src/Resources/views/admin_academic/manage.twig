@@ -30,26 +30,26 @@
 				<input type="text" id="searchString" size="30" />
 			</div>
 			
-			<table class="full_width">
+			<table class="full_width manage">
 		    	<tr>
 		        	<th>Username</th>
 		        	<th>University Identification</th>
 		        	<th width="150px">Name</th>
 		        	<th width="175px">E-mail</th>
-		        	<th width="120px">Action</th>
+		        	<th width="70px">Action</th>
 				</tr>
 			</table>
 		</div>
 		
 		<div id="default_page">
-		    <table class="full_width">
+		    <table class="full_width manage">
 		        <thead>
 		            <tr>
 		                <th>Username</th>
 		                <th>University Identification</th>
 		                <th width="150px">Name</th>
 		                <th width="175px">E-mail</th>
-		                <th width="120px">Action</th>
+		                <th width="70px">Action</th>
 		            </tr>
 		        </thead>
 		
@@ -60,7 +60,7 @@
 		                    <td>{{ academic.getUniversityIdentification() }}
 		                    <td>{{ academic.getFullName() }}</td>
 		                    <td>{{ academic.getEmail() }}</td>
-		                    <td>
+		                    <td class="actions">
 		                        {% if hasAccess('admin_academic', 'edit') %}
 								    <a href="{{ url('admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
 								{% endif %}
@@ -117,7 +117,7 @@
 							.append('<td>' + this.fullName + '</td>')
 							.append('<td>' + this.email + '</td>')
 							.append(
-								$('<td>')
+								$('<td>', {'class': 'actions'})
 									.append('<a href="{{ url('admin_academic', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
 									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
 								);
@@ -127,6 +127,7 @@
 							});
 					});
 					$('#student_search .delete').click(openModal);
+					$('#student_search table').change();
 				},
 				clear: function () {
 					$('#student_search table').find('tr.item').remove();
