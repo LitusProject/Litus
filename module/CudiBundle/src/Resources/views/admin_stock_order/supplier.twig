@@ -8,7 +8,7 @@
 	{% include 'admin_stock_order/partials/suppliers.twig' %}
 
 	<div id="controller_action">
-		<table>
+		<table class="manage">
 		
 		    <tr>
 		        <th width="120px">Date</th>
@@ -22,7 +22,7 @@
 		            <td>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i') }}{% else %}(new){% endif %}</td>
 		            <td>{{ order.getPerson().getFullName() }}</td>
 		            <td>&euro; {{ (order.getPrice()/100)|number_format(2) }}</td>
-					<td>
+					<td class="actions">
 					    {% if hasAccess('admin_stock_order', 'edit') %}
     						{% if order.isPlaced() %}
     							<a href="{{ url('admin_stock_order', {"action": "edit", "id": order.getId()}) }}" class="view">View</a>

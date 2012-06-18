@@ -49,12 +49,6 @@ table {
             a:hover {
                 color: @cBlack;
             }
-            
-            &.actions {
-                a {
-                    display: none;
-                }
-            }
         }
     }
 
@@ -70,6 +64,16 @@ table {
 
             td:last-child {
                 background-image: none;
+            }
+        }
+    }
+    
+    &.manage {
+        td {
+            &.actions {
+                a {
+                    display: none;
+                }
             }
         }
     }
@@ -94,7 +98,7 @@ table {
     &.right .tooltip-arrow  { #popoverArrow > .right(5px, @cTabsGradientStop); }
 }
 .tooltip-inner {
-    max-width: 200px;
+    max-width: 300px;
     padding: 3px 8px;
     color: #fff;
     text-align: center;

@@ -6,7 +6,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-		<table class="full_width">
+		<table class="full_width manage">
 		
 		    <tr>
 		        <th>Manager</th>
@@ -26,7 +26,7 @@
 		            <td>&euro; {{ (session.getTheoreticalRevenue()/100)|number_format(2) }}</td>
 		            <td>&euro; {{ (session.getActualRevenue()/100)|number_format(2) }}</td>
 		            <td>&euro; {% if session.getTheoreticalRevenue() - session.getActualRevenue() < 0 %}+{% endif %}{{ ((session.getActualRevenue() - session.getTheoreticalRevenue())/100)|number_format(2) }}</td>
-					<td>
+					<td class="actions">
 					    {% if hasAccess('admin_sales_session', 'edit') %}
     					    <a href="{{ url("admin_sales_session", {"action": "edit", "id": session.getId()}) }}" class="edit">Edit</a>
     					{% endif %}

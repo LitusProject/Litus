@@ -91,7 +91,7 @@
               && e.clientY > this.tip().offset().top - this.$element.height() - 20 && e.clientY < this.tip().offset().top + this.tip().height())
           return;
       else if (placement == 'left'
-              && e.clientX > this.tip().offset().left && e.clientX < this.tip().offset().left + this.tip().width() + this.$element.width() + 20
+              && e.clientX > this.tip().offset().left && e.clientX < this.tip().offset().left + this.tip().width() + this.$element.width() + 30
               && e.clientY > this.tip().offset().top && e.clientY < this.tip().offset().top + this.tip().height() + 10)
           return;
       else if (placement == 'right'

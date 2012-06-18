@@ -6,7 +6,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    <table class="full_width" id="articleComments">
+	    <table class="full_width manage" id="articleComments">
             <tr>
                 <th width="100px">Date</th>
                 <th width="140px">Person</th>
@@ -19,7 +19,7 @@
                     <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
                     <td>{{ item.getPerson().getFullName() }}</td>
                     <td>{{ item.getStatus()|capitalize }}</td>
-    				<td>
+    				<td class="actions">
     					<a href="#" class="view" data-text="{{ item.getComment() }}">Comments</a>
                     </td>
                 </tr>

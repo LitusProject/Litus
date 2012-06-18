@@ -20,7 +20,7 @@
 	{% include 'admin_stock_delivery/partials/suppliers.twig' %}
 
 	<div id="controller_action">
-		<table>
+		<table class="manage">
 		
 		    <tr>
 		        <th width="110px">Date</th>
@@ -36,7 +36,7 @@
 		        	<td>{{ delivery.getArticle().getMainArticle().getTitle() }}</td>
 		        	<td>{{ delivery.getNumber() }}</td>
 		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
-		        	<td>
+		        	<td class="actions">
 		        	    {% if hasAccess('admin_stock_delivery', 'delete') %}
     		        		<a href="#" class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getMainArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
     		        	{% endif %}

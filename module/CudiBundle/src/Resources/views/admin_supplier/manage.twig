@@ -7,13 +7,13 @@
     
 	<div id="controller_action">
 		<div>
-		    <table class="full_width">
+		    <table class="full_width manage">
 		        <thead>
 		            <tr>
 		                <th>Name</th>
 		                <th width="150px">Phone Number</th>
 		                <th width="200px">City</th>
-		            	<th width="200px">Actions</th>
+		            	<th width="100px">Actions</th>
 		            </tr>
 		        </thead>
 		
@@ -23,7 +23,7 @@
 		                    <td>{{ supplier.getName() }}</td>
 		                    <td>{{ supplier.getPhoneNumber() }}</td>
 		                    <td>{{ supplier.getAddress().getCity() }}</td>
-		            		<td>
+		            		<td class="actions">
 		            		    {% if hasAccess('admin_supplier', 'edit') %}
 		            			    <a href="{{ url('admin_supplier', {"action": "edit", "id": supplier.getId()}) }}" class="edit">Edit</a>
 		            			{% endif %}

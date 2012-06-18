@@ -38,18 +38,20 @@
     		<br style="clear:both"/>
     	{% endif %}
 		
-		<table class="full_width" id="articleFiles">
+		<table class="full_width manage" id="articleFiles">
 	        <tr>
 	            <th width="200px">Name</th>
 	            <th>Description</th>
-	            <th width="210px">Action</th>
+	            <th width="80px">Printable</th>
+	            <th width="70px">Action</th>
 	        </tr>
 	
 	        {% for mapping in mappings %}
 	            <tr class="item">
 	                <td>{{ mapping.getFile().getName() }}</td>
 	                <td>{{ mapping.getFile().getDescription() }}</td>
-					<td>
+	                <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
+					<td class="actions">
 					    {% if hasAccess('admin_article_file', 'download') %}
     						<a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
     					{% endif %}

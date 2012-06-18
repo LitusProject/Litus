@@ -27,35 +27,29 @@
 	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
 	    <br />
 	    
-	    <table>
-	        <thead>
-	            <tr>
-	                <th>Username</th>
-	                <th width="100px">Supplier</th>
-	                <th width="150px">Name</th>
-	                <th width="160px">E-mail</th>
-	                <th width="140px">Action</th>
-	            </tr>
-	        </thead>
+	    <table class="manage">
+            <tr>
+                <th width="150px">Username</th>
+                <th>Name</th>
+                <th width="160px">E-mail</th>
+                <th width="70px">Action</th>
+            </tr>
 	
-	        <tbody>
-	            {% for user in paginator %}
-	                <tr class="item">
-	                    <td>{{ user.getUsername() }}</td>
-	                    <td>{{ user.getSupplier().getName() }}</td>
-	                    <td>{{ user.getFullName() }}</td>
-	                    <td>{{ user.getEmail() }}</td>
-	                    <td>
-	                        {% if hasAccess('admin_supplier_user', 'edit') %}
-	                            <a href="{{ url('admin_supplier_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                        {% if hasAccess('admin_supplier_user', 'delete') %}
-	                            <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
-	                        {% endif %}
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
+            {% for user in paginator %}
+                <tr class="item">
+                    <td>{{ user.getUsername() }}</td>
+                    <td>{{ user.getFullName() }}</td>
+                    <td>{{ user.getEmail() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_supplier_user', 'edit') %}
+                            <a href="{{ url('admin_supplier_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('admin_supplier_user', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
 	    </table>
 
 		{% include 'admin/partials/paginationControl.twig' %}
