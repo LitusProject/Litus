@@ -18,6 +18,7 @@ namespace CudiBundle\Controller\Admin\Sales;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Booking,
+    CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
     DateInterval,
 	Zend\Mail\Message;
@@ -166,8 +167,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 ->findAllByPersonAndPeriod($booking->getPerson(), $activePeriod),
             $this->getParam('page')
         );
+        
+        $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
+        $mailForm->setAction($this->url()->fromRoute('admin_cudi_mail'));
             
         return array(
+            'mailForm' => $mailForm,
             'periods' => $periods,
             'activePeriod' => $activePeriod,
             'currentPeriod' => $currentPeriod,

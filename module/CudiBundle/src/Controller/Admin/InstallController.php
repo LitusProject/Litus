@@ -212,6 +212,9 @@ VTK Cudi
 	                'admin_article_subject' => array(
 	                    'delete', 'manage'
 	                ),
+	                'admin_cudi_mail' => array(
+	                    'send'
+	                ),
 	                'admin_prof_action' => array(
 	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
 	                ),
