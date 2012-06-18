@@ -417,6 +417,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 					
 		if (!isset($queueItem))
 			return;
+		
+		$queueItem->setPayMethod($data->payMethod);
 			
 		$bookings = $this->_entityManager
 			->getRepository('CudiBundle\Entity\Sales\Booking')

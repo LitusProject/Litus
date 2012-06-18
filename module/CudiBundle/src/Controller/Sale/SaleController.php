@@ -16,6 +16,7 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\QueueItem,
 	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm;
 
 /**

@@ -94,10 +94,25 @@ class QueueItem
     private $comment;
     
     /**
-     * @var array The possible states of a booking
+     * @var string The pay method of the queue item
+     *
+     * @Column(type="text", nullable=true)
+     */
+    private $payMethod;
+    
+    /**
+     * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
     	'signed_in', 'collecting', 'collected', 'selling', 'hold', 'canceled', 'sold'
+    );
+    
+    /**
+     * @var array The possible pay methods of a queue item
+     */
+    public static $POSSIBLE_PAY_METHODS = array(
+    	'cash' => 'Cash',
+    	'bank' => 'Bank',
     );
 
 	/**
@@ -122,6 +137,14 @@ class QueueItem
     public static function isValidQueueStatus($status)
     {
     	return in_array($status, self::$POSSIBLE_STATUSES);
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidPayMethod($payMethod)
+    {
+    	return array_key_exists($payMethod, self::$POSSIBLE_PAY_METHODS);
     }
 	
 	/**
@@ -180,7 +203,7 @@ class QueueItem
     public function setStatus($status)
     {
         if (!self::isValidQueueStatus($status))
-        	throw new \InvalidArgumentException('The QueueStatus is not valid.');
+        	throw new \InvalidArgumentException('The queue status is not valid.');
         
     	$this->status = $status;
     	
@@ -229,5 +252,27 @@ class QueueItem
     public function getComment()
     {
         return $this->comment;
+    }
+    
+    /**
+     * @param string $payMethod
+     * 
+     * @return \CudiBundle\Entity\Sales\QueueItem
+     */
+    public function setPayMethod($payMethod)
+    {
+        if (!self::isValidPayMethod($payMethod))
+        	throw new \InvalidArgumentException('The pay method is not valid.');
+        	
+        $this->payMethod = $payMethod;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getPayMethod()
+    {
+        return self::$POSSIBLE_PAY_METHODS[$this->payMethod];
     }
 }
