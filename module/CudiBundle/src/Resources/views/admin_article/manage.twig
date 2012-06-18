@@ -37,7 +37,7 @@
 	            	<th width="180px">Publisher</th>
 	            	<th width="50px">Year</th>
 	            	<th width="60px">Type</th>
-	            	<th width="120px">Action</th>
+	            	<th width="80px">Action</th>
 				</tr>
 			</table>
 		</div>
@@ -50,7 +50,7 @@
 		            <th width="180px">Publisher</th>
 		            <th width="50px">Year</th>
 					<th width="60px">Type</th>
-		            <th width="120px">Action</th>
+		            <th width="80px">Action</th>
 		        </tr>
 		        
 		        {% for article in paginator %}
@@ -60,7 +60,7 @@
 		                <td>{{ article.getPublishers() }}</td>
 		                <td>{{ article.getYearPublished() }}</td>
 		                <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
-						<td>
+						<td class="actions">
 						    {% if hasAccess('admin_article', 'edit') %}
 		                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
@@ -117,7 +117,7 @@
 							.append('<td>' + this.yearPublished + '</td>')
 							.append('<td>' + (this.isInternal ? 'Internal' : 'External') + '</td>')
 							.append(
-								actions = $('<td>')
+								actions = $('<td>', {'class': 'actions'})
 							);
 							
 							{% if hasAccess('admin_article', 'edit') %}
@@ -134,6 +134,7 @@
 							{% endif %}
 					});
 					$('#article_search .delete').click(openModal);
+					$('#article_search table').collapseActions();
 				},
 				clear: function () {
 					$('#article_search table').find('tr.item').remove();
@@ -141,6 +142,7 @@
 			});
 			{% endif %}
 			
+			$('#default_page table').collapseActions();
 			$('.item .delete').click(openModal);
 		});
 		

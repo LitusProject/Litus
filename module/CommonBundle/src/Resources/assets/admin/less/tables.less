@@ -49,6 +49,12 @@ table {
             a:hover {
                 color: @cBlack;
             }
+            
+            &.actions {
+                a {
+                    display: none;
+                }
+            }
         }
     }
 
@@ -67,4 +73,52 @@ table {
             }
         }
     }
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    visibility: visible;
+    padding: 5px;
+    font-size: 11px;
+    .opacity(0);
+    &.in     { .opacity(80); }
+    &.top    { margin-top:  -2px; }
+    &.right  { margin-left:  2px; }
+    &.bottom { margin-top:   2px; }
+    &.left   { margin-left: -2px; }
+    &.top .tooltip-arrow    { #popoverArrow > .top(5px, @cTabsGradientStop); }
+    &.left .tooltip-arrow   { #popoverArrow > .left(5px, @cTabsGradientStop); }
+    &.bottom .tooltip-arrow { #popoverArrow > .bottom(5px, @cTabsGradientStop); }
+    &.right .tooltip-arrow  { #popoverArrow > .right(5px, @cTabsGradientStop); }
+}
+.tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    #gradient > .vertical(@cTabsGradientStart, @cTabsGradientStop);
+    .border-radius(4px);
+    
+    a {
+        font-weight: bold;
+        margin-top: @defaultSpacing / 2;
+        padding-right: @defaultSpacing;
+        text-decoration: none;
+        color: @cWhite;
+        display: inline-block;
+        float: none;
+        text-indent: 9px;
+    }
+    
+    a:hover{
+    	color: @cTabsAccent;
+    }
+}
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
 }
