@@ -30,7 +30,7 @@
 				<input type="text" id="searchString" size="30" />
 			</div>
 			
-			<table class="full_width">
+			<table class="full_width manage">
 	        	<tr>
 	            	<th>Title</th>
 	            	<th width="100px">Author</th>
@@ -43,7 +43,7 @@
 		</div>
 		
 		<div id="default_page">
-			<table class="full_width">
+			<table class="full_width manage">
 		        <tr>
 		            <th>Title</th>
 		            <th width="100px">Author</th>
@@ -134,7 +134,7 @@
 							{% endif %}
 					});
 					$('#article_search .delete').click(openModal);
-					$('#article_search table').collapseActions();
+					$('#article_search table').change();
 				},
 				clear: function () {
 					$('#article_search table').find('tr.item').remove();
@@ -142,7 +142,6 @@
 			});
 			{% endif %}
 			
-			$('#default_page table').collapseActions();
 			$('.item .delete').click(openModal);
 		});
 		

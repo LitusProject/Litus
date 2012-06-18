@@ -13,6 +13,10 @@
             });
         });
     };
+    $(document).ready(function () {
+        $('table.manage').collapseActions()
+            .bind('change', function () {$(this).collapseActions()});
+    });
 }) (jQuery);
 
 !function ($) {
@@ -114,10 +118,12 @@
         , actualHeight
         , placement
         , tp
+        , that
         
       $('.tooltip').remove();
 
       if (this.enabled) {
+        that = this;
         $tip = this.tip()
         this.setContent()
 
@@ -155,6 +161,10 @@
             tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width}
             break
         }
+        
+        $tip.find('a').click(function () {
+            that.hide();
+        });
 
         $tip
           .css(tp)
