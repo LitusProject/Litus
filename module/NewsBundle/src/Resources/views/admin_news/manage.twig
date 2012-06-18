@@ -1,77 +1,72 @@
-{% extends 'admin/layout.twig' %}
+{% extends 'admin/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-success news_removed_success fade">
-    	<a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Success') }}</div>
-    	<div class="content">
-    		<p>{{ translator().translate('The news was successfully removed!') }}</p>
-    	</div>
-    </div>
-    <div class="flashmessage alert alert-danger news_removed_error fade">
-    	<a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Error') }}</div>
-    	<div class="content">
-    		<p>{{ translator().translate('An error occurred while trying to delete the news.') }}</p>
-    	</div>
-    </div>
-    
-    <div class="page-header">
-        <h1>{{ translator().translate('News') }}</h1>
-    </div>
-    
-    {% include 'admin_news/partials/navigation.twig' %}
-    
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>{{ translator().translate('Title') }}</th>
-                <th width="100px">{{ translator().translate('Category') }}</th>
-                <th width="150px">{{ translator().translate('Time') }}</th>
-                <th width="160px">{{ translator().translate('Person') }}</th>
-                <th width="180px">{{ translator().translate('Actions') }}</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for news in paginator %}
-                <tr class="item">
-                    <td>{{ news.getTitle(language) }}</td>
-                    <td>{{ translator().translate(news.getCategory()|capitalize) }}</td>
-                    <td>{{ dateLocalized(news.getCreateTime(), 'dd/MM/y H:m') }}</td>
-                    <td>{{ news.getUpdatePerson().getFullName() }}</td>
-                    <td class="actions">
-                        {% if hasAccess('admin_news', 'edit') %}
-                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>
-                        {% endif %}
-                        {% if hasAccess('admin_news', 'delete') %}
-                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle(language) }}" class="btn btn-danger delete">{{ translator().translate('Delete') }}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-	{% include 'admin/partials/paginationControl.twig' %}
+	{% include 'admin_news/partials/navigation.twig' %}
 	
-	<div id="removeNews" class="modal fade">
+	{% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width role_removed_success hide">
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The news item was successfully removed!</p>
+    	</div>
+    </div>
+    <div class="flashmessage error_message full_width role_removed_error hide">
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while trying to delete the news item.</p>
+    	</div>
+    </div>
+	
+	<div id="controller_action">
+	    <table class="full_width">
+	        <thead>
+	            <tr>
+	                <th>Title</th>
+	                <th width="150px">Time</th>
+	                <th width="160px">Author</th>
+	                <th width="100px">Actions</th>
+	            </tr>
+	        </thead>
+	
+	        <tbody>
+	            {% for news in paginator %}
+	                <tr class="item">
+	                    <td>{{ news.getTitle() }}</td>
+	                    <td>{{ dateLocalized(news.getCreateTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ news.getUpdatePerson().getFullName() }}</td>
+	                    <td class="actions">
+	                        {% if hasAccess('admin_news', 'edit') %}
+	                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>
+	                        {% endif %}
+	                        {% if hasAccess('admin_news', 'delete') %}
+	                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle() }}" class="btn btn-danger delete">{{ translator().translate('Delete') }}</a>
+	                        {% endif %}
+	                    </td>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+	    </table>
+	
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+	
+	<div class="modal hide fade" id="removeRole">
 		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
-			<h3>{{ translator().translate('Remove News') }}</h3>
+			<span>Litus Admin</span>
+			/News Delete
 		</div>
 		<div class="modal-body">
 			<p>
-				{{ translator().translate('You are about to delete the following news') }}: <b class="title"></b>?
-				{{ translator().translate('Please note that this operation cannot be undone!') }}
+				You are about to delete the following news item: <b class="title"></b>?
+				Please note that this operation cannot be undone!
 			</p>
 			<p>
-				{{ translator().translate('Are you sure you want to continue?') }}
+				Are you sure you want to continue?
 			</p>
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-danger delete">{{ translator().translate('Yes') }}</button>
-			<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
 		</div>
 	</div>
 {% endblock %}
@@ -91,8 +86,8 @@
 			removeNews.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_news', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
-    					$('.flashmessage').removeClass('in');
-    					$('.news_removed_success').addClass('in');
+    					$('.flashmessage').addClass('hide');
+    					$('.news_removed_success').removeClass('hide');
     					$this.parent().parent().remove();
     					removeNews.modal('hide');
     				} else {
