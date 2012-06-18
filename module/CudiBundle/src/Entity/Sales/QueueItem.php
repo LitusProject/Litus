@@ -16,6 +16,7 @@
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
+    CudiBundle\Entity\Sales\PayDesk,
 	CudiBundle\Entity\Sales\Session,
 	Doctrine\ORM\EntityManager;
 
@@ -172,6 +173,17 @@ class QueueItem
     }
     
     /**
+     * @param \CudiBundle\Entity\Sales\PayDesk $payDesk
+     *
+     * @return \CudiBundle\Entity\Sales\QueueItem
+     */
+    public function setPayDesk(PayDesk $payDesk)
+    {
+        $this->payDesk = $payDesk;
+        return $this;
+    }
+    
+    /**
      * @return \CudiBundle\Entity\Sales\PayDesk
      */
     public function getPayDesk()
@@ -206,6 +218,9 @@ class QueueItem
         	throw new \InvalidArgumentException('The queue status is not valid.');
         
     	$this->status = $status;
+    	
+    	if ($status != 'sold' && $status != 'selling')
+    	    $this->payDesk = null;
     	
     	switch ($status) {
     	    case 'signed_in':
@@ -273,6 +288,8 @@ class QueueItem
      */
     public function getPayMethod()
     {
+        if (!self::isValidPayMethod($this->payMethod))
+            return '';
         return self::$POSSIBLE_PAY_METHODS[$this->payMethod];
     }
 }

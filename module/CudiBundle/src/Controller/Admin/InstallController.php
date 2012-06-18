@@ -23,6 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Config,
     CudiBundle\Entity\Articles\Options\Binding,
 	CudiBundle\Entity\Articles\Options\Color,
+	CudiBundle\Entity\Sales\PayDesk,
 	DateInterval,
 	DateTime,
 	Exception;
@@ -193,6 +194,7 @@ VTK Cudi
 		$this->_installColor();
 		$this->_installMoneyUnit();
 		$this->_installBankDevice();
+		$this->_installPayDesks();
 	}
 	
 	protected function _initAcl()
@@ -461,6 +463,26 @@ VTK Cudi
 			if (null == $bankdevice) {
 				$bankdevice = new BankDevice($item);
 				$this->getEntityManager()->persist($bankdevice);
+			}
+		}
+		$this->getEntityManager()->flush();
+	}
+	
+	private function _installPayDesks()
+	{
+		$paydesks = array(
+		    'paydesk_1' => '1',
+		    'paydesk_2' => '2',
+		    'paydesk_3' => '3',
+		);
+		
+		foreach($paydesks as $code => $name) {
+			$paydesk = $this->getEntityManager()
+				->getRepository('CudiBundle\Entity\Sales\PayDesk')
+				->findOneByCode($code);
+			if (null == $paydesk) {
+				$paydesk = new PayDesk($code, $name);
+				$this->getEntityManager()->persist($paydesk);
 			}
 		}
 		$this->getEntityManager()->flush();
