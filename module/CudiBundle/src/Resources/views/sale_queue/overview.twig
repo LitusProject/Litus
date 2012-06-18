@@ -91,7 +91,11 @@
 			$(data).each(function () {
 				var item = $('<tr>').append(
 						$('<td>').html(this.number),
-						$('<td>').html(this.name ? this.name : 'guest ' + this.id)
+						$('<td>').append(
+						    (this.name ? this.name : 'guest ' + this.id),
+						    ' ',
+						    (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
+						)
 					);
 				container.append(item);
 			});

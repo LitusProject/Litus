@@ -63,6 +63,11 @@ return array(
                                 	        'common/js/jqueryui-1.8.16.min.js',
                                 	    ),
                                 	),
+                                	'common_jquery_form' => array(
+                                	    'assets'  => array(
+                                	        'common/js/jquery.form.js',
+                                	    ),
+                                	),
                                     'common_form_upload_progress' => array(
                                         'assets'  => array(
                                             'common/js/jquery.form.js',

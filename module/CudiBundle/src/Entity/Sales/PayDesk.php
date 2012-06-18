@@ -45,6 +45,16 @@ class PayDesk
 	private $code;
 	
 	/**
+	 * @param string $code The code of the paydesk
+	 * @param string $name The name of the paydesk
+	 */
+	public function __construct($code, $name)
+	{
+	    $this->code = $code;
+	    $this->name = $name;
+	}
+	
+	/**
 	 * @return integer
 	 */
 	public function getId()

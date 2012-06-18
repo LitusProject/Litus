@@ -22,6 +22,7 @@ return array(
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
 				'admin_prof_action'      => 'CudiBundle\Controller\Admin\Prof\ActionController',
+				'admin_cudi_mail'        => 'CudiBundle\Controller\Admin\MailController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
@@ -409,6 +410,18 @@ return array(
 				'defaults' => array(
 					'controller' => 'admin_prof_action',
 					'action'     => 'manage',
+				),
+			),
+		),
+		'admin_cudi_mail' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/cudi/mail',
+				'constraints' => array(
+				),
+				'defaults' => array(
+					'controller' => 'admin_cudi_mail',
+					'action'     => 'send',
 				),
 			),
 		),
