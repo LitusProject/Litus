@@ -105,6 +105,9 @@
         foreach($params as $key => $param) {
             if ('' === $param)
                 unset($params[$key]);
+                
+            if (isset($params['page']))
+            	unset($params['page']);
         }
     	return array(
        	    'fullWidth' => $fullWidth,

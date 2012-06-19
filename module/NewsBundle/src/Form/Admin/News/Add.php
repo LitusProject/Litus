@@ -108,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $valid = parent::isValid($data);
         
-        $form = $this->getSubForm('tab-content');
+        $form = $this->getSubForm('tab_content');
         $date = new \DateTime();
         
         if ($date) {
