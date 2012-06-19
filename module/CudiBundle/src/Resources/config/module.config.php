@@ -226,6 +226,21 @@ return array(
 				),
 			),
 		),
+		'admin_sales_article_typeahead' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article/:academicyear/typeahead[/:string]',
+				'constraints' => array(
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+					'string'       => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'typeahead',
+				),
+			),
+		),
+		
 		'admin_sales_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -542,7 +557,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/subject/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_subject',
@@ -569,7 +584,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/article/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_article',
@@ -638,7 +653,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/prof/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_prof',

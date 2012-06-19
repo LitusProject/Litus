@@ -18,6 +18,18 @@
 	<script type="text/javascript">
 	    $(document).ready(function () {
 	        $('#controller_nav .assignAll').click(openAssignAllModal);
+	        
+	        $('#articleSearch').typeaheadRemote(
+	            {
+	                source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+	            }
+	        ).change(function (e) {
+	            if ($(this).data('value')) {
+	                $('#articleId').val($(this).data('value').id);
+	            } else {
+	                $('#articleId').val('');
+	            }
+	        });
 	    });
 	</script>
 {% endblock %}

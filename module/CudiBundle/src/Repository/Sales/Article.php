@@ -185,4 +185,32 @@ class Article extends EntityRepository
         	
         return $resultSet;
     }
+    
+    public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        	->from('CudiBundle\Entity\Sales\Article', 'a')
+        	->innerJoin('a.mainArticle', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('a.isHistory', 'false'),
+        	        $query->expr()->eq('a.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+        	        $query->expr()->eq('m.isProf', 'false'),
+        	        $query->expr()->orX(
+        	            $query->expr()->like($query->expr()->lower('m.title'), ':title'),
+        	            $query->expr()->like($query->expr()->concat('a.barcode', '\'\''), ':barcode')
+        	        )
+        	    )
+        	)
+        	->setParameter('title', '%'.strtolower($title).'%')
+        	->setParameter('barcode', strtolower($title).'%')
+        	->setParameter('academicYear', $academicYear->getId())
+        	->orderBy('m.title', 'ASC')
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
 }

@@ -94,6 +94,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($activePeriod = $this->_getPeriod()))
             return;
             
+        $academicYear = $this->_getAcademicYear();
+            
         $form = new AddForm($this->getEntityManager());
 		
 		if($this->getRequest()->isPost()) {
@@ -107,7 +109,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 						->findOneByUsername($formData['person']),
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Sales\Article')
-						->findOneByBarcode($formData['article']),
+						->findOneById($formData['article_id']),
 					'booked',
 					$formData['number']
 				);
@@ -142,6 +144,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'periods' => $periods,
             'activePeriod' => $activePeriod,
             'currentPeriod' => $currentPeriod,
+            'currentAcademicYear' => $academicYear,
             'form' => $form,
         );
     }

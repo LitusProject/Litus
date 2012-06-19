@@ -221,7 +221,7 @@ VTK Cudi
 	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
 	                ),
 	                'admin_sales_article' => array(
-	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf'
+	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
 	                ),
 	                'admin_sales_booking' => array(
 	                    'add', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'search', 'unassign'

@@ -85,7 +85,7 @@ return array(
         		'route' => '/admin/syllabus/subject/typeahead/:academicyear[/:string]',
         		'constraints' => array(
         			'academicyear' => '[0-9]{4}-[0-9]{4}',
-        			'string'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'string'       => '[%a-zA-Z0-9_-]*',
         		),
         		'defaults' => array(
         			'controller' => 'admin_subject',
@@ -113,7 +113,7 @@ return array(
         	'options' => array(
         		'route' => '/admin/syllabus/prof/typeahead[/:string]',
         		'constraints' => array(
-        			'string'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+        			'string'  => '[%a-zA-Z0-9_-]*',
         		),
         		'defaults' => array(
         			'controller' => 'admin_prof',
