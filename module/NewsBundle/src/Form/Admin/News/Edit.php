@@ -15,10 +15,10 @@
  
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
-    NewsBundle\Entity\Nodes\News;
+    NewsBundle\Entity\Nodes\News,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit a page.
@@ -35,9 +35,9 @@ class Edit extends Add
         
         $this->news = $news;
         
-        $form = $this->getSubForm('tab-content');
+        $form = $this->getSubForm('tab_content');
         
-        foreach ($this->_getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
             $title->clearValidators();
         }
@@ -45,11 +45,21 @@ class Edit extends Add
         $this->removeElement('submit');
         
         $field = new Submit('submit');
-        $field->setLabel('Save');
+        $field->setLabel('Save')
+        	->setAttrib('class', 'news_edit')
+        	->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
         
-        $this->setActionsGroup(array('submit'));
-        
         $this->_populateFromNews($news);
+    }
+    
+    private function _populateFromNews(News $news)
+    {
+        $data = array();
+        foreach($this->getLanguages() as $language) {
+            $data['content_' . $language->getAbbrev()] = $news->getContent($language);
+            $data['title_' . $language->getAbbrev()] = $news->getTitle($language);
+        }
+        $this->populate($data);
     }
 }

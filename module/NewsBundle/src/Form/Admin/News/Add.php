@@ -57,7 +57,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 		
 		$tabContent = new TabContent();
 		
-		foreach($this->_getLanguages() as $language) {
+		foreach($this->getLanguages() as $language) {
 		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 		    
 		    $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -87,17 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->addElement($field);
     }
     
-    protected function _populateFromNews(News $news)
-    {
-        $data = array();
-        foreach($this->_getLanguages() as $language) {
-            $data['content_' . $language->getAbbrev()] = $news->getContent($language);
-            $data['title_' . $language->getAbbrev()] = $news->getTitle($language);
-        }
-        $this->populate($data);
-    }
-    
-    protected function _getLanguages()
+    protected function getLanguages()
     {
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -112,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $date = new \DateTime();
         
         if ($date) {
-            foreach($this->_getLanguages() as $language) {
+            foreach($this->getLanguages() as $language) {
                 $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
                 $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
 

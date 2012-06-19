@@ -50,6 +50,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getTitle(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getTitle();
     }
@@ -62,6 +63,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getName(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getName();
     }
@@ -74,6 +76,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getContent(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getContent();
     }
@@ -86,6 +89,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getSummary(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getSummary();
     }
