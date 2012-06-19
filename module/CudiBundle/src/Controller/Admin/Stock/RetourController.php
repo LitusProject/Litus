@@ -82,6 +82,8 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	    if (!($period = $this->_getActiveStockPeriod()))
 	        return;
 	        
+	    $academicYear = $this->_getAcademicYear();
+
 	    $form = new RetourForm($this->getEntityManager());
 		
 		if($this->getRequest()->isPost()) {
@@ -90,7 +92,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Article')
-					->findOneByBarcode($formData['article']);
+					->findOneById($formData['article_id']);
 				
 			    $item = new Retour($article, $formData['number'], $this->getAuthentication()->getPersonObject(), $formData['comment']);
 				$this->getEntityManager()->persist($item);
@@ -128,6 +130,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         	'form' => $form,
         	'retours' => $retours,
         	'suppliers' => $suppliers,
+        	'currentAcademicYear' => $academicYear,
         );
 	}
 	

@@ -340,6 +340,27 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
 	}
+	
+	public function typeaheadAction()
+	{
+	    $academicYear = $this->_getAcademicYear();
+        
+        $articles = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Sales\Article')
+        	->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+	}
     
     private function _getSaleArticle()
     {
