@@ -38,7 +38,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
         	
             if ($form->isValid($formData)) {
-                $news = new News($this->getAuthentication()->getPersonObject(), $formData['category']);
+                $news = new News(
+                	$this->getAuthentication()->getPersonObject()
+                );
                 $this->getEntityManager()->persist($news);
 
                 $languages = $this->getEntityManager()
@@ -47,7 +49,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 
                 foreach($languages as $language) {
                     $translation = new Translation(
-                    	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                    	$news,
+                    	$language,
+                    	$formData['content_' . $language->getAbbrev()],
+                    	$formData['title_' . $language->getAbbrev()]
                     );
                     $this->getEntityManager()->persist($translation);
                     
@@ -61,7 +66,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The news was successfully added!'
+                        'The news item was successfully added!'
                     )
                 );
 

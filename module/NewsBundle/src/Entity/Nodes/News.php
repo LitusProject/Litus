@@ -21,39 +21,12 @@ class News extends \CommonBundle\Entity\Nodes\Node
     private $translations;
     
     /**
-     * @var string The category of this news
-     *
-     * @Column(type="string")
-     */
-    private $category;
-    
-    /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $category
      */
-    public function __construct(Person $person, $category)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
-        $this->category = $category;
-    }
-    
-    /** 
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    
-    /**
-     * @param string $category
-     *
-     * @return \NewsBundle\Entity\Nodes\Translation
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-        return $this;
     }
     
     /**
