@@ -43,7 +43,7 @@
 	        </tr>
 	
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getSubject().getCode() }}</td>
 	                <td>{{ mapping.getSubject().getName() }}</td>
 	                <td>{{ mapping.getSubject().getSemester() }}</td>
@@ -103,12 +103,13 @@
 			var removeMapping = $('#removeMapping');
 			removeMapping.find('.articleTitle').html($(this).data('article'));
 			removeMapping.find('.subjectName').html($(this).data('subject'));
+			var id = $this.data('id');
 			removeMapping.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.mapping_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeMapping.modal('hide');
 					} else {
 					    errorRemove();

@@ -39,7 +39,7 @@
 	        </tr>
 	
 	        {% for discount in discounts %}
-	            <tr class="item">
+	            <tr class="item item-{{ discount.getId() }}">
 	                <td style="text-align:center;">{% if discount.getTemplate() is not null %}&times;{% endif %}</td>
 	                <td>{{ discount.getType()|capitalize }}</td>
 	                <td>{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}</td>
@@ -98,12 +98,13 @@
 			var removeDiscount = $('#removeDiscount');
 			removeDiscount.find('.type').html($(this).data('type'));
 			removeDiscount.find('.discount').html($(this).data('discount'));
+			var id = $this.data('id');
 			removeDiscount.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.discount_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeDiscount.modal('hide');
 					} else {
 					    errorRemove();

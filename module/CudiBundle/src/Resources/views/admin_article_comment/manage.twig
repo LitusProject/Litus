@@ -40,7 +40,7 @@
 	        </tr>
 	
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
 	                <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
 	                <td>{{ mapping.getComment().getSummary() }}</td>
@@ -113,12 +113,13 @@
 			e.preventDefault();
 			var removeComment = $('#removeComment');
 			removeComment.find('.author').html($(this).data('author'));
+			var id = $this.data('id');
 			removeComment.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_comment', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_comment', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.comment_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeComment.modal('hide');
 					} else {
 					    errorRemove();

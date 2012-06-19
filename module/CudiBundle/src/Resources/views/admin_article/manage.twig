@@ -52,7 +52,7 @@
 		        </tr>
 		        
 		        {% for article in paginator %}
-		            <tr class="item">
+		            <tr class="item item-{{ article.getId() }}">
 		                <td>{{ article.getTitle() }}</td>
 		                <td>{{ article.getAuthors() }}</td>
 		                <td>{{ article.getYearPublished() }}</td>
@@ -107,7 +107,7 @@
 				display: function (data) {
 					$('#article_search table').find('tr.item').remove();
 					$(data).each(function () {
-						$('#article_search table').append(row = $('<tr>', {class: 'item'}));
+						$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 						row.append('<td>' + this.title + '</td>')
 							.append('<td>' + this.author + '</td>')
 							.append('<td>' + this.yearPublished + '</td>')
@@ -148,12 +148,13 @@
 			var removeArticle = $('#removeArticle');
 			removeArticle.find('.articleTitle').html($(this).data('title'));
 			removeArticle.find('.articleAuthors').html($(this).data('authors'));
+			var id = $this.data('id');
 			removeArticle.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.article_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+    					$('.item-' + id).remove();
     					removeArticle.modal('hide');
     				} else {
     				    errorRemove();

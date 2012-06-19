@@ -47,7 +47,7 @@
 	        </tr>
 	
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getFile().getName() }}</td>
 	                <td>{{ mapping.getFile().getDescription() }}</td>
 	                <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
@@ -179,12 +179,13 @@
 			var removeFile = $('#removeFile');
 			removeFile.find('.fileName').html($(this).data('name'));
 			removeFile.find('.fileDescription').html($(this).data('description'));
+			var id = $this.data('id');
 			removeFile.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.file_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+    					$('.item-' + id).remove();
     					removeFile.modal('hide');
     				} else {
     				    errorRemove();

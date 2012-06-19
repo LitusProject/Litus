@@ -294,6 +294,7 @@ class Study
                     } while (file_exists($filePath . $fileName));
                     
                     file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
+                    unlink('/tmp/' . $identification);
                     $prof->setPhotoPath($fileName);
                 }
                 
