@@ -31,7 +31,7 @@
 		    </tr>
 		    
 		    {% for retour in paginator %}
-		        <tr class="item">
+		        <tr class="item item-{{ retour.getId() }}">
 		        	<td>{{ retour.getTimestamp().format('Y-m-d H:i') }}</td>
 		        	<td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
 		        	<td>{{ retour.getNumber() }}</td>
@@ -98,12 +98,13 @@
 			var removeRetour = $('#removeRetour');
 			removeRetour.find('.articleTitle').html($(this).data('title'));
 			removeRetour.find('.retourNumber').html($(this).data('number'));
+			var id = $this.data('id');
 			removeRetour.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.retour_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeRetour.modal('hide');
     				} else {
     				    errorRemove();

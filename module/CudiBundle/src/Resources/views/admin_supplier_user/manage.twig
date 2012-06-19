@@ -36,7 +36,7 @@
             </tr>
 	
             {% for user in paginator %}
-                <tr class="item">
+                <tr class="item item-{{ user.getId() }}">
                     <td>{{ user.getUsername() }}</td>
                     <td>{{ user.getFullName() }}</td>
                     <td>{{ user.getEmail() }}</td>
@@ -105,12 +105,13 @@
 			var removeUser = $('#removeUser');
 			removeUser.find('.fullName').html($(this).data('name'));
 			removeUser.find('.supplier').html($(this).data('supplier'));
+			var id = $this.data('id');
 			removeUser.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}/' + id), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.supplier_removed_success').show();
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeUser.modal('hide');
     				} else {
     				    errorRemove();

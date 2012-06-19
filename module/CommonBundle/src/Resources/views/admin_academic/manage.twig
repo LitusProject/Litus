@@ -55,7 +55,7 @@
 		
 		        <tbody>
 		            {% for academic in paginator %}
-		                <tr class="item">
+		                <tr class="item item-{{ academic.getId() }}">
 		                    <td>{{ academic.getUsername() }}</td>
 		                    <td>{{ academic.getUniversityIdentification() }}
 		                    <td>{{ academic.getFullName() }}</td>
@@ -111,7 +111,7 @@
 				display: function (data) {
 					$('#student_search table').find('tr.item').remove();
 					$(data).each(function () {
-						$('#student_search table').append(row = $('<tr>', {class: 'item'}));
+						$('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 						row.append('<td>' + this.username + '</td>')
 							.append('<td>' + this.universityIdentification + '</td>')
 							.append('<td>' + this.fullName + '</td>')
@@ -140,19 +140,19 @@
 		
 		function openModal(e) {
 			var $this = $(this);
-
 			e.preventDefault();
 			var removeStudent = $('#removeStudent');
 			removeStudent.find('.fullname').html($(this).data('fullname'));
 			removeStudent.find('.cancel').one('click', function () {
 				removeStudent.modal('hide');
 			});
+			var id = $this.data('id');
 			removeStudent.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.student_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+    					$('.item-' + id).remove();
     					removeStudent.modal('hide');
     				} else {
     				    errorRemove();
