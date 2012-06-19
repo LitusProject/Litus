@@ -4,7 +4,7 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('admin_news', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_news", {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_news", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
             {% if hasAccess('admin_news', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_news", {"action": "add"}) }}">Add</a></li>

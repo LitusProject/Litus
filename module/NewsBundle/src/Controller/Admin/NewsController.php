@@ -13,7 +13,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NewsController extends \CommonBundle\Component\Controller\ActionController
+class NewsController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -51,9 +51,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     $translation = new Translation(
                     	$news,
                     	$language,
-                    	$formData['content_' . $language->getAbbrev()],
+                    	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
                     	$formData['title_' . $language->getAbbrev()]
                     );
+                    
                     $this->getEntityManager()->persist($translation);
                     
                     if ($language->getAbbrev() == 'en')
@@ -111,8 +112,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
                         $translation = new Translation(
-                        	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                        	$news,
+                        	$language,
+                        	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
+                        	$formData['title_' . $language->getAbbrev()]
                         );
+                        
                         $this->getEntityManager()->persist($translation);
                     }
                     
@@ -126,7 +131,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The news was successfully edited!'
+                        'The news item was successfully edited!'
                     )
                 );
 

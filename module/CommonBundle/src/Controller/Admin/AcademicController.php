@@ -81,7 +81,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 	)
                 );
                 
-                $newUser->activate();
+                $newUser->activate(
+                	$this->getEntityManager(),
+                	$this->getMailTransport()
+                );
                 
                 $this->getEntityManager()->persist($newUser);                
                 $this->getEntityManager()->flush();

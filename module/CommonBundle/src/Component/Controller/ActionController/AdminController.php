@@ -35,6 +35,12 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     public function execute(MvcEvent $e)
     {
 		$result = parent::execute($e);
+		
+		$language = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Language')
+		    ->findOneByAbbrev('en');
+		    
+		$result['language'] = $language;
 				
 		$result['now'] = array(
 			'iso8601' => date('c', time()),

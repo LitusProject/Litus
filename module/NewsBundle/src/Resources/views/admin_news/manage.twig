@@ -18,28 +18,28 @@
     </div>
 	
 	<div id="controller_action">
-	    <table class="full_width">
+	    <table class="full_width manage">
 	        <thead>
 	            <tr>
 	                <th>Title</th>
 	                <th width="150px">Time</th>
 	                <th width="160px">Author</th>
-	                <th width="100px">Actions</th>
+	                <th width="70px">Actions</th>
 	            </tr>
 	        </thead>
 	
 	        <tbody>
 	            {% for news in paginator %}
 	                <tr class="item">
-	                    <td>{{ news.getTitle() }}</td>
+	                    <td>{{ news.getTitle(language) }}</td>
 	                    <td>{{ dateLocalized(news.getCreateTime(), 'dd/MM/y H:m') }}</td>
 	                    <td>{{ news.getUpdatePerson().getFullName() }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_news', 'edit') %}
-	                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>
+	                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle() }}" class="btn btn-danger delete">{{ translator().translate('Delete') }}</a>
+	                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -50,10 +50,10 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 	
-	<div class="modal hide fade" id="removeRole">
+	<div class="modal hide fade" id="removeNews">
 		<div class="modal-header">
 			<span>Litus Admin</span>
-			/News Delete
+			/Delete News
 		</div>
 		<div class="modal-body">
 			<p>
@@ -79,28 +79,31 @@
 		
 		function openModal(e) {
 			var $this = $(this);
-
 			e.preventDefault();
 			var removeNews = $('#removeNews');
 			removeNews.find('.title').html($(this).data('title'));
+			removeNews.find('.cancel').one('click', function () {
+				removeNews.modal('hide');
+			});
+			var id = $this.data('id');
 			removeNews.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_news', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_news', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.news_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
-    					removeNews.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
+						$('.flashmessage').addClass('hide');
+						$('.news_removed_success').removeClass('hide');
+						$('.item-' + id).remove();
+						removeNews.modal('hide');
+					} else {
+					    errorRemove();
+					}
 				}, 'json').error(errorRemove);
 			});
 			removeNews.modal();
 		}
 		
 		function errorRemove() {
-		    $('.flashmessage').removeClass('in');
-		    $('.news_removed_error').addClass('in');
+		    $('.flashmessage').addClass('hide');
+		    $('.news_removed_error').removeClass('hide');
 		    $('#removeNews').modal('hide');
 		}
 	</script>

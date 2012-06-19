@@ -346,7 +346,7 @@ return array(
         'account' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/account[/:action[/:id]]',
+                'route'    => '/account[/:action[/code/:code]]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
