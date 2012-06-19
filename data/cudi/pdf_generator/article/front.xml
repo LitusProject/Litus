@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article binding="none">
+    <our_union short_name="VTK">
+    	<name>VTK VZW</name>
+        <logo>data/images/logo/logo.svg</logo>
+    </our_union>
+    <university>KATHOLIEKE UNIVERSITEIT LEUVEN</university>
+    <faculty>FACULTEIT INGENIEURSWETENSCHAPPEN</faculty>
+    <address>
+    	<name>CURSUSDIENST VTK vzw</name>
+    	<street>STUDENTENWIJK ARENBERG 6/0</street>
+    	<city>B-3001 HEVERLEE</city>
+        <site>HTTP://WWW.VTK.BE</site>
+    </address>
+	<title>Elektromagnetische golven</title>
+	<authors>A. Van de Capelle</authors>
+	<subjects>
+    	<subject>
+    		<code>H01M1A</code>
+    		<name>Elektromagnetische golven</name>
+    	</subject>
+    </subjects>
+	<price>2.60</price>
+	<barcode>978111233051</barcode>
+</article>
