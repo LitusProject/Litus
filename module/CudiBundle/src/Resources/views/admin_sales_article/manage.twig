@@ -35,9 +35,9 @@
 	    	<table class="full_width manage">
 	        	<tr>
 	            	<th>Title</th>
-	            	<th width="100px">Author</th>
-	            	<th width="180px">Publisher</th>
-	            	<th width="100px">Sell Price</th>
+	            	<th width="170px">Author</th>
+		            <th width="90px">Sell Price</th>
+		            <th width="90px">Stock</th>
 	            	<th width="70px">Action</th>
 	    		</tr>
 	    	</table>
@@ -47,9 +47,9 @@
 			<table class="full_width manage">
 		        <tr>
 		            <th>Title</th>
-		            <th width="100px">Author</th>
-		            <th width="180px">Publisher</th>
-		            <th width="100px">Sell Price</th>
+		            <th width="170px">Author</th>
+		            <th width="90px">Sell Price</th>
+		            <th width="90px">Stock</th>
 		            <th width="70px">Action</th>
 		        </tr>
 		        
@@ -57,8 +57,8 @@
 		            <tr class="item item-{{ article.getId() }}">
 		                <td>{{ article.getMainArticle().getTitle() }}</td>
 		                <td>{{ article.getMainArticle().getAuthors() }}</td>
-		                <td>{{ article.getMainArticle().getPublishers() }}</td>
 		                <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
+		                <td>{{ article.getStockValue() }}</td>
 						<td class="actions">
 						    {% if activeAcademicYear.getId() == currentAcademicYear.getId() %}  
     						    {% if hasAccess('admin_sales_article', 'edit') %}
@@ -118,8 +118,8 @@
 		    			$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 		    			row.append('<td>' + this.title + '</td>')
 		    				.append('<td>' + this.author + '</td>')
-		    				.append('<td>' + this.publisher + '</td>')
 		    				.append('<td>&euro; ' + this.sellPrice + '</td>')
+		    				.append('<td>' + this.stockValue + '</td>')
 		    				.append(
 		    					actions = $('<td>', {'class': 'actions'})
 		    				);
