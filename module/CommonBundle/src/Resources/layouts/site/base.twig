@@ -96,68 +96,7 @@
         
         <div id="content">
             <div class="container">
-            	<div class="alert alert-info">
-	    	        <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-	    	    </div>
-            
-				<div class="row">
-				    <div class="span3">
-				    	<img class="headingIcon" src="/_site/img/glyphicons-calendar.png">
-				    	<h2>Calendar</h2>
-					    	
-						<div class="item">
-				    		<span class="date calendar">10 Mei</span>
-					    		
-					    	<p>
-					    		<i class="icon-time"></i> <a href="#" rel="popover" data-original-title="AfrekeningsTD" data-content="And here's some amazing content. It's very engaging right?">18:00&mdash;AfrekeningsTD</a><br />
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i>
-					    	</p>
-					    </div>
-					    
-					    <div class="item">
-					    	<span class="date calendar">11 Mei</span>
-					    		
-					    	<p>
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i><br />
-					    	</p>
-					    </div>
-					    
-					    <div class="item">
-					    	<span class="date calendar">12 Mei</span>
-					    		
-					    	<p>
-					    		<i class="icon-time"></i><br />
-					    		<i class="icon-time"></i><br />
-					    	</p>
-					    </div>
-				    </div>
-				    
-				   	<div class="span3">
-				   		<img class="headingIcon" src="/_site/img/glyphicons-twitter.png">
-						<h2>Twitter</h2>	
-				   	</div>
-				   
-				   	<div class="span6">
-				   		<img class="headingIcon" src="/_site/img/glyphicons-news.png">
-				    	<h2>{{ translator().translate('News') }}</h2>
-				    		
-				    	<div class="item">
-				    		<span class="date news">10 Mei</span>
-				    		
-				    		<h3>Test</h3>
-				    			
-				    		<p>
-				    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ornare lectus et orci auctor pellentesque. Sed tempus faucibus augue, id ullamcorper massa imperdiet ut. Fusce vitae felis vitae tellus tempus dictum vitae at magna. Cras elementum, purus pharetra malesuada sodales, diam arcu dignissim nulla, at rhoncus dui felis et velit. Morbi ultricies ullamcorper justo, sit amet accumsan est pulvinar ac. Maecenas at sem nibh. Mauris quis purus vitae est euismod aliquam. Integer a mauris urna. Aenean eget elit erat, sit amet luctus risus. Vivamus scelerisque, massa ac vestibulum eleifend, justo sapien tempor urna, sed condimentum urna enim sit amet metus. Phasellus ut velit diam, vel tristique ipsum. Vivamus pulvinar convallis est id tempus. Maecenas consequat scelerisque est, a tempus lorem eleifend eget. Fusce at eros non libero pretium volutpat et eget lorem. Sed in mi id massa sagittis blandit id at enim. Cras nec urna purus, et iaculis dolor.
-				    		</p>
-				    	</div>
-				    	
-				    </div>
-			    </div>
+            	{% block content %} {% endblock %}
             </div>
         </div>
     </div>
@@ -197,12 +136,10 @@
             });
             
             $('.carousel').carousel();
-            
-            $('a[rel=popover]').popover().click(function(e) {
-            	e.preventDefault();
-            });
         });
     </script>
+    
+    {% block content_script %} {% endblock %}
 
 </body>
 </html>
