@@ -81,13 +81,23 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            ),
 	            array(
 	            	'key'         => 'union_logo',
-	            	'value'       => 'data/images/logo/logo.jpg',
+	            	'value'       => 'data/images/logo/logo.svg',
 	            	'description' => 'The path to the logo of the union',
 	            ),
 	            array(
 	            	'key'         => 'union_url',
 	            	'value'       => 'http://www.vtk.be',
 	            	'description' => 'The URL of the union',
+	            ),
+	            array(
+	            	'key'         => 'university',
+	            	'value'       => 'KU Leuven',
+	            	'description' => 'The name of the university',
+	            ),
+	            array(
+	            	'key'         => 'faculty',
+	            	'value'       => 'Faculty of Engineering',
+	            	'description' => 'The name of the faculty',
 	            ),
 	            array(
 	            	'key'         => 'cudi.name',
@@ -184,6 +194,11 @@ VTK Cudi
     			    'key'         => 'cudi.price_perforated',
     			    'value'       => '50',
     			    'description' => 'The price of a perforated article',
+    			),
+    			array(
+    			    'key'         => 'cudi.front_address_name',
+    			    'value'       => 'CuDi VTK vzw',
+    			    'description' => 'The name of the address on the front of an article',
     			),
 			)
 		);

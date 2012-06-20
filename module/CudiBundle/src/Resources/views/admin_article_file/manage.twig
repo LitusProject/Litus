@@ -45,7 +45,20 @@
 	            <th width="80px">Printable</th>
 	            <th width="70px">Action</th>
 	        </tr>
-	
+	        
+	        {% if article.isInternal() and saleArticle is not null %}
+    	        <tr class="item">
+    	            <td>front.pdf</td>
+    	            <td>Front page of this article</td>
+    	            <td style="text-align: center;">&times;</td>
+    	        	<td class="actions">
+    	        	    {% if hasAccess('admin_article_file', 'front') %}
+    	        			<a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
+    	        		{% endif %}
+    	            </td>
+    	        </tr>
+	        {% endif %}
+	        
 	        {% for mapping in mappings %}
 	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getFile().getName() }}</td>
