@@ -104,7 +104,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         	new Object(
         		'article',
         		array(
-        			'binding' => $this->_article->getMainArticle()->getBinding()->getName(),
+        			'binding' => $this->_article->getMainArticle()->getBinding()->getCode(),
         		),
         		array(
         			new Object(

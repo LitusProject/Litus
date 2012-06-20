@@ -15,7 +15,9 @@
  
 namespace CudiBundle\Entity;
 
-use DateTime;
+use CommonBundle\Entity\General\AcademicYear,
+    DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Article")
@@ -396,6 +398,29 @@ abstract class Article
 	public function setType($type)
 	{
 	    $this->type = $type;
+	    return $this;
+	}
+	
+	/**
+	 * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+	 * 
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function getSaleArticle(AcademicYear $academicYear)
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Sales\Article')
+	        ->findOneByArticleAndAcademicYear($this, $academicYear);
+	}
+	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setEntityManager(EntityManager $entityManager)
+	{
+	    $this->_entityManager = $entityManager;
 	    return $this;
 	}
 	

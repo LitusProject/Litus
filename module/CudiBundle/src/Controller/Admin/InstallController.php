@@ -359,14 +359,18 @@ VTK Cudi
 	
 	private function _installBinding()
 	{
-		$bindings = array('Binded');
+		$bindings = array(
+		    'binded' => 'Binded',
+		    'none' => 'None',
+            'glued' => 'Glued',
+		);
 		
-		foreach($bindings as $item) {
+		foreach($bindings as $code => $name) {
 			$binding = $this->getEntityManager()
 				->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-				->findOneByName($item);
+				->findOneByCode($code);
 			if (null == $binding) {
-				$binding = new Binding($item);
+				$binding = new Binding($code, $name);
 				$this->getEntityManager()->persist($binding);
 			}
 		}
