@@ -34,7 +34,7 @@ use CommonBundle\Component\Acl\Acl,
 class ActionController extends \Zend\Mvc\Controller\ActionController implements AuthenticationAware, DoctrineAware
 {
 	/**
-     * Execute the request
+     * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
@@ -106,39 +106,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
     
     /**
-     * Initializes our custom view helpers.
-     *
-     * @return void
-     */
-    private function _initViewHelpers()
-    {
-    	$view = $this->getLocator()->get('view');
-    	
-    	// DateLocalized View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
-    	);
-		
-    	// GetParam View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-    	);
-    	$view->plugin('getParam')->setRouteMatch(
-    		$this->getEvent()->getRouteMatch()
-    	);
-    	
-    	// HasAccess View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
-    		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
-    	);		
-    	$view->plugin('hasAccess')->setDriver(
-    		new HasAccess(
-    			$this->_getAcl(), $this->getAuthentication()
-    		)
-    	);
-    }
-    
-    /**
      * Initializes our custom controller plugins.
      *
      * @return void
@@ -158,6 +125,39 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     	// Paginator Plugin
     	$this->getBroker()->getClassLoader()->registerPlugin(
     		'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
+    	);
+    }
+    
+    /**
+     * Initializes our custom view helpers.
+     *
+     * @return void
+     */
+    private function _initViewHelpers()
+    {
+    	$view = $this->getLocator()->get('view');
+    	
+    	// DateLocalized View Helper
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
+    	);
+    	
+    	// GetParam View Helper
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
+    	);
+    	$view->plugin('getParam')->setRouteMatch(
+    		$this->getEvent()->getRouteMatch()
+    	);
+    	
+    	// HasAccess View Helper
+    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
+    	);		
+    	$view->plugin('hasAccess')->setDriver(
+    		new HasAccess(
+    			$this->_getAcl(), $this->getAuthentication()
+    		)
     	);
     }
     

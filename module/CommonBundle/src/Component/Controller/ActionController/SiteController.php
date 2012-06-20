@@ -26,7 +26,7 @@ use CommonBundle\Form\Auth\Login as LoginForm,
 class SiteController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
-     * Execute the request
+     * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
@@ -37,11 +37,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 		
 		$result = parent::execute($e);
 		
-		$language = $this->getEntityManager()
-		    ->getRepository('CommonBundle\Entity\General\Language')
-		    ->findOneByAbbrev('en');
-		
-		$result['language'] = $language;
+		$result['language'] = $this->_getLanguage();
 		
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
@@ -58,5 +54,33 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $e->setResult($result);
         
         return $result;
+    }
+    
+    /**
+     * Returns the language that is currently requested.
+     * 
+     * @return \CommonBundle\Entity\General\Language
+     */
+    private function _getLanguage()
+    {
+       if ($this->getParam('language')) {
+           $language = $this->getEntityManager()
+               ->getRepository('CommonBundle\Entity\General\Language')
+               ->findOneByAbbrev($this->getParam('language'));
+       }
+       
+       if (!isset($language)) {
+           $language = $this->getEntityManager()
+               ->getRepository('CommonBundle\Entity\General\Language')
+               ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
+       }
+       
+       if (!isset($language)) {
+           $language = $this->getEntityManager()
+               ->getRepository('CommonBundle\Entity\General\Language')
+               ->findOneByAbbrev('en');
+       }
+               
+       return $language;
     }
 }
