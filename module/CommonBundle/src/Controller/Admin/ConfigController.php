@@ -37,12 +37,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 			if (strstr($entry->getKey(), Config::$separator)) {
 				$explodedKey = explode(Config::$separator, $entry->getKey());
 				$formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
-					'value' => strlen($entry->getValue()) > 100 ? substr($entry->getValue(), 0, 100) . '...' : $entry->getValue(),
+					'value' => $entry->getValue(),
 					'fullKey' => $entry->getKey()
 				);
 			} else {
 				$formattedValues[0][$entry->getKey()] = array(
-					'value' => strlen($entry->getValue()) > 100 ? substr($entry->getValue(), 0, 100) . '...' : $entry->getValue(),
+					'value' => $entry->getValue(),
 					'fullKey' => $entry->getKey()
 				);
 			}
