@@ -14,6 +14,7 @@ table {
     padding: 0;
     border-collapse: separate;
     font-size: @tSize;
+    table-layout: fixed;
 
     th {
         padding-right: 2 * @defaultSpacing;
@@ -33,6 +34,9 @@ table {
         line-height: @tableRowHeight;
 
         td {
+            height: @tableRowHeight;
+            overflow: hidden;
+            white-space: nowrap;
             padding-right: 2 * @defaultSpacing;
             text-indent: @tIndent;
             text-align: left;
