@@ -71,7 +71,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         
         $field = new Text('isbn');
         $field->setLabel('ISBN')
-        	->setRequired()
         	->addValidator('isbn');
         $this->addElement($field);
         
