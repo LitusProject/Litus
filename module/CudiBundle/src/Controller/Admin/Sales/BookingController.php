@@ -32,7 +32,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+        if (!($currentPeriod = $this->getActiveStockPeriod()))
             return;
         
         if (!($activePeriod = $this->_getPeriod()))
@@ -60,7 +60,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     
     public function inactiveAction()
     {
-        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+        if (!($currentPeriod = $this->getActiveStockPeriod()))
             return;
         
         if (!($activePeriod = $this->_getPeriod()))
@@ -88,13 +88,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     
     public function addAction()
     {
-        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+        if (!($currentPeriod = $this->getActiveStockPeriod()))
             return;
         
         if (!($activePeriod = $this->_getPeriod()))
             return;
             
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
             
         $form = new AddForm($this->getEntityManager());
 		
@@ -154,7 +154,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return;
             
-        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+        if (!($currentPeriod = $this->getActiveStockPeriod()))
             return;
         
         if (!($activePeriod = $this->_getPeriod()))
@@ -209,7 +209,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return;
             
-        if (!($currentPeriod = $this->_getActiveStockPeriod()))
+        if (!($currentPeriod = $this->getActiveStockPeriod()))
             return;
         
         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
@@ -401,7 +401,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getPeriod()
     {
     	if (null === $this->getParam('period')) {
-    		return $this->_getActiveStockPeriod();
+    		return $this->getActiveStockPeriod();
     	}
     
         $supplier = $this->getEntityManager()

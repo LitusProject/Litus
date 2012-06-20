@@ -55,7 +55,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	    if (!($supplier = $this->_getSupplier()))
 	        return;
 	    
-	    if (!($period = $this->_getActiveStockPeriod()))
+	    if (!($period = $this->getActiveStockPeriod()))
 	        return;
 	        
 	    $paginator = $this->paginator()->createFromArray(
@@ -79,10 +79,10 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	
 	public function addAction()
 	{
-	    if (!($period = $this->_getActiveStockPeriod()))
+	    if (!($period = $this->getActiveStockPeriod()))
 	        return;
 	        
-	    $academicYear = $this->_getAcademicYear();
+	    $academicYear = $this->getAcademicYear();
 
 	    $form = new RetourForm($this->getEntityManager());
 		

@@ -9,9 +9,9 @@ namespace NewsBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-		$this->_installConfig(
+		$this->installConfig(
 	        array(
 				/*array(
         			'key'         => 'search_max_results',
@@ -22,7 +22,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 		);
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAclStructure(
 	        array(

@@ -35,9 +35,9 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-		$this->_installConfig(
+		$this->installConfig(
 	        array(
 	            array(
 	            	'key'         => 'cudi.file_path',
@@ -197,7 +197,7 @@ VTK Cudi
 		$this->_installPayDesks();
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAcl(
 	        array(

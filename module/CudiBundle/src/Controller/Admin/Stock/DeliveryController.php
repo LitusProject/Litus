@@ -53,7 +53,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	    if (!($supplier = $this->_getSupplier()))
 	        return;
 	    
-	    if (!($period = $this->_getActiveStockPeriod()))
+	    if (!($period = $this->getActiveStockPeriod()))
 	        return;
 	        
 	    $paginator = $this->paginator()->createFromArray(
@@ -77,10 +77,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	
 	public function addAction()
 	{
-	    if (!($period = $this->_getActiveStockPeriod()))
+	    if (!($period = $this->getActiveStockPeriod()))
 	        return;
 	        
-	    $academicYear = $this->_getAcademicYear();
+	    $academicYear = $this->getAcademicYear();
 	        
 		$form = new AddForm($this->getEntityManager());
 		
