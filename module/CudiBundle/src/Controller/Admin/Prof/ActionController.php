@@ -220,7 +220,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	        ->setAuthors($formData['author'])
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
-        	        ->setISBN($formData['isbn'])
+        	        ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
         	        ->setURL($formData['url'])
         	        ->setIsDownloadable($formData['downloadable'])
         	        ->setType($formData['type']);

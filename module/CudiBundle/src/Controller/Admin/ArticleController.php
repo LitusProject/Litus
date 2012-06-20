@@ -69,7 +69,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 						$formData['author'],
 						$formData['publisher'],
 						$formData['year_published'],
-						$formData['isbn'],
+						$formData['isbn'] != ''? $formData['isbn'] : null,
 						$formData['url'],
 						$formData['type'],
 						$formData['downloadable'],
@@ -88,7 +88,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	                	$formData['author'],
 	                	$formData['publisher'],
 	                	$formData['year_published'],
-	                	$formData['isbn'],
+	                	$formData['isbn'] != ''? $formData['isbn'] : null,
 	                	$formData['url'],
 	                	$formData['type'],
 	                	$formData['downloadable']
@@ -156,7 +156,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	        ->setAuthors($formData['author'])
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
-        	        ->setISBN($formData['isbn'])
+        	        ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
         	        ->setURL($formData['url'])
         	        ->setIsDownloadable($formData['downloadable'])
         	        ->setType($formData['type']);

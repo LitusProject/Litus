@@ -83,7 +83,7 @@ abstract class Article
     /**
      * @var integer The ISBN number of this article
      *
-     * @Column(type="bigint")
+     * @Column(type="bigint", nullable=true)
      */
     private $isbn;
     
@@ -126,7 +126,7 @@ abstract class Article
      * @var array The possible types of an article
      */
     public static $POSSIBLE_TYPES = array(
-    	'common' => 'Common',
+    	'other' => 'Other',
     	'exercises' => 'Exercises',
     	'slides' => 'Slides',
     	'student' => 'Student',
