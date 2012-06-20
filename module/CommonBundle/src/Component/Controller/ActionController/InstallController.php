@@ -36,8 +36,8 @@ abstract class InstallController extends AdminController
 	 */
 	public function indexAction()
 	{
-		$this->_initConfig();
-		$this->_initAcl();
+		$this->initConfig();
+		$this->initAcl();
 		
 		return array(
 			'installerReady' => true
