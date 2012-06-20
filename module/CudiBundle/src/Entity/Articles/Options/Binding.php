@@ -36,11 +36,19 @@ class Binding
      * @Column(type="string")
      */
     private $name;
+    
+    /**
+     * @var string The code of the binding
+     *
+     * @Column(type="string")
+     */
+    private $code;
 	
 	/**
 	 * @param string $name
 	 */
-	public function __construct($name) {
+	public function __construct($code, $name) {
+		$this->code = $code;
 		$this->name = $name;
 	}
 	
@@ -50,6 +58,14 @@ class Binding
 	public function getId()
 	{
 		return $this->id;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 	
 	/**

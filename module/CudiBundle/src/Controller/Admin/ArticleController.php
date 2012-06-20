@@ -40,9 +40,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
         
+        foreach($paginator as $item)
+            $item->setEntityManager($this->getEntityManager());
+        
+        $academicYear = $this->getAcademicYear();
+        
         return array(
         	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        	'paginationControl' => $this->paginator()->createControl(true),
+            'currentAcademicYear' => $academicYear,
         );
     }
 
