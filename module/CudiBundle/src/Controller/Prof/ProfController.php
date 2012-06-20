@@ -31,7 +31,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
             
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return
             
         $form = new AddForm();
@@ -125,7 +125,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     
     private function _getSubject($id = null)
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return
         	
         $id = $id == null ? $this->getParam('id') : $id;

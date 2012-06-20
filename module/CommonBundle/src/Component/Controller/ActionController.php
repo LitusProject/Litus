@@ -224,7 +224,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function _getCurrentAcademicYear()
+    protected function getCurrentAcademicYear()
     {
     	$start = AcademicYear::getStartOfAcademicYear();
     	$start->setTime(0, 0);

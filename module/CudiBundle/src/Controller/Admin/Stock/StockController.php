@@ -31,7 +31,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
             
         $paginator = $this->paginator()->createFromArray(
@@ -50,7 +50,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function searchAction()
     {
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
             
         switch($this->getParam('field')) {
@@ -97,7 +97,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function editAction()
     {
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
         
         if (!($article = $this->_getArticle()))
@@ -207,7 +207,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     
     public function deltaAction()
     {
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
         
         if (!($article = $this->_getArticle()))

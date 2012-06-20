@@ -44,7 +44,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return;
 
         $form = new AddForm($this->getEntityManager());

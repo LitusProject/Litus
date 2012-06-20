@@ -49,7 +49,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -203,7 +203,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByArticleAndAcademicYear($article, $this->_getAcademicYear());
+            ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
         
         return array(
             'form' => $form,

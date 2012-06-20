@@ -22,9 +22,9 @@ namespace CommonBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-	    $this->_installConfig(
+	    $this->installConfig(
             array(
                 array(
                     'key'         => 'common.profile_path',
@@ -76,7 +76,7 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
         );
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAcl(
 	    	array(
