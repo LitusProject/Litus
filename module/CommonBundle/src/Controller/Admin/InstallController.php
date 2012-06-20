@@ -108,7 +108,7 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 	                ),
 	                'actions' => array(
 	                	'admin_auth' => array(
-	                		'index', 'authenticate', 'login', 'logout'
+	                		'authenticate', 'login', 'logout'
 	                	),
 	                ),
 	            ),
