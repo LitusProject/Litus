@@ -52,13 +52,6 @@ class Translation
     private $language;
     
     /**
-     * @var string The content of this tanslation
-     *
-     * @Column(type="string")
-     */
-    private $content;
-        
-    /**
      * @var string The title of this tanslation
      *
      * @Column(type="string")
@@ -71,6 +64,13 @@ class Translation
      * @Column(type="string", unique=true)
      */
     private $name;
+    
+    /**
+     * @var string The content of this tanslation
+     *
+     * @Column(type="text")
+     */
+    private $content;
     
     /**
      * @param \NewsBundle\Entity\Nodes\News $news
@@ -138,7 +138,7 @@ class Translation
      */
     private function _setName($name)
     {
-        $this->name = $this->news->getCreateTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name));
+        $this->name = $this->news->getCreateTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
         return $this;
     }
     

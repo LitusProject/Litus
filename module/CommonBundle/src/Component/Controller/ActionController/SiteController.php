@@ -37,6 +37,12 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 		
 		$result = parent::execute($e);
 		
+		$language = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Language')
+		    ->findOneByAbbrev('en');
+		
+		$result['language'] = $language;
+		
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
 		
