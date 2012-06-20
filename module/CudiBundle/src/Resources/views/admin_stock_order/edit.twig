@@ -127,7 +127,7 @@
 	
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');

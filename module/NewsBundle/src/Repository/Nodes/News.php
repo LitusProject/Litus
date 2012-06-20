@@ -12,12 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class News extends EntityRepository
 {
-    public function findAll()
+    public function findAll($nbResults = 5)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
         	->from('NewsBundle\Entity\Nodes\News', 'n')
         	->orderBy('n.createTime', 'DESC')
+        	->setMaxResults($nbResults)
         	->getQuery()
         	->getResult();
         

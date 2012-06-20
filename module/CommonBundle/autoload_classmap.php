@@ -82,7 +82,7 @@ return array(
     'CommonBundle\Controller\Admin\AcademicController'                                 => __DIR__ . '/src/Controller/Admin/AcademicController.php',
     'CommonBundle\Controller\Admin\AuthController'                                     => __DIR__ . '/src/Controller/Admin/AuthController.php',
     'CommonBundle\Controller\Admin\ConfigController'                                   => __DIR__ . '/src/Controller/Admin/ConfigController.php',
-    'CommonBundle\Controller\Admin\DashboardController'                                => __DIR__ . '/src/Controller/Admin/DashboardController.php',
+    'CommonBundle\Controller\Admin\IndexController'                                    => __DIR__ . '/src/Controller/Admin/IndexController.php',
     'CommonBundle\Controller\Admin\InstallController'                                  => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'CommonBundle\Controller\Admin\RoleController'                                     => __DIR__ . '/src/Controller/Admin/RoleController.php',
     'CommonBundle\Controller\ErrorController'                                          => __DIR__ . '/src/Controller/ErrorController.php',
