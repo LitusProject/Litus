@@ -16,6 +16,8 @@
 namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+	CommonBundle\Component\Util\File\TmpFile,
+	CudiBundle\Component\Document\Generator\Front as FrontGenerator,
     CudiBundle\Entity\Files\File,
 	CudiBundle\Form\Admin\Article\File\Add as AddForm,
 	CudiBundle\Form\Admin\Article\File\Edit as EditForm,
@@ -33,6 +35,10 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	{
 		if (!($article = $this->_getArticle()))
 		    return;
+		    
+		$saleArticle = $this->getEntityManager()
+		    ->getRepository('CudiBundle\Entity\Sales\Article')
+		    ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
 		
 		$mappings = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Files\Mapping')
@@ -52,6 +58,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         return array(
         	'form' => $form,
         	'article' => $article,
+        	'saleArticle' => $saleArticle,
         	'mappings' => $mappings,
         	'uploadProgressName' => ini_get('session.upload_progress.name'),
         	'uploadProgressId' => uniqid(),
@@ -220,6 +227,27 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         );
     }
     
+    public function frontAction()
+    {
+        if (!($article = $this->_getSaleArticle()))
+            return;
+		    
+		$file = new TmpFile();
+		$document = new FrontGenerator($this->getEntityManager(), $article, $file);
+		$document->generate();
+
+		$headers = new Headers();
+		$headers->addHeaders(array(
+			'Content-Disposition' => 'attachment; filename="front.pdf"',
+			'Content-type'        => 'application/pdf',
+		));
+		$this->getResponse()->setHeaders($headers);
+		
+		return array(
+			'data' => $file->getContent()
+		);
+    }
+    
     private function _getArticle()
     {
     	if (null === $this->getParam('id')) {
@@ -243,6 +271,53 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
+    }
+    
+    private function _getSaleArticle()
+    {
+    	if (null === $this->getParam('id')) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No id was given to identify the article!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_article',
+    			array(
+    				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneById($this->getParam('id'));
     	
     	if (null === $article) {

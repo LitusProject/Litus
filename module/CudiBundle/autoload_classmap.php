@@ -5,6 +5,7 @@ return array(
     'CudiBundle\Component\Controller\ProfController'           => __DIR__ . '/src/Component/Controller/ProfController.php',
     'CudiBundle\Component\Controller\SaleController'           => __DIR__ . '/src/Component/Controller/SaleController.php',
     'CudiBundle\Component\Controller\SupplierController'       => __DIR__ . '/src/Component/Controller/SupplierController.php',
+    'CudiBundle\Component\Document\Generator\Front'            => __DIR__ . '/src/Component/Document/Generator/Front.php',
     'CudiBundle\Component\Document\Generator\OrderPdf'         => __DIR__ . '/src/Component/Document/Generator/OrderPdf.php',
     'CudiBundle\Component\Document\Generator\OrderXml'         => __DIR__ . '/src/Component/Document/Generator/OrderXml.php',
     'CudiBundle\Component\Mail\Booking'                        => __DIR__ . '/src/Component/Mail/Booking.php',

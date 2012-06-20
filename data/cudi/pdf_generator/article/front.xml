@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<article binding="none">
+<article binding="Binded">
     <our_union short_name="VTK">
     	<name>VTK VZW</name>
         <logo>data/images/logo/logo.svg</logo>
@@ -20,6 +20,6 @@
     		<name>Elektromagnetische golven</name>
     	</subject>
     </subjects>
-	<price>2.60</price>
+	<price>4.10</price>
 	<barcode>978111233051</barcode>
 </article>

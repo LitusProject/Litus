@@ -52,7 +52,7 @@
                                 <fo:table-cell display-align="center" padding-right="3mm">
                                     <fo:block>
                                         <fo:external-graphic content-width="16mm" scaling="uniform">
-                                            <xsl:attribute name="src"><xsl:text>url('../../../images/logo/sedes.svg')</xsl:text></xsl:attribute>
+                                            <xsl:attribute name="src"><xsl:text>url('data/images/logo/sedes.svg')</xsl:text></xsl:attribute>
                                         </fo:external-graphic>
                                     </fo:block>
                                 </fo:table-cell>
@@ -127,7 +127,7 @@
                                     
                                     <fo:table-cell display-align="after">
                                         <fo:block font-family="sans-serif" font-size="12pt" font-weight="bold" text-align="center" space-after="2mm">
-                                            <xsl:value-of select="price"/> <xsl:call-template name="euro"/>
+                                            <xsl:value-of select="price"/>&#160;<xsl:call-template name="euro"/>
                                         </fo:block>
                                                                             
                                         <fo:block>
