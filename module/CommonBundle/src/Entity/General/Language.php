@@ -47,6 +47,16 @@ class Language
     private $name;
 	
 	/**
+	 * @param string $abbrev The language abbrev
+	 * @param string $name The language name
+	 */
+	public function __construct($abbrev, $name)
+	{
+		$this->abbrev = $abbrev;
+		$this->name = $name;
+	}
+	
+	/**
 	 * @return integer
 	 */
     public function getId()
