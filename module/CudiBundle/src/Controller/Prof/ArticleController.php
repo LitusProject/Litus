@@ -63,7 +63,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 						$formData['author'],
 						$formData['publisher'],
 						$formData['year_published'],
-						$formData['isbn'],
+						$formData['isbn'] != ''? $formData['isbn'] : null,
 						$formData['url'],
 						$formData['type'],
 						$formData['downloadable'],
@@ -82,7 +82,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 	                	$formData['author'],
 	                	$formData['publisher'],
 	                	$formData['year_published'],
-	                	$formData['isbn'],
+	                	$formData['isbn'] != ''? $formData['isbn'] : null,
 	                	$formData['url'],
 	                	$formData['type'],
 	                	$formData['downloadable']
@@ -183,7 +183,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	    $edited = true;
                 	}
                 	if ($article->getISBN() != $formData['isbn']) {
-                	    $duplicate->setISBN($formData['isbn']);
+                	    $duplicate->setISBN($formData['isbn'] != ''? $formData['isbn'] : null);
                 	    $edited = true;
                 	}
                 	if ($article->getURL() != $formData['url']) {
