@@ -82,16 +82,19 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 	    	array(
 		        'commonbundle' => array(
 		            'admin_auth' => array(
-		            	'index', 'authenticate', 'login', 'logout'
+		            	'authenticate', 'login', 'logout'
 		            ),
-		            'admin_dashboard' => array(
+		            'admin_index' => array(
 		            	'index'
 		            ),
 		            'admin_role' => array(
-		            	'index', 'add', 'manage', 'edit', 'delete'
+		            	'add', 'edit', 'delete', 'manage'
 		            ),
 		            'admin_user' => array(
-		            	'index', 'add', 'manage', 'edit', 'delete'
+		            	'add', 'edit', 'delete', 'manage'
+		            ),
+		            'index' => array(
+		            	'index'
 		            ),
 		        )
 		    )

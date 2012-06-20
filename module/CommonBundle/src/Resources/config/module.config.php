@@ -34,7 +34,7 @@ return array(
 				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
-                'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
+                'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
                 
                 'mail_transport'                   => 'Zend\Mail\Transport\Smtp',
@@ -400,7 +400,7 @@ return array(
 		'admin_config' => array(
 		    'type'    => 'Zend\Mvc\Router\Http\Segment',
 		    'options' => array(
-		        'route'    => '/admin/config[/:action[/:key]]',
+		        'route'    => '/admin/config[/:action[/key:key]]',
 		        'constraints' => array(
 		        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 		        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
@@ -411,12 +411,12 @@ return array(
 		        ),
 		    ),
 		),
-    	'admin_dashboard' => array(
+    	'admin_index' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin[/dashboard]',
+    	        'route'    => '/admin[/:action]',
     	        'defaults' => array(
-    	            'controller' => 'admin_dashboard',
+    	            'controller' => 'admin_index',
     	            'action'     => 'index',
     	        ),
     	    ),
@@ -424,7 +424,7 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:name]][/page/:page]',
+    	        'route'    => '/admin/role[/:action[/name:name]][/page/:page]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
