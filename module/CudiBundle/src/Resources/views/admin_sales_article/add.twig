@@ -29,7 +29,7 @@
                 cursor: 'pointer',
             });
             $('#sell_price').parent().append(field);
-	        field.html('(calculated: &euro; {{ precalculatedPrice|number_format(2) }})')
+	        field.html('(Calculated: &euro; {{ precalculatedPrice|number_format(2) }})')
                 .click(function () {
                     $('#sell_price').val(({{ precalculatedPrice|number_format(2) }}).toFixed(2));
                 });
