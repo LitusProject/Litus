@@ -37,12 +37,12 @@ return array(
             	'parameters' => array(
         		    'adapter' => 'ArrayAdapter',
         			'translations' => array(
-                		'news_common_en' => array(
-                			'content' => __DIR__ . '/../translations/common.en.php',
+                		'news_site_en' => array(
+                			'content' => __DIR__ . '/../translations/site.en.php',
                 			'locale' => 'en',
                 		),
-                		'news_common_nl' => array(
-                			'content' => __DIR__ . '/../translations/common.nl.php',
+                		'news_site_nl' => array(
+                			'content' => __DIR__ . '/../translations/site.nl.php',
                 			'locale' => 'nl',
                 		),
             		),

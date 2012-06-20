@@ -308,14 +308,6 @@ return array(
                 ),
             ),
             
-            'ZfTwig\TwigEnvironment' => array(
-            	'parameters' => array(
-            		'options' => array(
-            			'charset' => 'ISO-8859-1',
-            		),
-            	),
-            ),
-            
             'mail_transport' => array(
                 'parameters' => array(
                     'options' => 'mail_smtp',
@@ -327,6 +319,30 @@ return array(
                     'host' => 'smtp.kuleuven.be',
                     'port' => 25,
                 ),
+            ),
+            
+            'translator' => array(
+            	'parameters' => array(
+            	    'adapter' => 'ArrayAdapter',
+            		'translations' => array(
+                		'common_site_en' => array(
+                			'content' => __DIR__ . '/../translations/site.en.php',
+                			'locale' => 'en',
+                		),
+                		'common_site_nl' => array(
+                			'content' => __DIR__ . '/../translations/site.nl.php',
+                			'locale' => 'nl',
+                		),
+            		),
+            	),
+            ),
+            
+            'ZfTwig\TwigEnvironment' => array(
+            	'parameters' => array(
+            		'options' => array(
+            			'charset' => 'ISO-8859-1',
+            		),
+            	),
             ),
         ),
     ),
