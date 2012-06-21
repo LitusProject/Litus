@@ -17,8 +17,9 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias'           => array(
-				'admin_company' => 'BrBundle\Controller\Admin\CompanyController',
-				'admin_section' => 'BrBundle\Controller\Admin\SectionController',
+				'admin_company'      => 'BrBundle\Controller\Admin\CompanyController',
+				'admin_company_user' => 'BrBundle\Controller\Admin\Company\UserController',
+				'admin_section'      => 'BrBundle\Controller\Admin\SectionController',
           	),
           	'doctrine_config' => array(
           	    'parameters' => array(
@@ -44,6 +45,21 @@ return array(
 	                'action'     => 'manage',
 	            ),
 	        ),
+	    ),
+	    'admin_company_user' => array(
+	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
+	    	'options' => array(
+	    		'route' => '/admin/company/user[/:action[/:id]][/page/:page]',
+	    		'constraints' => array(
+	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'id'     => '[0-9]*',
+	    			'page'   => '[0-9]*',
+	    		),
+	    		'defaults' => array(
+	    			'controller' => 'admin_company_user',
+	    			'action'     => 'manage',
+	    		),
+	    	),
 	    ),
 	    'admin_section' => array(
 	        'type'    => 'Zend\Mvc\Router\Http\Segment',
