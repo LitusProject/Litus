@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,	
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\TextArea;
+	Zend\Form\Element\Textarea;
 
 /**
  * Return to supplier (inverse of delivery)
@@ -39,7 +39,7 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
         $submit = $this->getElement('submit');
         $this->removeElement('submit');
         
-        $field = new TextArea('comment');
+        $field = new Textarea('comment');
         $field->setLabel('Comment')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));
