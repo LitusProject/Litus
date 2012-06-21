@@ -8,7 +8,7 @@ use CommonBundle\Entity\General\Language;
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="CalendarBundle\Repository\Nodes\Translation")
- * @Table(name="nodes.event_translation")
+ * @Table(name="nodes.event_translations")
  */
 class Translation
 {

@@ -28,7 +28,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\TextArea;
 
 /**
- * Add a news.
+ * Add News
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
