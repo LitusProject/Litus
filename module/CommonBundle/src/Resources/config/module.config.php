@@ -34,7 +34,7 @@ return array(
 				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
-                'admin_dashboard'                  => 'CommonBundle\Controller\Admin\DashboardController',
+                'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
                 
                 'mail_transport'                   => 'Zend\Mail\Transport\Smtp',
@@ -61,6 +61,11 @@ return array(
                                 	'common_jqueryui' => array(
                                 	    'assets'  => array(
                                 	        'common/js/jqueryui-1.8.16.min.js',
+                                	    ),
+                                	),
+                                	'common_jquery_form' => array(
+                                	    'assets'  => array(
+                                	        'common/js/jquery.form.js',
                                 	    ),
                                 	),
                                     'common_form_upload_progress' => array(
@@ -303,14 +308,6 @@ return array(
                 ),
             ),
             
-            'ZfTwig\TwigEnvironment' => array(
-            	'parameters' => array(
-            		'options' => array(
-            			'charset' => 'ISO-8859-1',
-            		),
-            	),
-            ),
-            
             'mail_transport' => array(
                 'parameters' => array(
                     'options' => 'mail_smtp',
@@ -322,6 +319,30 @@ return array(
                     'host' => 'smtp.kuleuven.be',
                     'port' => 25,
                 ),
+            ),
+            
+            'translator' => array(
+            	'parameters' => array(
+            	    'adapter' => 'ArrayAdapter',
+            		'translations' => array(
+                		'common_site_en' => array(
+                			'content' => __DIR__ . '/../translations/site.en.php',
+                			'locale' => 'en',
+                		),
+                		'common_site_nl' => array(
+                			'content' => __DIR__ . '/../translations/site.nl.php',
+                			'locale' => 'nl',
+                		),
+            		),
+            	),
+            ),
+            
+            'ZfTwig\TwigEnvironment' => array(
+            	'parameters' => array(
+            		'options' => array(
+            			'charset' => 'ISO-8859-1',
+            		),
+            	),
             ),
         ),
     ),
@@ -341,7 +362,7 @@ return array(
         'account' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/account[/:action[/:id]]',
+                'route'    => '/account[/:action[/code/:code]]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -395,7 +416,7 @@ return array(
 		'admin_config' => array(
 		    'type'    => 'Zend\Mvc\Router\Http\Segment',
 		    'options' => array(
-		        'route'    => '/admin/config[/:action[/:key]]',
+		        'route'    => '/admin/config[/:action[/key:key]]',
 		        'constraints' => array(
 		        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 		        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
@@ -406,12 +427,12 @@ return array(
 		        ),
 		    ),
 		),
-    	'admin_dashboard' => array(
+    	'admin_index' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin[/dashboard]',
+    	        'route'    => '/admin[/:action]',
     	        'defaults' => array(
-    	            'controller' => 'admin_dashboard',
+    	            'controller' => 'admin_index',
     	            'action'     => 'index',
     	        ),
     	    ),
@@ -419,7 +440,7 @@ return array(
     	'admin_role' => array(
     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
     	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/:name]][/page/:page]',
+    	        'route'    => '/admin/role[/:action[/name:name]][/page/:page]',
     	        'constraints' => array(
     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
     	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',

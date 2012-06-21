@@ -4,8 +4,18 @@
 #
 
 scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-
 cd "${scriptDirectory}/../"
+
+function killAndRun() {
+	if ps aux | grep -v grep | grep "$1" > /dev/null]; then
+		kill $(ps aux | grep -v grep | grep $1 | | cut -c10-15)
+	fi
+	
+	echo "Running: $1"
+	$1 &
+}
+
+# Updating the repository
 git pull
 
 # Updating the database
@@ -19,3 +29,9 @@ touch module/CommonBundle/src/Resources/assets/site/less/base.less
 touch module/CudiBundle/src/Resources/assets/prof/less/base.less
 touch module/CudiBundle/src/Resources/assets/sale/less/base.less
 touch module/CudiBundle/src/Resources/assets/supplier/less/base.less
+
+# Starting the WebSockets
+if [ "$EUID" != 0 ]; then
+	killAndRun 'php bin/CudiBundle/queue.php --run'
+	killAndRun 'php bin/SyllabusBundle/update.php --run'
+fi

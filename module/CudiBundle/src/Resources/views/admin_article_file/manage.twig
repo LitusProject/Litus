@@ -13,7 +13,7 @@
 	<div class="flashmessage error_message full_width file_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while trying to delete an file.</p>
+			<p>An error occurred while trying to delete a file.</p>
 		</div>
 	</div>
 	<div class="flashmessage success_message full_width file_uploaded hide">
@@ -38,18 +38,33 @@
     		<br style="clear:both"/>
     	{% endif %}
 		
-		<table class="full_width" id="articleFiles">
+		<table class="full_width manage" id="articleFiles">
 	        <tr>
 	            <th width="200px">Name</th>
 	            <th>Description</th>
-	            <th width="210px">Action</th>
+	            <th width="80px">Printable</th>
+	            <th width="70px">Action</th>
 	        </tr>
-	
+	        
+	        {% if article.isInternal() and saleArticle is not null %}
+    	        <tr class="item">
+    	            <td>front.pdf</td>
+    	            <td>Front page of this article</td>
+    	            <td style="text-align: center;">&times;</td>
+    	        	<td class="actions">
+    	        	    {% if hasAccess('admin_article_file', 'front') %}
+    	        			<a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
+    	        		{% endif %}
+    	            </td>
+    	        </tr>
+	        {% endif %}
+	        
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getFile().getName() }}</td>
 	                <td>{{ mapping.getFile().getDescription() }}</td>
-					<td>
+	                <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
+					<td class="actions">
 					    {% if hasAccess('admin_article_file', 'download') %}
     						<a href="#" class="downloadFile view" data-file="{{ url('admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
     					{% endif %}
@@ -103,7 +118,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.downloadFile').each(function () {
@@ -120,17 +135,18 @@
 			    },
 			    onSubmitted: function (data) {
 			        if (data.errors) {
-			            $('.file_uploaded').hide();
+    			        $('.flashmessage').addClass('hide');
     			        $('#uploadFile').find('ul.errors').remove();
     			        for(element in data.errors) {
     			            var list = $('<ul>', {class: 'errors'})
-    			            for (error in data[element])
-    			                list.append($('<li>').html(data[element][error]));
+    			            for (error in data.errors[element])
+    			                list.append($('<li>').html(data.errors[element][error]));
     			            $('#uploadFile').find('#' + element).parent().parent().after(list);
     			        }
     			    } else if (data.info) {
     			        $('#uploadFile').resetForm();
-    			        $('.file_uploaded').show();
+        			    $('.flashmessage').addClass('hide');
+    			        $('.file_uploaded').removeClass('hide');
     			        
     			        var item = $('<tr>', {class: 'item'});
     			        item.append(
@@ -155,12 +171,12 @@
     			    progressModal.permanentModal('hide');
 			    },
 			    onSubmit: function () {
-			        $('.file_uploaded').hide();
+    			    $('.flashmessage').addClass('hide');
 			        var progressModal = $('#progressModal');
 			        progressModal.permanentModal('open');
 			    },
 			    onError: function () {
-			        $('.file_uploaded').hide();
+    			    $('.flashmessage').addClass('hide');
 			        var progressModal = $('#progressModal');
 			        progressModal.permanentModal('hide');
 			    }
@@ -176,12 +192,13 @@
 			var removeFile = $('#removeFile');
 			removeFile.find('.fileName').html($(this).data('name'));
 			removeFile.find('.fileDescription').html($(this).data('description'));
+			var id = $this.data('id');
 			removeFile.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.file_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+    					$('.item-' + id).remove();
     					removeFile.modal('hide');
     				} else {
     				    errorRemove();

@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+ 
 namespace NewsBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -9,11 +22,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     NewsBundle\Form\Admin\News\Edit as EditForm;
 
 /**
- * Handles system admin for news.
+ * NewsController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class NewsController extends \CommonBundle\Component\Controller\ActionController
+class NewsController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -38,7 +52,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
         	
             if ($form->isValid($formData)) {
-                $news = new News($this->getAuthentication()->getPersonObject(), $formData['category']);
+                $news = new News(
+                	$this->getAuthentication()->getPersonObject()
+                );
                 $this->getEntityManager()->persist($news);
 
                 $languages = $this->getEntityManager()
@@ -47,8 +63,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 
                 foreach($languages as $language) {
                     $translation = new Translation(
-                    	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                    	$news,
+                    	$language,
+                    	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
+                    	$formData['title_' . $language->getAbbrev()]
                     );
+                    
                     $this->getEntityManager()->persist($translation);
                     
                     if ($language->getAbbrev() == 'en')
@@ -61,7 +81,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The news was successfully added!'
+                        'The news item was successfully added!'
                     )
                 );
 
@@ -106,8 +126,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
                         $translation = new Translation(
-                        	$news, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]
+                        	$news,
+                        	$language,
+                        	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
+                        	$formData['title_' . $language->getAbbrev()]
                         );
+                        
                         $this->getEntityManager()->persist($translation);
                     }
                     
@@ -121,7 +145,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The news was successfully edited!'
+                        'The news item was successfully edited!'
                     )
                 );
 

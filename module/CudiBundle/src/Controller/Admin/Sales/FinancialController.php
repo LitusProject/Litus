@@ -46,7 +46,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     
     public function stockAction()
     {
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
             
 		$paginator = $this->paginator()->createFromArray(

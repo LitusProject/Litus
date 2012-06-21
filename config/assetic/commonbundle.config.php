@@ -38,7 +38,7 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		),
-		'admin_dashboard' => array(
+		'admin_index' => array(
 			'@common_jquery',
 		    '@admin_css',
 		    '@admin_js',

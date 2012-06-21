@@ -7,13 +7,13 @@
 	<div class="flashmessage error_message full_width hide" id="syllabus_update_error">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while updating the Syllabus!</p>
+			<p>An error occurred while updating the syllabus!</p>
 		</div>
 	</div>
 	<div class="flashmessage success_message full_width hide" id="syllabus_update_success">
 		<div class="title">SUCCESS</div>
 		<div class="content">
-			<p>The Syllabus was successfully updated.</p>
+			<p>The syllabus was successfully updated.</p>
 		</div>
 	</div>
 	
@@ -25,7 +25,7 @@
 		    <div class="title">Update Syllabus</div>
 		    <div class="content">
 		        <p>
-		            <i>Please hit the link below to update the Syllabus!</i>
+		            <i>Please hit the link below to update the syllabus!</i>
 		        </p>
 		    	<p>
 		    		<a href="#" id="updateNow">&rarr; Update Syllabus</a>
@@ -41,7 +41,7 @@
 		</div>
 		<div class="modal-body">
 			<p>
-				Syllabus is updating: <span class="status"></span>
+				<span class="status"></span>
 			</p>
 			<p>
 				<div class="progress progress-striped active">
@@ -52,7 +52,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$.webSocket(
 			{
@@ -99,13 +99,13 @@
 		            text += 'Loading XML';
 		            break;
 		        case 'cleanup':
-		            text += 'Clean up database';
+		            text += 'Cleaning Database';
 		            break;
 		        case 'create_studies':
 		            text += 'Creating Studies';
 		            break;
 		        case 'create_subjects':
-		            text += 'Create Subjects';
+		            text += 'Creating Subjects';
 		            break;
 		        case 'saving_data':
 		            text += 'Saving Data';
@@ -116,8 +116,8 @@
 		        return text;
 		    
 		    var extra = status.extra;
-		    if (extra.length > 40)
-		        extra = extra.substr(0, 40) + '...';
+		    if (extra.length > 60)
+		        extra = extra.substr(0, 60) + '...';
 		    return text + ' (' + extra + ')';
 		}
 	</script>

@@ -16,9 +16,14 @@
 namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Entity\Users\Person,
+	CommonBundle\Entity\Users\Statuses\University,
 	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+	Zend\Form\Element\Select,
+	Zend\Form\Element\Submit,
+	Zend\Form\Element\Text,
+	Zend\Validator\Alnum as AlnumValidator;
 
 /**
  * Edit Academic
@@ -35,7 +40,14 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
-
+		
+		$field = new Text('university_identification');
+		$field->setLabel('University Identification')
+			->setRequired()
+		    ->setDecorators(array(new FieldDecorator()))
+		    ->addValidator(new AlnumValidator());
+		$this->addElement($field);
+		
      	$field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'academic_edit')

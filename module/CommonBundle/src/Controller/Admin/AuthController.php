@@ -64,7 +64,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         $isAuthenticated = $this->getAuthentication()->isAuthenticated();
         
         if ($isAuthenticated) {
-            $this->redirect()->toRoute('admin_dashboard');
+            $this->redirect()->toRoute('admin_index');
             
             return;
         }
@@ -103,7 +103,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     	
     	if ($authentication->isAuthenticated()) {
 	    	$this->redirect()->toRoute(
-	    		'admin_dashboard'
+	    		'admin_index'
 	    	);
 	    }
     }

@@ -6,12 +6,14 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    <table class="full_width" id="articleComments">
+	    <table class="full_width manage" id="articleComments">
             <tr>
                 <th width="100px">Date</th>
-                <th width="140px">Person</th>
-                <th width="80px">Status</th>
-                <th width="140px">Action</th>
+                <th>Person</th>
+                <th width="70px">Status</th>
+                <th width="80px">Pay Method</th>
+                <th width="70px">PayDesk</th>
+                <th width="70px">Action</th>
             </tr>
     
             {% for item in items %}
@@ -19,7 +21,9 @@
                     <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
                     <td>{{ item.getPerson().getFullName() }}</td>
                     <td>{{ item.getStatus()|capitalize }}</td>
-    				<td>
+                    <td>{{ item.getPayMethod() }}</td>
+                    <td>{% if item.getPayDesk() %}{{ item.getPayDesk().getName() }}{% endif %}</td>
+    				<td class="actions">
     					<a href="#" class="view" data-text="{{ item.getComment() }}">Comments</a>
                     </td>
                 </tr>
@@ -42,7 +46,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);

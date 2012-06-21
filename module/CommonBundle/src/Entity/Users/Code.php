@@ -35,7 +35,7 @@ class Code
     /**
      * @var \DateTime The expire time of this code
      *
-     * @Column(type="datetime", nullable=true)
+     * @Column(name="expire_time", type="datetime", nullable=true)
      */
     private $expireTime;
 

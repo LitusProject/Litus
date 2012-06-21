@@ -20,7 +20,7 @@
 	{% include 'admin_stock_delivery/partials/suppliers.twig' %}
 
 	<div id="controller_action">
-		<table>
+		<table class="manage">
 		
 		    <tr>
 		        <th width="110px">Date</th>
@@ -31,12 +31,12 @@
 		    </tr>
 		    
 		    {% for delivery in paginator %}
-		        <tr class="item">
+		        <tr class="item item-{{ delivery.getId() }}">
 		        	<td>{{ delivery.getTimestamp().format('Y-m-d H:i') }}</td>
 		        	<td>{{ delivery.getArticle().getMainArticle().getTitle() }}</td>
 		        	<td>{{ delivery.getNumber() }}</td>
 		            <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
-		        	<td>
+		        	<td class="actions">
 		        	    {% if hasAccess('admin_stock_delivery', 'delete') %}
     		        		<a href="#" class="delete" data-id="{{ delivery.getId() }}" data-title="{{ delivery.getArticle().getMainArticle().getTitle() }}" data-number="{{ delivery.getNumber() }}">Delete</a>
     		        	{% endif %}
@@ -85,7 +85,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
@@ -98,12 +98,13 @@
 			var removeDelivery = $('#removeDelivery');
 			removeDelivery.find('.articleTitle').html($(this).data('title'));
 			removeDelivery.find('.deliveryNumber').html($(this).data('number'));
+			var id = $this.data('id');
 			removeDelivery.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_delivery', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_delivery', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.delivery_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeDelivery.modal('hide');
     				} else {
     				    errorRemove();

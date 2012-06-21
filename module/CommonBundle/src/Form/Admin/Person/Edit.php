@@ -39,8 +39,6 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         parent::__construct($entityManager, $opts);
 
         $this->removeElement('username');
-        $this->removeElement('credential');
-        $this->removeElement('verify_credential');
         
         $field = new Text('code');
         $field->setLabel('Code')

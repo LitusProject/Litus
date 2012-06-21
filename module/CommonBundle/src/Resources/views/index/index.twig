@@ -1,1 +1,83 @@
 {% extends 'site/base.twig' %}
+
+{% block content %}
+	<div class="alert alert-info">
+        <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+    </div>
+
+	<div class="row">
+	    <div class="span3">
+	    	<img class="headingIcon" src="/_site/img/glyphicons-calendar.png">
+	    	<h2>Calendar</h2>
+		    	
+			<div class="item">
+	    		<span class="date calendar">10 Mei</span>
+		    		
+		    	<p>
+		    		<i class="icon-time"></i> <a href="#" rel="popover" data-original-title="AfrekeningsTD" data-content="And here's some amazing content. It's very engaging right?">18:00&mdash;AfrekeningsTD</a><br />
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i>
+		    	</p>
+		    </div>
+		    
+		    <div class="item">
+		    	<span class="date calendar">11 Mei</span>
+		    		
+		    	<p>
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i><br />
+		    	</p>
+		    </div>
+		    
+		    <div class="item">
+		    	<span class="date calendar">12 Mei</span>
+		    		
+		    	<p>
+		    		<i class="icon-time"></i><br />
+		    		<i class="icon-time"></i><br />
+		    	</p>
+		    </div>
+	    </div>
+	    
+	   	<div class="span3">
+	   		<img class="headingIcon" src="/_site/img/glyphicons-twitter.png">
+			<h2>Twitter</h2>	
+	   	</div>
+	   
+	   	<div class="span6">
+	   		<img class="headingIcon" src="/_site/img/glyphicons-news.png">
+	    	<h2>{{ translator().translate('News') }}</h2>
+	    	
+	    	{% for item in newsItem %}
+	    		<div class="item">
+	    			<span class="date news">{{ dateLocalized(item.getUpdateTime(), 'd MMM') }}</span>
+	    			
+	    			<h3>{{ item.getTitle(language) }}</h3>
+	    				
+	    			<p>
+	    				{% autoescape false %}
+	    					{{ markdown(item.getContent(language)) }}
+	    				{% endautoescape %}
+	    			</p>
+	    		</div>
+	    	{% else %}
+	    		<div class="headingSpacer"></div>
+	    		
+	    		<div class="alert">
+	    		    <strong>{{ translator().translate('Warning') }}</strong> {{ translator().translate('No news items were posted yet.') }}
+	    		</div>
+	    	{% endfor %}
+	    </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$('a[rel=popover]').popover().click(function(e) {
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}

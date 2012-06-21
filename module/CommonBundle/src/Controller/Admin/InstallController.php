@@ -22,10 +22,15 @@ namespace CommonBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-	    $this->_installConfig(
+	    $this->installConfig(
             array(
+                array(
+                    'key'         => 'common.profile_path',
+                    'value'       => 'data/images/profile',
+                    'description' => 'The path for profile photo\'s',
+                ),
                 array(
         			'key'         => 'search_max_results',
         			'value'       => '30',
@@ -71,22 +76,25 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
         );
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAcl(
 	    	array(
 		        'commonbundle' => array(
 		            'admin_auth' => array(
-		            	'index', 'authenticate', 'login', 'logout'
+		            	'authenticate', 'login', 'logout'
 		            ),
-		            'admin_dashboard' => array(
+		            'admin_index' => array(
 		            	'index'
 		            ),
 		            'admin_role' => array(
-		            	'index', 'add', 'manage', 'edit', 'delete'
+		            	'add', 'edit', 'delete', 'manage'
 		            ),
 		            'admin_user' => array(
-		            	'index', 'add', 'manage', 'edit', 'delete'
+		            	'add', 'edit', 'delete', 'manage'
+		            ),
+		            'index' => array(
+		            	'index'
 		            ),
 		        )
 		    )
@@ -100,7 +108,7 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 	                ),
 	                'actions' => array(
 	                	'admin_auth' => array(
-	                		'index', 'authenticate', 'login', 'logout'
+	                		'authenticate', 'login', 'logout'
 	                	),
 	                ),
 	            ),

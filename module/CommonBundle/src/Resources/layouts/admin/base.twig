@@ -29,15 +29,15 @@
             		<div class="title">Admin</div>
 					<ul>
 		            	{% if hasAccess('admin_index', 'index') %}
-		                    <li><a href="{{ url('admin_dashboard') }}">Dashboard</a></li>
+		                    <li><a href="{{ url('admin_index') }}">Dashboard</a></li>
 		                {% endif %}
-		                {% if hasAccess('admin_config', 'index') %}
+		                {% if hasAccess('admin_config', 'manage') %}
 		                    <li><a href="{{ url('admin_config') }}">Configuration</a></li>
 		                {% endif %}
-		                {% if hasAccess('admin_academic', 'index') %}
+		                {% if hasAccess('admin_academic', 'manage') %}
 		                    <li><a href="{{ url('admin_academic') }}">Academic</a></li>
 		                {% endif %}
-		                {% if hasAccess('admin_role', 'index') %}
+		                {% if hasAccess('admin_role', 'manage') %}
 		                    <li><a href="{{ url('admin_role') }}">Groups</a></li>
 		                {% endif %}
 		            </ul>
@@ -49,7 +49,7 @@
 	                <div class="title">Divisions</div>
 	                
 	                <ul class="subsubmenu">
-	                	{% if hasAccess('admin_company', 'index') or hasAccess('admin_section', 'index') or hasAccess('admin_contract', 'index') %}
+	                	{% if hasAccess('admin_company', 'manage') or hasAccess('admin_section', 'manage') or hasAccess('admin_contract', 'manage') %}
 	                	    <li>
 	                	        <div class="subtitle">
 	                	    		<b>Corporate Relations</b><br />
@@ -61,14 +61,14 @@
 	                	        		style="display: block;"
 	                	        	{% endif %}
 	                	        >
-	                	            {% if hasAccess('admin_company', 'index') %}
+	                	            {% if hasAccess('admin_company', 'manage') %}
 	                	                <li><a href="{{ url('admin_company') }}">Companies</a></li>
 	                	            {% endif %}
-	                	            {% if hasAccess('admin_section', 'index') %}
+	                	            {% if hasAccess('admin_section', 'manage') %}
 	                	                <li><a href="{{ url('admin_section') }}">Sections</a></li>
 	                	            {% endif %}
-	                	            {% if hasAccess('admin_contract', 'index') %}
-	                	                <li><a href="{{ url('admin_dashboard') }}">Contracts</a></li>
+	                	            {% if hasAccess('admin_contract', 'manage') %}
+	                	                <li><a href="{{ url('admin_index') }}">Contracts</a></li>
 	                	            {% endif %}
 	                	        </ul>
 	                		</li>
@@ -120,7 +120,7 @@
 		                			News &amp; Calendar
 		                		</div>
 		                		<ul
-		                			{% if 'admin_action' == getParam('controller') %}
+		                			{% if 'admin_news' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
@@ -144,7 +144,7 @@
 			                    	{% endif %}
 			                    >
 			                        {% if hasAccess('admin_run', 'index') %}
-			                            <li><a href="{{ url('admin_dashboard') }}">24h-Run</a></li>
+			                            <li><a href="{{ url('admin_index') }}">24h-Run</a></li>
 			                        {% endif %}
 			                    </ul>
 			            	</li>
@@ -201,7 +201,7 @@
 	});
 </script>
 
-{% block controller_script %} {% endblock %}
+{% block content_script %} {% endblock %}
 
 </body>
 </html>

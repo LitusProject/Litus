@@ -55,3 +55,21 @@
 		{% endif %}
 	</aside>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#articleSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#articleId').val($(this).data('value').id);
+                } else {
+                    $('#articleId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -29,12 +29,12 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return;
         	
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->_getAcademicYear());
+            ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
         
     	return array(
     	    'subjects' => $subjects,
@@ -47,7 +47,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return;
             
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return;
         
         $mappings = $this->getEntityManager()
@@ -115,7 +115,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return;
         
         $subjects = $this->getEntityManager()
@@ -137,7 +137,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     
     private function _getSubject()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return;
         	
         if (null === $this->getParam('id')) {

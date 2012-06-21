@@ -18,8 +18,8 @@ namespace CudiBundle\Form\Admin\Sales\Booking;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
-	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
 	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Hidden,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
 	Zend\Validator\Int as IntValidator;
@@ -41,12 +41,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 			->addValidator(new UsernameValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-
-		$field = new Text('article');
+        
+        $field = new Hidden('article_id');
+        $field->setRequired()
+            ->addValidator(new IntValidator())
+            ->setAttrib('id', 'articleId')
+            ->clearDecorators()
+            ->setDecorators(array('ViewHelper'));
+        $this->addElement($field);
+         
+        $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')
+        	->setAttrib('style', 'width: 400px;')
+        	->setAttrib('id', 'articleSearch')
+        	->setAttrib('autocomplete', 'off')
+        	->setAttrib('data-provide', 'typeahead')
         	->setRequired()
-			->addValidator(new ArticleBarcodeValidator($entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 

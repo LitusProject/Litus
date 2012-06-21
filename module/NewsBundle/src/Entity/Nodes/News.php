@@ -1,4 +1,17 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
  
 namespace NewsBundle\Entity\Nodes;
 
@@ -21,39 +34,12 @@ class News extends \CommonBundle\Entity\Nodes\Node
     private $translations;
     
     /**
-     * @var string The category of this news
-     *
-     * @Column(type="string")
-     */
-    private $category;
-    
-    /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $category
      */
-    public function __construct(Person $person, $category)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
-        $this->category = $category;
-    }
-    
-    /** 
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    
-    /**
-     * @param string $category
-     *
-     * @return \NewsBundle\Entity\Nodes\Translation
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-        return $this;
     }
     
     /**
@@ -77,6 +63,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getTitle(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getTitle();
     }
@@ -89,6 +76,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getName(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getName();
     }
@@ -101,6 +89,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getContent(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getContent();
     }
@@ -113,6 +102,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function getSummary(Language $language)
     {
         $translation = $this->getTranslation($language);
+        
         if (null !== $translation)
             return $translation->getSummary();
     }

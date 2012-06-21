@@ -15,7 +15,9 @@
  
 namespace CudiBundle\Entity;
 
-use DateTime;
+use CommonBundle\Entity\General\AcademicYear,
+    DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Article")
@@ -83,7 +85,7 @@ abstract class Article
     /**
      * @var integer The ISBN number of this article
      *
-     * @Column(type="bigint")
+     * @Column(type="bigint", nullable=true)
      */
     private $isbn;
     
@@ -126,7 +128,7 @@ abstract class Article
      * @var array The possible types of an article
      */
     public static $POSSIBLE_TYPES = array(
-    	'common' => 'Common',
+    	'other' => 'Other',
     	'exercises' => 'Exercises',
     	'slides' => 'Slides',
     	'student' => 'Student',
@@ -396,6 +398,29 @@ abstract class Article
 	public function setType($type)
 	{
 	    $this->type = $type;
+	    return $this;
+	}
+	
+	/**
+	 * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+	 * 
+	 * @return \CudiBundle\Entity\Sales\Article
+	 */
+	public function getSaleArticle(AcademicYear $academicYear)
+	{
+	    return $this->_entityManager
+	        ->getRepository('CudiBundle\Entity\Sales\Article')
+	        ->findOneByArticleAndAcademicYear($this, $academicYear);
+	}
+	
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager
+	 *
+	 * @return \CudiBundle\Entity\Article
+	 */
+	public function setEntityManager(EntityManager $entityManager)
+	{
+	    $this->_entityManager = $entityManager;
 	    return $this;
 	}
 	

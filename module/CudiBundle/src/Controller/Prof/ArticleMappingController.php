@@ -32,7 +32,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
         if (!($subject = $this->_getSubject()))
             return;
             
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return
             
         $form = new AddForm();
@@ -118,7 +118,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     
     private function _getMapping()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return
         	
         if (null === $this->getParam('id')) {
@@ -172,7 +172,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     
     private function _getSubject()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->getAcademicYear()))
         	return
         	
         if (null === $this->getParam('id')) {

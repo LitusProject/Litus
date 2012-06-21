@@ -33,11 +33,10 @@
 			<table class="full_width manage">
 	        	<tr>
 	            	<th>Title</th>
-	            	<th width="100px">Author</th>
-	            	<th width="180px">Publisher</th>
+	            	<th width="200px">Author</th>
 	            	<th width="50px">Year</th>
 	            	<th width="60px">Type</th>
-	            	<th width="80px">Action</th>
+	            	<th width="70px">Action</th>
 				</tr>
 			</table>
 		</div>
@@ -46,21 +45,24 @@
 			<table class="full_width manage">
 		        <tr>
 		            <th>Title</th>
-		            <th width="100px">Author</th>
-		            <th width="180px">Publisher</th>
+		            <th width="200px">Author</th>
 		            <th width="50px">Year</th>
 					<th width="60px">Type</th>
-		            <th width="80px">Action</th>
+		            <th width="70px">Action</th>
 		        </tr>
 		        
 		        {% for article in paginator %}
-		            <tr class="item">
+		            <tr class="item item-{{ article.getId() }}">
 		                <td>{{ article.getTitle() }}</td>
 		                <td>{{ article.getAuthors() }}</td>
-		                <td>{{ article.getPublishers() }}</td>
 		                <td>{{ article.getYearPublished() }}</td>
 		                <td>{% if article.isInternal() %}Internal{% else %}External{% endif %}</td>
 						<td class="actions">
+						    {% if article.getSaleArticle(currentAcademicYear) is not null and hasAccess('admin_sales_article', 'edit') %}
+		                        <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getSaleArticle(currentAcademicYear).getId()}) }}" class="article">Sale Article</a>
+						    {% elseif article.getSaleArticle(currentAcademicYear) is null and hasAccess('admin_sales_article', 'add') %}
+		                        <a href="{{ url('admin_sales_article', {"action": "add", "id": article.getId()}) }}" class="article">Sale Article</a>
+						    {% endif %}
 						    {% if hasAccess('admin_article', 'edit') %}
 		                        <a href="{{ url('admin_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
@@ -97,7 +99,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    {% if hasAccess('admin_article', 'search') %}
@@ -110,10 +112,9 @@
 				display: function (data) {
 					$('#article_search table').find('tr.item').remove();
 					$(data).each(function () {
-						$('#article_search table').append(row = $('<tr>', {class: 'item'}));
+						$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 						row.append('<td>' + this.title + '</td>')
 							.append('<td>' + this.author + '</td>')
-							.append('<td>' + this.publisher + '</td>')
 							.append('<td>' + this.yearPublished + '</td>')
 							.append('<td>' + (this.isInternal ? 'Internal' : 'External') + '</td>')
 							.append(
@@ -152,12 +153,13 @@
 			var removeArticle = $('#removeArticle');
 			removeArticle.find('.articleTitle').html($(this).data('title'));
 			removeArticle.find('.articleAuthors').html($(this).data('authors'));
+			var id = $this.data('id');
 			removeArticle.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.article_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+    					$('.item-' + id).remove();
     					removeArticle.modal('hide');
     				} else {
     				    errorRemove();

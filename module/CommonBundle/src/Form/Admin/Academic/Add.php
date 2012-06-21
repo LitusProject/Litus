@@ -40,18 +40,30 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         parent::__construct($entityManager, $opts);
 		        
         $field = new Text('university_identification');
-        $field->setLabel('University Identification')
+        $field->setLabel('Identification')
         	->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator());
         $this->addElement($field);
 		
 		$field = new Select('university_status');
-		$field->setLabel('University Status')
+		$field->setLabel('Status')
 			->setRequired()
 			->setMultiOptions(University::$possibleStatuses)
 			->setDecorators(array(new FieldDecorator()));
 		$this->addElement($field);
+		
+		$this->addDisplayGroup(
+			array(
+				'university_identification',
+		        'university_status',
+		    ),
+		    'academic_form'
+		);
+		$this->getDisplayGroup('academic_form')
+		   	->setLegend('University')
+		    ->setAttrib('id', 'academic_form')
+		    ->removeDecorator('DtDdWrapper');
 		
         $field = new Submit('submit');
         $field->setLabel('Add')

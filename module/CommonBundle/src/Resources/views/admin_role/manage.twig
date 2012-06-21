@@ -18,11 +18,11 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="full_width">
+	    <table class="full_width manage">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th width="115px">Action</th>
+                    <th width="70px">Action</th>
                 </tr>
             </thead>
     
@@ -30,7 +30,7 @@
                 {% for role in paginator %}
                     <tr class="item">
                         <td>{{ role.getName() }}</td>
-                        <td>
+                        <td class="actions">
                             {% if hasAccess('admin_role', 'edit') %}
                                 <a href="{{ url('admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
                             {% endif %}
@@ -49,7 +49,7 @@
 	<div class="modal hide fade" id="removeRole">
 		<div class="modal-header">
 			<span>Litus Admin</span>
-			/Group Delete
+			/Delete Group
 		</div>
 		<div class="modal-body">
 			<p>
@@ -67,7 +67,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);

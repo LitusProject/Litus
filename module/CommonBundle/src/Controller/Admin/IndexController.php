@@ -20,7 +20,7 @@ namespace CommonBundle\Controller\Admin;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class DashboardController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class IndexController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function indexAction()
     {

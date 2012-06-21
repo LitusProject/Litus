@@ -73,6 +73,8 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@common_jquery_form',
+		    '@common_typeahead_remote',
 		),
 		'admin_sales_session' => array(
 			'@common_jquery',
@@ -120,6 +122,7 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
+			'@common_typeahead_remote',
 		),
 		'admin_stock_delivery' => array(
 			'@common_jquery',
@@ -128,6 +131,7 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
+			'@common_typeahead_remote',
 		),
 		'admin_stock_retour' => array(
 			'@common_jquery',
@@ -136,6 +140,7 @@ return array(
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
 		    '@supplier_nav',
+			'@common_typeahead_remote',
 		),
 		'admin_prof_action' => array(
 			'@common_jquery',
@@ -151,6 +156,7 @@ return array(
 			'@queue_js',
 			'@bootstrap_js_transition',
 			'@bootstrap_js_modal',
+			'@bootstrap_js_button',
 			'@bootstrap_js_alert',
 			'@common_permanent_modal',
 			'@common_socket',

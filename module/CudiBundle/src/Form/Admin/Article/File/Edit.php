@@ -24,7 +24,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CudiBundle\Form\Admin\File\Add
+class Edit extends Add
 {
     public function __construct(FileMapping $mapping, $options = null)
     {

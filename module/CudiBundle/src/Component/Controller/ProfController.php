@@ -52,7 +52,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
     
-    protected function _getAcademicYear()
+    protected function getAcademicYear()
     {
    		$start = AcademicYear::getStartOfAcademicYear();
     	$start->setTime(0, 0);

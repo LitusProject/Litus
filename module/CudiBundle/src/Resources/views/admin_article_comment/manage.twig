@@ -30,22 +30,22 @@
 		{% endautoescape %}
 		<br style="clear:both"/>
 			
-		<table class="full_width" id="articleComments">
+		<table class="full_width manage" id="articleComments">
 	        <tr>
 	            <th width="100px">Date</th>
 	            <th width="140px">Person</th>
 	            <th>Summary</th>
 	            <th width="80px">Type</th>
-	            <th width="140px">Action</th>
+	            <th width="70px">Action</th>
 	        </tr>
 	
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
 	                <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
 	                <td>{{ mapping.getComment().getSummary() }}</td>
 	                <td>{{ mapping.getComment().getType()|capitalize }}</td>
-					<td>
+					<td class="actions">
 						<a href="#" class="view" data-text="{{ mapping.getComment().getText() }}">View</a>
 						{% if hasAccess('admin_article_comment', 'delete') %}
 						    <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-author="{{ mapping.getComment().getPerson().getFullName() }}">Delete</a>						    
@@ -91,7 +91,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
@@ -113,12 +113,13 @@
 			e.preventDefault();
 			var removeComment = $('#removeComment');
 			removeComment.find('.author').html($(this).data('author'));
+			var id = $this.data('id');
 			removeComment.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_comment', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_comment', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.comment_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeComment.modal('hide');
 					} else {
 					    errorRemove();
