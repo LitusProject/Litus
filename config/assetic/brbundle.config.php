@@ -20,6 +20,11 @@ return array(
 		    '@admin_css',
 		    '@admin_js',
 		),
+		'admin_user' => array(
+			'@common_jquery',
+		    '@admin_css',
+		    '@admin_js',
+		),
 		'admin_section' => array(
 			'@common_jquery',
 			'@common_jqueryui',

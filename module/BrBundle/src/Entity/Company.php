@@ -16,6 +16,7 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
+    CommonBundle\Entity\General\Address,
 	Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -52,7 +53,7 @@ class Company
 	/**
 	 * @var \CommonBundle\Entity\General\Address The address of the company
 	 *
-	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "delete"})
 	 * @JoinColumn(name="address", referencedColumnName="id")
 	 */
 	private $address;
@@ -78,18 +79,14 @@ class Company
 	/**
 	 * @param string $name The company's name
 	 * @param string $vatNumber The company's VAT number
-	 * @param array $contacts The company's contacts
 	 */
-	public function __construct($name, $vatNumber, array $contacts)
+	public function __construct($name, $vatNumber, Address $address)
 	{
 		$this->setName($name);
 		$this->setVatNumber($vatNumber);
+		$this->setAddress($address);
 		
 		$this->active = true;
-		
-		$this->contacts = new ArrayCollection(
-			$contacts
-		);
 	}
 	
 	/**
@@ -142,6 +139,25 @@ class Company
 	public function getVatNumber()
 	{
 	    return $this->vatNumber;
+	}
+	
+	/**
+	 * @param \CommonBundle\Entity\General\Address $address
+	 * @return \BrBundle\Entity\Company
+	 */
+	public function setAddress(Address $address)
+	{
+		$this->address = $address;
+		
+		return $this;
+	}
+	
+	/**
+	 * @return \CommonBundle\Entity\General\Address
+	 */
+	public function getAddress()
+	{
+		return $this->address;
 	}
 	
 	/**
