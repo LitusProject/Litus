@@ -51,6 +51,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 					'value'       => '30',
 					'description' => 'The maximum number of search results shown',
 				),
+				array(
+					'key'         => 'syllabus.xml_url',
+					'value'       => 'http://litus/admin/syllabus/update/xml',
+					'description' => 'The url to the xml',
+				),
 	    	)
 	    );
 	    

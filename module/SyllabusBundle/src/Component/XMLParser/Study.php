@@ -76,6 +76,10 @@ class Study
         
         $this->_callback('load_xml', 'SC_51016934.xml');
         
+        $url = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.xml_url');
+        
         $xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
         
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(
