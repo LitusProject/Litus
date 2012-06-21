@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Hidden,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
-    Zend\Form\Element\TextArea,
+    Zend\Form\Element\Textarea,
 	Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
@@ -55,7 +55,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->addElement($field);
          
-        $field = new TextArea('message');
+        $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttrib('style', 'width: 500px')
         	->setRequired();

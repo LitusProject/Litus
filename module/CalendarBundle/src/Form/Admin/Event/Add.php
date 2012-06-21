@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Tabs,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\TextArea,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     Doctrine\ORM\EntityManager,
     CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
     CalendarBundle\Entity\Nodes\Event,
@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 		        ->setRequired();
 		    $pane->addElement($field);
 		    
-		    $field = new TextArea('content_' . $language->getAbbrev());
+		    $field = new Textarea('content_' . $language->getAbbrev());
 		    $field->setLabel('Content')
 		        ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
 		        ->setRequired();

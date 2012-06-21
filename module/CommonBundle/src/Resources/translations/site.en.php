@@ -40,4 +40,9 @@ return array(
     'News' => 'News',
     'Warning' => 'Warning',
     'No news items were posted yet.' => 'No news items were posted yet.',
+    
+    'Username' => 'Username',
+    'Password' => 'Password',
+    'Remember Me' => 'Remember Me',
+    'Login' => 'Login',
 );

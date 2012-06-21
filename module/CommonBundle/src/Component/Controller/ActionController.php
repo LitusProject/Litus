@@ -75,7 +75,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
 		
 		$result = parent::execute($e);
 		
-		$result['language'] = $this->_getLanguage();
+		$result['language'] = $this->getLanguage();
 		
 		$result['languages'] = $this->getEntityManager()
 		    ->getRepository('CommonBundle\Entity\General\Language')
@@ -174,7 +174,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * 
      * @return \CommonBundle\Entity\General\Language
      */
-    protected function _getLanguage()
+    protected function getLanguage()
     {
        if ($this->getParam('language')) {
            $language = $this->getEntityManager()
@@ -205,7 +205,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initLocalization()
     {
-        $language = $this->_getLanguage();
+        $language = $this->getLanguage();
 
         $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
 

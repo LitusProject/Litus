@@ -80,7 +80,7 @@ class Study
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.xml_url');
         
-        $xml = simplexml_load_file('http://litus/admin/syllabus/update/xml');
+        $xml = simplexml_load_file($url);
         
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(
             new DateTime(substr($xml->properties->academiejaar, 0, 4) . '-12-25 0:0')
