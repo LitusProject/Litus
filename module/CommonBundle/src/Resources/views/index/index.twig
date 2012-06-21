@@ -8,7 +8,7 @@
 	<div class="row">
 	    <div class="span3">
 	    	<img class="headingIcon" src="/_site/img/glyphicons-calendar.png">
-	    	<h2>Calendar</h2>
+	    	<h2>{{ translator().translate('Calendar') }}</h2>
 		    	
 			<div class="item">
 	    		<span class="date calendar">10 Mei</span>
@@ -44,14 +44,14 @@
 	    
 	   	<div class="span3">
 	   		<img class="headingIcon" src="/_site/img/glyphicons-twitter.png">
-			<h2>Twitter</h2>	
+			<h2>{{ translator().translate('Twitter') }}</h2>	
 	   	</div>
 	   
 	   	<div class="span6">
 	   		<img class="headingIcon" src="/_site/img/glyphicons-news.png">
 	    	<h2>{{ translator().translate('News') }}</h2>
 	    	
-	    	{% for item in newsItem %}
+	    	{% for item in newsItems %}
 	    		<div class="item">
 	    			<span class="date news">{{ dateLocalized(item.getUpdateTime(), 'd MMM') }}</span>
 	    			
