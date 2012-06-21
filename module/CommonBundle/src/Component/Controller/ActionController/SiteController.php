@@ -34,15 +34,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     public function execute(MvcEvent $e)
     {
 		$this->getLocator()->get('view')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
-		$this->_initLocalisation();
 		
 		$result = parent::execute($e);
-		
-		$result['language'] = $this->_getLanguage();
-		
-		$result['languages'] = $this->getEntityManager()
-		    ->getRepository('CommonBundle\Entity\General\Language')
-		    ->findAll();
 		
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
@@ -59,52 +52,5 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $e->setResult($result);
         
         return $result;
-    }
-    
-    /**
-     * Returns the language that is currently requested.
-     * 
-     * @return \CommonBundle\Entity\General\Language
-     */
-    private function _getLanguage()
-    {
-       if ($this->getParam('language')) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev($this->getParam('language'));
-       }
-       
-       if (!isset($language)) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
-       }
-       
-       if (!isset($language)) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev('en');
-       }
-               
-       return $language;
-    }
-    
-    
-    /**
-     * Initializes the localisation
-     */
-    private function _initLocalisation()
-    {
-        $language = $this->_getLanguage();
-
-        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
-
-        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
-        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
-        
-        if ($this->getAuthentication()->isAuthenticated()) {
-        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
-        	$this->getEntityManager()->flush();
-        }
     }
 }

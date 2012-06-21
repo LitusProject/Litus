@@ -51,4 +51,24 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         
         return $result;
     }
+    
+    /**
+     * Initializes the localisation
+     */
+    protected function initLocalisation()
+    {
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+
+        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
+        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        
+        if ($this->getAuthentication()->isAuthenticated()) {
+        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
+        	$this->getEntityManager()->flush();
+        }
+    }
 }

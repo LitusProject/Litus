@@ -42,36 +42,57 @@ class Frame
 		$this->_decodeFrame($data);
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	public function getIsFin()
 	{
 		return $this->_isFin;
 	}
 	
+	/**
+	 * @return integer
+	 */
 	public function getOpcode()
 	{
 		return $this->_opcode;
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	public function getIsControl()
 	{
 		return $this->_isControl;
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	public function getIsMasked()
 	{
 		return $this->_isMasked;
 	}
 	
+	/**
+	 * @return integer
+	 */
 	public function getPaylen()
 	{
 		return $this->_paylen;
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function getData()
 	{
 		return $this->_data;
 	}
 	
+	/**
+	 * @param string
+	 */
 	public function appendData($data)
 	{
 		$this->_data .= $data;
@@ -87,36 +108,24 @@ class Frame
 	 */
 	private function _decodeFrame($frame)
 	{
-		/* read first 2 bytes */
 		$data = substr($frame, 0, 2);
 		$frame = substr($frame, 2);
 		$b1 = ord($data[0]);
 		$b2 = ord($data[1]);
 		
-		/* Bit 0 of Byte 1: Indicates that this is the final fragment in a
-		 * message.  The first fragment MAY also be the final fragment.*/
 		$isFin = ($b1 & (1 << 7)) != 0;
-		/* Bits 4-7 of Byte 1: Defines the interpretation of the payload data. */
 		$opcode = $b1 & 0x0f;
-		/* Control frames are identified by opcodes where the most significant
-		 * bit of the opcode is 1 */
 		$isControl = ($b1 & (1 << 3)) != 0;
-		/* Bit 0 of Byte 2: If set to 1, a masking key is present in
-		 * masking-key, and this is used to unmask the payload data. */
+		
 		$isMasked = ($b2 & (1 << 7)) != 0;
-		/* Bits 1-7 of Byte 2: The length of the payload data. */
 		$paylen = $b2 & 0x7f;
-		
-		/* read extended payload length, if applicable */
-		
+	    		
 		if ($paylen == 126) {
-			/* the following 2 bytes are the actual payload len */
 			$data = substr($frame, 0, 2);
 			$frame = substr($frame, 2);
 			$unpacked = unpack('n', $data);
 			$paylen = $unpacked[1];
 		} else if ($paylen == 127) {
-			/* the following 8 bytes are the actual payload len */
 			$data = substr($frame, 0, 8);
 			$frame = substr($frame, 8);
 			return;
@@ -124,9 +133,7 @@ class Frame
 		
 		if ($paylen >= self::MAX_PAYLOAD_LEN)
 			return;
-		
-		/* read masking key and decode payload data */
-		
+				
 		$mask = false;
 		$data = '';
 		

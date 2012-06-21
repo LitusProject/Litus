@@ -135,6 +135,21 @@ return array(
 					),
 				),
 			), 
+			'translator' => array(
+				'parameters' => array(
+				    'adapter' => 'ArrayAdapter',
+					'translations' => array(
+			    		'cudi_prof_en' => array(
+			    			'content' => __DIR__ . '/../translations/prof.en.php',
+			    			'locale' => 'en',
+			    		),
+			    		'cudi_prof_nl' => array(
+			    			'content' => __DIR__ . '/../translations/prof.nl.php',
+			    			'locale' => 'nl',
+			    		),
+					),
+				),
+			),
 		),
 	),
 	'routes' => array(

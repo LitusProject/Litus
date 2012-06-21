@@ -3,38 +3,38 @@
 {% block content %}
     <div class="flashmessage alert alert-error fade" id="comment_removed_error">
 	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">Error</div>
+    	<div class="title">{{ translator().translate('Error') }}</div>
     	<div class="content">
-    		<p>An error occurred while removing the comment.</p>
+    		<p>{{ translator().translate('An error occurred while removing the comment.') }}</p>
     	</div>
     </div>
     <div class="flashmessage alert alert-success fade" id="comment_removed_success">
 	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">Success</div>
+    	<div class="title">{{ translator().translate('Success') }}</div>
     	<div class="content">
-    		<p>The comment was succesfully removed.</p>
+    		<p>{{ translator().translate('The comment was succesfully removed.') }}</p>
     	</div>
     </div>
     
 	<div class="page-header">
-	    <h2>Comments</h2>
+	    <h2>{{ translator().translate('Comments') }}</h2>
 	</div>
 	
-	<h3>Article</h3>
+	<h3>{{ translator().translate('Article') }}</h3>
 	<p>
-	    Title: <b>{{ article.getTitle() }}</b><br />
-	    Authors: <b>{{ article.getAuthors() }}</b><br />
-	    Publisher: <b>{{ article.getPublishers() }}</b><br />
-	    Publish Year: <b>{{ article.getYearPublished() }}</b><br />
-	    {% if article.getBarcode() %} Barcode: <b>{{ article.getBarcode() }}</b>{% endif %}
+	    {{ translator().translate('Title') }}: <b>{{ article.getTitle() }}</b><br />
+	    {{ translator().translate('Authors') }}: <b>{{ article.getAuthors() }}</b><br />
+	    {{ translator().translate('Publisher') }}: <b>{{ article.getPublishers() }}</b><br />
+	    {{ translator().translate('Publish Year') }}: <b>{{ article.getYearPublished() }}</b><br />
+	    {% if article.getISBN() %} {{ translator().translate('ISBN') }}: <b>{{ article.getISBN() }}</b>{% endif %}
 	</p>
 	
 	<table class="table table-bordered table-striped">
         <tr>
-            <th width="100px">Date</th>
-            <th width="140px">Person</th>
-            <th>Summary</th>
-            <th width="140px">Action</th>
+            <th width="100px">{{ translator().translate('Date') }}</th>
+            <th width="140px">{{ translator().translate('Person') }}</th>
+            <th>{{ translator().translate('Summary') }}</th>
+            <th width="140px">{{ translator().translate('Actions') }}</th>
         </tr>
 
         {% for mapping in mappings %}
@@ -43,36 +43,36 @@
                 <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
                 <td>{{ mapping.getComment().getSummary(70) }}</td>
 				<td class="actions">
-					<a href="#" class="btn btn-primary view" data-text="{{ mapping.getComment().getText() }}">View</a>
+					<a href="#" class="btn btn-primary view" data-text="{{ mapping.getComment().getText() }}">{{ translator().translate('View') }}</a>
 					{% if mapping.getComment().getPerson().getId() == authenticatedUserObject.getId() %}
-					    <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}">Delete</a>
+					    <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}">{{ translator().translate('Delete') }}</a>
 					{% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
     <div class="pull-right">
-        <a href="#addComment" class="btn btn-success" data-toggle="modal">Add Comment</a>
+        <a href="#addComment" class="btn btn-success" data-toggle="modal">{{ translator().translate('Add Comment') }}</a>
     </div>
     <br class="clear" />
     
     <div id="viewComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>Article Comment</h3>
+    		<h3>{{ translator().translate('Comment') }}</h3>
     	</div>
     	<div class="modal-body">
     		<pre class="text"></pre>
     	</div>
     	<div class="modal-footer">
-    		<button class="btn" data-dismiss="modal">Close</button>
+    		<button class="btn" data-dismiss="modal">{{ translator().translate('Close') }}</button>
     	</div>
     </div>
     
     <div id="addComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>Article Comment Add</h3>
+    		<h3>{{ translator().translate('Add Comment') }}</h3>
     	</div>
     	<div class="modal-body">
     		{% autoescape false %}
@@ -80,22 +80,22 @@
     		{% endautoescape %}
     	</div>
     	<div class="modal-footer">
-    		<button class="btn btn-success save">Save</button>
-    		<button class="btn" data-dismiss="modal">Cancel</button>
+    		<button class="btn btn-success save">{{ translator().translate('Save') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translator().translate('Cancel') }}</button>
     	</div>
     </div>
     
     <div id="removeComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>Remove Comment</h3>
+    		<h3>{{ translator().translate('Remove Comment') }}</h3>
     	</div>
     	<div class="modal-body">
-    		Are you sure you want to remove your comment?
+    		{{ translator().translate('Are you sure you want to remove your comment?') }}
     	</div>
     	<div class="modal-footer">
-    		<button class="btn btn-danger confirm">Yes</button>
-    		<button class="btn" data-dismiss="modal">No</button>
+    		<button class="btn btn-danger confirm">{{ translator().translate('Yes') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
     	</div>
     </div>
 {% endblock %}

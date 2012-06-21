@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     {{ headMeta() }}
-	{{ headTitle('Litus Prof', 'PREPEND') }}
+	{{ headTitle(translator().translate('Litus Prof'), 'PREPEND') }}
 	
 	{{ headLink() }}   
 </head>
@@ -17,19 +17,33 @@
 			<ul class="nav">
 				{% if hasAccess('prof_index', 'index') %}
 					<li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_index") }}">Home</a>
+					    <a href="{{ url("prof_index") }}">{{ translator().translate('Home') }}</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('prof_subject', 'manage') %}
 					<li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_subject") }}">Subjects</a>
+					    <a href="{{ url("prof_subject") }}">{{ translator().translate('Subjects') }}</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('prof_article', 'manage') %}
 					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_article") }}">Articles</a>
+					    <a href="{{ url("prof_article") }}">{{ translator().translate('Articles') }}</a>
 					</li>
 				{% endif %}
+			</ul>
+			<ul class="nav pull-right lang-nav visible-desktop">
+			    <li class="dropdown" id="langDropdown">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				        {{ translator().translate('Language') }} <span class="caret"></span>
+			        </a>
+			        <ul class="dropdown-menu">
+			            {% for language in languages %}
+				            <li>
+				                <a href="#">{{ translator().translate(language.getName()) }}</a>
+				            </li>
+			            {% endfor %}
+			        </ul>
+				</li>
 			</ul>
 			<ul class="nav pull-right auth-nav">
 			    {% if authenticated %}
@@ -49,14 +63,14 @@
 			                </li>
 			                <li class="divider"></li>
 			                <li>
-			                    <a href="{{ url("prof_auth", {"action": "logout"}) }}">Logout</a>
+			                    <a href="{{ url("prof_auth", {"action": "logout"}) }}">{{ translator().translate('Logout') }}</a>
 			                </li>
 			            </ul>
 			        </li>
 			    {% else %}
 				    <li class="dropdown" id="loginDropdown">
 				        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				            Login <span class="caret"></span>
+				            {{ translator().translate('Login') }} <span class="caret"></span>
 			            </a>
 			            <ul class="dropdown-menu">
 			                <li>
@@ -75,7 +89,7 @@
 <header>
 	<div class="inner">
 		<div class="container">
-			<h1>Litus Prof</h1>
+			<h1>{{ translator().translate('Litus Prof') }}</h1>
 		</div>
 	</div>
 </header>
