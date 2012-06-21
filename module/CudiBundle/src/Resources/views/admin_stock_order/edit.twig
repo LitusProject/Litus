@@ -25,19 +25,19 @@
 		<p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s')}}{% else %}(new){% endif %}</b></p>
 		<br />
 		
-		<table>
+		<table class="manage">
 			
 			<tr>
 				<th>Article</th>
-				<th>Number</th>
-				<th>Actions</th>
+				<th width="80px">Number</th>
+				<th width="70px">Actions</th>
 			</tr>
 	
 			{% for item in order.getItems() %}
-				<tr class="item">
+				<tr class="item item-{{ item.getId() }}">
 					<td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
 					<td>{{ item.getNumber() }}</td>
-					<td>
+					<td class="actions">
 						{% if not order.isPlaced() and hasAccess('admin_stock_order', 'delete') %}
 		        			<a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
 						{% endif %}
@@ -127,7 +127,7 @@
 	
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');
@@ -143,12 +143,13 @@
 			var removeOrder = $('#removeOrder');
 			removeOrder.find('.articleTitle').html($(this).data('title'));
 			removeOrder.find('.orderNumber').html($(this).data('number'));
+			var id = $this.data('id');
 			removeOrder.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_order', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_order', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.order_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeOrder.modal('hide');
 					} else {
 					    errorRemove();

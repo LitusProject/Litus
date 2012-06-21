@@ -27,7 +27,7 @@ use CommonBundle\Form\Auth\Login as LoginForm,
 class AdminController extends \CommonBundle\Component\Controller\ActionController
 {
 	/**
-     * Execute the request
+     * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
@@ -35,6 +35,12 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     public function execute(MvcEvent $e)
     {
 		$result = parent::execute($e);
+		
+		$language = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Language')
+		    ->findOneByAbbrev('en');
+		    
+		$result['language'] = $language;
 				
 		$result['now'] = array(
 			'iso8601' => date('c', time()),

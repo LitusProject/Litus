@@ -14,6 +14,7 @@ table {
     padding: 0;
     border-collapse: separate;
     font-size: @tSize;
+    table-layout: fixed;
 
     th {
         padding-right: 2 * @defaultSpacing;
@@ -33,6 +34,9 @@ table {
         line-height: @tableRowHeight;
 
         td {
+            height: @tableRowHeight;
+            overflow: hidden;
+            white-space: nowrap;
             padding-right: 2 * @defaultSpacing;
             text-indent: @tIndent;
             text-align: left;
@@ -49,12 +53,6 @@ table {
             a:hover {
                 color: @cBlack;
             }
-            
-            &.actions {
-                a {
-                    display: none;
-                }
-            }
         }
     }
 
@@ -70,6 +68,16 @@ table {
 
             td:last-child {
                 background-image: none;
+            }
+        }
+    }
+    
+    &.manage {
+        td {
+            &.actions {
+                a {
+                    display: none;
+                }
             }
         }
     }
@@ -94,7 +102,7 @@ table {
     &.right .tooltip-arrow  { #popoverArrow > .right(5px, @cTabsGradientStop); }
 }
 .tooltip-inner {
-    max-width: 200px;
+    max-width: 300px;
     padding: 3px 8px;
     color: #fff;
     text-align: center;

@@ -13,7 +13,7 @@
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
 
-		<h2>File</h2>
+		<h1>File</h1>
 		<p>Name: <b>{{ file.getName() }}</b></p>
 		{% if hasAccess('admin_article_file', 'download') %}
 			<input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download" />
@@ -25,7 +25,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.downloadFile').each(function () {

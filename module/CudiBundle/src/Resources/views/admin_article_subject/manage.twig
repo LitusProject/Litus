@@ -32,24 +32,24 @@
 		{% endautoescape %}
 		<br style="clear:both"/>
 			
-		<table class="full_width" id="articleSubjects">
+		<table class="full_width manage" id="articleSubjects">
 	        <tr>
 	            <th width="90px">Code</th>
 	            <th>Name</th>
 	            <th width="80px">Semester</th>
 	            <th width="80px">Credits</th>
 	            <th width="80px">Mandatory</th>
-	            <th width="80px">Actions</th>
+	            <th width="70px">Actions</th>
 	        </tr>
 	
 	        {% for mapping in mappings %}
-	            <tr class="item">
+	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getSubject().getCode() }}</td>
 	                <td>{{ mapping.getSubject().getName() }}</td>
 	                <td>{{ mapping.getSubject().getSemester() }}</td>
 	                <td>{{ mapping.getSubject().getCredits() }}</td>
 	                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
-					<td>
+					<td class="actions">
 						<a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ article.getTitle() }}" data-subject="{{ mapping.getSubject().getName() }}">Delete</a>
 	                </td>
 	            </tr>
@@ -78,7 +78,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
@@ -103,12 +103,13 @@
 			var removeMapping = $('#removeMapping');
 			removeMapping.find('.articleTitle').html($(this).data('article'));
 			removeMapping.find('.subjectName').html($(this).data('subject'));
+			var id = $this.data('id');
 			removeMapping.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.mapping_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeMapping.modal('hide');
 					} else {
 					    errorRemove();

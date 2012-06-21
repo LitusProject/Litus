@@ -40,16 +40,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
         
+        foreach($paginator as $item)
+            $item->setEntityManager($this->getEntityManager());
+        
+        $academicYear = $this->getAcademicYear();
+        
         return array(
         	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        	'paginationControl' => $this->paginator()->createControl(true),
+            'currentAcademicYear' => $academicYear,
         );
     }
 
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -69,7 +75,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 						$formData['author'],
 						$formData['publisher'],
 						$formData['year_published'],
-						$formData['isbn'],
+						$formData['isbn'] != ''? $formData['isbn'] : null,
 						$formData['url'],
 						$formData['type'],
 						$formData['downloadable'],
@@ -88,7 +94,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	                	$formData['author'],
 	                	$formData['publisher'],
 	                	$formData['year_published'],
-	                	$formData['isbn'],
+	                	$formData['isbn'] != ''? $formData['isbn'] : null,
 	                	$formData['url'],
 	                	$formData['type'],
 	                	$formData['downloadable']
@@ -156,7 +162,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	        ->setAuthors($formData['author'])
         	        ->setPublishers($formData['publisher'])
         	        ->setYearPublished($formData['year_published'])
-        	        ->setISBN($formData['isbn'])
+        	        ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
         	        ->setURL($formData['url'])
         	        ->setIsDownloadable($formData['downloadable'])
         	        ->setType($formData['type']);
@@ -203,7 +209,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByArticleAndAcademicYear($article, $this->_getAcademicYear());
+            ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
         
         return array(
             'form' => $form,

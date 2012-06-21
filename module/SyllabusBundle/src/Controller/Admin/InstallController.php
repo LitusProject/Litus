@@ -27,9 +27,9 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-	    $this->_installConfig(
+	    $this->installConfig(
 	        array(
 	    		array(
 	    			'key'         => 'syllabus.update_socket_port',
@@ -57,7 +57,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	    $this->_installAcademicYear();
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAcl(
 	        array(

@@ -22,6 +22,7 @@ return array(
 				'admin_stock_retour'     => 'CudiBundle\Controller\Admin\Stock\RetourController',
 				'admin_stock_order'	     => 'CudiBundle\Controller\Admin\Stock\OrderController',
 				'admin_prof_action'      => 'CudiBundle\Controller\Admin\Prof\ActionController',
+				'admin_cudi_mail'        => 'CudiBundle\Controller\Admin\MailController',
 				
 				'sale_sale'	             => 'CudiBundle\Controller\Sale\SaleController',
 				'sale_queue'	         => 'CudiBundle\Controller\Sale\QueueController',
@@ -225,6 +226,21 @@ return array(
 				),
 			),
 		),
+		'admin_sales_article_typeahead' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/sales/article/:academicyear/typeahead[/:string]',
+				'constraints' => array(
+        			'academicyear' => '[0-9]{4}-[0-9]{4}',
+					'string'       => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_sales_article',
+					'action'     => 'typeahead',
+				),
+			),
+		),
+		
 		'admin_sales_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -412,6 +428,18 @@ return array(
 				),
 			),
 		),
+		'admin_cudi_mail' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/cudi/mail',
+				'constraints' => array(
+				),
+				'defaults' => array(
+					'controller' => 'admin_cudi_mail',
+					'action'     => 'send',
+				),
+			),
+		),
 		'sale_queue' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
@@ -529,7 +557,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/subject/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_subject',
@@ -556,7 +584,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/article/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_article',
@@ -625,7 +653,7 @@ return array(
 	    	'options' => array(
 	    		'route' => '/cudi/prof/prof/typeahead[/:string]',
 	    		'constraints' => array(
-	    			'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+	    			'string' => '[%a-zA-Z0-9_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_prof',

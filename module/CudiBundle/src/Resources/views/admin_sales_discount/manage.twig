@@ -30,20 +30,20 @@
 		{% endautoescape %}
 		<br style="clear:both"/>
 			
-		<table class="full_width" id="articleDiscounts">
+		<table class="full_width manage" id="articleDiscounts">
 	        <tr>
 	            <th width="70px">Template</th>
 	            <th>Type</th>
 	            <th width="200px">Value</th>
-	            <th width="140px">Actions</th>
+	            <th width="100px">Actions</th>
 	        </tr>
 	
 	        {% for discount in discounts %}
-	            <tr class="item">
+	            <tr class="item item-{{ discount.getId() }}">
 	                <td style="text-align:center;">{% if discount.getTemplate() is not null %}&times;{% endif %}</td>
 	                <td>{{ discount.getType()|capitalize }}</td>
 	                <td>{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}</td>
-					<td>
+					<td class="actions">
 						{% if hasAccess('admin_sales_discount', 'delete') %}
 						    <a href="#" class="delete" data-id="{{ discount.getId() }}" data-type="{{ discount.getType()|capitalize }}" data-discount="{% if discount.getMethod() == 'percentage' %}-{{ (discount.getValue()/100)|number_format(2) }}%{% elseif discount.getMethod() == 'fixed' %}- &euro; {{ (discount.getValue()/100)|number_format(2) }}{% else %}&euro; {{ (discount.getValue()/100)|number_format(2) }}{% endif %}">Delete</a>						    
 						{% endif %}
@@ -74,7 +74,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openRemoveModal);
@@ -98,12 +98,13 @@
 			var removeDiscount = $('#removeDiscount');
 			removeDiscount.find('.type').html($(this).data('type'));
 			removeDiscount.find('.discount').html($(this).data('discount'));
+			var id = $this.data('id');
 			removeDiscount.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.discount_removed_success').removeClass('hide');
-						$this.parent().parent().remove();
+						$('.item-' + id).remove();
 						removeDiscount.modal('hide');
 					} else {
 					    errorRemove();

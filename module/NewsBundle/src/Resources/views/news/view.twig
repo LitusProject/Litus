@@ -1,7 +1,0 @@
-{% extends 'common/layout.twig' %}
-
-{% block content %}
-    <h1>{{ news.getTitle() }}</h1>
-    <em class="subtitle">{{ translator().translate('placed by %user% on %date% in %category%')|replace({'%user%':news.getNews().getCreatePerson().getFullName(), '%date%':dateLocalized(news.getNews().getUpdateTime(), 'd MMMM yyyy'), '%category%': translator().translate(news.getNews().getCategory()|capitalize)}) }}</em>
-    <p>{{ news.getContent() }}</p>
-{% endblock %}

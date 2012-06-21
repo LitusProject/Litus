@@ -29,20 +29,10 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
     {
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->_getCurrentAcademicYear());
+            ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->getCurrentAcademicYear());
         
     	return array(
     	    'articles' => $articles
     	);
-    }
-    
-    private function _getCurrentAcademicYear()
-    {
-    	$start = AcademicYear::getStartOfAcademicYear();
-    	$start->setTime(0, 0);
-
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
     }
 }

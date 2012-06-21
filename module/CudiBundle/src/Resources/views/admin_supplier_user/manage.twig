@@ -27,35 +27,29 @@
 	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
 	    <br />
 	    
-	    <table>
-	        <thead>
-	            <tr>
-	                <th>Username</th>
-	                <th width="100px">Supplier</th>
-	                <th width="150px">Name</th>
-	                <th width="160px">E-mail</th>
-	                <th width="140px">Action</th>
-	            </tr>
-	        </thead>
+	    <table class="manage">
+            <tr>
+                <th width="150px">Username</th>
+                <th>Name</th>
+                <th width="160px">E-mail</th>
+                <th width="70px">Action</th>
+            </tr>
 	
-	        <tbody>
-	            {% for user in paginator %}
-	                <tr class="item">
-	                    <td>{{ user.getUsername() }}</td>
-	                    <td>{{ user.getSupplier().getName() }}</td>
-	                    <td>{{ user.getFullName() }}</td>
-	                    <td>{{ user.getEmail() }}</td>
-	                    <td>
-	                        {% if hasAccess('admin_supplier_user', 'edit') %}
-	                            <a href="{{ url('admin_supplier_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                        {% if hasAccess('admin_supplier_user', 'delete') %}
-	                            <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
-	                        {% endif %}
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
+            {% for user in paginator %}
+                <tr class="item item-{{ user.getId() }}">
+                    <td>{{ user.getUsername() }}</td>
+                    <td>{{ user.getFullName() }}</td>
+                    <td>{{ user.getEmail() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_supplier_user', 'edit') %}
+                            <a href="{{ url('admin_supplier_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('admin_supplier_user', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ user.getId() }}" data-name="{{ user.getFullName() }}" data-supplier="{{ user.getSupplier().getName() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
 	    </table>
 
 		{% include 'admin/partials/paginationControl.twig' %}
@@ -98,7 +92,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('.item .delete').click(openModal);
@@ -111,12 +105,13 @@
 			var removeUser = $('#removeUser');
 			removeUser.find('.fullName').html($(this).data('name'));
 			removeUser.find('.supplier').html($(this).data('supplier'));
+			var id = $this.data('id');
 			removeUser.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}/' + id), function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.supplier_removed_success').show();
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeUser.modal('hide');
     				} else {
     				    errorRemove();

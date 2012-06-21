@@ -32,7 +32,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -48,7 +48,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return array(
             'academicYears' => $academicYears,
             'activeAcademicYear' => $academicYear,
-            'currentAcademicYear' => $this->_getCurrentAcademicYear(),
+            'currentAcademicYear' => $this->getCurrentAcademicYear(),
         	'paginator' => $paginator,
         	'paginationControl' => $this->paginator()->createControl(true)
         );
@@ -95,7 +95,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	        $formData['unbookable'],
         	        $supplier,
         	        $formData['can_expire'],
-        	        $this->_getCurrentAcademicYear()
+        	        $this->getCurrentAcademicYear()
         	    );
         	    
         	    $this->getEntityManager()->persist($saleArticle);
@@ -223,7 +223,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         		    ->setIsUnbookable($formData['unbookable'])
         		    ->setSupplier($supplier)
         		    ->setCanExpire($formData['can_expire'])
-        		    ->setAcademicYear($this->_getCurrentAcademicYear());
+        		    ->setAcademicYear($this->getCurrentAcademicYear());
         		
         		$this->getEntityManager()->persist($new);
         		$this->getEntityManager()->flush();
@@ -276,17 +276,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	case 'title':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByTitleAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
+	    			->findAllByTitleAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
 	    		break;
 	    	case 'author':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByAuthorAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
+	    			->findAllByAuthorAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
 	    		break;
 	    	case 'publisher':
 	    		$articles = $this->getEntityManager()
 	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->_getAcademicYear());
+	    			->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
 	    		break;
 	    }
 	    
@@ -304,6 +304,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$item->author = $article->getMainArticle()->getAuthors();
 	    	$item->publisher = $article->getMainArticle()->getPublishers();
 	    	$item->sellPrice = number_format($article->getSellPrice()/100, 2);
+	    	$item->stockValue = $article->getStockValue();
 	    	$result[] = $item;
 	    }
 	    
@@ -339,6 +340,27 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     	);
 
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function typeaheadAction()
+	{
+	    $academicYear = $this->getAcademicYear();
+        
+        $articles = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Sales\Article')
+        	->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
 	}
     
     private function _getSaleArticle()

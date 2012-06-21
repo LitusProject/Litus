@@ -20,27 +20,27 @@
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
 	    	
-	    	<table class="full_width">
+	    	<table class="full_width manage">
 	        	<tr>
 		            <th width="140px">Person</th>
 	            	<th>Article</th>
 		            <th width="30px">&nbsp;</th>
 	            	<th width="100px">Date</th>
 	            	<th width="55px">Status</th>
-	            	<th width="90px">Actions</th>
+	            	<th width="70px">Actions</th>
 	    		</tr>
 	    	</table>
 	    </div>
 	    
 		<div id="default_page">
-			<table class="full_width">
+			<table class="full_width manage">
 		        <tr>
 		            <th width="140px">Person</th>
 		            <th>Article</th>
 		            <th width="30px">&nbsp;</th>
 		            <th width="100px">Date</th>
 		            <th width="55px">Status</th>
-		            <th width="90px">Actions</th>
+		            <th width="70px">Actions</th>
 		        </tr>
 		        
 		        {% for booking in paginator %}
@@ -50,7 +50,7 @@
 		                <td>&times;{{ booking.getNumber() }}</td>
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
 		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
-		                <td>
+		                <td class="actions">
 		                    {% if hasAccess('admin_sales_booking', 'edit') %}
 		                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
@@ -64,7 +64,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('#controller_nav .assignAll').click(openAssignAllModal);
@@ -85,11 +85,12 @@
 							.append('<td>&times;' + this.number + '</td>')
 							.append('<td>' + this.bookDate + '</td>')
 							.append('<td class="status">' + this.status + '</td>')
-							.append(actions = $('<td>'));
+							.append(actions = $('<td>', {'class': 'actions'}));
 						{% if hasAccess('admin_sales_booking', 'edit') %}
 							actions.append(button = $('<a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>'));
 						{% endif %}
 					});
+					$('#booking_search table').change();
 				},
 				clear: function () {
 					$('#booking_search table').find('tr.item').remove();

@@ -86,6 +86,7 @@
 	    var settings = $this.data('saleSettings');
 	    var data = {
 	        id: settings.data.sale.id,
+	        payMethod: $this.find('#payMethod button.active').data('method'),
 	        discount: $this.find('.discounts input:checked').data('type'),
 	        articles: {}
 	    };

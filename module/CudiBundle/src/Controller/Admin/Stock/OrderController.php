@@ -56,7 +56,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($supplier = $this->_getSupplier()))
             return;
             
-        if (!($period = $this->_getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod()))
             return;
             
         $paginator = $this->paginator()->createFromArray(
@@ -97,6 +97,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function addAction()
 	{
 		$form = new AddForm($this->getEntityManager());
+	    
+	    $academicYear = $this->getAcademicYear();
 				
 		if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -104,7 +106,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             if($form->isValid($formData)) {
 				$article = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Sales\Article')
-					->findOneByBarcode($formData['article']);
+					->findOneById($formData['article_id']);
 				
 				$item = $this->getEntityManager()
 					->getRepository('CudiBundle\Entity\Stock\Orders\Order')
@@ -139,6 +141,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return array(
         	'form' => $form,
         	'suppliers' => $suppliers,
+        	'currentAcademicYear' => $academicYear,
         );
 	}
 	

@@ -72,7 +72,6 @@ class Study
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
-        $this->_prof = array();
         $this->_callback = $callback;
         
         $this->_callback('load_xml', 'SC_51016934.xml');
@@ -261,30 +260,45 @@ class Study
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($identification);
             if (null == $prof) {
-                if (isset($this->_profs[$identification])) {
-                    $prof = $this->_profs[$identification];
-                } else {
-                    $info = $this->_getInfoProf(trim($profData->attributes()->persnr));
+                $info = $this->_getInfoProf(trim($profData->attributes()->persnr));
+                
+                $prof = new Academic(
+                    $identification,
+                    array(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName('prof')
+                    ),
+                    trim($profData->voornaam),
+                    trim($profData->familienaam),
+                    $info['email'],
+                    $info['phone'],
+                    null,
+                    $identification);
+                
+                $prof->activate($this->getEntityManager(), $this->_mailTransport);
+                
+                file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
+                $finfo = new \finfo;
+                $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);   
+                $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
+                
+                if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
+                    $filePath = $this->getEntityManager()
+                    	->getRepository('CommonBundle\Entity\General\Config')
+                    	->getConfigValue('common.profile_path');
+                    	
+                    $fileName = '';
+                    do{
+                        $fileName = '/' . sha1(uniqid());
+                    } while (file_exists($filePath . $fileName));
                     
-                    $prof = new Academic(
-                        $identification,
-                        array(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\Acl\Role')
-                                ->findOneByName('prof')
-                        ),
-                        trim($profData->voornaam),
-                        trim($profData->familienaam),
-                        $info['email'],
-                        $info['phone'],
-                        null,
-                        $identification);
-                    
-                    $prof->activate($this->getEntityManager(), $this->_mailTransport);
-                    
-                    $this->getEntityManager()->persist($prof);
-                    $this->_profs[$identification] = $prof;
+                    file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
+                    unlink('/tmp/' . $identification);
+                    $prof->setPhotoPath($fileName);
                 }
+                
+                $this->getEntityManager()->persist($prof);
             }
             
             $map = $this->getEntityManager()
@@ -345,6 +359,7 @@ class Study
         return array(
             'email' => $email,
             'phone' => $phone,
+            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
         );
     }
     

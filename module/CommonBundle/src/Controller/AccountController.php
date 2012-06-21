@@ -56,12 +56,12 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'Your account is succesfully activated'
+                        'Your account was succesfully activated!'
                     )
                 );
                 
                 $this->redirect()->toRoute(
-                	'home'
+                	'index'
                 );
                 
                 return;
@@ -78,7 +78,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     
     public function _getUser()
     {
-    	if (null === $this->getParam('id')) {
+    	if (null === $this->getParam('code')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
@@ -88,7 +88,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     		);
     		
     		$this->redirect()->toRoute(
-    			'home'
+    			'index'
     		);
     		
     		return;
@@ -96,19 +96,19 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Code')
-            ->findOneUserByCode($this->getParam('id'));
+            ->findOneUserByCode($this->getParam('code'));
     	
     	if (null === $user) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
     		        'Error',
-    		        'No user with the given name was code!'
+    		        'The given code is not valid!'
     		    )
     		);
     		
     		$this->redirect()->toRoute(
-    			'home'
+    			'index'
     		);
     		
     		return;

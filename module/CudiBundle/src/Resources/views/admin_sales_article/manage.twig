@@ -32,34 +32,34 @@
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
 	    	
-	    	<table class="full_width">
+	    	<table class="full_width manage">
 	        	<tr>
 	            	<th>Title</th>
-	            	<th width="100px">Author</th>
-	            	<th width="180px">Publisher</th>
-	            	<th width="100px">Sell Price</th>
-	            	<th width="120px">Action</th>
+	            	<th width="170px">Author</th>
+		            <th width="90px">Sell Price</th>
+		            <th width="90px">Stock</th>
+	            	<th width="70px">Action</th>
 	    		</tr>
 	    	</table>
 	    </div>
 	    
 		<div id="default_page">
-			<table class="full_width">
+			<table class="full_width manage">
 		        <tr>
 		            <th>Title</th>
-		            <th width="100px">Author</th>
-		            <th width="180px">Publisher</th>
-		            <th width="100px">Sell Price</th>
-		            <th width="120px">Action</th>
+		            <th width="170px">Author</th>
+		            <th width="90px">Sell Price</th>
+		            <th width="90px">Stock</th>
+		            <th width="70px">Action</th>
 		        </tr>
 		        
 		        {% for article in paginator %}
-		            <tr class="item">
+		            <tr class="item item-{{ article.getId() }}">
 		                <td>{{ article.getMainArticle().getTitle() }}</td>
 		                <td>{{ article.getMainArticle().getAuthors() }}</td>
-		                <td>{{ article.getMainArticle().getPublishers() }}</td>
 		                <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
-						<td>
+		                <td>{{ article.getStockValue() }}</td>
+						<td class="actions">
 						    {% if activeAcademicYear.getId() == currentAcademicYear.getId() %}  
     						    {% if hasAccess('admin_sales_article', 'edit') %}
     		                        <a href="{{ url('admin_sales_article', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
@@ -102,7 +102,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    {% if hasAccess('admin_sales_article', 'search') %}
@@ -115,13 +115,13 @@
 		    	display: function (data) {
 		    		$('#article_search table').find('tr.item').remove();
 		    		$(data).each(function () {
-		    			$('#article_search table').append(row = $('<tr>', {class: 'item'}));
+		    			$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 		    			row.append('<td>' + this.title + '</td>')
 		    				.append('<td>' + this.author + '</td>')
-		    				.append('<td>' + this.publisher + '</td>')
 		    				.append('<td>&euro; ' + this.sellPrice + '</td>')
+		    				.append('<td>' + this.stockValue + '</td>')
 		    				.append(
-		    					actions = $('<td>')
+		    					actions = $('<td>', {'class': 'actions'})
 		    				);
 		    				
 		    				{% if hasAccess('admin_sales_article', 'edit') %}
@@ -138,6 +138,7 @@
 		    				{% endif %}
 		    		});
 		    		$('#article_search .delete').click(openModal);
+		    		$('#article_search table').change();
 		    	},
 		    	clear: function () {
 		    		$('#article_search table').find('tr.item').remove();
@@ -154,12 +155,13 @@
 			var removeArticle = $('#removeArticle');
 			removeArticle.find('.articleTitle').html($(this).data('title'));
 			removeArticle.find('.articleAuthors').html($(this).data('authors'));
+			var id = $this.data('id');
 			removeArticle.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_article', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_sales_article', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.article_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeArticle.modal('hide');
     				} else {
     				    errorRemove();

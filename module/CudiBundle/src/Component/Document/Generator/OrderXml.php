@@ -18,6 +18,7 @@ namespace CudiBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\File\TmpFile,
 	CommonBundle\Component\Util\Xml\Generator,
 	CommonBundle\Component\Util\Xml\Object,
+	CudiBundle\Component\Document\Generator\Front as FrontGenerator,
 	CudiBundle\Entity\Stock\Orders\Order,
 	CudiBundle\Entity\Stock\Orders\Item,
 	Doctrine\ORM\EntityManager,
@@ -68,6 +69,14 @@ class OrderXml
 			$xmlFile = new TmpFile();
 			$this->generateXml($item, $xmlFile);
 			
+			if ($item->getArticle()->getMainArticle()->isInternal()) {
+			    $file = new TmpFile();
+			    $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
+			    $document->generate();
+			    
+			    $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
+			}
+			
 			$mappings = $this->_entityManager
 			    ->getRepository('CudiBundle\Entity\Files\Mapping')
 			    ->findAllByArticle($item->getArticle()->getMainArticle());
@@ -89,6 +98,17 @@ class OrderXml
 		
 		$attachments = array();
 		$num = 1;
+		if ($item->getArticle()->getMainArticle()->isInternal()) {
+		    $attachments[] = new Object(
+		    	'Attachment',
+		    	array(
+		    		'AttachmentKey' => 'File' . $num++,
+		    		'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
+		    	),
+		    	null
+		    );
+		}
+		
 		$mappings = $this->_entityManager
 		    ->getRepository('CudiBundle\Entity\Files\Mapping')
 		    ->findAllByArticle($item->getArticle()->getMainArticle());

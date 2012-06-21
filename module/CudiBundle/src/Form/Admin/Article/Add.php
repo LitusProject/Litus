@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
- class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -77,7 +77,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         
         $field = new Text('isbn');
         $field->setLabel('ISBN')
-        	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator('isbn');
         $this->addElement($field);
@@ -193,7 +192,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	    $field = new Hidden('subject_id');
 	    $field->setRequired()
 	        ->addValidator(new IntValidator())
-	        ->setAttrib('id', 'subjectId');
+	        ->setAttrib('id', 'subjectId')
+	        ->clearDecorators()
+	        ->setDecorators(array('ViewHelper'));
 	    $this->addElement($field);
 	     
 	    $field = new Text('subject');

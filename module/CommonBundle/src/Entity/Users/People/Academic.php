@@ -160,7 +160,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         if (($photoPath === null) || !is_string($photoPath))
             throw new \InvalidArgumentException('Invalid photo path');
-            
+        
         $this->photoPath = $photoPath;
         
         return $this;

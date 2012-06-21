@@ -6,7 +6,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    <table>
+	    <table class="manage">
 	    
 	        <tr>
 	            <th>Manager</th>
@@ -22,7 +22,7 @@
 	                <td>{% if period.isOpen() %}Yes{% else %}No{% endif %}</td>
 	                <td>{{ period.getStartDate().format('Y-m-d H:i') }}</td>
 	                <td>{% if not period.isOpen() %}{{ period.getEndDate().format('Y-m-d H:i')}}{% endif %}</td>
-	    			<td>
+	    			<td class="actions">
 	    			    {% if hasAccess('admin_stock_period', 'view') %}
 	    			        <a href="{{ url("admin_stock_period", {"action": "view", "id": period.getId()}) }}" class="view">View</a>
 	    			    {% endif %}
@@ -71,7 +71,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('#newPeriod .new').click(function () {

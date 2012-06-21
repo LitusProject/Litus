@@ -24,7 +24,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	Zend\Form\Element\Checkbox,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\Form\Element\Text,
+    Zend\Validator\Isbn as IsbnValidator;
 
 /**
  * Add Article
@@ -62,7 +63,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $field->setLabel('Barcode')
             ->setAttrib('class', 'disableEnter')
         	->setRequired()
-        	->addValidator('isbn')
+        	->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)))
         	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);

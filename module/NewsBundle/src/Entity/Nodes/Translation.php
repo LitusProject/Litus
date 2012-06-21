@@ -1,4 +1,17 @@
 <?php
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
  
 namespace NewsBundle\Entity\Nodes;
 
@@ -39,13 +52,6 @@ class Translation
     private $language;
     
     /**
-     * @var string The content of this tanslation
-     *
-     * @Column(type="string")
-     */
-    private $content;
-        
-    /**
      * @var string The title of this tanslation
      *
      * @Column(type="string")
@@ -58,6 +64,13 @@ class Translation
      * @Column(type="string", unique=true)
      */
     private $name;
+    
+    /**
+     * @var string The content of this tanslation
+     *
+     * @Column(type="text")
+     */
+    private $content;
     
     /**
      * @param \NewsBundle\Entity\Nodes\News $news
@@ -125,7 +138,7 @@ class Translation
      */
     private function _setName($name)
     {
-        $this->name = $this->news->getCreateTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name));
+        $this->name = $this->news->getCreateTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
         return $this;
     }
     

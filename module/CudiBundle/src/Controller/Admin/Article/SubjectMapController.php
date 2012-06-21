@@ -31,7 +31,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 	    if (!($article = $this->_getArticle()))
 	        return;
 	        
-	    if (!($academicYear = $this->_getAcademicYear()))
+	    if (!($academicYear = $this->getAcademicYear()))
 	    	return;
 	    
 	    $form = new AddForm();

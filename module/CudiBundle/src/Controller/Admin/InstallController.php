@@ -23,6 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Config,
     CudiBundle\Entity\Articles\Options\Binding,
 	CudiBundle\Entity\Articles\Options\Color,
+	CudiBundle\Entity\Sales\PayDesk,
 	DateInterval,
 	DateTime,
 	Exception;
@@ -34,9 +35,9 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-		$this->_installConfig(
+		$this->installConfig(
 	        array(
 	            array(
 	            	'key'         => 'cudi.file_path',
@@ -80,13 +81,23 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	            ),
 	            array(
 	            	'key'         => 'union_logo',
-	            	'value'       => 'data/images/logo/logo.jpg',
+	            	'value'       => 'data/images/logo/logo.svg',
 	            	'description' => 'The path to the logo of the union',
 	            ),
 	            array(
 	            	'key'         => 'union_url',
 	            	'value'       => 'http://www.vtk.be',
 	            	'description' => 'The URL of the union',
+	            ),
+	            array(
+	            	'key'         => 'university',
+	            	'value'       => 'KU Leuven',
+	            	'description' => 'The name of the university',
+	            ),
+	            array(
+	            	'key'         => 'faculty',
+	            	'value'       => 'Faculty of Engineering',
+	            	'description' => 'The name of the faculty',
 	            ),
 	            array(
 	            	'key'         => 'cudi.name',
@@ -184,6 +195,11 @@ VTK Cudi
     			    'value'       => '50',
     			    'description' => 'The price of a perforated article',
     			),
+    			array(
+    			    'key'         => 'cudi.front_address_name',
+    			    'value'       => 'CuDi VTK vzw',
+    			    'description' => 'The name of the address on the front of an article',
+    			),
 			)
 		);
 		
@@ -193,9 +209,10 @@ VTK Cudi
 		$this->_installColor();
 		$this->_installMoneyUnit();
 		$this->_installBankDevice();
+		$this->_installPayDesks();
 	}
 	
-	protected function _initAcl()
+	protected function initAcl()
 	{
 	    $this->installAcl(
 	        array(
@@ -212,11 +229,14 @@ VTK Cudi
 	                'admin_article_subject' => array(
 	                    'delete', 'manage'
 	                ),
+	                'admin_cudi_mail' => array(
+	                    'send'
+	                ),
 	                'admin_prof_action' => array(
 	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
 	                ),
 	                'admin_sales_article' => array(
-	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf'
+	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
 	                ),
 	                'admin_sales_booking' => array(
 	                    'add', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'search', 'unassign'
@@ -339,14 +359,18 @@ VTK Cudi
 	
 	private function _installBinding()
 	{
-		$bindings = array('Binded');
+		$bindings = array(
+		    'binded' => 'Binded',
+		    'none' => 'None',
+            'glued' => 'Glued',
+		);
 		
-		foreach($bindings as $item) {
+		foreach($bindings as $code => $name) {
 			$binding = $this->getEntityManager()
 				->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-				->findOneByName($item);
+				->findOneByCode($code);
 			if (null == $binding) {
-				$binding = new Binding($item);
+				$binding = new Binding($code, $name);
 				$this->getEntityManager()->persist($binding);
 			}
 		}
@@ -458,6 +482,26 @@ VTK Cudi
 			if (null == $bankdevice) {
 				$bankdevice = new BankDevice($item);
 				$this->getEntityManager()->persist($bankdevice);
+			}
+		}
+		$this->getEntityManager()->flush();
+	}
+	
+	private function _installPayDesks()
+	{
+		$paydesks = array(
+		    'paydesk_1' => '1',
+		    'paydesk_2' => '2',
+		    'paydesk_3' => '3',
+		);
+		
+		foreach($paydesks as $code => $name) {
+			$paydesk = $this->getEntityManager()
+				->getRepository('CudiBundle\Entity\Sales\PayDesk')
+				->findOneByCode($code);
+			if (null == $paydesk) {
+				$paydesk = new PayDesk($code, $name);
+				$this->getEntityManager()->persist($paydesk);
 			}
 		}
 		$this->getEntityManager()->flush();

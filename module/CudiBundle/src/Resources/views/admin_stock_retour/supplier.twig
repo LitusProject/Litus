@@ -20,7 +20,7 @@
 	{% include 'admin_stock_retour/partials/suppliers.twig' %}
 	
 	<div id="controller_action">
-		<table>
+		<table class="manage">
 		
 		    <tr>
 		        <th width="110px">Date</th>
@@ -31,12 +31,12 @@
 		    </tr>
 		    
 		    {% for retour in paginator %}
-		        <tr class="item">
+		        <tr class="item item-{{ retour.getId() }}">
 		        	<td>{{ retour.getTimestamp().format('Y-m-d H:i') }}</td>
 		        	<td>{{ retour.getArticle().getMainArticle().getTitle() }}</td>
 		        	<td>{{ retour.getNumber() }}</td>
 		            <td>&euro; {{ (retour.getPrice()/100)|number_format(2) }}</td>
-		        	<td>
+		        	<td class="actions">
 		        	    {% if hasAccess('admin_stock_retour', 'delete') %}
     		        		<a href="#" class="delete" data-id="{{ retour.getId() }}" data-title="{{ retour.getArticle().getMainArticle().getTitle() }}" data-number="{{ retour.getNumber() }}">Delete</a>
     		        	{% endif %}
@@ -85,7 +85,7 @@
 	</div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
@@ -98,12 +98,13 @@
 			var removeRetour = $('#removeRetour');
 			removeRetour.find('.articleTitle').html($(this).data('title'));
 			removeRetour.find('.retourNumber').html($(this).data('number'));
+			var id = $this.data('id');
 			removeRetour.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.retour_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
+						$('.item-' + id).remove();
     					removeRetour.modal('hide');
     				} else {
     				    errorRemove();

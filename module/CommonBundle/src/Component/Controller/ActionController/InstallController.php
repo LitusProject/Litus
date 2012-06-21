@@ -36,8 +36,8 @@ abstract class InstallController extends AdminController
 	 */
 	public function indexAction()
 	{
-		$this->_initConfig();
-		$this->_initAcl();
+		$this->initConfig();
+		$this->initAcl();
 		
 		return array(
 			'installerReady' => true
@@ -49,21 +49,21 @@ abstract class InstallController extends AdminController
 	 *
 	 * @return void
 	 */
-	abstract protected function _initConfig();
+	abstract protected function initConfig();
 	
 	/**
 	 * Initializes the ACL tree for the bundle.
 	 *
 	 * @return void
 	 */
-	abstract protected function _initAcl();
+	abstract protected function initAcl();
 	
 	/**
 	 * Install the config values
 	 *
 	 * @param array $configs
 	 */
-	protected function _installConfig($configs)
+	protected function installConfig($configs)
 	{
 		foreach($configs as $item) {
 			try {
