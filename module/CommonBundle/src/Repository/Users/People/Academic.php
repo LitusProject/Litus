@@ -27,6 +27,35 @@ class Academic extends \CommonBundle\Repository\Users\Person
     	return $resultSet;
     }
     
+    public function findAllByName($name)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$resultSet = $query->select('p')
+    		->from('CommonBundle\Entity\Users\People\Academic', 'p')
+    		->where(
+    			$query->expr()->orX(
+    				$query->expr()->like(
+    					$query->expr()->concat(
+    						$query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+    						$query->expr()->lower('p.lastName')
+    					),
+    					':name'
+    				),
+    				$query->expr()->like(
+    					$query->expr()->concat(
+    						$query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+    						$query->expr()->lower('p.firstName')
+    					),
+    					':name'
+    				)
+    			))
+    		->setParameter('name', '%' . strtolower($name) . '%')
+    		->getQuery()
+    		->getResult();
+    	
+    	return $resultSet;
+    }
+    
 	public function findAllByUniversityIdentification($universityIdentification)
 	{
 		$query = $this->_em->createQueryBuilder();
