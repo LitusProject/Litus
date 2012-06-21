@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CudiBundle\Entity\Sales\Article,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
-	Zend\Form\Element\TextArea,
+	Zend\Form\Element\Textarea,
 	Zend\Validator\Int as IntValidator,
 	Zend\Validator\GreaterThan as GreaterThanValidator;
 
@@ -43,7 +43,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         	->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
-        $field = new TextArea('comment');
+        $field = new Textarea('comment');
         $field->setLabel('Comment')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));

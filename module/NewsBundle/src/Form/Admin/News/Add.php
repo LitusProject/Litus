@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
-    Zend\Form\Element\TextArea;
+    Zend\Form\Element\Textarea;
 
 /**
  * Add a news.
@@ -68,7 +68,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 		        ->setDecorators(array(new FieldDecorator()));
 		    $pane->addElement($title);
 		    
-		    $content = new TextArea('content_' . $language->getAbbrev());
+		    $content = new Textarea('content_' . $language->getAbbrev());
 		    $content->setLabel('Content')
 		        ->setRequired()
 		        ->setAttrib('rows', 20)
