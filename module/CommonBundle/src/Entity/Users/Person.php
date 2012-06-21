@@ -18,6 +18,7 @@ namespace CommonBundle\Entity\Users;
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Acl\Role,
  	CommonBundle\Entity\General\Address,
+ 	CommonBundle\Entity\General\Language,
  	CommonBundle\Entity\Users\Code,
  	CommonBundle\Entity\Users\Credential,
 	Doctrine\Common\Collections\ArrayCollection,
@@ -153,6 +154,14 @@ abstract class Person
      * @Column(name="failed_logins", type="smallint")
      */
     private $failedLogins = 0;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Language The last used language of this person
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @JoinColumn(name="language", referencedColumnName="id")
+     */
+    private $language;
 
     /**
      * @param string $username The user's username
@@ -515,6 +524,25 @@ abstract class Person
     {
         $this->failedLogins = $failedLogins;
         return $this;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     *
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function setLanguage(Language $language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\Language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
     
     /**

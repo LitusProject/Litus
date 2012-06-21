@@ -14,5 +14,30 @@
  */
 
 return array(
+    'Vlaamse Technische Kring Leuven' => 'Vlaamse Technische Kring Leuven',
+    'VTK Leuven vzw' => 'VTK Leuven vzw',
+    'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
+    
+    'Recreation' => 'Recreation',
+    'Studies' => 'Studies',
+    'Company relations' => 'Company relations',
+    'Services' => 'Services',
+    'Media' => 'Media',
+    'Wiki\'s' => 'Wiki\'s',
+    'About VTK' => 'About VTK',
+    'Login' => 'Login',
+    'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
+    
+    'Language' => 'Language',
+    'Dutch' => 'Nederlands',
+    'English' => 'English',
+    
+    'Links' => 'Links',
+    'Partners' => 'Partners',
+    
+    'Calendar' => 'Calendar',
+    'Twitter' => 'Twitter',
+    'News' => 'News',
     'Warning' => 'Warning',
+    'No news items were posted yet.' => 'No news items were posted yet.',
 );

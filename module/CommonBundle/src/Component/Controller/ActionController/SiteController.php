@@ -34,10 +34,15 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     public function execute(MvcEvent $e)
     {
 		$this->getLocator()->get('view')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
+		$this->_initLocalisation();
 		
 		$result = parent::execute($e);
 		
 		$result['language'] = $this->_getLanguage();
+		
+		$result['languages'] = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Language')
+		    ->findAll();
 		
 		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
 		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
@@ -82,5 +87,24 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
        }
                
        return $language;
+    }
+    
+    
+    /**
+     * Initializes the localisation
+     */
+    private function _initLocalisation()
+    {
+        $language = $this->_getLanguage();
+
+        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+
+        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
+        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        
+        if ($this->getAuthentication()->isAuthenticated()) {
+        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
+        	$this->getEntityManager()->flush();
+        }
     }
 }
