@@ -59,7 +59,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist"})
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist", "delete"})
      */
     private $universityStatuses;
 
