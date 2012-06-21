@@ -12,15 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class Config extends EntityRepository
 {
-    public function getConfigValue($key)
+    public function findAll()
     {
-        $config = $this->find($key);
-
-        if($config === null)
-            throw new \RuntimeException('Configuration entry ' . $key . ' not found');
-        return $config->getValue();
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+        	->from('CommonBundle\Entity\General\Config', 'c')
+        	->orderBy('c.key', 'ASC')
+        	->getQuery()
+        	->getResult();
+        
+        return $resultSet;
     }
-
+    
     public function findAllByPrefix($prefix)
     {
         $configs = $this->_em
@@ -38,5 +41,14 @@ class Config extends EntityRepository
         }
 
         return $result;
+    }
+
+    public function getConfigValue($key)
+    {
+        $config = $this->find($key);
+
+        if($config === null)
+            throw new \RuntimeException('Configuration entry ' . $key . ' not found');
+        return $config->getValue();
     }
 }

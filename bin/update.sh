@@ -8,7 +8,7 @@ cd "${scriptDirectory}/../"
 
 function killAndRun() {
 	if ps aux | grep -v grep | grep "$1" > /dev/null]; then
-		kill $(ps aux | grep -v grep | grep $1 | | cut -c10-15)
+		kill $(ps aux | grep -v grep | grep $1 | cut -c10-15)
 	fi
 	
 	echo "Running: $1"
@@ -31,7 +31,7 @@ touch module/CudiBundle/src/Resources/assets/sale/less/base.less
 touch module/CudiBundle/src/Resources/assets/supplier/less/base.less
 
 # Starting the WebSockets
-if [ "$EUID" != 0 ]; then
+if [ "$EUID" == 0 ]; then
 	killAndRun 'php bin/CudiBundle/queue.php --run'
 	killAndRun 'php bin/SyllabusBundle/update.php --run'
 fi
