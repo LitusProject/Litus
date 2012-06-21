@@ -40,4 +40,9 @@ return array(
     'News' => 'Nieuws',
     'Warning' => 'Opmerking',
     'No news items were posted yet.' => 'Er zijn nog geen nieuws items geplaatst.',
+    
+    'Username' => 'Gebruikersnaam',
+    'Password' => 'Wachtwoord',
+    'Remember Me' => 'Onthoud Mij',
+    'Login' => 'Aanmelden',
 );

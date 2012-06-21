@@ -49,7 +49,7 @@
                 <td>{{ mapping.getFile().getDescription() }}</td>
 				<td class="actions">
 				    {% if hasAccess('prof_file', 'download') %}
-						<a href="#" class="btn btn-info downloadFile" data-file="{{ url('prof_file', {"action": "download", "id": mapping.getId()}) }}">{{ translator().translate('Download') }}</a>
+						<a href="#" class="btn btn-info downloadFile" data-file="{{ url('prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translator().translate('Download') }}</a>
 					{% endif %}
 					{% if hasAccess('prof_file', 'delete') %}
 	                    <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translator().translate('Delete') }}</a>
@@ -130,7 +130,7 @@
 			});
 			
 			$('#uploadFile').formUploadProgress({
-			    url: '{{ url('prof_file', {"action": "progress"}) }}',
+			    url: '{{ url('prof_file', {"action": "progress", "language": language.getAbbrev()}) }}',
 			    name: '{{ uploadProgressId }}',
 			    uploadProgressName: '{{ uploadProgressName }}',
 			    interval: 1000,
@@ -160,7 +160,7 @@
 				        
 				        {% if hasAccess('prof_file', 'download') %}
 				            actions.append(downloadFile = $('<a>', {class: 'btn btn-info downloadFile'}).html('{{ translator().translate('Download') }}'), ' ');
-				            downloadFile.downloadFile('{{ url('prof_file', {"action": "download"}) }}/' + data.info.id);
+				            downloadFile.downloadFile('{{ url('prof_file', {"action": "download", "language": language.getAbbrev()}) }}/' + data.info.id);
 				        {% endif %}
 				        {% if hasAccess('prof_file', 'delete') %}
 				            actions.append(deleteFile = $('<a>', {class: 'btn btn-danger delete'}).html('{{ translator().translate('Delete') }}'));
@@ -195,7 +195,7 @@
 			removeFile.find('.fileName').html($(this).data('name'));
 			removeFile.find('.fileDescription').html($(this).data('description'));
 			removeFile.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('prof_file', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function  (data) {
 				    if (data && 'success' == data.status) {
 		                $('.flashmessage').removeClass('in');
 						$('#file_removed_success').addClass('in');
