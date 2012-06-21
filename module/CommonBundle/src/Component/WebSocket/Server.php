@@ -161,25 +161,17 @@ class Server
 	{
 		$f = new Frame($data);
 		
-		/* unfragmented message */
 		if ($f->getIsFin() && $f->getOpcode() != 0) {
-			/* unfragmented messages may represent a control frame */
 			if ($f->getIsControl()) {
 				$this->_handleControlFrame($user, $f);
 			} else {
 				$this->handleDataFrame($user, $f);
 			}
-		}
-		/* start fragmented message */
-		else if (!$f->getIsFin() && $f->getOpcode() != 0) {
+		} else if (!$f->getIsFin() && $f->getOpcode() != 0) {
 			$user->createBuffer($f);
-		}
-		/* continue fragmented message */
-		else if (!$f->getIsFin() && $f->getOpcode() == 0) {
+		} else if (!$f->getIsFin() && $f->getOpcode() == 0) {
 			$user->appendBuffer($f);
-		}
-		/* finalize fragmented message */
-		else if ($f->getIsFin() && $f->getOpcode() == 0) {
+		} else if ($f->getIsFin() && $f->getOpcode() == 0) {
 			$user->appendBuffer($f);
 			
 			$this->handleDataFrame($user, $user->getBuffer());
@@ -199,11 +191,8 @@ class Server
 		$len = strlen($frame->getData());
 		
 		if ($frame->getOpcode() == self::OP_CLOSE) {
-			/* If there is a body, the first two bytes of the body MUST be a
-			 * 2-byte unsigned integer */
-			if ($len !== 0 && $len === 1) {
+			if ($len !== 0 && $len === 1)
 				return;
-			}
 			
 			$statusCode = false;
 			$reason = false;
@@ -213,9 +202,7 @@ class Server
 				$statusCode = $unpacked[1];
 				$reason = substr($frame->getData(), 3);
 			}
-						
-			/* Send close frame.
-			* 0x88: 10001000 fin, opcode close */
+			
 			$user->write(chr(0x88) . chr(0));
 			
 			$this->_removeUserSocket($user->getSocket());
@@ -248,15 +235,11 @@ class Server
 	{
 		$len = strlen($text);
 		
-		/* extended 64bit payload not implemented yet */
-		if ($len > 0xffff) {
+		if ($len > 0xffff)
 			return;
-		}
 		
-		/* 0x81 = first and last bit set (fin, opcode=text) */
 		$header = chr(0x81);
 		
-		/* extended 32bit payload */
 		if ($len >= 125) {
 			$header .= chr(126) . pack('n', $len);
 		} else {
@@ -275,15 +258,11 @@ class Server
 	{
 		$len = strlen($text);
 		
-		/* extended 64bit payload not implemented yet */
-		if ($len > 0xffff) {
+		if ($len > 0xffff)
 			return;
-		}
 		
-		/* 0x81 = first and last bit set (fin, opcode=text) */
 		$header = chr(0x81);
 		
-		/* extended 32bit payload */
 		if ($len >= 125) {
 			$header .= chr(126) . pack('n', $len);
 		} else {

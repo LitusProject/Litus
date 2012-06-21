@@ -48,24 +48,6 @@
         				</li>
         			</ul>
         		</div>
-        		<ul class="nav pull-right auth-nav visible-desktop">
-        		    <li class="dropdown" id="loginDropdown">
-        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translator().translate('Login') }} <span class="caret"></span>
-        		        </a>
-        		        <ul class="dropdown-menu">
-        		        	<li style="text-align: center;">
-        		        		<button class="btn btn-info" href="">{{ translator().translate('KU Leuven&mdash;Central Login') }}</button>
-        		        	</li>
-        		        	<li class="divider"></li>
-        		            <li>
-        		                {% autoescape false %}
-        		                	{{ loginForm }}
-        		                {% endautoescape %}
-        		            </li>
-        		        </ul>
-        			</li>
-        		</ul>
         		<ul class="nav pull-right lang-nav visible-desktop">
         		    <li class="dropdown" id="langDropdown">
         			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -73,10 +55,28 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-            		            <li>
-            		                <a href="#">{{ translator().translate(language.getName()) }}</a>
-            		            </li>
+        			            <li>
+        			                <a href="#">{{ translator().translate(language.getName()) }}</a>
+        			            </li>
         		            {% endfor %}
+        		        </ul>
+        			</li>
+        		</ul>
+        		<ul class="nav pull-right auth-nav visible-desktop">
+        		    <li class="dropdown" id="loginDropdown">
+        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        			        {{ translator().translate('Login') }} <span class="caret"></span>
+        		        </a>
+        		        <ul class="dropdown-menu">
+        		        	<li style="text-align: center;">
+        		        		<button class="btn btn-info" href="">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</button>
+        		        	</li>
+        		        	<li class="divider"></li>
+        		            <li>
+        		                {% autoescape false %}
+        		                	{{ loginForm }}
+        		                {% endautoescape %}
+        		            </li>
         		        </ul>
         			</li>
         		</ul>
