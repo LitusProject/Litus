@@ -15,7 +15,7 @@
  
 namespace CommonBundle\Entity\Users\Statuses;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
 	CommonBundle\Entity\Users\People\Academic;
 
 /**
@@ -64,18 +64,19 @@ class University
     private $status;
 
     /**
-     * @var string The academic year this status is/was valid in; the format is yyzz (i.e. 0910, 1112)
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the status
      *
-     * @Column(type="string", length=4)
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
-    private $year;
+    private $academicYear;
 
     /**
      * @param \CommonBundle\Entity\Users\People\Academic $person The person that should be given the status
      * @param string $status The status that should be given to the person
      * @throws \InvalidArgumentException
      */
-    public function __construct(Academic $person, $status)
+    public function __construct(Academic $person, $status, AcademicYear $academicYear)
     {
         if (!self::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
@@ -83,7 +84,7 @@ class University
         $this->person = $person;
         
         $this->setStatus($status);
-        $this->year = AcademicYear::getShortAcademicYear();
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -150,6 +151,6 @@ class University
      */
     public function getYear()
     {
-        return $this->year;
+        return $this->academicYear->getCode(true);
     }
 }

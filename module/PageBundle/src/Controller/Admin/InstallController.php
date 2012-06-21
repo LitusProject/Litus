@@ -1,5 +1,18 @@
 <?php
- 
+/**
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+   
 namespace PageBundle\Controller\Admin;
 
 /**
@@ -11,15 +24,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
 	protected function _initConfig()
 	{
-		$this->_installConfig(
-	        array(
-				/*array(
-        			'key'         => 'search_max_results',
-        			'value'       => '30',
-        			'description' => 'The maximum number of search results shown',
-        		),*/
-			)
-		);
+		$this->_installLanguages();
 	}
 	
 	protected function _initAcl()
@@ -59,5 +64,26 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     	        )
     	    )
     	);
+	}
+	
+	private function _installLanguages()
+	{
+		$languages = array(
+			'en' => 'English',
+			'nl' => 'Dutch'
+		);
+		
+		foreach($languages as $abbrev => $name) {
+			$language = $this->getEntityManager()
+				->getRepository('CommonBundle\Entity\General\Language')
+				->findOneByAbbrev($abbrev);
+				
+			if (null == $language) {
+				$language = new Language($abbrev, $name);
+				$this->getEntityManager()->persist($language);
+			}
+		}
+		
+		$this->getEntityManager()->flush();
 	}
 }

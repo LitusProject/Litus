@@ -130,9 +130,9 @@ abstract class Person
     private $canLogin;
     
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Union", mappedBy="person")
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
      */
-    private $unionStatuses;
+    private $organisationStatuses;
     
     /**
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
@@ -184,7 +184,7 @@ abstract class Person
         $this->canLogin = true;
         
         $this->roles = new ArrayCollection($roles);        
-       	$this->unionStatuses = new ArrayCollection();
+       	$this->organisationStatuses = new ArrayCollection();
     }
 
     /**

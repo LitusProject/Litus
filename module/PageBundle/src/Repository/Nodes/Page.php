@@ -17,7 +17,7 @@ class Page extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
         	->from('PageBundle\Entity\Nodes\Page', 'p')
-        	->orderBy('p.updateTime', 'DESC')
+        	->where('p.endTime is null')
         	->getQuery()
         	->getResult();
         

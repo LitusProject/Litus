@@ -84,10 +84,16 @@ class AcademicYear
     }
     
     /**
+     * Returns a code representation for the academic year
+     *
+     * @param boolean $short Whether or not we want a short code
      * @return string
      */
-    public function getCode()
+    public function getCode($short = false)
     {
-        return $this->startDate->format('Y') . '-' . $this->endDate->format('Y');
+        if (true === $short)
+        	return $this->startDate->format('y') . $this->endDate->format('y'); 
+        	
+		return $this->startDate->format('Y') . '-' . $this->endDate->format('Y'); 
     }
 }
