@@ -17,7 +17,7 @@
 			
 			$('#subjectSearch').typeaheadRemote(
 			    {
-			        source: '{{ url("prof_subject_typeahead")}}',
+			        source: '{{ url("prof_subject_typeahead", {"language": language.getAbbrev()})}}',
 			    }
 			).change(function (e) {
 			    if ($(this).data('value')) {

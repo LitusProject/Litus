@@ -22,7 +22,7 @@
 		$(document).ready(function () {
 		    $('#profSearch').typeaheadRemote(
 			    {
-			        source: '{{ url("prof_typeahead")}}',
+			        source: '{{ url("prof_typeahead", {"language": language.getAbbrev()})}}',
 			    }
 			).change(function (e) {
 			    if ($(this).data('value')) {

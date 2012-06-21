@@ -20,7 +20,7 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Tabs,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\TextArea,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Name as PageNameValidator,
     PageBundle\Entity\Nodes\Page;
@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 		        ->addValidator(new PageNameValidator($entityManager));
 		    $pane->addElement($title);
 		    
-		    $content = new TextArea('content_' . $language->getAbbrev());
+		    $content = new Textarea('content_' . $language->getAbbrev());
 		    $content->setLabel('Content')
 		        ->setRequired()
 		        ->setAttrib('rows', 20);

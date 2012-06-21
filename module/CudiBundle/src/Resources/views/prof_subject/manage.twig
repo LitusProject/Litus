@@ -24,7 +24,7 @@
 		        <td>{{ subject.getSubject().getNbEnrollment(academicYear) }}</td>
 		        <td class="actions">
 		            {% if hasAccess('prof_subject', 'subject') %}
-		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId()}) }}" class="btn btn-primary">{{ translator().translate('View') }}</a>
+		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translator().translate('View') }}</a>
 		            {% endif %}
 		        </td>
 		    </tr>

@@ -58,7 +58,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 		            
         $this->redirect()->toRoute(
-        	'prof_index'
+        	'prof_index',
+        	array(
+        	    'language' => $this->getLanguage()->getAbbrev(),
+        	)
         );
         
         return;
@@ -77,7 +80,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'prof_index'
+        	'prof_index',
+        	array(
+        	    'language' => $this->getLanguage()->getAbbrev(),
+        	)
         );
 
         return;

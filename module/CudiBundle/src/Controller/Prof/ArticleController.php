@@ -136,7 +136,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                 	'prof_article',
                 	array(
-                		'action' => 'manage'
+                		'action' => 'manage',
+        				'language' => $this->getLanguage()->getAbbrev(),
                 	)
                 );
                 
@@ -254,7 +255,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	    $this->redirect()->toRoute(
         	    	'prof_article',
         	    	array(
-        	    		'action' => 'manage'
+        	    		'action' => 'manage',
+        	    		'language' => $this->getLanguage()->getAbbrev(),
         	    	)
         	    );
         	    
@@ -295,7 +297,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the article!'
     		    )
     		);
@@ -303,7 +305,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -318,7 +321,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No article with the given id was found!'
     		    )
     		);
@@ -326,7 +329,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
