@@ -97,6 +97,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         	    	array(
         	    		'action' => 'subject',
         	    		'id' => $subject->getId(),
+        	    		'language' => $this->getLanguage()->getAbbrev(),
         	    	)
         	    );
         	    
@@ -133,7 +134,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         return array(
         	'result' => $result,
         );
-        }
+    }
     
     private function _getSubject()
     {
@@ -144,7 +145,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the subject!'
     		    )
     		);
@@ -152,7 +153,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -171,7 +173,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No subject with the given id was found!'
     		    )
     		);
@@ -179,7 +181,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		

@@ -529,10 +529,11 @@ return array(
 	    'prof_index' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof[/:action][/page/:page]',
+	    		'route' => '[/:language]/cudi/prof[/:action][/page/:page]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'page'   => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_index',
@@ -543,9 +544,10 @@ return array(
 	    'prof_auth' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/auth[/:action]',
+	    		'route' => '[/:language]/cudi/prof/auth[/:action]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_auth',
@@ -556,10 +558,11 @@ return array(
 	    'prof_subject' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/subject[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/subject[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_subject',
@@ -570,9 +573,10 @@ return array(
 	    'prof_subject_typeahead' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/subject/typeahead[/:string]',
+	    		'route' => '[/:language]/cudi/prof/subject/typeahead[/:string]',
 	    		'constraints' => array(
 	    			'string' => '[%a-zA-Z0-9_-]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_subject',
@@ -583,10 +587,11 @@ return array(
 	    'prof_article' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/article[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/article[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_article',
@@ -597,9 +602,10 @@ return array(
 	    'prof_article_typeahead' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/article/typeahead[/:string]',
+	    		'route' => '[/:language]/cudi/prof/article/typeahead[/:string]',
 	    		'constraints' => array(
 	    			'string' => '[%a-zA-Z0-9_-]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_article',
@@ -610,10 +616,11 @@ return array(
 	    'prof_article_mapping' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/article/mapping[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/article/mapping[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_article_mapping',
@@ -624,10 +631,11 @@ return array(
 	    'prof_file' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/files[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/files[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_file',
@@ -638,10 +646,11 @@ return array(
 	    'prof_comment' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/comments[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/comments[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_comment',
@@ -652,10 +661,11 @@ return array(
 	    'prof_prof' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/prof[/:action[/:id]]',
+	    		'route' => '[/:language]/cudi/prof/prof[/:action[/:id]]',
 	    		'constraints' => array(
 	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 	    			'id' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_prof',
@@ -666,9 +676,10 @@ return array(
 	    'prof_typeahead' => array(
 	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
 	    	'options' => array(
-	    		'route' => '/cudi/prof/prof/typeahead[/:string]',
+	    		'route' => '[/:language]/cudi/prof/prof/typeahead[/:string]',
 	    		'constraints' => array(
 	    			'string' => '[%a-zA-Z0-9_-]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 	    		),
 	    		'defaults' => array(
 	    			'controller' => 'prof_prof',

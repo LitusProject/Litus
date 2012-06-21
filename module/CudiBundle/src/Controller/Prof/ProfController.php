@@ -32,7 +32,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             return;
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return
+        	return;
             
         $form = new AddForm();
         
@@ -67,6 +67,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 	array(
                 		'action' => 'subject',
                 		'id' => $subject->getId(),
+                		'language' => $this->getLanguage()->getAbbrev(),
                 	)
                 );
 	        }
@@ -126,7 +127,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     private function _getSubject($id = null)
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return
+        	return;
         	
         $id = $id == null ? $this->getParam('id') : $id;
 
@@ -134,7 +135,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the subject!'
     		    )
     		);
@@ -142,7 +143,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -162,7 +164,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No subject with the given id was found!'
     		    )
     		);
@@ -170,7 +172,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -186,7 +189,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the mapping!'
     		    )
     		);
@@ -194,7 +197,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -209,7 +213,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No mapping with the given id was found!'
     		    )
     		);
@@ -217,7 +221,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
