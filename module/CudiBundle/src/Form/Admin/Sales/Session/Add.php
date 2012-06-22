@@ -42,6 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		foreach($units as $unit) {
 			$field = new Text('unit_' . $unit->getId());
 	        $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
+    			->setAttrib('autocomplete', 'off')
 	            ->setRequired()
 				->setValue(0)
 				->addValidator(new IntValidator())
@@ -56,6 +57,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 		foreach($devices as $device) {
 			$field = new Text('device_' . $device->getId());
 	        $field->setLabel($device->getName())
+    			->setAttrib('autocomplete', 'off')
 	            ->setRequired()
 				->setValue(0)
 				->addValidator(new PriceValidator())
