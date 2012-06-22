@@ -15,16 +15,16 @@
  
 namespace CommonBundle\Entity\Users\Statuses;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
 	CommonBundle\Entity\Users\Person;
 
 /**
  * Specifying the different types of memberships the organization has.
  * 
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Union")
- * @Table(name="users.union_statuses")
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organisation")
+ * @Table(name="users.organization_statuses")
  */
-class Union
+class Organization
 {
     /**
      * @static
@@ -65,18 +65,19 @@ class Union
     private $status;
 
     /**
-     * @var string The academic year this status was valid in; the format is yyzz (i.e. 0910, 1112)
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the status
      *
-     * @Column(type="string", length=4)
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
-    private $year;
+    private $academicYear;
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
      * @param string $status The actual status value
      * @throws \InvalidArgumentException
      */
-    public function __construct(Person $person, $status)
+    public function __construct(Person $person, $status, AcademicYear $academicYear)
     {
         if(!self::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
@@ -84,7 +85,7 @@ class Union
         $this->person = $person;
         
         $this->setStatus($status);
-        $this->year = AcademicYear::getShortAcademicYear();
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -151,6 +152,6 @@ class Union
      */
     public function getYear()
     {
-        return $this->year;
+        return $this->academicYear->getCode(true);
     }
 }

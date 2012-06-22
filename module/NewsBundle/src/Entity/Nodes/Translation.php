@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="NewsBundle\Repository\Nodes\Translation")
- * @Table(name="nodes.news_translation")
+ * @Table(name="nodes.news_translations")
  */
 class Translation
 {

@@ -46,7 +46,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
-		$this->initLocalisation();
         
         if (
         	$this->hasAccess()->resourceAction(
@@ -71,6 +70,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 );
             }
         }
+        
+       	$this->_initLocalization();
 		
 		$result = parent::execute($e);
 		
@@ -198,9 +199,11 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     
     
     /**
-     * Initializes the localisation
+     * Initializes the localization
+     *
+     * @return void
      */
-    protected function initLocalisation()
+    private function _initLocalization()
     {
         $language = $this->getLanguage();
 
