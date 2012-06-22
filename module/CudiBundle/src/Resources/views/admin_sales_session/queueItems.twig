@@ -24,7 +24,7 @@
                     <td>{{ item.getPayMethod() }}</td>
                     <td>{% if item.getPayDesk() %}{{ item.getPayDesk().getName() }}{% endif %}</td>
     				<td class="actions">
-    					<a href="#" class="view" data-text="{{ item.getComment() }}">Comments</a>
+    					<a href="#" class="view" data-text="{{ item.getComment() }}">Comment</a>
                     </td>
                 </tr>
             {% endfor %}
