@@ -53,9 +53,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
     
     /**
-     * Initializes the localisation
+     * Initializes the localization
+     *
+     * @return void
      */
-    protected function initLocalisation()
+    protected function initLocalization()
     {
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')

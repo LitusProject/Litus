@@ -147,6 +147,14 @@ return array(
 			    			'content' => __DIR__ . '/../translations/prof.nl.php',
 			    			'locale' => 'nl',
 			    		),
+			    		'cudi_supplier_en' => array(
+			    			'content' => __DIR__ . '/../translations/supplier.en.php',
+			    			'locale' => 'en',
+			    		),
+			    		'cudi_supplier_nl' => array(
+			    			'content' => __DIR__ . '/../translations/supplier.nl.php',
+			    			'locale' => 'nl',
+			    		),
 					),
 				),
 			),
@@ -487,10 +495,11 @@ return array(
 		'supplier_index' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/supplier[/:action]',
+				'route' => '[/:language]/cudi/supplier[/:action]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'supplier_index',
@@ -501,10 +510,11 @@ return array(
 		'supplier_auth' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/supplier/auth[/:action]',
+				'route' => '[/:language]/cudi/supplier/auth[/:action]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'supplier_auth',
@@ -515,10 +525,11 @@ return array(
 		'supplier_article' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
-				'route' => '/cudi/supplier/article[/:action]',
+				'route' => '[/:language]/cudi/supplier/article[/:action]',
 				'constraints' => array(
 					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 					'session' => '[0-9]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
 				),
 				'defaults' => array(
 					'controller' => 'supplier_article',
