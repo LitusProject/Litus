@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
+    CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     Doctrine\ORM\EntityRepository,
@@ -421,13 +422,14 @@ class Booking extends EntityRepository
         	    $counter++;
         	    
         		if ($available < $booking->getNumber()) {
-        		    $new = new Booking(
+        		    $new = new BookingEntity(
         		    	$this->getEntityManager(),
         		    	$booking->getPerson(),
         		    	$booking->getArticle(),
         		    	'booked',
         		    	$booking->getNumber() - $available
         		    );
+        		    $this->getEntityManager()->persist($new);
         		    
         		    $booking->setNumber($available);
         		}

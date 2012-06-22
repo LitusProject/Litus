@@ -56,6 +56,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         
         $field = new Text('number');
         $field->setLabel('Number')
+			->setAttrib('autocomplete', 'off')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
 			->addValidator(new GreaterThanValidator(0))

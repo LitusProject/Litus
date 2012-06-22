@@ -51,6 +51,7 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
       	
         $field = new Submit('submit');
         $field->setLabel('Return')
+			->setAttrib('autocomplete', 'off')
         	->setAttrib('id', 'signin');
         $this->addElement($field);
         
