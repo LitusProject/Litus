@@ -20,7 +20,7 @@
                 <tr class="item">
                     <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
                     <td>{{ item.getPerson().getFullName() }}</td>
-                    <td>{{ item.getStatus()|capitalize }}</td>
+                    <td>{{ item.getStatusReadable() }}</td>
                     <td>{{ item.getPayMethod() }}</td>
                     <td>{% if item.getPayDesk() %}{{ item.getPayDesk().getName() }}{% endif %}</td>
     				<td class="actions">

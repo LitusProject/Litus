@@ -105,7 +105,13 @@ class QueueItem
      * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
-    	'signed_in', 'collecting', 'collected', 'selling', 'hold', 'canceled', 'sold'
+    	'signed_in' => 'Signed In',
+    	'collecting' => 'Collecting',
+    	'collected' => 'Collected',
+    	'selling' => 'Selling',
+    	'hold' => 'Hold',
+    	'canceled' => 'Canceled',
+    	'sold' => 'Sold',
     );
     
     /**
@@ -113,7 +119,7 @@ class QueueItem
      */
     public static $POSSIBLE_PAY_METHODS = array(
     	'cash' => 'Cash',
-    	'bank' => 'Bank',
+    	'bank' => 'Bank Device',
     );
 
 	/**
@@ -137,7 +143,7 @@ class QueueItem
      */
     public static function isValidQueueStatus($status)
     {
-    	return in_array($status, self::$POSSIBLE_STATUSES);
+    	return array_key_exists($status, self::$POSSIBLE_STATUSES);
     }
     
     /**
@@ -205,6 +211,14 @@ class QueueItem
     public function getStatus()
     {
         return $this->status;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getStatusReadable()
+    {
+        return self::$POSSIBLE_STATUSES[$this->status];
     }
     
     /**
