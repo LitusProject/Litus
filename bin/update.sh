@@ -22,6 +22,9 @@ git pull
 bin/MistDoctrine/doctrine orm:schema-tool:update --force
 bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
 
+bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
+chown -R www-data:www-data data/proxies
+
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/src/Resources/assets/admin/less/admin.less
 touch module/CommonBundle/src/Resources/assets/bootstrap/less/bootstrap.less
