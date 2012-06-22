@@ -77,7 +77,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $newUser->addUniversityStatus(
                 	new UniversityStatus(
                 		$newUser,
-                		$formData['university_status']
+                		$formData['university_status'],
+                		$this->getCurrentAcademicYear()
                 	)
                 );
                 

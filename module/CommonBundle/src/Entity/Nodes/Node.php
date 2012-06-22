@@ -9,7 +9,7 @@ use CommonBundle\Entity\Users\Person,
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Nodes\Node")
- * @Table(name="nodes.node")
+ * @Table(name="nodes.nodes")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
  * @DiscriminatorMap({
