@@ -18,14 +18,28 @@
 			<ul class="nav">
 				{% if hasAccess('supplier_index', 'index') %}
 					<li {% if 'index' == getParam('action') and 'supplier_index' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("supplier_index") }}">Home</a>
+					    <a href="{{ url("supplier_index", {"language": language.getAbbrev()}) }}">{{ translator().translate('Home') }}</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('supplier_article', 'manage') %}
 					<li {% if 'supplier_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("supplier_article") }}">Articles</a>
+					    <a href="{{ url("supplier_article", {"language": language.getAbbrev()}) }}">{{ translator().translate('Articles') }}</a>
 					</li>
 				{% endif %}
+			</ul>
+			<ul class="nav pull-right lang-nav visible-desktop">
+			    <li class="dropdown" id="langDropdown">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				        {{ translator().translate('Language') }} <span class="caret"></span>
+			        </a>
+			        <ul class="dropdown-menu">
+			            {% for language in languages %}
+				            <li>
+				                <a href="{{ url("supplier_index", {"language": language.getAbbrev()}) }}">{{ translator().translate(language.getName()) }}</a>
+				            </li>
+			            {% endfor %}
+			        </ul>
+				</li>
 			</ul>
 			<ul class="nav pull-right auth-nav">
 			    {% if authenticated %}
@@ -45,14 +59,14 @@
 			                </li>
 			                <li class="divider"></li>
 			                <li>
-			                    <a href="{{ url("supplier_auth", {"action": "logout"}) }}">Logout</a>
+			                    <a href="{{ url("supplier_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translator().translate('Logout') }}</a>
 			                </li>
 			            </ul>
 			        </li>
 			    {% else %}
     			    <li class="dropdown" id="loginDropdown">
     			        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-    			            Login <span class="caret"></span>
+    			            {{ translator().translate('Login') }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
@@ -71,7 +85,7 @@
 <header>
 	<div class="inner">
 		<div class="container">
-			<h1>Litus Supplier</h1>
+			<h1>{{ translator().translate('Litus Supplier') }}</h1>
 		</div>
 	</div>
 </header>

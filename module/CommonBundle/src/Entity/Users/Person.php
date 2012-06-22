@@ -249,6 +249,8 @@ abstract class Person
      */
     public function validateCredential($credential)
     {
+        if (null == $this->credential)
+            return false;
         return $this->credential->validateCredential($credential);
     }
 

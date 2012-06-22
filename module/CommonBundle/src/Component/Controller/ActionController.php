@@ -71,7 +71,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             }
         }
         
-       	$this->_initLocalization();
+       	$this->initLocalization();
 		
 		$result = parent::execute($e);
 		
@@ -203,7 +203,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      *
      * @return void
      */
-    private function _initLocalization()
+    protected function initLocalization()
     {
         $language = $this->getLanguage();
 
