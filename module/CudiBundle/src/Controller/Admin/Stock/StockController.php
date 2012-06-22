@@ -109,7 +109,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+
 			if (isset($formData['updateStock'])) {
 				if ($stockForm->isValid($formData)) {
 					$delta = new Delta(
@@ -147,7 +147,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 				if ($orderForm->isValid($formData)) {
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Stock\Orders\Order')
-						->addNumberByArticle($article, $formData['number']);
+						->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 					
 					$this->getEntityManager()->flush();
 					

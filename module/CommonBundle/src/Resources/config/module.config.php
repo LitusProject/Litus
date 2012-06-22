@@ -402,19 +402,6 @@ return array(
     	        ),
     	    ),
     	),
-    	'admin_auth' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin/auth[/:action]',
-    	        'constraints' => array(
-    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'admin_auth',
-    	            'action'     => 'login',
-    	        ),
-    	    ),
-    	),
 		'admin_config' => array(
 		    'type'    => 'Zend\Mvc\Router\Http\Segment',
 		    'options' => array(
@@ -436,6 +423,19 @@ return array(
     	        'defaults' => array(
     	            'controller' => 'admin_index',
     	            'action'     => 'index',
+    	        ),
+    	    ),
+    	),
+    	'admin_auth' => array(
+    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+    	    'options' => array(
+    	        'route'    => '/admin/auth[/:action]',
+    	        'constraints' => array(
+    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+    	        ),
+    	        'defaults' => array(
+    	            'controller' => 'admin_auth',
+    	            'action'     => 'login',
     	        ),
     	    ),
     	),
