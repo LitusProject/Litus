@@ -37,6 +37,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
 		
         $field = new Text('number');
         $field->setLabel('Number')
+			->setAttrib('autocomplete', 'off')
         	->setRequired()
 			->addValidator(new IntValidator())
 			->addValidator(new GreaterThanValidator(0))
