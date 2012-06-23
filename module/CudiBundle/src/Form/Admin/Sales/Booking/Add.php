@@ -17,7 +17,6 @@ namespace CudiBundle\Form\Admin\Sales\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	//CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	Doctrine\ORM\EntityManager,
 	Zend\Form\Element\Hidden,
 	Zend\Form\Element\Submit,
@@ -34,13 +33,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
-         
-		/*$field = new Text('person');
-        $field->setLabel('Person')
-        	->setRequired()
-			->addValidator(new UsernameValidator($entityManager))
-        	->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);*/
         
         $field = new Hidden('person_id');
         $field->setRequired()
