@@ -33,6 +33,11 @@ use CommonBundle\Component\Acl\Acl,
  */
 class ActionController extends \Zend\Mvc\Controller\ActionController implements AuthenticationAware, DoctrineAware
 {
+    /**
+     * @var \CommonBundle\Entity\General\Language
+     */
+    private $_language;
+
 	/**
      * Execute the request.
      * 
@@ -176,25 +181,30 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     protected function getLanguage()
     {
-       if ($this->getParam('language')) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev($this->getParam('language'));
-       }
-       
-       if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
-       }
-       
-       if (!isset($language)) {
-           $language = $this->getEntityManager()
-               ->getRepository('CommonBundle\Entity\General\Language')
-               ->findOneByAbbrev('en');
-       }
-               
-       return $language;
+        if (null !== $this->_language)
+            return $this->_language;
+        
+        if ($this->getParam('language')) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getParam('language'));
+        }
+        
+        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
+        }
+        
+        if (!isset($language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+        
+        $this->_language = $language;
+        
+        return $language;
     }
     
     
