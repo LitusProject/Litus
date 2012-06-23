@@ -402,6 +402,19 @@ return array(
     	        ),
     	    ),
     	),
+    	'admin_academic_typeahead' => array(
+    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+    		'options' => array(
+    			'route' => '/admin/academic/typeahead[/:string]',
+    			'constraints' => array(
+    				'string'       => '[%a-zA-Z0-9_-]*',
+    			),
+    			'defaults' => array(
+    				'controller' => 'admin_academic',
+    				'action'     => 'typeahead',
+    			),
+    		),
+    	),
 		'admin_config' => array(
 		    'type'    => 'Zend\Mvc\Router\Http\Segment',
 		    'options' => array(

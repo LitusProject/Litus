@@ -30,6 +30,17 @@
 	                $('#articleId').val('');
 	            }
 	        });
+	        $('#personSearch').typeaheadRemote(
+	            {
+	                source: '{{ url("admin_academic_typeahead")}}',
+	            }
+	        ).change(function (e) {
+	            if ($(this).data('value')) {
+	                $('#personId').val($(this).data('value').id);
+	            } else {
+	                $('#personId').val('');
+	            }
+	        });
 	    });
 	</script>
 {% endblock %}

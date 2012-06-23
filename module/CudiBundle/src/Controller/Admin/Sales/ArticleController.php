@@ -344,6 +344,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	
 	public function typeaheadAction()
 	{
+	    $this->initAjax();
+	    
 	    $academicYear = $this->getAcademicYear();
         
         $articles = $this->getEntityManager()
