@@ -48,7 +48,8 @@ class Academic extends \CommonBundle\Repository\Users\Person
     					),
     					':name'
     				)
-    			))
+    			)
+    		)
     		->setParameter('name', '%' . strtolower($name) . '%')
     		->getQuery()
     		->getResult();
@@ -98,5 +99,38 @@ class Academic extends \CommonBundle\Repository\Users\Person
 	        return $barcode->getPerson();
 	    
 	    return null;
+	}
+	
+	public function findAllByNameTypeahead($name)
+	{
+	    $query = $this->_em->createQueryBuilder();
+	    $resultSet = $query->select('a')
+	    	->from('CommonBundle\Entity\Users\People\Academic', 'a')
+	    	->where(
+	    	    $query->expr()->orX(
+    	    	    $query->expr()->orX(
+    	    	    	$query->expr()->like(
+    	    	    		$query->expr()->concat(
+    	    	    			$query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
+    	    	    			$query->expr()->lower('a.lastName')
+    	    	    		),
+    	    	    		':name'
+    	    	    	),
+    	    	    	$query->expr()->like(
+    	    	    		$query->expr()->concat(
+    	    	    			$query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
+    	    	    			$query->expr()->lower('a.firstName')
+    	    	    		),
+    	    	    		':name'
+    	    	    	)
+    	    	    ),
+    	    		$query->expr()->like('a.universityIdentification', ':name')
+    	    	)
+	    	)
+    		->setParameter('name', '%' . strtolower($name) . '%')
+	    	->getQuery()
+	    	->getResult();
+	    
+	    return $resultSet;
 	}
 }

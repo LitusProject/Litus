@@ -194,6 +194,27 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 		);
     }
     
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+        
+        $users = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findAllByNameTypeahead($this->getParam('string'));
+        
+        $result = array();
+        foreach($users as $user) {
+        	$item = (object) array();
+        	$item->id = $user->getId();
+        	$item->value = $user->getFullName() . ' - ' . $user->getUniversityIdentification();
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+    }
+    
     public function searchAction()
     {
     	$this->initAjax();

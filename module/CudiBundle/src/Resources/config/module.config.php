@@ -263,7 +263,6 @@ return array(
 				),
 			),
 		),
-		
 		'admin_sales_discount' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(
