@@ -160,6 +160,7 @@ return array(
 			'@bootstrap_js_alert',
 			'@common_permanent_modal',
 			'@common_socket',
+			'@common_typeahead_remote',
 		),
 		'sale_queue' => array(
 			'@common_jquery',

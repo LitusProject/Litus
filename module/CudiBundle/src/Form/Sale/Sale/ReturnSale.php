@@ -20,7 +20,9 @@ use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
 	CommonBundle\Component\Form\Bootstrap\Element\Submit,
 	CommonBundle\Component\Form\Bootstrap\Element\Text,
 	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
-	Doctrine\ORM\EntityManager;
+	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Hidden,
+	Zend\Validator\Int as IntValidator;
 	
 /**
  * Return Sale
@@ -32,20 +34,30 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct(EntityManager $entityManager, $opts = null )
     {
         parent::__construct($opts);
-
-        $field = new Text('username');
-        $field->setLabel('Student Number')
-            ->setRequired()
-			->setAttrib('autocomplete', 'off')
-			->setAttrib('placeholder', "Student Number")
-			->addValidator(new UsernameValidator($entityManager));
+        
+        $field = new Hidden('person_id');
+        $field->setRequired()
+            ->addValidator(new IntValidator())
+            ->setAttrib('id', 'personId')
+            ->clearDecorators()
+            ->setDecorators(array('ViewHelper'));
+        $this->addElement($field);
+         
+        $field = new Text('person');
+        $field->setLabel('Person')
+			->setAttrib('placeholder', 'Student')
+        	->setAttrib('style', 'width: 400px;')
+        	->setAttrib('id', 'personSearch')
+        	->setAttrib('autocomplete', 'off')
+        	->setAttrib('data-provide', 'typeahead')
+        	->setRequired();
         $this->addElement($field);
         
         $field = new Text('article');
         $field->setLabel('Article')
             ->setRequired()
         	->setAttrib('autocomplete', 'off')
-			->setAttrib('placeholder', "Article Barcode")
+			->setAttrib('placeholder', 'Article Barcode')
         	->addValidator(new ArticleBarcodeValidator($entityManager));
         $this->addElement($field);
       	
