@@ -240,7 +240,6 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     	->setIsOfficial($formData['official'])
                     	->setIsRectoVerso($formData['rectoverso'])
                     	->setFrontColor($frontPageColor)
-                    	->setFrontPageTextColored($formData['front_text_colored'])
                     	->setIsPerforated($formData['perforated']);
 				}
 				

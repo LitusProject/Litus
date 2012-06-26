@@ -59,6 +59,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@common_download_file',
 		),
 		'admin_sales_discount' => array(
 			'@common_jquery',
