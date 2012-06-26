@@ -24,6 +24,14 @@
 	</div>
 	
 	<div id="sale">
+	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
+	        <a class="close" data-dismiss="alert">&times;</a>
+	    	<div class="title">Error</div>
+	    	<div class="content">
+	    		<p>The scanned barcode was not valid and was ignored.</p>
+	    	</div>
+	    </div>
+	    
 		<div class="row wrapper">
 			<div class="span7 customer">
 				<div class="row title">Current Customer:</div>
@@ -98,7 +106,7 @@
 			<div class="modal-body">
 			    {% for payDesk in payDesks %}
     				<div class="span2">
-    				    <h3>{{ payDesk.getName() }}</h3>
+    				    <h3>Paydesk {{ payDesk.getName() }}</h3>
     				    <br>
     				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
     				</div>
