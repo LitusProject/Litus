@@ -133,6 +133,7 @@
 	            $(this).find('.addArticle').click();
 	            return false;
 	        }
+	        $this.find('#barcodeFailure').addClass('in');
 	    });
 	}
 	
