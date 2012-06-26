@@ -278,7 +278,16 @@ class Study
                     $info['email'],
                     $info['phone'],
                     null,
-                    $identification);
+                    $identification
+                );
+                
+                $prof->addUniversityStatus(
+                	new UniversityStatus(
+                		$prof,
+                		'professor',
+                		$this->_academicYear
+                	)
+                );
                 
                 $prof->activate($this->getEntityManager(), $this->_mailTransport);
                 
