@@ -69,13 +69,6 @@ class Internal extends \CudiBundle\Entity\Article
     private $frontPageColor;
     
     /**
-     * @var boolean Flag whether the front page is colored or not.
-     * 
-     * @Column(name="front_page_text_colored", type="boolean")
-     */
-    private $frontPageTextColored;
-    
-    /**
      * @var boolean Whether the aricle is perforated or not.
      *
      * @Column(type="boolean")
@@ -99,11 +92,10 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $official Whether the article is an official one or not
      * @param boolean $rectoverso Whether the article is recto-verso or not
      * @param \CudiBundle\Entity\Articles\Options\Color $frontPageColor The front page color of the article
-     * @param boolean $frontPageTextColored Whether the front page text of the article is colored or not
      * @param boolean $isPerforated Whether the article is perforated or not
      */
     public function __construct(
-    	$title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $frontPageTextColored, $isPerforated
+    	$title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
     ) {
     	parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
     	
@@ -113,7 +105,6 @@ class Internal extends \CudiBundle\Entity\Article
     		->setIsOfficial($official)
     		->setIsRectoVerso($rectoverso)
     		->setFrontColor($frontPageColor)
-    		->setFrontPageTextColored($frontPageTextColored)
     		->setIsPerforated($isPerforated);
     }
     
@@ -232,25 +223,6 @@ class Internal extends \CudiBundle\Entity\Article
     }
     
     /**
-     * @return boolean
-     */
-    public function getFrontPageTextColored()
-    {
-    	return $this->frontPageTextColored;
-    }
-    
-    /**
-     * @param boolean $frontPageTextColored
-     *
-     * @return \CudiBundle\Entity\Articles\Internal
-     */
-    public function setFrontPageTextColored($frontPageTextColored)
-    {
-    	$this->frontPageTextColored = $frontPageTextColored;
-    	return $this;
-    }
-    
-    /**
      * @return integer
      */
     public function getNbPages()
@@ -297,7 +269,6 @@ class Internal extends \CudiBundle\Entity\Article
             $this->isOfficial(),
             $this->isRectoVerso(),
             $this->getFrontColor(),
-            $this->getFrontPageTextColored(),
             $this->isPerforated()
         );
     }

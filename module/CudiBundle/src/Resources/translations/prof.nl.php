@@ -128,7 +128,7 @@ return array(
     'Exercises' => 'Oefeningen',
     'Slides' => 'Presentaties',
     'Textbook' => 'Handboek',
-    'Binded' => 'Ingebonden',
+    'Stapled' => 'Geniet',
     'None' => 'Los',
     'Glued' => 'Gelijmd',
     

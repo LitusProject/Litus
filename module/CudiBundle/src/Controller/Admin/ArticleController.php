@@ -85,7 +85,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['official'],
                         $formData['rectoverso'],
                         $frontColor,
-                        $formData['front_text_colored'],
                         $formData['perforated']
 	                );
 				} else {
@@ -182,7 +181,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     	->setIsOfficial($formData['official'])
                     	->setIsRectoVerso($formData['rectoverso'])
                     	->setFrontColor($frontPageColor)
-                    	->setFrontPageTextColored($formData['front_text_colored'])
                     	->setIsPerforated($formData['perforated']);
 				}
         	    
@@ -210,11 +208,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
+            
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->findByArticle($article);
         
         return array(
             'form' => $form,
         	'article' => $article,
         	'saleArticle' => $saleArticle,
+        	'comments' => $comments,
         );
 	}
 

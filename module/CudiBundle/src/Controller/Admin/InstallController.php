@@ -360,7 +360,7 @@ VTK Cudi
 	private function _installBinding()
 	{
 		$bindings = array(
-		    'binded' => 'Binded',
+		    'stapled' => 'Stapled',
 		    'none' => 'None',
             'glued' => 'Glued',
 		);
