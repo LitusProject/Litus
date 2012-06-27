@@ -239,7 +239,7 @@ VTK Cudi
 	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
 	                ),
 	                'admin_sales_booking' => array(
-	                    'add', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'search', 'unassign'
+	                    'add', 'article', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
 	                ),
 	                'admin_sales_discount' => array(
 	                    'delete', 'manage'

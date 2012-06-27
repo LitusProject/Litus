@@ -20,6 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
+    CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateInterval,
 	Zend\Mail\Message;
 
@@ -397,6 +399,59 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    	'result' => $result,
 	    );
 	}
+	
+	public function personAction()
+	{
+	    if (!($activePeriod = $this->_getPeriod()))
+	        return;
+	        
+	    $return = array();
+	     
+	    $form = new PersonForm();
+        $return['form'] = $form;
+
+	    if ($person = $this->_getPerson()) {
+	        $paginator = $this->paginator()->createFromArray(
+	            $this->getEntityManager()
+	                ->getRepository('CudiBundle\Entity\Sales\Booking')
+	                ->findAllByPersonAndPeriod($person, $activePeriod),
+	            $this->getParam('page')
+	        );
+	        
+	        $return['paginator'] = $paginator;
+	        $return['paginationControl'] = $this->paginator()->createControl();
+	        $return['person'] = $person;
+	    }
+	    
+	    return $return;
+	}
+	
+	public function articleAction()
+	{
+	    if (!($activePeriod = $this->_getPeriod()))
+	        return;
+	        
+	    $return = array();
+	     
+	    $form = new ArticleForm();
+        $return['form'] = $form;
+	    $return['currentAcademicYear'] = $this->getAcademicYear();;
+
+	    if ($article = $this->_getArticle()) {
+	        $paginator = $this->paginator()->createFromArray(
+	            $this->getEntityManager()
+	                ->getRepository('CudiBundle\Entity\Sales\Booking')
+	                ->findAllByArticleAndPeriod($article, $activePeriod),
+	            $this->getParam('page')
+	        );
+	        
+	        $return['paginator'] = $paginator;
+	        $return['paginationControl'] = $this->paginator()->createControl();
+	        $return['article'] = $article;
+	    }
+	    
+	    return $return;
+	}
     
     private function _getPeriod()
     {
@@ -468,6 +523,70 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     			'admin_sales_booking',
     			array(
     				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
+    }
+    
+    private function _getPerson()
+    {
+    	if (null === $this->getParam('id')) {
+    		return;
+    	}
+    
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $person) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No person with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sales_booking',
+    			array(
+    				'action' => 'person'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $person;
+    }
+    
+    private function _getArticle()
+    {
+    	if (null === $this->getParam('id')) {
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sales_booking',
+    			array(
+    				'action' => 'article'
     			)
     		);
     		

@@ -6,6 +6,12 @@
             {% if hasAccess('admin_sales_booking', 'assignAll') %}
                 <li><a href="#" class="assignAll">Assign All</a></li>
             {% endif %}
+            {% if hasAccess('admin_sales_booking', 'person') %}
+                <li><a {% if 'person' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "person"}) }}">By Person</a></li>
+            {% endif %}
+            {% if hasAccess('admin_sales_booking', 'article') %}
+                <li><a {% if 'article' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "article"}) }}">By Article</a></li>
+            {% endif %}
             {% if hasAccess('admin_sales_booking', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_sales_booking', {"action": "add"}) }}">Add</a></li>
             {% endif %}
