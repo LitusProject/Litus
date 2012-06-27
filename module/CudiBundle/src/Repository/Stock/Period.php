@@ -111,7 +111,7 @@ class Period extends EntityRepository
         return $articles;
     }
     
-    public function findAllArticlesByPeriod(PeriodEntity $period)
+    public function findAllArticlesByPeriod(PeriodEntity $period, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -122,10 +122,17 @@ class Period extends EntityRepository
             ->getQuery()
             ->getResult();
             
+        if ($notDelivered) {
+            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                    unset($resultSet[$i]);
+            }
+        }
+            
         return $resultSet;
     }
     
-    public function findAllArticlesByPeriodAndTitle(PeriodEntity $period, $title)
+    public function findAllArticlesByPeriodAndTitle(PeriodEntity $period, $title, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -139,11 +146,18 @@ class Period extends EntityRepository
     		->setParameter('title', '%'.strtolower($title).'%')
             ->getQuery()
             ->getResult();
+        
+        if ($notDelivered) {
+            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                    unset($resultSet[$i]);
+            }
+        }
             
         return $resultSet;
     }
     
-    public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode)
+    public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode, $notDelivered = false)
     {
         if (!is_numeric($barcode))
             return array();
@@ -160,11 +174,18 @@ class Period extends EntityRepository
     		->setParameter('barcode', $barcode . '%')
             ->getQuery()
             ->getResult();
+        
+        if ($notDelivered) {
+            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                    unset($resultSet[$i]);
+            }
+        }
             
         return $resultSet;
     }
     
-    public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier)
+    public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -178,6 +199,13 @@ class Period extends EntityRepository
     		->setParameter('supplier', '%'.strtolower($supplier).'%')
             ->getQuery()
             ->getResult();
+        
+        if ($notDelivered) {
+            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+                if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
+                    unset($resultSet[$i]);
+            }
+        }
             
         return $resultSet;
     }
