@@ -92,19 +92,21 @@ abstract class InstallController extends AdminController
 	        	->findOneByName($roleName);
 	        
 	        $parents = array();
-	        foreach($config['parents'] as $name) {
-	            $parents[] = $this->getEntityManager()
-	            	->getRepository('CommonBundle\Entity\Acl\Role')
-	            	->findOneByName($name);
+	        if (isset($config['parents'])) {
+	            foreach($config['parents'] as $name) {
+	                $parents[] = $this->getEntityManager()
+	                	->getRepository('CommonBundle\Entity\Acl\Role')
+	                	->findOneByName($name);
+	            }
 	        }
-
+	
 	        if (null === $role) {
 	        	$role = new Role(
 	        		$roleName, $config['system'], $parents
 	        	);
 	        	
 	        	$this->getEntityManager()->persist($role);
-	        } elseif(sizeof($config['parents']) > 0) {
+	        } elseif(isset($config['parents']) && sizeof($config['parents']) > 0) {
 	            $role->setParents($parents);
 	        }
 	        
@@ -118,9 +120,9 @@ abstract class InstallController extends AdminController
 	            	    $role->allow($action);
 	            }
 	        }
+	
+	        $this->getEntityManager()->flush();
 	    }
-	    
-	    $this->getEntityManager()->flush();
 	}
 	
 	/**
