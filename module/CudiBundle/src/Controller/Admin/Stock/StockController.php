@@ -48,6 +48,25 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         );
     }
     
+    public function notDeliveredAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return;
+            
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findAllArticlesByPeriod($period, true),
+            $this->getParam('page')
+        );
+        
+        return array(
+            'period' => $period,
+            'paginator' => $paginator,
+            'paginationControl' => $this->paginator()->createControl(true)
+        );
+    }
+    
     public function searchAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
@@ -68,6 +87,53 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         		$articles = $this->getEntityManager()
         			->getRepository('CudiBundle\Entity\Stock\Period')
         			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
+        		break;
+        }
+        
+        $numResults = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('search_max_results');
+        
+        array_splice($articles, $numResults);
+        
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->title = $article->getMainArticle()->getTitle();
+        	$item->supplier = $article->getSupplier()->getName();
+        	$item->nbInStock = $article->getStockValue();
+        	$item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+        	$item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+        	$item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+    }
+    
+    public function searchNotDeliveredAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return;
+            
+        switch($this->getParam('field')) {
+        	case 'title':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'), true);
+        		break;
+        	case 'barcode':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'), true);
+        		break;
+        	case 'supplier':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'), true);
         		break;
         }
         
