@@ -251,10 +251,10 @@ VTK Cudi
 	                    'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems'
 	                ),
 	                'admin_stock' => array(
-	                    'delta', 'edit', 'manage', 'search'
+	                    'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
 	                ),
 	                'admin_stock_delivery' => array(
-	                    'add', 'delete', 'manage', 'supplier'
+	                    'add', 'delete', 'manage', 'supplier', 'typeahead'
 	                ),
 	                'admin_stock_order' => array(
 	                    'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
