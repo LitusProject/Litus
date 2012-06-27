@@ -35,6 +35,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
 
+        $this->setAttrib('id', 'deliveryForm');
+        
 		$field = new Hidden('article_id');
 		$field->setRequired()
 		    ->addValidator(new IntValidator())
@@ -57,15 +59,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('number');
         $field->setLabel('Number')
 			->setAttrib('autocomplete', 'off')
+			->setAttrib('id', 'delivery_number')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
 			->addValidator(new GreaterThanValidator(0))
         	->addValidator(new IntValidator());
         $this->addElement($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('add');
         $field->setLabel('Add')
                 ->setAttrib('class', 'stock_add')
+                ->setAttrib('id', 'stock_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }

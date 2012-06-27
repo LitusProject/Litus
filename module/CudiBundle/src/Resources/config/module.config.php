@@ -420,6 +420,20 @@ return array(
 				),
 			),
 		),
+		'admin_stock_delivery_typeahead' => array(
+			'type'    => 'Zend\Mvc\Router\Http\Segment',
+			'options' => array(
+				'route' => '/admin/stock/article/:academicyear/typeahead[/:string]',
+				'constraints' => array(
+					'academicyear' => '[0-9]{4}-[0-9]{4}',
+					'string'       => '[%a-zA-Z0-9_-]*',
+				),
+				'defaults' => array(
+					'controller' => 'admin_stock_delivery',
+					'action'     => 'typeahead',
+				),
+			),
+		),
 		'admin_stock_retour' => array(
 			'type'    => 'Zend\Mvc\Router\Http\Segment',
 			'options' => array(

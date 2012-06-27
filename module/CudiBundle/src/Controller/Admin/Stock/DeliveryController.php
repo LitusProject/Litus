@@ -148,6 +148,33 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 		);
 	}
 	
+	public function typeaheadAction()
+	{
+	    $this->initAjax();
+	    
+	    if (!($period = $this->getActiveStockPeriod()))
+	        return;
+	        
+	    $academicYear = $this->getAcademicYear();
+        
+        $articles = $this->getEntityManager()
+        	->getRepository('CudiBundle\Entity\Sales\Article')
+        	->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+        	$item->maximum = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+        	$result[] = $item;
+        }
+        
+        return array(
+        	'result' => $result,
+        );
+    }
+	
 	private function _getDelivery()
 	{
 		if (null === $this->getParam('id')) {
