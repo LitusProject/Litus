@@ -3,10 +3,10 @@
 	url = git://github.com/zendframework/zf2.git
 [submodule "vendor/ZfTwig"]
 	path = vendor/ZfTwig
-	url = git://github.com/mtymek/ZfTwig.git
+	url = git@github.com:LitusProject/ZfTwig.git
 [submodule "vendor/AsseticBundle"]
 	path = vendor/AsseticBundle
-	url = git://github.com/Pmaene/zf2-assetic-module.git
+	url = git@github.com:LitusProject/zf2-assetic-module.git
 [submodule "vendor/MistDoctrine"]
 	path = vendor/MistDoctrine
 	url = git://github.com/LitusProject/MistDoctrine.git

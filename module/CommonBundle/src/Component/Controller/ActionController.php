@@ -48,11 +48,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function execute(MvcEvent $e)
     {
     	$startExecutionTime = microtime(true);
-    
         $this->_initControllerPlugins();
-        $this->_initViewHelpers();
+        //$this->_initViewHelpers();
         
-        if (
+        /*8if (
         	$this->hasAccess()->resourceAction(
         		$this->getParam('controller'), $this->getParam('action')
         	)
@@ -76,11 +75,27 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             }
         }
         
-       	$this->initLocalization();
+       	$this->initLocalization();*/
 		
 		$result = parent::execute($e);
-		
-		$result['language'] = $this->getLanguage();
+        
+        $result->setVariables(
+            array(
+                'language' => $this->getLanguage(),
+                'languages' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll(),
+                'flashMessenger' => $this->flashMessenger(),
+                'authenticatedUser' => null,//$authenticatedUser,
+                'environment' => getenv('APPLICATION_ENV'),
+                'developmentInformation' => array(
+                	'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
+                	'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
+                ),
+            )
+        );
+        $result->setTerminal(true);
+		/*$result['language'] = $this->getLanguage();
 		
 		$result['languages'] = $this->getEntityManager()
 		    ->getRepository('CommonBundle\Entity\General\Language')
@@ -94,7 +109,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
   		$result['developmentInformation'] = array(
   			'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
   			'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
-  		);
+  		);*/
   		
         $e->setResult($result);
         return $result;

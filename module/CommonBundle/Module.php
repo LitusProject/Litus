@@ -58,7 +58,7 @@ class Module implements AutoloaderProvider
 
     public function initializeView(Event $e)
     {
-        $app = $e->getParam('application');
+        /*$app = $e->getParam('application');
         $locator = $app->getLocator();
         $view = $locator->get('view');
 		
@@ -69,7 +69,17 @@ class Module implements AutoloaderProvider
         $url->setRouter($app->getRouter());
         
         $view->plugin('doctype')->setDoctype(Doctype::HTML5);
-        $view->plugin('headTitle')->setSeparator('&mdash;');
+        $view->plugin('headTitle')->setSeparator('&mdash;');*/
+
+        $app = $e->getParam('application');
+        $basePath = $app->getRequest()->getBasePath();
+        $locator = $app->getLocator();
+        $renderer = $locator->get('ZfTwig\TwigRenderer');
+        $renderer->plugin('basePath')->setBasePath($basePath);
+
+        $view = $locator->get('view');
+        $twigStrategy = $locator->get('ZfTwig\TwigRenderingStrategy');
+        $view->events()->attach($twigStrategy, 100);
     }
     
     public function getProvides()
