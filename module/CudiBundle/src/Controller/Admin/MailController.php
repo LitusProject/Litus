@@ -49,9 +49,10 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 	->setFrom($mailAddress, $mailName)
                 	->addTo($formData['email'], $formData['name'])
                 	->setSubject($formData['subject']);
-                	
-                // TODO: activate this	
-                //$mailTransport->send($mail);
+                
+                if ('production' == getenv('APPLICATION_ENV'))
+                    $mailTransport->send($mail);
+               
                 
                 return array(
                     'status' => 'success',

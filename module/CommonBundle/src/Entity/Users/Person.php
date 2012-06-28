@@ -587,8 +587,8 @@ abstract class Person
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject);
 
-        // TODO: activate this	
-        //$mailTransport->send($mail);
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
         
         return $this;
     }
