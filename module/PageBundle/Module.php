@@ -17,11 +17,6 @@ class Module implements AutoloaderProvider
 	public function init(Manager $moduleManager)
     {
     	$this->moduleManager = $moduleManager;
-    
-		$events = StaticEventManager::getInstance();
-		$events->attach(
-			'bootstrap', 'bootstrap', array($this, 'initializeView')
-		);
     }
 
     public function getAutoloaderConfig()
@@ -45,11 +40,11 @@ class Module implements AutoloaderProvider
 
     public function initializeView(Event $e)
     {
-        $app = $e->getParam('application');
+        /*$app = $e->getParam('application');
         $locator = $app->getLocator();
         $view = $locator->get('view');
 		
-        $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
+        $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');*/
     }
     
     public function getProvides()

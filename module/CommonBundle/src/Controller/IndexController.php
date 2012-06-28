@@ -15,6 +15,8 @@
 
 namespace CommonBundle\Controller;
 
+use Zend\View\Model\ViewModel;
+
 /**
  * Handles system home page.
  *
@@ -24,6 +26,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
+        return new ViewModel();
     	$newsItems = $this->getEntityManager()
     		->getRepository('NewsBundle\Entity\Nodes\News')
     		->findAll();

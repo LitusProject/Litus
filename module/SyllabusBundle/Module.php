@@ -30,11 +30,6 @@ class Module implements AutoloaderProvider
 	public function init(Manager $moduleManager)
     {
     	$this->moduleManager = $moduleManager;
-    
-		$events = StaticEventManager::getInstance();
-		$events->attach(
-			'bootstrap', 'bootstrap', array($this, 'initializeView')
-		);
     }
 
     public function getAutoloaderConfig()

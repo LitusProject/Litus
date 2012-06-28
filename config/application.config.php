@@ -22,13 +22,13 @@ return array(
     	
         'CommonBundle',
         
-        'BrBundle',
+        /*'BrBundle',
         'CudiBundle',
         'SyllabusBundle',
         
         'CalendarBundle',
         'NewsBundle',
-        'PageBundle',
+        'PageBundle',*/
     ),
     'module_listener_options' => array( 
         'config_cache_enabled' 	=> false,

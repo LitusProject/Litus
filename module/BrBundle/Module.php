@@ -30,11 +30,6 @@ class Module implements AutoloaderProvider
 	public function init(Manager $moduleManager)
     {
     	$this->moduleManager = $moduleManager;
-    
-		$events = StaticEventManager::getInstance();
-		$events->attach(
-			'bootstrap', 'bootstrap', array($this, 'initializeView')
-		);
     }
 
     public function getAutoloaderConfig()
@@ -58,7 +53,7 @@ class Module implements AutoloaderProvider
 
     public function initializeView(Event $e)
     {
-        $app = $e->getParam('application');
+        /*$app = $e->getParam('application');
         $locator = $app->getLocator();
         $view = $locator->get('view');
 		
@@ -69,7 +64,7 @@ class Module implements AutoloaderProvider
         $url->setRouter($app->getRouter());
         
         $view->plugin('doctype')->setDoctype(Doctype::HTML5);
-        $view->plugin('headTitle')->setSeparator('&mdash;');
+        $view->plugin('headTitle')->setSeparator('&mdash;');*/
     }
     
     public function getProvides()
