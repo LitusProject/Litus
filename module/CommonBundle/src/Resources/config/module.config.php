@@ -39,8 +39,7 @@ return array(
                 
             	'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
-                'mail_transport'                   => 'Zend\Mail\Transport\Smtp',
-                'mail_smtp'                        => 'Zend\Mail\Transport\SmtpOptions',
+                'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -307,19 +306,6 @@ return array(
                 	'entityPaths' => array(
                 		'commonbundle' => __DIR__ . '/../../Entity',
                 	),
-                ),
-            ),
-            
-            'mail_transport' => array(
-                'parameters' => array(
-                    'options' => 'mail_smtp',
-                )
-            ),
-            'mail_smtp' => array(
-                'parameters' => array(
-                    'name' => 'smtp.kuleuven.be',
-                    'host' => 'smtp.kuleuven.be',
-                    'port' => 25,
                 ),
             ),
             
