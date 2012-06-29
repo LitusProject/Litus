@@ -77,7 +77,7 @@ class Module implements AutoloaderProvider
         $renderer = $locator->get('ZfTwig\TwigRenderer');
         $renderer->plugin('basePath')->setBasePath($basePath);
 
-        $view = $locator->get('view');
+        $view = $locator->get('Zend\View\View');
         $twigStrategy = $locator->get('ZfTwig\TwigRenderingStrategy');
         $view->events()->attach($twigStrategy, 100);
     }
