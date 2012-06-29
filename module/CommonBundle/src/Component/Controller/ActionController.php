@@ -49,9 +49,9 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
     	$startExecutionTime = microtime(true);
         $this->_initControllerPlugins();
-        //$this->_initViewHelpers();
+        $this->_initViewHelpers();
         
-        /*8if (
+        /*if (
         	$this->hasAccess()->resourceAction(
         		$this->getParam('controller'), $this->getParam('action')
         	)
@@ -163,26 +163,26 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initViewHelpers()
     {
-    	$view = $this->getLocator()->get('view');
+    	$renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
     	
     	// DateLocalized View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
     	);
     	
     	// GetParam View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
     	);
-    	$view->plugin('getParam')->setRouteMatch(
+    	$renderer->plugin('getParam')->setRouteMatch(
     		$this->getEvent()->getRouteMatch()
     	);
     	
     	// HasAccess View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
     	);		
-    	$view->plugin('hasAccess')->setDriver(
+    	$renderer->plugin('hasAccess')->setDriver(
     		new HasAccess(
     			$this->_getAcl(), $this->getAuthentication()
     		)
