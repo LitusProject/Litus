@@ -19,7 +19,8 @@ use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
 	BrBundle\Form\Admin\Company\User\Add as AddForm,
 	BrBundle\Form\Admin\Company\User\Edit as EditForm,
 	CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Users\Credential;
+    CommonBundle\Entity\Users\Credential,
+    Zend\View\Model\ViewModel;
 
 /**
  * ContactController
@@ -46,10 +47,12 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 		    )
 		);
         
-        return array(
-            'supplier' => $supplier,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -101,9 +104,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             }
         }
                 
-        return array(
-            'supplier' => $supplier,
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'form' => $form,
+            )
         );
     }
     
@@ -146,9 +151,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             }
         }
         
-        return array(
-            'supplier' => $user->getSupplier(),
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $user->getSupplier(),
+            	'form' => $form,
+            )
         );
     }
     
@@ -162,8 +169,10 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 		$user->disableLogin();
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
     

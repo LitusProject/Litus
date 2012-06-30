@@ -17,7 +17,8 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Credential,
-    CommonBundle\Form\Auth\Activate as ActivateForm;
+    CommonBundle\Form\Auth\Activate as ActivateForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * Handles account page.
@@ -68,8 +69,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             }
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
         // check if code exists
         // show field to enter new password

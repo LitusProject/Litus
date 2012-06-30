@@ -158,558 +158,563 @@ return array(
 					),
 				),
 			),
+			
+			'Zend\Mvc\Router\RouteStack' => array(
+			    'parameters' => array(
+			        'routes' => array(
+			        	'cudi_install' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/install/cudi',
+			        			'defaults' => array(
+			        				'controller' => 'cudi_install',
+			        				'action'     => 'index',
+			        			),
+			        		),
+			        	),
+			        	'admin_article' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        				'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'string'  => '[%a-zA-Z0-9_-]*',
+			        				'page'    => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_article',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_article_subject'=> array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/article/subject[/:action[/:id]][/:academicyear]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			            			'academicyear' => '[0-9]{4}-[0-9]{4}',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_article_subject',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_article_comment' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/article/comment[/:action[/:id[/:article]]]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_article_comment',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_article_file' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/article/file[/:action[/:id]]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_article_file',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_article' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/article[/:action[/:id][/page/:page][/:academicyear][/:field/:string]]',
+			        			'constraints' => array(
+			        				'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'           => '[0-9]*',
+			            			'academicyear' => '[0-9]{4}-[0-9]{4}',
+			        				'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'string'       => '[%a-zA-Z0-9_-]*',
+			        				'page'         => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_article',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_article_typeahead' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/article/:academicyear/typeahead[/:string]',
+			        			'constraints' => array(
+			            			'academicyear' => '[0-9]{4}-[0-9]{4}',
+			        				'string'       => '[%a-zA-Z0-9_-]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_article',
+			        				'action'     => 'typeahead',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_discount' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/discount[/:action[/:id]]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_discount',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_booking' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][:type[/:field/:string]]]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        				'period'  => '[0-9]*',
+			        				'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+			        				'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
+			        				'page'    => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_booking',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_session' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/session[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_session',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_sales_financial' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/sales/financial[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_sales_financial',
+			        				'action'     => 'sales',
+			        			),
+			        		),
+			        	),
+			        	'admin_supplier' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/supplier[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_supplier',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_supplier_user' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/supplier/user[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_supplier_user',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock[/:action[/:id][/:field/:string]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock_period' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]][/page/:page]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        				'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'string'  => '[%a-zA-Z0-9_-]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock_period',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock_order' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock/order[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock_order',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock_delivery' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock/delivery[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock_delivery',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock_delivery_typeahead' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock/article/:academicyear/typeahead[/:string]',
+			        			'constraints' => array(
+			        				'academicyear' => '[0-9]{4}-[0-9]{4}',
+			        				'string'       => '[%a-zA-Z0-9_-]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock_delivery',
+			        				'action'     => 'typeahead',
+			        			),
+			        		),
+			        	),
+			        	'admin_stock_retour' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/stock/retour[/:action[/:id]][/page/:page]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'id'      => '[0-9]*',
+			        				'page'    => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_stock_retour',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_prof_action' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/prof/actions[/:action[/:id]][/page/:page]',
+			        			'contraints' => array(
+			        			    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        			    'id'     => '[0-9]*',
+			        				'page'   => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_prof_action',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			        	'admin_cudi_mail' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/admin/cudi/mail',
+			        			'constraints' => array(
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'admin_cudi_mail',
+			        				'action'     => 'send',
+			        			),
+			        		),
+			        	),
+			        	'sale_queue' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/cudi/queue[/:action]/:session',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'session' => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'sale_queue',
+			        				'action'     => 'index',
+			        			),
+			        		),
+			        	),
+			        	'sale_sale' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '/cudi/sale[/:action]/:session[/:id]',
+			        			'constraints' => array(
+			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'session' => '[0-9]*',
+			        				'id'      => '[0-9]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'sale_sale',
+			        				'action'     => 'index',
+			        			),
+			        		),
+			        	),
+			        	'supplier_index' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '[/:language]/cudi/supplier[/:action]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'session' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'supplier_index',
+			        				'action'     => 'index',
+			        			),
+			        		),
+			        	),
+			        	'supplier_auth' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '[/:language]/cudi/supplier/auth[/:action]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'session' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'supplier_auth',
+			        				'action'     => 'login',
+			        			),
+			        		),
+			        	),
+			        	'supplier_article' => array(
+			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
+			        		'options' => array(
+			        			'route' => '[/:language]/cudi/supplier/article[/:action]',
+			        			'constraints' => array(
+			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'session' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			        			),
+			        			'defaults' => array(
+			        				'controller' => 'supplier_article',
+			        				'action'     => 'manage',
+			        			),
+			        		),
+			        	),
+			            'prof_index' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof[/:action][/page/:page]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			        				'page'   => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_index',
+			            			'action'     => 'index',
+			            		),
+			            	),
+			            ),
+			            'prof_auth' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/auth[/:action]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_auth',
+			            			'action'     => 'login',
+			            		),
+			            	),
+			            ),
+			            'prof_subject' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/subject[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_subject',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_subject_typeahead' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/subject/typeahead[/:string]',
+			            		'constraints' => array(
+			            			'string' => '[%a-zA-Z0-9_-]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_subject',
+			            			'action'     => 'typeahead',
+			            		),
+			            	),
+			            ),
+			            'prof_article' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/article[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_article',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_article_typeahead' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/article/typeahead[/:string]',
+			            		'constraints' => array(
+			            			'string' => '[%a-zA-Z0-9_-]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_article',
+			            			'action'     => 'typeahead',
+			            		),
+			            	),
+			            ),
+			            'prof_article_mapping' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/article/mapping[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_article_mapping',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_file' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/files[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_file',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_comment' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/comments[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_comment',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_prof' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/prof[/:action[/:id]]',
+			            		'constraints' => array(
+			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            			'id' => '[0-9]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_prof',
+			            			'action'     => 'manage',
+			            		),
+			            	),
+			            ),
+			            'prof_typeahead' => array(
+			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
+			            	'options' => array(
+			            		'route' => '[/:language]/cudi/prof/prof/typeahead[/:string]',
+			            		'constraints' => array(
+			            			'string' => '[%a-zA-Z0-9_-]*',
+			                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+			            		),
+			            		'defaults' => array(
+			            			'controller' => 'prof_prof',
+			            			'action'     => 'typeahead',
+			            		),
+			            	),
+			            ),
+			        ),
+			    ),
+			),  
 		),
-	),
-	'routes' => array(
-		'cudi_install' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/install/cudi',
-				'defaults' => array(
-					'controller' => 'cudi_install',
-					'action'     => 'index',
-				),
-			),
-		),
-		'admin_article' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string'  => '[%a-zA-Z0-9_-]*',
-					'page'    => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_article',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_article_subject'=> array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/subject[/:action[/:id]][/:academicyear]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-				),
-				'defaults' => array(
-					'controller' => 'admin_article_subject',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_article_comment' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/comment[/:action[/:id[/:article]]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_article_comment',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_article_file' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/article/file[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_article_file',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_article' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/article[/:action[/:id][/page/:page][/:academicyear][/:field/:string]]',
-				'constraints' => array(
-					'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'           => '[0-9]*',
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-    				'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'string'       => '[%a-zA-Z0-9_-]*',
-					'page'         => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_article',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_article_typeahead' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/article/:academicyear/typeahead[/:string]',
-				'constraints' => array(
-        			'academicyear' => '[0-9]{4}-[0-9]{4}',
-					'string'       => '[%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_article',
-					'action'     => 'typeahead',
-				),
-			),
-		),
-		'admin_sales_discount' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/discount[/:action[/:id]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_discount',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_booking' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/page/:page][:type[/:field/:string]]]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-					'period'  => '[0-9]*',
-					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
-					'type'    => '[a-zA-Z][%a-zA-Z0-9_-]*',
-					'page'    => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_booking',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_session' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/session[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_session',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_sales_financial' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/sales/financial[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_sales_financial',
-					'action'     => 'sales',
-				),
-			),
-		),
-		'admin_supplier' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_supplier',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_supplier_user' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/supplier/user[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_supplier_user',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock[/:action[/:id][/:field/:string]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_period' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]][/page/:page]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string'  => '[%a-zA-Z0-9_-]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_period',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_order' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/order[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_order',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_delivery' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/delivery[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_delivery',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_stock_delivery_typeahead' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/article/:academicyear/typeahead[/:string]',
-				'constraints' => array(
-					'academicyear' => '[0-9]{4}-[0-9]{4}',
-					'string'       => '[%a-zA-Z0-9_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_delivery',
-					'action'     => 'typeahead',
-				),
-			),
-		),
-		'admin_stock_retour' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/stock/retour[/:action[/:id]][/page/:page]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'id'      => '[0-9]*',
-					'page'    => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_stock_retour',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_prof_action' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/prof/actions[/:action[/:id]][/page/:page]',
-				'contraints' => array(
-				    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-				    'id'     => '[0-9]*',
-					'page'   => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'admin_prof_action',
-					'action'     => 'manage',
-				),
-			),
-		),
-		'admin_cudi_mail' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/admin/cudi/mail',
-				'constraints' => array(
-				),
-				'defaults' => array(
-					'controller' => 'admin_cudi_mail',
-					'action'     => 'send',
-				),
-			),
-		),
-		'sale_queue' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/queue[/:action]/:session',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'sale_queue',
-					'action'     => 'index',
-				),
-			),
-		),
-		'sale_sale' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '/cudi/sale[/:action]/:session[/:id]',
-				'constraints' => array(
-					'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-					'id'      => '[0-9]*',
-				),
-				'defaults' => array(
-					'controller' => 'sale_sale',
-					'action'     => 'index',
-				),
-			),
-		),
-		'supplier_index' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '[/:language]/cudi/supplier[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'supplier_index',
-					'action'     => 'index',
-				),
-			),
-		),
-		'supplier_auth' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '[/:language]/cudi/supplier/auth[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'supplier_auth',
-					'action'     => 'login',
-				),
-			),
-		),
-		'supplier_article' => array(
-			'type'    => 'Zend\Mvc\Router\Http\Segment',
-			'options' => array(
-				'route' => '[/:language]/cudi/supplier/article[/:action]',
-				'constraints' => array(
-					'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'session' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-				),
-				'defaults' => array(
-					'controller' => 'supplier_article',
-					'action'     => 'manage',
-				),
-			),
-		),
-	    'prof_index' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof[/:action][/page/:page]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'page'   => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_index',
-	    			'action'     => 'index',
-	    		),
-	    	),
-	    ),
-	    'prof_auth' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/auth[/:action]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_auth',
-	    			'action'     => 'login',
-	    		),
-	    	),
-	    ),
-	    'prof_subject' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/subject[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_subject',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_subject_typeahead' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/subject/typeahead[/:string]',
-	    		'constraints' => array(
-	    			'string' => '[%a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_subject',
-	    			'action'     => 'typeahead',
-	    		),
-	    	),
-	    ),
-	    'prof_article' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/article[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_article',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_article_typeahead' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/article/typeahead[/:string]',
-	    		'constraints' => array(
-	    			'string' => '[%a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_article',
-	    			'action'     => 'typeahead',
-	    		),
-	    	),
-	    ),
-	    'prof_article_mapping' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/article/mapping[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_article_mapping',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_file' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/files[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_file',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_comment' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/comments[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_comment',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_prof' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/prof[/:action[/:id]]',
-	    		'constraints' => array(
-	    			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-	    			'id' => '[0-9]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_prof',
-	    			'action'     => 'manage',
-	    		),
-	    	),
-	    ),
-	    'prof_typeahead' => array(
-	    	'type'    => 'Zend\Mvc\Router\Http\Segment',
-	    	'options' => array(
-	    		'route' => '[/:language]/cudi/prof/prof/typeahead[/:string]',
-	    		'constraints' => array(
-	    			'string' => '[%a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-	    		),
-	    		'defaults' => array(
-	    			'controller' => 'prof_prof',
-	    			'action'     => 'typeahead',
-	    		),
-	    	),
-	    ),
 	),
 );

@@ -17,7 +17,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Config\Edit as EditForm,
-	CommonBundle\Entity\General\Config;
+	CommonBundle\Entity\General\Config,
+	Zend\View\Model\ViewModel;
 
 /**
  * ConfigController
@@ -50,8 +51,10 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 		
 		ksort($formattedValues, SORT_STRING);
 		
-		return array(
-			'configValues' => $formattedValues
+		return new ViewModel(
+		    array(
+    			'configValues' => $formattedValues,
+    		)
 		);
 	}
 
@@ -91,9 +94,11 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
         
-        return array(
-        	'entry' => $entry,
-        	'form' => $form
+        return new ViewModel(
+            array(
+            	'entry' => $entry,
+            	'form' => $form,
+            )
         );
 	}
 		
