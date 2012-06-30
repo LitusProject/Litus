@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
 	CommonBundle\Entity\Acl\Action as AclAction,
 	CommonBundle\Entity\Acl\Role,
-	CommonBundle\Entity\Acl\Resource;
+	CommonBundle\Entity\Acl\Resource,
+	Zend\View\Model\ViewModel;
 
 /**
  * RoleController
@@ -36,9 +37,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 		    $this->getParam('page')
 		);
 		
-		return array(
-			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true)
+		return new ViewModel(
+		    array(
+    			'paginator' => $paginator,
+    			'paginationControl' => $this->paginator()->createControl(true),
+    		)
 		);
 	}
 
@@ -77,20 +80,34 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->persist($newRole);
 
-                // Flushing the EM so that new role is displayed
                 $this->getEntityManager()->flush();
                 
                 $form = new AddForm(
                 	$this->getEntityManager()
                 );
                 
-                $roleCreated = true;
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The role was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                	'admin_role',
+                	array(
+                		'action' => 'add'
+                	)
+                );
             }
         }       
         
-        return array(
-        	'form' => $form,
-        	'roleCreated' => $roleCreated
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'roleCreated' => $roleCreated,
+            )
         );
     }
 
@@ -147,8 +164,10 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             }
         }
         
-        return array(
-        	'form' => $form
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            )
         );
 	}
 	
@@ -170,10 +189,12 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         
         $this->getEntityManager()->flush();
     	
-    	return array(
-    		'result' => array(
-    			'status' => 'success'
-    		),
+    	return new ViewModel(
+    	    array(
+        		'result' => array(
+        			'status' => 'success'
+        		),
+        	)
     	);
 	}
 		

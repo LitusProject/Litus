@@ -84,7 +84,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->authenticatedUser = null;//$authenticatedUser;
+        $result->authenticatedUser = $authenticatedUser;
         $result->environment = getenv('APPLICATION_ENV');
         $result->developmentInformation = array(
         	'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
@@ -145,6 +145,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     private function _initViewHelpers()
     {
     	$renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
+    	$renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
     	
     	// DateLocalized View Helper
     	$renderer->getBroker()->getClassLoader()->registerPlugin(
