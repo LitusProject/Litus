@@ -61,7 +61,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 	public function editAction()
 	{
 		if (!($entry = $this->_getEntry()))
-		    return;
+		    return new ViewModel();
 		
         $form = new EditForm(
         	$entry
@@ -90,7 +90,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         

@@ -50,7 +50,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     public function stockAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
 		$paginator = $this->paginator()->createFromArray(
 		    $this->getEntityManager()
@@ -95,7 +95,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     public function deliveriesAction()
     {
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         $suppliers = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Supplier')
@@ -123,7 +123,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     public function retoursAction()
     {
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         $suppliers = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Supplier')

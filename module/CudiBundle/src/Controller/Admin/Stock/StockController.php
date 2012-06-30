@@ -33,7 +33,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -54,7 +54,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function notDeliveredAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -75,7 +75,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function searchAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         switch($this->getParam('field')) {
         	case 'title':
@@ -124,7 +124,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function searchNotDeliveredAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         switch($this->getParam('field')) {
         	case 'title':
@@ -173,10 +173,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $deliveryForm = new DeliveryForm($this->getEntityManager());
         $orderForm = new OrderForm($this->getEntityManager());
@@ -216,7 +216,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			} elseif (isset($formData['add_order'])) {
 				if ($orderForm->isValid($formData)) {
@@ -242,7 +242,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			} elseif (isset($formData['add_delivery'])) {
 				if ($deliveryForm->isValid($formData)) {
@@ -266,7 +266,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			}
 		}
@@ -285,10 +285,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function deltaAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\PeriodValues\Delta',

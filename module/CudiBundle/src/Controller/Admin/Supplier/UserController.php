@@ -32,7 +32,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function manageAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
-	    	return;
+	    	return new ViewModel();
 	    	
 		$paginator = $this->paginator()->createFromEntity(
 		    'CudiBundle\Entity\Users\People\Supplier',
@@ -58,7 +58,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function addAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return;
+        	return new ViewModel();
         
         $form = new AddForm($this->getEntityManager());
 		
@@ -101,7 +101,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
                 
@@ -116,7 +116,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($user = $this->_getUser()))
-        	return;
+        	return new ViewModel();
         			
         $form = new EditForm($this->getEntityManager(), $user);
 
@@ -148,7 +148,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -165,7 +165,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 
 		if (!($user = $this->_getUser()))
-			return;
+			return new ViewModel();
 
 		$user->disableLogin();
 		$this->getEntityManager()->flush();

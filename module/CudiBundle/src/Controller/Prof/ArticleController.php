@@ -48,7 +48,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     public function addAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         $form = new AddForm($this->getEntityManager());
 
@@ -144,7 +144,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
@@ -158,7 +158,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     public function editAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $article);
         
@@ -265,7 +265,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
@@ -319,7 +319,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     			)
     		);
     		
-    		return;
+    		return new ViewModel();
     	}
     
         $article = $this->getEntityManager()
@@ -343,7 +343,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     			)
     		);
     		
-    		return;
+    		return new ViewModel();
     	}
     	
     	return $article;

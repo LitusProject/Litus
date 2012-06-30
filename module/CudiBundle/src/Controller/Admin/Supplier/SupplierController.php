@@ -86,7 +86,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -100,7 +100,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
     public function editAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return;
+        	return new ViewModel();
         
         $form = new EditForm($supplier);
         
@@ -135,7 +135,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         

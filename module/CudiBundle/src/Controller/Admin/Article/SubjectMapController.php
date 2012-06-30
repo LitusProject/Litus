@@ -30,10 +30,10 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 	public function manageAction()
 	{
 	    if (!($article = $this->_getArticle()))
-	        return;
+	        return new ViewModel();
 	        
 	    if (!($academicYear = $this->getAcademicYear()))
-	    	return;
+	    	return new ViewModel();
 	    
 	    $form = new AddForm();
 	    
@@ -98,7 +98,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         $this->initAjax();
         
 		if (!($mapping = $this->_getMapping()))
-		    return;
+		    return new ViewModel();
 
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();

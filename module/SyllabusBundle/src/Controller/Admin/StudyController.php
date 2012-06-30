@@ -29,7 +29,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
     
         $paginator = $this->paginator()->createFromArray(
         	$this->getEntityManager()
@@ -57,7 +57,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         switch($this->getParam('field')) {
         	case 'name':

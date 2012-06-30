@@ -31,10 +31,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     public function addAction()
     {
         if (!($subject = $this->_getSubject()))
-        	return;
+        	return new ViewModel();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -94,7 +94,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
         
         if (!($mapping = $this->_getMapping()))
-        	return;
+        	return new ViewModel();
         	
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();

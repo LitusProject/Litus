@@ -136,7 +136,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
         	}
         }
         
@@ -151,7 +151,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	public function editAction()
 	{
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $article);
         
@@ -206,7 +206,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
@@ -233,7 +233,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    $this->initAjax();
 	    
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
 
         $article->setIsHistory(true);
 		$this->getEntityManager()->flush();

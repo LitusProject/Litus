@@ -31,10 +31,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     public function addAction()
     {
         if (!($subject = $this->_getSubject()))
-            return;
+            return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
             
         $form = new AddForm();
         
@@ -98,7 +98,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     	$this->initAjax();
     	
         if (!($mapping = $this->_getMapping()))
-            return;
+            return new ViewModel();
         
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()

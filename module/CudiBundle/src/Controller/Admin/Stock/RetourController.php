@@ -56,10 +56,10 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	public function supplierAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
-	        return;
+	        return new ViewModel();
 	    
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $paginator = $this->paginator()->createFromArray(
 	        $this->getEntityManager()
@@ -85,7 +85,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	public function addAction()
 	{
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $academicYear = $this->getAcademicYear();
 
@@ -146,7 +146,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 		
 		if (!($retour = $this->_getRetour()))
-		    return;
+		    return new ViewModel();
 		
 		$retour->getArticle()->addStockValue(-$retour->getNumber());
 		$this->getEntityManager()->remove($retour);

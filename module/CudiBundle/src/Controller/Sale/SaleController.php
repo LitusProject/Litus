@@ -49,7 +49,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     public function saveCommentAction()
     {
         if (!($queueItem = $this->_getQueueItem()))
-            return;
+            return new ViewModel();
 
         $queueItem->setComment($this->getRequest()->post()->get('comment'));
         $this->getEntityManager()->flush();
@@ -133,7 +133,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				)
     			);
     			
-    			return;
+    			return new ViewModel();
     		}
     	}
     	

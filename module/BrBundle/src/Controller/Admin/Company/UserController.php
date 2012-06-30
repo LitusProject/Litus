@@ -100,7 +100,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
                 
@@ -147,7 +147,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -164,7 +164,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 		$this->initAjax();
 
 		if (!($user = $this->_getUser()))
-			return;
+			return new ViewModel();
 
 		$user->disableLogin();
 		$this->getEntityManager()->flush();

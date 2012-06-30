@@ -30,7 +30,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
@@ -69,7 +69,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
 			}
         }
         
@@ -87,7 +87,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $this->initAjax();
         
         if (!($mapping = $this->_getCommentMapping()))
-    	    return;
+    	    return new ViewModel();
     	
     	$this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();

@@ -35,7 +35,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	public function manageAction()
 	{
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
 		    
 		$saleArticle = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Sales\Article')
@@ -73,7 +73,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	    $this->initAjax();
 	    
 	    if (!($article = $this->_getArticle()))
-	        return;
+	        return new ViewModel();
 	    
 		$form = new AddForm();
 	    $formData = $this->getRequest()->post()->toArray();
@@ -142,7 +142,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	public function editAction()
 	{
 	    if (!($mapping = $this->_getFileMapping()))
-	        return;
+	        return new ViewModel();
 	        
 	    $form = new EditForm($mapping);
 	    
@@ -171,7 +171,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
 	            
@@ -189,7 +189,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 					
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 
 		$this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
@@ -208,7 +208,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 			->getConfigValue('cudi.file_path');
 			
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 		
 		$file = $mapping->getFile();
 		
@@ -245,7 +245,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     public function frontAction()
     {
         if (!($article = $this->_getSaleArticle()))
-            return;
+            return new ViewModel();
 		    
 		$file = new TmpFile();
 		$document = new FrontGenerator($this->getEntityManager(), $article, $file);

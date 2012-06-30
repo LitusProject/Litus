@@ -64,7 +64,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	)
         );
         
-        return;
+        return new ViewModel();
     }
 
     public function logoutAction()
@@ -86,6 +86,6 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	)
         );
 
-        return;
+        return new ViewModel();
     }
 }

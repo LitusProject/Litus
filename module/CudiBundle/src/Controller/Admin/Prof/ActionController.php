@@ -79,7 +79,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
         
@@ -93,7 +93,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function refuseAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setRefused($this->getAuthentication()->getPersonObject());
         
@@ -119,7 +119,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function confirmAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
         
@@ -132,7 +132,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 		'id' => $action->getId(),
                 	)
                 );
-                return;
+                return new ViewModel();
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();
@@ -186,7 +186,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 		'id' => $action->getId(),
                 	)
                 );
-                return;
+                return new ViewModel();
             } else {
                 $action->getEntity()->setRemoved();
             }
@@ -210,12 +210,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         		'action' => 'completed'
         	)
         );
+        
+        return new ViewModel();
     }
     
     public function confirmArticleAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
             
@@ -264,7 +266,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    		'action' => 'completed'
         	    	)
         	    );
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
@@ -278,7 +280,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function confirmFileAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
             
@@ -304,7 +306,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    		'action' => 'completed'
         	    	)
         	    );
-        	    return;
+        	    return new ViewModel();
         	}
         }
         

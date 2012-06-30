@@ -100,6 +100,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 		'action' => 'add'
                 	)
                 );
+                
+                return new ViewModel();
             }
         }       
         
@@ -114,7 +116,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 	public function editAction()
 	{
 		if (!($role = $this->_getRole()))
-		    return;
+		    return new ViewModel();
 		
         $form = new EditForm(
         	$this->getEntityManager(), $role
@@ -160,7 +162,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -176,7 +178,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 	    $this->initAjax();
 	    
     	if (!($role = $this->_getRole()))
-    	    return;
+    	    return new ViewModel();
         
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Person')

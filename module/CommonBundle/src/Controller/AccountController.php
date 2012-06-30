@@ -29,13 +29,13 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
-    
+        return new ViewModel();
     }
     
     public function activateAction()
     {
         if (!($user = $this->_getUser()))
-            return;
+            return new ViewModel();
         
         $form = new ActivateForm();
         
@@ -65,7 +65,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 	'index'
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         

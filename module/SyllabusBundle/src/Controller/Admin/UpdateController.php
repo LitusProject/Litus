@@ -43,5 +43,6 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
     
     public function xmlAction()
     {
+        return new ViewModel();
     }
 }
