@@ -1,12 +1,12 @@
-<h2><?= $this->message ?></h2>
+<h2>{{ message }}</h2>
 	
-<?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
+{% if display_exceptions is defined and display_exceptions %}
 
-	<?php if (isset($this->exception)): ?>
+	{% if exception is defined %}
         
         <h3>Exception Information</h3>
         <p>
-            <b>Message:</b> <?= $this->exception->getMessage(); ?>
+            <b>Message:</b> {{ exception.getMessage() }}
         </p>
         			
 		<h3>Stack Trace</h3>
@@ -18,21 +18,21 @@
 		        <th>Class</th>
 		    </tr>
 		
-		    <?php foreach($this->exception->getTrace() as $traceNumber => $traceItem): ?>
+		    {% for traceNumber, traceItem in exception.getTrace() %}
 			    <tr>
-			        <td><?= $traceNumber ?></td>
-			        <td><?= isset($traceItem['line']) ? $traceItem['line'] : '' ?></td>
-			        <td><?= isset($traceItem['function']) ? $traceItem['function'] : '' ?></td>
-			        <td><?= isset($traceItem['class']) ? $traceItem['class'] : '' ?></td>
+			        <td>{{ traceNumber }}</td>
+			        <td>{{ traceItem.line }}</td>
+			        <td>{{ traceItem.function }}</td>
+			        <td>{{ traceItem.class }}</td>
 			    </tr>
-		    <?php endforeach; ?>
+		    {% endfor %}
 		
 		</table>
 
-    <?php else: ?>
+    {% else %}
     
         <h3>No Exception available</h3>
         
-    <? endif; ?>
+    {% endif %}
     	
-<?php endif; ?>
+{% endif %}

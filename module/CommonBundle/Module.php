@@ -58,19 +58,6 @@ class Module implements AutoloaderProvider
 
     public function initializeView(Event $e)
     {
-        /*$app = $e->getParam('application');
-        $locator = $app->getLocator();
-        $view = $locator->get('view');
-		
-		$view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CommonBundle/src/Resources/layouts');
-        $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
-
-        $url = $view->plugin('url');
-        $url->setRouter($app->getRouter());
-        
-        $view->plugin('doctype')->setDoctype(Doctype::HTML5);
-        $view->plugin('headTitle')->setSeparator('&mdash;');*/
-
         $app = $e->getParam('application');
         $basePath = $app->getRequest()->getBasePath();
         $locator = $app->getLocator();
