@@ -45,21 +45,6 @@ abstract class Node
     private $createPerson;
     
     /**
-     * @var \DateTime The time of update of this node
-     *
-     * @Column(name="update_time", type="datetime", nullable=true)
-     */
-    private $updateTime;
-    
-    /**
-     * @var \CommonBundle\Entity\Users\Person The person who updated this node last
-     *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="update_person", referencedColumnName="id")
-     */
-    private $updatePerson;
-    
-    /**
      * @param \CommonBundle\Entity\Users\Person $person
      */
     public function __construct(Person $person)
@@ -90,37 +75,5 @@ abstract class Node
     public function getCreatePerson()
     {
         return $this->createPerson;
-    }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getUpdateTime()
-    {
-        if (null === $this->updateTime)
-            return $this->createTime;
-        return $this->updateTime;
-    }
-    
-    /**
-     * @return \CommonBundle\Entity\Users\Person
-     */
-    public function getUpdatePerson()
-    {
-        if (null === $this->updatePerson)
-            return $this->createPerson;
-        return $this->updatePerson;
-    }
-    
-    /**
-     * @param \CommonBundle\Entity\Users\Person $person
-     *
-     * @return \CommonBundle\Entity\Nodes\Node
-     */
-    public function setUpdatePerson(Person $updatePerson)
-    {
-        $this->updatePerson = $updatePerson;
-        $this->updateTime = new DateTime();
-        return $this;
     }
 }

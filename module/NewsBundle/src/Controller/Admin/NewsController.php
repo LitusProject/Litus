@@ -112,8 +112,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
         	
             if ($form->isValid($formData)) {
-                $news->setUpdatePerson($this->getAuthentication()->getPersonObject());
-
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
