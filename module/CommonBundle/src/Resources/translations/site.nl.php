@@ -15,4 +15,5 @@
 
 return array(
     'Warning' => 'Opmerking',
+    'Login' => 'Aanmelden',
 );

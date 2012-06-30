@@ -15,4 +15,5 @@
 
 return array(
     'Warning' => 'Warning',
+    'Login' => 'Login',
 );
