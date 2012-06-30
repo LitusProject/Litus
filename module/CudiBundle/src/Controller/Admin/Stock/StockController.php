@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
 	CudiBundle\Form\Admin\Stock\Update as StockForm,
 	CudiBundle\Entity\Stock\Deliveries\Delivery,
-	CudiBundle\Entity\Stock\PeriodValues\Delta;
+	CudiBundle\Entity\Stock\PeriodValues\Delta,
+	Zend\View\Model\ViewModel;
 
 /**
  * StockController
@@ -41,10 +42,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
         
-        return array(
-            'period' => $period,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'period' => $period,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -60,10 +63,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
         
-        return array(
-            'period' => $period,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'period' => $period,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -109,8 +114,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
@@ -156,8 +163,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
@@ -262,12 +271,14 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 			}
 		}
         
-        return array(
-            'article' => $article,
-            'period' => $period,
-            'deliveryForm' => $deliveryForm,
-            'orderForm' => $orderForm,
-            'stockForm' => $stockForm,
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'period' => $period,
+                'deliveryForm' => $deliveryForm,
+                'orderForm' => $orderForm,
+                'stockForm' => $stockForm,
+            )
         );
     }
     
@@ -289,10 +300,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             array('timestamp' => 'DESC')
         );
         
-        return array(
-            'article' => $article,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'article' => $article,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     

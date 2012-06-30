@@ -18,7 +18,8 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\SubjectProfMap,
-    SyllabusBundle\Form\Admin\Prof\Add as AddForm;
+    SyllabusBundle\Form\Admin\Prof\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ProfController
@@ -78,11 +79,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 	        }
 	    }
         
-        return array(
-            'academicYears' => $academicYears,
-            'currentAcademicYear' => $academicYear,
-            'subject' => $subject,
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'subject' => $subject,
+                'form' => $form,
+            )
         );
     }
     
@@ -96,8 +99,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
@@ -120,8 +125,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

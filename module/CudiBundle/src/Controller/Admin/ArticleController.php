@@ -21,7 +21,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Form\Admin\Article\Add as AddForm,
-    CudiBundle\Form\Admin\Article\Edit as EditForm;
+    CudiBundle\Form\Admin\Article\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -45,10 +46,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $academicYear = $this->getAcademicYear();
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
-            'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+                'currentAcademicYear' => $academicYear,
+            )
         );
     }
 
@@ -137,9 +140,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	}
         }
         
-        return array(
-            'form' => $form,
-            'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'currentAcademicYear' => $academicYear,
+            )
         );
     }
     
@@ -213,11 +218,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findByArticle($article);
         
-        return array(
-            'form' => $form,
-        	'article' => $article,
-        	'saleArticle' => $saleArticle,
-        	'comments' => $comments,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            	'article' => $article,
+            	'saleArticle' => $saleArticle,
+            	'comments' => $comments,
+            )
         );
 	}
 
@@ -231,8 +238,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $article->setIsHistory(true);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
 
@@ -276,8 +285,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$result[] = $item;
 	    }
 	    
-	    return array(
-	    	'result' => $result,
+	    return new ViewModel(
+	        array(
+	        	'result' => $result,
+	        )
 	    );
 	}
     

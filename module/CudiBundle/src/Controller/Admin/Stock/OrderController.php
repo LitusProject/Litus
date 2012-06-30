@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Component\Document\Generator\OrderPdf as OrderPdfGenerator,
 	CudiBundle\Component\Document\Generator\OrderXml as OrderXmlGenerator,
 	CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
-	Zend\Http\Headers;
+	Zend\Http\Headers,
+	Zend\View\Model\ViewModel;
 
 /**
  * OrderController
@@ -44,10 +45,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 		
-		return array(
-			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'paginator' => $paginator,
+    			'paginationControl' => $this->paginator()->createControl(true),
+    			'suppliers' => $suppliers,
+    		)
 		);
     }
 
@@ -70,11 +73,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'supplier' => $supplier,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
-        	'suppliers' => $suppliers,
+        return new ViewModel(
+            array(
+            	'supplier' => $supplier,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            	'suppliers' => $suppliers,
+            )
         );
 	}
 	
@@ -87,10 +92,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 
-		return array(
-			'order' => $order,
-        	'supplier' => $order->getSupplier(),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'order' => $order,
+            	'supplier' => $order->getSupplier(),
+    			'suppliers' => $suppliers,
+    		)
 		);
 	}
 	
@@ -138,10 +145,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'form' => $form,
-        	'suppliers' => $suppliers,
-        	'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'suppliers' => $suppliers,
+            	'currentAcademicYear' => $academicYear,
+            )
         );
 	}
 	
@@ -155,8 +164,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		$this->getEntityManager()->remove($item);
 		$this->getEntityManager()->flush();
 		
-		return array(
-		    'result' => (object) array("status" => "success")
+		return new ViewModel(
+		    array(
+		        'result' => (object) array("status" => "success"),
+		    )
 		);
 	}
 	
@@ -202,8 +213,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		));
 		$this->getResponse()->setHeaders($headers);
 		
-		return array(
-			'data' => $file->getContent()
+		return new ViewModel(
+		    array(
+			    'data' => $file->getContent(),
+			)
 		);
 	}
 	
@@ -228,8 +241,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		$data = fread($handle, filesize($archive->getFileName()));
 		fclose($handle);
 		
-		return array(
-			'data' => $data,
+		return new ViewModel(
+		    array(
+			    'data' => $data,
+			)
 		);
 	}
 	

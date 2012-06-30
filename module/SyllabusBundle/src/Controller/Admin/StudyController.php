@@ -16,7 +16,8 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    Zend\View\Model\ViewModel;
 
 /**
  * StudyController
@@ -41,11 +42,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
         
-        return array(
-            'academicYears' => $academicYears,
-            'currentAcademicYear' => $academicYear,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -79,8 +82,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

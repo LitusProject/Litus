@@ -50,21 +50,6 @@ class Module implements AutoloaderProvider
     {
         return include __DIR__ . '/src/Resources/config/module.config.php';
     }
-
-    public function initializeView(Event $e)
-    {
-        $app = $e->getParam('application');
-        $locator = $app->getLocator();
-        $view = $locator->get('view');
-		
-        $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
-
-        $url = $view->plugin('url');
-        $url->setRouter($app->getRouter());
-        
-        $view->plugin('doctype')->setDoctype(Doctype::HTML5);
-        $view->plugin('headTitle')->setSeparator('&mdash;');
-    }
     
     public function getProvides()
     {

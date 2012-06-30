@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Discounts\Discount,
-    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm;
+    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * DiscountController
@@ -81,10 +82,12 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findByArticle($article);
                     
-        return array(
-        	'article' => $article,
-        	'discounts' => $discounts,
-        	'form' => $form,
+        return new ViewModel(
+            array(
+            	'article' => $article,
+            	'discounts' => $discounts,
+            	'form' => $form,
+            )
         );
     }
 
@@ -98,8 +101,10 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         $this->getEntityManager()->remove($discount);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
     

@@ -15,6 +15,8 @@
  
 namespace SyllabusBundle\Controller\Admin;
 
+use Zend\View\Model\ViewModel;
+
 /**
  * UpdateController
  *
@@ -32,8 +34,10 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         	->getRepository('CommonBundle\Entity\General\Config')
         	->getConfigValue('syllabus.update_socket_port');
         	
-        return array(
-        	'socketUrl' => 'ws://' . $address . ':' . $port,
+        return new ViewModel(
+            array(
+        	    'socketUrl' => 'ws://' . $address . ':' . $port,
+        	)
         );
     }
     

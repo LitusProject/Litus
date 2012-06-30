@@ -26,6 +26,5 @@ class IndexController extends \CudiBundle\Component\Controller\SupplierControlle
 {
     public function indexAction()
     {
-    	return array();
     }
 }

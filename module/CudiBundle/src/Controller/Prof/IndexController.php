@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article,
+    Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -38,12 +39,12 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
     	    foreach($paginator as $action)
     	        $action->setEntityManager($this->getEntityManager());
     	    	    
-    	    return array(
-    	        'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(),
+    	    return new ViewModel(
+    	        array(
+    	            'paginator' => $paginator,
+            	    'paginationControl' => $this->paginator()->createControl(),
+            	)
     	    );
         }
-        
-        return array();
 	}
 }

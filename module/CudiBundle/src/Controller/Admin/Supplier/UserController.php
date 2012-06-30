@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Credential,
     CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
-    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm;
+    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * UserController
@@ -45,10 +46,12 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 		    )
 		);
         
-        return array(
-            'supplier' => $supplier,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -102,9 +105,11 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             }
         }
                 
-        return array(
-            'supplier' => $supplier,
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'form' => $form,
+            )
         );
     }
     
@@ -147,9 +152,11 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             }
         }
         
-        return array(
-            'supplier' => $user->getSupplier(),
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $user->getSupplier(),
+            	'form' => $form,
+            )
         );
     }
     
@@ -163,8 +170,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 		$user->disableLogin();
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
     

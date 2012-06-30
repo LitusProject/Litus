@@ -158,6 +158,14 @@ return array(
 					),
 				),
 			),
+			'Zend\View\Resolver\TemplatePathStack' => array(
+			    'parameters' => array(
+			        'paths'  => array(
+			            'cudi_layouts' => __DIR__ . '/../layouts',
+			            'cudi_views' => __DIR__ . '/../views',
+			        ),
+			    ),
+			),
 			
 			'Zend\Mvc\Router\RouteStack' => array(
 			    'parameters' => array(

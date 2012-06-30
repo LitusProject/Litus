@@ -22,7 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
-    CudiBundle\Form\Prof\Article\Edit as EditForm;
+    CudiBundle\Form\Prof\Article\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -37,8 +38,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
                             
-        return array(
-            'articles' => $articles,
+        return new ViewModel(
+            array(
+                'articles' => $articles,
+            )
         );
     }
     
@@ -145,8 +148,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	}
         }
         
-    	return array(
-    	    'form' => $form,
+    	return new ViewModel(
+    	    array(
+    	        'form' => $form,
+    	    )
     	);
     }
     
@@ -264,9 +269,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	}
         }
         
-    	return array(
-    	    'form' => $form,
-    	    'article' => $article,
+    	return new ViewModel(
+    	    array(
+    	        'form' => $form,
+    	        'article' => $article,
+    	    )
     	);
     }
     
@@ -284,8 +291,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

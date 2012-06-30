@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\QueueItem,
-	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm;
+	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * SaleController
@@ -36,10 +37,12 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findAll();
         
-    	return array(
-    		'socketUrl' => $this->getSocketUrl(),
-    		'barcodePrefix' => $barcodePrefix,
-    		'payDesks' => $payDesks,
+    	return new ViewModel(
+    	    array(
+        		'socketUrl' => $this->getSocketUrl(),
+        		'barcodePrefix' => $barcodePrefix,
+        		'payDesks' => $payDesks,
+        	)
     	);
     }
     
@@ -51,8 +54,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         $queueItem->setComment($this->getRequest()->post()->get('comment'));
         $this->getEntityManager()->flush();
     
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
@@ -132,8 +137,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     		}
     	}
     	
-    	return array(
-    		'form' => $form,
+    	return new ViewModel(
+    	    array(
+    		    'form' => $form,
+    		)
     	);
     }
     

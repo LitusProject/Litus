@@ -23,7 +23,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
     CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateInterval,
-	Zend\Mail\Message;
+	Zend\Mail\Message,
+	Zend\View\Model\ViewModel;
 
 /**
  * BookingController
@@ -51,12 +52,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
                     
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -79,12 +82,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
                     
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -142,12 +147,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
              
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'currentAcademicYear' => $academicYear,
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+            )
         );
     }
     
@@ -176,14 +183,16 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
         $mailForm->setAction($this->url()->fromRoute('admin_cudi_mail'));
             
-        return array(
-            'mailForm' => $mailForm,
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'booking' => $booking,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(),
+        return new ViewModel(
+            array(
+                'mailForm' => $mailForm,
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'booking' => $booking,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -395,8 +404,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$result[] = $item;
 	    }
 	    
-	    return array(
-	    	'result' => $result,
+	    return new ViewModel(
+	        array(
+    	    	'result' => $result,
+    	    )
 	    );
 	}
 	
@@ -405,10 +416,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    if (!($activePeriod = $this->_getPeriod()))
 	        return;
 	        
-	    $return = array();
+	    $return = new ViewModel();
 	     
 	    $form = new PersonForm();
-        $return['form'] = $form;
+        $return->form = $form;
 
 	    if ($person = $this->_getPerson()) {
 	        $paginator = $this->paginator()->createFromArray(
@@ -418,9 +429,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	            $this->getParam('page')
 	        );
 	        
-	        $return['paginator'] = $paginator;
-	        $return['paginationControl'] = $this->paginator()->createControl();
-	        $return['person'] = $person;
+	        $return->paginator = $paginator;
+	        $return->paginationControl = $this->paginator()->createControl();
+	        $return->person = $person;
 	    }
 	    
 	    return $return;
@@ -431,11 +442,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    if (!($activePeriod = $this->_getPeriod()))
 	        return;
 	        
-	    $return = array();
+	    $return = new ViewModel();
 	     
 	    $form = new ArticleForm();
-        $return['form'] = $form;
-	    $return['currentAcademicYear'] = $this->getAcademicYear();;
+        $return->form = $form;
+	    $return->currentAcademicYear = $this->getAcademicYear();;
 
 	    if ($article = $this->_getArticle()) {
 	        $paginator = $this->paginator()->createFromArray(
@@ -445,9 +456,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	            $this->getParam('page')
 	        );
 	        
-	        $return['paginator'] = $paginator;
-	        $return['paginationControl'] = $this->paginator()->createControl();
-	        $return['article'] = $article;
+	        $return->paginator = $paginator;
+	        $return->paginationControl = $this->paginator()->createControl();
+	        $return->article = $article;
 	    }
 	    
 	    return $return;

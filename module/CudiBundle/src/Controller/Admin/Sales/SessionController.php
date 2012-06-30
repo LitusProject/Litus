@@ -23,7 +23,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Session\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Session\Close as CloseForm,
-    CudiBundle\Form\Admin\Sales\Session\Comment as CommentForm;
+    CudiBundle\Form\Admin\Sales\Session\Comment as CommentForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * SessionController
@@ -42,9 +43,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 			array('openDate' => 'DESC')
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -100,8 +103,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             }
         }
         
-        return array(
-        	'form' => $form,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            )
         );
     }
     
@@ -148,11 +153,13 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 			->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
 			->findAll();
 		
-		return array(
-			'session' => $session,
-			'units'   => $units,
-			'devices' => $devices,
-			'form' => $form,
+		return new ViewModel(
+		    array(
+    			'session' => $session,
+    			'units'   => $units,
+    			'devices' => $devices,
+    			'form' => $form,
+    		)
 		);
     }
 
@@ -211,9 +218,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             }
         }
         
-        return array(
-        	'form' => $form,
-        	'session' => $session,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'session' => $session,
+            )
         );
     }
 
@@ -275,9 +284,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 			}
 		}
 		
-		return array(
-			'form' => $form,
-			'session' => $session,
+		return new ViewModel(
+		    array(
+    			'form' => $form,
+    			'session' => $session,
+    		)
 		);
     }
     
@@ -290,9 +301,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findBySession($session);
         	
-        return array(
-            'session' => $session,
-            'items' => $items,
+        return new ViewModel(
+            array(
+                'session' => $session,
+                'items' => $items,
+            )
         );
     }
     

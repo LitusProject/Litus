@@ -48,6 +48,13 @@ return array(
             		),
             	),
             ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'news_views' => __DIR__ . '/../views',
+                    ),
+                ),
+            ),
             
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(

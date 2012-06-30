@@ -16,7 +16,8 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -41,11 +42,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
             
-        return array(
-            'study' => $study,
-            'mappings' => $mappings,
-            'currentAcademicYear' => $academicYear,
-            'academicYears' => $academicYears,
+        return new ViewModel(
+            array(
+                'study' => $study,
+                'mappings' => $mappings,
+                'currentAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+            )
         );
     }
     
@@ -69,12 +72,14 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
             
-        return array(
-            'subject' => $subject,
-            'profMappings' => $profs,
-            'articleMappings' => $articles,
-            'currentAcademicYear' => $academicYear,
-            'academicYears' => $academicYears,
+        return new ViewModel(
+            array(
+                'subject' => $subject,
+                'profMappings' => $profs,
+                'articleMappings' => $articles,
+                'currentAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+            )
         );
     }
     
@@ -119,8 +124,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
@@ -141,8 +148,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
