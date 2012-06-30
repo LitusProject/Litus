@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CommonBundle\Entity\Users\People\Academic,
 	CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
 	CommonBundle\Form\Admin\Academic\Add as AddForm,
-	CommonBundle\Form\Admin\Academic\Edit as EditForm;
+	CommonBundle\Form\Admin\Academic\Edit as EditForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
@@ -38,9 +39,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 	        )
 	    );
 	    
-	    return array(
-	    	'paginator' => $paginator,
-	    	'paginationControl' => $this->paginator()->createControl(true)
+	    return new ViewModel(
+	        array(
+    	    	'paginator' => $paginator,
+    	    	'paginationControl' => $this->paginator()->createControl(true),
+    	    )
 	    );
 	}
 	
@@ -77,7 +80,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $newUser->addUniversityStatus(
                 	new UniversityStatus(
                 		$newUser,
-                		$formData['university_status']
+                		$formData['university_status'],
+                		$this->getCurrentAcademicYear()
                 	)
                 );
                 
@@ -104,20 +108,22 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 	)
                 );
                 
-                return;
+                return new ViewModel();
                 
             }
         }
         
-        return array(
-        	'form' => $form,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            )
         );
     }
 
     public function editAction()
     {
 		if (!($user = $this->_getUser()))
-		    return;
+		    return new ViewModel();
 		
         $form = new EditForm(
         	$this->getEntityManager(), $user
@@ -161,12 +167,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-        	'form' => $form
+        return new ViewModel(
+            array(
+            	'form' => $form
+            )
         );
     }
 
@@ -175,7 +183,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     	$this->initAjax();
     
 		if (!($user = $this->_getUser()))
-		    return;
+		    return new ViewModel();
         
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')
@@ -188,9 +196,34 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 		
 		$this->getEntityManager()->flush();
 		
-		return array(
-			'result' => array('status' => 'success'),
+		return new ViewModel(
+		    array(
+			    'result' => array('status' => 'success'),
+			)
 		);
+    }
+    
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+        
+        $users = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findAllByNameTypeahead($this->getParam('string'));
+        
+        $result = array();
+        foreach($users as $user) {
+        	$item = (object) array();
+        	$item->id = $user->getId();
+        	$item->value = $user->getFullName() . ' - ' . $user->getUniversityIdentification();
+        	$result[] = $item;
+        }
+        
+        return new ViewModel(
+            array(
+            	'result' => $result,
+            )
+        );
     }
     
     public function searchAction()
@@ -233,8 +266,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     		$result[] = $item;
     	}
     	
-    	return array(
-    		'result' => $result,
+    	return new ViewModel(
+    	    array(
+        		'result' => $result,
+        	)
     	);
     }
     

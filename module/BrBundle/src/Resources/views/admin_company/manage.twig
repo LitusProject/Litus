@@ -22,8 +22,12 @@
 	                    <td>{{ company.getVatNumber() }}</td>
 	                    <td>
 	                        <ul>
-	                            <li><a href="{{ url('admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
-	                            <li><a href="{{ url('admin_company', {"action": "delete", "id": company.getId()}) }}" class="delete">Delete</a></li>
+	                        	{% if hasAccess('admin_supplier', 'edit') %}
+	                            	<li><a href="{{ url('admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
+	                            {% endif %}
+	                            {% if hasAccess('admin_company_user', 'manage') %}
+	                                <a href="{{ url('admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="view">Users</a>
+	                            {% endif %}
 	                        </ul>
 	                    </td>
 	                </tr>

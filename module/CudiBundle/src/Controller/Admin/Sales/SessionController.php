@@ -23,7 +23,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Session\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Session\Close as CloseForm,
-    CudiBundle\Form\Admin\Sales\Session\Comment as CommentForm;
+    CudiBundle\Form\Admin\Sales\Session\Comment as CommentForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * SessionController
@@ -42,9 +43,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 			array('openDate' => 'DESC')
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -96,19 +99,21 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
             }
         }
         
-        return array(
-        	'form' => $form,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
 		if (!($session = $this->_getSession()))
-			return;
+			return new ViewModel();
 			
 		$form = new CommentForm($session);
 
@@ -136,7 +141,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
 			}
 		}
 		
@@ -148,18 +153,20 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 			->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
 			->findAll();
 		
-		return array(
-			'session' => $session,
-			'units'   => $units,
-			'devices' => $devices,
-			'form' => $form,
+		return new ViewModel(
+		    array(
+    			'session' => $session,
+    			'units'   => $units,
+    			'devices' => $devices,
+    			'form' => $form,
+    		)
 		);
     }
 
     public function editRegisterAction()
     {
         if (!($cashRegister = $this->_getCashRegister()))
-        	return;
+        	return new ViewModel();
         	
         $session = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Sales\Session')
@@ -207,20 +214,22 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-        	'form' => $form,
-        	'session' => $session,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'session' => $session,
+            )
         );
     }
 
     public function closeAction()
     {
         if (!($session = $this->_getSession()))
-        	return;
+        	return new ViewModel();
         	     
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 		
@@ -271,28 +280,32 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                		)
                	);
                	
-               	return;
+               	return new ViewModel();
 			}
 		}
 		
-		return array(
-			'form' => $form,
-			'session' => $session,
+		return new ViewModel(
+		    array(
+    			'form' => $form,
+    			'session' => $session,
+    		)
 		);
     }
     
     public function queueItemsAction()
     {
         if (!($session = $this->_getSession()))
-        	return;
+        	return new ViewModel();
         	
         $items = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findBySession($session);
         	
-        return array(
-            'session' => $session,
-            'items' => $items,
+        return new ViewModel(
+            array(
+                'session' => $session,
+                'items' => $items,
+            )
         );
     }
     

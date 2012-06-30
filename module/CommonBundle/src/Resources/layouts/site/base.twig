@@ -4,7 +4,7 @@
 <head>
 
     {{ headMeta() }}
-	{{ headTitle('VTK (Vlaamse Technische Kring) Leuven vzw', 'PREPEND') }}
+	{{ headTitle(translator().translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
 	
 	{{ headLink() }}   
 </head>
@@ -19,53 +19,67 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="#">VTK Leuven vzw</a>
+                <a class="title hidden-desktop" href="#">{{ translator().translate('VTK Leuven vzw') }}</a>
                 <div class="nav-collapse collapse">
         			<ul class="nav main-nav">
         			    <li class="active">
-        					<a class="custom" href="#">Ontspanning</a>
+        					<a class="custom" href="#">{{ translator().translate('Recreation') }}</a>
         				</li>
         			    <li>
-        				    <a href="#">Studies</a>
+        				    <a href="#">{{ translator().translate('Studies') }}</a>
         				</li>
         				<li>
-        				    <a href="#">Bedrijvenrelaties</a>
+        				    <a href="#">{{ translator().translate('Company relations') }}</a>
         				</li>
         				<li>
-        				    <a href="#">Diensten</a>
+        				    <a href="#">{{ translator().translate('Services') }}</a>
         				</li>
         				<li>
-        				    <a href="#">Media</a>
+        				    <a href="#">{{ translator().translate('Media') }}</a>
         				</li>
         				<li>
-        				    <a href="#">Wiki's</a>
+        				    <a href="#">{{ translator().translate('Wiki\'s') }}</a>
         				</li>
         				<li>
-        				    <a href="#">Over VTK</a>
+        				    <a href="#">{{ translator().translate('About VTK') }}</a>
         				</li>
         				<li class="hidden-desktop">
-        				    <a href="#">Aanmelden</a>
+        				    <a href="#">{{ translator().translate('Login') }}</a>
         				</li>
         			</ul>
         		</div>
-    			<ul class="nav pull-right auth-nav visible-desktop">
-    			    <li class="dropdown" id="loginDropdown">
-    				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-    				        {{ translator().translate('Login') }} <span class="caret"></span>
-    			        </a>
-    			        <ul class="dropdown-menu">
-    			        	<li style="text-align: center;">
-    			        		<button class="btn btn-info" href="">KU Leuven&mdash;Central Login</button>
-    			        	</li>
-    			        	<li class="divider"></li>
-    			            <li>
-    			                {% autoescape false %}
-    			                	{{ loginForm }}
-    			                {% endautoescape %}
-    			            </li>
-    			        </ul>
-    				</li>
-    			</ul>
+        		<ul class="nav pull-right lang-nav visible-desktop">
+        		    <li class="dropdown" id="langDropdown">
+        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        			        {{ translator().translate('Language') }} <span class="caret"></span>
+        		        </a>
+        		        <ul class="dropdown-menu">
+        		            {% for language in languages %}
+        			            <li>
+        			                <a href="#">{{ translator().translate(language.getName()) }}</a>
+        			            </li>
+        		            {% endfor %}
+        		        </ul>
+        			</li>
+        		</ul>
+        		<ul class="nav pull-right auth-nav visible-desktop">
+        		    <li class="dropdown" id="loginDropdown">
+        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        			        {{ translator().translate('Login') }} <span class="caret"></span>
+        		        </a>
+        		        <ul class="dropdown-menu">
+        		        	<li style="text-align: center;">
+        		        		<button class="btn btn-info" href="">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</button>
+        		        	</li>
+        		        	<li class="divider"></li>
+        		            <li>
+        		                {% autoescape false %}
+        		                	{{ loginForm }}
+        		                {% endautoescape %}
+        		            </li>
+        		        </ul>
+        			</li>
+        		</ul>
     		</div>
     	</div>
     </nav>
@@ -74,7 +88,9 @@
         <header>
         	<div class="inner">
         		<div class="container">
-        			<h1>Vlaamse Technische Kring Leuven</h1>
+        			<img class="headingIcon" src="/_site/img/logo.png" />
+        			<h1>{{ translator().translate('Vlaamse Technische Kring Leuven') }}</h1>
+        			
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
                             <div class="active item">
@@ -106,10 +122,10 @@
     		<div class="container">
 		        <div class="row-fluid">
 		        	<span class="span3">
-		        		<span class="title">Links</span>
+		        		<span class="title">{{ translator().translate('Links') }}</span>
 		        	</span>
 		        	<span class="span9">
-		        		<span class="title">Partners</span>
+		        		<span class="title">{{ translator().translate('Partners') }}</span>
 		        	</span>
 		        </div>
 		    </div>
@@ -117,12 +133,12 @@
         
         <div class="container bottom">
         	<span class="title">
-        		&copy; 2012 Vlaamse Technische Kring vzw
+        		&copy; 2012 {{ translator().translate('Vlaamse Technische Kring vzw') }}
         	</span>
         	
         	<span class="social">
-        		<a href="http://facebook.com/vtk"><img src="/_site/img/facebook.png"></a>
-        		<a href="http://twitter.com/vtk_leuven"><img src="/_site/img/twitter.png"></a>
+        		<a href="http://facebook.com/vtk"><img src="/_site/img/facebook.png" /></a>
+        		<a href="http://twitter.com/vtk_leuven"><img src="/_site/img/twitter.png" /></a>
         	</span>
         </div>
     </footer>

@@ -45,6 +45,19 @@
 	    	    </div>
 	    	</div>
 	    {% endif %}
+	    {% if hasAccess('admin_article_file', 'front') and article.getMainArticle().isInternal() %}
+	    	<div class="sidebox">
+	    	    <div class="title">Download Front Page</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to download the front page of this article!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="#" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
 	</aside>
 	
 	<div class="modal hide fade" id="sellProfVersion">
@@ -70,6 +83,10 @@
 {% block content_script %}
 	<script type="text/javascript">
 	    $(document).ready(function () {
+	        $('.downloadFile').each(function () {
+	        	$(this).downloadFile($(this).data('file'));
+	        });
+	        
 	        $('.sellProfVersion').click(openSellProfModal);
 	        
 	        {% if article.getMainArticle().isInternal() %}

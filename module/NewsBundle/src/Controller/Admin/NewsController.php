@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     NewsBundle\Entity\Nodes\News,
     NewsBundle\Entity\Nodes\Translation,
     NewsBundle\Form\Admin\News\Add as AddForm,
-    NewsBundle\Form\Admin\News\Edit as EditForm;
+    NewsBundle\Form\Admin\News\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -38,9 +39,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -92,19 +95,21 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
         if (!($news = $this->_getNews()))
-            return;
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $news);
         
@@ -154,12 +159,14 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
@@ -174,10 +181,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         
         $this->getEntityManager()->flush();
     	
-    	return array(
-    		'result' => array(
-    			'status' => 'success'
-    		),
+    	return new ViewModel(
+    	    array(
+        		'result' => array(
+        			'status' => 'success'
+        		),
+        	)
     	);
     }
     

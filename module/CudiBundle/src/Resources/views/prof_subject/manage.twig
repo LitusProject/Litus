@@ -2,17 +2,17 @@
 
 {% block content %}
 	<div class="page-header">
-	    <h2>Your Subjects</h2>
+	    <h2>{{ translator().translate('Your Subjects') }}</h2>
 	</div>
 	
 	<table class="table table-bordered table-striped">
 	    <tr>
-	        <th width="80px">Code</th>
-	        <th>Name</th>
-	        <th width="80px">Semester</th>
-	        <th width="80px">Credits</th>
-	        <th width="80px">Students</th>
-	        <th width="80px">Actions</th>
+	        <th width="80px">{{ translator().translate('Code') }}</th>
+	        <th>{{ translator().translate('Name') }}</th>
+	        <th width="80px">{{ translator().translate('Semester') }}</th>
+	        <th width="80px">{{ translator().translate('Credits') }}</th>
+	        <th width="80px">{{ translator().translate('Students') }}</th>
+	        <th width="80px">{{ translator().translate('Actions') }}</th>
 	    </tr>
 	    
 		{% for subject in subjects %}
@@ -24,7 +24,7 @@
 		        <td>{{ subject.getSubject().getNbEnrollment(academicYear) }}</td>
 		        <td class="actions">
 		            {% if hasAccess('prof_subject', 'subject') %}
-		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId()}) }}" class="btn btn-primary">View</a>
+		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translator().translate('View') }}</a>
 		            {% endif %}
 		        </td>
 		    </tr>

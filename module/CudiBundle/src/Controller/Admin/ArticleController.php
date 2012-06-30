@@ -21,7 +21,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Form\Admin\Article\Add as AddForm,
-    CudiBundle\Form\Admin\Article\Edit as EditForm;
+    CudiBundle\Form\Admin\Article\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -45,10 +46,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         $academicYear = $this->getAcademicYear();
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
-            'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+                'currentAcademicYear' => $academicYear,
+            )
         );
     }
 
@@ -85,7 +88,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['official'],
                         $formData['rectoverso'],
                         $frontColor,
-                        $formData['front_text_colored'],
                         $formData['perforated']
 	                );
 				} else {
@@ -134,20 +136,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
-            'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'currentAcademicYear' => $academicYear,
+            )
         );
     }
     
 	public function editAction()
 	{
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $article);
         
@@ -182,7 +186,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     	->setIsOfficial($formData['official'])
                     	->setIsRectoVerso($formData['rectoverso'])
                     	->setFrontColor($frontPageColor)
-                    	->setFrontPageTextColored($formData['front_text_colored'])
                     	->setIsPerforated($formData['perforated']);
 				}
         	    
@@ -203,18 +206,25 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
+            
+        $comments = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+            ->findByArticle($article);
         
-        return array(
-            'form' => $form,
-        	'article' => $article,
-        	'saleArticle' => $saleArticle,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            	'article' => $article,
+            	'saleArticle' => $saleArticle,
+            	'comments' => $comments,
+            )
         );
 	}
 
@@ -223,13 +233,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    $this->initAjax();
 	    
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
 
         $article->setIsHistory(true);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
 
@@ -273,8 +285,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$result[] = $item;
 	    }
 	    
-	    return array(
-	    	'result' => $result,
+	    return new ViewModel(
+	        array(
+	        	'result' => $result,
+	        )
 	    );
 	}
     

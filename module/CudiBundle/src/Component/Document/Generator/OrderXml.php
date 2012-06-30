@@ -79,7 +79,7 @@ class OrderXml
 			
 			$mappings = $this->_entityManager
 			    ->getRepository('CudiBundle\Entity\Files\Mapping')
-			    ->findAllByArticle($item->getArticle()->getMainArticle());
+			    ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
 			
 			$zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
 		    foreach($mappings as $mapping)

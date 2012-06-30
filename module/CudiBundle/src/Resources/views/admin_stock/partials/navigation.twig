@@ -15,8 +15,11 @@
             {% if hasAccess('admin_stock_retour', 'manage') %}
                 <li><a{% if 'admin_stock_retour' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock_retour') }}">Retours</a></li>
             {% endif %}
+            {% if hasAccess('admin_stock', 'notDelivered') %}
+                <li><a{% if 'admin_stock' == getParam('controller') and 'notDelivered' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock', {'action': 'notDelivered'}) }}">Not Delivered</a></li>
+            {% endif %}
             {% if hasAccess('admin_stock', 'manage') %}
-                <li><a{% if 'admin_stock' == getParam('controller') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
+                <li><a{% if 'admin_stock' == getParam('controller') and 'notDelivered' != getParam('action') %} class="active" {% endif %} href="{{ url('admin_stock') }}">Overview</a></li>
             {% endif %}
         </ul>
     </nav>

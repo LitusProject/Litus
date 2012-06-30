@@ -43,7 +43,11 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
 		$field->setLabel('Street')
 			->setRequired()
 		    ->setDecorators(array(new FieldDecorator()))
-		    ->addValidator(new AlphaValidator());
+		    ->addValidator(new AlphaValidator(
+		    	array(
+		    		'allowWhiteSpace' => true
+		    	)
+		    ));
 		$this->addElement($field);
 		
 		$field = new Text($prefix . 'address_number');

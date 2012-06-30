@@ -161,11 +161,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 	       	->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 	    
-	    $field = new Checkbox('front_text_colored');
-	    $field->setLabel('Front Page Text Colored')
-	        ->setDecorators(array(new FieldDecorator()));
-	    $this->addElement($field);
-	    
 	    $field = new Checkbox('perforated');
 	    $field->setLabel('Perforated')
 	        ->setDecorators(array(new FieldDecorator()));
@@ -179,7 +174,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 						'official',
 						'rectoverso',
 						'front_color',
-						'front_text_colored',
 						'perforated',
 		            ),
 		            'internal_form'
@@ -278,7 +272,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 			$data['official'] = $article->isOfficial();
 			$data['rectoverso'] = $article->isRectoVerso();
 			$data['front_color'] = $article->getFrontColor()->getId();
-			$date['front_text_colored'] = $article->getFrontPageTextColored();
 			$data['perforated'] = $article->isPerforated();
 		}
 						

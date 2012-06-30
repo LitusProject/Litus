@@ -17,16 +17,15 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
 	BrBundle\Form\Admin\Company\Add as AddForm,
-	CommonBundle\Entity\Users\Credential,
-	CommonBundle\Entity\Users\People\Corporate as CorporatePerson,
-	CommonBundle\Entity\Users\Statuses\Corporate as CorporateStatus;
+	CommonBundle\Entity\General\Address,
+	Zend\View\Model\ViewModel;
 
 /**
  * CompanyController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class CompanyController extends \CommonBundle\Component\Controller\ActionController
+class CompanyController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -38,9 +37,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
 
@@ -54,63 +55,16 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 			
-            if ($form->isValid($formData)) {
-                $corporateRole = $this->getEntityManager()
-                	->getRepository('CommonBundle\Entity\Acl\Role')
-                	->findOneByName('corporate');
-                
-                $correspondenceContact = new CorporatePerson(
-                    $formData['correspondence_contact_username'],
-                    new Credential(
-                        'sha512',
-                        $formData['correspondence_contact_credential']
-                    ),
-                    array(
-                   		$corporateRole 
-                    ),
-                    $formData['correspondence_contact_first_name'],
-                    $formData['correspondence_contact_last_name'],
-                    $formData['correspondence_contact_email'],
-                    $formData['correspondence_contact_phone_number'],
-                    $formData['correspondence_contact_sex']
-                );
-                
-                $correspondenceStatus = new CorporateStatus(
-                	$correspondenceContact, 'correspondence'
-                );
-                $correspondenceContact->addCorporateStatus(
-                	$correspondenceStatus
-                );
-                
-                $signatoryContact = new CorporatePerson(
-                    $formData['signatory_contact_username'],
-                    new Credential(
-                        'sha512',
-                        $formData['signatory_contact_credential']
-                    ),
-                    array(
-                   		$corporateRole 
-                    ),
-                    $formData['signatory_contact_first_name'],
-                    $formData['signatory_contact_last_name'],
-                    $formData['signatory_contact_email'],
-                    $formData['signatory_contact_phone_number'],
-                    $formData['signatory_contact_sex']                    
-                );
-                
-                $signatoryStatus = new CorporateStatus(
-                	$signatoryContact, 'signatory'
-                );
-                $signatoryContact->addCorporateStatus(
-                	$signatoryStatus
-                );
-                
+            if ($form->isValid($formData)) {                
                 $newCompany = new Company(
                 	$formData['company_name'],
                 	$formData['vat_number'],
-                	array(
-                		$correspondenceContact,
-                		$signatoryContact
+                	new Address(
+                		$formData['address_street'],
+                		$formData['address_number'],
+                		$formData['address_postal'],
+                		$formData['address_city'],
+                		$formData['address_country']
                 	)
                 );
                 
@@ -126,9 +80,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         
         $this->getEntityManager()->flush();
         
-        return array(
-        	'form' => $form,
-        	'companyCreated' => $companyCreated
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'companyCreated' => $companyCreated,
+            )
         );
     }
 

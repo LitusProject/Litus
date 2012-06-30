@@ -90,8 +90,8 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 		            'admin_role' => array(
 		            	'add', 'edit', 'delete', 'manage'
 		            ),
-		            'admin_user' => array(
-		            	'add', 'edit', 'delete', 'manage'
+		            'admin_academic' => array(
+		            	'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
 		            ),
 		            'index' => array(
 		            	'index'

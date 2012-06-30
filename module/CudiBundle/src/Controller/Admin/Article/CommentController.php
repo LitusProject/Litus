@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Comments\Comment,
-    CudiBundle\Form\Admin\Article\Comment\Add as AddForm;
+    CudiBundle\Form\Admin\Article\Comment\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -29,7 +30,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
@@ -68,14 +69,16 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
 			}
         }
         
-        return array(
-            'article' => $article,
-            'form' => $form,
-            'mappings' => $mappings,
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'form' => $form,
+                'mappings' => $mappings,
+            )
         );
     }
     
@@ -84,13 +87,15 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $this->initAjax();
         
         if (!($mapping = $this->_getCommentMapping()))
-    	    return;
+    	    return new ViewModel();
     	
     	$this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     

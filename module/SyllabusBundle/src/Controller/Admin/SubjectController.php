@@ -16,7 +16,8 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -28,10 +29,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         if (!($study = $this->_getStudy()))
-        	return;
+        	return new ViewModel();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
@@ -41,21 +42,23 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
             
-        return array(
-            'study' => $study,
-            'mappings' => $mappings,
-            'currentAcademicYear' => $academicYear,
-            'academicYears' => $academicYears,
+        return new ViewModel(
+            array(
+                'study' => $study,
+                'mappings' => $mappings,
+                'currentAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+            )
         );
     }
     
     public function subjectAction()
     {
         if (!($subject = $this->_getSubject()))
-        	return;
+        	return new ViewModel();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         $profs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -69,12 +72,14 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
             
-        return array(
-            'subject' => $subject,
-            'profMappings' => $profs,
-            'articleMappings' => $articles,
-            'currentAcademicYear' => $academicYear,
-            'academicYears' => $academicYears,
+        return new ViewModel(
+            array(
+                'subject' => $subject,
+                'profMappings' => $profs,
+                'articleMappings' => $articles,
+                'currentAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+            )
         );
     }
     
@@ -83,10 +88,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
         
         if (!($study = $this->_getStudy()))
-        	return;
+        	return new ViewModel();
         	
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         switch($this->getParam('field')) {
         	case 'name':
@@ -119,8 +124,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
@@ -141,8 +148,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

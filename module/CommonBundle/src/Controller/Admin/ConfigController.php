@@ -17,7 +17,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Config\Edit as EditForm,
-	CommonBundle\Entity\General\Config;
+	CommonBundle\Entity\General\Config,
+	Zend\View\Model\ViewModel;
 
 /**
  * ConfigController
@@ -50,15 +51,17 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 		
 		ksort($formattedValues, SORT_STRING);
 		
-		return array(
-			'configValues' => $formattedValues
+		return new ViewModel(
+		    array(
+    			'configValues' => $formattedValues,
+    		)
 		);
 	}
 
 	public function editAction()
 	{
 		if (!($entry = $this->_getEntry()))
-		    return;
+		    return new ViewModel();
 		
         $form = new EditForm(
         	$entry
@@ -87,13 +90,15 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-        	'entry' => $entry,
-        	'form' => $form
+        return new ViewModel(
+            array(
+            	'entry' => $entry,
+            	'form' => $form,
+            )
         );
 	}
 		

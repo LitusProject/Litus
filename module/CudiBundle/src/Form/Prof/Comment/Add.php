@@ -15,7 +15,7 @@
  
 namespace CudiBundle\Form\Prof\Comment;
 
-use CommonBundle\Component\Form\Bootstrap\Element\TextArea;
+use CommonBundle\Component\Form\Bootstrap\Element\Textarea;
 
 /**
  * Add Comment
@@ -28,7 +28,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($options);
              
-        $field = new TextArea('text');
+        $field = new Textarea('text');
         $field->setLabel('Comment')
             ->setAttrib('class', 'input-xlarge')
             ->setAttrib('rows', 5)

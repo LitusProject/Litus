@@ -2,15 +2,15 @@
 
 {% block content %}
 	<div class="page-header">
-	    <h2>Add Article</h2>
+	    <h2>{{ translator().translate('Add Article') }}</h2>
 	</div>
 	
-	<h3>Subject</h3>
+	<h3>{{ translator().translate('Subject') }}</h3>
 	<p>
-	    Code: <b>{{ subject.getCode() }}</b><br />
-	    Name: <b>{{ subject.getName() }}</b><br />
-	    Semester: <b>{{ subject.getSemester() }}</b><br />
-	    Credits: <b>{{ subject.getCredits() }}</b>
+	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+	    {{ translator().translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
 	</p>
 	{% autoescape false %}
 	    {{ form }}
@@ -22,7 +22,7 @@
 		$(document).ready(function () {
 		    $('#articleSearch').typeaheadRemote(
 			    {
-			        source: '{{ url("prof_article_typeahead")}}',
+			        source: '{{ url("prof_article_typeahead", {"language": language.getAbbrev()})}}',
 			    }
 			).change(function (e) {
 			    if ($(this).data('value')) {

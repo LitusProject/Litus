@@ -18,6 +18,7 @@ namespace CommonBundle\Entity\Users;
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Acl\Role,
  	CommonBundle\Entity\General\Address,
+ 	CommonBundle\Entity\General\Language,
  	CommonBundle\Entity\Users\Code,
  	CommonBundle\Entity\Users\Credential,
 	Doctrine\Common\Collections\ArrayCollection,
@@ -129,9 +130,9 @@ abstract class Person
     private $canLogin;
     
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Union", mappedBy="person")
+     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
      */
-    private $unionStatuses;
+    private $organisationStatuses;
     
     /**
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
@@ -153,6 +154,14 @@ abstract class Person
      * @Column(name="failed_logins", type="smallint")
      */
     private $failedLogins = 0;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Language The last used language of this person
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @JoinColumn(name="language", referencedColumnName="id")
+     */
+    private $language;
 
     /**
      * @param string $username The user's username
@@ -175,7 +184,7 @@ abstract class Person
         $this->canLogin = true;
         
         $this->roles = new ArrayCollection($roles);        
-       	$this->unionStatuses = new ArrayCollection();
+       	$this->organisationStatuses = new ArrayCollection();
     }
 
     /**
@@ -240,6 +249,8 @@ abstract class Person
      */
     public function validateCredential($credential)
     {
+        if (null == $this->credential)
+            return false;
         return $this->credential->validateCredential($credential);
     }
 
@@ -518,6 +529,25 @@ abstract class Person
     }
     
     /**
+     * @param \CommonBundle\Entity\General\Language $language
+     *
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function setLanguage(Language $language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\Language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+    
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
      * @return \CommonBundle\Entity\Users\Person
@@ -557,8 +587,8 @@ abstract class Person
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject);
 
-        // TODO: activate this	
-        //$mailTransport->send($mail);
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
         
         return $this;
     }
