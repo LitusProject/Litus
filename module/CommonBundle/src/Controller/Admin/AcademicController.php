@@ -108,7 +108,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 	)
                 );
                 
-                return;
+                return new ViewModel();
                 
             }
         }
@@ -123,7 +123,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     public function editAction()
     {
 		if (!($user = $this->_getUser()))
-		    return;
+		    return new ViewModel();
 		
         $form = new EditForm(
         	$this->getEntityManager(), $user
@@ -167,7 +167,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -183,7 +183,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     	$this->initAjax();
     
 		if (!($user = $this->_getUser()))
-		    return;
+		    return new ViewModel();
         
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')

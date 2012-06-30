@@ -35,7 +35,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')
@@ -81,7 +81,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 			->getConfigValue('cudi.file_path');
 			
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 		
 		$file = $mapping->getFile();
 		
@@ -109,7 +109,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 	    $this->initAjax();
 
 	    if (!($article = $this->_getArticle()))
-	        return;
+	        return new ViewModel();
 	    
 		$form = new AddForm();
 	    $formData = $this->getRequest()->post()->toArray();
@@ -202,7 +202,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $this->initAjax();
         
         if (!($mapping = $this->_getFileMapping()))
-            return;
+            return new ViewModel();
             
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()

@@ -60,7 +60,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $form = new AddForm($this->getEntityManager());
         
@@ -120,7 +120,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
@@ -136,7 +136,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	public function editAction()
 	{
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $saleArticle);
         
@@ -193,7 +193,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
@@ -209,7 +209,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	public function activateAction()
 	{
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new ActivateForm($this->getEntityManager(), $saleArticle);
         
@@ -250,7 +250,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
@@ -267,7 +267,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    $this->initAjax();
 	    	    
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
 
         $saleArticle->setIsHistory(true);
 		$this->getEntityManager()->flush();
@@ -329,7 +329,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	public function sellProfAction()
 	{
 	    if (!($saleArticle = $this->_getSaleArticle()))
-	        return;
+	        return new ViewModel();
 	    
 	    $saleItem = new SaleItem(
 	        $saleArticle,

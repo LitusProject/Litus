@@ -57,10 +57,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function supplierAction()
 	{
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -86,7 +86,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function editAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		
 		$suppliers = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Supplier')
@@ -137,7 +137,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 					)
 				);
 				
-				return;
+				return new ViewModel();
 			}
         }
         
@@ -159,7 +159,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 		
 		if (!($item = $this->_getOrderItem()))
-		    return;
+		    return new ViewModel();
 		    
 		$this->getEntityManager()->remove($item);
 		$this->getEntityManager()->flush();
@@ -174,7 +174,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function placeAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$order->order();
 		
@@ -200,7 +200,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function pdfAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$file = new TmpFile();
 		$document = new OrderPdfGenerator($this->getEntityManager(), $order, $file);
@@ -223,7 +223,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 	public function exportAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$document = new OrderXmlGenerator($this->getEntityManager(), $order);
 		

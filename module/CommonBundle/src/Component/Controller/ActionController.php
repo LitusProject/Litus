@@ -48,6 +48,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function execute(MvcEvent $e)
     {
     	$startExecutionTime = microtime(true);
+
+		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->setCharset('utf-8');
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
         

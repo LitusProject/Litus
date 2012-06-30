@@ -29,10 +29,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         if (!($study = $this->_getStudy()))
-        	return;
+        	return new ViewModel();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
@@ -55,10 +55,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     public function subjectAction()
     {
         if (!($subject = $this->_getSubject()))
-        	return;
+        	return new ViewModel();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         $profs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -88,10 +88,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
         
         if (!($study = $this->_getStudy()))
-        	return;
+        	return new ViewModel();
         	
         if (!($academicYear = $this->_getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         switch($this->getParam('field')) {
         	case 'name':

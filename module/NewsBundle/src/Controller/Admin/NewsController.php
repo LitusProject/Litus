@@ -95,7 +95,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -109,7 +109,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($news = $this->_getNews()))
-            return;
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $news);
         
@@ -161,7 +161,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         

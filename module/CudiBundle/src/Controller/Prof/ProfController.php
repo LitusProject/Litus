@@ -30,10 +30,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 	public function addAction()
     {
         if (!($subject = $this->_getSubject()))
-            return;
+            return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
             
         $form = new AddForm();
         
@@ -71,6 +71,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 		'language' => $this->getLanguage()->getAbbrev(),
                 	)
                 );
+                
+                return new ViewModel();
 	        }
 	    }
         
@@ -87,11 +89,13 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     	$this->initAjax();
     	
         if (!($mapping = $this->_getMapping()))
-            return;
+            return new ViewModel();
         
         if ($mapping->getProf()->getId() == $this->getAuthentication()->getPersonObject()->getId()) {
-            return array(
-                'result' => (object) array("status" => "error")
+            return new ViewModel(
+                array(
+                    'result' => (object) array("status" => "error"),
+                )
             );
         }
         

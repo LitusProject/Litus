@@ -69,7 +69,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         if ($isAuthenticated) {
             $this->redirect()->toRoute('admin_index');
             
-            return;
+            return new ViewModel();
         }
 		            
         return new ViewModel(
@@ -88,7 +88,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	'admin_auth'
         );
         
-        return;
+        return new ViewModel();
     }
     
     public function shibbolethAction()
@@ -112,6 +112,6 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 	    	);
 	    }
 	    
-	    return;
+	    return new ViewModel();
     }
 }

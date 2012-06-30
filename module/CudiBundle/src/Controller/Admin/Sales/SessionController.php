@@ -99,7 +99,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel();
             }
         }
         
@@ -113,7 +113,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     public function editAction()
     {
 		if (!($session = $this->_getSession()))
-			return;
+			return new ViewModel();
 			
 		$form = new CommentForm($session);
 
@@ -141,7 +141,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
 			}
 		}
 		
@@ -166,7 +166,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     public function editRegisterAction()
     {
         if (!($cashRegister = $this->_getCashRegister()))
-        	return;
+        	return new ViewModel();
         	
         $session = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Sales\Session')
@@ -214,7 +214,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
@@ -229,7 +229,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     public function closeAction()
     {
         if (!($session = $this->_getSession()))
-        	return;
+        	return new ViewModel();
         	     
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 		
@@ -280,7 +280,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                		)
                	);
                	
-               	return;
+               	return new ViewModel();
 			}
 		}
 		
@@ -295,7 +295,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     public function queueItemsAction()
     {
         if (!($session = $this->_getSession()))
-        	return;
+        	return new ViewModel();
         	
         $items = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')

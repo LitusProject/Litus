@@ -54,10 +54,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	public function supplierAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
-	        return;
+	        return new ViewModel();
 	    
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $paginator = $this->paginator()->createFromArray(
 	        $this->getEntityManager()
@@ -83,7 +83,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	public function addAction()
 	{
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $academicYear = $this->getAcademicYear();
 	        
@@ -144,7 +144,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 		$this->initAjax();
 		
 		if (!($delivery = $this->_getDelivery()))
-		    return;
+		    return new ViewModel();
 		
 		$delivery->getArticle()->addStockValue(-$delivery->getNumber());
 		$this->getEntityManager()->remove($delivery);
@@ -162,7 +162,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	    $this->initAjax();
 	    
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $academicYear = $this->getAcademicYear();
         

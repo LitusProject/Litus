@@ -91,13 +91,13 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         	)
         );
         
-        return;
+        return new ViewModel();
     }
     
     public function viewAction()
     {
         if (!($period = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $period->setEntityManager($this->getEntityManager());
             
@@ -120,7 +120,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
     public function searchAction()
     {
         if (!($period = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $period->setEntityManager($this->getEntityManager());
             
