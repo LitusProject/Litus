@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Controller\Admin\Sales;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+Zend\View\Model\ViewModel;
 
 /**
  * FinancialController
@@ -38,16 +39,18 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         	$item->setEntityManager($this->getEntityManager());
         }
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function stockAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
 		$paginator = $this->paginator()->createFromArray(
 		    $this->getEntityManager()
@@ -56,10 +59,12 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 		    $this->getParam('page')
 		);
         
-        return array(
-            'period' => $period,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'period' => $period,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -78,17 +83,19 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
-        	'suppliers' => $suppliers,
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            	'suppliers' => $suppliers,
+            )
         );
     }
     
     public function deliveriesAction()
     {
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         $suppliers = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Supplier')
@@ -103,18 +110,20 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
         
-        return array(
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
-            'supplier' => $supplier,
-        	'suppliers' => $suppliers,
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'supplier' => $supplier,
+            	'suppliers' => $suppliers,
+            )
         );
     }
     
     public function retoursAction()
     {
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         $suppliers = $this->getEntityManager()
         	->getRepository('CudiBundle\Entity\Supplier')
@@ -129,11 +138,13 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
         
-        return array(
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
-            'supplier' => $supplier,
-        	'suppliers' => $suppliers,
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'supplier' => $supplier,
+            	'suppliers' => $suppliers,
+            )
         );
     }
     

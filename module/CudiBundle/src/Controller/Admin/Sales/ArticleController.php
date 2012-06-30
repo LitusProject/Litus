@@ -21,7 +21,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Entity\Sales\Article as SaleArticle,
     CudiBundle\Entity\Sales\History,
-    CudiBundle\Entity\Sales\SaleItem;
+    CudiBundle\Entity\Sales\SaleItem,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -45,19 +46,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
                     
-        return array(
-            'academicYears' => $academicYears,
-            'activeAcademicYear' => $academicYear,
-            'currentAcademicYear' => $this->getCurrentAcademicYear(),
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'activeAcademicYear' => $academicYear,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
 
     public function addAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $form = new AddForm($this->getEntityManager());
         
@@ -117,21 +120,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
-            'article' => $article,
-            'precalculatedPrice' => $precalculatedPrice,
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $article,
+                'precalculatedPrice' => $precalculatedPrice,
+            )
         );
     }
     
 	public function editAction()
 	{
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $saleArticle);
         
@@ -188,21 +193,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
-            'article' => $saleArticle,
-            'precalculatedPrice' => $precalculatedPrice,
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $saleArticle,
+                'precalculatedPrice' => $precalculatedPrice,
+            )
         );
 	}
 	
 	public function activateAction()
 	{
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
         
         $form = new ActivateForm($this->getEntityManager(), $saleArticle);
         
@@ -243,13 +250,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
-            'article' => $saleArticle->getMainArticle(),
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $saleArticle->getMainArticle(),
+            )
         );
 	}
 
@@ -258,13 +267,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    $this->initAjax();
 	    	    
 		if (!($saleArticle = $this->_getSaleArticle()))
-		    return;
+		    return new ViewModel();
 
         $saleArticle->setIsHistory(true);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
 
@@ -308,15 +319,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$result[] = $item;
 	    }
 	    
-	    return array(
-	    	'result' => $result,
+	    return new ViewModel(
+	        array(
+    	    	'result' => $result,
+    	    )
 	    );
 	}
 	
 	public function sellProfAction()
 	{
 	    if (!($saleArticle = $this->_getSaleArticle()))
-	        return;
+	        return new ViewModel();
 	    
 	    $saleItem = new SaleItem(
 	        $saleArticle,
@@ -344,6 +357,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 	
 	public function typeaheadAction()
 	{
+	    $this->initAjax();
+	    
 	    $academicYear = $this->getAcademicYear();
         
         $articles = $this->getEntityManager()
@@ -358,8 +373,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+            	'result' => $result,
+            )
         );
 	}
     

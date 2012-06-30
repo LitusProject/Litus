@@ -376,7 +376,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			$result->status = $item->getStatus();
 			$result->locked = isset($this->_lockedItems[$item->getId()]);
 			if ($item->getPayDesk())
-			    $result->payDesk = $item->getPayDesk()->getCode();
+			    $result->payDesk = $item->getPayDesk()->getName();
 			$results[] = $result;
 		}
 		return $results;

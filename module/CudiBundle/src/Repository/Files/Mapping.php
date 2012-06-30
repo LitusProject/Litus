@@ -13,6 +13,26 @@ use CudiBundle\Entity\Article,
  */
 class Mapping extends EntityRepository
 {
+    public function findAllPrintableByArticle(Article $article, $isProf = false)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+        	->from('CudiBundle\Entity\Files\Mapping', 'm')
+        	->where(
+        	    $query->expr()->andX(
+        	        $query->expr()->eq('m.removed', 'false'),
+        	        $query->expr()->eq('m.printable', 'true'),
+        	        $query->expr()->eq('m.article', ':article'),
+        	        $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
+        	    )
+        	)
+        	->setParameter('article', $article->getId())
+        	->getQuery()
+        	->getResult();
+        	
+        return $resultSet;
+    }
+    
     public function findAllByArticle(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();

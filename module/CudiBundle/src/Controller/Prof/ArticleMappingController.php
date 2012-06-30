@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Entity\Prof\Action,
-    CudiBundle\Form\Prof\Mapping\Add as AddForm;
+    CudiBundle\Form\Prof\Mapping\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleMappingController
@@ -30,10 +31,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     public function addAction()
     {
         if (!($subject = $this->_getSubject()))
-            return;
+            return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return
+        	return new ViewModel();
             
         $form = new AddForm();
         
@@ -78,14 +79,17 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 	array(
                 		'action' => 'subject',
                 		'id' => $subject->getId(),
+                		'language' => $this->getLanguage()->getAbbrev(),
                 	)
                 );
 	        }
 	    }
             
-    	return array(
-    	    'subject' => $subject,
-    	    'form' => $form,
+    	return new ViewModel(
+    	    array(
+    	        'subject' => $subject,
+    	        'form' => $form,
+    	    )
     	);
     }
     
@@ -94,7 +98,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     	$this->initAjax();
     	
         if (!($mapping = $this->_getMapping()))
-            return;
+            return new ViewModel();
         
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
@@ -111,21 +115,23 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
         
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
     private function _getMapping()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return
+        	return;
         	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the mapping!'
     		    )
     		);
@@ -133,7 +139,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -152,7 +159,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No mapping with the given id was found!'
     		    )
     		);
@@ -160,7 +167,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -173,13 +181,13 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     private function _getSubject()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return
+        	return;
         	
         if (null === $this->getParam('id')) {
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the subject!'
     		    )
     		);
@@ -187,7 +195,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -206,7 +215,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No subject with the given id was found!'
     		    )
     		);
@@ -214,7 +223,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -232,7 +242,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the article!'
     		    )
     		);
@@ -240,7 +250,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -255,7 +266,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No article with the given id was found!'
     		    )
     		);
@@ -263,7 +274,8 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     		$this->redirect()->toRoute(
     			'prof_subject',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		

@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Admin\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
-    CudiBundle\Form\Admin\Prof\File\Confirm as FileForm;
+    CudiBundle\Form\Admin\Prof\File\Confirm as FileForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ActionController
@@ -35,9 +36,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllUncompleted(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -49,9 +52,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllCompleted(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -63,28 +68,32 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllRefused(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function viewAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
         
-        return array(
-            'action' => $action,
+        return new ViewModel(
+            array(
+                'action' => $action,
+            )
         );
     }
     
     public function refuseAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setRefused($this->getAuthentication()->getPersonObject());
         
@@ -110,7 +119,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function confirmAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
         
@@ -123,7 +132,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 		'id' => $action->getId(),
                 	)
                 );
-                return;
+                return new ViewModel();
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();
@@ -177,7 +186,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 		'id' => $action->getId(),
                 	)
                 );
-                return;
+                return new ViewModel();
             } else {
                 $action->getEntity()->setRemoved();
             }
@@ -201,12 +210,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         		'action' => 'completed'
         	)
         );
+        
+        return new ViewModel();
     }
     
     public function confirmArticleAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
             
@@ -240,7 +251,6 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     	->setIsOfficial($formData['official'])
                     	->setIsRectoVerso($formData['rectoverso'])
                     	->setFrontColor($frontPageColor)
-                    	->setFrontPageTextColored($formData['front_text_colored'])
                     	->setIsPerforated($formData['perforated']);
 				}
 				
@@ -256,19 +266,21 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    		'action' => 'completed'
         	    	)
         	    );
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
     public function confirmFileAction()
     {
         if (!($action = $this->_getAction()))
-            return;
+            return new ViewModel();
         
         $action->setEntityManager($this->getEntityManager());
             
@@ -294,12 +306,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    		'action' => 'completed'
         	    	)
         	    );
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     

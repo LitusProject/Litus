@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CudiBundle\Entity\Supplier,
     CudiBundle\Form\Admin\Supplier\Add as AddForm,
-    CudiBundle\Form\Admin\Supplier\Edit as EditForm;
+    CudiBundle\Form\Admin\Supplier\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * SupplierController
@@ -39,9 +40,11 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -83,19 +86,21 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-        	'form' => $form,
+        return new ViewModel(
+            array(
+        	    'form' => $form,
+        	)
         );
     }
     
     public function editAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return;
+        	return new ViewModel();
         
         $form = new EditForm($supplier);
         
@@ -130,12 +135,14 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-        	'form' => $form,
+        return new ViewModel(
+            array(
+        	    'form' => $form,
+        	)
         );
     }
     

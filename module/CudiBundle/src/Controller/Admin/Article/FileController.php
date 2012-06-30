@@ -22,7 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Form\Admin\Article\File\Add as AddForm,
 	CudiBundle\Form\Admin\Article\File\Edit as EditForm,
 	Zend\File\Transfer\Adapter\Http as FileUpload,
-	Zend\Http\Headers;
+	Zend\Http\Headers,
+	Zend\View\Model\ViewModel;
 
 /**
  * FileController
@@ -34,7 +35,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	public function manageAction()
 	{
 		if (!($article = $this->_getArticle()))
-		    return;
+		    return new ViewModel();
 		    
 		$saleArticle = $this->getEntityManager()
 		    ->getRepository('CudiBundle\Entity\Sales\Article')
@@ -55,13 +56,15 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		    )
 		);
         
-        return array(
-        	'form' => $form,
-        	'article' => $article,
-        	'saleArticle' => $saleArticle,
-        	'mappings' => $mappings,
-        	'uploadProgressName' => ini_get('session.upload_progress.name'),
-        	'uploadProgressId' => uniqid(),
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'article' => $article,
+            	'saleArticle' => $saleArticle,
+            	'mappings' => $mappings,
+            	'uploadProgressName' => ini_get('session.upload_progress.name'),
+            	'uploadProgressId' => uniqid(),
+            )
         );
 	}
 	
@@ -70,7 +73,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	    $this->initAjax();
 	    
 	    if (!($article = $this->_getArticle()))
-	        return;
+	        return new ViewModel();
 	    
 		$form = new AddForm();
 	    $formData = $this->getRequest()->post()->toArray();
@@ -102,15 +105,17 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     		$this->getEntityManager()->persist($file);
     		$this->getEntityManager()->flush();
     		
-    		return array(
-    		    'status' => 'success',
-    		    'info' => array(
-    		        'info' => (object) array(
-    		            'name' => $file->getName(),
-    		            'description' => $file->getDescription(),
-    		            'id' => $file->getId(),
-    		        )
-    		    ),
+    		return new ViewModel(
+    		    array(
+        		    'status' => 'success',
+        		    'info' => array(
+        		        'info' => (object) array(
+        		            'name' => $file->getName(),
+        		            'description' => $file->getDescription(),
+        		            'id' => $file->getId(),
+        		        ),
+        		    ),
+        		)
     		);
     	} else {
     	    $errors = $form->getErrors();
@@ -123,11 +128,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     	        }
     	    }
     	    
-    	    return array(
-    	        'status' => 'error',
-    	        'form' => array(
-    	            'errors' => $formErrors
-    	        ),
+    	    return new ViewModel(
+    	        array(
+        	        'status' => 'error',
+        	        'form' => array(
+        	            'errors' => $formErrors,
+        	        ),
+        	    ),
     	    );
     	}
 	}
@@ -135,7 +142,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 	public function editAction()
 	{
 	    if (!($mapping = $this->_getFileMapping()))
-	        return;
+	        return new ViewModel();
 	        
 	    $form = new EditForm($mapping);
 	    
@@ -164,14 +171,16 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
 	            
-	    return array(
-	        'form' => $form,
-	        'file' => $mapping->getFile(),
-	        'article' => $mapping->getArticle(),
+	    return new ViewModel(
+	        array(
+    	        'form' => $form,
+    	        'file' => $mapping->getFile(),
+    	        'article' => $mapping->getArticle(),
+    	    )
 	    );
 	}
 	
@@ -180,13 +189,15 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 					
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 
 		$this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
 		
-		return array(
-		    'result' => (object) array('status' => 'success'),
+		return new ViewModel(
+		    array(
+		        'result' => (object) array('status' => 'success'),
+		    )
 		);
 	}
 	
@@ -197,7 +208,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 			->getConfigValue('cudi.file_path');
 			
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 		
 		$file = $mapping->getFile();
 		
@@ -213,8 +224,10 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		$data = fread($handle, filesize($filePath . $file->getPath()));
 		fclose($handle);
 		
-		return array(
-			'data' => $data
+		return new ViewModel(
+		    array(
+    			'data' => $data,
+    		)
 		);
 	}
 	
@@ -222,15 +235,17 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
 
-        return array(
-            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+            )
         );
     }
     
     public function frontAction()
     {
         if (!($article = $this->_getSaleArticle()))
-            return;
+            return new ViewModel();
 		    
 		$file = new TmpFile();
 		$document = new FrontGenerator($this->getEntityManager(), $article, $file);
@@ -243,8 +258,10 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 		));
 		$this->getResponse()->setHeaders($headers);
 		
-		return array(
-			'data' => $file->getContent()
+		return new ViewModel(
+		    array(
+    			'data' => $file->getContent(),
+    		)
 		);
     }
     

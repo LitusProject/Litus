@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Entity\Comments\Comment,
-    CudiBundle\Form\Prof\Comment\Add as AddForm;
+    CudiBundle\Form\Prof\Comment\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -30,7 +31,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
@@ -66,17 +67,20 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 					array(
 						'action' => 'manage',
 						'id' => $article->getId(),
+						'language' => $this->getLanguage()->getAbbrev(),
 					)
 				);
 				
-				return;
+				return new ViewModel();
 			}
         }
                 
-    	return array(
-    	    'article' => $article,
-    	    'form' => $form,
-    	    'mappings' => $mappings
+    	return new ViewModel(
+    	    array(
+        	    'article' => $article,
+        	    'form' => $form,
+        	    'mappings' => $mappings,
+        	)
     	);
     }
     
@@ -85,7 +89,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         $this->initAjax();
         
         if (!($mapping = $this->_getCommentMapping()))
-    	    return;
+    	    return new ViewModel();
     	    
     	if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
     		return array(
@@ -96,8 +100,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     	$this->getEntityManager()->remove($mapping);
     	$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
@@ -109,7 +115,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the article!'
     		    )
     		);
@@ -117,7 +123,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -132,7 +139,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No article with the given id was found!'
     		    )
     		);
@@ -140,7 +147,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -156,7 +164,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the comment!'
     		    )
     		);
@@ -164,7 +172,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -179,7 +188,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No comment with the given id was found!'
     		    )
     		);
@@ -187,7 +196,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		

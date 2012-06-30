@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addElement($field);
          
         $field = new Text('author');
-        $field->setLabel('Author')
+        $field->setLabel('Authors')
 			->setAttrib('size', 60)
         	->setRequired();
         $this->addElement($field);
@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addElement($field);
          
         $field = new Text('year_published');
-        $field->setLabel('Year Published')
+        $field->setLabel('Publish Year')
         	->setRequired()
 			->addValidator('int')
         	->addValidator(new YearValidator());

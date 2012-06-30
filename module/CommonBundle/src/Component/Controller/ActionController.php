@@ -33,6 +33,11 @@ use CommonBundle\Component\Acl\Acl,
  */
 class ActionController extends \Zend\Mvc\Controller\ActionController implements AuthenticationAware, DoctrineAware
 {
+    /**
+     * @var \CommonBundle\Entity\General\Language
+     */
+    private $_language;
+
 	/**
      * Execute the request.
      * 
@@ -43,7 +48,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     public function execute(MvcEvent $e)
     {
     	$startExecutionTime = microtime(true);
-    
+
+		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->setCharset('utf-8');
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
         
@@ -70,19 +76,24 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 );
             }
         }
+        
+       	$this->initLocalization();
 		
 		$result = parent::execute($e);
-		
-        $result['flashMessenger'] = $this->flashMessenger();
-        
-        $result['authenticatedUser'] = $authenticatedUser;
-  		
-  		$result['environment'] = getenv('APPLICATION_ENV');
-  		$result['developmentInformation'] = array(
-  			'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
-  			'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
-  		);
-  		
+
+        $result->language = $this->getLanguage();
+        $result->languages = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+        $result->flashMessenger = $this->flashMessenger();
+        $result->authenticatedUser = $authenticatedUser;
+        $result->environment = getenv('APPLICATION_ENV');
+        $result->developmentInformation = array(
+        	'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
+        	'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
+        );
+        $result->setTerminal(true);
+  		  		
         $e->setResult($result);
         return $result;
     }
@@ -135,30 +146,85 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initViewHelpers()
     {
-    	$view = $this->getLocator()->get('view');
+    	$renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
+    	$renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
     	
     	// DateLocalized View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
     	);
     	
     	// GetParam View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
     	);
-    	$view->plugin('getParam')->setRouteMatch(
+    	$renderer->plugin('getParam')->setRouteMatch(
     		$this->getEvent()->getRouteMatch()
     	);
     	
     	// HasAccess View Helper
-    	$view->getEnvironment()->getBroker()->getClassLoader()->registerPlugin(
+    	$renderer->getBroker()->getClassLoader()->registerPlugin(
     		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
     	);		
-    	$view->plugin('hasAccess')->setDriver(
+    	$renderer->plugin('hasAccess')->setDriver(
     		new HasAccess(
     			$this->_getAcl(), $this->getAuthentication()
     		)
     	);
+    }
+        
+    /**
+     * Returns the language that is currently requested.
+     * 
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->_language)
+            return $this->_language;
+        
+        if ($this->getParam('language')) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getParam('language'));
+        }
+        
+        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
+        }
+        
+        if (!isset($language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+        
+        $this->_language = $language;
+        
+        return $language;
+    }
+    
+    
+    /**
+     * Initializes the localization
+     *
+     * @return void
+     */
+    protected function initLocalization()
+    {
+        $language = $this->getLanguage();
+
+        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+
+        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
+        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        
+        if ($this->getAuthentication()->isAuthenticated()) {
+        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
+        	$this->getEntityManager()->flush();
+        }
     }
     
     /**

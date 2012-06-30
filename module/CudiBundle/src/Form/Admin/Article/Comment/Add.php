@@ -19,7 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
-	Zend\Form\Element\TextArea;
+	Zend\Form\Element\Textarea;
 
 /**
  * Add Comment
@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
              
-        $field = new TextArea('text');
+        $field = new Textarea('text');
         $field->setLabel('Comment')
         	->setRequired()
         	->setDecorators(array(new FieldDecorator()));

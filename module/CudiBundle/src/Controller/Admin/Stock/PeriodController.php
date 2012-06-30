@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\PeriodValues\Start as StartValue;
+    CudiBundle\Entity\Stock\PeriodValues\Start as StartValue,
+    Zend\View\Model\ViewModel;
 
 /**
  * PeriodController
@@ -37,9 +38,11 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             )
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -88,13 +91,13 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         	)
         );
         
-        return;
+        return new ViewModel();
     }
     
     public function viewAction()
     {
         if (!($period = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $period->setEntityManager($this->getEntityManager());
             
@@ -105,17 +108,19 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
         
-        return array(
-            'period' => $period,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'period' => $period,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function searchAction()
     {
         if (!($period = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $period->setEntityManager($this->getEntityManager());
             
@@ -155,8 +160,10 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

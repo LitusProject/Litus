@@ -40,12 +40,12 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
 		
 		$result = parent::execute($e);
 				
-		$result['supplier'] = $this->getSupplier();
-		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
-		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
-		$result['loginForm'] = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
+		$result->supplier = $this->getSupplier();
+		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+		$result->authenticated = $this->getAuthentication()->isAuthenticated();
+		$result->loginForm = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
 		
-		$result['unionUrl'] = $this->getEntityManager()
+		$result->unionUrl = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('union_url');
   		

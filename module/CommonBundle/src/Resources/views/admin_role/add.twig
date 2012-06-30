@@ -6,15 +6,6 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-		{% if roleCreated %}
-			<div class="flashmessage success_message">
-				<div class="title">Success</div>
-				<div class="content">
-					<p>The role was successfully created!</p>
-				</div>
-			</div>
-		{% endif %}
-	
 		{% autoescape false %}
 	    	{{ form }}
 	    {% endautoescape %}

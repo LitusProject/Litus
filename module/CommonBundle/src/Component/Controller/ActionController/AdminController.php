@@ -40,9 +40,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 		    ->getRepository('CommonBundle\Entity\General\Language')
 		    ->findOneByAbbrev('en');
 		    
-		$result['language'] = $language;
-				
-		$result['now'] = array(
+		$result->language = $language;
+		$result->now = array(
 			'iso8601' => date('c', time()),
 			'display' => date('l, F j Y, H:i', time())
 		);
@@ -50,5 +49,27 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $e->setResult($result);
         
         return $result;
+    }
+    
+    /**
+     * Initializes the localization
+     *
+     * @return void
+     */
+    protected function initLocalization()
+    {
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+
+        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
+        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        
+        if ($this->getAuthentication()->isAuthenticated()) {
+        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
+        	$this->getEntityManager()->flush();
+        }
     }
 }

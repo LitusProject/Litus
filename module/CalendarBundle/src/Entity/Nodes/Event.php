@@ -9,7 +9,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="CalendarBundle\Repository\Nodes\Event")
- * @Table(name="nodes.event")
+ * @Table(name="nodes.events")
  */
 class Event extends \CommonBundle\Entity\Nodes\Node
 {

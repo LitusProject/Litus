@@ -22,7 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Prof\File\Add as AddForm,
     Doctrine\ORM\EntityManager,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Http\Headers;
+    Zend\Http\Headers,
+    Zend\View\Model\ViewModel;
 
 /**
  * FileController
@@ -34,7 +35,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     public function manageAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')
@@ -57,16 +58,19 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 array(
                     'action' => 'upload',
                     'id' => $article->getId(),
+                    'language' => $this->getLanguage()->getAbbrev(),
                 )
             )
         );
         
-        return array(
-        	'form' => $form,
-        	'article' => $article,
-        	'mappings' => $fileMappings,
-        	'uploadProgressName' => ini_get('session.upload_progress.name'),
-        	'uploadProgressId' => uniqid(),
+        return new ViewModel(
+            array(
+        	    'form' => $form,
+            	'article' => $article,
+            	'mappings' => $fileMappings,
+            	'uploadProgressName' => ini_get('session.upload_progress.name'),
+            	'uploadProgressId' => uniqid(),
+            )
         );
     }
     
@@ -77,7 +81,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 			->getConfigValue('cudi.file_path');
 			
 		if (!($mapping = $this->_getFileMapping()))
-		    return;
+		    return new ViewModel();
 		
 		$file = $mapping->getFile();
 		
@@ -93,8 +97,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 		$data = fread($handle, filesize($filePath . $file->getPath()));
 		fclose($handle);
 		
-		return array(
-			'data' => $data
+		return new ViewModel(
+		    array(
+			    'data' => $data,
+			)
 		);
 	}
 	
@@ -103,7 +109,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 	    $this->initAjax();
 
 	    if (!($article = $this->_getArticle()))
-	        return;
+	        return new ViewModel();
 	    
 		$form = new AddForm();
 	    $formData = $this->getRequest()->post()->toArray();
@@ -146,15 +152,17 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		
     		$this->getEntityManager()->flush();
     		
-    		return array(
-    		    'status' => 'success',
-    		    'info' => array(
-    		        'info' => (object) array(
-    		            'name' => $file->getName(),
-    		            'description' => $file->getDescription(),
-    		            'id' => $file->getId(),
-    		        )
-    		    ),
+    		return new ViewModel(
+    		    array(
+        		    'status' => 'success',
+        		    'info' => array(
+        		        'info' => (object) array(
+        		            'name' => $file->getName(),
+        		            'description' => $file->getDescription(),
+        		            'id' => $file->getId(),
+        		        )
+        		    ),
+    		    )
     		);
     	} else {
     	    $errors = $form->getErrors();
@@ -167,11 +175,13 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     	        }
     	    }
     	    
-    	    return array(
-    	        'status' => 'error',
-    	        'form' => array(
-    	            'errors' => $formErrors
-    	        ),
+    	    return new ViewModel(
+    	        array(
+        	        'status' => 'error',
+        	        'form' => array(
+        	            'errors' => $formErrors
+        	        ),
+        	    )
     	    );
     	}
 	}
@@ -180,8 +190,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
 
-        return array(
-            'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+            )
         );
     }
     
@@ -190,7 +202,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $this->initAjax();
         
         if (!($mapping = $this->_getFileMapping()))
-            return;
+            return new ViewModel();
             
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
@@ -207,8 +219,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         
         $this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array('status' => 'success'),
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
         );
     }
     
@@ -220,7 +234,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the article!'
     		    )
     		);
@@ -228,7 +242,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -243,7 +258,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No article with the given id was found!'
     		    )
     		);
@@ -251,7 +266,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -267,7 +283,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No id was given to identify the file!'
     		    )
     		);
@@ -275,7 +291,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		
@@ -290,7 +307,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->flashMessenger()->addMessage(
     		    new FlashMessage(
     		        FlashMessage::ERROR,
-    		        'Error',
+    		        'ERROR',
     		        'No file with the given id was found!'
     		    )
     		);
@@ -298,7 +315,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     		$this->redirect()->toRoute(
     			'prof_article',
     			array(
-    				'action' => 'manage'
+    				'action' => 'manage',
+    				'language' => $this->getLanguage()->getAbbrev(),
     			)
     		);
     		

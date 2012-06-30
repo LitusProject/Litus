@@ -9,14 +9,14 @@
     	</div>
     	<div class="span3 columns">
     	    {% if hasAccess('prof_comment', 'manage') %}
-        	    <h3>Comments</h3>
-        	    <p>View comments on this article and add one.</p>
-        	    <p><a href="{{ url("prof_comment", {"action": "manage", "id": article.getId()}) }}" class="btn">Comments</a></p>
+        	    <h3>{{ translator().translate('Comments') }}</h3>
+        	    <p>{{ translator().translate('View comments on this article and add one.') }}</p>
+        	    <p><a href="{{ url("prof_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translator().translate('Comments') }}</a></p>
         	{% endif %}
     	    {% if hasAccess('prof_file', 'manage') and article.isInternal() %}
-        	    <h3>Files</h3>
-        	    <p>Manage the files of this article.</p>
-        	    <p><a href="{{ url("prof_file", {"action": "manage", "id": article.getId()}) }}" class="btn">Files</a></p>
+        	    <h3>{{ translator().translate('Files') }}</h3>
+        	    <p>{{ translator().translate('Manage the files of this article.') }}</p>
+        	    <p><a href="{{ url("prof_file", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translator().translate('Files') }}</a></p>
         	{% endif %}
     	</div>
     </div>

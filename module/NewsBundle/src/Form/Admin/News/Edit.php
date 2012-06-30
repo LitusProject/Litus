@@ -21,7 +21,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Submit;
 
 /**
- * Edit a page.
+ * Edit News
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {

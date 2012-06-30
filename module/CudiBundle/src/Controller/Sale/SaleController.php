@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\QueueItem,
-	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm;
+	CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * SaleController
@@ -36,23 +37,27 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findAll();
         
-    	return array(
-    		'socketUrl' => $this->getSocketUrl(),
-    		'barcodePrefix' => $barcodePrefix,
-    		'payDesks' => $payDesks,
+    	return new ViewModel(
+    	    array(
+        		'socketUrl' => $this->getSocketUrl(),
+        		'barcodePrefix' => $barcodePrefix,
+        		'payDesks' => $payDesks,
+        	)
     	);
     }
     
     public function saveCommentAction()
     {
         if (!($queueItem = $this->_getQueueItem()))
-            return;
+            return new ViewModel();
 
         $queueItem->setComment($this->getRequest()->post()->get('comment'));
         $this->getEntityManager()->flush();
     
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
@@ -70,7 +75,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     		if ($form->isValid($formData)) {
     			$person = $this->getEntityManager()
     				->getRepository('CommonBundle\Entity\Users\Person')
-    				->findOneByUsername($formData['username']);
+    				->findOneById($formData['person_id']);
     				
     			$article = $this->getEntityManager()
     				->getRepository('CudiBundle\Entity\Sales\Article')
@@ -128,12 +133,14 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     				)
     			);
     			
-    			return;
+    			return new ViewModel();
     		}
     	}
     	
-    	return array(
-    		'form' => $form,
+    	return new ViewModel(
+    	    array(
+    		    'form' => $form,
+    		)
     	);
     }
     

@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Discounts\Discount,
-    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm;
+    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * DiscountController
@@ -29,7 +30,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     public function manageAction()
     {
         if (!($article = $this->_getSaleArticle()))
-            return;
+            return new ViewModel();
         
         $form = new AddForm($article, $this->getEntityManager());
         
@@ -73,7 +74,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
@@ -81,10 +82,12 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findByArticle($article);
                     
-        return array(
-        	'article' => $article,
-        	'discounts' => $discounts,
-        	'form' => $form,
+        return new ViewModel(
+            array(
+            	'article' => $article,
+            	'discounts' => $discounts,
+            	'form' => $form,
+            )
         );
     }
 
@@ -93,13 +96,15 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 	    $this->initAjax();
 	    	    
 		if (!($discount = $this->_getDiscount()))
-		    return;
+		    return new ViewModel();
         
         $this->getEntityManager()->remove($discount);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
     

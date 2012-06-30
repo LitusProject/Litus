@@ -2,7 +2,7 @@
 
 {% block content %}
 	<div class="page-header">
-	    <h2>Add Article</h2>
+	    <h2>{{ translator().translate('Add Article') }}</h2>
 	</div>
 	{% autoescape false %}
 	    {{ form }}
@@ -17,7 +17,7 @@
 			
 			$('#subjectSearch').typeaheadRemote(
 			    {
-			        source: '{{ url("prof_subject_typeahead")}}',
+			        source: '{{ url("prof_subject_typeahead", {"language": language.getAbbrev()})}}',
 			    }
 			).change(function (e) {
 			    if ($(this).data('value')) {
