@@ -1,6 +1,6 @@
 [submodule "vendor/ZendFramework"]
 	path = vendor/ZendFramework
-	url = git://github.com/zendframework/zf2.git
+	url = git@github.com:LitusProject/zf2.git
 [submodule "vendor/ZfTwig"]
 	path = vendor/ZfTwig
 	url = git@github.com:LitusProject/ZfTwig.git

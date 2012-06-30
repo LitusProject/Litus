@@ -33,7 +33,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		//$this->getLocator()->get('view')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
+		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
 		
 		$result = parent::execute($e);
 		
@@ -46,13 +46,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 			)
 		);
 		
-		$result->setVariables(
-		    array(
-		        //'authenticatedUserObject' => $this->getAuthentication()->getPersonObject(),
-		        //'authenticated' => $this->getAuthentication()->isAuthenticated(),
-		        'loginForm' =>$loginForm,
-		    )
-		);
+		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+		$result->authenticated = $this->getAuthentication()->isAuthenticated();
+		$result->loginForm = $loginForm;
   		
         $e->setResult($result);
         

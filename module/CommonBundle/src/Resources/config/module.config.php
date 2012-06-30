@@ -38,7 +38,6 @@ return array(
             	'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
                 'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
-                'view'                             => 'Zend\View\View',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
