@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\Deliveries\Delivery,
-	CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm;
+	CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * DeliveryController
@@ -41,10 +42,12 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 		
-		return array(
-			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'paginator' => $paginator,
+    			'paginationControl' => $this->paginator()->createControl(true),
+    			'suppliers' => $suppliers,
+    		)
 		);
 	}
 	
@@ -67,11 +70,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 	    	->getRepository('CudiBundle\Entity\Supplier')
 	    	->findAll();
 	    
-	    return array(
-	    	'supplier' => $supplier,
-	    	'paginator' => $paginator,
-	    	'paginationControl' => $this->paginator()->createControl(),
-	    	'suppliers' => $suppliers,
+	    return new ViewModel(
+	        array(
+    	    	'supplier' => $supplier,
+    	    	'paginator' => $paginator,
+    	    	'paginationControl' => $this->paginator()->createControl(),
+    	    	'suppliers' => $suppliers,
+    	    )
 	    );
 	}	
 	
@@ -124,11 +129,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'form' => $form,
-        	'deliveries' => $deliveries,
-        	'suppliers' => $suppliers,
-        	'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'deliveries' => $deliveries,
+            	'suppliers' => $suppliers,
+            	'currentAcademicYear' => $academicYear,
+            )
         );
 	}
 	
@@ -143,8 +150,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 		$this->getEntityManager()->remove($delivery);
 		$this->getEntityManager()->flush();
 		
-		return array(
-		    'result' => (object) array("status" => "success")
+		return new ViewModel(
+		    array(
+		        'result' => (object) array("status" => "success"),
+		    )
 		);
 	}
 	
@@ -170,8 +179,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
 	

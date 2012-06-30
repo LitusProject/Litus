@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Entity\Comments\Comment,
-    CudiBundle\Form\Prof\Comment\Add as AddForm;
+    CudiBundle\Form\Prof\Comment\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -74,10 +75,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 			}
         }
                 
-    	return array(
-    	    'article' => $article,
-    	    'form' => $form,
-    	    'mappings' => $mappings
+    	return new ViewModel(
+    	    array(
+        	    'article' => $article,
+        	    'form' => $form,
+        	    'mappings' => $mappings,
+        	)
     	);
     }
     
@@ -97,8 +100,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     	$this->getEntityManager()->remove($mapping);
     	$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     

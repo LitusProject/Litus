@@ -47,11 +47,11 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		    ->getRepository('CommonBundle\Entity\General\Language')
 		    ->findOneByAbbrev('en');
 		    
-		$result['language'] = $language;
+		$result->language = $language;
 		
-		$result['session'] = $session;
+		$result->session = $session;
 		
-		$result['unionUrl'] = $this->getEntityManager()
+		$result->unionUrl = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('union_url');
   		

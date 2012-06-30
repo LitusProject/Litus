@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Entity\Prof\Action,
-    CudiBundle\Form\Prof\Mapping\Add as AddForm;
+    CudiBundle\Form\Prof\Mapping\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleMappingController
@@ -84,9 +85,11 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
 	        }
 	    }
             
-    	return array(
-    	    'subject' => $subject,
-    	    'form' => $form,
+    	return new ViewModel(
+    	    array(
+    	        'subject' => $subject,
+    	        'form' => $form,
+    	    )
     	);
     }
     
@@ -112,8 +115,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
         
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     

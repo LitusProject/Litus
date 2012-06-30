@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
-    CudiBundle\Form\Admin\Article\Mapping\Add as AddForm;
+    CudiBundle\Form\Admin\Article\Mapping\Add as AddForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * SubjectMapController
@@ -81,12 +82,14 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
             
-        return array(
-            'academicYears' => $academicYears,
-            'currentAcademicYear' => $academicYear,
-            'form' => $form,
-            'article' => $article,
-        	'mappings' => $mappings,
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+                'article' => $article,
+            	'mappings' => $mappings,
+            )
         );
     }
     
@@ -100,8 +103,10 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         $this->getEntityManager()->remove($mapping);
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     

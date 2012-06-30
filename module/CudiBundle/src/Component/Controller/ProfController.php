@@ -40,11 +40,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
 		$result = parent::execute($e);
 				
-		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
-		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
-		$result['loginForm'] = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
+		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+		$result->authenticated = $this->getAuthentication()->isAuthenticated();
+		$result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
 		
-		$result['unionUrl'] = $this->getEntityManager()
+		$result->unionUrl = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('union_url');
   		

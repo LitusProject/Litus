@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
-    Zend\Mail\Message;
+    Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * MailController
@@ -54,9 +55,11 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     $mailTransport->send($mail);
                
                 
-                return array(
-                    'status' => 'success',
-                    'result' => (object) array("status" => "success")
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'result' => (object) array("status" => "success"),
+                    )
                 );
             } else {
                 $errors = $form->getErrors();
@@ -69,17 +72,21 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     }
                 }
                 
-                return array(
-                    'status' => 'error',
-                    'form' => array(
-                        'errors' => $formErrors
-                    ),
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $formErrors
+                        ),
+                    )
                 );
             }
         }
         
-        return array(
-            'result' => (object) array("status" => "error")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "error")
+            )
         );
     }
 }

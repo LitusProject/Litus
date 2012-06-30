@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
-    SyllabusBundle\Entity\StudentEnrollment;
+    SyllabusBundle\Entity\StudentEnrollment,
+    Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -36,9 +37,11 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
         
-    	return array(
-    	    'subjects' => $subjects,
-            'academicYear' => $academicYear,
+    	return new ViewModel(
+    	    array(
+        	    'subjects' => $subjects,
+                'academicYear' => $academicYear,
+            )
     	);
     }
     
@@ -105,12 +108,14 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         	}
         }
         
-        return array(
-            'subject' => $subject,
-            'academicYear' => $academicYear,
-            'articleMappings' => $articleMappings,
-            'profMappings' => $profMappings,
-            'enrollmentForm' => $enrollmentForm,
+        return new ViewModel(
+            array(
+                'subject' => $subject,
+                'academicYear' => $academicYear,
+                'articleMappings' => $articleMappings,
+                'profMappings' => $profMappings,
+                'enrollmentForm' => $enrollmentForm,
+            )
         );
     }
     
@@ -131,8 +136,10 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

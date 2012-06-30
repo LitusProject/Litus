@@ -16,7 +16,14 @@ return array(
                 		'syllabusbundle' => __DIR__ . '/../../Entity',
                 	),
                 ),
-            ), 
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'syllabus_views' => __DIR__ . '/../views',
+                    ),
+                ),
+            ),
             
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(

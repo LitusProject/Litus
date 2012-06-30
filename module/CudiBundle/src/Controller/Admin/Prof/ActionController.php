@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Admin\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\History,
     CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
-    CudiBundle\Form\Admin\Prof\File\Confirm as FileForm;
+    CudiBundle\Form\Admin\Prof\File\Confirm as FileForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ActionController
@@ -35,9 +36,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllUncompleted(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -49,9 +52,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllCompleted(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -63,9 +68,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	    ->findAllRefused(),
             $this->getParam('page')
         );
-        return array(
-            'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
@@ -76,8 +83,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         
         $action->setEntityManager($this->getEntityManager());
         
-        return array(
-            'action' => $action,
+        return new ViewModel(
+            array(
+                'action' => $action,
+            )
         );
     }
     
@@ -259,8 +268,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	}
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
@@ -297,8 +308,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         	}
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     

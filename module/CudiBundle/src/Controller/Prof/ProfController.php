@@ -17,7 +17,8 @@ namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Prof\Prof\Add as AddForm,
-    SyllabusBundle\Entity\SubjectProfMap;
+    SyllabusBundle\Entity\SubjectProfMap,
+    Zend\View\Model\ViewModel;
 
 /**
  * ProfController
@@ -73,9 +74,11 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 	        }
 	    }
         
-        return array(
-            'subject' => $subject,
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'subject' => $subject,
+                'form' => $form,
+            )
         );
     }
     
@@ -95,8 +98,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         $this->getEntityManager()->remove($mapping);
     	$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
     }
     
@@ -119,8 +124,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
