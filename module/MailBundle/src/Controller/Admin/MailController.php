@@ -18,6 +18,8 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    MailBundle\Form\Admin\Mail\Mail as MailForm,
+    Zend\Mail\Message,
 	Zend\View\Model\ViewModel;
 
 /**
@@ -27,8 +29,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */	
 class MailController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-	public function manageAction()
-	{	
+	public function groupsAction()
+	{
+	    $headers = get_headers('http://www.kuleuven.be/wieiswie/nl/person/00049892/photo');
+	    if ($headers[0] != 'HTTP/1.1 404 Not Found')
+	    file_get_contents('http://www.kuleuven.be/wieiswie/nl/person/00049892/photo');
 	    return new ViewModel(
 	        array(
     	    	'university' => UniversityStatus::$possibleStatuses,
@@ -39,7 +44,125 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 	
 	public function sendAction()
 	{
-	    return new ViewModel();
+	    if (!($type = $this->_getType()))
+	        return new ViewModel();
+	    
+	    if ('organization' == $type) {
+	        if (!($status = $this->_getOrganizationStatus()))
+	            return new ViewModel();
+	        $statuses = OrganizationStatus::$possibleStatuses;
+	    } else {
+	        if (!($status = $this->_getUniversityStatus()))
+	            return new ViewModel();
+	        $statuses = UniversityStatus::$possibleStatuses;
+	    }
+	    
+	    $form = new MailForm();
+	    
+	    if($this->getRequest()->isPost()) {
+	        $formData = $this->getRequest()->post()->toArray();
+	    	
+	    	if ($form->isValid($formData)) {
+	    	    $mailAddress = $this->getEntityManager()
+	    	    	->getRepository('CommonBundle\Entity\General\Config')
+	    	    	->getConfigValue('system_mail_address');
+	    	    	
+	    	    $mailName = $this->getEntityManager()
+	    	    	->getRepository('CommonBundle\Entity\General\Config')
+	    	    	->getConfigValue('system_mail_name');
+	    	    	
+	    	    $mail = new Message();
+	    	    $mail->setBody($formData['message'])
+	    	    	->setFrom($mailAddress, $mailName)
+	    	    	->setSubject($formData['subject']);
+	    	    	
+	    	    if ('organization' == $type) {
+	    	        $persons = $this->getEntityManager()
+	    	            ->getRepository('CommonBundle\Entity\Users\Statuses\Organization')
+	    	            ->findAllByStatus($status, $this->getCurrentAcademicYear());
+	    	    } else {
+	    	        $persons = $this->getEntityManager()
+	    	            ->getRepository('CommonBundle\Entity\Users\Statuses\University')
+	    	            ->findAllByStatus($status, $this->getCurrentAcademicYear());
+	    	    }
+	    	    
+	    	    foreach($persons as $person)
+	    	        $mail->addTo($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
+	    	    
+	    	    if ('production' == getenv('APPLICATION_ENV'))
+	    	        $mailTransport->send($mail);
+	    	    
+	    	    $this->flashMessenger()->addMessage(
+	    	        new FlashMessage(
+	    	            FlashMessage::SUCCESS,
+	    	            'Success',
+	    	            'The mail was successfully send!'
+	    	        )
+	    	    );
+
+	    	    $this->redirect()->toRoute(
+	    	    	'admin_mail',
+	    	    	array(
+	    	    		'action' => 'groups'
+	    	    	)
+	    	    );
+	    	    
+	    	    return new ViewModel();
+	    	}
+	    }
+	    
+	    return new ViewModel(
+	        array(
+	            'type' => $type,
+	            'status' => $statuses[$status],
+	            'form' => $form,
+	        )
+	    );
+	}
+	
+	private function _getType()
+	{
+	    if (null === $this->getParam('type')) {
+	    	$this->flashMessenger()->addMessage(
+	    	    new FlashMessage(
+	    	        FlashMessage::ERROR,
+	    	        'Error',
+	    	        'No university status given to send a mail to!'
+	    	    )
+	    	);
+	    	
+	    	$this->redirect()->toRoute(
+	    		'admin_mail',
+	    		array(
+	    			'action' => 'groups'
+	    		)
+	    	);
+	    	
+	    	return;
+	    };
+	    
+	    $type = $this->getParam('type');
+	    
+	    if ('organization' != $type && 'university' != $type) {
+	        $this->flashMessenger()->addMessage(
+	            new FlashMessage(
+	                FlashMessage::ERROR,
+	                'Error',
+	                'No university status given to send a mail to!'
+	            )
+	        );
+	        
+	        $this->redirect()->toRoute(
+	        	'admin_mail',
+	        	array(
+	        		'action' => 'groups'
+	        	)
+	        );
+	        
+	        return;
+	    }
+	    
+	    return $type;
 	}
     
     private function _getUniversityStatus()
@@ -56,7 +179,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 			$this->redirect()->toRoute(
 				'admin_mail',
 				array(
-					'action' => 'manage'
+					'action' => 'groups'
 				)
 			);
 			
@@ -77,14 +200,14 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 			$this->redirect()->toRoute(
 				'admin_mail',
 				array(
-					'action' => 'manage'
+					'action' => 'groups'
 				)
 			);
 			
 			return;
 		}
 		
-		return $user;
+		return $status;
 	}    
 	
 	private function _getOrganizationStatus()
@@ -101,7 +224,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 			$this->redirect()->toRoute(
 				'admin_mail',
 				array(
-					'action' => 'manage'
+					'action' => 'groups'
 				)
 			);
 			
@@ -122,13 +245,13 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 			$this->redirect()->toRoute(
 				'admin_mail',
 				array(
-					'action' => 'manage'
+					'action' => 'groups'
 				)
 			);
 			
 			return;
 		}
 		
-		return $user;
+		return $status;
 	}
 }
