@@ -1,0 +1,54 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_mail/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    <h1>Organization</h1>
+    
+	<div id="controller_action">
+	    <table class="full_width">
+	    
+	        <tr>
+	            <th>Group</th>
+	    		<th width="200px">Actions</th>
+	        </tr>
+	        
+	        {% for key,group in organization %}
+	            <tr>
+	                <td>{{ group }}</td>
+	    			<td>
+	    			    {% if hasAccess('admin_mail', 'send') %}
+	    				    <a href="{{ url('admin_mail', {"action": "send", "group": key, "type": 'organization'}) }}" class="mail_send">Send Mail</a>
+	    				{% endif %}
+	    			</td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+	</div>
+	<br class="clear">
+	
+	<h1>University</h1>
+	
+	<div id="controller_action">
+	    <table class="full_width">
+	    
+	        <tr>
+	            <th>Group</th>
+	    		<th width="200px">Actions</th>
+	        </tr>
+	        
+	        {% for key,group in university %}
+	            <tr>
+	                <td>{{ group }}</td>
+	    			<td>
+	    			    {% if hasAccess('admin_mail', 'send') %}
+	    				    <a href="{{ url('admin_mail', {"action": "send", "group": key, "type": 'university'}) }}" class="mail_send">Send Mail</a>
+	    				{% endif %}
+	    			</td>
+	            </tr>
+	        {% endfor %}
+	    </table>
+	</div>
+{% endblock %}

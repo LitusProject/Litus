@@ -13,14 +13,13 @@
  * @license http://litus.cc/LICENSE
  */
  
-return function ($class) {
-    static $map;
-    if (!$map) {
-        $map = include __DIR__ . '/autoload_classmap.php';
-    }
-
-    if (!isset($map[$class])) {
-        return false;
-    }
-    return include $map[$class];
-};
+return array(
+	'controllers'  => array(
+	    'admin_mail' => array(
+	    	'@common_jquery',
+	    	'@admin_css',
+	    	'@admin_js',
+	    ),
+	),
+	'routes' => array(),
+);

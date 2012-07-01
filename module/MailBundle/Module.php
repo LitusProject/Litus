@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace NewsBundle;
+namespace MailBundle;
 
 use Zend\Module\Manager,
 	Zend\EventManager\Event,
