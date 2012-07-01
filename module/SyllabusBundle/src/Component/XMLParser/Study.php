@@ -19,6 +19,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
     Doctrine\ORM\EntityManager,
     SimpleXMLElement,
@@ -291,24 +292,27 @@ class Study
                 
                 $prof->activate($this->getEntityManager(), $this->_mailTransport);
                 
-                file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
-                $finfo = new \finfo;
-                $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);   
-                $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
-                
-                if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
-                    $filePath = $this->getEntityManager()
-                    	->getRepository('CommonBundle\Entity\General\Config')
-                    	->getConfigValue('common.profile_path');
-                    	
-                    $fileName = '';
-                    do{
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
+                $headers = get_headers($info['photo']);
+                if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+                    file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
+                    $finfo = new \finfo;
+                    $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);   
+                    $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
                     
-                    file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
-                    unlink('/tmp/' . $identification);
-                    $prof->setPhotoPath($fileName);
+                    if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
+                        $filePath = $this->getEntityManager()
+                        	->getRepository('CommonBundle\Entity\General\Config')
+                        	->getConfigValue('common.profile_path');
+                        	
+                        $fileName = '';
+                        do{
+                            $fileName = '/' . sha1(uniqid());
+                        } while (file_exists($filePath . $fileName));
+                        
+                        file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
+                        unlink('/tmp/' . $identification);
+                        $prof->setPhotoPath($fileName);
+                    }
                 }
                 
                 $this->getEntityManager()->persist($prof);

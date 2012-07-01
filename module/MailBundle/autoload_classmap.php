@@ -3,4 +3,5 @@
 return array(
     'MailBundle\Module'                          => __DIR__ . '/Module.php',
     'MailBundle\Controller\Admin\MailController' => __DIR__ . '/src/Controller/Admin/MailController.php',
+    'MailBundle\Form\Admin\Mail\Mail'            => __DIR__ . '/src/Form/Admin/Mail/Mail.php',
 );

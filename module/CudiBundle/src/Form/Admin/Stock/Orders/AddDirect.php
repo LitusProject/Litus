@@ -27,7 +27,7 @@ class AddDirect extends Add
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($entityManager, $options);
-
+        
         $this->removeElement('article_id');
         $this->removeElement('article');
 		$this->getElement('submit')

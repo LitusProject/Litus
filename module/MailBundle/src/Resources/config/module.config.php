@@ -40,7 +40,7 @@ return array(
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_mail',
-                                    'action'     => 'manage',
+                                    'action'     => 'groups',
                                 ),
                             ),
                         ),
