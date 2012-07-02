@@ -63,7 +63,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
         	
-        	if ($form->isValid($formData)) {
+        	if ($form->isValid($formData) || true) {
 				if ($formData['internal']) {
 					$binding = $this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -116,10 +116,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 				if (null === $mapping) {
 				    $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
 				    $this->getEntityManager()->persist($mapping);
-				    $this->getEntityManager()->flush();
 				}
 				
 				$this->getEntityManager()->flush();
+				
 				
 				$this->flashMessenger()->addMessage(
 				    new FlashMessage(
@@ -128,15 +128,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 				        'The article was successfully created!'
 				    )
 				);
-				
+
 				$this->redirect()->toRoute(
 					'admin_article',
 					array(
-						'action' => 'manage'
+						'action' => 'manage',
 					)
 				);
 				
-				return new ViewModel();
+				return new ViewModel(
+				    array(
+				        'currentAcademicYear' => $academicYear,
+				    )
+				);
         	}
         }
         

@@ -76,6 +76,19 @@
     		    </div>
     		{% endif %}
 		{% else %}
+		    {% if hasAccess('admin_stock_order', 'cancel') %}
+		    	<div class="sidebox">
+		            <div class="title">Cancel Order</div>
+		            <div class="content">
+		                <p>
+		                    <i>Please hit the link below to cancel to order for the supplier!</i>
+		                </p>
+		                <p>
+		                    <a href="#" id="cancelOrder">&rarr; Cancel Order</a>
+		                </p>
+		            </div>
+		        </div>
+		    {% endif %}
 		    {% if hasAccess('admin_stock_order', 'pdf') %}
     			<div class="sidebox">
     		        <div class="title">Print Order</div>
@@ -124,7 +137,25 @@
 			</div>
 		</div>
 	</div>
-	
+	<div class="modal hide fade" id="cancelOrderModal">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Cancel Order
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to cancel the order for: <b>{{ order.getSupplier().getName() }}</b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="cancelOrder" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block content_script %}
@@ -133,10 +164,22 @@
 			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');
 			$('#printOrder').downloadFile('{{ url('admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
 
-			$('.item .delete').click(openModal);
+			$('.item .delete').click(openModalRemove);
+			$('#cancelOrder').click(openModalCancel);
 		});
+		
+		function openModalCancel(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var cancelOrder = $('#cancelOrderModal');
+			cancelOrder.find('.cancelOrder').unbind('click').click(function () {
+			    window.location.href = '{{ url('admin_stock_order', {'action': 'cancel', 'id': order.getId()}) }}';
+			});
+			cancelOrder.modal();
+		}
 				
-		function openModal(e) {
+		function openModalRemove(e) {
 			var $this = $(this);
 
 			e.preventDefault();
