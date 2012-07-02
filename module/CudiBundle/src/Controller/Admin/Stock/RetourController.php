@@ -118,6 +118,12 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 						'id'     => $article->getSupplier()->getId(),
 					)
 				);
+				
+				return new ViewModel(
+				    array(
+				    	'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         

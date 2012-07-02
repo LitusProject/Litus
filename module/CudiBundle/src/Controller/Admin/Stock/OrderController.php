@@ -119,7 +119,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 					->getRepository('CudiBundle\Entity\Stock\Orders\Order')
 					->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 				
-				$this->getEntityManager()->flush();	
+				//$this->getEntityManager()->flush();	
 				
 				$this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -137,7 +137,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 					)
 				);
 				
-				return new ViewModel();
+				return new ViewModel(
+				    array(
+				        'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         
@@ -195,6 +199,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 				'id' => $order->getId(),
 			)
 		);
+		
+		return new ViewModel();
 	}
 	
 	public function pdfAction()
@@ -246,6 +252,28 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			    'data' => $data,
 			)
 		);
+	}
+	
+	public function cancelAction()
+	{
+		if (!($order = $this->_getOrder()))
+		    return new ViewModel();
+		    
+		$order->cancel();
+		
+		$this->getEntityManager()->flush();
+		    
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'The order was successfully canceled!'
+		    )
+		);
+		
+		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return new ViewModel();
 	}
 	
 	private function _getSupplier()

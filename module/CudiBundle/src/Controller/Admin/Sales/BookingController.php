@@ -122,7 +122,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 				);
                  
                 $this->getEntityManager()->persist($booking);
-                $this->getEntityManager()->flush();
+                //$this->getEntityManager()->flush();
                 
 				$this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -139,7 +139,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return new ViewModel();
+				return new ViewModel(
+				    array(
+				        'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         

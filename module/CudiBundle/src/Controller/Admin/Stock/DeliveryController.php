@@ -116,6 +116,12 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 						'id'     => $article->getSupplier()->getId(),
 					)
 				);
+				
+				return new ViewModel(
+				    array(
+				    	'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         
