@@ -418,6 +418,31 @@ class Booking extends EntityRepository
     	return null;
     }
     
+    
+    
+    public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        			$query->expr()->eq('b.article', ':article'),
+        			$query->expr()->eq('b.number', ':number'),
+        			$query->expr()->eq('b.status', ':status')
+        		)
+        	)
+        	->setParameter('number', $number)
+        	->setParameter('status', 'sold')
+        	->setParameter('article', $article->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+    }
+    
     public function assignAll(Transport $mailTransport)
     {
         $period = $this->getEntityManager()
