@@ -36,6 +36,15 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 			)
 		);
 	}
+	
+	public function screenAction()
+	{
+	    return new ViewModel(
+		    array(
+			    'socketUrl' => $this->getSocketUrl(),
+			)
+		);
+	}
 
     public function signInAction()
 	{

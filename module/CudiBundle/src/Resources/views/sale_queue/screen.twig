@@ -1,0 +1,121 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+	{{ headTitle('Litus Sale', 'PREPEND') }}
+	
+	{{ headLink() }}   
+</head>
+
+<body>
+
+<div class="container">
+	{% include 'sale/partials/flashMessenger.twig' %}
+	
+	<div class="flashmessage alert alert-error fade" id="loading_queue_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while loading the queue.</p>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Selling</th>
+					</tr>
+				</thead>
+				<tbody class="queue_list" id="selling_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Collected</th>
+					</tr>
+				</thead>
+				<tbody class="queue_list" id="collected_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Collecting</th>
+					</tr>
+				</thead>
+				<tbody class="queue_list" id="collecting_list">
+				</tbody>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Signed In</th>
+					</tr>
+				</thead>
+				<tbody class="queue_list" id="signed_in_list">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+	
+{{ inlineScript() }}
+
+{% block content_script %}
+    <script type="text/javascript">
+    	$.webSocket(
+    		{
+    			name: 'overviewQueue',
+    			url: '{{ socketUrl }}',
+    			open: function (e) {
+    				$('#loading_queue_error').removeClass('in');
+    				$.webSocket('send', {name: 'overviewQueue', text: 'initialize: {"queueType": "fullQueue", "session": "{{ session.getId() }}" }'});
+    			},
+    			message: function (e, data) {
+    				$('#loading_queue_error').removeClass('in');
+    				displayItem($('#signed_in_list'), data.queue.signed_in);
+    				displayItem($('#collecting_list'), data.queue.collecting);
+    				displayItem($('#collected_list'), data.queue.collected);
+    				displayItem($('#selling_list'), data.queue.selling);
+    			},
+    			error: function (e) {
+    				$('#loading_queue_error').addClass('in');
+    				$('.queue_list').html('');
+    			}
+    		}
+    	);
+    	
+    	function displayItem(container, data) {
+    		container.html('');
+    		$(data).each(function () {
+    			var item = $('<tr>').append(
+    					$('<td>').html(this.number),
+    					$('<td>').append(
+    					    (this.name ? this.name : 'guest ' + this.id),
+    					    ' ',
+    					    (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
+    					)
+    				);
+    			container.append(item);
+    		});
+    	}
+    </script>
+{% endblock %}
+
+</body>
+</html>

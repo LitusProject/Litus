@@ -293,7 +293,7 @@ VTK Cudi
 	                    'manage', 'subject', 'typeahead'
 	                ),
 	                'sale_queue' => array(
-	                    'overview', 'signin'
+	                    'overview', 'screen', 'signin'
 	                ),
 	                'sale_sale' => array(
 	                    'return', 'sale', 'saveComment'
