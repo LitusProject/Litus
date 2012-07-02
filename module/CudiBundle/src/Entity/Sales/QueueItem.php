@@ -290,7 +290,7 @@ class QueueItem
      */
     public function setPayMethod($payMethod)
     {
-        if (!self::isValidPayMethod($payMethod))
+        if (!self::isValidPayMethod($payMethod) && $payMethod !== null)
         	throw new \InvalidArgumentException('The pay method is not valid.');
         	
         $this->payMethod = $payMethod;
