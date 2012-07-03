@@ -75,6 +75,7 @@ class Organization
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
      * @param string $status The actual status value
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)

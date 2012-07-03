@@ -74,6 +74,7 @@ class University
     /**
      * @param \CommonBundle\Entity\Users\People\Academic $person The person that should be given the status
      * @param string $status The status that should be given to the person
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
