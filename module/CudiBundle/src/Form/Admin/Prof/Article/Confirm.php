@@ -76,7 +76,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         
         $field = new Text('isbn');
         $field->setLabel('ISBN')
-        	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator('isbn');
         $this->addElement($field);

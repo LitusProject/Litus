@@ -134,7 +134,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         	        'form' => array(
         	            'errors' => $formErrors,
         	        ),
-        	    ),
+        	    )
     	    );
     	}
 	}

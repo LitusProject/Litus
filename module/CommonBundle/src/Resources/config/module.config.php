@@ -428,7 +428,7 @@ return array(
                     	'admin_academic' => array(
                     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
                     	    'options' => array(
-                    	        'route'    => '/admin/academic[/:action[/:id]][/page/:page][/:field/:string]',
+                    	        'route'    => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
                     	        'constraints' => array(
                     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     	        	'id'      => '[0-9]*',
@@ -495,7 +495,7 @@ return array(
                     	'admin_role' => array(
                     	    'type'    => 'Zend\Mvc\Router\Http\Segment',
                     	    'options' => array(
-                    	        'route'    => '/admin/role[/:action[/name:name]][/page/:page]',
+                    	        'route'    => '/admin/role[/:action[/name:name][/page/:page]]',
                     	        'constraints' => array(
                     	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',

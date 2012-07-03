@@ -114,6 +114,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         		'action' => 'refused'
         	)
         );
+        
+        return new ViewModel();
     }
     
     public function confirmAction()
@@ -165,7 +167,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         ->setIsPerforated($duplicate->isPerforated());
             	}
                 
-                $history = new History($this->getEntityManager(), $current, $edited);
+                $history = new History($current, $edited);
                 $this->getEntityManager()->persist($history);
                 
                 $action->setEntityId($current->getId())
