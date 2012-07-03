@@ -55,7 +55,7 @@ return array(
                         'admin_study' => array(
                         	'type'    => 'Zend\Mvc\Router\Http\Segment',
                         	'options' => array(
-                        		'route' => '/admin/syllabus/study[/:action[/:id]][/:academicyear][/page/:page][/:field/:string]',
+                        		'route' => '/admin/syllabus/study[/:action[/:id][/page/:page][/:field/:string]][/:academicyear]',
                         		'constraints' => array(
                         			'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         			'id'           => '[0-9]*',

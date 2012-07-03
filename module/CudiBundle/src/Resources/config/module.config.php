@@ -308,7 +308,7 @@ return array(
 			        	'admin_sales_session' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/sales/session[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/sales/session[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -323,7 +323,7 @@ return array(
 			        	'admin_sales_financial' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/sales/financial[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/sales/financial[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -338,7 +338,7 @@ return array(
 			        	'admin_supplier' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/supplier[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/supplier[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -353,7 +353,7 @@ return array(
 			        	'admin_supplier_user' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/supplier/user[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/supplier/user[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -368,7 +368,7 @@ return array(
 			        	'admin_stock' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/stock[/:action[/:id][/:field/:string]][/page/:page]',
+			        			'route' => '/admin/stock[/:action[/:id][/:field/:string][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -385,7 +385,7 @@ return array(
 			        	'admin_stock_period' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/stock/period[/:action[/:id[/:field/:string]]][/page/:page]',
+			        			'route' => '/admin/stock/period[/:action[/:id[/:field/:string]][/page/:page]]',
 			        			'constraints' => array(
 			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'      => '[0-9]*',
@@ -402,7 +402,7 @@ return array(
 			        	'admin_stock_order' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/stock/order[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/stock/order[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'      => '[0-9]*',
@@ -417,7 +417,7 @@ return array(
 			        	'admin_stock_delivery' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/stock/delivery[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/stock/delivery[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'     => '[0-9]*',
@@ -446,7 +446,7 @@ return array(
 			        	'admin_stock_retour' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/stock/retour[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/stock/retour[/:action[/:id][/page/:page]]',
 			        			'constraints' => array(
 			        				'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'id'      => '[0-9]*',
@@ -461,7 +461,7 @@ return array(
 			        	'admin_prof_action' => array(
 			        		'type'    => 'Zend\Mvc\Router\Http\Segment',
 			        		'options' => array(
-			        			'route' => '/admin/prof/actions[/:action[/:id]][/page/:page]',
+			        			'route' => '/admin/prof/actions[/:action[/:id][/page/:page]]',
 			        			'contraints' => array(
 			        			    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        			    'id'     => '[0-9]*',
@@ -562,7 +562,7 @@ return array(
 			            'prof_index' => array(
 			            	'type'    => 'Zend\Mvc\Router\Http\Segment',
 			            	'options' => array(
-			            		'route' => '[/:language]/cudi/prof[/:action][/page/:page]',
+			            		'route' => '[/:language]/cudi/prof[/:action[/page/:page]]',
 			            		'constraints' => array(
 			            			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			        				'page'   => '[0-9]*',

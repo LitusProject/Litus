@@ -147,7 +147,7 @@ abstract class Article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
      */
-    public function __construct($title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable)
+    public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable)
     {
         $this->setTitle($title)
             ->setAuthors($authors)
@@ -302,7 +302,11 @@ abstract class Article
 	 */
 	public function setISBN($isbn)
 	{
-	    $this->isbn = $isbn;
+	    if (strlen($isbn) == 0)
+	        $this->isbn = null;
+	    else
+	        $this->isbn = $isbn;
+	    
 	    return $this;
 	}
 	

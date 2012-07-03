@@ -196,7 +196,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	    $duplicate->setURL($formData['url']);
                 	    $edited = true;
                 	}
-                	if ($article->isDownloadable() != $formData['downloadable']) {
+                	if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
                 	    $duplicate->setIsDownloadable($formData['downloadable']);
                 	    $edited = true;
                 	}
@@ -212,11 +212,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             	            	->findOneById($formData['binding']));
                     	    $edited = true;
 				        }
-    					if ($article->isRectoVerso() != $formData['rectoverso']) {
+    					if ($article->isRectoVerso() !== (bool) $formData['rectoverso']) {
             	            $duplicate->setIsRectoVerso($formData['rectoverso']);
                     	    $edited = true;
         				}
-        				if ($article->isPerforated() != $formData['perforated']) {
+        				if ($article->isPerforated() !== (bool) $formData['perforated']) {
             	            $duplicate->setIsPerforated($formData['perforated']);
         				    $edited = true;
         				}
