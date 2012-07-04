@@ -126,7 +126,7 @@ class Study
         $studies = array();
         
         $language = trim((string) $data->doceertaal);
-        $mainTitle = ucfirst(trim((string) $data->titel));
+        $mainTitle = html_entity_decode(ucfirst(trim((string) $data->titel)));
                 
         foreach($data->fases->children() as $phase) {
 		    $phaseNumber = (int) $phase->attributes()->code;
@@ -144,7 +144,7 @@ class Study
             
 		    if ($phase->tcs->children()->count() > 0) {
 		        foreach($phase->tcs->children() as $studyData) {
-		            $title = preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel);
+		            $title = html_entity_decode(preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel));
 		            $titles = explode('+', $title);
 		            
 		            if (sizeof($titles) == 2) {
@@ -227,7 +227,7 @@ class Study
                         ->findOneByCode($code);
                     
                     if (null === $subject) {
-                        $subject = new SubjectEntity($code, trim((string) $subjectData->titel), (int) $subjectData->periode, (int) $subjectData->pts);
+                        $subject = new SubjectEntity($code, html_entity_decode(trim((string) $subjectData->titel)), (int) $subjectData->periode, (int) $subjectData->pts);
                         $this->getEntityManager()->persist($subject);
                     }
                     $this->_createProf($subject, $subjectData->docenten->children());
