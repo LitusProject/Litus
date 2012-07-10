@@ -16,7 +16,8 @@
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Auth\Login as LoginForm;
+    CommonBundle\Form\Auth\Login as LoginForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -64,7 +65,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	)
         );
         
-        return;
+        return new ViewModel();
     }
 
     public function logoutAction()
@@ -86,6 +87,6 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	)
         );
 
-        return;
+        return new ViewModel();
     }
 }

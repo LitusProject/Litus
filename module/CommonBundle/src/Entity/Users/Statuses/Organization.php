@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * Specifying the different types of memberships the organization has.
  * 
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organisation")
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
  * @Table(name="users.organization_statuses")
  */
 class Organization
@@ -75,6 +75,7 @@ class Organization
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person this union status describes
      * @param string $status The actual status value
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)

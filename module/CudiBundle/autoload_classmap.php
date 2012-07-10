@@ -89,6 +89,8 @@ return array(
     'CudiBundle\Form\Admin\Sales\Article\Add'                  => __DIR__ . '/src/Form/Admin/Sales/Article/Add.php',
     'CudiBundle\Form\Admin\Sales\Article\Edit'                 => __DIR__ . '/src/Form/Admin/Sales/Article/Edit.php',
     'CudiBundle\Form\Admin\Sales\Booking\Add'                  => __DIR__ . '/src/Form/Admin/Sales/Booking/Add.php',
+    'CudiBundle\Form\Admin\Sales\Booking\Article'              => __DIR__ . '/src/Form/Admin/Sales/Booking/Article.php',
+    'CudiBundle\Form\Admin\Sales\Booking\Person'               => __DIR__ . '/src/Form/Admin/Sales/Booking/Person.php',
     'CudiBundle\Form\Admin\Sales\Discounts\Add'                => __DIR__ . '/src/Form/Admin/Sales/Discounts/Add.php',
     'CudiBundle\Form\Admin\Sales\Session\Add'                  => __DIR__ . '/src/Form/Admin/Sales/Session/Add.php',
     'CudiBundle\Form\Admin\Sales\Session\Close'                => __DIR__ . '/src/Form/Admin/Sales/Session/Close.php',

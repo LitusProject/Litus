@@ -15,8 +15,10 @@
 
 namespace CommonBundle\Controller\Admin;
 
+use Zend\View\Model\ViewModel;
+
 /**
- * DashboardController
+ * IndexController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -29,13 +31,15 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         	    ->findAllUncompleted();
         array_splice($profActions, 10);
         
-        return array(
-            'profActions' => $profActions,
-        	'versions' => array(
-        		'php' => phpversion(),
-        		'zf' => \Zend\Version::VERSION,
-        		'doctrine' => \Doctrine\Common\Version::VERSION
-        	)
+        return new ViewModel(
+            array(
+                'profActions' => $profActions,
+            	'versions' => array(
+            		'php' => phpversion(),
+            		'zf' => \Zend\Version::VERSION,
+            		'doctrine' => \Doctrine\Common\Version::VERSION
+            	),
+            )
         );
     }
 }

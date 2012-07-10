@@ -50,7 +50,7 @@
 	   	<div class="span6">
 	   		<img class="headingIcon" src="/_site/img/glyphicons-news.png" />
 	    	<h2>{{ translator().translate('News') }}</h2>
-	    	
+
 	    	{% for item in newsItems %}
 	    		<div class="item">
 	    			<span class="date news">{{ dateLocalized(item.getUpdateTime(), 'd MMM') }}</span>

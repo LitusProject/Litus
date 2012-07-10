@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Credential,
     CudiBundle\Entity\Users\People\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
-    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm;
+    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * UserController
@@ -31,7 +32,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function manageAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
-	    	return;
+	    	return new ViewModel();
 	    	
 		$paginator = $this->paginator()->createFromEntity(
 		    'CudiBundle\Entity\Users\People\Supplier',
@@ -45,17 +46,19 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 		    )
 		);
         
-        return array(
-            'supplier' => $supplier,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl()
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
     public function addAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return;
+        	return new ViewModel();
         
         $form = new AddForm($this->getEntityManager());
 		
@@ -98,20 +101,22 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
                 
-        return array(
-            'supplier' => $supplier,
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            	'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
         if (!($user = $this->_getUser()))
-        	return;
+        	return new ViewModel();
         			
         $form = new EditForm($this->getEntityManager(), $user);
 
@@ -143,13 +148,15 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-            'supplier' => $user->getSupplier(),
-        	'form' => $form,
+        return new ViewModel(
+            array(
+                'supplier' => $user->getSupplier(),
+            	'form' => $form,
+            )
         );
     }
     
@@ -158,13 +165,15 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 
 		if (!($user = $this->_getUser()))
-			return;
+			return new ViewModel();
 
 		$user->disableLogin();
 		$this->getEntityManager()->flush();
         
-        return array(
-            'result' => (object) array("status" => "success")
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
         );
 	}
     

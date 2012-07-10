@@ -111,7 +111,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 	 * @param string $data
 	 */
 	private function _gotAction(User $user, $data)
-	{
+	{echo $data;
 		$action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
 		$params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 		
@@ -151,6 +151,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 				break;
 			case 'concludeSelling':
 				$this->_concludeSelling(json_decode($params));
+				break;
+			case 'undoSelling':
+				$this->_undoSelling(json_decode($params));
 				break;
 			case 'setPayDesk':
 			    $user->setExtraData('payDesk', trim($params));
@@ -376,7 +379,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 			$result->status = $item->getStatus();
 			$result->locked = isset($this->_lockedItems[$item->getId()]);
 			if ($item->getPayDesk())
-			    $result->payDesk = $item->getPayDesk()->getCode();
+			    $result->payDesk = $item->getPayDesk()->getName();
 			$results[] = $result;
 		}
 		return $results;
@@ -471,5 +474,37 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 		$this->_entityManager->flush();
 		
 		$this->_updateItemStatus($data->id, 'sold');
+	}
+	
+    private function _undoSelling($data)
+	{
+	    print_r($data);
+	    $queueItem = $this->_entityManager
+	    	->getRepository('CudiBundle\Entity\Sales\QueueItem')
+	    	->findOneById($data->id);
+	    			
+	    if (!isset($queueItem))
+	    	return;
+	    	
+	    $queueItem->setPayMethod(null);
+	    
+	    $saleItems = $this->_entityManager
+	    	->getRepository('CudiBundle\Entity\Sales\SaleItem')
+	    	->findByQueueItem($queueItem);
+	    	
+	    foreach($saleItems as $saleItem) {
+	        $booking = $this->getEntityManager()
+	            ->getRepository('CudiBundle\Entity\Sales\Booking')
+	            ->findOneSoldByArticleAndNumber($saleItem->getArticle(), $saleItem->getNumber());
+	        
+	        if (isset($booking))
+	            $booking->setStatus('assigned');
+	        
+	        $saleItem->getArticle()->setStockValue($saleItem->getArticle()->getStockValue() + $saleItem->getNumber());
+	    }
+
+		$this->_entityManager->flush();
+		
+		$this->_updateItemStatus($data->id, 'collected');
 	}
 }

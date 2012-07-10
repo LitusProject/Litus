@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Sales;
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
+    CudiBundle\Entity\Sales\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     Doctrine\ORM\EntityRepository,
@@ -59,6 +60,31 @@ class Booking extends EntityRepository
         		)
     		)
     		->setParameter('person', $person->getId())
+    		->setParameter('startDate', $period->getStartDate());
+    		
+    		if (!$period->isOpen())
+    		    $query->setParameter('endDate', $period->getEndDate());
+    		
+    	$resultSet = $query->orderBy('b.bookDate', 'DESC')
+    		->getQuery()
+    		->getResult();
+    		
+    	return $resultSet;
+    }
+    
+    public function findAllByArticleAndPeriod(ArticleEntity $article, Period $period)
+    {
+    	$query = $this->_em->createQueryBuilder();
+    	$query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+    		->where(
+    		    $query->expr()->andX(
+    		        $query->expr()->eq('b.article', ':article'),
+        		    $query->expr()->gt('b.bookDate', ':startDate'),
+        		    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+        		)
+    		)
+    		->setParameter('article', $article->getId())
     		->setParameter('startDate', $period->getStartDate());
     		
     		if (!$period->isOpen())
@@ -392,6 +418,31 @@ class Booking extends EntityRepository
     	return null;
     }
     
+    
+    
+    public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+    		->from('CudiBundle\Entity\Sales\Booking', 'b')
+        	->where(
+        	    $query->expr()->andX(
+        			$query->expr()->eq('b.article', ':article'),
+        			$query->expr()->eq('b.number', ':number'),
+        			$query->expr()->eq('b.status', ':status')
+        		)
+        	)
+        	->setParameter('number', $number)
+        	->setParameter('status', 'sold')
+        	->setParameter('article', $article->getId())
+        	->setMaxResults(1)
+        	->getQuery()
+        	->getResult();
+        
+        if (isset($resultSet[0]))
+        	return $resultSet[0];
+    }
+    
     public function assignAll(Transport $mailTransport)
     {
         $period = $this->getEntityManager()
@@ -421,13 +472,14 @@ class Booking extends EntityRepository
         	    $counter++;
         	    
         		if ($available < $booking->getNumber()) {
-        		    $new = new Booking(
+        		    $new = new BookingEntity(
         		    	$this->getEntityManager(),
         		    	$booking->getPerson(),
         		    	$booking->getArticle(),
         		    	'booked',
         		    	$booking->getNumber() - $available
         		    );
+        		    $this->getEntityManager()->persist($new);
         		    
         		    $booking->setNumber($available);
         		}

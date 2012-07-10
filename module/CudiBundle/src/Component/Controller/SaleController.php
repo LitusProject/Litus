@@ -43,9 +43,15 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 		
 		$result = parent::execute($e);
 		
-		$result['session'] = $session;
+		$language = $this->getEntityManager()
+		    ->getRepository('CommonBundle\Entity\General\Language')
+		    ->findOneByAbbrev('en');
+		    
+		$result->language = $language;
 		
-		$result['unionUrl'] = $this->getEntityManager()
+		$result->session = $session;
+		
+		$result->unionUrl = $this->getEntityManager()
 			->getRepository('CommonBundle\Entity\General\Config')
 			->getConfigValue('union_url');
   		
@@ -63,5 +69,27 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     		->getConfigValue('cudi.queue_socket_port');
     		
     	return 'ws://' . $address . ':' . $port;
+    }
+        
+    /**
+     * Initializes the localization
+     *
+     * @return void
+     */
+    protected function initLocalization()
+    {
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+
+        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
+        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        
+        if ($this->getAuthentication()->isAuthenticated()) {
+        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
+        	$this->getEntityManager()->flush();
+        }
     }
 }

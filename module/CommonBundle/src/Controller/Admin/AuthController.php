@@ -17,7 +17,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Authentication\Authentication,
 	CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-	CommonBundle\Form\Admin\Auth\Login as LoginForm;
+	CommonBundle\Form\Admin\Auth\Login as LoginForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -54,8 +55,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 	        }
         }
 
-        return array(
-        	'authResult' => $authResult
+        return new ViewModel(
+            array(
+            	'authResult' => $authResult,
+            )
         );
     }
 
@@ -66,12 +69,14 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         if ($isAuthenticated) {
             $this->redirect()->toRoute('admin_index');
             
-            return;
+            return new ViewModel();
         }
 		            
-        return array(
-        	'isAuthenticated' => $isAuthenticated,
-        	'form' => new LoginForm()
+        return new ViewModel(
+            array(
+            	'isAuthenticated' => $isAuthenticated,
+            	'form' => new LoginForm(),
+            )
         );
     }
 
@@ -83,7 +88,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         	'admin_auth'
         );
         
-        return;
+        return new ViewModel();
     }
     
     public function shibbolethAction()
@@ -106,5 +111,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 	    		'admin_index'
 	    	);
 	    }
+	    
+	    return new ViewModel();
     }
 }

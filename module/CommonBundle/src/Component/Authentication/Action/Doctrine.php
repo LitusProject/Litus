@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Authentication\Action;
 
 use CommonBundle\Entity\Users\Code,
     Doctrine\ORM\EntityManager,
-    Zend\Mail\Transport\Smtp,
+    Zend\Mail\Transport,
     Zend\Mail\Message;
 
 /**
@@ -37,7 +37,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     private $_mailTransport;
 
-    public function __construct(EntityManager $entityManager, Smtp $mailTransport)
+    public function __construct(EntityManager $entityManager, Transport $mailTransport)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -93,7 +93,8 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
 	        	->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
 	        	->setSubject($subject);
 	        	
-	        $this->_mailTransport->send($mail);
+            if ('production' == getenv('APPLICATION_ENV'))
+    	        $this->_mailTransport->send($mail);
 	    }
 	    $this->_entityManager->flush();
 	}

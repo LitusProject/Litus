@@ -20,8 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
+    CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
+    CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateInterval,
-	Zend\Mail\Message;
+	Zend\Mail\Message,
+	Zend\View\Model\ViewModel;
 
 /**
  * BookingController
@@ -33,10 +36,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($currentPeriod = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($activePeriod = $this->_getPeriod()))
-            return;
+            return new ViewModel();
                 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -49,22 +52,24 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
                     
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function inactiveAction()
     {
         if (!($currentPeriod = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($activePeriod = $this->_getPeriod()))
-            return;
+            return new ViewModel();
                 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -77,22 +82,24 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
                     
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true),
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function addAction()
     {
         if (!($currentPeriod = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($activePeriod = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $academicYear = $this->getAcademicYear();
             
@@ -105,8 +112,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 				$booking = new Booking(
 					$this->getEntityManager(),
 					$this->getEntityManager()
-						->getRepository('CommonBundle\Entity\Users\Person')
-						->findOneByUsername($formData['person']),
+						->getRepository('CommonBundle\Entity\Users\People\Academic')
+						->findOneById($formData['person_id']),
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Sales\Article')
 						->findOneById($formData['article_id']),
@@ -115,7 +122,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 				);
                  
                 $this->getEntityManager()->persist($booking);
-                $this->getEntityManager()->flush();
+                //$this->getEntityManager()->flush();
                 
 				$this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -132,7 +139,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 					)
 				);
 				
-				return;
+				return new ViewModel(
+				    array(
+				        'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         
@@ -140,25 +151,27 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findAll();
              
-        return array(
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'currentAcademicYear' => $academicYear,
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
         if (!($booking = $this->_getBooking()))
-            return;
+            return new ViewModel();
             
         if (!($currentPeriod = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($activePeriod = $this->_getPeriod()))
-            return;
+            return new ViewModel();
             
         $periods = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -174,21 +187,23 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
         $mailForm->setAction($this->url()->fromRoute('admin_cudi_mail'));
             
-        return array(
-            'mailForm' => $mailForm,
-            'periods' => $periods,
-            'activePeriod' => $activePeriod,
-            'currentPeriod' => $currentPeriod,
-            'booking' => $booking,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(),
+        return new ViewModel(
+            array(
+                'mailForm' => $mailForm,
+                'periods' => $periods,
+                'activePeriod' => $activePeriod,
+                'currentPeriod' => $currentPeriod,
+                'booking' => $booking,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
     public function deleteAction()
     {
         if (!($booking = $this->_getBooking()))
-    	    return;
+    	    return new ViewModel();
 		
 		$this->getEntityManager()->remove($booking);
 		$this->getEntityManager()->flush();
@@ -207,15 +222,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function assignAction()
     {
         if (!($booking = $this->_getBooking()))
-            return;
+            return new ViewModel();
             
         if (!($currentPeriod = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
         if ($available <= 0) {
-    		return array(
-    		    'result' => (object) array("status" => "error")
+    		return new ViewModel(
+    		    array(
+    		        'result' => (object) array("status" => "error"),
+    		    )
     		);
     	}
     	
@@ -262,12 +279,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
         
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        
+        return new ViewModel();
     }
     
     public function unassignAction()
 	{
 	    if (!($booking = $this->_getBooking()))
-		    return;
+		    return new ViewModel();
 
         $booking->setStatus('booked');
 		$this->getEntityManager()->flush();
@@ -281,12 +300,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 		);
 		
 		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return new ViewModel();
 	}
 	
 	public function expireAction()
 	{
 	    if (!($booking = $this->_getBooking()))
-		    return;
+		    return new ViewModel();
 
         $booking->setStatus('expired');
 		$this->getEntityManager()->flush();
@@ -300,12 +321,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 		);
 		
 		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return new ViewModel();
 	}
 	
 	public function extendAction()
 	{
 	    if (!($booking = $this->_getBooking()))
-		    return;
+		    return new ViewModel();
         
         $extendTime = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -324,6 +347,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 		);
 		
 		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return new ViewModel();
 	}
 	
 	public function assignAllAction()
@@ -348,6 +373,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     	);
 
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        
+        return new ViewModel();
 	}
 	
 	public function searchAction()
@@ -355,7 +382,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    $this->initAjax();
 	    
 	    if (!($activePeriod = $this->_getPeriod()))
-	        return;
+	        return new ViewModel();
 	    	    
 	    switch($this->getParam('field')) {
 	    	case 'person':
@@ -393,9 +420,64 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 	    	$result[] = $item;
 	    }
 	    
-	    return array(
-	    	'result' => $result,
+	    return new ViewModel(
+	        array(
+    	    	'result' => $result,
+    	    )
 	    );
+	}
+	
+	public function personAction()
+	{
+	    if (!($activePeriod = $this->_getPeriod()))
+	        return new ViewModel();
+	        
+	    $return = new ViewModel();
+	     
+	    $form = new PersonForm();
+        $return->form = $form;
+
+	    if ($person = $this->_getPerson()) {
+	        $paginator = $this->paginator()->createFromArray(
+	            $this->getEntityManager()
+	                ->getRepository('CudiBundle\Entity\Sales\Booking')
+	                ->findAllByPersonAndPeriod($person, $activePeriod),
+	            $this->getParam('page')
+	        );
+	        
+	        $return->paginator = $paginator;
+	        $return->paginationControl = $this->paginator()->createControl();
+	        $return->person = $person;
+	    }
+	    
+	    return $return;
+	}
+	
+	public function articleAction()
+	{
+	    if (!($activePeriod = $this->_getPeriod()))
+	        return new ViewModel();
+	        
+	    $return = new ViewModel();
+	     
+	    $form = new ArticleForm();
+        $return->form = $form;
+	    $return->currentAcademicYear = $this->getAcademicYear();;
+
+	    if ($article = $this->_getArticle()) {
+	        $paginator = $this->paginator()->createFromArray(
+	            $this->getEntityManager()
+	                ->getRepository('CudiBundle\Entity\Sales\Booking')
+	                ->findAllByArticleAndPeriod($article, $activePeriod),
+	            $this->getParam('page')
+	        );
+	        
+	        $return->paginator = $paginator;
+	        $return->paginationControl = $this->paginator()->createControl();
+	        $return->article = $article;
+	    }
+	    
+	    return $return;
 	}
     
     private function _getPeriod()
@@ -468,6 +550,70 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     			'admin_sales_booking',
     			array(
     				'action' => 'manage'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $article;
+    }
+    
+    private function _getPerson()
+    {
+    	if (null === $this->getParam('id')) {
+    		return;
+    	}
+    
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $person) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No person with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sales_booking',
+    			array(
+    				'action' => 'person'
+    			)
+    		);
+    		
+    		return;
+    	}
+    	
+    	return $person;
+    }
+    
+    private function _getArticle()
+    {
+    	if (null === $this->getParam('id')) {
+    		return;
+    	}
+    
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneById($this->getParam('id'));
+    	
+    	if (null === $article) {
+    		$this->flashMessenger()->addMessage(
+    		    new FlashMessage(
+    		        FlashMessage::ERROR,
+    		        'Error',
+    		        'No article with the given id was found!'
+    		    )
+    		);
+    		
+    		$this->redirect()->toRoute(
+    			'admin_sales_booking',
+    			array(
+    				'action' => 'article'
     			)
     		);
     		

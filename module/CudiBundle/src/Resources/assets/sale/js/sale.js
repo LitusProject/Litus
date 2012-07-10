@@ -3,7 +3,8 @@
 		socketName: 'showQueue',
 		modal: null,
 		data: {},
-		statusTranslate: function () {}
+		statusTranslate: function () {},
+		//lastSold: 0,
 	};
 	
 	var methods = {
@@ -95,6 +96,9 @@
 	    });
 	    
 	    $.webSocket('send', {name: settings.socketName, text: 'action: concludeSelling ' + JSON.stringify(data)});
+	    settings.modal.find('#undoLastSelling').show().unbind('click').click(function () {
+	        _undoSelling(settings.socketName, data.id);
+	    });
 	    _close($this);
 	}
 	
@@ -133,6 +137,7 @@
 	            $(this).find('.addArticle').click();
 	            return false;
 	        }
+	        $this.find('#barcodeFailure').addClass('in');
 	    });
 	}
 	
@@ -204,6 +209,15 @@
 			article.find('.removeArticle').removeClass('hide');
 		
 		_updateTotalPrice($this);
+	}
+	
+	function _undoSelling (socketName, id) {
+	    $(document).find('#undoLastSelling').hide();
+
+	    var data = {
+	        id: id,
+	    };
+	    $.webSocket('send', {name: socketName, text: 'action: undoSelling ' + JSON.stringify(data)});
 	}
 	
 	function _updatePrices ($this) {

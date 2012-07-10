@@ -19,11 +19,11 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
 	Zend\Form\Decorator;
 
 /**
- * TextArea form element
+ * Textarea form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TextArea extends \CommonBundle\Component\Form\Bootstrap\Element
+class Textarea extends \CommonBundle\Component\Form\Bootstrap\Element
 {
 
     public $helper = 'formTextarea';

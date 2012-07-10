@@ -28,8 +28,9 @@ class AddDirect extends Add
     {
         parent::__construct($entityManager, $options);
 
+        $this->removeElement('article_id');
         $this->removeElement('article');
-		$this->getElement('submit')
+		$this->getElement('add')
 		    ->setName('add_delivery');
     }
 }

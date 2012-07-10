@@ -113,6 +113,24 @@
 		            		</li>
 		                {% endif %}
 		                
+		                {% if hasAccess('admin_mail', 'groups') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Mail</b><br />
+		                			Send mail to a group
+		                		</div>
+		                		<ul
+		                			{% if 'admin_mail' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_mail', 'groups') %}
+		                		        <li><a href="{{ url('admin_mail') }}">Groups</a></li>
+		                		    {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+		                
 		                {% if hasAccess('admin_news', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">

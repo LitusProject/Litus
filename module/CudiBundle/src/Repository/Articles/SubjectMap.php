@@ -5,6 +5,7 @@ namespace CudiBundle\Repository\Articles;
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
@@ -47,6 +48,9 @@ class SubjectMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
         	->from('CudiBundle\Entity\Articles\SubjectMap', 'm')
+        	->innerJoin('m.article', 'a', Join::WITH,
+        	    $query->expr()->eq('a.isHistory', 'false')
+        	)
         	->where(
         	    $query->expr()->andX(
         	        $query->expr()->eq('m.removed', 'false'),
