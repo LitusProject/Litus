@@ -59,6 +59,7 @@ return array(
 		    '@admin_js',
 		    '@bootstrap_js_transition',
 		    '@bootstrap_js_modal',
+		    '@common_download_file',
 		),
 		'admin_sales_discount' => array(
 			'@common_jquery',
@@ -160,6 +161,7 @@ return array(
 			'@bootstrap_js_alert',
 			'@common_permanent_modal',
 			'@common_socket',
+			'@common_typeahead_remote',
 		),
 		'sale_queue' => array(
 			'@common_jquery',

@@ -24,9 +24,17 @@
 	</div>
 	
 	<div id="sale">
+	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
+	        <a class="close" data-dismiss="alert">&times;</a>
+	    	<div class="title">Error</div>
+	    	<div class="content">
+	    		<p>The scanned barcode was not valid and was ignored.</p>
+	    	</div>
+	    </div>
+	    
 		<div class="row wrapper">
 			<div class="span7 customer">
-				<div class="row title">Current customer:</div>
+				<div class="row title">Current Customer:</div>
 				<div class="row name">&nbsp;</div>
 				<div class="row actions">
 					<button class="btn btn-info addComment">
@@ -98,7 +106,7 @@
 			<div class="modal-body">
 			    {% for payDesk in payDesks %}
     				<div class="span2">
-    				    <h3>{{ payDesk.getName() }}</h3>
+    				    <h3>Paydesk {{ payDesk.getName() }}</h3>
     				    <br>
     				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
     				</div>
@@ -154,14 +162,14 @@
                         <div class="controls">
                             <div class="btn-group" id="payMethod" data-toggle="buttons-radio">
                               <button class="btn active" type="button" data-key="114" data-method="cash">Cash - F3</button>
-                              <button class="btn" type="button" data-key="115" data-method="bank">Bank - F4</button>
+                              <button class="btn" type="button" data-key="115" data-method="bank">Bank Device - F4</button>
                             </div>
                         </div>
                     </div>
     			</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-success confirmConclude" data-key="122">Ok - F11</button>
+				<button class="btn btn-success confirmConclude" data-key="122">Sell - F11</button>
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -199,6 +207,10 @@
 			</table>
 		</div>
 		<div class="modal-footer">
+		    <button id="undoLastSelling" class="btn btn-danger hide" data-key="117">
+		        <i class="icon-arrow-left icon-white"></i>
+		        Undo Last Selling - F6
+		    </button>
 			<button id="startCollectingNext" class="btn btn-success" data-key="118">
 			    <i class="icon-print icon-white"></i>
 			    Print Next - F7

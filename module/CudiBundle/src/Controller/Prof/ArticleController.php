@@ -22,7 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
-    CudiBundle\Form\Prof\Article\Edit as EditForm;
+    CudiBundle\Form\Prof\Article\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -37,15 +38,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
                             
-        return array(
-            'articles' => $articles,
+        return new ViewModel(
+            array(
+                'articles' => $articles,
+            )
         );
     }
     
     public function addAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
 
         $form = new AddForm($this->getEntityManager());
 
@@ -141,19 +144,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	)
                 );
                 
-                return;
+                return new ViewModel();
         	}
         }
         
-    	return array(
-    	    'form' => $form,
+    	return new ViewModel(
+    	    array(
+    	        'form' => $form,
+    	    )
     	);
     }
     
     public function editAction()
     {
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $article);
         
@@ -191,7 +196,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 	    $duplicate->setURL($formData['url']);
                 	    $edited = true;
                 	}
-                	if ($article->isDownloadable() != $formData['downloadable']) {
+                	if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
                 	    $duplicate->setIsDownloadable($formData['downloadable']);
                 	    $edited = true;
                 	}
@@ -207,11 +212,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             	            	->findOneById($formData['binding']));
                     	    $edited = true;
 				        }
-    					if ($article->isRectoVerso() != $formData['rectoverso']) {
+    					if ($article->isRectoVerso() !== (bool) $formData['rectoverso']) {
             	            $duplicate->setIsRectoVerso($formData['rectoverso']);
                     	    $edited = true;
         				}
-        				if ($article->isPerforated() != $formData['perforated']) {
+        				if ($article->isPerforated() !== (bool) $formData['perforated']) {
             	            $duplicate->setIsPerforated($formData['perforated']);
         				    $edited = true;
         				}
@@ -260,13 +265,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
-    	return array(
-    	    'form' => $form,
-    	    'article' => $article,
+    	return new ViewModel(
+    	    array(
+    	        'form' => $form,
+    	        'article' => $article,
+    	    )
     	);
     }
     
@@ -284,8 +291,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
@@ -310,7 +319,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     			)
     		);
     		
-    		return;
+    		return new ViewModel();
     	}
     
         $article = $this->getEntityManager()
@@ -334,7 +343,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     			)
     		);
     		
-    		return;
+    		return new ViewModel();
     	}
     	
     	return $article;

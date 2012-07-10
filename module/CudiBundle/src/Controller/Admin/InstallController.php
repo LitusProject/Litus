@@ -233,13 +233,13 @@ VTK Cudi
 	                    'send'
 	                ),
 	                'admin_prof_action' => array(
-	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'view'
+	                	'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'refuse', 'view'
 	                ),
 	                'admin_sales_article' => array(
 	                    'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
 	                ),
 	                'admin_sales_booking' => array(
-	                    'add', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'search', 'unassign'
+	                    'add', 'article', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
 	                ),
 	                'admin_sales_discount' => array(
 	                    'delete', 'manage'
@@ -251,13 +251,13 @@ VTK Cudi
 	                    'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems'
 	                ),
 	                'admin_stock' => array(
-	                    'delta', 'edit', 'manage', 'search'
+	                    'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
 	                ),
 	                'admin_stock_delivery' => array(
-	                    'add', 'delete', 'manage', 'supplier'
+	                    'add', 'delete', 'manage', 'supplier', 'typeahead'
 	                ),
 	                'admin_stock_order' => array(
-	                    'add', 'delete', 'edit', 'export', 'manage', 'pdf', 'supplier'
+	                    'add', 'delete', 'edit', 'export', 'manage', 'place', 'pdf', 'supplier'
 	                ),
 	                'admin_stock_period' => array(
 	                    'manage', 'new', 'search', 'view'
@@ -293,7 +293,7 @@ VTK Cudi
 	                    'manage', 'subject', 'typeahead'
 	                ),
 	                'sale_queue' => array(
-	                    'overview', 'signin'
+	                    'overview', 'screen', 'signin'
 	                ),
 	                'sale_sale' => array(
 	                    'return', 'sale', 'saveComment'
@@ -360,7 +360,7 @@ VTK Cudi
 	private function _installBinding()
 	{
 		$bindings = array(
-		    'binded' => 'Binded',
+		    'stapled' => 'Stapled',
 		    'none' => 'None',
             'glued' => 'Glued',
 		);

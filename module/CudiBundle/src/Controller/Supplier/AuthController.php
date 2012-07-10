@@ -58,10 +58,13 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 		            
         $this->redirect()->toRoute(
-        	'supplier_index'
+        	'supplier_index',
+        	array(
+        	    'language' => $this->getLanguage()->getAbbrev(),
+        	)
         );
         
-        return;
+        return new ViewModel();
     }
 
     public function logoutAction()
@@ -77,9 +80,12 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'supplier_index'
+        	'supplier_index',
+        	array(
+        	    'language' => $this->getLanguage()->getAbbrev(),
+        	)
         );
 
-        return;
+        return new ViewModel();
     }
 }

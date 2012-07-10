@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
 	CudiBundle\Form\Admin\Stock\Update as StockForm,
 	CudiBundle\Entity\Stock\Deliveries\Delivery,
-	CudiBundle\Entity\Stock\PeriodValues\Delta;
+	CudiBundle\Entity\Stock\PeriodValues\Delta,
+	Zend\View\Model\ViewModel;
 
 /**
  * StockController
@@ -32,7 +33,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -41,17 +42,40 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
         
-        return array(
-            'period' => $period,
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'period' => $period,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+    
+    public function notDeliveredAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+            
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period')
+                ->findAllArticlesByPeriod($period, true),
+            $this->getParam('page')
+        );
+        
+        return new ViewModel(
+            array(
+                'period' => $period,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     
     public function searchAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         switch($this->getParam('field')) {
         	case 'title':
@@ -90,18 +114,69 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
+        );
+    }
+    
+    public function searchNotDeliveredAction()
+    {
+        if (!($period = $this->getActiveStockPeriod()))
+            return new ViewModel();
+            
+        switch($this->getParam('field')) {
+        	case 'title':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'), true);
+        		break;
+        	case 'barcode':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'), true);
+        		break;
+        	case 'supplier':
+        		$articles = $this->getEntityManager()
+        			->getRepository('CudiBundle\Entity\Stock\Period')
+        			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'), true);
+        		break;
+        }
+        
+        $numResults = $this->getEntityManager()
+        	->getRepository('CommonBundle\Entity\General\Config')
+        	->getConfigValue('search_max_results');
+        
+        array_splice($articles, $numResults);
+        
+        $result = array();
+        foreach($articles as $article) {
+        	$item = (object) array();
+        	$item->id = $article->getId();
+        	$item->title = $article->getMainArticle()->getTitle();
+        	$item->supplier = $article->getSupplier()->getName();
+        	$item->nbInStock = $article->getStockValue();
+        	$item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+        	$item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+        	$item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
+        	$result[] = $item;
+        }
+        
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     
     public function editAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $deliveryForm = new DeliveryForm($this->getEntityManager());
         $orderForm = new OrderForm($this->getEntityManager());
@@ -109,7 +184,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+
 			if (isset($formData['updateStock'])) {
 				if ($stockForm->isValid($formData)) {
 					$delta = new Delta(
@@ -141,13 +216,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			} elseif (isset($formData['add_order'])) {
 				if ($orderForm->isValid($formData)) {
 					$this->getEntityManager()
 						->getRepository('CudiBundle\Entity\Stock\Orders\Order')
-						->addNumberByArticle($article, $formData['number']);
+						->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 					
 					$this->getEntityManager()->flush();
 					
@@ -167,7 +242,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			} elseif (isset($formData['add_delivery'])) {
 				if ($deliveryForm->isValid($formData)) {
@@ -191,27 +266,29 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 						)
 					);
 					
-					return;
+					return new ViewModel();
 				}
 			}
 		}
         
-        return array(
-            'article' => $article,
-            'period' => $period,
-            'deliveryForm' => $deliveryForm,
-            'orderForm' => $orderForm,
-            'stockForm' => $stockForm,
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'period' => $period,
+                'deliveryForm' => $deliveryForm,
+                'orderForm' => $orderForm,
+                'stockForm' => $stockForm,
+            )
         );
     }
     
     public function deltaAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
         
         if (!($article = $this->_getArticle()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\PeriodValues\Delta',
@@ -223,10 +300,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             array('timestamp' => 'DESC')
         );
         
-        return array(
-            'article' => $article,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+                'article' => $article,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
     

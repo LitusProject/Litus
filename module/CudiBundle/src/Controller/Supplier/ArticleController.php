@@ -16,7 +16,8 @@
 namespace CudiBundle\Controller\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -31,8 +32,10 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->getCurrentAcademicYear());
         
-    	return array(
-    	    'articles' => $articles
+    	return new ViewModel(
+    	    array(
+    	        'articles' => $articles,
+    	    )
     	);
     }
 }

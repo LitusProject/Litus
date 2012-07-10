@@ -31,6 +31,11 @@
 					    <a href="{{ url("sale_queue", {"action": "overview", "session": session.getId()}) }}">Queue</a>
 					</li>
 				{% endif %}
+				{% if hasAccess('sale_queue', 'screen') %}
+					<li {% if 'screen' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}>
+					    <a href="{{ url("sale_queue", {"action": "screen", "session": session.getId()}) }}">Queue Screen</a>
+					</li>
+				{% endif %}
 				{% if hasAccess('sale_queue', 'signin') %}
 					<li {% if 'signin' == getParam('action') and 'sale_queue' == getParam('controller') %} class="active" {% endif %}>
 					    <a href="{{ url("sale_queue", {"action": "signin", "session": session.getId()}) }}">Queue Sign In</a>

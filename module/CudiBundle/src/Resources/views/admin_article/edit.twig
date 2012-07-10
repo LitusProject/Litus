@@ -16,6 +16,31 @@
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
+		<br class="clear" />
+		<br class="clear" />
+		
+		<h1>Last Comments</h1>
+		<table>
+	        <tr>
+	            <th width="100px">Date</th>
+	            <th width="140px">Person</th>
+	            <th>Summary</th>
+	            <th width="80px">Type</th>
+	            <th width="70px">Action</th>
+	        </tr>
+	
+	        {% for mapping in comments %}
+	            <tr class="item item-{{ mapping.getId() }}">
+	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
+	                <td>{{ mapping.getComment().getPerson().getFullName() }}</td>
+	                <td>{{ mapping.getComment().getSummary() }}</td>
+	                <td>{{ mapping.getComment().getType()|capitalize }}</td>
+					<td class="actions">
+						<a href="#" class="view viewComment" data-text="{{ mapping.getComment().getText() }}">View</a>
+	                </td>
+	            </tr>
+	        {% endfor %}
+	    </table>
 	</div>
 	
 	<aside>
@@ -84,6 +109,20 @@
 			</div>
 		{% endif %}
 	</aside>
+	
+	<div class="modal hide fade" id="viewComment">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Article Comment
+		</div>
+		<div class="modal-body">
+			<pre class="text"></pre>
+	        <br style="clear:both" />
+			<div class="footer">
+				<input type="button" data-dismiss="modal" value="Close">
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block content_script %}
@@ -92,7 +131,17 @@
 			$('#internal').click(toggleInternal)
 				.parent().parent().hide();
 			toggleInternal();
+			$('.item .viewComment').click(openViewModal);
 		});
+		
+		function openViewModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var viewComment = $('#viewComment');
+			viewComment.find('.text').html($this.data('text'));
+			viewComment.modal();
+		}
 		
 		function toggleInternal() {
 			if ($('#internal').is(':checked'))

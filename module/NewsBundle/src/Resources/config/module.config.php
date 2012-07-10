@@ -48,49 +48,61 @@ return array(
             		),
             	),
             ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'news_views' => __DIR__ . '/../views',
+                    ),
+                ),
+            ),
+            
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
+                    'routes' => array(
+                        'news_install' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/install/news',
+                                'constraints' => array(
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'news_install',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'admin_news' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/site/news[/:action[/:id]]',
+                                'constraints' => array(
+                                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                	'id'      => '[0-9]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_news',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'news' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '[/:language]/news[/:action[/:name]]',
+                                'constraints' => array(
+                                	'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                	'name'     => '[a-zA-Z0-9_-]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'news',
+                                    'action'     => 'overview',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
-    'routes' => array(
-        'news_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/install/news',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'news_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'admin_news' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/site/news[/:action[/:id]]',
-                'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'id'      => '[0-9]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'admin_news',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'news' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '[/:language]/news[/:action[/:name]]',
-                'constraints' => array(
-                	'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'name'     => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'news',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
-	),
 );

@@ -17,7 +17,8 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
 	BrBundle\Form\Admin\Company\Add as AddForm,
-	CommonBundle\Entity\General\Address;
+	CommonBundle\Entity\General\Address,
+	Zend\View\Model\ViewModel;
 
 /**
  * CompanyController
@@ -36,9 +37,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
         
-        return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(true)
+        return new ViewModel(
+            array(
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(true),
+            )
         );
     }
 
@@ -77,9 +80,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         
         $this->getEntityManager()->flush();
         
-        return array(
-        	'form' => $form,
-        	'companyCreated' => $companyCreated
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'companyCreated' => $companyCreated,
+            )
         );
     }
 

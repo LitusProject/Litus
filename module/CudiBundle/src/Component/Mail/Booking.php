@@ -46,7 +46,7 @@ class Booking
         	->addTo($person->getEmail(), $person->getFullName())
         	->setSubject($subject);
         	
-        // TODO: activate this	
-        //$mailTransport->send($mail);
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
     }
 }

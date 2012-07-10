@@ -249,6 +249,8 @@ abstract class Person
      */
     public function validateCredential($credential)
     {
+        if (null == $this->credential)
+            return false;
         return $this->credential->validateCredential($credential);
     }
 
@@ -473,7 +475,7 @@ abstract class Person
      */
     public function isMember()
     {
-        foreach ($this->unionStatuses as $status) {
+        foreach ($this->organisationStatuses as $status) {
             if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
                 return true;
         }
@@ -585,8 +587,8 @@ abstract class Person
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject);
 
-        // TODO: activate this	
-        //$mailTransport->send($mail);
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
         
         return $this;
     }

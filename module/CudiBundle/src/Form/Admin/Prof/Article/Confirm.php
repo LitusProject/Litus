@@ -76,7 +76,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         
         $field = new Text('isbn');
         $field->setLabel('ISBN')
-        	->setRequired()
         	->setDecorators(array(new FieldDecorator()))
         	->addValidator('isbn');
         $this->addElement($field);
@@ -161,11 +160,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	       	->setDecorators(array(new FieldDecorator()));
 	    $this->addElement($field);
 	    
-	    $field = new Checkbox('front_text_colored');
-	    $field->setLabel('Front Page Text Colored')
-	        ->setDecorators(array(new FieldDecorator()));
-	    $this->addElement($field);
-	    
 	    $field = new Checkbox('perforated');
 	    $field->setLabel('Perforated')
 	        ->setDecorators(array(new FieldDecorator()));
@@ -179,7 +173,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 						'official',
 						'rectoverso',
 						'front_color',
-						'front_text_colored',
 						'perforated',
 		            ),
 		            'internal_form'

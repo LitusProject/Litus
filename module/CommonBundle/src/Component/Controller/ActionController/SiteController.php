@@ -33,14 +33,11 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$this->getLocator()->get('view')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
+		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
 		
 		$result = parent::execute($e);
 		
-		$result['authenticatedUserObject'] = $this->getAuthentication()->getPersonObject();
-		$result['authenticated'] = $this->getAuthentication()->isAuthenticated();
-		
-		$result['loginForm'] = new LoginForm(
+		$loginForm = new LoginForm(
 			$this->url()->fromRoute(
 				'index',
 				array(
@@ -48,6 +45,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 				)
 			)
 		);
+		
+		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+		$result->authenticated = $this->getAuthentication()->isAuthenticated();
+		$result->loginForm = $loginForm;
   		
         $e->setResult($result);
         

@@ -20,7 +20,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Component\Document\Generator\OrderPdf as OrderPdfGenerator,
 	CudiBundle\Component\Document\Generator\OrderXml as OrderXmlGenerator,
 	CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
-	Zend\Http\Headers;
+	Zend\Http\Headers,
+	Zend\View\Model\ViewModel;
 
 /**
  * OrderController
@@ -44,20 +45,22 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 		
-		return array(
-			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'paginator' => $paginator,
+    			'paginationControl' => $this->paginator()->createControl(true),
+    			'suppliers' => $suppliers,
+    		)
 		);
     }
 
 	public function supplierAction()
 	{
         if (!($supplier = $this->_getSupplier()))
-            return;
+            return new ViewModel();
             
         if (!($period = $this->getActiveStockPeriod()))
-            return;
+            return new ViewModel();
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -70,27 +73,31 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'supplier' => $supplier,
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
-        	'suppliers' => $suppliers,
+        return new ViewModel(
+            array(
+            	'supplier' => $supplier,
+            	'paginator' => $paginator,
+            	'paginationControl' => $this->paginator()->createControl(),
+            	'suppliers' => $suppliers,
+            )
         );
 	}
 	
 	public function editAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		
 		$suppliers = $this->getEntityManager()
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 
-		return array(
-			'order' => $order,
-        	'supplier' => $order->getSupplier(),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'order' => $order,
+            	'supplier' => $order->getSupplier(),
+    			'suppliers' => $suppliers,
+    		)
 		);
 	}
 	
@@ -112,7 +119,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 					->getRepository('CudiBundle\Entity\Stock\Orders\Order')
 					->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 				
-				$this->getEntityManager()->flush();	
+				//$this->getEntityManager()->flush();	
 				
 				$this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -130,7 +137,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 					)
 				);
 				
-				return;
+				return new ViewModel(
+				    array(
+				        'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         
@@ -138,10 +149,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'form' => $form,
-        	'suppliers' => $suppliers,
-        	'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'suppliers' => $suppliers,
+            	'currentAcademicYear' => $academicYear,
+            )
         );
 	}
 	
@@ -150,20 +163,22 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 		
 		if (!($item = $this->_getOrderItem()))
-		    return;
+		    return new ViewModel();
 		    
 		$this->getEntityManager()->remove($item);
 		$this->getEntityManager()->flush();
 		
-		return array(
-		    'result' => (object) array("status" => "success")
+		return new ViewModel(
+		    array(
+		        'result' => (object) array("status" => "success"),
+		    )
 		);
 	}
 	
 	public function placeAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$order->order();
 		
@@ -184,12 +199,14 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 				'id' => $order->getId(),
 			)
 		);
+		
+		return new ViewModel();
 	}
 	
 	public function pdfAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$file = new TmpFile();
 		$document = new OrderPdfGenerator($this->getEntityManager(), $order, $file);
@@ -202,15 +219,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		));
 		$this->getResponse()->setHeaders($headers);
 		
-		return array(
-			'data' => $file->getContent()
+		return new ViewModel(
+		    array(
+			    'data' => $file->getContent(),
+			)
 		);
 	}
 	
 	public function exportAction()
 	{
 		if (!($order = $this->_getOrder()))
-		    return;
+		    return new ViewModel();
 		    
 		$document = new OrderXmlGenerator($this->getEntityManager(), $order);
 		
@@ -228,9 +247,33 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 		$data = fread($handle, filesize($archive->getFileName()));
 		fclose($handle);
 		
-		return array(
-			'data' => $data,
+		return new ViewModel(
+		    array(
+			    'data' => $data,
+			)
 		);
+	}
+	
+	public function cancelAction()
+	{
+		if (!($order = $this->_getOrder()))
+		    return new ViewModel();
+		    
+		$order->cancel();
+		
+		$this->getEntityManager()->flush();
+		    
+		$this->flashMessenger()->addMessage(
+		    new FlashMessage(
+		        FlashMessage::SUCCESS,
+		        'SUCCESS',
+		        'The order was successfully canceled!'
+		    )
+		);
+		
+		$this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+		
+		return new ViewModel();
 	}
 	
 	private function _getSupplier()

@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 	CudiBundle\Entity\Stock\Deliveries\Delivery,
 	CudiBundle\Entity\Stock\Deliveries\Retour,
 	CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
-	CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm;
+	CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm,
+	Zend\View\Model\ViewModel;
 
 /**
  * RetourController
@@ -43,20 +44,22 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 			->getRepository('CudiBundle\Entity\Supplier')
 			->findAll();
 		
-		return array(
-			'paginator' => $paginator,
-			'paginationControl' => $this->paginator()->createControl(true),
-			'suppliers' => $suppliers,
+		return new ViewModel(
+		    array(
+    			'paginator' => $paginator,
+    			'paginationControl' => $this->paginator()->createControl(true),
+    			'suppliers' => $suppliers,
+    		)
 		);
 	}
 	
 	public function supplierAction()
 	{
 	    if (!($supplier = $this->_getSupplier()))
-	        return;
+	        return new ViewModel();
 	    
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $paginator = $this->paginator()->createFromArray(
 	        $this->getEntityManager()
@@ -69,18 +72,20 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 	    	->getRepository('CudiBundle\Entity\Supplier')
 	    	->findAll();
 	    
-	    return array(
-	    	'supplier' => $supplier,
-	    	'paginator' => $paginator,
-	    	'paginationControl' => $this->paginator()->createControl(),
-	    	'suppliers' => $suppliers,
+	    return new ViewModel(
+	        array(
+    	    	'supplier' => $supplier,
+    	    	'paginator' => $paginator,
+    	    	'paginationControl' => $this->paginator()->createControl(),
+    	    	'suppliers' => $suppliers,
+    	    )
 	    );
 	}	
 	
 	public function addAction()
 	{
 	    if (!($period = $this->getActiveStockPeriod()))
-	        return;
+	        return new ViewModel();
 	        
 	    $academicYear = $this->getAcademicYear();
 
@@ -113,6 +118,12 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 						'id'     => $article->getSupplier()->getId(),
 					)
 				);
+				
+				return new ViewModel(
+				    array(
+				    	'currentAcademicYear' => $academicYear,
+				    )
+				);
 			}
         }
         
@@ -126,11 +137,13 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         	->getRepository('CudiBundle\Entity\Supplier')
         	->findAll();
         
-        return array(
-        	'form' => $form,
-        	'retours' => $retours,
-        	'suppliers' => $suppliers,
-        	'currentAcademicYear' => $academicYear,
+        return new ViewModel(
+            array(
+            	'form' => $form,
+            	'retours' => $retours,
+            	'suppliers' => $suppliers,
+            	'currentAcademicYear' => $academicYear,
+            )
         );
 	}
 	
@@ -139,14 +152,16 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 		$this->initAjax();
 		
 		if (!($retour = $this->_getRetour()))
-		    return;
+		    return new ViewModel();
 		
 		$retour->getArticle()->addStockValue(-$retour->getNumber());
 		$this->getEntityManager()->remove($retour);
 		$this->getEntityManager()->flush();
 		
-		return array(
-		    'result' => (object) array("status" => "success")
+		return new ViewModel(
+		    array(
+		        'result' => (object) array("status" => "success"),
+		    )
 		);
 	}
 	

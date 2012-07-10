@@ -16,8 +16,6 @@
 $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
-    'display_exceptions' => true,
-    'encoding' => 'ISO-8859-1',
     'di' => array(
         'instance' => array(
             'alias' => array(
@@ -39,8 +37,7 @@ return array(
                 
             	'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
-                'mail_transport'                   => 'Zend\Mail\Transport\Smtp',
-                'mail_smtp'                        => 'Zend\Mail\Transport\SmtpOptions',
+                'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -310,19 +307,6 @@ return array(
                 ),
             ),
             
-            'mail_transport' => array(
-                'parameters' => array(
-                    'options' => 'mail_smtp',
-                )
-            ),
-            'mail_smtp' => array(
-                'parameters' => array(
-                    'name' => 'smtp.kuleuven.be',
-                    'host' => 'smtp.kuleuven.be',
-                    'port' => 25,
-                ),
-            ),
-            
             'translator' => array(
             	'parameters' => array(
             	    'adapter' => 'ArrayAdapter',
@@ -339,120 +323,193 @@ return array(
             	),
             ),
             
-            'ZfTwig\TwigEnvironment' => array(
-            	'parameters' => array(
-            		'options' => array(
-            			'charset' => 'ISO-8859-1',
-            		),
-            	),
+            'Zend\View\Helper\Doctype' => array(
+                'parameters' => array(
+                    'doctype' => 'HTML5',
+                ),
+            ),
+            'Zend\Mvc\View\RouteNotFoundStrategy' => array(
+                'parameters' => array(
+                    'displayNotFoundReason' => true,
+                    'displayExceptions'     => true,
+                    'notFoundTemplate'      => 'error/404',
+                ),
+            ),
+            'Zend\Mvc\View\ExceptionStrategy' => array(
+                'parameters' => array(
+                    'displayExceptions' => true,
+                    'exceptionTemplate' => 'error/index',
+                ),
+            ),
+            
+            'Zend\Mvc\Controller\ActionController' => array(
+                'parameters' => array(
+                    'broker'       => 'Zend\Mvc\Controller\PluginBroker',
+                ),
+            ),
+            'Zend\Mvc\Controller\PluginBroker' => array(
+                'parameters' => array(
+                    'loader' => 'Zend\Mvc\Controller\PluginLoader',
+                ),
+            ),
+            
+            'Zend\View\Resolver\AggregateResolver' => array(
+                'injections' => array(
+                    'Zend\View\Resolver\TemplateMapResolver',
+                    'Zend\View\Resolver\TemplatePathStack',
+                ),
+            ),
+            'Zend\View\Resolver\TemplateMapResolver' => array(
+                'parameters' => array(
+                    'map'  => array(
+                        'layout' => __DIR__ . '/../layouts/layout.twig',
+                    ),
+                ),
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'common_layouts' => __DIR__ . '/../layouts',
+                        'common_views' => __DIR__ . '/../views',
+                    ),
+                    'defaultSuffix' => 'twig'
+                ),
+            ),
+            'ZfTwig\TwigRenderer' => array(
+                'parameters' => array(
+                    'resolver' => 'Zend\View\Resolver\AggregateResolver',
+                ),
+            ),
+            'Zend\View\Renderer\PhpRenderer' => array(
+                'parameters' => array(
+                    'resolver' => 'Zend\View\Resolver\AggregateResolver',
+                ),
+            ),
+            
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
+                    'routes' => array(
+                        'index' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/',
+                                'constraints' => array(
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'index',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'account' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/account[/:action[/code/:code]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'account',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'common_install' => array(
+                        	'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        	'options' => array(
+                        		'route' => '/admin/install/common',
+                        		'defaults' => array(
+                        			'controller' => 'common_install',
+                        			'action'     => 'index',
+                        		),
+                        	),
+                        ),
+                    	'admin_academic' => array(
+                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    	    'options' => array(
+                    	        'route'    => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
+                    	        'constraints' => array(
+                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    	        	'id'      => '[0-9]*',
+                    				'page'    => '[0-9]*',
+                    				'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    				'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                    	        ),
+                    	        'defaults' => array(
+                    	            'controller' => 'admin_academic',
+                    	            'action'     => 'manage',
+                    	        ),
+                    	    ),
+                    	),
+                    	'admin_academic_typeahead' => array(
+                    		'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    		'options' => array(
+                    			'route' => '/admin/academic/typeahead[/:string]',
+                    			'constraints' => array(
+                    				'string'       => '[%a-zA-Z0-9_-]*',
+                    			),
+                    			'defaults' => array(
+                    				'controller' => 'admin_academic',
+                    				'action'     => 'typeahead',
+                    			),
+                    		),
+                    	),
+                    	'admin_config' => array(
+                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    	    'options' => array(
+                    	        'route'    => '/admin/config[/:action[/key:key]]',
+                    	        'constraints' => array(
+                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    	        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
+                    	        ),
+                    	        'defaults' => array(
+                    	            'controller' => 'admin_config',
+                    	            'action'     => 'manage',
+                    	        ),
+                    	    ),
+                    	),
+                    	'admin_index' => array(
+                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    	    'options' => array(
+                    	        'route'    => '/admin[/:action]',
+                    	        'defaults' => array(
+                    	            'controller' => 'admin_index',
+                    	            'action'     => 'index',
+                    	        ),
+                    	    ),
+                    	),
+                    	'admin_auth' => array(
+                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    	    'options' => array(
+                    	        'route'    => '/admin/auth[/:action]',
+                    	        'constraints' => array(
+                    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    	        ),
+                    	        'defaults' => array(
+                    	            'controller' => 'admin_auth',
+                    	            'action'     => 'login',
+                    	        ),
+                    	    ),
+                    	),
+                    	'admin_role' => array(
+                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    	    'options' => array(
+                    	        'route'    => '/admin/role[/:action[/name:name][/page/:page]]',
+                    	        'constraints' => array(
+                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    				'page'    => '[0-9]*',
+                    	        ),
+                    	        'defaults' => array(
+                    	            'controller' => 'admin_role',
+                    	            'action'     => 'manage',
+                    	        ),
+                    	    ),
+                    	),
+                    ),
+                ),
             ),
         ),
     ),
-    'routes' => array(
-        'index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'index',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'account' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/account[/:action[/code/:code]]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[a-zA-Z0-9_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'account',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'common_install' => array(
-        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-        	'options' => array(
-        		'route' => '/admin/install/common',
-        		'defaults' => array(
-        			'controller' => 'common_install',
-        			'action'     => 'index',
-        		),
-        	),
-        ),
-    	'admin_academic' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin/academic[/:action[/:id]][/page/:page][/:field/:string]',
-    	        'constraints' => array(
-    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'id'      => '[0-9]*',
-    				'page'    => '[0-9]*',
-					'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-					'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'admin_academic',
-    	            'action'     => 'manage',
-    	        ),
-    	    ),
-    	),
-    	'admin_auth' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin/auth[/:action]',
-    	        'constraints' => array(
-    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'admin_auth',
-    	            'action'     => 'login',
-    	        ),
-    	    ),
-    	),
-		'admin_config' => array(
-		    'type'    => 'Zend\Mvc\Router\Http\Segment',
-		    'options' => array(
-		        'route'    => '/admin/config[/:action[/key:key]]',
-		        'constraints' => array(
-		        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-		        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
-		        ),
-		        'defaults' => array(
-		            'controller' => 'admin_config',
-		            'action'     => 'manage',
-		        ),
-		    ),
-		),
-    	'admin_index' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin[/:action]',
-    	        'defaults' => array(
-    	            'controller' => 'admin_index',
-    	            'action'     => 'index',
-    	        ),
-    	    ),
-    	),
-    	'admin_role' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '/admin/role[/:action[/name:name]][/page/:page]',
-    	        'constraints' => array(
-    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-    				'page'    => '[0-9]*',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'admin_role',
-    	            'action'     => 'manage',
-    	        ),
-    	    ),
-    	),
-	),
 );

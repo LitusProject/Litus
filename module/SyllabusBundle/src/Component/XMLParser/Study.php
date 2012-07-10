@@ -19,6 +19,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
     Doctrine\ORM\EntityManager,
     SimpleXMLElement,
@@ -125,7 +126,7 @@ class Study
         $studies = array();
         
         $language = trim((string) $data->doceertaal);
-        $mainTitle = ucfirst(trim((string) $data->titel));
+        $mainTitle = html_entity_decode(ucfirst(trim((string) $data->titel)));
                 
         foreach($data->fases->children() as $phase) {
 		    $phaseNumber = (int) $phase->attributes()->code;
@@ -143,7 +144,7 @@ class Study
             
 		    if ($phase->tcs->children()->count() > 0) {
 		        foreach($phase->tcs->children() as $studyData) {
-		            $title = preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel);
+		            $title = html_entity_decode(preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel));
 		            $titles = explode('+', $title);
 		            
 		            if (sizeof($titles) == 2) {
@@ -226,7 +227,7 @@ class Study
                         ->findOneByCode($code);
                     
                     if (null === $subject) {
-                        $subject = new SubjectEntity($code, trim((string) $subjectData->titel), (int) $subjectData->periode, (int) $subjectData->pts);
+                        $subject = new SubjectEntity($code, html_entity_decode(trim((string) $subjectData->titel)), (int) $subjectData->periode, (int) $subjectData->pts);
                         $this->getEntityManager()->persist($subject);
                     }
                     $this->_createProf($subject, $subjectData->docenten->children());
@@ -278,28 +279,40 @@ class Study
                     $info['email'],
                     $info['phone'],
                     null,
-                    $identification);
+                    $identification
+                );
+                
+                $prof->addUniversityStatus(
+                	new UniversityStatus(
+                		$prof,
+                		'professor',
+                		$this->_academicYear
+                	)
+                );
                 
                 $prof->activate($this->getEntityManager(), $this->_mailTransport);
                 
-                file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
-                $finfo = new \finfo;
-                $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);   
-                $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
-                
-                if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
-                    $filePath = $this->getEntityManager()
-                    	->getRepository('CommonBundle\Entity\General\Config')
-                    	->getConfigValue('common.profile_path');
-                    	
-                    $fileName = '';
-                    do{
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
+                $headers = get_headers($info['photo']);
+                if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+                    file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
+                    $finfo = new \finfo;
+                    $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);   
+                    $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
                     
-                    file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
-                    unlink('/tmp/' . $identification);
-                    $prof->setPhotoPath($fileName);
+                    if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
+                        $filePath = $this->getEntityManager()
+                        	->getRepository('CommonBundle\Entity\General\Config')
+                        	->getConfigValue('common.profile_path');
+                        	
+                        $fileName = '';
+                        do{
+                            $fileName = '/' . sha1(uniqid());
+                        } while (file_exists($filePath . $fileName));
+                        
+                        file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
+                        unlink('/tmp/' . $identification);
+                        $prof->setPhotoPath($fileName);
+                    }
                 }
                 
                 $this->getEntityManager()->persist($prof);

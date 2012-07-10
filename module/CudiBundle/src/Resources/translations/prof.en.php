@@ -128,7 +128,7 @@ return array(
     'Exercises' => 'Exercises',
     'Slides' => 'Slides',
     'Textbook' => 'Textbook',
-    'Binded' => 'Binded',
+    'Stapled' => 'Stapled',
     'None' => 'None',
     'Glued' => 'Glued',
     

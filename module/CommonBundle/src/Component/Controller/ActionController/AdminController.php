@@ -40,9 +40,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 		    ->getRepository('CommonBundle\Entity\General\Language')
 		    ->findOneByAbbrev('en');
 		    
-		$result['language'] = $language;
-				
-		$result['now'] = array(
+		$result->language = $language;
+		$result->now = array(
 			'iso8601' => date('c', time()),
 			'display' => date('l, F j Y, H:i', time())
 		);
@@ -53,9 +52,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
     
     /**
-     * Initializes the localisation
+     * Initializes the localization
+     *
+     * @return void
      */
-    protected function initLocalisation()
+    protected function initLocalization()
     {
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')

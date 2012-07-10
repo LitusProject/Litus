@@ -85,7 +85,7 @@ return array(
     'Not confirmed' => 'Niet bevestigd',
     'by %name%' => 'door %name%',
     'added an article - subject map on <b>%date%</b>' => 'voegde een artikel - vak verbinding toe op <b>%date%</b>',
-    'removed an article - subject map on <b>%date%</b>' => 'verwijderde een artikel - vak verbindinge op <b>%date%</b>',
+    'removed an article - subject map on <b>%date%</b>' => 'verwijderde een artikel - vak verbinding op <b>%date%</b>',
     'Filename' => 'Bestandsnaam',
     'added a file on <b>%date%</b>' => 'voegde een bestand toe op <b>%date%</b>',
     'removed a file on <b>%date%</b>' => 'verwijderde een bestand op <b>%date%</b>',
@@ -128,7 +128,7 @@ return array(
     'Exercises' => 'Oefeningen',
     'Slides' => 'Presentaties',
     'Textbook' => 'Handboek',
-    'Binded' => 'Ingebonden',
+    'Stapled' => 'Geniet',
     'None' => 'Los',
     'Glued' => 'Gelijmd',
     

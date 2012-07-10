@@ -1,0 +1,15 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_mail/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        <h1>{{ type|capitalize }}: {{ status }}</h1>
+    
+        {% autoescape false %}
+            {{ form }}
+        {% endautoescape %}
+    </div>
+{% endblock %}

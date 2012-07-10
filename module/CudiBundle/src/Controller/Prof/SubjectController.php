@@ -18,7 +18,8 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
     CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
-    SyllabusBundle\Entity\StudentEnrollment;
+    SyllabusBundle\Entity\StudentEnrollment,
+    Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -30,25 +31,27 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     public function manageAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
         	
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
         
-    	return array(
-    	    'subjects' => $subjects,
-            'academicYear' => $academicYear,
+    	return new ViewModel(
+    	    array(
+        	    'subjects' => $subjects,
+                'academicYear' => $academicYear,
+            )
     	);
     }
     
     public function subjectAction()
     {
         if (!($subject = $this->_getSubject()))
-            return;
+            return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
@@ -59,8 +62,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
-            
-            if (!isset($actions[0]))
+
+            if (!isset($actions[0]) || $actions[0]->isRefused())
                 $articleMappings[] = $mapping;
         }
           
@@ -101,23 +104,25 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         	    	)
         	    );
         	    
-        	    return;
+        	    return new ViewModel();
         	}
         }
         
-        return array(
-            'subject' => $subject,
-            'academicYear' => $academicYear,
-            'articleMappings' => $articleMappings,
-            'profMappings' => $profMappings,
-            'enrollmentForm' => $enrollmentForm,
+        return new ViewModel(
+            array(
+                'subject' => $subject,
+                'academicYear' => $academicYear,
+                'articleMappings' => $articleMappings,
+                'profMappings' => $profMappings,
+                'enrollmentForm' => $enrollmentForm,
+            )
         );
     }
     
     public function typeaheadAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
+        	return new ViewModel();
         
         $subjects = $this->getEntityManager()
         	->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -131,8 +136,10 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         	$result[] = $item;
         }
         
-        return array(
-        	'result' => $result,
+        return new ViewModel(
+            array(
+        	    'result' => $result,
+        	)
         );
     }
     

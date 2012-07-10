@@ -171,4 +171,13 @@ class Order
 		$this->dateOrdered = new DateTime();
 		return $this;
 	}
+	
+	/**
+	 * @return \CudiBundle\Entity\Stock\Orders\Order
+	 */
+	public function cancel()
+	{
+		$this->dateOrdered = null;
+		return $this;
+	}
 }
