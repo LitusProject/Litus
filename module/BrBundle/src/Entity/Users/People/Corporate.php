@@ -17,13 +17,13 @@ namespace BrBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
 	CommonBundle\Entity\Users\Credential,
-	BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
+	CommonBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
 	Doctrine\Common\Collections\ArrayCollection;
 	
 /**
  * This is a person that represents a contact in a company.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Users\People\Corporate")
+ * @Entity(repositoryClass="CommonBundle\Repository\Users\People\Corporate")
  * @Table(name="users.corporate_people")
  */
 class Corporate extends \CommonBundle\Entity\Users\Person
@@ -54,7 +54,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $name
-     * @return \BrBundle\Entity\Users\People\Corporate
+     * @return \CommonBundle\Entity\Users\People\Corporate
      * @throws \InvalidArgumentException
      */
     public function setName($name)
@@ -77,7 +77,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param string $vatNumber
-     * @return \BrBundle\Entity\Users\People\Corporate
+     * @return \CommonBundle\Entity\Users\People\Corporate
      * @throws \InvalidArgumentException
      */
     public function setVatNumber($vatNumber)
@@ -101,8 +101,8 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param \BrBundle\Entity\Users\Statuses\Corporate $corporateStatus
-     * @return \BrBundle\Entity\Users\People\Corporate
+     * @param \CommonBundle\Entity\Users\Statuses\Corporate $corporateStatus
+     * @return \CommonBundle\Entity\Users\People\Corporate
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
