@@ -84,14 +84,14 @@ class Study
         $xml = simplexml_load_file($url);
         
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(
-            new DateTime(substr($xml->properties->academiejaar, 0, 4) . '-12-25 0:0')
+            new DateTime($xml->properties->academiejaar->startjaar . '-12-25 0:0')
         );
         $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStartDate($startAcademicYear);
 
         if (null === $academicYear) {
             $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                new DateTime((substr($xml->properties->academiejaar, 0, 4) + 1) . '-12-25 0:0')
+                new DateTime($xml->properties->academiejaar->eindjaar . '-12-25 0:0')
             );
             $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
             $entityManager->persist($academicYear);

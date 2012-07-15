@@ -53,7 +53,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 				),
 				array(
 					'key'         => 'syllabus.xml_url',
-					'value'       => 'http://litus/admin/syllabus/update/xml',
+					'value'       => 'http://onderwijsaanbod.kuleuven.be/2012/opleidingen/n/xml/SC_51016934.xml',
 					'description' => 'The url to the xml',
 				),
 	    	)
@@ -77,7 +77,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 	                	'manage', 'search', 'subject', 'typeahead'
 	                ),
 	                'admin_update_syllabus' => array(
-	                	'index', 'xml'
+	                	'index'
 	                ),
 	            )
 	        )
