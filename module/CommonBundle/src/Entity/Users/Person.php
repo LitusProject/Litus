@@ -549,46 +549,52 @@ abstract class Person
     
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Zend\Mail\Transport $mailTransport
+     * @param boolean $shib Activate only login by Shibboleth
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, Transport $mailTransport)
+    public function activate(EntityManager $entityManager, Transport $mailTransport, $shib = true)
     {
-        do {
-            $code = md5(uniqid(rand(), true));
-            $found = $entityManager
-                ->getRepository('CommonBundle\Entity\Users\Code')
-                ->findOneByCode($code);
-        } while(isset($found));
-        
-        $code = new Code($code);
-        $entityManager->persist($code);
-        $this->setCode($code);
-        
-        $message = $entityManager
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('account_activated_mail');
-        	
-        $subject = $entityManager
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('account_activated_subject');
-        	
-        $mailAddress = $entityManager
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('system_mail_address');
-        	
-        $mailName = $entityManager
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('system_mail_name');
-        
-        $mail = new Message();
-        $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
-            ->setFrom($mailAddress, $mailName)
-            ->addTo($this->getEmail(), $this->getFullName())
-            ->setSubject($subject);
-
-        if ('production' == getenv('APPLICATION_ENV'))
-            $mailTransport->send($mail);
+        if ($shib) {
+            $this->canlogin = true;
+        } else {
+            do {
+                $code = md5(uniqid(rand(), true));
+                $found = $entityManager
+                    ->getRepository('CommonBundle\Entity\Users\Code')
+                    ->findOneByCode($code);
+            } while(isset($found));
+            
+            $code = new Code($code);
+            $entityManager->persist($code);
+            $this->setCode($code);
+            
+            $message = $entityManager
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('account_activated_mail');
+            	
+            $subject = $entityManager
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('account_activated_subject');
+            	
+            $mailAddress = $entityManager
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('system_mail_address');
+            	
+            $mailName = $entityManager
+            	->getRepository('CommonBundle\Entity\General\Config')
+            	->getConfigValue('system_mail_name');
+            
+            $mail = new Message();
+            $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
+                ->setFrom($mailAddress, $mailName)
+                ->addTo($this->getEmail(), $this->getFullName())
+                ->setSubject($subject);
+    
+            if ('production' == getenv('APPLICATION_ENV'))
+                $mailTransport->send($mail);
+        }
         
         return $this;
     }
