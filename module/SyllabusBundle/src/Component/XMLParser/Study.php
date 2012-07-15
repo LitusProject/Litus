@@ -265,7 +265,7 @@ class Study
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findOneByUniversityIdentification($identification);
             if (null == $prof) {
-                $info = $this->_getInfoProf(trim($profData->attributes()->persnr));
+                $info = $this->_getInfoProf(trim($profData->attributes()->persno));
                 
                 $prof = new Academic(
                     $identification,
