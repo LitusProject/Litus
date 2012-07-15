@@ -113,19 +113,22 @@
 		            		</li>
 		                {% endif %}
 		                
-		                {% if hasAccess('admin_mail', 'groups') %}
+		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'startCudi') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Mail</b><br />
 		                			Send mail to a group
 		                		</div>
 		                		<ul
-		                			{% if 'admin_mail' == getParam('controller') %}
+		                			{% if 'admin_mail' == getParam('controller') or 'admin_mail_prof' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
 		                		    {% if hasAccess('admin_mail', 'groups') %}
 		                		        <li><a href="{{ url('admin_mail') }}">Groups</a></li>
+		                		    {% endif %}
+		                		    {% if hasAccess('admin_mail_prof', 'startCudi') %}
+		                		        <li><a href="{{ url('admin_mail_prof', {'action': 'startCudi'}) }}">Start Cudi</a></li>
 		                		    {% endif %}
 		                		</ul>
 		                	</li>

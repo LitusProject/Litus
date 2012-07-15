@@ -25,15 +25,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 /**
  * MailController
  *
- * @autor Pieter Maene <pieter.maene@litus.cc>
+ * @autor Kristof Mariën <kristof.marien@litus.cc>
  */	
 class MailController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 	public function groupsAction()
 	{
-	    $headers = get_headers('http://www.kuleuven.be/wieiswie/nl/person/00049892/photo');
-	    if ($headers[0] != 'HTTP/1.1 404 Not Found')
-	    file_get_contents('http://www.kuleuven.be/wieiswie/nl/person/00049892/photo');
 	    return new ViewModel(
 	        array(
     	    	'university' => UniversityStatus::$possibleStatuses,
