@@ -1,0 +1,35 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_mail_prof/partials/navigation.twig' %}
+	
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    <h1>Mail Prof Start Cudi</h1>
+    
+	<div id="controller_action">
+	    <p>The following mail will be send to the profs of semester {{ semester }}:<p>
+	    <br />
+	    <p>
+	        <b>Subject:</b>
+	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ subject }}</pre>
+	    </p>
+	    <br />
+	    <p>
+	        <b>Body:</b>
+	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ mail }}</pre>
+	    </p>
+	    <br />
+	    <input type="button" id="send" value="Send Mail " />
+	</div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#send').click(function () {
+                window.location = '{{ url('admin_mail_prof', {'action':'send'}) }}';
+            });
+        });
+    </script>
+{% endblock %}
