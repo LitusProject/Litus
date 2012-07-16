@@ -138,8 +138,7 @@ return array(
                                     		),
                                     	),
                                     	'options' => array(
-                                            'output' => 'site_css.css',
-                                            'media' => 'print'
+                                            'output' => 'site_css.css'
                                         ),
                                     ),
                                     
@@ -319,7 +318,23 @@ return array(
                 			'content' => __DIR__ . '/../translations/site.nl.php',
                 			'locale' => 'nl',
                 		),
-            		),
+                        'validators_en' => array(
+                        	'content' => 'vendor/ZendFramework/resources/languages/en/Zend_Validate.php',
+                        	'locale' => 'en',
+                        ),
+                        'validators_nl' => array(
+                        	'content' => 'vendor/ZendFramework/resources/languages/nl/Zend_Validate.php',
+                        	'locale' => 'nl',
+                        ),
+                        'countries_en' => array(
+                        	'content' => __DIR__ . '/../translations/countries.en.php',
+                        	'locale' => 'en',
+                        ),
+                        'countries_nl' => array(
+                        	'content' => __DIR__ . '/../translations/countries.nl.php',
+                        	'locale' => 'nl',
+                        ),
+                    ),
             	),
             ),
             
