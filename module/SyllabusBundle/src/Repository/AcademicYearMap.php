@@ -37,4 +37,22 @@ class AcademicYearMap extends EntityRepository
         
         return $result;
     }
+    
+    public function findAllByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
+            ->innerJoin('m.study', 's')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear->getId())
+            ->orderBy('s.phase', 'ASC')
+            ->addOrderBy('s.title', 'ASC')
+        	->getQuery()
+        	->getResult();
+                
+        return $resultSet;
+    }
 }

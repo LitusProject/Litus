@@ -34,7 +34,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromArray(
         	$this->getEntityManager()
         	    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-        	    ->findByAcademicYear($academicYear),
+        	    ->findAllByAcademicYear($academicYear),
             $this->getParam('page')
         );
         

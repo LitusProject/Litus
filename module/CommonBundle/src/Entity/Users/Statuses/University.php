@@ -79,7 +79,7 @@ class University
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
     {
-        if (!self::isValidPerson($person))
+        if (!self::isValidPerson($person, $academicYear))
             throw new \InvalidArgumentException('Invalid person');
             
         $this->person = $person;
@@ -109,11 +109,12 @@ class University
      *
      * @static
      * @param \CommonBundle\Entity\Users\People\Academic $person the user to check
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @return bool
      */
-    public static function isValidPerson(Academic $person)
+    public static function isValidPerson(Academic $person, AcademicYear $academicYear)
     {
-        return ($person != null) && $person->canHaveUniversityStatus();
+        return ($person != null) && $person->canHaveUniversityStatus($academicYear->getCode(true));
     }
 
     /**
