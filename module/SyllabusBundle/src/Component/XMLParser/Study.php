@@ -74,42 +74,47 @@ class Study
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
         $this->_callback = $callback;
-        
-        $this->_callback('load_xml', 'SC_51016934.xml');
-        
-        $url = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.xml_url');
-        
-        $xml = simplexml_load_file($url);
-        
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear(
-            new DateTime($xml->properties->academiejaar->startjaar . '-12-25 0:0')
+                
+        $urls = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.xml_url')
         );
-        $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($startAcademicYear);
+        
+        foreach($urls as $url) {
+            $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-        if (null === $academicYear) {
-            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                new DateTime($xml->properties->academiejaar->eindjaar . '-12-25 0:0')
+            $xml = simplexml_load_file($url);
+            
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear(
+                new DateTime($xml->properties->academiejaar->startjaar . '-12-25 0:0')
             );
-            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
-            $entityManager->persist($academicYear);
+            $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByStartDate($startAcademicYear);
+    
+            if (null === $academicYear) {
+                $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                    new DateTime($xml->properties->academiejaar->eindjaar . '-12-25 0:0')
+                );
+                $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+                $entityManager->persist($academicYear);
+            }
+            $this->_academicYear = $academicYear;
+            
+            $this->_callback('cleanup', '');
+    
+            $this->_removeMappings();
+            
+            $this->_createSubjects(
+                $xml->data->sc->cg, 
+                $this->_createStudies($xml->data->sc)
+            );
+            
+            $this->_callback('saving_data', (string) $xml->data->sc->titel);
+            
+            $this->getEntityManager()->flush();
+            break;
         }
-        $this->_academicYear = $academicYear;
-        
-        $this->_callback('cleanup', '');
-
-        $this->_removeMappings();
-        
-        $this->_createSubjects(
-            $xml->data->sc->cg, 
-            $this->_createStudies($xml->data->sc)
-        );
-        
-        $this->_callback('saving_data', (string) $xml->data->sc->titel);
-        
-        $this->getEntityManager()->flush();
     }
     
     /**
@@ -186,6 +191,7 @@ class Study
 		        }
 		    } else {
 		        $studies[$phaseNumber][0] = $mainStudy;
+	            $this->getEntityManager()->persist(new AcademicYearMap($mainStudy, $this->_academicYear));
 		    }
 		    $this->getEntityManager()->flush();
 		}
@@ -259,7 +265,7 @@ class Study
     private function _createProf(SubjectEntity $subject, $profs)
     {
         foreach($profs as $profData) {
-            $identification = 'u' . substr(trim($profData->attributes()->persnr), 1);
+            $identification = 'u' . substr(trim($profData->attributes()->persno), 1);
             
             $prof = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
@@ -280,14 +286,6 @@ class Study
                     $info['phone'],
                     null,
                     $identification
-                );
-                
-                $prof->addUniversityStatus(
-                	new UniversityStatus(
-                		$prof,
-                		'professor',
-                		$this->_academicYear
-                	)
                 );
                 
                 $prof->activate($this->getEntityManager(), $this->_mailTransport);
@@ -316,6 +314,16 @@ class Study
                 }
                 
                 $this->getEntityManager()->persist($prof);
+            }
+
+            if ($prof->canHaveUniversityStatus($this->_academicYear->getCode(true))) {
+                $prof->addUniversityStatus(
+                	new UniversityStatus(
+                		$prof,
+                		'professor',
+                		$this->_academicYear
+                	)
+                );
             }
             
             $map = $this->getEntityManager()
