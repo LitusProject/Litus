@@ -65,7 +65,7 @@ return array(
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_mail_prof',
-                                    'action'     => 'startCudi',
+                                    'action'     => 'cudi',
                                 ),
                             ),
                         ),
