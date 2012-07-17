@@ -81,9 +81,13 @@ class Study
                 ->getConfigValue('syllabus.xml_url')
         );
         
+        $this->_callback('progress', 1);
+        $counter = 0;
+        
         foreach($urls as $url) {
+            $counter++;
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
-
+            
             $xml = simplexml_load_file($url);
             
             $startAcademicYear = AcademicYear::getStartOfAcademicYear(
@@ -113,7 +117,8 @@ class Study
             $this->_callback('saving_data', (string) $xml->data->sc->titel);
             
             $this->getEntityManager()->flush();
-            break;
+    
+            $this->_callback('progress', round($counter/sizeof($urls)*100, 4));
         }
     }
     
@@ -201,6 +206,9 @@ class Study
     private function _createSubjects($data, $studies)
     {
         $this->_callback('create_subjects');
+        if (null === $data->cg)
+            return;
+        
         foreach($data->cg as $subjects) {
             if ($subjects->tc_cgs->children()->count() > 0) {
                 $activeStudies = array();
