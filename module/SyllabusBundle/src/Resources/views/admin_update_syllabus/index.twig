@@ -63,8 +63,11 @@
 				},
 				message: function (e, data) {
 					$('#syllabus_update_error, #syllabus_update_success').addClass('hide');
-
-				    $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
+                    
+                    if ('progress' !== data.status.type)
+				        $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
+				    else
+				        $('#updateSyllabus .bar').width(data.status.extra + '%');
 				    
 				    if ('done' == data.status.type) {
 				        $('#syllabus_update_success').removeClass('hide');
@@ -89,7 +92,6 @@
 		});
 		
 		function translateStatus(status) {
-		    console.log(status);
 		    var text = '';
 		    switch(status.type) {
 		        case 'done':
@@ -116,8 +118,8 @@
 		        return text;
 		    
 		    var extra = status.extra;
-		    if (extra.length > 60)
-		        extra = extra.substr(0, 60) + '...';
+		    if (extra.length > 70)
+		        extra = extra.substr(0, 70) + '...';
 		    return text + ' (' + extra + ')';
 		}
 	</script>

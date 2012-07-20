@@ -73,7 +73,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param string $sex The user's sex
      * @param string $universityIdentification The user's university identification
      */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
+    public function __construct($username, array $roles, $firstName, $lastName, $email = null, $phoneNumber, $sex, $universityIdentification)
     {
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
@@ -181,20 +181,22 @@ class Academic extends \CommonBundle\Entity\Users\Person
     public function addUniversityStatus(UniversityStatus $universityStatus)
     {	
     	$this->universityStatuses->add($universityStatus);
-    	
+
     	return $this;
     }
     
     /**
-     * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
+     * @param integer $shortYear
      * @throws \RuntimeException
      */
-    public function canHaveUniversityStatus()
+    public function canHaveUniversityStatus($shortYear = null)
     {
-    	if ($this->universityStatuses->count() > 1) {
+        $shortYear = $shortYear == null ? AcademicYear::getShortAcademicYear() : $shortYear;
+
+    	if ($this->universityStatuses->count() >= 1) {
 	    	if ($this->universityStatuses->exists(
-	    		function($key, $value) {
-	    			if ($value->getYear() == AcademicYear::getShortAcademicYear())
+	    		function($key, $value) use ($shortYear) {
+	    			if ($value->getYear() == $shortYear)
 	    				return true;
 	    		}
 	    	)) {

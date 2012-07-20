@@ -90,7 +90,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 	            (object) array(
 	                'status' => (object) array(
 	                    'type' => $type,
-	                    'extra' => trim($extra),
+	                    'extra' => substr(trim($extra), 0, 74),
 	                )
 	            )
 	        )

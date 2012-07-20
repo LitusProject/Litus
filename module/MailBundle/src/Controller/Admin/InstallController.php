@@ -74,7 +74,7 @@ Jorn Hendrickx',
 	                    'groups', 'send'
 	                ),
 	                'admin_mail_prof' => array(
-	                    'startCudi'
+	                    'cudi', 'send'
 	                ),
 	            )
 	        )

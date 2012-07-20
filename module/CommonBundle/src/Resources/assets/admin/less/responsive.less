@@ -1,0 +1,135 @@
+@media (min-width: 1220px) {
+    #layout {
+        width: @layoutWidth + 200;
+    }
+    
+    #content_controller {
+        width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing) + 200;
+        
+        #controller_action {
+            .form {
+                .row {
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
+                    
+                    .label {
+                        width: @formLabelWidth + 100;
+                    }
+        
+                    .field {
+                        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing) + 100;
+                    }
+                }
+            }
+        
+            .pagination {
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
+        
+                tr {
+                    td:first-child, td:last-child {
+                        width: @paginationSideWidth + 100;
+                    }
+                }
+            }
+        }
+        
+        .flashmessage {
+        	width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+        }
+            
+        .full_width {
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) + 200 !important;
+        }
+    
+    	.half_width {
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 + 200 !important;
+        }
+    }
+    
+    table {
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
+    }
+    
+    fieldset {
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
+    }
+    
+    .tabs {
+        width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) + 200 !important;
+    }
+    
+    .modal {
+    	width: 660px;
+    }
+    
+    footer {
+        width: @layoutWidth - 4 * @defaultSpacing + 200;
+    }
+}
+
+@media (min-width: 1420px) {
+    #layout {
+        width: @layoutWidth + 400;
+    }
+    
+    #content_controller {
+        width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing) + 400;
+        
+        #controller_action {
+            .form {
+                .row {
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+                    
+                    .label {
+                        width: @formLabelWidth + 200;
+                    }
+        
+                    .field {
+                        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing) + 200;
+                    }
+                }
+            }
+        
+            .pagination {
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+        
+                tr {
+                    td:first-child, td:last-child {
+                        width: @paginationSideWidth + 200;
+                    }
+                }
+            }
+        }
+        
+        .flashmessage {
+        	width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+        }
+            
+        .full_width {
+            width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) + 400 !important;
+        }
+    
+    	.half_width {
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 + 400 !important;
+        }
+    }
+    
+    table {
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+    }
+    
+    fieldset {
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 400;
+    }
+    
+    .tabs {
+        width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) + 400 !important;
+    }
+    
+    .modal {
+    	width: 760px;
+    }
+    
+    footer {
+        width: @layoutWidth - 4 * @defaultSpacing + 400;
+    }
+}
