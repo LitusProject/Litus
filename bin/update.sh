@@ -15,9 +15,6 @@ function killAndRun() {
 	$1 &
 }
 
-# Updating the repository
-git pull
-
 # Updating the database
 bin/MistDoctrine/doctrine orm:schema-tool:update --force
 bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
