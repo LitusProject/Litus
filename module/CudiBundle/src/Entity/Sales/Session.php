@@ -74,7 +74,7 @@ class Session
 	private $manager;
 	
 	/**
-	 * @var string The comments on this sale session
+	 * @var string The comment on this sale session
 	 *
 	 * @Column(type="string")
 	 */
@@ -88,7 +88,7 @@ class Session
 	/**
 	 * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
 	 * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
-	 * @param string $comment
+	 * @param string $comment The comment on this sale session
 	 */
 	public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
 	{
