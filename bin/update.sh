@@ -7,7 +7,7 @@ scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${scriptDirectory}/../"
 
 function killAndRun() {
-	if ps aux | grep -v grep | grep "$1" > /dev/null]; then
+	if ps aux | grep -v grep | grep "$1" > /dev/null; then
 		kill $(ps aux | grep -v grep | grep "$1" | cut -c10-15)
 	fi
 	
