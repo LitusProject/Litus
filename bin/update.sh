@@ -33,7 +33,5 @@ touch module/CudiBundle/src/Resources/assets/sale/less/base.less
 touch module/CudiBundle/src/Resources/assets/supplier/less/base.less
 
 # Starting the WebSockets
-if [ "$EUID" == 0 ]; then
-	killAndRun 'php bin/CudiBundle/queue.php --run'
-	killAndRun 'php bin/SyllabusBundle/update.php --run'
-fi
+killAndRun 'php bin/CudiBundle/queue.php --run'
+killAndRun 'php bin/SyllabusBundle/update.php --run'
