@@ -16,10 +16,14 @@ function killAndRun() {
 }
 
 # Updating the database
-php bin/MistDoctrine/doctrine.php orm:schema-tool:update --force
-php bin/MistDoctrine/doctrine.php orm:generate-proxies data/proxies/
+if [ ! -x bin/MistDoctrine/doctrine ]; then
+    chmod +x bin/MistDoctrine/doctrine
+fi
 
-php bin/MistDoctrine/doctrine.php orm:generate-proxies data/proxies/
+bin/MistDoctrine/doctrine orm:schema-tool:update --force
+bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
+
+bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
 
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/src/Resources/assets/admin/less/admin.less
