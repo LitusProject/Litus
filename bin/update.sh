@@ -12,7 +12,7 @@ function killAndRun() {
 	fi
 	
 	echo "Running: $1"
-	$1 &
+	bash -c $1 &
 }
 
 # Updating the database
