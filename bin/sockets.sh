@@ -6,15 +6,15 @@
 scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${scriptDirectory}/../"
 
-function killAndRun() {
+function checkAndRun() {
 	if ps aux | grep -v grep | grep "$1" > /dev/null; then
-		kill $(ps aux | grep -v grep | grep "$1" | cut -c10-15)
+		exit 0
 	fi
 	
 	echo "Running: $1"
-	bash -c $1 &
+	$1 &
 }
 
 # Starting the WebSockets
-killAndRun 'php bin/CudiBundle/queue.php --run'
-killAndRun 'php bin/SyllabusBundle/update.php --run'
+checkAndRun 'php bin/CudiBundle/queue.php --run'
+checkAndRun 'php bin/SyllabusBundle/update.php --run'
