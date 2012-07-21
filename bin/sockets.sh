@@ -6,15 +6,16 @@
 scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${scriptDirectory}/../"
 
-function checkAndRun() {
+function backgroundTask() {
 	if ps aux | grep -v grep | grep "$1" > /dev/null; then
-		exit 0
+		echo " Running: $1"
+		return 0
 	fi
 	
-	echo "Running: $1"
+	echo "Starting: $1"
 	$1 &
 }
 
 # Starting the WebSockets
-checkAndRun 'php bin/CudiBundle/queue.php --run'
-checkAndRun 'php bin/SyllabusBundle/update.php --run'
+backgroundTask "php bin/CudiBundle/queue.php --run"
+backgroundTask "php bin/SyllabusBundle/update.php --run"
