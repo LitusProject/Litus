@@ -81,17 +81,20 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 	    $this->installAcl(
 	    	array(
 		        'commonbundle' => array(
+		            'admin_academic' => array(
+		            	'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+		            ),  
 		            'admin_auth' => array(
 		            	'authenticate', 'login', 'logout'
+		            ),
+		            'admin_config' => array(
+		            	'edit', 'manage'
 		            ),
 		            'admin_index' => array(
 		            	'index'
 		            ),
 		            'admin_role' => array(
 		            	'add', 'edit', 'delete', 'manage'
-		            ),
-		            'admin_academic' => array(
-		            	'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
 		            ),
 		            'index' => array(
 		            	'index'
