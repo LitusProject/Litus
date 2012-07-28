@@ -73,7 +73,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      * @param string $sex The user's sex
      * @param string $universityIdentification The user's university identification
      */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
+    public function __construct($username, array $roles, $firstName, $lastName, $email = null, $phoneNumber, $sex, $universityIdentification)
     {
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 

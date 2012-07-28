@@ -12,6 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
+if (!file_exists(__DIR__ . '/../database.config.php')) {
+	throw new RuntimeException(
+		'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
+	);
+}
+
+$databaseConfig = include __DIR__ . '/../database.config.php';
  
 return array(
     'di' => array(
@@ -19,12 +27,12 @@ return array(
             'doctrine_em' => array(
                 'parameters' => array(
                     'conn' => array(
-                        'driver'   => 'pdo_pgsql',
-                        'host'     => 'localhost',
-                        'port'     => '5432', 
-                        'user'     => 'litus',
-                        'password' => 'huQeyU8te3aXusaz',
-                        'dbname'   => 'litus',
+                        'driver'   => $databaseConfig['driver'],
+                        'host'     => $databaseConfig['host'],
+                        'port'     => $databaseConfig['port'], 
+                        'user'     => $databaseConfig['user'],
+                        'password' => $databaseConfig['password'],
+                        'dbname'   => $databaseConfig['dbname'],
                     ),
                 ),
             ),
