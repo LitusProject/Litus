@@ -82,7 +82,7 @@ abstract class Person
     /**
      * @var string The persons first name
      *
-     * @Column(name="first_name", type="string", length=20)
+     * @Column(name="first_name", type="string", length=30)
      */
     private $firstName;
 
@@ -96,7 +96,7 @@ abstract class Person
     /**
      * @var string The users email address.
      *
-     * @Column(type="string", length=100)
+     * @Column(type="string", nullable=true, length=100)
      */
     private $email;
 
@@ -172,7 +172,7 @@ abstract class Person
      * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex ('m' or 'f')
      */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
+    public function __construct($username, array $roles, $firstName, $lastName, $email = null, $phoneNumber = null, $sex = null)
     {
         $this->setUsername($username);
         $this->setFirstName($firstName);
@@ -367,9 +367,9 @@ abstract class Person
      * @return \CommonBundle\Entity\Users\Person
      * @throws \InvalidArgumentException
      */
-    public function setEmail($email)
+    public function setEmail($email = null)
     {
-        if (($email === null) || !filter_var($email, FILTER_VALIDATE_EMAIL))
+        if ($email !== null && !filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new \InvalidArgumentException('Invalid e-mail');
             
         $this->email = $email;

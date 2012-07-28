@@ -30,7 +30,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */	
 class ProfController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-	public function startCudiAction()
+	public function cudiAction()
 	{
 	    $subject = $this->getEntityManager()
 	    	->getRepository('CommonBundle\Entity\General\Config')
@@ -121,7 +121,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
         	'admin_mail_prof',
         	array(
-        		'action' => 'startCudi'
+        		'action' => 'cudi'
         	)
         );
 	                    	    
