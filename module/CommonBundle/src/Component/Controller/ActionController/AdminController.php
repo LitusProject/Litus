@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Form\Auth\Login as LoginForm,
+use CommonBundle\Entity\General\Language,
+    CommonBundle\Form\Auth\Login as LoginForm,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -40,6 +41,12 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 		    ->getRepository('CommonBundle\Entity\General\Language')
 		    ->findOneByAbbrev('en');
 		    
+		if (null === $language) {
+		    $language = new Language(
+		        'en', 'English'
+		    );
+		}
+		    
 		$result->language = $language;
 		$result->now = array(
 			'iso8601' => date('c', time()),
@@ -61,8 +68,16 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
+            
+        if (null === $language) {
+            $language = new Language(
+                'en', 'English'
+            );
+        }
 
-        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+        $this->getLocator()->get('translator')->setLocale(
+            $language->getAbbrev()
+        );
 
         \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));

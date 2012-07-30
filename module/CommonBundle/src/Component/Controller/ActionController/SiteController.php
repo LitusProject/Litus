@@ -33,7 +33,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->appendName('viewport', 'width=device-width, initial-scale=1.0');
+		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+		    ->plugin('headMeta')
+		    ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 		
 		$result = parent::execute($e);
 		

@@ -53,13 +53,13 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
         
+        $authenticatedUser = 'Guest';
+        
         if (
         	$this->hasAccess()->resourceAction(
         		$this->getParam('controller'), $this->getParam('action')
         	)
         ) {
-        	$authenticatedUser = 'Guest';
-        
             if ($this->getAuthentication()->isAuthenticated()) {
                 $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
 
