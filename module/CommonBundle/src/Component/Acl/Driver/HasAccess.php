@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
-	CommonBundle\Component\Authentication\Authentication;
+	  CommonBundle\Component\Authentication\Authentication;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -62,6 +62,9 @@ class HasAccess
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('production' != getenv('APPLICATION_ENV'))
             return true;
+            
+        if (!$this->_acl->hasResource($resource))
+            return false;
 
         if ($this->_authentication->isAuthenticated()) {
             foreach ($this->_authentication->getPersonObject()->getRoles() as $role) {

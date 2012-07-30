@@ -113,6 +113,9 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
 	                	'admin_auth' => array(
 	                		'authenticate', 'login', 'logout'
 	                	),
+	                	'index' => array(
+	                	    'index'
+	                	),
 	                ),
 	            ),
 	        )
