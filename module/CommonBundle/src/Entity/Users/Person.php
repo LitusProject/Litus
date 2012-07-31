@@ -550,13 +550,13 @@ abstract class Person
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \Zend\Mail\Transport $mailTransport
-     * @param boolean $shib Activate only login by Shibboleth
+     * @param boolean $onlyShibboleth Activate only login by Shibboleth
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, Transport $mailTransport, $shib = true)
+    public function activate(EntityManager $entityManager, Transport $mailTransport, $onlyShibboleth = true)
     {
-        if ($shib) {
+        if ($onlyShibboleth) {
             $this->canlogin = true;
         } else {
             do {

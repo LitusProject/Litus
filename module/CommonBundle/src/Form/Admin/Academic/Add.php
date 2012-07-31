@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
 	CommonBundle\Entity\Users\Statuses\University,
 	Doctrine\ORM\EntityManager,
+	Zend\Form\Element\Checkbox,
 	Zend\Form\Element\Select,
 	Zend\Form\Element\Submit,
 	Zend\Form\Element\Text,
@@ -38,7 +39,12 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-		        
+		
+		$field = new Checkbox('activation_code');
+		$field->setLabel('Activation Code')
+			->setDecorators(array(new FieldDecorator()));
+		$this->addElement($field);
+		
         $field = new Text('university_identification');
         $field->setLabel('Identification')
         	->setRequired()
@@ -56,7 +62,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
 		$this->addDisplayGroup(
 			array(
 				'university_identification',
-		        'university_status',
+		        'university_status'
 		    ),
 		    'academic_form'
 		);

@@ -87,7 +87,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 
                 $newUser->activate(
                 	$this->getEntityManager(),
-                	$this->getMailTransport()
+                	$this->getMailTransport(),
+                	!$formData['activation_code']
                 );
                 
                 $this->getEntityManager()->persist($newUser);                
