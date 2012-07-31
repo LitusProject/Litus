@@ -14,39 +14,39 @@
  */
  
 return array(
-	'controllers'  => array(
-	    'syllabus_install' => array(
-	    	'@common_jquery',
-	    	'@admin_css',
-	    	'@admin_js',
-	    ),
-		'admin_update_syllabus' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-			'@common_socket',
-			'@common_permanent_modal',
-			'@bootstrap_js_transition',
-			'@bootstrap_js_modal',
-		),
-		'admin_study' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		),
-		'admin_subject' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		    '@bootstrap_js_transition',
-		    '@bootstrap_js_modal',
-		),
-		'admin_prof' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-			'@common_typeahead_remote',
-		),
-	),
-	'routes' => array(),
+    'controllers'  => array(
+        'syllabus_install' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_update_syllabus' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_socket',
+            '@common_permanent_modal',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'admin_study' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_subject' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'admin_prof' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_typeahead_remote',
+        ),
+    ),
+    'routes' => array(),
 );

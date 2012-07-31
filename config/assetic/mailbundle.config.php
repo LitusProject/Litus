@@ -14,22 +14,22 @@
  */
  
 return array(
-	'controllers'  => array(
-	    'mail_install' => array(
-	    	'@common_jquery',
-	    	'@admin_css',
-	    	'@admin_js',
-	    ),
-	    'admin_mail' => array(
-	    	'@common_jquery',
-	    	'@admin_css',
-	    	'@admin_js',
-	    ),
-        'admin_mail_prof' => array(
-        	'@common_jquery',
-        	'@admin_css',
-        	'@admin_js',
+    'controllers'  => array(
+        'mail_install' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
         ),
-	),
-	'routes' => array(),
+        'admin_mail' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_mail_prof' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+    ),
+    'routes' => array(),
 );

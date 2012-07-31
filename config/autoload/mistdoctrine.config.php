@@ -14,9 +14,9 @@
  */
 
 if (!file_exists(__DIR__ . '/../database.config.php')) {
-	throw new RuntimeException(
-		'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
-	);
+    throw new RuntimeException(
+        'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
+    );
 }
 
 $databaseConfig = include __DIR__ . '/../database.config.php';
@@ -38,9 +38,9 @@ return array(
             ),
             'doctrine_config' => array(
                 'parameters' => array(
-                	'autoGenerateProxyClasses' => ('development' == getenv('APPLICATION_ENV')),
-                	'proxyDir'                 => realpath('data/proxies'),
-                	'entityPaths'              => array(),
+                    'autoGenerateProxyClasses' => ('development' == getenv('APPLICATION_ENV')),
+                    'proxyDir'                 => realpath('data/proxies'),
+                    'entityPaths'              => array(),
                 ),
             ), 
         ),

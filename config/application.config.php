@@ -15,11 +15,11 @@
  
 return array(
     'modules' => array(
-    	'AsseticBundle',
-    	'EdpMarkdown',
-    	'MistDoctrine',
-    	'ZfTwig',
-    	
+        'AsseticBundle',
+        'EdpMarkdown',
+        'MistDoctrine',
+        'ZfTwig',
+        
         'CommonBundle',
         
         'BrBundle',
@@ -32,9 +32,9 @@ return array(
         'PageBundle',
     ),
     'module_listener_options' => array( 
-        'config_cache_enabled' 	=> false,
-        'cache_dir'            	=> 'data/cache',
-        'module_paths' 			=> array(
+        'config_cache_enabled' => false,
+        'cache_dir'            => 'data/cache',
+        'module_paths'         => array(
             'module',
             'vendor',
         ),

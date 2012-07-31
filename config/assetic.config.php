@@ -14,9 +14,9 @@
  */
  
 $settings = array(
-	'controllers'  => array(),
-	'routes' => array(),
-	
+    'controllers'  => array(),
+    'routes' => array(),
+    
 );
 
 if ($handle = opendir(__DIR__ . '/assetic')) {
@@ -25,11 +25,11 @@ if ($handle = opendir(__DIR__ . '/assetic')) {
             $moduleConfig = include __DIR__ . '/assetic/' . $entry;
             
             $settings['controllers'] = array_merge_recursive(
-            	$settings['controllers'], $moduleConfig['controllers']
+                $settings['controllers'], $moduleConfig['controllers']
             );
             
             $settings['routes'] = array_merge_recursive(
-            	$settings['routes'], $moduleConfig['routes']
+                $settings['routes'], $moduleConfig['routes']
             );
         }
     }
