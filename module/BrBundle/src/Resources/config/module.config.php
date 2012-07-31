@@ -17,77 +17,77 @@ return array(
     'di' => array(
         'instance' => array(
             'alias'           => array(
-				'admin_company'      => 'BrBundle\Controller\Admin\CompanyController',
-				'admin_company_user' => 'BrBundle\Controller\Admin\Company\UserController',
-				'admin_section'      => 'BrBundle\Controller\Admin\SectionController',
-          	),
-          	'doctrine_config' => array(
-          	    'parameters' => array(
-          	    	'entityPaths' => array(
-          	    		'brbundle' => __DIR__ . '/../../Entity',
-          	    	),
-          	    ),
-          	),
-          	'Zend\View\Resolver\TemplatePathStack' => array(
-          	    'parameters' => array(
-          	        'paths'  => array(
-          	            'br_layouts' => __DIR__ . '/../layouts',
-          	            'br_views' => __DIR__ . '/../views',
-          	        ),
-          	    ),
-          	),
-          	
-          	'Zend\Mvc\Router\RouteStack' => array(
-          	    'parameters' => array(
+                'admin_company'      => 'BrBundle\Controller\Admin\CompanyController',
+                'admin_company_user' => 'BrBundle\Controller\Admin\Company\UserController',
+                'admin_section'      => 'BrBundle\Controller\Admin\SectionController',
+              ),
+              'doctrine_config' => array(
+                  'parameters' => array(
+                      'entityPaths' => array(
+                          'brbundle' => __DIR__ . '/../../Entity',
+                      ),
+                  ),
+              ),
+              'Zend\View\Resolver\TemplatePathStack' => array(
+                  'parameters' => array(
+                      'paths'  => array(
+                          'br_layouts' => __DIR__ . '/../layouts',
+                          'br_views' => __DIR__ . '/../views',
+                      ),
+                  ),
+              ),
+              
+              'Zend\Mvc\Router\RouteStack' => array(
+                  'parameters' => array(
                     'routes' => array(
-              	        'admin_company' => array(
-              	            'type'    => 'Zend\Mvc\Router\Http\Segment',
-              	            'options' => array(
-              	                'route'    => '/admin/company[/:action[/:id[/:confirm]]]',
-              	                'constraints' => array(
-              	                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-              	                	'id'      => '[0-9]*',
-              	                	'confirm' => '[01]',
-              	                ),
-              	                'defaults' => array(
-              	                    'controller' => 'admin_company',
-              	                    'action'     => 'manage',
-              	                ),
-              	            ),
-              	        ),
-              	        'admin_company_user' => array(
-              	        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-              	        	'options' => array(
-              	        		'route' => '/admin/company/user[/:action[/:id]][/page/:page]',
-              	        		'constraints' => array(
-              	        			'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-              	        			'id'     => '[0-9]*',
-              	        			'page'   => '[0-9]*',
-              	        		),
-              	        		'defaults' => array(
-              	        			'controller' => 'admin_company_user',
-              	        			'action'     => 'manage',
-              	        		),
-              	        	),
-              	        ),
-              	        'admin_section' => array(
-              	            'type'    => 'Zend\Mvc\Router\Http\Segment',
-              	            'options' => array(
-              	                'route'    => '/admin/section[/:action[/:id[/:confirm]]]',
-              	                'constraints' => array(
-              	                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-              	                	'id'      => '[0-9]*',
-              	                	'confirm' => '[01]',
-              	                ),
-              	                'defaults' => array(
-              	                    'controller' => 'admin_section',
-              	                    'action'     => 'manage',
-              	                ),
-              	            ),
-              	        ),
-              	    ),
-          	    ),
-          	),
+                          'admin_company' => array(
+                              'type'    => 'Zend\Mvc\Router\Http\Segment',
+                              'options' => array(
+                                  'route'    => '/admin/company[/:action[/:id[/:confirm]]]',
+                                  'constraints' => array(
+                                      'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                      'id'      => '[0-9]*',
+                                      'confirm' => '[01]',
+                                  ),
+                                  'defaults' => array(
+                                      'controller' => 'admin_company',
+                                      'action'     => 'manage',
+                                  ),
+                              ),
+                          ),
+                          'admin_company_user' => array(
+                              'type'    => 'Zend\Mvc\Router\Http\Segment',
+                              'options' => array(
+                                  'route' => '/admin/company/user[/:action[/:id]][/page/:page]',
+                                  'constraints' => array(
+                                      'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                      'id'     => '[0-9]*',
+                                      'page'   => '[0-9]*',
+                                  ),
+                                  'defaults' => array(
+                                      'controller' => 'admin_company_user',
+                                      'action'     => 'manage',
+                                  ),
+                              ),
+                          ),
+                          'admin_section' => array(
+                              'type'    => 'Zend\Mvc\Router\Http\Segment',
+                              'options' => array(
+                                  'route'    => '/admin/section[/:action[/:id[/:confirm]]]',
+                                  'constraints' => array(
+                                      'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                      'id'      => '[0-9]*',
+                                      'confirm' => '[01]',
+                                  ),
+                                  'defaults' => array(
+                                      'controller' => 'admin_section',
+                                      'action'     => 'manage',
+                                  ),
+                              ),
+                          ),
+                      ),
+                  ),
+              ),
         ),
     ),
 );

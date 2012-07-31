@@ -16,45 +16,45 @@ class Article extends EntityRepository
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();
-		$resultSet = $query->select('a')
-			->from('CudiBundle\Entity\Article', 'a')
-			->where(
-			    $query->expr()->andX(
-			        $query->expr()->eq('a.isHistory', 'false'),
-			        $query->expr()->eq('a.isProf', 'false')
-			    )
-			)
-			->orderBy('a.title', 'ASC')
-			->getQuery()
-			->getResult();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
     
     public function findAllByTitle($title)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('a')
-    		->from('CudiBundle\Entity\Article', 'a')
-    		->where($query->expr()->andX(
-    		        $query->expr()->like($query->expr()->lower('a.title'), ':title'),
-    		        $query->expr()->eq('a.isHistory', 'false'),
-    		        $query->expr()->eq('a.isProf', 'false')
-    			)
-    		)
-    		->setParameter('title', '%'.strtolower($title).'%')
-    		->orderBy('a.title', 'ASC')
-    		->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where($query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('a.title'), ':title'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->setParameter('title', '%'.strtolower($title).'%')
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
     
     public function findAllByAuthor($author)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('a')
-    		->from('CudiBundle\Entity\Article', 'a')
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('a.authors'), ':author'),
@@ -63,31 +63,31 @@ class Article extends EntityRepository
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
-    		->orderBy('a.title', 'ASC')
-    		->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
     
     public function findAllByPublisher($publisher)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('a')
-    		->from('CudiBundle\Entity\Article', 'a')
-    		->where(
-    		    $query->expr()->andX(
-    		        $query->expr()->like($query->expr()->lower('a.publishers'), ':publisher'),
-    		        $query->expr()->eq('a.isHistory', 'false'),
-    		        $query->expr()->eq('a.isProf', 'false')
-    		    )
-    		)
-    		->setParameter('publisher', '%'.strtolower($publisher).'%')
-    		->orderBy('a.title', 'ASC')
-    		->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('a.publishers'), ':publisher'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->setParameter('publisher', '%'.strtolower($publisher).'%')
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
     
     public function findAllByProf(Person $person)
@@ -181,8 +181,8 @@ class Article extends EntityRepository
         
         if (isset($resultSet[0]) &&
                 (!$resultSet[0]->getArticle()->isInternal() || $resultSet[0]->getArticle()->isOfficial()))
-        	return $resultSet[0]->getArticle();
-        	
+            return $resultSet[0]->getArticle();
+            
         $actions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndEntityIdAndPerson('article', $id, $person);

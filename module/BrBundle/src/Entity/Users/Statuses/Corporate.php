@@ -16,7 +16,7 @@
 namespace BrBundle\Entity\Users\Statuses;
 
 use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
-	CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * A classification of a user based on his status at our Alma Mater.

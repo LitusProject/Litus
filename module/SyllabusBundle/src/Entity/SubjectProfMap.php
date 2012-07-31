@@ -27,35 +27,35 @@ class SubjectProfMap
     /**
      * @var integer The ID of the mapping
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\People\Academic The prof of the mapping
      *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $prof;
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
+     * @JoinColumn(referencedColumnName="id")
+     */
+    private $prof;
 
-	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
-	 *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $subject;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-	 * @JoinColumn(name="academic_year", referencedColumnName="id")
-	 */
-	private $academicYear;
+    /**
+     * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+     *
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+     * @JoinColumn(referencedColumnName="id")
+     */
+    private $subject;
+    
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
     
     /**
      * @param \SyllabusBundle\Entity\Subject $subject

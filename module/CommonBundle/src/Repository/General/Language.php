@@ -12,15 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class Language extends EntityRepository
 {
-	public function findAll()
-	{
-	    $query = $this->_em->createQueryBuilder();
-	    $resultSet = $query->select('l')
-	    	->from('CommonBundle\Entity\General\Language', 'l')
-	    	->orderBy('l.name', 'ASC')
-	    	->getQuery()
-	    	->getResult();
-	    
-	    return $resultSet;
-	}
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('CommonBundle\Entity\General\Language', 'l')
+            ->orderBy('l.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+        
+        return $resultSet;
+    }
 }

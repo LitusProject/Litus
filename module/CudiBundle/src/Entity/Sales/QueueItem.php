@@ -17,8 +17,8 @@ namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\PayDesk,
-	CudiBundle\Entity\Sales\Session,
-	Doctrine\ORM\EntityManager;
+    CudiBundle\Entity\Sales\Session,
+    Doctrine\ORM\EntityManager;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\QueueItem")
@@ -27,8 +27,8 @@ use CommonBundle\Entity\Users\Person,
 class QueueItem
 {
     /**
-	 * @var integer The ID of the queue item
-	 *
+     * @var integer The ID of the queue item
+     *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
@@ -105,37 +105,37 @@ class QueueItem
      * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
-    	'signed_in' => 'Signed In',
-    	'collecting' => 'Collecting',
-    	'collected' => 'Collected',
-    	'selling' => 'Selling',
-    	'hold' => 'Hold',
-    	'canceled' => 'Canceled',
-    	'sold' => 'Sold',
+        'signed_in' => 'Signed In',
+        'collecting' => 'Collecting',
+        'collected' => 'Collected',
+        'selling' => 'Selling',
+        'hold' => 'Hold',
+        'canceled' => 'Canceled',
+        'sold' => 'Sold',
     );
     
     /**
      * @var array The possible pay methods of a queue item
      */
     public static $POSSIBLE_PAY_METHODS = array(
-    	'cash' => 'Cash',
-    	'bank' => 'Bank Device',
+        'cash' => 'Cash',
+        'bank' => 'Bank Device',
     );
 
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 * @param \CommonBundle\Entity\Users\Person $person
-	 * @param \CudiBundle\Entity\Sales\Session $session
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CudiBundle\Entity\Sales\Session $session
+     */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
-       	$this->person = $person;
-    	$this->session = $session;
-    	$this->setStatus('signed_in');
+           $this->person = $person;
+        $this->session = $session;
+        $this->setStatus('signed_in');
 
-    	$this->queueNumber = $entityManager
-    		->getRepository('CudiBundle\Entity\Sales\QueueItem')
-    		->getNextQueueNumber($session);
+        $this->queueNumber = $entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->getNextQueueNumber($session);
     }
     
     /**
@@ -143,7 +143,7 @@ class QueueItem
      */
     public static function isValidQueueStatus($status)
     {
-    	return array_key_exists($status, self::$POSSIBLE_STATUSES);
+        return array_key_exists($status, self::$POSSIBLE_STATUSES);
     }
     
     /**
@@ -151,20 +151,20 @@ class QueueItem
      */
     public static function isValidPayMethod($payMethod)
     {
-    	return array_key_exists($payMethod, self::$POSSIBLE_PAY_METHODS);
+        return array_key_exists($payMethod, self::$POSSIBLE_PAY_METHODS);
     }
-	
-	/**
-	 * @return integer
-	 */
+    
+    /**
+     * @return integer
+     */
     public function getId()
     {
-		return $this->id;
+        return $this->id;
     }
 
-	/**
-	 * @return \CommonBundle\Entity\Users\Person
-	 */
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
     public function getPerson()
     {
         return $this->person;
@@ -201,7 +201,7 @@ class QueueItem
      * @return integer
      */
     public function getQueueNumber() 
-    	{
+        {
         return $this->queueNumber;
     }
     
@@ -229,22 +229,22 @@ class QueueItem
     public function setStatus($status)
     {
         if (!self::isValidQueueStatus($status))
-        	throw new \InvalidArgumentException('The queue status is not valid.');
+            throw new \InvalidArgumentException('The queue status is not valid.');
         
-    	$this->status = $status;
-    	
-    	if ($status != 'sold' && $status != 'selling')
-    	    $this->payDesk = null;
-    	
-    	switch ($status) {
-    	    case 'signed_in':
-    	        $this->signInTime = new \DateTime();
-    	        break;
-    	    case 'sold':
-    	        $this->soldTime = new \DateTime();
-    	        break;
-    	}
-    	
+        $this->status = $status;
+        
+        if ($status != 'sold' && $status != 'selling')
+            $this->payDesk = null;
+        
+        switch ($status) {
+            case 'signed_in':
+                $this->signInTime = new \DateTime();
+                break;
+            case 'sold':
+                $this->soldTime = new \DateTime();
+                break;
+        }
+        
         return $this;
     }
     
@@ -291,8 +291,8 @@ class QueueItem
     public function setPayMethod($payMethod)
     {
         if (!self::isValidPayMethod($payMethod) && $payMethod !== null)
-        	throw new \InvalidArgumentException('The pay method is not valid.');
-        	
+            throw new \InvalidArgumentException('The pay method is not valid.');
+            
         $this->payMethod = $payMethod;
         return $this;
     }

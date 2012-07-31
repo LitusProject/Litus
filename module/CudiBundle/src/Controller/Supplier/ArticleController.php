@@ -32,10 +32,10 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->getCurrentAcademicYear());
         
-    	return new ViewModel(
-    	    array(
-    	        'articles' => $articles,
-    	    )
-    	);
+        return new ViewModel(
+            array(
+                'articles' => $articles,
+            )
+        );
     }
 }

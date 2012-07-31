@@ -17,7 +17,7 @@ namespace PageBundle\Form\Admin\Page;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
+    Doctrine\ORM\QueryBuilder,
     PageBundle\Component\Validator\Name as PageNameValidator,
     PageBundle\Entity\Nodes\Page;
 
@@ -26,10 +26,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, Page $page, $opts = null)
     {
         parent::__construct($entityManager, $opts);

@@ -24,11 +24,11 @@ class Photo extends EntityRepository
                     $query->expr()->eq('p.filePath', ':filePath')
                 )
             )
-        	->setParameter('album', $album->getId())
-        	->setParameter('filePath', $filePath)
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
+            ->setParameter('album', $album->getId())
+            ->setParameter('filePath', $filePath)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
             return $resultSet[0];

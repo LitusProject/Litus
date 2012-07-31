@@ -56,8 +56,8 @@ class ContractController extends \Litus\Controller\Action
     private function _generateFiles($id, $invoiceOnly = false)
     {
         $contract = $this->getEntityManager()
-			->getRepository('Litus\Entity\Br\Contract')
-			->find($id);
+            ->getRepository('Litus\Entity\Br\Contract')
+            ->find($id);
 
         if (null === $contract)
             throw new \InvalidArgumentException('No contract found with the given id');
@@ -133,7 +133,7 @@ class ContractController extends \Litus\Controller\Action
         }
     }
 
-	public function manageAction()
+    public function manageAction()
     {
         $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
     }
@@ -153,7 +153,7 @@ class ContractController extends \Litus\Controller\Action
 
             if($form->isValid($formData)) {
                 $company = $this->getEntityManager()
-                	->getRepository('Litus\Entity\Users\People\Company')
+                    ->getRepository('Litus\Entity\Users\People\Company')
                     ->findOneById($formData['company']);
 
                 $contract->setCompany($company)
@@ -167,7 +167,7 @@ class ContractController extends \Litus\Controller\Action
                 $contractComposition = array();
                 foreach ($formData['sections'] as $id) {
                     $section = $this->getEntityManager()
-                    	->getRepository('Litus\Entity\Br\Contracts\Section')
+                        ->getRepository('Litus\Entity\Br\Contracts\Section')
                         ->findOneById($id);
 
                     $contractComposition[] = $section;
@@ -240,31 +240,31 @@ class ContractController extends \Litus\Controller\Action
 
     public function downloadAction()
     {
-		if ('pdf' == $this->getRequest()->getParam('format')) {
+        if ('pdf' == $this->getRequest()->getParam('format')) {
             $this->broker('viewRenderer')->setNoRender();
-			$this->_generateFiles(
+            $this->_generateFiles(
                 $this->getRequest()->getParam('id')
             );
 
-			$file = FileUtil::getRealFilename(
-				Registry::get('litus.resourceDirectory') . '/pdf/br/'
-					. $this->getRequest()->getParam('id') . '/'
-					. $this->getRequest()->getParam('type') .
-					'.pdf'
-			);
+            $file = FileUtil::getRealFilename(
+                Registry::get('litus.resourceDirectory') . '/pdf/br/'
+                    . $this->getRequest()->getParam('id') . '/'
+                    . $this->getRequest()->getParam('type') .
+                    '.pdf'
+            );
 
-			$this->getResponse()->setHeader(
-				'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
-			);
-			$this->getResponse()->setHeader('Content-Length', filesize($file));
+            $this->getResponse()->setHeader(
+                'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
+            );
+            $this->getResponse()->setHeader('Content-Length', filesize($file));
 
-			readfile($file);
-		} else {
-			$this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
-		}
+            readfile($file);
+        } else {
+            $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
+        }
     }
 
-	public function composeAction()
+    public function composeAction()
     {
         $this->_initAjax();
 

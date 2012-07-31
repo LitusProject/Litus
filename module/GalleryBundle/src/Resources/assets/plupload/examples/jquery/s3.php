@@ -29,40 +29,40 @@ if (!function_exists('hash_hmac')) :
 // based on: http://www.php.net/manual/en/function.sha1.php#39492
 function hash_hmac($algo, $data, $key, $raw_output = false)
 {
-	$blocksize = 64;
+    $blocksize = 64;
     if (strlen($key) > $blocksize)
         $key = pack('H*', $algo($key));
     
-	$key = str_pad($key, $blocksize, chr(0x00));
+    $key = str_pad($key, $blocksize, chr(0x00));
     $ipad = str_repeat(chr(0x36), $blocksize);
     $opad = str_repeat(chr(0x5c), $blocksize);
     $hmac = pack('H*', $algo(($key^$opad) . pack('H*', $algo(($key^$ipad) . $data))));
-	
-	return $raw_output ? $hmac : bin2hex($hmac);
+    
+    return $raw_output ? $hmac : bin2hex($hmac);
 }
 endif;
 
 // prepare policy
 $policy = base64_encode(json_encode(array(
-	// ISO 8601 - date('c'); generates uncompatible date, so better do it manually
-	'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),  
-	'conditions' => array(
-		array('bucket' => $bucket),
-		array('acl' => 'public-read'),
-		array('starts-with', '$key', ''),
-		// for demo purposes we are accepting only images
-		array('starts-with', '$Content-Type', 'image/'),
-		// "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body. 
-		// To configure POST to return a response that does not have an empty body, set success_action_status to 201.
-		// When set, Amazon S3 returns an XML document with a 201 status code." 
-		// http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
-		array('success_action_status' => '201'),
-		// Plupload internally adds name field, so we need to mention it here
-		array('starts-with', '$name', ''), 	
-		// One more field to take into account: Filename - gets silently sent by FileReference.upload() in Flash
-		// http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
-		array('starts-with', '$Filename', ''), 
-	)
+    // ISO 8601 - date('c'); generates uncompatible date, so better do it manually
+    'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),  
+    'conditions' => array(
+        array('bucket' => $bucket),
+        array('acl' => 'public-read'),
+        array('starts-with', '$key', ''),
+        // for demo purposes we are accepting only images
+        array('starts-with', '$Content-Type', 'image/'),
+        // "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body. 
+        // To configure POST to return a response that does not have an empty body, set success_action_status to 201.
+        // When set, Amazon S3 returns an XML document with a 201 status code." 
+        // http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
+        array('success_action_status' => '201'),
+        // Plupload internally adds name field, so we need to mention it here
+        array('starts-with', '$name', ''),     
+        // One more field to take into account: Filename - gets silently sent by FileReference.upload() in Flash
+        // http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
+        array('starts-with', '$Filename', ''), 
+    )
 )));
 
 // sign policy
@@ -76,12 +76,12 @@ $signature = base64_encode(hash_hmac('sha1', $policy, $secret, true));
 <title>Plupload to Amazon S3 Example</title>
 
 <style type="text/css">
-	body {
-		font-family:Verdana, Geneva, sans-serif;
-		font-size:13px;
-		color:#333;
-		background:url(../bg.jpg);
-	}
+    body {
+        font-family:Verdana, Geneva, sans-serif;
+        font-size:13px;
+        color:#333;
+        background:url(../bg.jpg);
+    }
 </style>
 
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
@@ -113,44 +113,44 @@ $signature = base64_encode(hash_hmac('sha1', $policy, $secret, true));
 <script type="text/javascript">
 // Convert divs to queue widgets when the DOM is ready
 $(function() {
-	$("#uploader").plupload({
-		runtimes : 'flash,silverlight',
-		url : 'http://<?php echo $bucket; ?>.s3.amazonaws.com/',
-		max_file_size : '10mb',
-		
-		multipart: true,
-		multipart_params: {
-			'key': '${filename}', // use filename as a key
-			'Filename': '${filename}', // adding this to keep consistency across the runtimes
-			'acl': 'public-read',
-			'Content-Type': 'image/jpeg',
-			'success_action_status': '201',
-			'AWSAccessKeyId' : '<?php echo $accessKeyId; ?>',		
-			'policy': '<?php echo $policy; ?>',
-			'signature': '<?php echo $signature; ?>'
-		},
-		
-		// !!!Important!!! 
-		// this is not recommended with S3, since it will force Flash runtime into the mode, with no progress indication
-		//resize : {width : 800, height : 600, quality : 60},  // Resize images on clientside, if possible 
-		
-		// optional, but better be specified directly
-		file_data_name: 'file',
-		
-		// re-use widget (not related to S3, but to Plupload UI Widget)
-		multiple_queues: true,
+    $("#uploader").plupload({
+        runtimes : 'flash,silverlight',
+        url : 'http://<?php echo $bucket; ?>.s3.amazonaws.com/',
+        max_file_size : '10mb',
+        
+        multipart: true,
+        multipart_params: {
+            'key': '${filename}', // use filename as a key
+            'Filename': '${filename}', // adding this to keep consistency across the runtimes
+            'acl': 'public-read',
+            'Content-Type': 'image/jpeg',
+            'success_action_status': '201',
+            'AWSAccessKeyId' : '<?php echo $accessKeyId; ?>',        
+            'policy': '<?php echo $policy; ?>',
+            'signature': '<?php echo $signature; ?>'
+        },
+        
+        // !!!Important!!! 
+        // this is not recommended with S3, since it will force Flash runtime into the mode, with no progress indication
+        //resize : {width : 800, height : 600, quality : 60},  // Resize images on clientside, if possible 
+        
+        // optional, but better be specified directly
+        file_data_name: 'file',
+        
+        // re-use widget (not related to S3, but to Plupload UI Widget)
+        multiple_queues: true,
 
-		// Specify what files to browse for
-		filters : [
-			{title : "JPEG files", extensions : "jpg"}
-		],
+        // Specify what files to browse for
+        filters : [
+            {title : "JPEG files", extensions : "jpg"}
+        ],
 
-		// Flash settings
-		flash_swf_url : '../../js/plupload.flash.swf',
+        // Flash settings
+        flash_swf_url : '../../js/plupload.flash.swf',
 
-		// Silverlight settings
-		silverlight_xap_url : '../../js/plupload.silverlight.xap'
-	});
+        // Silverlight settings
+        silverlight_xap_url : '../../js/plupload.silverlight.xap'
+    });
 });
 </script>
 

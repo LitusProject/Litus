@@ -73,14 +73,14 @@ class Discount
      * @var array The possible types of a discount
      */
     private static $POSSIBLE_TYPES = array(
-    	'member', 'acco'
+        'member', 'acco'
     );
     
     /**
      * @var array The possible methods of a discount
      */
     private static $POSSIBLE_METHODS = array(
-    	'percentage', 'fixed', 'override'
+        'percentage', 'fixed', 'override'
     );
     
     /**
@@ -117,10 +117,10 @@ class Discount
     public function setDiscount($value, $method, $type)
     {
         if (!self::isValidDiscountType($type))
-        	throw new \InvalidArgumentException('The discount type is not valid.');
-        	
+            throw new \InvalidArgumentException('The discount type is not valid.');
+            
         if (!self::isValidDiscountMethod($method))
-        	throw new \InvalidArgumentException('The discount method is not valid.');
+            throw new \InvalidArgumentException('The discount method is not valid.');
         
         $this->template = null;
         $this->value = $value * 100;
@@ -134,7 +134,7 @@ class Discount
      */
     public static function isValidDiscountType($type)
     {
-    	return in_array($type, self::$POSSIBLE_TYPES);
+        return in_array($type, self::$POSSIBLE_TYPES);
     }
     
     /**
@@ -142,7 +142,7 @@ class Discount
      */
     public static function isValidDiscountMethod($method)
     {
-    	return in_array($method, self::$POSSIBLE_METHODS);
+        return in_array($method, self::$POSSIBLE_METHODS);
     }
     
     /**

@@ -18,19 +18,19 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-        	->from('CudiBundle\Entity\Sales\Session', 's')
-        	->where($query->expr()->orX(
-        			$query->expr()->eq('s.openRegister', ':register'),
-        			$query->expr()->eq('s.closeRegister', ':register')
-        		)
-        	)
-        	->setParameter('register', $cashRegister->getId())
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
+            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->where($query->expr()->orX(
+                    $query->expr()->eq('s.openRegister', ':register'),
+                    $query->expr()->eq('s.closeRegister', ':register')
+                )
+            )
+            ->setParameter('register', $cashRegister->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
-        	return $resultSet[0];
+            return $resultSet[0];
         
         return null;
     }
@@ -38,7 +38,7 @@ class Session extends EntityRepository
     public function getTheoreticalRevenue(SessionEntity $session)
     {
         $query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('SUM(s.price)')
+        $resultSet = $query->select('SUM(s.price)')
             ->from('CudiBundle\Entity\Sales\SaleItem', 's')
             ->where(
                 $query->expr()->eq('s.session', ':session')
@@ -57,14 +57,14 @@ class Session extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-        	->from('CudiBundle\Entity\Sales\Session', 's')
-        	->setMaxResults(1)
-        	->orderBy('s.openDate', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->from('CudiBundle\Entity\Sales\Session', 's')
+            ->setMaxResults(1)
+            ->orderBy('s.openDate', 'DESC')
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
-        	return $resultSet[0];
+            return $resultSet[0];
         
         return null;
     }

@@ -16,8 +16,8 @@
 namespace CommonBundle\Component\Form\Admin\Decorator;
 
 use Zend\Form\Decorator\Errors,
-	Zend\Form\Decorator\ViewHelper,
-	Zend\Form\Decorator\File;
+    Zend\Form\Decorator\ViewHelper,
+    Zend\Form\Decorator\File;
 
 /**
  * This decorator combines all decorators needed to decorate a field with a label.
@@ -26,12 +26,12 @@ use Zend\Form\Decorator\Errors,
  */
 class FileDecorator extends \Zend\Form\Decorator\File
 {
-	/**
-	 * Decorate content and/or element
-	 *
-	 * @param string $content The element's content
-	 * @return string
-	 */
+    /**
+     * Decorate content and/or element
+     *
+     * @param string $content The element's content
+     * @return string
+     */
     public function render($content)
     {
         $viewHelper = new ViewHelper();

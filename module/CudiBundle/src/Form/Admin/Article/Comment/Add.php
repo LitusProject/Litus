@@ -16,10 +16,10 @@
 namespace CudiBundle\Form\Admin\Article\Comment;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Textarea;
 
 /**
  * Add Comment
@@ -34,15 +34,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
              
         $field = new Textarea('text');
         $field->setLabel('Comment')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Select('type');
         $field->setLabel('Type')
             ->setMultiOptions(array('internal' => 'Internal', 'external' => 'External'))
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Submit('submit');

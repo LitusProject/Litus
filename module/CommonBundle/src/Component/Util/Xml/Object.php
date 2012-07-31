@@ -83,21 +83,21 @@ class Object
             $this->_content .= '</' . $tag . '>' . $n;
         }
     }
-	
-	/**
-	 * Converts an UTF-8 value to HTML.
-	 *
-	 * @param string $value The value that should be converted
-	 * @return string
-	 */
+    
+    /**
+     * Converts an UTF-8 value to HTML.
+     *
+     * @param string $value The value that should be converted
+     * @return string
+     */
     private function _escape($value)
     {
         return UTF8::utf8toHtml($value, false);
     }
-	
-	/**
-	 * @return string
-	 */
+    
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->_content;

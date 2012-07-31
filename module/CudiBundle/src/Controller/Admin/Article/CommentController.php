@@ -42,18 +42,18 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
-				$comment = new Comment(
-				    $this->getEntityManager(),
-				    $this->getAuthentication()->getPersonObject(),
-				    $article,
-				    $formData['text'],
-				    $formData['type']
-				);
-				
-				$this->getEntityManager()->persist($comment);
+                $comment = new Comment(
+                    $this->getEntityManager(),
+                    $this->getAuthentication()->getPersonObject(),
+                    $article,
+                    $formData['text'],
+                    $formData['type']
+                );
+                
+                $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
                 
-				$this->flashMessenger()->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -61,16 +61,16 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     )
                 );
                 
-				$this->redirect()->toRoute(
-					'admin_article_comment',
-					array(
-						'action' => 'manage',
-						'id' => $article->getId(),
-					)
-				);
-				
-				return new ViewModel();
-			}
+                $this->redirect()->toRoute(
+                    'admin_article_comment',
+                    array(
+                        'action' => 'manage',
+                        'id' => $article->getId(),
+                    )
+                );
+                
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
@@ -87,10 +87,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $this->initAjax();
         
         if (!($mapping = $this->_getCommentMapping()))
-    	    return new ViewModel();
-    	
-    	$this->getEntityManager()->remove($mapping);
-		$this->getEntityManager()->flush();
+            return new ViewModel();
+        
+        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
@@ -103,95 +103,95 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $id = $id == null ? $this->getParam('id') : $id;
         
-    	if (null === $id) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $id) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($id);
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $article;
     }
     
     private function _getCommentMapping()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the comment!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the comment!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $comment = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $comment) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No comment with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $comment;
+        
+        if (null === $comment) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No comment with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $comment;
     }
 }

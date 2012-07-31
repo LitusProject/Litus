@@ -38,8 +38,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         );
         
         return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
+            'paginator' => $paginator,
+            'paginationControl' => $this->paginator()->createControl(),
         );
     }
     
@@ -49,7 +49,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $page = new Page($this->getAuthentication()->getPersonObject());
                 $this->getEntityManager()->persist($page);
@@ -84,10 +84,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_page',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_page',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return;
@@ -108,7 +108,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $page->setUpdatePerson($this->getAuthentication()->getPersonObject());
 
@@ -149,10 +149,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_page',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_page',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return;
@@ -185,58 +185,58 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->findOneByAbbrev('en')
                 )
         );
-    	
-    	return array(
-    		'result' => array(
-    			'status' => 'success'
-    		),
-    	);
+        
+        return array(
+            'result' => array(
+                'status' => 'success'
+            ),
+        );
     }
     
     public function _getPage()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the page!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_page',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the page!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_page',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $page) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No page with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_page',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $page;
+        
+        if (null === $page) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No page with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_page',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $page;
     }
 }

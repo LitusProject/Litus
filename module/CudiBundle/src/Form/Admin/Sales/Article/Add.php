@@ -14,14 +14,14 @@
  */
  
 namespace CudiBundle\Form\Admin\Sales\Article;
-	
+    
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
-	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
-	CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Validator\Price as PriceValidator,
+    CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+    CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Checkbox,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
@@ -34,60 +34,60 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
  class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	protected $_entityManager = null;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
 
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
         
-       	$this->_entityManager = $entityManager;
+           $this->_entityManager = $entityManager;
          
         $field = new Text('purchase_price');
         $field->setLabel('Purchase Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new PriceValidator());
         $this->addElement($field);
          
         $field = new Text('sell_price');
         $field->setLabel('Sell Price')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new PriceValidator());
         $this->addElement($field);
-		
-		$field = new Text('barcode');
+        
+        $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttrib('class', 'disableEnter')
-        	->setRequired()
-        	->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)))
-        	->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)))
+            ->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-		
+        
         $field = new Select('supplier');
         $field->setLabel('Supplier')
-        	->setRequired()
-			->setMultiOptions($this->_getSuppliers())
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setMultiOptions($this->_getSuppliers())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
          
         $field = new Checkbox('bookable');
         $field->setLabel('Bookable')
-        	->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
          
         $field = new Checkbox('unbookable');
         $field->setLabel('Unbookable')
-        	->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Checkbox('can_expire');
+        $field = new Checkbox('can_expire');
         $field->setLabel('Can Expire')
-        	->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');
@@ -99,26 +99,26 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     
     private function _getSuppliers()
     {
-    	$suppliers = $this->_entityManager
+        $suppliers = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Supplier')
-    		->findAll();
-    	$supplierOptions = array();
-    	foreach($suppliers as $item)
-    		$supplierOptions[$item->getId()] = $item->getName();
-    	
-    	return $supplierOptions;
+            ->findAll();
+        $supplierOptions = array();
+        foreach($suppliers as $item)
+            $supplierOptions[$item->getId()] = $item->getName();
+        
+        return $supplierOptions;
     }
-	
-	public function populateFromArticle(Article $article)
-	{
-		$this->populate(array(
-			'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
-			'sell_price' => number_format($article->getSellPrice()/100, 2),
-			'barcode' => $article->getBarcode(),
-			'supplier' => $article->getSupplier()->getId(),
-			'bookable' => $article->isBookable(),
-			'unbookable' => $article->isUnbookable(),
-			'can_expire' => $article->canExpire()
-		));
-	}
+    
+    public function populateFromArticle(Article $article)
+    {
+        $this->populate(array(
+            'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
+            'sell_price' => number_format($article->getSellPrice()/100, 2),
+            'barcode' => $article->getBarcode(),
+            'supplier' => $article->getSupplier()->getId(),
+            'bookable' => $article->isBookable(),
+            'unbookable' => $article->isUnbookable(),
+            'can_expire' => $article->canExpire()
+        ));
+    }
 }

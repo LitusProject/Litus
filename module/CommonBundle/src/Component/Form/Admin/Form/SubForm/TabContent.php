@@ -36,7 +36,7 @@ class TabContent extends \Zend\Form\SubForm
         $decorators = $this->getDecorators();
         if (empty($decorators)) {
             $this->addDecorator('FormElements')
-            	->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_content'));
+                ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_content'));
         }
         return $this;
     }

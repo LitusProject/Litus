@@ -22,8 +22,8 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  */
 class Checkbox extends \Zend\Form\Element\Checkbox
 {
-	
-	/**
+    
+    /**
      * Load default decorators
      *
      * @return CommonBundle\Component\Form\Bootstrap\Element

@@ -17,7 +17,7 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
     CommonBundle\Entity\General\Address,
-	Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This is the entity for a company.
@@ -27,179 +27,179 @@ use BrBundle\Entity\Users\People\Corporate,
  */
 class Company
 {
-	/**
-	 * @var string The company's ID
-	 *
-	 * @Id
-	 * @Column(type="bigint")
-	 * @GeneratedValue
-	 */
-	private $id;
-	
-	/**
-	 * @var string The company's name
-	 *
-	 * @Column(type="string", length=50)
-	 */
-	private $name;
-	
-	/**
-	 * @var string The company's VAT number
-	 *
-	 * @Column(type="string", name="vat_number")
-	 */
-	private $vatNumber;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\Address The address of the company
-	 *
-	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "delete"})
-	 * @JoinColumn(name="address", referencedColumnName="id")
-	 */
-	private $address;
-	
-	/**
-	 * @var bool Whether or not this is an active company
-	 *
-	 * @Column(type="boolean")
-	 */
-	private $active;
-	
-	/**
-	 * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
-	 *
-	 * @ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
-	 * @JoinTable(name="br.companies_contacts",
-	 *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
-	 *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
-	 * )
-	 */
-	private $contacts;
-	
-	/**
-	 * @param string $name The company's name
-	 * @param string $vatNumber The company's VAT number
-	 */
-	public function __construct($name, $vatNumber, Address $address)
-	{
-		$this->setName($name);
-		$this->setVatNumber($vatNumber);
-		$this->setAddress($address);
-		
-		$this->active = true;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
-	/**
-	 * @param string $name
-	 * @return \BrBundle\Entity\Company
-	 */
-	public function setName($name)
-	{
-		if ((null === $name) || !is_string($name))
-			throw new \InvalidArgumentException('Invalid name');
-			
-		$this->name = $name;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return $this->name;
-	}
-	
-	/**
-	 * @param string $vatNumber
-	 * @return \BrBundle\Entity\Company
-	 */
-	public function setVatNumber($vatNumber)
-	{
-		if ((null === $vatNumber) || !is_string($vatNumber))
-			throw new \InvalidArgumentException('Invalid VAT number');
-			
-	    $this->vatNumber = $vatNumber;
-	    
-	    return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getVatNumber()
-	{
-	    return $this->vatNumber;
-	}
-	
-	/**
-	 * @param \CommonBundle\Entity\General\Address $address
-	 * @return \BrBundle\Entity\Company
-	 */
-	public function setAddress(Address $address)
-	{
-		$this->address = $address;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return \CommonBundle\Entity\General\Address
-	 */
-	public function getAddress()
-	{
-		return $this->address;
-	}
-	
-	/**
-	 * @return bool
-	 */
-	public function getActive()
-	{
-		return $this->active;
-	}
-	
-	/**
-	 * Deactivates the given company.
-	 *
-	 * @return \BrBundle\Entity\Company
-	 */
-	public function deactivate()
-	{
-		$this->active = false;
-		
-		return $this;		
-	}
-	
-	/**
-	 * @return array
-	 */
-	public function getContacts()
-	{
-	    return $this->contacts->toArray();
-	}
-	
-	/**
-	 * @param array $contact The contacts that should be added
-	 * @return \BrBundle\Entity\Company
-	 * @throws \InvalidArugmentException
-	 */
-	public function addContact(Corporate $contact)
-	{	
-	    if ((null === $contact) || $this->contacts->contains($contact))
-	    	throw new \InvalidArgumentException('Invalid contact');
-	    	
-	    $this->contacts->add($contact);	
-	    	
-	    return $this;
-	}
+    /**
+     * @var string The company's ID
+     *
+     * @Id
+     * @Column(type="bigint")
+     * @GeneratedValue
+     */
+    private $id;
+    
+    /**
+     * @var string The company's name
+     *
+     * @Column(type="string", length=50)
+     */
+    private $name;
+    
+    /**
+     * @var string The company's VAT number
+     *
+     * @Column(type="string", name="vat_number")
+     */
+    private $vatNumber;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Address The address of the company
+     *
+     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "delete"})
+     * @JoinColumn(name="address", referencedColumnName="id")
+     */
+    private $address;
+    
+    /**
+     * @var bool Whether or not this is an active company
+     *
+     * @Column(type="boolean")
+     */
+    private $active;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
+     *
+     * @ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
+     * @JoinTable(name="br.companies_contacts",
+     *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
+     * )
+     */
+    private $contacts;
+    
+    /**
+     * @param string $name The company's name
+     * @param string $vatNumber The company's VAT number
+     */
+    public function __construct($name, $vatNumber, Address $address)
+    {
+        $this->setName($name);
+        $this->setVatNumber($vatNumber);
+        $this->setAddress($address);
+        
+        $this->active = true;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @param string $name
+     * @return \BrBundle\Entity\Company
+     */
+    public function setName($name)
+    {
+        if ((null === $name) || !is_string($name))
+            throw new \InvalidArgumentException('Invalid name');
+            
+        $this->name = $name;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @param string $vatNumber
+     * @return \BrBundle\Entity\Company
+     */
+    public function setVatNumber($vatNumber)
+    {
+        if ((null === $vatNumber) || !is_string($vatNumber))
+            throw new \InvalidArgumentException('Invalid VAT number');
+            
+        $this->vatNumber = $vatNumber;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getVatNumber()
+    {
+        return $this->vatNumber;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\Address $address
+     * @return \BrBundle\Entity\Company
+     */
+    public function setAddress(Address $address)
+    {
+        $this->address = $address;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\Address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+    
+    /**
+     * Deactivates the given company.
+     *
+     * @return \BrBundle\Entity\Company
+     */
+    public function deactivate()
+    {
+        $this->active = false;
+        
+        return $this;        
+    }
+    
+    /**
+     * @return array
+     */
+    public function getContacts()
+    {
+        return $this->contacts->toArray();
+    }
+    
+    /**
+     * @param array $contact The contacts that should be added
+     * @return \BrBundle\Entity\Company
+     * @throws \InvalidArugmentException
+     */
+    public function addContact(Corporate $contact)
+    {    
+        if ((null === $contact) || $this->contacts->contains($contact))
+            throw new \InvalidArgumentException('Invalid contact');
+            
+        $this->contacts->add($contact);    
+            
+        return $this;
+    }
 }

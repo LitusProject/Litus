@@ -16,14 +16,14 @@
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
-	CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\Acl\Driver\HasAccess,
     CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Component\Util\File,
+    CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-	Zend\Cache\StorageFactory,
-	Zend\Mvc\MvcEvent,
-	Zend\Paginator\Paginator,
-	Zend\Paginator\Adapter\ArrayAdapter;
+    Zend\Cache\StorageFactory,
+    Zend\Mvc\MvcEvent,
+    Zend\Paginator\Paginator,
+    Zend\Paginator\Adapter\ArrayAdapter;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -38,7 +38,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private $_language;
 
-	/**
+    /**
      * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -47,18 +47,18 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function execute(MvcEvent $e)
     {
-    	$startExecutionTime = microtime(true);
+        $startExecutionTime = microtime(true);
 
-		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->setCharset('utf-8');
+        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->setCharset('utf-8');
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
         
         $authenticatedUser = 'Guest';
         
         if (
-        	$this->hasAccess()->resourceAction(
-        		$this->getParam('controller'), $this->getParam('action')
-        	)
+            $this->hasAccess()->resourceAction(
+                $this->getParam('controller'), $this->getParam('action')
+            )
         ) {
             if ($this->getAuthentication()->isAuthenticated()) {
                 $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
@@ -77,9 +77,9 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             }
         }
         
-       	$this->initLocalization();
-		
-		$result = parent::execute($e);
+           $this->initLocalization();
+        
+        $result = parent::execute($e);
 
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
@@ -89,11 +89,11 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $result->authenticatedUser = $authenticatedUser;
         $result->environment = getenv('APPLICATION_ENV');
         $result->developmentInformation = array(
-        	'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
-        	'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
+            'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
+            'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
         );
         $result->setTerminal(true);
-  		  		
+                    
         $e->setResult($result);
         return $result;
     }
@@ -107,11 +107,11 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     protected function initAjax()
     {        
         if (
-        	!$this->getRequest()->headers()->get('X_REQUESTED_WITH')
-        	|| 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
+            !$this->getRequest()->headers()->get('X_REQUESTED_WITH')
+            || 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
         ) {
             throw new Request\Exception\NoXmlHttpRequestException(
-            	'This page is accessible only through an asynchroneous request'
+                'This page is accessible only through an asynchroneous request'
             );
         }
     }
@@ -123,20 +123,20 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initControllerPlugins()
     {
-    	// HasAccess Plugin
-    	$this->getBroker()->getClassLoader()->registerPlugin(
-    		'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
-    	);		
-    	$this->hasAccess()->setDriver(
-    		new HasAccess(
-    			$this->_getAcl(), $this->getAuthentication()
-    		)
-    	);
-    	
-    	// Paginator Plugin
-    	$this->getBroker()->getClassLoader()->registerPlugin(
-    		'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
-    	);
+        // HasAccess Plugin
+        $this->getBroker()->getClassLoader()->registerPlugin(
+            'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
+        );        
+        $this->hasAccess()->setDriver(
+            new HasAccess(
+                $this->_getAcl(), $this->getAuthentication()
+            )
+        );
+        
+        // Paginator Plugin
+        $this->getBroker()->getClassLoader()->registerPlugin(
+            'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
+        );
     }
     
     /**
@@ -146,31 +146,31 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initViewHelpers()
     {
-    	$renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
-    	$renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
-    	
-    	// DateLocalized View Helper
-    	$renderer->getBroker()->getClassLoader()->registerPlugin(
-    		'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
-    	);
-    	
-    	// GetParam View Helper
-    	$renderer->getBroker()->getClassLoader()->registerPlugin(
-    		'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-    	);
-    	$renderer->plugin('getParam')->setRouteMatch(
-    		$this->getEvent()->getRouteMatch()
-    	);
-    	
-    	// HasAccess View Helper
-    	$renderer->getBroker()->getClassLoader()->registerPlugin(
-    		'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
-    	);		
-    	$renderer->plugin('hasAccess')->setDriver(
-    		new HasAccess(
-    			$this->_getAcl(), $this->getAuthentication()
-    		)
-    	);
+        $renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
+        
+        // DateLocalized View Helper
+        $renderer->getBroker()->getClassLoader()->registerPlugin(
+            'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
+        );
+        
+        // GetParam View Helper
+        $renderer->getBroker()->getClassLoader()->registerPlugin(
+            'getparam', 'CommonBundle\Component\View\Helper\GetParam'
+        );
+        $renderer->plugin('getParam')->setRouteMatch(
+            $this->getEvent()->getRouteMatch()
+        );
+        
+        // HasAccess View Helper
+        $renderer->getBroker()->getClassLoader()->registerPlugin(
+            'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
+        );        
+        $renderer->plugin('hasAccess')->setDriver(
+            new HasAccess(
+                $this->_getAcl(), $this->getAuthentication()
+            )
+        );
     }
         
     /**
@@ -222,8 +222,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
         
         if ($this->getAuthentication()->isAuthenticated()) {
-        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
-        	$this->getEntityManager()->flush();
+            $this->getAuthentication()->getPersonObject()->setLanguage($language);
+            $this->getEntityManager()->flush();
         }
     }
     
@@ -236,11 +236,11 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _getAcl()
     {
-    	return new Acl(
-    		$this->getEntityManager()
-    	);
+        return new Acl(
+            $this->getEntityManager()
+        );
     }
-	
+    
     /**
      * Returns the Authentication instance
      *
@@ -292,15 +292,15 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     protected function getCurrentAcademicYear()
     {
-    	$start = AcademicYear::getStartOfAcademicYear();
-    	$start->setTime(0, 0);
-    	
-    	$academicYear = $this->getEntityManager()
+        $start = AcademicYear::getStartOfAcademicYear();
+        $start->setTime(0, 0);
+        
+        $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStartDate($start);
 
         if (null === $academicYear) {
-    	    $now = new DateTime();
+            $now = new DateTime();
             $endAcademicYear = AcademicYear::getStartOfAcademicYear(
                 $now->add(
                     new DateInterval('P1Y')

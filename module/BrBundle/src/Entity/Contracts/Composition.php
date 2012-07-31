@@ -16,7 +16,7 @@
 namespace BrBundle\Entity\Contracts;
 
 use BrBundle\Entity\Contract,
-	BrBundle\Entity\Contracts\Section;
+    BrBundle\Entity\Contracts\Section;
 
 /**
  * This entity represents the composition of a contract.

@@ -21,60 +21,60 @@ namespace CudiBundle\Entity\Sales;
  */
 class PayDesk
 {
-	/**
-	 * @var integer The ID of the paydesk
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var string The name of the paydesk
-	 *
-	 * @Column(type="string")
-	 */
-	private $name;
-	
-	/**
-	 * @var string The code of the paydesk
-	 *
-	 * @Column(type="string")
-	 */
-	private $code;
-	
-	/**
-	 * @param string $code The code of the paydesk
-	 * @param string $name The name of the paydesk
-	 */
-	public function __construct($code, $name)
-	{
-	    $this->code = $code;
-	    $this->name = $name;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return $this->name;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getCode()
-	{
-	    return $this->code;
-	}
+    /**
+     * @var integer The ID of the paydesk
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var string The name of the paydesk
+     *
+     * @Column(type="string")
+     */
+    private $name;
+    
+    /**
+     * @var string The code of the paydesk
+     *
+     * @Column(type="string")
+     */
+    private $code;
+    
+    /**
+     * @param string $code The code of the paydesk
+     * @param string $name The name of the paydesk
+     */
+    public function __construct($code, $name)
+    {
+        $this->code = $code;
+        $this->name = $name;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 }

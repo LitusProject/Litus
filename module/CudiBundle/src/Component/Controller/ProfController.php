@@ -20,7 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     DateInterval,
     DateTime,
-	Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -29,7 +29,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
+    /**
      * Execute the request
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -38,49 +38,49 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$result = parent::execute($e);
-				
-		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
-		$result->authenticated = $this->getAuthentication()->isAuthenticated();
-		$result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
-		
-		$result->unionUrl = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('union_url');
-  		
+        $result = parent::execute($e);
+                
+        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+        $result->authenticated = $this->getAuthentication()->isAuthenticated();
+        $result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
+        
+        $result->unionUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_url');
+          
         $e->setResult($result);
         return $result;
     }
     
     protected function getAcademicYear()
     {
-   		$start = AcademicYear::getStartOfAcademicYear();
-    	$start->setTime(0, 0);
-    	    	
-    	$now = new DateTime();
-    	$profStart = new DateTime($this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.prof_start_academic_year'));
-    	if ($now > $profStart) {
-    	    $start->add(new DateInterval('P1Y2M'));
-    	    $start = AcademicYear::getStartOfAcademicYear($start);
-    	}
+           $start = AcademicYear::getStartOfAcademicYear();
+        $start->setTime(0, 0);
+                
+        $now = new DateTime();
+        $profStart = new DateTime($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.prof_start_academic_year'));
+        if ($now > $profStart) {
+            $start->add(new DateInterval('P1Y2M'));
+            $start = AcademicYear::getStartOfAcademicYear($start);
+        }
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStartDate($start);
-    	
-    	if (null === $academicYear) {
-    	    $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-    	        $now->add(
-    	            new DateInterval('P1Y')
-    	        )
-    	    );
-    	    $academicYear = new AcademicYearEntity($start, $endAcademicYear);
-    	    $this->getEntityManager()->persist($academicYear);
-    	    $this->getEntityManager()->flush();
-    	}
+        
+        if (null === $academicYear) {
+            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
+                $now->add(
+                    new DateInterval('P1Y')
+                )
+            );
+            $academicYear = new AcademicYearEntity($start, $endAcademicYear);
+            $this->getEntityManager()->persist($academicYear);
+            $this->getEntityManager()->flush();
+        }
 
-    	return $academicYear;
+        return $academicYear;
     }
 }

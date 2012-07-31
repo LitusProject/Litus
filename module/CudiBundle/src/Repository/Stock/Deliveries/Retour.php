@@ -18,50 +18,50 @@ class Retour extends EntityRepository
     public function findAllBySupplierAndPeriod(Supplier $supplier, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-    	$query->select('r')
-    		->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
-    		->innerJoin('r.article', 'a', Join::WITH,
-    				$query->expr()->eq('a.supplier', ':supplier')
-    		)
-    		->where(
-    		    $query->expr()->andX(
-    				$query->expr()->gt('r.timestamp', ':startDate'),
-    				$period->isOpen() ? '1=1' : $query->expr()->lt('r.timestamp', ':endDate')
-    			)
-    		)
-    		->setParameter('supplier', $supplier->getId())
-    		->setParameter('startDate', $period->getStartDate())
-    		->orderBy('r.timestamp', 'DESC');
-    	
-    	if (!$period->isOpen())
-    	    $query->setParameter('endDate', $period->getEndDate());	
-    	
-    	$resultSet = $query->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query->select('r')
+            ->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
+            ->innerJoin('r.article', 'a', Join::WITH,
+                    $query->expr()->eq('a.supplier', ':supplier')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('r.timestamp', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('r.timestamp', ':endDate')
+                )
+            )
+            ->setParameter('supplier', $supplier->getId())
+            ->setParameter('startDate', $period->getStartDate())
+            ->orderBy('r.timestamp', 'DESC');
+        
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());    
+        
+        $resultSet = $query->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
     
     public function findAllByPeriod(Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-    	$query->select('r')
-    		->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
-    		->where(
-    		    $query->expr()->andX(
-    				$query->expr()->gt('r.timestamp', ':startDate'),
-    				$period->isOpen() ? '1=1' : $query->expr()->lt('r.timestamp', ':endDate')
-    			)
-    		)
-    		->setParameter('startDate', $period->getStartDate())
-    		->orderBy('r.timestamp', 'DESC');
-    	
-    	if (!$period->isOpen())
-    	    $query->setParameter('endDate', $period->getEndDate());	
-    	
-    	$resultSet = $query->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query->select('r')
+            ->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('r.timestamp', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('r.timestamp', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate())
+            ->orderBy('r.timestamp', 'DESC');
+        
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());    
+        
+        $resultSet = $query->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
 }

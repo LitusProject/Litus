@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
-	Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager;
 
 /**
  * This class provides a container to create documents
@@ -46,13 +46,13 @@ abstract class Pdf
      * @var string The 
      */
     private $_pdfPath;
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param string $xslPath The path to the document's XSL file
-	 * @param string $pdfPath The path all PDF's should be exported to
-	 */
-	public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param string $xslPath The path to the document's XSL file
+     * @param string $pdfPath The path all PDF's should be exported to
+     */
+    public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
         if(($xslPath === null) || !is_string($xslPath))
             throw new \InvalidArgumentException('Invalid xsl');
@@ -60,14 +60,14 @@ abstract class Pdf
         if(($pdfPath === null) || !is_string($pdfPath))
             throw new \InvalidArgumentException('Invalid pdf');
 
-		$this->_entityManager = $entityManager;
-		        
+        $this->_entityManager = $entityManager;
+                
         $this->_xslPath = $xslPath;
         $this->_pdfPath = $pdfPath;
         
         $this->_xmlFile = new TmpFile();
     }
-	    
+        
     /**
      * Returns our configuration repository.
      *
@@ -88,35 +88,35 @@ abstract class Pdf
     {
         return str_replace(',', '<br/>', $address);
     }
-	
-	/**
-	 * Generate the document.
-	 *
-	 * @return void
-	 */
+    
+    /**
+     * Generate the document.
+     *
+     * @return void
+     */
     public function generate()
     {
         $this->generateXml(
-        	$this->_xmlFile
+            $this->_xmlFile
         );
         
         $this->generatePdf();
     }
-	
-	/**
-	 * Generate the document's XML structure.
-	 *
-	 * @param \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
-	 * @return void
-	 */
+    
+    /**
+     * Generate the document's XML structure.
+     *
+     * @param \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
+     * @return void
+     */
     abstract protected function generateXml(TmpFile $xmlFile);
-	
-	/**
-	 * Generate the PDF document using the specified XSL and XML files, using FOP.
-	 *
-	 * @return void
-	 * @throws \RuntimeException
-	 */
+    
+    /**
+     * Generate the PDF document using the specified XSL and XML files, using FOP.
+     *
+     * @return void
+     * @throws \RuntimeException
+     */
     protected function generatePdf()
     {
         $xmlPath = $this->_xmlFile->getFilename();
@@ -130,11 +130,11 @@ abstract class Pdf
         $resultValue = 0;
         
         $fop_command = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('fop_command');;
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fop_command');;
         
         $result = system(
-        	escapeshellcmd($fop_command . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
+            escapeshellcmd($fop_command . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
         
         if ($resultValue != 0)
@@ -146,6 +146,6 @@ abstract class Pdf
      */
     public function getEntityManager()
     {
-    	return $this->_entityManager;
+        return $this->_entityManager;
     }
 }

@@ -24,23 +24,23 @@ class SubjectProfMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.prof', ':prof'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('subject', $subjectId)
-        	->setParameter('prof', $prof->getId())
-        	->setParameter('academicYear', $academicYear->getId())
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
+            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.prof', ':prof'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('subject', $subjectId)
+            ->setParameter('prof', $prof->getId())
+            ->setParameter('academicYear', $academicYear->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
-        	return $resultSet[0];
+            return $resultSet[0];
         
         return null;
     }
@@ -49,18 +49,18 @@ class SubjectProfMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('m.subject', ':subject'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('subject', $subject->getId())
-        	->setParameter('academicYear', $academicYear->getId())
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('subject', $subject->getId())
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
     
@@ -68,18 +68,18 @@ class SubjectProfMap extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('m.prof', ':prof'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('prof', $prof->getId())
-        	->setParameter('academicYear', $academicYear->getId())
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.prof', ':prof'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('prof', $prof->getId())
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
     
@@ -91,7 +91,7 @@ class SubjectProfMap extends EntityRepository
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
-        	->setParameter('academicYear', $academicYear->getId())
+            ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
             
@@ -101,19 +101,19 @@ class SubjectProfMap extends EntityRepository
             
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('m.prof', ':prof'),
-        	        $query->expr()->eq('m.academicYear', ':academicYear'),
-        	        $query->expr()->in('m.subject', $ids)
-        	    )
-        	)
-        	->setParameter('prof', $prof->getId())
-        	->setParameter('academicYear', $academicYear->getId())
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.prof', ':prof'),
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->in('m.subject', $ids)
+                )
+            )
+            ->setParameter('prof', $prof->getId())
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
 }

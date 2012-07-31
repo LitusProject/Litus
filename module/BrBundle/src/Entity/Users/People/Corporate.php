@@ -16,10 +16,10 @@
 namespace BrBundle\Entity\Users\People;
 
 use BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
-	CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Users\Credential,
-	Doctrine\Common\Collections\ArrayCollection;
-	
+    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\Users\Credential,
+    Doctrine\Common\Collections\ArrayCollection;
+    
 /**
  * This is a person that represents a contact in a company.
  *
@@ -30,7 +30,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @OneToMany(
-     * 		targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"}
+     *         targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"}
      * )
      */
     private $corporateStatuses;
@@ -108,15 +108,15 @@ class Corporate extends \CommonBundle\Entity\Users\Person
      */
     public function addCorporateStatus(CorporateStatus $corporateStatus)
     {
-    	if (null === $corporateStatus)
-    		throw new \InvalidArgumentException('Invalid status');
-    	
-    	if (!$this->canHaveCorporateStatus())
-    		throw \RuntimeException('The corporate status cannot be set');
-    		
-    	$this->corporateStatuses->add($corporateStatus);
-    	
-    	return $this;
+        if (null === $corporateStatus)
+            throw new \InvalidArgumentException('Invalid status');
+        
+        if (!$this->canHaveCorporateStatus())
+            throw \RuntimeException('The corporate status cannot be set');
+            
+        $this->corporateStatuses->add($corporateStatus);
+        
+        return $this;
     }
     
     /**
@@ -127,11 +127,11 @@ class Corporate extends \CommonBundle\Entity\Users\Person
      */
     public function canHaveCorporateStatus()
     {
-    	foreach ($this->corporateStatuses as $corporateStatus) {
-    		if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear())
-    			return false;
-    	}
-    	
-    	return true;
+        foreach ($this->corporateStatuses as $corporateStatus) {
+            if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear())
+                return false;
+        }
+        
+        return true;
     }
 }

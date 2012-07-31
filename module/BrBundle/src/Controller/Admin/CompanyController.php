@@ -16,9 +16,9 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
-	BrBundle\Form\Admin\Company\Add as AddForm,
-	CommonBundle\Entity\General\Address,
-	Zend\View\Model\ViewModel;
+    BrBundle\Form\Admin\Company\Add as AddForm,
+    CommonBundle\Entity\General\Address,
+    Zend\View\Model\ViewModel;
 
 /**
  * CompanyController
@@ -33,14 +33,14 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             'BrBundle\Entity\Company',
             $this->getParam('page'),
             array(
-            	'active' => true
+                'active' => true
             )
         );
         
         return new ViewModel(
             array(
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -48,31 +48,31 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     public function addAction()
     {
         $form = new AddForm(
-        	$this->getEntityManager()
+            $this->getEntityManager()
         );
-		
-		$companyCreated = false;
+        
+        $companyCreated = false;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+            
             if ($form->isValid($formData)) {                
                 $newCompany = new Company(
-                	$formData['company_name'],
-                	$formData['vat_number'],
-                	new Address(
-                		$formData['address_street'],
-                		$formData['address_number'],
-                		$formData['address_postal'],
-                		$formData['address_city'],
-                		$formData['address_country']
-                	)
+                    $formData['company_name'],
+                    $formData['vat_number'],
+                    new Address(
+                        $formData['address_street'],
+                        $formData['address_number'],
+                        $formData['address_postal'],
+                        $formData['address_city'],
+                        $formData['address_country']
+                    )
                 );
                 
                 $this->getEntityManager()->persist($newCompany);
 
-				$form = new AddForm(
-					$this->getEntityManager()
-				);
+                $form = new AddForm(
+                    $this->getEntityManager()
+                );
 
                 $companyCreated = true;
             }
@@ -82,8 +82,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         
         return new ViewModel(
             array(
-            	'form' => $form,
-            	'companyCreated' => $companyCreated,
+                'form' => $form,
+                'companyCreated' => $companyCreated,
             )
         );
     }

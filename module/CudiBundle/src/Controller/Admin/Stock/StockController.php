@@ -16,12 +16,12 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
-	CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
-	CudiBundle\Form\Admin\Stock\Update as StockForm,
-	CudiBundle\Entity\Stock\Deliveries\Delivery,
-	CudiBundle\Entity\Stock\PeriodValues\Delta,
-	Zend\View\Model\ViewModel;
+    CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
+    CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
+    CudiBundle\Form\Admin\Stock\Update as StockForm,
+    CudiBundle\Entity\Stock\Deliveries\Delivery,
+    CudiBundle\Entity\Stock\PeriodValues\Delta,
+    Zend\View\Model\ViewModel;
 
 /**
  * StockController
@@ -78,46 +78,46 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
             
         switch($this->getParam('field')) {
-        	case 'title':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'));
-        		break;
-        	case 'barcode':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'));
-        		break;
-        	case 'supplier':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
-        		break;
+            case 'title':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'));
+                break;
+            case 'barcode':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'));
+                break;
+            case 'supplier':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
+                break;
         }
         
         $numResults = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('search_max_results');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
         
         array_splice($articles, $numResults);
         
         $result = array();
         foreach($articles as $article) {
-        	$item = (object) array();
-        	$item->id = $article->getId();
-        	$item->title = $article->getMainArticle()->getTitle();
-        	$item->supplier = $article->getSupplier()->getName();
-        	$item->nbInStock = $article->getStockValue();
-        	$item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-        	$item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
-        	$item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->supplier = $article->getSupplier()->getName();
+            $item->nbInStock = $article->getStockValue();
+            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+            $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
@@ -127,46 +127,46 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
             
         switch($this->getParam('field')) {
-        	case 'title':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'), true);
-        		break;
-        	case 'barcode':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'), true);
-        		break;
-        	case 'supplier':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'), true);
-        		break;
+            case 'title':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'), true);
+                break;
+            case 'barcode':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'), true);
+                break;
+            case 'supplier':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'), true);
+                break;
         }
         
         $numResults = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('search_max_results');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
         
         array_splice($articles, $numResults);
         
         $result = array();
         foreach($articles as $article) {
-        	$item = (object) array();
-        	$item->id = $article->getId();
-        	$item->title = $article->getMainArticle()->getTitle();
-        	$item->supplier = $article->getSupplier()->getName();
-        	$item->nbInStock = $article->getStockValue();
-        	$item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
-        	$item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
-        	$item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->supplier = $article->getSupplier()->getName();
+            $item->nbInStock = $article->getStockValue();
+            $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
+            $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;
+            $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
@@ -185,91 +185,91 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
-			if (isset($formData['updateStock'])) {
-				if ($stockForm->isValid($formData)) {
-					$delta = new Delta(
-					    $this->getAuthentication()->getPersonObject(),
-					    $article,
-					    $period,
-					    $formData['number'] - $article->getStockValue(),
-					    $formData['comment']
-					);
-					$this->getEntityManager()->persist($delta);
+            if (isset($formData['updateStock'])) {
+                if ($stockForm->isValid($formData)) {
+                    $delta = new Delta(
+                        $this->getAuthentication()->getPersonObject(),
+                        $article,
+                        $period,
+                        $formData['number'] - $article->getStockValue(),
+                        $formData['comment']
+                    );
+                    $this->getEntityManager()->persist($delta);
 
-					$article->setStockValue($formData['number']);
-					
-					$this->getEntityManager()->flush();
-					
-					$this->flashMessenger()->addMessage(
-	                    new FlashMessage(
-	                        FlashMessage::SUCCESS,
-	                        'SUCCESS',
-	                        'The stock was successfully updated!'
-	                    )
-					);
-					
-					$this->redirect()->toRoute(
-						'admin_stock',
-						array(
-							'action' => 'edit',
-							'id' => $article->getId(),
-						)
-					);
-					
-					return new ViewModel();
-				}
-			} elseif (isset($formData['add_order'])) {
-				if ($orderForm->isValid($formData)) {
-					$this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Stock\Orders\Order')
-						->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
-					
-					$this->getEntityManager()->flush();
-					
-					$this->flashMessenger()->addMessage(
-	                    new FlashMessage(
-	                        FlashMessage::SUCCESS,
-	                        'SUCCESS',
-	                        'The order was successfully added!'
-	                    )
-					);
-					
-					$this->redirect()->toRoute(
-						'admin_stock',
-						array(
-							'action' => 'edit',
-							'id' => $article->getId(),
-						)
-					);
-					
-					return new ViewModel();
-				}
-			} elseif (isset($formData['add_delivery'])) {
-				if ($deliveryForm->isValid($formData)) {
-					$delivery = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
-					$this->getEntityManager()->persist($delivery);
-					$this->getEntityManager()->flush();
+                    $article->setStockValue($formData['number']);
+                    
+                    $this->getEntityManager()->flush();
+                    
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The stock was successfully updated!'
+                        )
+                    );
+                    
+                    $this->redirect()->toRoute(
+                        'admin_stock',
+                        array(
+                            'action' => 'edit',
+                            'id' => $article->getId(),
+                        )
+                    );
+                    
+                    return new ViewModel();
+                }
+            } elseif (isset($formData['add_order'])) {
+                if ($orderForm->isValid($formData)) {
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
+                        ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
+                    
+                    $this->getEntityManager()->flush();
+                    
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The order was successfully added!'
+                        )
+                    );
+                    
+                    $this->redirect()->toRoute(
+                        'admin_stock',
+                        array(
+                            'action' => 'edit',
+                            'id' => $article->getId(),
+                        )
+                    );
+                    
+                    return new ViewModel();
+                }
+            } elseif (isset($formData['add_delivery'])) {
+                if ($deliveryForm->isValid($formData)) {
+                    $delivery = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
+                    $this->getEntityManager()->persist($delivery);
+                    $this->getEntityManager()->flush();
 
-					$this->flashMessenger()->addMessage(
-		            	new FlashMessage(
-		                	FlashMessage::SUCCESS,
-		                    'SUCCESS',
-		                    'The delivery was successfully added!'
-		                )
-					);
-					
-					$this->redirect()->toRoute(
-						'admin_stock',
-						array(
-							'action' => 'edit',
-							'id' => $article->getId(),
-						)
-					);
-					
-					return new ViewModel();
-				}
-			}
-		}
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'The delivery was successfully added!'
+                        )
+                    );
+                    
+                    $this->redirect()->toRoute(
+                        'admin_stock',
+                        array(
+                            'action' => 'edit',
+                            'id' => $article->getId(),
+                        )
+                    );
+                    
+                    return new ViewModel();
+                }
+            }
+        }
         
         return new ViewModel(
             array(
@@ -303,56 +303,56 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'article' => $article,
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
     
     private function _getArticle()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the sale article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_stock',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the sale article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_stock',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $item = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $item) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No sale article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_stock',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $item;
+        
+        if (null === $item) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No sale article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_stock',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $item;
     }
 }

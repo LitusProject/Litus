@@ -17,12 +17,12 @@ namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Validator\Price as PriceValidator,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Sale Session content
@@ -39,31 +39,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
             ->findAll();
         
-		foreach($units as $unit) {
-			$field = new Text('unit_' . $unit->getId());
-	        $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
-    			->setAttrib('autocomplete', 'off')
-	            ->setRequired()
-				->setValue(0)
-				->addValidator(new IntValidator())
-	            ->setDecorators(array(new FieldDecorator()));
-	        $this->addElement($field);
-		}
-		
-		$devices = $entityManager
+        foreach($units as $unit) {
+            $field = new Text('unit_' . $unit->getId());
+            $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
+                ->setAttrib('autocomplete', 'off')
+                ->setRequired()
+                ->setValue(0)
+                ->addValidator(new IntValidator())
+                ->setDecorators(array(new FieldDecorator()));
+            $this->addElement($field);
+        }
+        
+        $devices = $entityManager
             ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
         
-		foreach($devices as $device) {
-			$field = new Text('device_' . $device->getId());
-	        $field->setLabel($device->getName())
-    			->setAttrib('autocomplete', 'off')
-	            ->setRequired()
-				->setValue(0)
-				->addValidator(new PriceValidator())
-	            ->setDecorators(array(new FieldDecorator()));
-	        $this->addElement($field);
-		}
+        foreach($devices as $device) {
+            $field = new Text('device_' . $device->getId());
+            $field->setLabel($device->getName())
+                ->setAttrib('autocomplete', 'off')
+                ->setRequired()
+                ->setValue(0)
+                ->addValidator(new PriceValidator())
+                ->setDecorators(array(new FieldDecorator()));
+            $this->addElement($field);
+        }
 
         $field = new Submit('submit');
         $field->setLabel('Add')
@@ -76,9 +76,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $data = array();
         foreach($cashRegister->getBankDeviceAmounts() as $amount)
-        	$data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
+            $data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
         foreach($cashRegister->getMoneyUnitAmounts() as $amount)
-        	$data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
+            $data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
         
         $this->populate($data);
     }

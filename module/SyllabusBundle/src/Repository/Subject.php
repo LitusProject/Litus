@@ -22,7 +22,7 @@ class Subject extends EntityRepository
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
-        	->setParameter('academicYear', $academicYear->getId())
+            ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
             
@@ -32,19 +32,19 @@ class Subject extends EntityRepository
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Subject', 's')
-        	->where(
-        	    $query->expr()->andX(
-            	    $query->expr()->orX(
-            	        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
-            	        $query->expr()->like($query->expr()->lower('s.code'), ':name')
-            	    ),
-            	    $query->expr()->in('s.id', $ids)
-            	)
-        	)
-        	->setParameter('name', strtolower(trim($name)) . '%')
-        	->getQuery()
-        	->getResult();
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                        $query->expr()->like($query->expr()->lower('s.code'), ':name')
+                    ),
+                    $query->expr()->in('s.id', $ids)
+                )
+            )
+            ->setParameter('name', strtolower(trim($name)) . '%')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }

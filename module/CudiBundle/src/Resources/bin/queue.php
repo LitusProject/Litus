@@ -61,6 +61,6 @@ try {
 }
 
 if (isset($opts->r)) {
-	$queue = new \CudiBundle\Component\WebSocket\Sale\Queue($diContainer->get('doctrine_em'));
-	$queue->process();
+    $queue = new \CudiBundle\Component\WebSocket\Sale\Queue($diContainer->get('doctrine_em'));
+    $queue->process();
 }

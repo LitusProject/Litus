@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
-	  CommonBundle\Component\Authentication\Authentication;
+      CommonBundle\Component\Authentication\Authentication;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -25,39 +25,39 @@ use CommonBundle\Component\Acl\Acl,
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class HasAccess
-{	
-	/**
-	 * @var \CommonBundle\Component\Acl\Acl The ACL object
-	 */
-	private $_acl = null;
-	
-	/**
-	 * @var \CommonBundle\Component\Authentication\Authentication The authentication object
-	 */
-	private $_authentication = null;
-	
-	/**
-	 * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
-	 * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
-	 */
-	public function __construct(Acl $acl, Authentication $authentication)
-	{
-		$this->_acl = $acl;
-		$this->_authentication = $authentication;
-	}
-	
-	/**
-	 * @param string $resource The resource that should be verified
-	 * @param string $action The module that should be verified	 	 
-	 * @return bool
-	 */
+{    
+    /**
+     * @var \CommonBundle\Component\Acl\Acl The ACL object
+     */
+    private $_acl = null;
+    
+    /**
+     * @var \CommonBundle\Component\Authentication\Authentication The authentication object
+     */
+    private $_authentication = null;
+    
+    /**
+     * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
+     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
+     */
+    public function __construct(Acl $acl, Authentication $authentication)
+    {
+        $this->_acl = $acl;
+        $this->_authentication = $authentication;
+    }
+    
+    /**
+     * @param string $resource The resource that should be verified
+     * @param string $action The module that should be verified          
+     * @return bool
+     */
     public function __invoke($resource, $action)
     {
-    	if (null === $this->_acl)
-    		throw new Exception\RuntimeException('No ACL object was provided');
-    		
-    	if (null === $this->_authentication)
-    		throw new Exception\RuntimeException('No authentication object was provided');
+        if (null === $this->_acl)
+            throw new Exception\RuntimeException('No ACL object was provided');
+            
+        if (null === $this->_authentication)
+            throw new Exception\RuntimeException('No authentication object was provided');
     
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('production' != getenv('APPLICATION_ENV'))

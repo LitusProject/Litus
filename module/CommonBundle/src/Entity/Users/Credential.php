@@ -69,7 +69,7 @@ class Credential
         $this->salt = md5(uniqid(rand(), true));
         
         $this->hash = hash_hmac(
-        	$algorithm, $credential, $this->salt
+            $algorithm, $credential, $this->salt
         );
     }
 

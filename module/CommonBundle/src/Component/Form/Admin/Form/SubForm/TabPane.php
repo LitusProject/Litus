@@ -36,7 +36,7 @@ class TabPane extends \Zend\Form\SubForm
         
         $this->clearDecorators();
         $this->addDecorator('FormElements')
-        	->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_pane', 'id' => $options));
+            ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_pane', 'id' => $options));
     }
     
     /**

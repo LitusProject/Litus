@@ -27,18 +27,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     public function indexAction()
     {
         $profActions = $this->getEntityManager()
-        	    ->getRepository('CudiBundle\Entity\Prof\Action')
-        	    ->findAllUncompleted();
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllUncompleted();
         array_splice($profActions, 10);
         
         return new ViewModel(
             array(
                 'profActions' => $profActions,
-            	'versions' => array(
-            		'php' => phpversion(),
-            		'zf' => \Zend\Version::VERSION,
-            		'doctrine' => \Doctrine\Common\Version::VERSION
-            	),
+                'versions' => array(
+                    'php' => phpversion(),
+                    'zf' => \Zend\Version::VERSION,
+                    'doctrine' => \Doctrine\Common\Version::VERSION
+                ),
             )
         );
     }

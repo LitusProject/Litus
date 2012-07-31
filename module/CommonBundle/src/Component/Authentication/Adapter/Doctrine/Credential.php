@@ -16,8 +16,8 @@
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\QueryBuilder;
 
 /**
  * An authentication adapter using Doctrine.
@@ -36,7 +36,7 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
-    	parent::__construct($entityManager, $entityName, $identityColumn, $caseSensitive);
+        parent::__construct($entityManager, $entityName, $identityColumn, $caseSensitive);
     }
 
     /**
@@ -48,14 +48,14 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
     {
         $query = new QueryBuilder($this->getEntityManager());
         $query->from($this->getEntityName(), 'u')
-        	->select('u');
+            ->select('u');
 
         if ($this->getCaseSensitive()) {
             $query->where('u.' . $this->getIdentityColumn() . ' = :identity')
-            	->setParameter('identity', $this->getIdentity());
+                ->setParameter('identity', $this->getIdentity());
         } else {
             $query->where('TRIM(LOWER(u.' . $this->getIdentityColumn() . ')) = :identity')
-            	->setParameter('identity', trim(strtolower($this->getIdentity())));
+                ->setParameter('identity', trim(strtolower($this->getIdentity())));
         }
 
         return $query;
@@ -70,35 +70,35 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
     {
         if (!$this->getPersonObject()->validateCredential($this->getCredential())) {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::FAILURE_CREDENTIAL_INVALID,
-            		'messages' => array(
-            			'Supplied credential is invalid'
-            		),
-            		'personObject' => $this->getPersonObject()
-            	)
-            );	
+                array(
+                    'code' => Result::FAILURE_CREDENTIAL_INVALID,
+                    'messages' => array(
+                        'Supplied credential is invalid'
+                    ),
+                    'personObject' => $this->getPersonObject()
+                )
+            );    
         }
         else if (!$this->getPersonObject()->canLogin() || $this->getPersonObject()->getCode() !== null) {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::FAILURE,
-            		'messages' => array(
-            			'The given identity cannot login'
-            		),
-            		'personObject' => $this->getPersonObject()
-            	)
+                array(
+                    'code' => Result::FAILURE,
+                    'messages' => array(
+                        'The given identity cannot login'
+                    ),
+                    'personObject' => $this->getPersonObject()
+                )
             );
         } else {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::SUCCESS,
-            		'identity' => $this->getIdentity(),
-            		'message' => array(
-            			'Authentication successful'
-            		),
-            		'personObject' => $this->getPersonObject()
-            	)
+                array(
+                    'code' => Result::SUCCESS,
+                    'identity' => $this->getIdentity(),
+                    'message' => array(
+                        'Authentication successful'
+                    ),
+                    'personObject' => $this->getPersonObject()
+                )
             );
         }
     }

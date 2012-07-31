@@ -26,41 +26,41 @@ class History
     /**
      * @var integer The ID of this article history
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
-	/**
-	 * @var \CudiBundle\Entity\Sales\Article The newest version of the two
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+    /**
+     * @var \CudiBundle\Entity\Sales\Article The newest version of the two
+     *
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
      * @JoinColumn(name="article", referencedColumnName="id")
-	 */
-	private $article;
-	
-	/**
-	 * @var \CudiBundle\Entity\Sales\Article The oldest version of the two
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article", cascade={"persist"})
+     */
+    private $article;
+    
+    /**
+     * @var \CudiBundle\Entity\Sales\Article The oldest version of the two
+     *
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article", cascade={"persist"})
      * @JoinColumn(name="precursor", referencedColumnName="id")
-	 */
-	private $precursor;
-	
-	/**
-	 * @param \CudiBundle\Entity\Sales\Article $article The new version of the article
-	 * @param \CudiBundle\Entity\Sales\Article $precursor The old version of the article
-	 */
-	public function __construct(Article $article, Article $precursor = null)
-	{
-	    $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
+     */
+    private $precursor;
+    
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article The new version of the article
+     * @param \CudiBundle\Entity\Sales\Article $precursor The old version of the article
+     */
+    public function __construct(Article $article, Article $precursor = null)
+    {
+        $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
 
-	    $this->precursor->setVersionNumber($article->getVersionNumber())
-	        ->setIsHistory(true);
-	    
-		$article->setVersionNumber($article->getVersionNumber()+1);
-		
-		$this->article = $article;
-	}
+        $this->precursor->setVersionNumber($article->getVersionNumber())
+            ->setIsHistory(true);
+        
+        $article->setVersionNumber($article->getVersionNumber()+1);
+        
+        $this->article = $article;
+    }
 }

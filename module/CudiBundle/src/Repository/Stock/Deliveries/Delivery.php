@@ -18,50 +18,50 @@ class Delivery extends EntityRepository
     public function findAllBySupplierAndPeriod(Supplier $supplier, Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-    	$query->select('o')
-    		->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'o')
-    		->innerJoin('o.article', 'a', Join::WITH,
-   				$query->expr()->eq('a.supplier', ':supplier')
-    		)
-    		->where(
-    		    $query->expr()->andX(
-    				$query->expr()->gt('o.timestamp', ':startDate'),
-    				$period->isOpen() ? '1=1' : $query->expr()->lt('o.timestamp', ':endDate')
-    			)
-    		)
-    		->setParameter('supplier', $supplier->getId())
-    		->setParameter('startDate', $period->getStartDate())
-    		->orderBy('o.timestamp', 'DESC');
-    	
-    	if (!$period->isOpen())
-    	    $query->setParameter('endDate', $period->getEndDate());	
-    	
-    	$resultSet = $query->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query->select('o')
+            ->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'o')
+            ->innerJoin('o.article', 'a', Join::WITH,
+                   $query->expr()->eq('a.supplier', ':supplier')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.timestamp', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.timestamp', ':endDate')
+                )
+            )
+            ->setParameter('supplier', $supplier->getId())
+            ->setParameter('startDate', $period->getStartDate())
+            ->orderBy('o.timestamp', 'DESC');
+        
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());    
+        
+        $resultSet = $query->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
     
     public function findAllByPeriod(Period $period)
     {
         $query = $this->_em->createQueryBuilder();
-    	$query->select('o')
-    		->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'o')
-    		->where(
-    		    $query->expr()->andX(
-    				$query->expr()->gt('o.timestamp', ':startDate'),
-    				$period->isOpen() ? '1=1' : $query->expr()->lt('o.timestamp', ':endDate')
-    			)
-    		)
-    		->setParameter('startDate', $period->getStartDate())
-    		->orderBy('o.timestamp', 'DESC');
-    	
-    	if (!$period->isOpen())
-    	    $query->setParameter('endDate', $period->getEndDate());	
-    	
-    	$resultSet = $query->getQuery()
-    		->getResult();
-    		
-    	return $resultSet;
+        $query->select('o')
+            ->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.timestamp', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.timestamp', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $period->getStartDate())
+            ->orderBy('o.timestamp', 'DESC');
+        
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());    
+        
+        $resultSet = $query->getQuery()
+            ->getResult();
+            
+        return $resultSet;
     }
 }

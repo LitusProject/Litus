@@ -28,34 +28,34 @@ use CommonBundle\Entity\General\Language,
  */
 class Page extends \CommonBundle\Entity\Nodes\Node
 {
-	/**
-	 * @var \Datetime The time at which this version was created
-	 *
-	 * @Column(name="start_time", type="datetime")
-	 */
-	private $startTime;
+    /**
+     * @var \Datetime The time at which this version was created
+     *
+     * @Column(name="start_time", type="datetime")
+     */
+    private $startTime;
 
-	/**
-	 * @var \Datetime The time at which this version was rendered obsolete
-	 *
-	 * @Column(name="end_time", type="datetime", nullable=true)
-	 */
-	private $endTime;
-	
-	/**
-	 * @var \PageBundle\Entity\Category The page's category
-	 *
-	 * @ManyToOne(targetEntity="PageBundle\Entity\Category")
-	 */
-	private $category;
-	
-	/**
-	 * @var \PageBundle\Entity\Category The page's parent
-	 *
-	 * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
-	 */
-	private $parent;
-	
+    /**
+     * @var \Datetime The time at which this version was rendered obsolete
+     *
+     * @Column(name="end_time", type="datetime", nullable=true)
+     */
+    private $endTime;
+    
+    /**
+     * @var \PageBundle\Entity\Category The page's category
+     *
+     * @ManyToOne(targetEntity="PageBundle\Entity\Category")
+     */
+    private $category;
+    
+    /**
+     * @var \PageBundle\Entity\Category The page's parent
+     *
+     * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     */
+    private $parent;
+    
     /**
      * @var array The translations of this page
      *
@@ -83,53 +83,53 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      */
     public function getStartTime()
     {
-		return $this->startTime;
-	}
-	
-	/**
-	 * @return \DateTime
-	 */
-	public function getEndTime()
-	{
-		return $this->endTime;
-	}
-	
-	/**
-	 * @param \PageBundle\Entity\Category $category The page's category
-	 * @return \PageBundle\Entity\Nodes\Page
-	 */
-	public function setCategory(Category $category)
-	{
-		$this->category = $category;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return \PageBundle\Entity\Category
-	 */
-	public function getCategory()
-	{
-		return $this->category;
-	}
-	
-	/**
-	 * @param \PageBundle\Entity\Nodes\Page $category The page's category
-	 */
-	public function setParent(Page $category)
-	{
-		$this->parent = $parent;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return \PageBundle\Entity\Nodes\Page
-	 */
-	public function getParent()
-	{
-		return $this->parent;
-	}
+        return $this->startTime;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+    
+    /**
+     * @param \PageBundle\Entity\Category $category The page's category
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category = $category;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \PageBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+    
+    /**
+     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     */
+    public function setParent(Page $category)
+    {
+        $this->parent = $parent;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
     
     /**
      * @param \CommonBundle\Entity\General\Language $language
@@ -183,7 +183,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      */
     public function close()
     {
-    	if (null === $this->endTime)
-    		$this->endTime = new \DateTime('now');
+        if (null === $this->endTime)
+            $this->endTime = new \DateTime('now');
     }
 }

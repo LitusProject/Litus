@@ -16,14 +16,14 @@
 namespace CudiBundle\Form\Sale\Sale;
 
 use CommonBundle\Component\Validator\ValidUsername as UsernameValidator,
-	CommonBundle\Component\Form\Bootstrap\Element\Reset,
-	CommonBundle\Component\Form\Bootstrap\Element\Submit,
-	CommonBundle\Component\Form\Bootstrap\Element\Text,
-	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Hidden,
-	Zend\Validator\Int as IntValidator;
-	
+    CommonBundle\Component\Form\Bootstrap\Element\Reset,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Hidden,
+    Zend\Validator\Int as IntValidator;
+    
 /**
  * Return Sale
  *
@@ -45,26 +45,26 @@ class ReturnSale extends \CommonBundle\Component\Form\Bootstrap\Form
          
         $field = new Text('person');
         $field->setLabel('Person')
-			->setAttrib('placeholder', 'Student')
-        	->setAttrib('style', 'width: 400px;')
-        	->setAttrib('id', 'personSearch')
-        	->setAttrib('autocomplete', 'off')
-        	->setAttrib('data-provide', 'typeahead')
-        	->setRequired();
+            ->setAttrib('placeholder', 'Student')
+            ->setAttrib('style', 'width: 400px;')
+            ->setAttrib('id', 'personSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired();
         $this->addElement($field);
         
         $field = new Text('article');
         $field->setLabel('Article')
             ->setRequired()
-        	->setAttrib('autocomplete', 'off')
-			->setAttrib('placeholder', 'Article Barcode')
-        	->addValidator(new ArticleBarcodeValidator($entityManager));
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('placeholder', 'Article Barcode')
+            ->addValidator(new ArticleBarcodeValidator($entityManager));
         $this->addElement($field);
-      	
+          
         $field = new Submit('submit');
         $field->setLabel('Return')
-			->setAttrib('autocomplete', 'off')
-        	->setAttrib('id', 'signin');
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('id', 'signin');
         $this->addElement($field);
         
         $field = new Reset('cancel');

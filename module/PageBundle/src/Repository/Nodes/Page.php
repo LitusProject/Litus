@@ -16,10 +16,10 @@ class Page extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-        	->from('PageBundle\Entity\Nodes\Page', 'p')
-        	->where('p.endTime is null')
-        	->getQuery()
-        	->getResult();
+            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->where('p.endTime is null')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }

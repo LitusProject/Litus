@@ -25,9 +25,9 @@ use CommonBundle\Component\Form\Bootstrap\DisplayGroup\Actions;
  */
 class Form extends \Zend\Form\Form
 {
-	/**
-	 * @param mixed $options The form's options
-	 */
+    /**
+     * @param mixed $options The form's options
+     */
     public function __construct($options)
     {
         parent::__construct($options = null);
@@ -40,18 +40,18 @@ class Form extends \Zend\Form\Form
     
     public function setActionsGroup($elements)
     {
-    	$group = array();
-    	foreach ($elements as $element) {
-    	    if (isset($this->_elements[$element])) {
-    	        $add = $this->getElement($element);
-    	        if (null !== $add) {
-    	            unset($this->_order[$element]);
-    	            $group[] = $add;
-    	        }
-    	    }
-    	}
-    	
-    	$actions = new Actions('form_actions', $this->getPluginLoader(self::DECORATOR), array('elements' => $group));
-    	$this->_addDisplayGroupObject($actions);
+        $group = array();
+        foreach ($elements as $element) {
+            if (isset($this->_elements[$element])) {
+                $add = $this->getElement($element);
+                if (null !== $add) {
+                    unset($this->_order[$element]);
+                    $group[] = $add;
+                }
+            }
+        }
+        
+        $actions = new Actions('form_actions', $this->getPluginLoader(self::DECORATOR), array('elements' => $group));
+        $this->_addDisplayGroupObject($actions);
     }
 }

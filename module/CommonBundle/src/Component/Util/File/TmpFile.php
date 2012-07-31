@@ -33,18 +33,18 @@ class TmpFile
      * @var resource The file handler
      */
     private $_fileHandler;
-	
-	/**
-	 * @param string $tmpDirectory The path to the directory that holds the temporary files
-	 * @throws \CommonBundle\Component\Util\File\Exception\FailedToOpenException Failed to open the temporary file
-	 */
+    
+    /**
+     * @param string $tmpDirectory The path to the directory that holds the temporary files
+     * @throws \CommonBundle\Component\Util\File\Exception\FailedToOpenException Failed to open the temporary file
+     */
     public function __construct($tmpDirectory = '/tmp')
     {
         $filename = '';
         do{
             $filename = '/.' . uniqid();
         } while (
-        	file_exists($tmpDirectory . $filename)
+            file_exists($tmpDirectory . $filename)
         );
 
         $this->_filename = FileUtil::getRealFilename($tmpDirectory . $filename);
@@ -52,29 +52,29 @@ class TmpFile
 
         if(!$this->_fileHandler) {
             throw new Exception\FailedtoOpenException(
-            	'Failed to open file ' . $this->_filename
+                'Failed to open file ' . $this->_filename
             );
         }
     }
-	
-	/**
-	 * Returns this file's content.
-	 *
-	 * @return string
-	 */
+    
+    /**
+     * Returns this file's content.
+     *
+     * @return string
+     */
     public function getContent()
     {
         $this->_checkOpen();
         fseek($this->_fileHandler, 0);
         
         return fread(
-        	$this->_fileHandler, filesize($this->_filename)
+            $this->_fileHandler, filesize($this->_filename)
         );
     }
 
     /**
      * Append content to the file.
-	 *    
+     *    
      * @param string $content The content that should be appended
      * @return void
      */
@@ -84,34 +84,34 @@ class TmpFile
         
         fwrite($this->_fileHandler, $content);
     }
-	
-	/**
-	 * Return the name of this file.
-	 *
-	 * @return string
-	 */
+    
+    /**
+     * Return the name of this file.
+     *
+     * @return string
+     */
     public function getFilename()
     {
         $this->_checkOpen();
         
         return $this->_filename;
     }
-	
-	/**
-	 * Check whether or not this file is open.
-	 *
-	 * @return bool
-	 */
+    
+    /**
+     * Check whether or not this file is open.
+     *
+     * @return bool
+     */
     public function isOpen()
     {
         return $this->_fileHandler !== null;
     }
-	
-	/**
-	 * Removes this file.
-	 *
-	 * @return void
-	 */
+    
+    /**
+     * Removes this file.
+     *
+     * @return void
+     */
     public function destroy()
     {
         if ($this->isOpen()) {

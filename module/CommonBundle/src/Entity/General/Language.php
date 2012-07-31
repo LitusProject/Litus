@@ -45,38 +45,38 @@ class Language
      * @Column(type="string")
      */
     private $name;
-	
-	/**
-	 * @param string $abbrev The language abbrev
-	 * @param string $name The language name
-	 */
-	public function __construct($abbrev, $name)
-	{
-		$this->abbrev = $abbrev;
-		$this->name = $name;
-	}
-	
-	/**
-	 * @return integer
-	 */
+    
+    /**
+     * @param string $abbrev The language abbrev
+     * @param string $name The language name
+     */
+    public function __construct($abbrev, $name)
+    {
+        $this->abbrev = $abbrev;
+        $this->name = $name;
+    }
+    
+    /**
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
     }
-	
-	/**
-	 * @return string
-	 */
+    
+    /**
+     * @return string
+     */
     public function getAbbrev()
     {
         return $this->abbrev;
     }
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-	    return $this->name;
-	}
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -26,7 +26,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
         
         return array(
-        	'albums' => $albums,
+            'albums' => $albums,
         );
     }
     
@@ -36,7 +36,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d/m/Y', $formData['date']));
                 $this->getEntityManager()->persist($album);
@@ -71,11 +71,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'addPhotos',
-                		'id' => $album->getId(),
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'addPhotos',
+                        'id' => $album->getId(),
+                    )
                 );
                 
                 return;
@@ -96,7 +96,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $album->setDate(\DateTime::createFromFormat('d/m/Y', $formData['date']));
 
@@ -136,10 +136,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_gallery',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_gallery',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return;
@@ -172,12 +172,12 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneByAbbrev('en')
                 )
         );
-    	
-    	return array(
-    		'result' => array(
-    			'status' => 'success'
-    		),
-    	);
+        
+        return array(
+            'result' => array(
+                'status' => 'success'
+            ),
+        );
     }
     
     public function photosAction()
@@ -269,9 +269,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $this->getEntityManager()->flush();
         
         return array(
-        	'result' => array(
-        		'status' => 'success'
-        	),
+            'result' => array(
+                'status' => 'success'
+            ),
         );
     }
     
@@ -352,7 +352,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         
         $headers = new Headers();
         $headers->addHeaders(array(
-        	'Content-type' => mime_content_type($path),
+            'Content-type' => mime_content_type($path),
         ));
         $this->getResponse()->setHeaders($headers);
         
@@ -367,95 +367,95 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     
     public function _getAlbum()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the album!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the album!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No album with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $album;
+        
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No album with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $album;
     }
     
     public function _getPhoto()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the photo!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the photo!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $album) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No photo with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_gallery',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $album;
+        
+        if (null === $album) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No photo with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_gallery',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $album;
     }
 }

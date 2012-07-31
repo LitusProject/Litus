@@ -16,9 +16,9 @@
 namespace CommonBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Users\Credential,
-	CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
-	Doctrine\Common\Collections\ArrayCollection;
+    CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -77,8 +77,8 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
-		$this->setUniversityIdentification($universityIdentification);
-		
+        $this->setUniversityIdentification($universityIdentification);
+        
         $this->universityStatuses = new ArrayCollection();
     }
 
@@ -176,13 +176,13 @@ class Academic extends \CommonBundle\Entity\Users\Person
     
     /**
      * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
-	 * @return \CommonBundle\Entity\Users\People\Academic
+     * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function addUniversityStatus(UniversityStatus $universityStatus)
-    {	
-    	$this->universityStatuses->add($universityStatus);
+    {    
+        $this->universityStatuses->add($universityStatus);
 
-    	return $this;
+        return $this;
     }
     
     /**
@@ -193,17 +193,17 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         $shortYear = $shortYear == null ? AcademicYear::getShortAcademicYear() : $shortYear;
 
-    	if ($this->universityStatuses->count() >= 1) {
-	    	if ($this->universityStatuses->exists(
-	    		function($key, $value) use ($shortYear) {
-	    			if ($value->getYear() == $shortYear)
-	    				return true;
-	    		}
-	    	)) {
-	    		return false;
-	    	}
-	    }
-	    
-	    return true;
+        if ($this->universityStatuses->count() >= 1) {
+            if ($this->universityStatuses->exists(
+                function($key, $value) use ($shortYear) {
+                    if ($value->getYear() == $shortYear)
+                        return true;
+                }
+            )) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }

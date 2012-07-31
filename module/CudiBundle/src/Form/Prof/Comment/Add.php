@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Comment')
             ->setAttrib('class', 'input-xlarge')
             ->setAttrib('rows', 5)
-        	->setRequired();
+            ->setRequired();
         $this->addElement($field);
     }
 }

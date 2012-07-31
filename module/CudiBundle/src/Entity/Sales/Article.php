@@ -93,20 +93,20 @@ class Article
      */
     private $supplier;
 
-	/**
-	 * @var boolean Flag whether the aritcle can expire
-	 *
-	 * @Column(type="boolean")
-	 */
-	private $canExpire;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\AcademicYear The year of the article
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-	 * @JoinColumn(name="academic_year", referencedColumnName="id")
-	 */
-	private $academicYear;
+    /**
+     * @var boolean Flag whether the aritcle can expire
+     *
+     * @Column(type="boolean")
+     */
+    private $canExpire;
+    
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the article
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
     
     /**
      * @var integer The version number of this article
@@ -187,260 +187,260 @@ class Article
         return $this->mainArticle;
     }
 
-	/**
+    /**
      * @param \CudiBundle\Entity\Article $mainArticle
-	 *
+     *
      * @return \CudiBundle\Entity\Sales\Article
      */
-	public function setMainArticle($mainArticle)
-	{
-		$this->mainArticle = $mainArticle;
-		return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getBarcode()
-	{
-		return $this->barcode;
-	}
-	
-	/**
-	 * @param integer $barcode
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setBarcode($barcode)
-	{
-		$this->barcode = $barcode;
-		return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getPurchasePrice()
-	{
-		return $this->purchasePrice;
-	}
-	
-	/**
-	 * @param float $purchasePrice
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setPurchasePrice($purchasePrice)
-	{
-		$this->purchasePrice = $purchasePrice * 100;
-		return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getSellPrice()
-	{
-		return $this->sellPrice;
-	}
-	
-	/**
-	 * @param float $sellPrice
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setSellPrice($sellPrice)
-	{
-		$this->sellPrice = $sellPrice * 100;
-		return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isBookable()
-	{
-		return $this->bookable;
-	}
-	
-	/**
-	 * @param boolean $bookable
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setIsBookable($bookable)
-	{
-		$this->bookable = $bookable;
-		return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isUnbookable()
-	{
-		return $this->unbookable;
-	}
-	
-	/**
-	 * @param boolean $unbookable
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setIsUnbookable($unbookable)
-	{
-		$this->unbookable = $unbookable;
-		return $this;
-	}
-	
-	/**
-	 * @return \CudiBundle\Entity\Suppplier
-	 */
-	public function getSupplier()
-	{
-		return $this->supplier;
-	}
-	
-	/**
-	 * @param \CudiBundle\Entity\Supplier $supplier
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setSupplier(Supplier $supplier)
-	{
-		$this->supplier = $supplier;
-		return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function canExpire()
-	{
-		return $this->canExpire;
-	}
-	
-	/**
-	 * @param boolean $canExpire
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setCanExpire($canExpire)
-	{
-		$this->canExpire = $canExpire;
-		return $this;
-	}
-	
-	/**
-	 * @return \CommonBundle\Entity\General\AcademicYear
-	 */
-	public function getAcademicYear()
-	{
-	    return $this->academicYear;
-	}
-	
-	/**
-	 * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setAcademicYear(AcademicYear $academicYear)
-	{
-	    $this->academicYear = $academicYear;
-	    return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getVersionNumber()
-	{
-	    return $this->versionNumber;
-	}
-	
-	/**
-	 * @param integer $versionNumber
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setVersionNumber($versionNumber)
-	{
-	    $this->versionNumber = $versionNumber;
-	    return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getStockValue()
-	{
-	    return $this->stockValue;
-	}
-	
-	/**
-	 * @param integer $stockValue
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function setStockValue($stockValue)
-	{
-	    $this->stockValue = $stockValue < 0 ? 0 : $stockValue;
-	    return $this;
-	}
-	
-	/**
-	 * @param integer $stockValue
-	 *
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function addStockValue($stockValue)
-	{
-	    $this->setStockValue($this->stockValue + $stockValue);
-	    return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isHistory()
-	{
-	    return $this->isHistory;
-	}
-	
-	/**
-	 * @param boolean $isHistory
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setIsHistory($isHistory)
-	{
-	    $this->isHistory = $isHistory;
-	    return $this;
-	}
-	
-	/**
-	 * @return \Doctrine\Common\Collections\ArrayCollection
-	 */
-	public function getDiscounts()
-	{
-	    return $this->discounts;
-	}
-	
-	/**
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function duplicate()
-	{
-	    return new Article(
-	        $this->getMainArticle(),
-	        $this->getBarcode(),
-	        $this->getPurchasePrice()/100,
-	        $this->getSellPrice()/100,
-	        $this->isBookable(),
-	        $this->isUnbookable(),
-	        $this->getSupplier(),
-	        $this->canExpire(),
-	        $this->getAcademicYear()
-	    );
-	}
+    public function setMainArticle($mainArticle)
+    {
+        $this->mainArticle = $mainArticle;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getBarcode()
+    {
+        return $this->barcode;
+    }
+    
+    /**
+     * @param integer $barcode
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setBarcode($barcode)
+    {
+        $this->barcode = $barcode;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getPurchasePrice()
+    {
+        return $this->purchasePrice;
+    }
+    
+    /**
+     * @param float $purchasePrice
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setPurchasePrice($purchasePrice)
+    {
+        $this->purchasePrice = $purchasePrice * 100;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getSellPrice()
+    {
+        return $this->sellPrice;
+    }
+    
+    /**
+     * @param float $sellPrice
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setSellPrice($sellPrice)
+    {
+        $this->sellPrice = $sellPrice * 100;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isBookable()
+    {
+        return $this->bookable;
+    }
+    
+    /**
+     * @param boolean $bookable
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setIsBookable($bookable)
+    {
+        $this->bookable = $bookable;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isUnbookable()
+    {
+        return $this->unbookable;
+    }
+    
+    /**
+     * @param boolean $unbookable
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setIsUnbookable($unbookable)
+    {
+        $this->unbookable = $unbookable;
+        return $this;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Suppplier
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+    
+    /**
+     * @param \CudiBundle\Entity\Supplier $supplier
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setSupplier(Supplier $supplier)
+    {
+        $this->supplier = $supplier;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function canExpire()
+    {
+        return $this->canExpire;
+    }
+    
+    /**
+     * @param boolean $canExpire
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setCanExpire($canExpire)
+    {
+        $this->canExpire = $canExpire;
+        return $this;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->academicYear = $academicYear;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getVersionNumber()
+    {
+        return $this->versionNumber;
+    }
+    
+    /**
+     * @param integer $versionNumber
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setVersionNumber($versionNumber)
+    {
+        $this->versionNumber = $versionNumber;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getStockValue()
+    {
+        return $this->stockValue;
+    }
+    
+    /**
+     * @param integer $stockValue
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function setStockValue($stockValue)
+    {
+        $this->stockValue = $stockValue < 0 ? 0 : $stockValue;
+        return $this;
+    }
+    
+    /**
+     * @param integer $stockValue
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function addStockValue($stockValue)
+    {
+        $this->setStockValue($this->stockValue + $stockValue);
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isHistory()
+    {
+        return $this->isHistory;
+    }
+    
+    /**
+     * @param boolean $isHistory
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsHistory($isHistory)
+    {
+        $this->isHistory = $isHistory;
+        return $this;
+    }
+    
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getDiscounts()
+    {
+        return $this->discounts;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function duplicate()
+    {
+        return new Article(
+            $this->getMainArticle(),
+            $this->getBarcode(),
+            $this->getPurchasePrice()/100,
+            $this->getSellPrice()/100,
+            $this->isBookable(),
+            $this->isUnbookable(),
+            $this->getSupplier(),
+            $this->canExpire(),
+            $this->getAcademicYear()
+        );
+    }
 }

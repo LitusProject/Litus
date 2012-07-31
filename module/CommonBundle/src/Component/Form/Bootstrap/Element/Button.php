@@ -23,18 +23,18 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
 class Button extends \Zend\Form\Element\Button
 {
 
-	/**
-	 * Create new Button button
-	 *
-	 * @param  string|array|Config $spec
-	 * @param  array|Traversable $options
-	 * @return void
-	 * @throws ElementException if no element name after initialization
-	 */
-	public function __construct($spec, $options = null)
-	{
-		parent::__construct($spec, $options);
-		$this->setAttrib('class', 'btn btn-primary');
-		$this->removeDecorator('DtDdWrapper');
-	}
+    /**
+     * Create new Button button
+     *
+     * @param  string|array|Config $spec
+     * @param  array|Traversable $options
+     * @return void
+     * @throws ElementException if no element name after initialization
+     */
+    public function __construct($spec, $options = null)
+    {
+        parent::__construct($spec, $options);
+        $this->setAttrib('class', 'btn btn-primary');
+        $this->removeDecorator('DtDdWrapper');
+    }
 }

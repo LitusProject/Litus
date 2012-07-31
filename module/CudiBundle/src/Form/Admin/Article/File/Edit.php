@@ -17,7 +17,7 @@ namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CudiBundle\Entity\Files\Mapping as FileMapping,
-	Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit;
 
 /**
  * Edit File
@@ -33,7 +33,7 @@ class Edit extends Add
         $this->removeElement('file');
         $this->removeElement('submit');
         
-		$field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'file_edit')
                 ->setDecorators(array(new ButtonDecorator()));

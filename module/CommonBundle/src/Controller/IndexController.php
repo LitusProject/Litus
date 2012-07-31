@@ -26,14 +26,14 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-    	$newsItems = $this->getEntityManager()
-    		->getRepository('NewsBundle\Entity\Nodes\News')
-    		->findAll();
-    		
-    	return new ViewModel(
-    	    array(
-        		'newsItems' => $newsItems,
-        	)
-    	);
+        $newsItems = $this->getEntityManager()
+            ->getRepository('NewsBundle\Entity\Nodes\News')
+            ->findAll();
+            
+        return new ViewModel(
+            array(
+                'newsItems' => $newsItems,
+            )
+        );
     }
 }

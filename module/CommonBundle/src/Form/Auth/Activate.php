@@ -26,9 +26,9 @@ use Zend\Form\Element\Password,
  */
 class Activate extends \Zend\Form\Form
 {
-	/**
-	 * @param mixed $options The form's options
-	 */
+    /**
+     * @param mixed $options The form's options
+     */
     public function __construct($options = null)
     {
         parent::__construct($options);

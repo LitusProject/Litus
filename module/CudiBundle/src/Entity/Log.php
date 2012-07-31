@@ -24,49 +24,49 @@ use CommonBundle\Entity\Users\Person,
  */
 class Log
 {
-	/**
-	 * @var integer The ID of the log
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var \DateTime The time of the log
-	 *
-	 * @Column(type="datetime")
-	 */
-	private $timestamp;
-	
-	/**
-	 * @var \CommonBundle\Entity\Users\Person The person of the log
-	 *
-	 * @OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
-	 * @JoinColumn(name="person", referencedColumnName="id")
-	 */
-	private $person;
+    /**
+     * @var integer The ID of the log
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var \DateTime The time of the log
+     *
+     * @Column(type="datetime")
+     */
+    private $timestamp;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Person The person of the log
+     *
+     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @JoinColumn(name="person", referencedColumnName="id")
+     */
+    private $person;
 
-	/**
-	 * @var string The vat number of the supplier
-	 *
-	 * @Column(type="text")
-	 */
-	private $text;
-	
-	/**
-	 * @param \CommonBundle\Entity\Users\Person $person
-	 * @param string $text
-	 */
-	public function __construct(Person $person, $text)
-	{
-		$this->person = $person;
-		$this->text = $text;
-		$this->timestamp = new DateTime();
-	}
-	
-	/**
+    /**
+     * @var string The vat number of the supplier
+     *
+     * @Column(type="text")
+     */
+    private $text;
+    
+    /**
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param string $text
+     */
+    public function __construct(Person $person, $text)
+    {
+        $this->person = $person;
+        $this->text = $text;
+        $this->timestamp = new DateTime();
+    }
+    
+    /**
      * @return integer
      */
     public function getId()
@@ -74,7 +74,7 @@ class Log
         return $this->id;
     }
 
-	/**
+    /**
      * @return \DateTime
      */
     public function getTimestamp()

@@ -16,11 +16,11 @@
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,	
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,    
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Textarea;
 
 /**
  * Return to supplier (inverse of delivery)
@@ -41,8 +41,8 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
         
         $field = new Textarea('comment');
         $field->setLabel('Comment')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $this->addElement($submit);

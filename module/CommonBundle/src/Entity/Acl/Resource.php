@@ -68,12 +68,12 @@ class Resource
         return $this->parent;
     }
 
-	/**
-	 * Retrieves this resource's children.
-	 *
-	 * @param \Doctrine\EntityManager $entityManager The EntityManager instance
-	 * @return array
-	 */
+    /**
+     * Retrieves this resource's children.
+     *
+     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @return array
+     */
     public function getChildren(EntityManager $entityManager)
     {
         return $entityManager
@@ -81,12 +81,12 @@ class Resource
                 ->findByParent($this->getName());
     }
 
-	/**
-	 * Retrieves this resource's actions.
-	 *
+    /**
+     * Retrieves this resource's actions.
+     *
      * @param \Doctrine\EntityManager $entityManager The EntityManager instance
-	 * @return array
-	 */
+     * @return array
+     */
     public function getActions(EntityManager $entityManager)
     {
         return $entityManager

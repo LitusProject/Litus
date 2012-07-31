@@ -17,10 +17,10 @@ namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Entity\Users\Person,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Edit Person
@@ -29,11 +29,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+     * @param mixed $opts The form's options
+     */
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $opts);
@@ -59,12 +59,12 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         );
     }
 
-	/**
-	 * Returns an array that is in the right format to populate the roles field.
-	 *
-	 * @param array $toles The user's roles
-	 * @return array
-	 */
+    /**
+     * Returns an array that is in the right format to populate the roles field.
+     *
+     * @param array $toles The user's roles
+     * @return array
+     */
     private function _createRolesPopulationArray(array $roles)
     {
         $rolesArray = array();

@@ -23,14 +23,14 @@ use CommonBundle\Entity\General\AcademicYear;
  */
 class Subject
 {
-	/**
-	 * @var integer The ID of the subject
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
+    /**
+     * @var integer The ID of the subject
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
 
     /**
      * @var string The code of the subject

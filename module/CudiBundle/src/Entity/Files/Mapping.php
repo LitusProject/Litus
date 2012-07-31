@@ -26,27 +26,27 @@ class Mapping
     /**
      * @var integer The ID of the mapping
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Articles\Internal The article of the mapping
      *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Internal")
-	 * @JoinColumn(name="article", referencedColumnName="id")
-	 */
-	private $article;
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Internal")
+     * @JoinColumn(name="article", referencedColumnName="id")
+     */
+    private $article;
 
-	/**
-	 * @var \CudiBundle\Entity\Files\File The file of the mapping
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Files\File")
-	 * @JoinColumn(name="file", referencedColumnName="id")
-	 */
-	private $file;
+    /**
+     * @var \CudiBundle\Entity\Files\File The file of the mapping
+     *
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Files\File")
+     * @JoinColumn(name="file", referencedColumnName="id")
+     */
+    private $file;
 
     /**
      * @var boolean Flag whether the file is the printable one or not
@@ -122,8 +122,8 @@ class Mapping
      */
     public function setPrintable($printable)
     {
-    	$this->printable = $printable;
-    	return $this;
+        $this->printable = $printable;
+        return $this;
     }
     
     /**

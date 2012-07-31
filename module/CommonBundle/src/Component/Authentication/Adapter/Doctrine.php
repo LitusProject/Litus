@@ -16,8 +16,8 @@
 namespace CommonBundle\Component\Authentication\Adapter;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\QueryBuilder;
 
 /**
  * An authentication adapter using Doctrine.
@@ -27,10 +27,10 @@ use CommonBundle\Component\Authentication\Result\Doctrine as Result,
  */
 abstract class Doctrine implements \Zend\Authentication\Adapter
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
 
     /**
      * @var string The name of the entity that holds the authentication information
@@ -76,11 +76,11 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
-    	$this->_entityManager = $entityManager;
-    	
-    	// A bit of a dirty hack to get Zend's DI to play nice
-    	$entityName = str_replace('"', '', $entityName);
-    	
+        $this->_entityManager = $entityManager;
+        
+        // A bit of a dirty hack to get Zend's DI to play nice
+        $entityName = str_replace('"', '', $entityName);
+        
         if ('\\' == substr($entityName, 0, 1)) {
             throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
@@ -92,47 +92,47 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
         $this->_caseSensitive = $caseSensitive;
         
         $this->setAuthenticationResult(
-        	array(
-        		'code' => Result::FAILURE,
-        		'identity' => '',
-        		'messages' => array(),
-        		'personObject' => null
-        	)
+            array(
+                'code' => Result::FAILURE,
+                'identity' => '',
+                'messages' => array(),
+                'personObject' => null
+            )
         );
     }
-	
-	/**
-	 * @return \Doctrine\ORM\EntityManager
-	 */
-	protected function getEntityManager()
-	{
-		return $this->_entityManager;
-	}
-	
-	/**
-	 * @return string
-	 */
-	protected function getEntityName()
-	{
-		return $this->_entityName;
-	}
-	
-	/**
-	 * @return string
-	 */
-	protected function getIdentityColumn()
-	{
-		return $this->_identityColumn;
-	}
-	
-	/**
-	 * @return bool
-	 */
-	protected function getCaseSensitive()
-	{
-		return $this->_caseSensitive;
-	}
-	
+    
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->_entityManager;
+    }
+    
+    /**
+     * @return string
+     */
+    protected function getEntityName()
+    {
+        return $this->_entityName;
+    }
+    
+    /**
+     * @return string
+     */
+    protected function getIdentityColumn()
+    {
+        return $this->_identityColumn;
+    }
+    
+    /**
+     * @return bool
+     */
+    protected function getCaseSensitive()
+    {
+        return $this->_caseSensitive;
+    }
+    
     /**
      * @param string $identity
      * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
@@ -143,13 +143,13 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
         return $this;
     }
 
-	/**
-	 * @return string
-	 */
-	public function getIdentity()
-	{
-		return $this->_identity;
-	}
+    /**
+     * @return string
+     */
+    public function getIdentity()
+    {
+        return $this->_identity;
+    }
 
     /**
      * @param string $credential
@@ -166,27 +166,27 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
      */
     protected function getCredential()
     {
-    	return $this->_credential;
+        return $this->_credential;
     }
     
     /**
      * @param array $authenticationResult
      */
-	protected function setAuthenticationResult(array $authenticationResult)
-	{
-		$this->_authenticationResult = array_merge(
-			$this->_authenticationResult,
-			$authenticationResult
-		);
-	}
-	
-	/**
-	 * @return \Litus\Entity\Users\Person
-	 */
-	protected function getPersonObject()
-	{
-		return $this->_personObject;
-	}
+    protected function setAuthenticationResult(array $authenticationResult)
+    {
+        $this->_authenticationResult = array_merge(
+            $this->_authenticationResult,
+            $authenticationResult
+        );
+    }
+    
+    /**
+     * @return \Litus\Entity\Users\Person
+     */
+    protected function getPersonObject()
+    {
+        return $this->_personObject;
+    }
     
     /**
      * Authenticate the user.
@@ -239,21 +239,21 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         if (count($resultSet) < 1) {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::FAILURE_IDENTITY_NOT_FOUND,
-            		'messages' => array(
-            			'A record with the supplied identity could not be found'
-            		)
-            	)
+                array(
+                    'code' => Result::FAILURE_IDENTITY_NOT_FOUND,
+                    'messages' => array(
+                        'A record with the supplied identity could not be found'
+                    )
+                )
             );
         } elseif (count($resultSet) > 1) {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::FAILURE_IDENTITY_AMBIGUOUS,
-            		'messages' => array(
-            			'More than one record matches the supplied identity'
-            		)
-            	)
+                array(
+                    'code' => Result::FAILURE_IDENTITY_AMBIGUOUS,
+                    'messages' => array(
+                        'More than one record matches the supplied identity'
+                    )
+                )
             );
         } else {
             $this->_personObject = $resultSet[0];

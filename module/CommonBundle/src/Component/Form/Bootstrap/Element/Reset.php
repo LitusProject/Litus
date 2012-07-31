@@ -33,8 +33,8 @@ class Reset extends \Zend\Form\Element\Reset
      */
     public function __construct($spec, $options = null)
     {
-    	parent::__construct($spec, $options);
-    	$this->setAttrib('class', 'btn');
-		$this->removeDecorator('DtDdWrapper');
+        parent::__construct($spec, $options);
+        $this->setAttrib('class', 'btn');
+        $this->removeDecorator('DtDdWrapper');
     }
 }

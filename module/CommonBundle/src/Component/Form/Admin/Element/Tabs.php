@@ -36,12 +36,12 @@ class Tabs extends \Zend\Form\Element\Xhtml
      */
     public function __construct($spec, $options = null)
     {
-    	parent::__construct($spec, $options);
-    	$this->setDecorators(
-    	    array(
-    	        new TabsDecorator()
-    	    )
-    	);
+        parent::__construct($spec, $options);
+        $this->setDecorators(
+            array(
+                new TabsDecorator()
+            )
+        );
     }
     
     /**

@@ -16,7 +16,7 @@
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
-	CommonBundle\Entity\Users\People\Academic;
+    CommonBundle\Entity\Users\People\Academic;
 
 /**
  * A classification of a user based on his status at our Alma Mater.

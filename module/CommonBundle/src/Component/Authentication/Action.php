@@ -29,13 +29,13 @@ interface Action
      * @param $result
      * @return void
      */
-	public function failedAction($result);
-	
+    public function failedAction($result);
+    
     /**
      * The authorization was successful.
      *
      * @param $result
      * @return void
      */
-	public function succeededAction($result);
+    public function succeededAction($result);
 }

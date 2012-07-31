@@ -24,7 +24,7 @@ use Zend\Form\Decorator\ViewHelper;
 */
 class ButtonDecorator extends \Zend\Form\Decorator\AbstractDecorator
 {
-	/**
+    /**
      * Decorate content and/or element
      *
      * @param string $content The element's content
@@ -32,16 +32,16 @@ class ButtonDecorator extends \Zend\Form\Decorator\AbstractDecorator
      */
     public function render($content)
     {
-    	$viewHelper = new ViewHelper();
-    	$viewHelper->setElement($this->getElement());
-    	$content = $viewHelper->render($content);
+        $viewHelper = new ViewHelper();
+        $viewHelper->setElement($this->getElement());
+        $content = $viewHelper->render($content);
 
         $this->getElement()->setLabel('');
 
-    	$divSpanWrapper = new DivSpanWrapper();
-    	$divSpanWrapper->setElement($this->getElement());
-    	$content = $divSpanWrapper->render($content);
+        $divSpanWrapper = new DivSpanWrapper();
+        $divSpanWrapper->setElement($this->getElement());
+        $content = $divSpanWrapper->render($content);
 
-    	return $content;
+        return $content;
     }
 }

@@ -21,42 +21,42 @@ namespace CudiBundle\Entity\Articles\Options;
  */
 class Color
 {
-	/**
-	 * @var integer The ID of the color
-	 *
+    /**
+     * @var integer The ID of the color
+     *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
-	private $id;
-	
-	/**
-	 * @var string The name of the color
-	 *
+    private $id;
+    
+    /**
+     * @var string The name of the color
+     *
      * @Column(type="string")
      */
     private $name;
-	
-	/**
-	 * @param string $name
-	 */
-	public function __construct($name) {
-		$this->name = $name;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    
+    /**
+     * @param string $name
+     */
+    public function __construct($name) {
+        $this->name = $name;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

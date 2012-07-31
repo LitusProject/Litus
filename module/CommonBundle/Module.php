@@ -16,7 +16,7 @@
 namespace CommonBundle;
 
 use Zend\Module\Manager,
-	Zend\EventManager\Event,
+    Zend\EventManager\Event,
     Zend\EventManager\StaticEventManager,
     Zend\Module\Consumer\AutoloaderProvider,
     Zend\Mvc\MvcEvent,
@@ -24,17 +24,17 @@ use Zend\Module\Manager,
 
 class Module implements AutoloaderProvider
 {
-	protected $locator = null;
-	protected $moduleManager = null;
+    protected $locator = null;
+    protected $moduleManager = null;
 
-	public function init(Manager $moduleManager)
+    public function init(Manager $moduleManager)
     {
-    	$this->moduleManager = $moduleManager;
+        $this->moduleManager = $moduleManager;
     
-		$events = StaticEventManager::getInstance();
-		$events->attach(
-			'bootstrap', 'bootstrap', array($this, 'initializeView')
-		);
+        $events = StaticEventManager::getInstance();
+        $events->attach(
+            'bootstrap', 'bootstrap', array($this, 'initializeView')
+        );
     }
 
     public function getAutoloaderConfig()
@@ -45,7 +45,7 @@ class Module implements AutoloaderProvider
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ 	=> __DIR__ . '/src/' . __NAMESPACE__,
+                    __NAMESPACE__     => __DIR__ . '/src/' . __NAMESPACE__,
                 )
             )
         );

@@ -24,104 +24,104 @@ use CommonBundle\Entity\Users\Person,
  */
 class Delivery
 {
-	/**
-	 * @var integer The ID of the delivery item
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var \CudiBundle\Entity\Sales\Article The article of the delivery
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-	 * @JoinColumn(name="article", referencedColumnName="id")
-	 */
-	private $article;
-	
-	/**
-	 * @var \DateTime The time of the delivery
-	 *
-	 * @Column(type="datetime")
-	 */
-	private $timestamp;
-	
-	/**
-	 * @var integer The number of the delivery
-	 *
-	 * @Column(type="integer")
-	 */
-	private $number;
-	
-	/**
-	 * @var \CommonBundle\Entity\Users\Person The person who ordered the order
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-	 * @JoinColumn(name="person", referencedColumnName="id")
-	 */
-	private $person;
-	
-	/**
-	 * @param \CudiBundle\Entity\Sales\Article $article The article of the delivery
-	 * @param integer $number The number of the article
-	 * @param \CommonBundle\Entity\Users\Person The person who ordered the order
-	 */
-	public function __construct(Article $article, $number, Person $person)
-	{
-	    $this->article = $article;
-		$this->timestamp = new \DateTime();
-		$this->number = $number;
-		$this->person = $person;
-		$article->addStockValue($number);
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function getArticle()
-	{
-		return $this->article;
-	}
-	
-	/**
-	 * @return \DateTime
-	 */
-	public function getTimestamp()
-	{
-		return $this->timestamp;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getNumber()
-	{
-		return $this->number;
-	}
-		
-	/**
-	 * @return \CommonBundle\Entity\Users\Person
-	 */
-	public function getPerson()
-	{
-		return $this->person;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getPrice()
-	{
-		return $this->article->getPurchasePrice() * $this->number;
-	}
+    /**
+     * @var integer The ID of the delivery item
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var \CudiBundle\Entity\Sales\Article The article of the delivery
+     *
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @JoinColumn(name="article", referencedColumnName="id")
+     */
+    private $article;
+    
+    /**
+     * @var \DateTime The time of the delivery
+     *
+     * @Column(type="datetime")
+     */
+    private $timestamp;
+    
+    /**
+     * @var integer The number of the delivery
+     *
+     * @Column(type="integer")
+     */
+    private $number;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Person The person who ordered the order
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @JoinColumn(name="person", referencedColumnName="id")
+     */
+    private $person;
+    
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article The article of the delivery
+     * @param integer $number The number of the article
+     * @param \CommonBundle\Entity\Users\Person The person who ordered the order
+     */
+    public function __construct(Article $article, $number, Person $person)
+    {
+        $this->article = $article;
+        $this->timestamp = new \DateTime();
+        $this->number = $number;
+        $this->person = $person;
+        $article->addStockValue($number);
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+        
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getPrice()
+    {
+        return $this->article->getPurchasePrice() * $this->number;
+    }
 }

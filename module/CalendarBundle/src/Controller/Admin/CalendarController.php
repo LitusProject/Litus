@@ -26,8 +26,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
         
         return array(
-        	'paginator' => $paginator,
-        	'paginationControl' => $this->paginator()->createControl(),
+            'paginator' => $paginator,
+            'paginationControl' => $this->paginator()->createControl(),
         );
     }
     
@@ -37,7 +37,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $event = new Event(
                     $this->getAuthentication()->getPersonObject(),
@@ -82,10 +82,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_calendar',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_calendar',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return;
@@ -106,7 +106,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $event->setUpdatePerson($this->getAuthentication()->getPersonObject())
                     ->setStartDate(DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']))
@@ -156,10 +156,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_calendar',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_calendar',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return;
@@ -192,58 +192,58 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->findOneByAbbrev('en')
                 )
         );
-    	
-    	return array(
-    		'result' => array(
-    			'status' => 'success'
-    		),
-    	);
+        
+        return array(
+            'result' => array(
+                'status' => 'success'
+            ),
+        );
     }
     
     public function _getEvent()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the event!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_calendar',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the event!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_calendar',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $event) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No event with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_calendar',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $event;
+        
+        if (null === $event) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No event with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_calendar',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $event;
     }
 }

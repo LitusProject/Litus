@@ -16,10 +16,10 @@
 namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
-	CommonBundle\Component\Util\Xml\Generator,
-	CommonBundle\Component\Util\Xml\Object,
-	CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager;
+    CommonBundle\Component\Util\Xml\Generator,
+    CommonBundle\Component\Util\Xml\Object,
+    CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Front
@@ -28,41 +28,41 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
-	/**
-	 * @var \CudiBundle\Entity\Sales\Article
-	 */
-	private $_article;
-	
-	/**
-	 * Create a new Article Front Generator.
-	 *
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 * @param \CudiBundle\Entity\Sales\Article $article The article
-	 * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
-	 */
+    /**
+     * @var \CudiBundle\Entity\Sales\Article
+     */
+    private $_article;
+    
+    /**
+     * Create a new Article Front Generator.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CudiBundle\Entity\Sales\Article $article The article
+     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
     {
-    	$filePath = $entityManager
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.pdf_generator_path');
-    				
-	   	parent::__construct(
-	   		$entityManager,
-    	    $filePath . '/article/front.xsl',
-    	    $file->getFilename()
-    	);
-    	$this->_article = $article;
+        $filePath = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.pdf_generator_path');
+                    
+           parent::__construct(
+               $entityManager,
+            $filePath . '/article/front.xsl',
+            $file->getFilename()
+        );
+        $this->_article = $article;
     }
-	
-	/**
-	 * Generate the XML for the fop.
-	 *
-	 * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
-	 */
+    
+    /**
+     * Generate the XML for the fop.
+     *
+     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     */
     protected function generateXml(TmpFile $tmpFile)
     {
-    	$configs = $this->getConfigRepository();
-    	
+        $configs = $this->getConfigRepository();
+        
         $now = new \DateTime();
         $union_short_name = $configs->getConfigValue('union_short_name');
         $union_name = $configs->getConfigValue('union_name');
@@ -101,93 +101,93 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-        	new Object(
-        		'article',
-        		array(
-        			'binding' => $this->_article->getMainArticle()->getBinding()->getCode(),
-        		),
-        		array(
-        			new Object(
-        				'our_union',
-        				array(
-        					'short_name' => $union_short_name
-        				),
-        				array(
-        					new Object(
-        						'name',
-        						null,
-        						$union_name
-        					),
-        					new Object(
-        						'logo',
-        						null,
-        						$logo
-        					)
-        				)
-        			),
-        			new Object(
-        				'university',
-        				null,
-        				strtoupper($university)
-        			),
-        			new Object(
-        				'faculty',
-        				null,
-        				strtoupper($faculty)
-        			),
-        			new Object(
-        				'address',
-        				null,
-        				array(
-        					new Object(
-        						'name',
-        						null,
-        						$address_name
-        					),
-        					new Object(
-        						'street',
-        						null,
-        						$address->getStreet() . ' ' . $address->getNumber()
-        					),
-        					new Object(
-        						'city',
-        						null,
-        						$address->getCountry() . '-' . $address->getPostal() . ' ' . $address->getCity()
-        					),
-        					new Object(
-        						'site',
-        						null,
-        						$union_url
-        					)
-        				)
-        			),
-        			new Object(
-        				'title',
-        				null,
-        				$this->_article->getMainArticle()->getTitle()
-        			),
-        			new Object(
-        				'authors',
-        				null,
-        				$this->_article->getMainArticle()->getAuthors()
-        			),
-        			new Object(
-        				'subjects',
-        				null,
-        				$subjects
-        			),
-        			new Object(
-        				'price',
-        				null,
-        				(string) number_format($this->_article->getSellPrice()/100, 2)
-        			),
-        			new Object(
-        				'barcode',
-        				null,
-        				substr((string) $this->_article->getBarcode(), 0, 12)
-        			),
-        		)
-        	)
+            new Object(
+                'article',
+                array(
+                    'binding' => $this->_article->getMainArticle()->getBinding()->getCode(),
+                ),
+                array(
+                    new Object(
+                        'our_union',
+                        array(
+                            'short_name' => $union_short_name
+                        ),
+                        array(
+                            new Object(
+                                'name',
+                                null,
+                                $union_name
+                            ),
+                            new Object(
+                                'logo',
+                                null,
+                                $logo
+                            )
+                        )
+                    ),
+                    new Object(
+                        'university',
+                        null,
+                        strtoupper($university)
+                    ),
+                    new Object(
+                        'faculty',
+                        null,
+                        strtoupper($faculty)
+                    ),
+                    new Object(
+                        'address',
+                        null,
+                        array(
+                            new Object(
+                                'name',
+                                null,
+                                $address_name
+                            ),
+                            new Object(
+                                'street',
+                                null,
+                                $address->getStreet() . ' ' . $address->getNumber()
+                            ),
+                            new Object(
+                                'city',
+                                null,
+                                $address->getCountry() . '-' . $address->getPostal() . ' ' . $address->getCity()
+                            ),
+                            new Object(
+                                'site',
+                                null,
+                                $union_url
+                            )
+                        )
+                    ),
+                    new Object(
+                        'title',
+                        null,
+                        $this->_article->getMainArticle()->getTitle()
+                    ),
+                    new Object(
+                        'authors',
+                        null,
+                        $this->_article->getMainArticle()->getAuthors()
+                    ),
+                    new Object(
+                        'subjects',
+                        null,
+                        $subjects
+                    ),
+                    new Object(
+                        'price',
+                        null,
+                        (string) number_format($this->_article->getSellPrice()/100, 2)
+                    ),
+                    new Object(
+                        'barcode',
+                        null,
+                        substr((string) $this->_article->getBarcode(), 0, 12)
+                    ),
+                )
+            )
         );
     }
 }

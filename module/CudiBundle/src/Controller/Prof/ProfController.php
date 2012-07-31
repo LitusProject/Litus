@@ -27,35 +27,35 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ProfController extends \CudiBundle\Component\Controller\ProfController
 {
-	public function addAction()
+    public function addAction()
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
             
         $form = new AddForm();
         
         if($this->getRequest()->isPost()) {
-	        $formData = $this->getRequest()->post()->toArray();
-	    	
-	    	if ($form->isValid($formData)) {
-	    	    $docent = $this->getEntityManager()
-	    	        ->getRepository('CommonBundle\Entity\Users\People\Academic')
-	    	        ->findOneById($formData['prof_id']);
-	    	        
-	    	    $mapping = $this->getEntityManager()
-	    	        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-	    	        ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
-	    	    
-	    	    if (null === $mapping) {
-    	    	    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
-    	    	    $this->getEntityManager()->persist($mapping);
-    	    	    $this->getEntityManager()->flush();
-    	    	}
-	    	    
-	    	    $this->flashMessenger()->addMessage(
+            $formData = $this->getRequest()->post()->toArray();
+            
+            if ($form->isValid($formData)) {
+                $docent = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findOneById($formData['prof_id']);
+                    
+                $mapping = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
+                
+                if (null === $mapping) {
+                    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
+                    $this->getEntityManager()->persist($mapping);
+                    $this->getEntityManager()->flush();
+                }
+                
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -64,17 +64,17 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 );
 
                 $this->redirect()->toRoute(
-                	'prof_subject',
-                	array(
-                		'action' => 'subject',
-                		'id' => $subject->getId(),
-                		'language' => $this->getLanguage()->getAbbrev(),
-                	)
+                    'prof_subject',
+                    array(
+                        'action' => 'subject',
+                        'id' => $subject->getId(),
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
                 );
                 
                 return new ViewModel();
-	        }
-	    }
+            }
+        }
         
         return new ViewModel(
             array(
@@ -86,8 +86,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     
     public function deleteAction()
     {
-    	$this->initAjax();
-    	
+        $this->initAjax();
+        
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
         
@@ -100,7 +100,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         }
         
         $this->getEntityManager()->remove($mapping);
-    	$this->getEntityManager()->flush();
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
@@ -113,54 +113,54 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $docents = array_merge(
             $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\Users\People\Academic')
-            	->findAllByName($this->getParam('string')),
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findAllByName($this->getParam('string')),
             $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\Users\People\Academic')
-            	->findAllByUniversityIdentification($this->getParam('string'))
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findAllByUniversityIdentification($this->getParam('string'))
         );
-        	
+            
         $result = array();
         foreach($docents as $docent) {
-        	$item = (object) array();
-        	$item->id = $docent->getId();
-        	$item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $docent->getId();
+            $item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
     private function _getSubject($id = null)
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
-        	
+            return;
+            
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the subject!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the subject!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -170,76 +170,76 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 $academicYear
             );
             
-    	
-    	if (null === $mapping) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No subject with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $mapping->getSubject();
+        
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No subject with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $mapping->getSubject();
     }
     
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the mapping!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the mapping!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneById($this->getParam('id'));
 
-    	if (null === $mapping || null === $this->_getSubject($mapping->getSubject()->getId())) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No mapping with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $mapping;
+        if (null === $mapping || null === $this->_getSubject($mapping->getSubject()->getId())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No mapping with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $mapping;
     }
 }

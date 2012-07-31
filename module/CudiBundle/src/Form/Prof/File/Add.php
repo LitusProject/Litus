@@ -16,7 +16,7 @@
 namespace CudiBundle\Form\Prof\File;
 
 use CommonBundle\Component\Form\Bootstrap\Element\File as FileElement,
-	CommonBundle\Component\Form\Bootstrap\Element\Text;
+    CommonBundle\Component\Form\Bootstrap\Element\Text;
 
 /**
  * Add File
@@ -33,14 +33,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      
         $field = new Text('description');
         $field->setLabel('Description')
-			->setAttrib('size', 70)
-        	->setRequired();
+            ->setAttrib('size', 70)
+            ->setRequired();
         $this->addElement($field);
         
         $field = new FileElement('file');
         $field->setLabel('File')
-        	->setAttrib('size', 70)
-        	->setRequired();
+            ->setAttrib('size', 70)
+            ->setRequired();
         $this->addElement($field);
     }
 }

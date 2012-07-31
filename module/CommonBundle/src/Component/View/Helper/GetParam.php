@@ -24,20 +24,20 @@ use Zend\Mvc\Router\RouteMatch;
  */
 class GetParam extends \Zend\View\Helper\AbstractHelper
 {
-	/**
-	 * @var \Zend\Mvc\Router\RouteMatch The matched router object
-	 */
-	private $_routeMatch = null;
+    /**
+     * @var \Zend\Mvc\Router\RouteMatch The matched router object
+     */
+    private $_routeMatch = null;
 
-	/**
-	 * @param \Zend\Stdlib\RequestDescription $routeMatch The matched router object
-	 * @return \CommonBundle\Component\View\Helper\Request
-	 */
+    /**
+     * @param \Zend\Stdlib\RequestDescription $routeMatch The matched router object
+     * @return \CommonBundle\Component\View\Helper\Request
+     */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
-    	$this->_routeMatch = $routeMatch;
-    	
-    	return $this;
+        $this->_routeMatch = $routeMatch;
+        
+        return $this;
     }
     
     /**
@@ -47,9 +47,9 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($key, $default = null)
     {
-    	if (null === $this->_routeMatch)
-    		throw new Exception\RuntimeException('No matched route was provided');
-    	
+        if (null === $this->_routeMatch)
+            throw new Exception\RuntimeException('No matched route was provided');
+        
         return $this->_routeMatch->getParam($key, $default);
     }
 }

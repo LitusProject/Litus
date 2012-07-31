@@ -23,33 +23,33 @@ return array(
                 
                 'admin_page'   => 'PageBundle\Controller\Admin\PageController',
 
-                'page'   	   => 'PageBundle\Controller\PageController',
+                'page'          => 'PageBundle\Controller\PageController',
             ),
             
             'doctrine_config' => array(
                 'parameters' => array(
-                	'entityPaths' => array(
-                		'pagebundle' => __DIR__ . '/../../Entity',
-                	),
+                    'entityPaths' => array(
+                        'pagebundle' => __DIR__ . '/../../Entity',
+                    ),
                 ),
             ),
         ),
     ),
     'routes' => array(
-    	'page' => array(
-    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-    	    'options' => array(
-    	        'route'    => '[/:language]/page[/:id]',
-    	        'constraints' => array(
-    	        	'id'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-    	            'language' => '[a-zA-Z][a-zA-Z_-]*',
-    	        ),
-    	        'defaults' => array(
-    	            'controller' => 'page',
-    	            'action'     => 'view',
-    	        ),
-    	    ),
-    	),
+        'page' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '[/:language]/page[/:id]',
+                'constraints' => array(
+                    'id'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'page',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
         'page_install' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -67,8 +67,8 @@ return array(
             'options' => array(
                 'route'    => '/admin/content/page[/:action[/:id]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'id'      => '[0-9]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'admin_page',
@@ -76,5 +76,5 @@ return array(
                 ),
             ),
         ),
-	),
+    ),
 );

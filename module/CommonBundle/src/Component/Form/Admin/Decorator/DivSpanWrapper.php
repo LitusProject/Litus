@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Form\Admin\Decorator;
 
 use Zend\Form\Decorator\AbstractDecorator,
-	Zend\Form\Decorator\Label;
+    Zend\Form\Decorator\Label;
 
 /**
  * This decorator will be used to decorate our form fields with div and span tags.
@@ -26,12 +26,12 @@ use Zend\Form\Decorator\AbstractDecorator,
  */
 class DivSpanWrapper extends \Zend\Form\Decorator\AbstractDecorator
 {
-	/**
-	 * Decorate content and/or element
-	 *
-	 * @param string $content The element's content
-	 * @return string
-	 */
+    /**
+     * Decorate content and/or element
+     *
+     * @param string $content The element's content
+     * @return string
+     */
     public function render($content)
     {
         $labelDecorator = new Label();

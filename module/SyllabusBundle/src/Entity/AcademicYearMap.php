@@ -26,27 +26,27 @@ class AcademicYearMap
     /**
      * @var integer The ID of the mapping
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
     /**
      * @var \SyllabusBundle\Entity\Study The study of the mapping
      *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-	 * @JoinColumn(name="study", referencedColumnName="id")
-	 */
-	private $study;
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @JoinColumn(name="study", referencedColumnName="id")
+     */
+    private $study;
 
-	/**
-	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-	 * @JoinColumn(name="academic_year", referencedColumnName="id")
-	 */
-	private $academicYear;
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
     
     /**
      * @param \SyllabusBundle\Entity\Study $study

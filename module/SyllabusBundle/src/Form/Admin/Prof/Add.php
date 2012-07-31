@@ -16,11 +16,11 @@
 namespace SyllabusBundle\Form\Admin\Prof;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Hidden,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Zend\Form\Element\Hidden,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Prof
@@ -33,21 +33,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
          
-		$field = new Hidden('prof_id');
-		$field->setRequired()
-		    ->addValidator(new IntValidator())
-		    ->setAttrib('id', 'profId');
-		$this->addElement($field);
-		 
-		$field = new Text('prof');
-		$field->setLabel('Docent')
-			->setAttrib('size', 70)
-			->setAttrib('id', 'profSearch')
-			->setAttrib('autocomplete', 'off')
-			->setAttrib('data-provide', 'typeahead')
-			->setRequired()
-			->setDecorators(array(new FieldDecorator()));
-		$this->addElement($field);
+        $field = new Hidden('prof_id');
+        $field->setRequired()
+            ->addValidator(new IntValidator())
+            ->setAttrib('id', 'profId');
+        $this->addElement($field);
+         
+        $field = new Text('prof');
+        $field->setLabel('Docent')
+            ->setAttrib('size', 70)
+            ->setAttrib('id', 'profSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')

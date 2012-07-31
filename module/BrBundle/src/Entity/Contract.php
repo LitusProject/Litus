@@ -16,11 +16,11 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
-	BrBundle\Entity\Contracts\Composition,
-	BrBundle\Entity\Contracts\Section,
-	CommonBundle\Entity\Users\Person,
-	Doctrine\Common\Collections\ArrayCollection;
-	
+    BrBundle\Entity\Contracts\Composition,
+    BrBundle\Entity\Contracts\Section,
+    CommonBundle\Entity\Users\Person,
+    Doctrine\Common\Collections\ArrayCollection;
+    
 /**
  * This is the entity for a contract.
  *

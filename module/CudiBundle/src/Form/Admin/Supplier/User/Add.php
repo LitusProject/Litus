@@ -16,8 +16,8 @@
 namespace CudiBundle\Form\Admin\Supplier\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Add a user to the database.
@@ -27,10 +27,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Form\Admin\Person\Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, $opts);

@@ -23,9 +23,9 @@ namespace CommonBundle\Component\Form\Admin;
  */
 class Form extends \Zend\Form\Form
 {
-	/**
-	 * @param mixed $options The form's options
-	 */
+    /**
+     * @param mixed $options The form's options
+     */
     public function __construct($options)
     {
         parent::__construct($options = null);

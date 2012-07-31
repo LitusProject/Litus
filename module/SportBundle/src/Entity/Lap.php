@@ -8,22 +8,22 @@ namespace Litus\Entity\Sport;
  */
 class Lap
 {
-	/**
+    /**
      * @var int The ID of this lap
      *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
-	private $id;
-	
-	/**
+    private $id;
+    
+    /**
      * @var \Litus\Entity\Sport\Runner The person who ran this lap
      *
      * @ManyToOne(targetEntity="Litus\Entity\Sport\Runner", fetch="EAGER", cascade={"persist"})
      * @JoinColumn(name="runner", referencedColumnName="university_identification")
      */
-	private $runner;
+    private $runner;
 
     /**
      * @var \DateTime The time when this runner registered for this lap
@@ -33,57 +33,57 @@ class Lap
     private $registrationTime;
 
     /**
-	 * @var \DateTime The time this runner started his lap
-	 *
-	 * @Column(name="start_time", type="datetime", nullable=true)
-	 */
-	private $startTime;
+     * @var \DateTime The time this runner started his lap
+     *
+     * @Column(name="start_time", type="datetime", nullable=true)
+     */
+    private $startTime;
 
     /**
-	 * @var \DateTime The time this runner ended his lap
-	 *
-	 * @Column(name="end_time", type="datetime", nullable=true)
-	 */
-	private $endTime;
-	
-	/**
-	 * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
-	 */
-	public function __construct(Runner $runner)
-	{
-		$this->setRunner($runner);
+     * @var \DateTime The time this runner ended his lap
+     *
+     * @Column(name="end_time", type="datetime", nullable=true)
+     */
+    private $endTime;
+    
+    /**
+     * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
+     */
+    public function __construct(Runner $runner)
+    {
+        $this->setRunner($runner);
         
-		$this->registrationTime = new \DateTime();
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+        $this->registrationTime = new \DateTime();
+    }
+    
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
-	 * @return \Litus\Entity\Sport\Lap
-	 */
-	public function setRunner(Runner $runner)
-	{
-		if (null === $runner)
-			throw new \InvalidArgumentException('Invalid runner');
-		$this->runner = $runner;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return \Litus\Entity\Sport\Runner
-	 */
-	public function getRunner()
-	{
-		return $this->runner;
-	}
+    /**
+     * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
+     * @return \Litus\Entity\Sport\Lap
+     */
+    public function setRunner(Runner $runner)
+    {
+        if (null === $runner)
+            throw new \InvalidArgumentException('Invalid runner');
+        $this->runner = $runner;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \Litus\Entity\Sport\Runner
+     */
+    public function getRunner()
+    {
+        return $this->runner;
+    }
 
     /**
      * @return \DateTime
@@ -115,13 +115,13 @@ class Lap
         return $this;
     }
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getStartTime()
-	{
-		return $this->startTime;
-	}
+    /**
+     * @return \DateTime
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
 
     /**
      * @return \DateTime

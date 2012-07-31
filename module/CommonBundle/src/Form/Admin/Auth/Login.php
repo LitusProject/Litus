@@ -16,8 +16,8 @@
 namespace CommonBundle\Form\Admin\Auth;
 
 use Zend\Form\Element\Checkbox,
-	Zend\Form\Element\Password,
-	Zend\Form\Element\Text;
+    Zend\Form\Element\Password,
+    Zend\Form\Element\Text;
 
 /**
  * Login
@@ -26,9 +26,9 @@ use Zend\Form\Element\Checkbox,
  */
 class Login extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param mixed $opts The form's options
+     */
     public function __construct($opts = null)
     {
         parent::__construct($opts);

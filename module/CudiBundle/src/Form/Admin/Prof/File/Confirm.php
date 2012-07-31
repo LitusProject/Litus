@@ -16,11 +16,11 @@
 namespace CudiBundle\Form\Admin\Prof\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CudiBundle\Entity\Files\Mapping as FileMapping,
-	Zend\Form\Element\Checkbox,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CudiBundle\Entity\Files\Mapping as FileMapping,
+    Zend\Form\Element\Checkbox,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Confirm File add action
@@ -37,14 +37,14 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
      
         $field = new Text('description');
         $field->setLabel('Description')
-			->setAttrib('size', 70)
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('size', 70)
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Checkbox('printable');
         $field->setLabel('Printable')
-        	->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Submit('submit');
@@ -58,10 +58,10 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
     
     public function populateFromFile(FileMapping $mapping)
     {
-    	$this->populate(
-    	    array(
-    		'description' => $mapping->getFile()->getDescription()
-    	    )
-    	);
+        $this->populate(
+            array(
+            'description' => $mapping->getFile()->getDescription()
+            )
+        );
     }
 }

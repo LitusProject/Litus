@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
-	Zend\Form\Decorator;
+    Zend\Form\Decorator;
 
 /**
  * Select form element
@@ -42,7 +42,7 @@ class Select extends \Zend\Form\Element\Select
                 return $decorator->getElement()->getId() . '-element';
             };
             $this->addDecorator('ViewHelper')
-            	->addDecorator(new Errors())
+                ->addDecorator(new Errors())
                 ->addDecorator('Description', array('tag' => 'span', 'class' => 'help-block'))
                 ->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'controls'))
                 ->addDecorator('Label', array('class' => 'control-label'))

@@ -23,43 +23,43 @@ namespace CommonBundle\Entity\General\Bank;
  */
 class BankDevice
 {
-	/**
-	 * @var int The device's ID
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="integer")
-	 */
-	private $id;
-	
-	/**
-	 * @var string The device's name
-	 *
-	 * @Column(type="string")
-	 */
-	private $name;
-	
-	/**
-	 * @param string $name The device's name
-	 */
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @var int The device's ID
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @var string The device's name
+     *
+     * @Column(type="string")
+     */
+    private $name;
+    
+    /**
+     * @param string $name The device's name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

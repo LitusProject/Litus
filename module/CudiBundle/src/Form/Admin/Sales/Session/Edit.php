@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-	CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit Sale Session content
@@ -31,7 +31,7 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $options);
 
-		$this->removeElement('submit');
+        $this->removeElement('submit');
 
         $field = new Submit('submit');
         $field->setLabel('Edit')

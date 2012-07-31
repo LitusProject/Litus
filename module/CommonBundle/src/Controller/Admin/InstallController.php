@@ -22,9 +22,9 @@ namespace CommonBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function initConfig()
-	{
-	    $this->installConfig(
+    protected function initConfig()
+    {
+        $this->installConfig(
             array(
                 array(
                     'key'         => 'common.profile_path',
@@ -32,93 +32,93 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The path for profile photo\'s',
                 ),
                 array(
-        			'key'         => 'search_max_results',
-        			'value'       => '30',
-        			'description' => 'The maximum number of search results shown',
-        		),
-        		array(
-        		    'key'         => 'account_deactivated_mail',
-        		    'value'       => 'Dear,
+                    'key'         => 'search_max_results',
+                    'value'       => '30',
+                    'description' => 'The maximum number of search results shown',
+                ),
+                array(
+                    'key'         => 'account_deactivated_mail',
+                    'value'       => 'Dear,
 
 Your account of litus.cc is deactivated.
 Click here to activate it again: http://litus/account/activate/{{ code }}',
-        		    'description' => 'The email sent when an account is deactivated',
-        		),
-        		array(
-        		    'key'         => 'account_deactivated_subject',
-        		    'value'       => 'Account deactivated',
-        		    'description' => 'The mail subject when an account is deactivated',
-        		),
-        		array(
-        		    'key'         => 'system_mail_address',
-        		    'value'       => 'info@litus.cc',
-        		    'description' => 'The system mail address',
-        		),
-        		array(
-        		    'key'         => 'system_mail_name',
-        		    'value'       => 'Litus Project',
-        		    'description' => 'The system mail name',
-        		),
-        		array(
-        		    'key'         => 'account_activated_mail',
-        		    'value'       => 'Dear {{ name }},
+                    'description' => 'The email sent when an account is deactivated',
+                ),
+                array(
+                    'key'         => 'account_deactivated_subject',
+                    'value'       => 'Account deactivated',
+                    'description' => 'The mail subject when an account is deactivated',
+                ),
+                array(
+                    'key'         => 'system_mail_address',
+                    'value'       => 'info@litus.cc',
+                    'description' => 'The system mail address',
+                ),
+                array(
+                    'key'         => 'system_mail_name',
+                    'value'       => 'Litus Project',
+                    'description' => 'The system mail name',
+                ),
+                array(
+                    'key'         => 'account_activated_mail',
+                    'value'       => 'Dear {{ name }},
 
 An account for you is created on litus.cc with username {{ username }}.
 Click here to activate it: http://litus/account/activate/{{ code }}',
-        		    'description' => 'The email sent when an account is deactivated',
-        		),
-        		array(
-        		    'key'         => 'account_activated_subject',
-        		    'value'       => 'Account created',
-        		    'description' => 'The mail subject when an account is deactivated',
-        		),
-        	)
+                    'description' => 'The email sent when an account is deactivated',
+                ),
+                array(
+                    'key'         => 'account_activated_subject',
+                    'value'       => 'Account created',
+                    'description' => 'The mail subject when an account is deactivated',
+                ),
+            )
         );
-	}
-	
-	protected function initAcl()
-	{
-	    $this->installAcl(
-	    	array(
-		        'commonbundle' => array(
-		            'admin_academic' => array(
-		            	'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
-		            ),  
-		            'admin_auth' => array(
-		            	'authenticate', 'login', 'logout'
-		            ),
-		            'admin_config' => array(
-		            	'edit', 'manage'
-		            ),
-		            'admin_index' => array(
-		            	'index'
-		            ),
-		            'admin_role' => array(
-		            	'add', 'edit', 'delete', 'manage'
-		            ),
-		            'index' => array(
-		            	'index'
-		            ),
-		        )
-		    )
-	    );
-	    
-	    $this->installRoles(
-	        array(
-	            'guest' => array(
-	            	'system' => true,
-	                'parents' => array(
-	                ),
-	                'actions' => array(
-	                	'admin_auth' => array(
-	                		'authenticate', 'login', 'logout'
-	                	),
-	                	'index' => array(
-	                	    'index'
-	                	),
-	                ),
-	            ),
-	        )
-	    );
-	}
+    }
+    
+    protected function initAcl()
+    {
+        $this->installAcl(
+            array(
+                'commonbundle' => array(
+                    'admin_academic' => array(
+                        'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+                    ),  
+                    'admin_auth' => array(
+                        'authenticate', 'login', 'logout'
+                    ),
+                    'admin_config' => array(
+                        'edit', 'manage'
+                    ),
+                    'admin_index' => array(
+                        'index'
+                    ),
+                    'admin_role' => array(
+                        'add', 'edit', 'delete', 'manage'
+                    ),
+                    'index' => array(
+                        'index'
+                    ),
+                )
+            )
+        );
+        
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'admin_auth' => array(
+                            'authenticate', 'login', 'logout'
+                        ),
+                        'index' => array(
+                            'index'
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
 }

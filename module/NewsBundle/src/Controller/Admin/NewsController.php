@@ -41,8 +41,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         
         return new ViewModel(
             array(
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -53,10 +53,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $news = new News(
-                	$this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject()
                 );
                 $this->getEntityManager()->persist($news);
 
@@ -66,10 +66,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 
                 foreach($languages as $language) {
                     $translation = new Translation(
-                    	$news,
-                    	$language,
-                    	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
-                    	$formData['title_' . $language->getAbbrev()]
+                        $news,
+                        $language,
+                        str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
+                        $formData['title_' . $language->getAbbrev()]
                     );
                     
                     $this->getEntityManager()->persist($translation);
@@ -89,10 +89,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_news',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_news',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -115,7 +115,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -129,10 +129,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
                         $translation = new Translation(
-                        	$news,
-                        	$language,
-                        	str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
-                        	$formData['title_' . $language->getAbbrev()]
+                            $news,
+                            $language,
+                            str_replace('#', '', $formData['content_' . $language->getAbbrev()]),
+                            $formData['title_' . $language->getAbbrev()]
                         );
                         
                         $this->getEntityManager()->persist($translation);
@@ -153,10 +153,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_news',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_news',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -180,60 +180,60 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($news);
         
         $this->getEntityManager()->flush();
-    	
-    	return new ViewModel(
-    	    array(
-        		'result' => array(
-        			'status' => 'success'
-        		),
-        	)
-    	);
+        
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
     }
     
     public function _getNews()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the news!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_news',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the news!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_news',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $news = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $news) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No news with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_news',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $news;
+        
+        if (null === $news) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No news with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_news',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $news;
     }
 }

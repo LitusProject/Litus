@@ -16,7 +16,7 @@
 namespace CudiBundle\Component\Controller;
 
 use Exception,
-	Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a sale session is selected.
@@ -25,7 +25,7 @@ use Exception,
  */
 class SaleController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
+    /**
      * Execute the request
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -34,41 +34,41 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$session = $this->getEntityManager()
-		    ->getRepository('CudiBundle\Entity\Sales\Session')
-		    ->findOneById($this->getParam('session'));
-		
-		if (null == $session || !$session->isOpen())
-			throw new Exception('No valid session is given');
-		
-		$result = parent::execute($e);
-		
-		$language = $this->getEntityManager()
-		    ->getRepository('CommonBundle\Entity\General\Language')
-		    ->findOneByAbbrev('en');
-		    
-		$result->language = $language;
-		
-		$result->session = $session;
-		
-		$result->unionUrl = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('union_url');
-  		
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Session')
+            ->findOneById($this->getParam('session'));
+        
+        if (null == $session || !$session->isOpen())
+            throw new Exception('No valid session is given');
+        
+        $result = parent::execute($e);
+        
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+            
+        $result->language = $language;
+        
+        $result->session = $session;
+        
+        $result->unionUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_url');
+          
         $e->setResult($result);
         return $result;
     }
     
     protected function getSocketUrl()
     {
-    	$address = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_remote_host');
-    	$port = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('cudi.queue_socket_port');
-    		
-    	return 'ws://' . $address . ':' . $port;
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_remote_host');
+        $port = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_port');
+            
+        return 'ws://' . $address . ':' . $port;
     }
         
     /**
@@ -88,8 +88,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
         
         if ($this->getAuthentication()->isAuthenticated()) {
-        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
-        	$this->getEntityManager()->flush();
+            $this->getAuthentication()->getPersonObject()->setLanguage($language);
+            $this->getEntityManager()->flush();
         }
     }
 }

@@ -23,43 +23,43 @@ namespace CommonBundle\Entity\General\Bank;
  */
 class MoneyUnit
 {
-	/**
-	 * @var int The unit's ID
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="integer")
-	 */
-	private $id;
-	
-	/**
-	 * @var int The unit's size
-	 *
-	 * @Column(type="integer")
-	 */
-	private $unit;
-	
-	/**
-	 * @param float $unit The unit's size, multiplied by a 100 before it is stored
-	 */
-	public function __construct($unit)
-	{
-		$this->unit = $unit * 100;
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return float
-	 */
-	public function getUnit()
-	{
-		return $this->unit;
-	}
+    /**
+     * @var int The unit's ID
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @var int The unit's size
+     *
+     * @Column(type="integer")
+     */
+    private $unit;
+    
+    /**
+     * @param float $unit The unit's size, multiplied by a 100 before it is stored
+     */
+    public function __construct($unit)
+    {
+        $this->unit = $unit * 100;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
 }

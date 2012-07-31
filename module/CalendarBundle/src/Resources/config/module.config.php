@@ -31,11 +31,11 @@ return array(
                             'calendarbundle' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
-                                	'calendar' => array(
-                                	    'assets'  => array(
-                                	        'css/calendar.css',
-                                	    ),
-                                	),
+                                    'calendar' => array(
+                                        'assets'  => array(
+                                            'css/calendar.css',
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),
@@ -45,26 +45,26 @@ return array(
             
             'doctrine_config' => array(
                 'parameters' => array(
-                	'entityPaths' => array(
-                		'calendarbundle' => __DIR__ . '/../../Entity',
-                	),
+                    'entityPaths' => array(
+                        'calendarbundle' => __DIR__ . '/../../Entity',
+                    ),
                 ),
             ),
             
             'translator' => array(
-            	'parameters' => array(
-        		    'adapter' => 'ArrayAdapter',
-        			'translations' => array(
-        				'calendar_admin_en' => array(
-                			'content' => __DIR__ . '/../translations/admin.en.php',
-                			'locale' => 'en',
-                		),
-                		'calendar_admin_nl' => array(
-                			'content' => __DIR__ . '/../translations/admin.nl.php',
-                			'locale' => 'nl',
-                		),
-            		),
-            	),
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'calendar_admin_en' => array(
+                            'content' => __DIR__ . '/../translations/admin.en.php',
+                            'locale' => 'en',
+                        ),
+                        'calendar_admin_nl' => array(
+                            'content' => __DIR__ . '/../translations/admin.nl.php',
+                            'locale' => 'nl',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),
@@ -86,8 +86,8 @@ return array(
             'options' => array(
                 'route'    => '/admin/content/calendar[/:action[/:id]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'id'      => '[0-9]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'admin_calendar',
@@ -100,8 +100,8 @@ return array(
             'options' => array(
                 'route'    => '[/:language]/calendar[/:action[/:name]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'name'  => '[a-zA-Z0-9_-]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'name'  => '[a-zA-Z0-9_-]*',
                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                 ),
                 'defaults' => array(
@@ -110,5 +110,5 @@ return array(
                 ),
             ),
         ),*/
-	),
+    ),
 );

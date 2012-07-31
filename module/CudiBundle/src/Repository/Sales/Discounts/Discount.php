@@ -18,40 +18,40 @@ class Discount extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
-        	->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('d.article', ':article'),
-        	        $query->expr()->eq('d.type', ':type')
-        	    )
-        	)
-        	->setParameter('article', $article->getId())
-        	->setParameter('type', $type)
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('d.article', ':article'),
+                    $query->expr()->eq('d.type', ':type')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('type', $type)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+            
         if (isset($resultSet[0]))
-        	return $resultSet[0];
+            return $resultSet[0];
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
-        	->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
-        	->innerJoin('d.template', 't', Join::WITH,
-       	        $query->expr()->eq('t.type', ':type')
-        	)
-        	->where(
-       	        $query->expr()->eq('d.article', ':article')
-        	)
-        	->setParameter('article', $article->getId())
-        	->setParameter('type', $type)
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
+            ->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
+            ->innerJoin('d.template', 't', Join::WITH,
+                   $query->expr()->eq('t.type', ':type')
+            )
+            ->where(
+                   $query->expr()->eq('d.article', ':article')
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('type', $type)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
-        	return $resultSet[0];
-        	
+            return $resultSet[0];
+            
         return null;
     }
 }

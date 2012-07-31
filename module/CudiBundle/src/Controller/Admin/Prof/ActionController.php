@@ -31,15 +31,15 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
-        	$this->getEntityManager()
-        	    ->getRepository('CudiBundle\Entity\Prof\Action')
-        	    ->findAllUncompleted(),
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllUncompleted(),
             $this->getParam('page')
         );
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -47,15 +47,15 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function completedAction()
     {
         $paginator = $this->paginator()->createFromArray(
-        	$this->getEntityManager()
-        	    ->getRepository('CudiBundle\Entity\Prof\Action')
-        	    ->findAllCompleted(),
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllCompleted(),
             $this->getParam('page')
         );
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -63,15 +63,15 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function refusedAction()
     {
         $paginator = $this->paginator()->createFromArray(
-        	$this->getEntityManager()
-        	    ->getRepository('CudiBundle\Entity\Prof\Action')
-        	    ->findAllRefused(),
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllRefused(),
             $this->getParam('page')
         );
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -109,10 +109,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         
         
         $this->redirect()->toRoute(
-        	'admin_prof_action',
-        	array(
-        		'action' => 'refused'
-        	)
+            'admin_prof_action',
+            array(
+                'action' => 'refused'
+            )
         );
         
         return new ViewModel();
@@ -128,11 +128,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         if ($action->getEntityName() == 'article') {
             if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
-                	'admin_prof_action',
-                	array(
-                		'action' => 'confirmArticle',
-                		'id' => $action->getId(),
-                	)
+                    'admin_prof_action',
+                    array(
+                        'action' => 'confirmArticle',
+                        'id' => $action->getId(),
+                    )
                 );
                 return new ViewModel();
             } else {
@@ -165,7 +165,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     $edited->setBinding($duplicate->getBinding())
                         ->setIsRectoVerso($duplicate->isRectoVerso())
                         ->setIsPerforated($duplicate->isPerforated());
-            	}
+                }
                 
                 $history = new History($current, $edited);
                 $this->getEntityManager()->persist($history);
@@ -182,11 +182,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         } elseif ($action->getEntityName() == 'file') {
             if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
-                	'admin_prof_action',
-                	array(
-                		'action' => 'confirmFile',
-                		'id' => $action->getId(),
-                	)
+                    'admin_prof_action',
+                    array(
+                        'action' => 'confirmFile',
+                        'id' => $action->getId(),
+                    )
                 );
                 return new ViewModel();
             } else {
@@ -207,10 +207,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'admin_prof_action',
-        	array(
-        		'action' => 'completed'
-        	)
+            'admin_prof_action',
+            array(
+                'action' => 'completed'
+            )
         );
         
         return new ViewModel();
@@ -227,49 +227,49 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    $action->getEntity()->setTitle($formData['title'])
-        	        ->setAuthors($formData['author'])
-        	        ->setPublishers($formData['publisher'])
-        	        ->setYearPublished($formData['year_published'])
-        	        ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
-        	        ->setURL($formData['url'])
-        	        ->setIsDownloadable($formData['downloadable'])
-        	        ->setType($formData['type']);
-        	    
-				if ($formData['internal']) {
-					$binding = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-						->findOneById($formData['binding']);
+            
+            if ($form->isValid($formData)) {
+                $action->getEntity()->setTitle($formData['title'])
+                    ->setAuthors($formData['author'])
+                    ->setPublishers($formData['publisher'])
+                    ->setYearPublished($formData['year_published'])
+                    ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
+                    ->setURL($formData['url'])
+                    ->setIsDownloadable($formData['downloadable'])
+                    ->setType($formData['type']);
+                
+                if ($formData['internal']) {
+                    $binding = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->findOneById($formData['binding']);
 
-					$frontPageColor = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Articles\Options\Color')
-						->findOneById($formData['front_color']);
+                    $frontPageColor = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Color')
+                        ->findOneById($formData['front_color']);
                     
                     $action->getEntity()->setNbBlackAndWhite($formData['nb_black_and_white'])
-                    	->setNbColored($formData['nb_colored'])
-                    	->setBinding($binding)
-                    	->setIsOfficial($formData['official'])
-                    	->setIsRectoVerso($formData['rectoverso'])
-                    	->setFrontColor($frontPageColor)
-                    	->setIsPerforated($formData['perforated']);
-				}
-				
-				$action->getEntity()->setIsProf(false);
-        	    
-        	    $action->setCompleted($this->getAuthentication()->getPersonObject());
-        	    
-        	    $this->getEntityManager()->flush();
-        	    
-        	    $this->redirect()->toRoute(
-        	    	'admin_prof_action',
-        	    	array(
-        	    		'action' => 'completed'
-        	    	)
-        	    );
-        	    return new ViewModel();
-        	}
+                        ->setNbColored($formData['nb_colored'])
+                        ->setBinding($binding)
+                        ->setIsOfficial($formData['official'])
+                        ->setIsRectoVerso($formData['rectoverso'])
+                        ->setFrontColor($frontPageColor)
+                        ->setIsPerforated($formData['perforated']);
+                }
+                
+                $action->getEntity()->setIsProf(false);
+                
+                $action->setCompleted($this->getAuthentication()->getPersonObject());
+                
+                $this->getEntityManager()->flush();
+                
+                $this->redirect()->toRoute(
+                    'admin_prof_action',
+                    array(
+                        'action' => 'completed'
+                    )
+                );
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
@@ -290,26 +290,26 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    $action->getEntity()
-        	        ->setPrintable($formData['printable'])
-        	        ->getFile()->setDescription($formData['description']);
-				
-				$action->getEntity()->setIsProf(false);
-        	    
-        	    $action->setCompleted($this->getAuthentication()->getPersonObject());
-        	    
-        	    $this->getEntityManager()->flush();
-        	    
-        	    $this->redirect()->toRoute(
-        	    	'admin_prof_action',
-        	    	array(
-        	    		'action' => 'completed'
-        	    	)
-        	    );
-        	    return new ViewModel();
-        	}
+            
+            if ($form->isValid($formData)) {
+                $action->getEntity()
+                    ->setPrintable($formData['printable'])
+                    ->getFile()->setDescription($formData['description']);
+                
+                $action->getEntity()->setIsProf(false);
+                
+                $action->setCompleted($this->getAuthentication()->getPersonObject());
+                
+                $this->getEntityManager()->flush();
+                
+                $this->redirect()->toRoute(
+                    'admin_prof_action',
+                    array(
+                        'action' => 'completed'
+                    )
+                );
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
@@ -322,47 +322,47 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     public function _getAction()
     {
         if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the action!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_prof_action',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the action!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_prof_action',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $action = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $action) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No action with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_prof_action',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $action;
+        
+        if (null === $action) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No action with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_prof_action',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $action;
     }
 }

@@ -16,43 +16,43 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CommonBundle\Entity\Users\People\Academic,
-	CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
-	CommonBundle\Form\Admin\Academic\Add as AddForm,
-	CommonBundle\Form\Admin\Academic\Edit as EditForm,
-	Zend\View\Model\ViewModel;
+    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CommonBundle\Form\Admin\Academic\Add as AddForm,
+    CommonBundle\Form\Admin\Academic\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
  *
  * @autor Pieter Maene <pieter.maene@litus.cc>
- */	
+ */    
 class AcademicController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-	public function manageAction()
-	{	
-	    $paginator = $this->paginator()->createFromEntity(
-	        'CommonBundle\Entity\Users\People\Academic',
-	        $this->getParam('page'),
-	        array(
-	            'canLogin' => true
-	        )
-	    );
-	    
-	    return new ViewModel(
-	        array(
-    	    	'paginator' => $paginator,
-    	    	'paginationControl' => $this->paginator()->createControl(true),
-    	    )
-	    );
-	}
-	
+    public function manageAction()
+    {    
+        $paginator = $this->paginator()->createFromEntity(
+            'CommonBundle\Entity\Users\People\Academic',
+            $this->getParam('page'),
+            array(
+                'canLogin' => true
+            )
+        );
+        
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+    
     public function addAction()
     {
         $form = new AddForm(
-        	$this->getEntityManager()
+            $this->getEntityManager()
         );
-		
+        
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -73,22 +73,22 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     $formData['last_name'],
                     $formData['email'],
                     $formData['phone_number'],
-					$formData['sex'],
-					$formData['university_identification']
+                    $formData['sex'],
+                    $formData['university_identification']
                 );
                 
                 $newUser->addUniversityStatus(
-                	new UniversityStatus(
-                		$newUser,
-                		$formData['university_status'],
-                		$this->getCurrentAcademicYear()
-                	)
+                    new UniversityStatus(
+                        $newUser,
+                        $formData['university_status'],
+                        $this->getCurrentAcademicYear()
+                    )
                 );
                 
                 $newUser->activate(
-                	$this->getEntityManager(),
-                	$this->getMailTransport(),
-                	!$formData['activation_code']
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    !$formData['activation_code']
                 );
                 
                 $this->getEntityManager()->persist($newUser);                
@@ -103,10 +103,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_academic',
-                	array(
-                		'action' => 'add'
-                	)
+                    'admin_academic',
+                    array(
+                        'action' => 'add'
+                    )
                 );
                 
                 return new ViewModel();
@@ -116,23 +116,23 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         
         return new ViewModel(
             array(
-            	'form' => $form,
+                'form' => $form,
             )
         );
     }
 
     public function editAction()
     {
-		if (!($user = $this->_getUser()))
-		    return new ViewModel();
-		
+        if (!($user = $this->_getUser()))
+            return new ViewModel();
+        
         $form = new EditForm(
-        	$this->getEntityManager(), $user
+            $this->getEntityManager(), $user
         );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+            
             if ($form->isValid($formData)) {
                 $roles = array();
 
@@ -162,10 +162,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_academic',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_academic',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -174,17 +174,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         
         return new ViewModel(
             array(
-            	'form' => $form
+                'form' => $form
             )
         );
     }
 
     public function deleteAction()
     {
-    	$this->initAjax();
+        $this->initAjax();
     
-		if (!($user = $this->_getUser()))
-		    return new ViewModel();
+        if (!($user = $this->_getUser()))
+            return new ViewModel();
         
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')
@@ -194,14 +194,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $session->deactivate();
         }
         $user->disableLogin();
-		
-		$this->getEntityManager()->flush();
-		
-		return new ViewModel(
-		    array(
-			    'result' => array('status' => 'success'),
-			)
-		);
+        
+        $this->getEntityManager()->flush();
+        
+        return new ViewModel(
+            array(
+                'result' => array('status' => 'success'),
+            )
+        );
     }
     
     public function typeaheadAction()
@@ -214,110 +214,110 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         
         $result = array();
         foreach($users as $user) {
-        	$item = (object) array();
-        	$item->id = $user->getId();
-        	$item->value = $user->getFullName() . ' - ' . $user->getUniversityIdentification();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $user->getId();
+            $item->value = $user->getFullName() . ' - ' . $user->getUniversityIdentification();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-            	'result' => $result,
+                'result' => $result,
             )
         );
     }
     
     public function searchAction()
     {
-    	$this->initAjax();
-    	
-    	switch($this->getParam('field')) {
-    		case 'username':
-    			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Users\People\Academic')
-    				->findAllByUsername($this->getParam('string'));
-    			break;
-    		case 'name':
-    			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Users\People\Academic')
-    				->findAllByName($this->getParam('string'));
-    			break;
-    		case 'university_identification':
-    			$users = $this->getEntityManager()
-    				->getRepository('CommonBundle\Entity\Users\People\Academic')
-    				->findAllByUniversityIdentification($this->getParam('string'));
-    			break;
-    	}
-    	
-    	$numResults = $this->getEntityManager()
-    		->getRepository('CommonBundle\Entity\General\Config')
-    		->getConfigValue('search_max_results');
-    	
-    	array_splice($users, $numResults);
-    	
-    	$result = array();
-    	foreach($users as $user) {
-    		$item = (object) array();
-    		$item->id = $user->getId();
-    		$item->username = $user->getUsername();
-    		$item->universityIdentification = $user->getUniversityIdentification();
-    		$item->fullName = $user->getFullName();
-    		$item->email = $user->getEmail();
-    		
-    		$result[] = $item;
-    	}
-    	
-    	return new ViewModel(
-    	    array(
-        		'result' => $result,
-        	)
-    	);
+        $this->initAjax();
+        
+        switch($this->getParam('field')) {
+            case 'username':
+                $users = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUsername($this->getParam('string'));
+                break;
+            case 'name':
+                $users = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByName($this->getParam('string'));
+                break;
+            case 'university_identification':
+                $users = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                    ->findAllByUniversityIdentification($this->getParam('string'));
+                break;
+        }
+        
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+        
+        array_splice($users, $numResults);
+        
+        $result = array();
+        foreach($users as $user) {
+            $item = (object) array();
+            $item->id = $user->getId();
+            $item->username = $user->getUsername();
+            $item->universityIdentification = $user->getUniversityIdentification();
+            $item->fullName = $user->getFullName();
+            $item->email = $user->getEmail();
+            
+            $result[] = $item;
+        }
+        
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
     
     private function _getUser()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No ID was given to identify the user!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_academic',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $user = $this->getEntityManager()
-	        ->getRepository('CommonBundle\Entity\Users\People\Academic')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $user) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No user with the given ID was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_academic',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $user;
-	}    
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the user!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_academic',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+    
+        $user = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneById($this->getParam('id'));
+        
+        if (null === $user) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No user with the given ID was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_academic',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $user;
+    }    
 }

@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Util;
 
 use DateTime,
-	DateInterval;
+    DateInterval;
 
 /**
  * Utility class containing methods used to retrieve the academic year 
@@ -27,7 +27,7 @@ use DateTime,
  * To ensure that the given variable does not change, it should always be cloned.
  * DateTime does not implement a clone() method, but the following is the same:
  *
- * 	$clone = new DateTime($date->format(DateTime::ISO8601))
+ *     $clone = new DateTime($date->format(DateTime::ISO8601))
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
@@ -100,7 +100,7 @@ class AcademicYear
             $currentDate = new DateTime('now');
         } else {
             $currentDate = new DateTime(
-            	$date->format(DateTime::ISO8601)
+                $date->format(DateTime::ISO8601)
             );
         }
                     
@@ -109,7 +109,7 @@ class AcademicYear
 
         do {
             $christmas = new DateTime(
-            	($currentDate->format('y')) . '-12-25'
+                ($currentDate->format('y')) . '-12-25'
             );
     
             $weekDay = $christmas->format('N');
@@ -124,7 +124,7 @@ class AcademicYear
     
             // One semester is 13 weeks long
             $christmas->sub(new DateInterval(
-            	'P' . (13 * 7) . 'D'
+                'P' . (13 * 7) . 'D'
             ));
             
             $currentDate = clone $date;
@@ -134,7 +134,7 @@ class AcademicYear
         } while($christmas > $date);
                 
         $christmas->sub(new DateInterval(
-        	'P' . $delta . 'D'
+            'P' . $delta . 'D'
         ));
         
         return $christmas;
@@ -168,7 +168,7 @@ class AcademicYear
             $date = new DateTime('now');
         } else {
             $date = new DateTime(
-            	$date->format(DateTime::ISO8601)
+                $date->format(DateTime::ISO8601)
             );
         }
 

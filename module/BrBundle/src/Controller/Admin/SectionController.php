@@ -16,9 +16,9 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contracts\Section,
-	BrBundle\Form\Admin\Section\Add as AddForm,
-	BrBundle\Form\Admin\Section\Edit as EditForm,
-	Zend\View\Model\ViewModel;
+    BrBundle\Form\Admin\Section\Add as AddForm,
+    BrBundle\Form\Admin\Section\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * SectionController
@@ -27,20 +27,20 @@ use BrBundle\Entity\Contracts\Section,
  */
 class SectionController extends \CommonBundle\Component\Controller\ActionController
 {
-	public function manageAction()
-	{
-	    $paginator = $this->paginator()->createFromEntity(
-	        'BrBundle\Entity\Contracts\Section',
-	        $this->getParam('page')
-	    );
-	    
-	    return new ViewModel(
-	        array(
-    	    	'paginator' => $paginator,
-    	    	'paginationControl' => $this->paginator()->createControl(true),
-    	    )
-	    );
-	}
+    public function manageAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Contracts\Section',
+            $this->getParam('page')
+        );
+        
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
 
     public function addAction()
     {
@@ -57,8 +57,8 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                     $formData['name'],
                     $formData['content'],
                     $this->getAuthentication()->getPersonObject(),
-					$formData['price'],
-					$formData['vat_type']
+                    $formData['price'],
+                    $formData['vat_type']
                 );
 
                 if($formData['invoice_description'] == '')
@@ -100,9 +100,9 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
         }
     }
 
-	public function deleteAction()
-	{
-		if (null !== $this->getRequest()->getParam('id')) {
+    public function deleteAction()
+    {
+        if (null !== $this->getRequest()->getParam('id')) {
             $section = $this->getEntityManager()
                 ->getRepository('Litus\Entity\Br\Contracts\Section')
                 ->findOneById($this->getRequest()->getParam('id'));
@@ -122,5 +122,5 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                 $this->_redirect('manage');
             }
         }
-	}
+    }
 }
