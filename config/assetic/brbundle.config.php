@@ -14,23 +14,23 @@
  */
  
 return array(
-	'controllers'  => array(
-		'admin_company' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		),
-		'admin_user' => array(
-			'@common_jquery',
-		    '@admin_css',
-		    '@admin_js',
-		),
-		'admin_section' => array(
-			'@common_jquery',
-			'@common_jqueryui',
-		    '@admin_css',
-		    '@admin_js',
-		),
-	),
-	'routes' => array(),
+    'controllers'  => array(
+        'admin_company' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_user' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_section' => array(
+            '@common_jquery',
+            '@common_jqueryui',
+            '@admin_css',
+            '@admin_js',
+        ),
+    ),
+    'routes' => array(),
 );
