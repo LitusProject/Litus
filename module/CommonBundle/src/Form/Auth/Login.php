@@ -27,10 +27,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  */
 class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-	/**
-	 * @param string $action
-	 * @param mixed $options The form's options
-	 */
+    /**
+     * @param string $action
+     * @param mixed $options The form's options
+     */
     public function __construct($action = '', $opts = null)
     {
         parent::__construct($opts);

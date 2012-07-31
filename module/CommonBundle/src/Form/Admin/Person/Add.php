@@ -16,18 +16,18 @@
 namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-	CommonBundle\Component\Validator\Username as UsernameValidator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Form,
-	Zend\Form\Element\Multiselect,
-	Zend\Form\Element\Password,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Text,
-	Zend\Validator\Alnum as AlnumValidator,
-	Zend\Validator\Alpha as AlphaValidator,
-	Zend\Validator\Identical as IdenticalValidator,
-	Zend\Validator\EmailAddress as EmailAddressValidator;
+    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CommonBundle\Component\Validator\Username as UsernameValidator,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Form,
+    Zend\Form\Element\Multiselect,
+    Zend\Form\Element\Password,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Text,
+    Zend\Validator\Alnum as AlnumValidator,
+    Zend\Validator\Alpha as AlphaValidator,
+    Zend\Validator\Identical as IdenticalValidator,
+    Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
  * Add Person
@@ -36,30 +36,30 @@ use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
  */
 abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
 
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The form's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-		
-		$this->_entityManager = $entityManager;
-		
+        
+        $this->_entityManager = $entityManager;
+        
         $field = new Text('username');
         $field->setLabel('Username')
-        	->setRequired()
+            ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator())
             ->addValidator(new UsernameValidator($this->_entityManager));
         $this->addElement($field);
 
-		$field = new Text('first_name');
+        $field = new Text('first_name');
         $field->setLabel('First Name')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
@@ -87,31 +87,31 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
             ->addValidator(new PhoneNumberValidator());
         $this->addElement($field);
 
-		$field = new Select('sex');
-		$field->setLabel('Sex')
-			->setRequired()
-			->setMultiOptions(
-					array(
-						'm' => 'M',
-						'f' => 'F'
-					)
-				)
-			->setDecorators(array(new FieldDecorator()));
-		$this->addElement($field);
-		
+        $field = new Select('sex');
+        $field->setLabel('Sex')
+            ->setRequired()
+            ->setMultiOptions(
+                    array(
+                        'm' => 'M',
+                        'f' => 'F'
+                    )
+                )
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
         $field = new Multiselect('roles');
         $field->setLabel('Groups')
             ->setMultiOptions($this->_createRolesArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
     }
-	
-	/**
-	 * Returns an array that has all the roles, so that they are available in the
-	 * roles multiselect.
-	 *
-	 * @return array
-	 */
+    
+    /**
+     * Returns an array that has all the roles, so that they are available in the
+     * roles multiselect.
+     *
+     * @return array
+     */
     private function _createRolesArray()
     {
         $roles = $this->_entityManager

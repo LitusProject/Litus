@@ -30,48 +30,48 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
-		$this->_entityManager = $entityManager;
-		
-		$tabs = new Tabs('languages');
-		$this->addElement($tabs);
-		
-		$tabContent = new TabContent();
-		
-		foreach($this->_getLanguages() as $language) {
-		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-		    
-		    $pane = new TabPane('tab_' . $language->getAbbrev());
-		    
-		    $title = new Text('title_' . $language->getAbbrev());
-		    $title->setLabel('Title')
-		        ->setAttrib('class', $title->getAttrib('class') . ' input-xxlarge')
-		        ->setRequired()
-		        ->addValidator(new PageNameValidator($entityManager));
-		    $pane->addElement($title);
-		    
-		    $content = new Textarea('content_' . $language->getAbbrev());
-		    $content->setLabel('Content')
-		        ->setRequired()
-		        ->setAttrib('rows', 20);
-		    $pane->addElement($content);
-		    
-		    $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
-		}
-		
-		$this->addSubForm($tabContent, 'tab-content');
+        $this->_entityManager = $entityManager;
+        
+        $tabs = new Tabs('languages');
+        $this->addElement($tabs);
+        
+        $tabContent = new TabContent();
+        
+        foreach($this->_getLanguages() as $language) {
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+            
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+            
+            $title = new Text('title_' . $language->getAbbrev());
+            $title->setLabel('Title')
+                ->setAttrib('class', $title->getAttrib('class') . ' input-xxlarge')
+                ->setRequired()
+                ->addValidator(new PageNameValidator($entityManager));
+            $pane->addElement($title);
+            
+            $content = new Textarea('content_' . $language->getAbbrev());
+            $content->setLabel('Content')
+                ->setRequired()
+                ->setAttrib('rows', 20);
+            $pane->addElement($content);
+            
+            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+        }
+        
+        $this->addSubForm($tabContent, 'tab-content');
         
         $field = new Submit('submit');
         $field->setLabel('Add');

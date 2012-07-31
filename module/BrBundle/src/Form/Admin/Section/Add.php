@@ -16,14 +16,14 @@
 namespace BrBundle\Form\Admin\Section;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	BrBundle\Entity\Contracts\Section,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Form,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    BrBundle\Entity\Contracts\Section,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Form,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Form\Element\Textarea;
 
 /**
  * Add a section.
@@ -32,10 +32,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
@@ -46,18 +46,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Text('price');
+        $field = new Text('price');
         $field->setLabel('Price')
             ->setRequired()
             ->setValue('0')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Select('vat_type');
-		$field->setLabel('VAT Type')
-		    ->setRequired()
-			->setMultiOptions($this->_getVatTypes($entityManager))
-			->setDecorators(array(new FieldDecorator()));
+        $field = new Select('vat_type');
+        $field->setLabel('VAT Type')
+            ->setRequired()
+            ->setMultiOptions($this->_getVatTypes($entityManager))
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Text('invoice_description');
@@ -79,14 +79,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-	
-	/**
-	 * Retrieve the different VAT types applicable.
-	 *
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 */
-	private function _getVatTypes(EntityManager $entityManager)
-	{
+    
+    /**
+     * Retrieve the different VAT types applicable.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     */
+    private function _getVatTypes(EntityManager $entityManager)
+    {
         $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->findAllByPrefix(Section::VAT_CONFIG_PREFIX);
 
@@ -95,5 +95,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $typesArray[$type] = $value . '%';
 
         return $typesArray;
-	}
+    }
 }

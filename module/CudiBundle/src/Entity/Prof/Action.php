@@ -25,43 +25,43 @@ use CommonBundle\Entity\Users\Person,
  */
 class Action
 {
-	/**
-	 * @var integer The ID of this action
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var string The entity name
-	 *
-	 * @Column(type="string")
-	 */
-	private $entity;
-	
-	/**
-	 * @var integer The entity id
-	 *
-	 * @Column(name="entity_id", type="integer")
-	 */
-	private $entityId;
-	
-	/**
-	 * @var integer The previous entity id
-	 *
-	 * @Column(name="previous_id", type="integer", nullable=true)
-	 */
-	private $previousId;
-	
-	/**
-	 * @var string The action type
-	 *
-	 * @Column(type="string")
-	 */
-	private $action;
-	
+    /**
+     * @var integer The ID of this action
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var string The entity name
+     *
+     * @Column(type="string")
+     */
+    private $entity;
+    
+    /**
+     * @var integer The entity id
+     *
+     * @Column(name="entity_id", type="integer")
+     */
+    private $entityId;
+    
+    /**
+     * @var integer The previous entity id
+     *
+     * @Column(name="previous_id", type="integer", nullable=true)
+     */
+    private $previousId;
+    
+    /**
+     * @var string The action type
+     *
+     * @Column(type="string")
+     */
+    private $action;
+    
     /**
      * @var \DateTime The time this action was executed
      *
@@ -113,12 +113,12 @@ class Action
      */
     public function __construct(Person $person, $entity, $entityId, $action, $previousId = null)
     {
-    	$this->person = $person;
-    	$this->entity = $entity;
-    	$this->entityId = $entityId;
-    	$this->previousId = $previousId;
-    	$this->action = $action;
-    	$this->timestamp = new DateTime();
+        $this->person = $person;
+        $this->entity = $entity;
+        $this->entityId = $entityId;
+        $this->previousId = $previousId;
+        $this->action = $action;
+        $this->timestamp = new DateTime();
     }
     
     /**

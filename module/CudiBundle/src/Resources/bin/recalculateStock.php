@@ -61,21 +61,21 @@ try {
 }
 
 if (isset($opts->r)) {
-	echo 'Updating stock...' . PHP_EOL;
-	
-	$entityManager = $diContainer->get('doctrine_em');
-	
-	$period = $entityManager
-	    ->getRepository('CudiBundle\Entity\Stock\Period')
-	    ->findOneActive();
-	    
-	$period->setEntityManager($entityManager);
-	    
-	$articles = $entityManager
-	    ->getRepository('CudiBundle\Entity\Stock\Period')
-	    ->findAllArticlesByPeriod($period);
-	    
-	foreach($articles as $article) {
+    echo 'Updating stock...' . PHP_EOL;
+    
+    $entityManager = $diContainer->get('doctrine_em');
+    
+    $period = $entityManager
+        ->getRepository('CudiBundle\Entity\Stock\Period')
+        ->findOneActive();
+        
+    $period->setEntityManager($entityManager);
+        
+    $articles = $entityManager
+        ->getRepository('CudiBundle\Entity\Stock\Period')
+        ->findAllArticlesByPeriod($period);
+        
+    foreach($articles as $article) {
         $number = $entityManager
                 ->getRepository('CudiBundle\Entity\Stock\PeriodValues\Start')
                 ->findValueByArticleAndPeriod($article, $period)
@@ -84,11 +84,11 @@ if (isset($opts->r)) {
         if ($number < 0)
             $number = 0;
         
-	    if ($article->getStockValue() != $number) {
-    	    echo 'Updated ' . $article->getMainArticle()->getTitle() . ': ' . $article->getStockValue() . ' to ' . $number . PHP_EOL;
-	        $article->setStockValue($number);
-    	}
-	}
-	
-	$entityManager->flush();
+        if ($article->getStockValue() != $number) {
+            echo 'Updated ' . $article->getMainArticle()->getTitle() . ': ' . $article->getStockValue() . ' to ' . $number . PHP_EOL;
+            $article->setStockValue($number);
+        }
+    }
+    
+    $entityManager->flush();
 }

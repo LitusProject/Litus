@@ -50,7 +50,7 @@ class DateCompare extends \Zend\Validator\AbstractValidator
      */
     private $_format;
 
-	/**
+    /**
      * Sets validator options
      *
      * @param  mixed $token

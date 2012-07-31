@@ -17,7 +17,7 @@ namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Form\Auth\Login as LoginForm,
-	Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a valid user is logged in.
@@ -26,7 +26,7 @@ use CommonBundle\Component\Controller\Exception\HasNoAccessException,
  */
 class SupplierController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
+    /**
      * Execute the request
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -35,20 +35,20 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function execute(MvcEvent $e)
     {
-		if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
-			throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-		
-		$result = parent::execute($e);
-				
-		$result->supplier = $this->getSupplier();
-		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
-		$result->authenticated = $this->getAuthentication()->isAuthenticated();
-		$result->loginForm = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
-		
-		$result->unionUrl = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('union_url');
-  		
+        if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
+            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        
+        $result = parent::execute($e);
+                
+        $result->supplier = $this->getSupplier();
+        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+        $result->authenticated = $this->getAuthentication()->isAuthenticated();
+        $result->loginForm = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
+        
+        $result->unionUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('union_url');
+          
         $e->setResult($result);
         return $result;
     }
@@ -56,6 +56,6 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     protected function getSupplier()
     {
         if ($this->getAuthentication()->isAuthenticated())
-    	    return $this->getAuthentication()->getPersonObject()->getSupplier();
+            return $this->getAuthentication()->getPersonObject()->getSupplier();
     }
 }

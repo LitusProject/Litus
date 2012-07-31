@@ -15,20 +15,20 @@ class University extends EntityRepository
 {
     public function findAllByStatus($status, AcademicYear $academicYear)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('s')
-    		->from('CommonBundle\Entity\Users\Statuses\University', 's')
-    		->where(
-    		    $query->expr()->andX(
-    		        $query->expr()->eq('s.status', ':status'),
-    		        $query->expr()->eq('s.academicYear', ':academicYear')
-    		    )
-    		)
-    		->setParameter('status', $status)
-    		->setParameter('academicYear', $academicYear->getId())
-    		->getQuery()
-    		->getResult();
-    	
-    	return $resultSet;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CommonBundle\Entity\Users\Statuses\University', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.status', ':status'),
+                    $query->expr()->eq('s.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('status', $status)
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+        
+        return $resultSet;
     }
 }

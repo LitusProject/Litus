@@ -17,8 +17,8 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Config\Edit as EditForm,
-	CommonBundle\Entity\General\Config,
-	Zend\View\Model\ViewModel;
+    CommonBundle\Entity\General\Config,
+    Zend\View\Model\ViewModel;
 
 /**
  * ConfigController
@@ -27,55 +27,55 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ConfigController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-	public function manageAction()
-	{
-		$configValues = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->findAll();
-			
-		$formattedValues = array();
-		foreach($configValues as $entry) {
-			if (strstr($entry->getKey(), Config::$separator)) {
-				$explodedKey = explode(Config::$separator, $entry->getKey());
-				$formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
-					'value' => $entry->getValue(),
-					'fullKey' => $entry->getKey()
-				);
-			} else {
-				$formattedValues[0][$entry->getKey()] = array(
-					'value' => $entry->getValue(),
-					'fullKey' => $entry->getKey()
-				);
-			}
-		}
-		
-		ksort($formattedValues, SORT_STRING);
-		
-		return new ViewModel(
-		    array(
-    			'configValues' => $formattedValues,
-    		)
-		);
-	}
+    public function manageAction()
+    {
+        $configValues = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->findAll();
+            
+        $formattedValues = array();
+        foreach($configValues as $entry) {
+            if (strstr($entry->getKey(), Config::$separator)) {
+                $explodedKey = explode(Config::$separator, $entry->getKey());
+                $formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
+                    'value' => $entry->getValue(),
+                    'fullKey' => $entry->getKey()
+                );
+            } else {
+                $formattedValues[0][$entry->getKey()] = array(
+                    'value' => $entry->getValue(),
+                    'fullKey' => $entry->getKey()
+                );
+            }
+        }
+        
+        ksort($formattedValues, SORT_STRING);
+        
+        return new ViewModel(
+            array(
+                'configValues' => $formattedValues,
+            )
+        );
+    }
 
-	public function editAction()
-	{
-		if (!($entry = $this->_getEntry()))
-		    return new ViewModel();
-		
+    public function editAction()
+    {
+        if (!($entry = $this->_getEntry()))
+            return new ViewModel();
+        
         $form = new EditForm(
-        	$entry
+            $entry
         );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+            
             if ($form->isValid($formData)) {
-            	$entry->setValue($formData['value']);
-            	
-            	$this->getEntityManager()->flush();
-            	
-            	$this->flashMessenger()->addMessage(
+                $entry->setValue($formData['value']);
+                
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
@@ -84,10 +84,10 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_config',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_config',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -96,56 +96,56 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         
         return new ViewModel(
             array(
-            	'entry' => $entry,
-            	'form' => $form,
+                'entry' => $entry,
+                'form' => $form,
             )
         );
-	}
-		
-	public function _getEntry()
-	{
-		if (null === $this->getParam('key')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No key was given to identify the configuration entry!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_config',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $role = $this->getEntityManager()
-	        ->getRepository('CommonBundle\Entity\General\Config')
-	        ->findOneByKey($this->getParam('key'));
-		
-		if (null === $role) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No configuraiton entry with the given key was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_config',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $role;
-	}
+    }
+        
+    public function _getEntry()
+    {
+        if (null === $this->getParam('key')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No key was given to identify the configuration entry!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_config',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+    
+        $role = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->findOneByKey($this->getParam('key'));
+        
+        if (null === $role) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No configuraiton entry with the given key was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_config',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $role;
+    }
 }

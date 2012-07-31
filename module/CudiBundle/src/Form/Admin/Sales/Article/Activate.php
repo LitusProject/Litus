@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Activate Sale Article
@@ -33,7 +33,7 @@ class Activate extends \CudiBundle\Form\Admin\Sales\Article\Add
 
         $this->removeElement('submit');
         
-		$field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Activate')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));

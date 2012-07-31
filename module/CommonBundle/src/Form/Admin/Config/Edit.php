@@ -16,11 +16,11 @@
 namespace CommonBundle\Form\Admin\Config;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Entity\General\Config,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Entity\General\Config,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Form\Element\Textarea;
 
 /**
  * Edit Configuration
@@ -30,43 +30,43 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing
+     * @param mixed $opts The form's options
+     */
     public function __construct(Config $entry, $opts = null)
     {
         parent::__construct($opts);
-		
-		$field = new Text('key');
-		$field->setLabel('Key')
-			->setAttrib('disabled', 'disabled')
-		    ->setDecorators(array(new FieldDecorator()));
-		$this->addElement($field);
-		
-		if (strlen($entry->getValue()) > 40) {
-	        $field = new Textarea('value');
-	        $field->setLabel('Value')
-	            ->setRequired()
-	            ->setDecorators(array(new FieldDecorator()));
-	        $this->addElement($field);
-	    } else {
-	    	$field = new Text('value');
-	    	$field->setLabel('Value')
-	    	    ->setRequired()
-	    	    ->setDecorators(array(new FieldDecorator()));
-	    	$this->addElement($field);
-	    }
+        
+        $field = new Text('key');
+        $field->setLabel('Key')
+            ->setAttrib('disabled', 'disabled')
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        if (strlen($entry->getValue()) > 40) {
+            $field = new Textarea('value');
+            $field->setLabel('Value')
+                ->setRequired()
+                ->setDecorators(array(new FieldDecorator()));
+            $this->addElement($field);
+        } else {
+            $field = new Text('value');
+            $field->setLabel('Value')
+                ->setRequired()
+                ->setDecorators(array(new FieldDecorator()));
+            $this->addElement($field);
+        }
 
         $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'config_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-		
+        
         $this->populate(
             array(
-            	'key' => $entry->getKey(),
+                'key' => $entry->getKey(),
                 'value' => $entry->getValue()
             )
         );

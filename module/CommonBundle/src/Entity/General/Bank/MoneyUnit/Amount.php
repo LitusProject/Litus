@@ -16,7 +16,7 @@
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-	CommonBundle\Entity\General\Bank\MoneyUnit;
+    CommonBundle\Entity\General\Bank\MoneyUnit;
 
 /**
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
@@ -24,92 +24,92 @@ use CommonBundle\Entity\General\Bank\CashRegister,
  */
 class Amount
 {
-	/**
-	 * @var string The amount's ID
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
-	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
-	 */
-	private $cashRegister;
-	
-	/**
-	 * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
-	 * @JoinColumn(name="unit_id", referencedColumnName="id")
-	 */
-	private $unit;
-	
-	/**
-	 * @var int The number of units
-	 *
-	 * @Column(type="integer")
-	 */
-	private $amount;
-	
-	/**
-	 * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
-	 * @param \CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
-	 * @param int $amount The number of units
-	 */
-	public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
-	{
-		$this->cashRegister = $register;
-		$this->unit = $unit;
-		$this->amount = $amount;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return \CommonBundle\Entity\General\Bank\MoneyUnit
-	 */
-	public function getUnit()
-	{
-		return $this->unit;
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getAmount()
-	{
-		return $this->amount;
-	}
-	
-	/**
-	 * @param int $amount The number of units
-	 * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount	 
-	 */
-	public function setAmount($number)
-	{
-		$this->amount = $number;
-		
-		return $this;
-	}
-	
-	/**
-	 * Returns the value of the amount.
-	 *
-	 * @return int
-	 */
-	public function getValue()
-	{
-		return $this->amount * $this->unit->getUnit();
-	}
+    /**
+     * @var string The amount's ID
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
+     * @JoinColumn(name="cash_register_id", referencedColumnName="id")
+     */
+    private $cashRegister;
+    
+    /**
+     * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
+     * @JoinColumn(name="unit_id", referencedColumnName="id")
+     */
+    private $unit;
+    
+    /**
+     * @var int The number of units
+     *
+     * @Column(type="integer")
+     */
+    private $amount;
+    
+    /**
+     * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
+     * @param \CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
+     * @param int $amount The number of units
+     */
+    public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
+    {
+        $this->cashRegister = $register;
+        $this->unit = $unit;
+        $this->amount = $amount;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\Bank\MoneyUnit
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+    
+    /**
+     * @param int $amount The number of units
+     * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount     
+     */
+    public function setAmount($number)
+    {
+        $this->amount = $number;
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the value of the amount.
+     *
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->amount * $this->unit->getUnit();
+    }
 }

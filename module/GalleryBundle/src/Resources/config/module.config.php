@@ -43,17 +43,17 @@ return array(
                                             'common/js/imageGallery.pack.js',
                                         ),
                                     ),
-                                	'plupload_js' => array(
-                                	    'assets'  => array(
-                                	        'plupload/js/plupload.full.js',
-                                	        'plupload/js/bootstrap/uploadkit.js',
-                                	    ),
-                                	),
-                                	'plupload_css' => array(
-                                	    'assets'  => array(
-                                	        'plupload/js/bootstrap/uploadkit.css',
-                                	    ),
-                                	),
+                                    'plupload_js' => array(
+                                        'assets'  => array(
+                                            'plupload/js/plupload.full.js',
+                                            'plupload/js/bootstrap/uploadkit.js',
+                                        ),
+                                    ),
+                                    'plupload_css' => array(
+                                        'assets'  => array(
+                                            'plupload/js/bootstrap/uploadkit.css',
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),
@@ -63,26 +63,26 @@ return array(
             
             'doctrine_config' => array(
                 'parameters' => array(
-                	'entityPaths' => array(
-                		'gallerybundle' => __DIR__ . '/../../Entity',
-                	),
+                    'entityPaths' => array(
+                        'gallerybundle' => __DIR__ . '/../../Entity',
+                    ),
                 ),
             ),
             
             'translator' => array(
-            	'parameters' => array(
-        		    'adapter' => 'ArrayAdapter',
-        			'translations' => array(
-        				'faq_admin_en' => array(
-                			'content' => __DIR__ . '/../translations/admin.en.php',
-                			'locale' => 'en',
-                		),
-                		'faq_admin_nl' => array(
-                			'content' => __DIR__ . '/../translations/admin.nl.php',
-                			'locale' => 'nl',
-                		),
-            		),
-            	),
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'faq_admin_en' => array(
+                            'content' => __DIR__ . '/../translations/admin.en.php',
+                            'locale' => 'en',
+                        ),
+                        'faq_admin_nl' => array(
+                            'content' => __DIR__ . '/../translations/admin.nl.php',
+                            'locale' => 'nl',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),
@@ -104,8 +104,8 @@ return array(
             'options' => array(
                 'route'    => '/admin/content/gallery[/:action[/:id]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'id'      => '[0-9]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'admin_gallery',
@@ -118,8 +118,8 @@ return array(
             'options' => array(
                 'route'    => '[/:language]/gallery[/:action[/:id]]',
                 'constraints' => array(
-                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                	'id'  => '[a-zA-Z0-9_-]*',
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'  => '[a-zA-Z0-9_-]*',
                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                 ),
                 'defaults' => array(
@@ -128,5 +128,5 @@ return array(
                 ),
             ),
         ),*/
-	),
+    ),
 );

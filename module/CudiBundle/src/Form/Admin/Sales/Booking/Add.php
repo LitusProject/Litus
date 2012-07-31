@@ -16,12 +16,12 @@
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Hidden,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Hidden,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Booking
@@ -44,12 +44,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
          
         $field = new Text('person');
         $field->setLabel('Person')
-        	->setAttrib('style', 'width: 400px;')
-        	->setAttrib('id', 'personSearch')
-        	->setAttrib('autocomplete', 'off')
-        	->setAttrib('data-provide', 'typeahead')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('style', 'width: 400px;')
+            ->setAttrib('id', 'personSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Hidden('article_id');
@@ -63,20 +63,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')
-        	->setAttrib('style', 'width: 400px;')
-        	->setAttrib('id', 'articleSearch')
-        	->setAttrib('autocomplete', 'off')
-        	->setAttrib('data-provide', 'typeahead')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('style', 'width: 400px;')
+            ->setAttrib('id', 'articleSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Text('number');
+        $field = new Text('number');
         $field->setLabel('Number')
-			->setAttrib('autocomplete', 'off')
-        	->setRequired()
-			->addValidator(new IntValidator())
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('autocomplete', 'off')
+            ->setRequired()
+            ->addValidator(new IntValidator())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');

@@ -23,13 +23,13 @@ namespace CommonBundle\Component\Form\Bootstrap\Decorator;
  */
 class Errors extends \Zend\Form\Decorator\Errors
 {
-	
-	public function __construct($options = null)
-	{
-		parent::__construct($options);
-		
-		$this->setOption('class', 'help-block');
-	}
+    
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+        
+        $this->setOption('class', 'help-block');
+    }
 
     /**
      * Render errors
@@ -50,9 +50,9 @@ class Errors extends \Zend\Form\Decorator\Errors
             return $content;
         }
         
-		$decorator = $element->getDecorator('HtmlTag');
-		if ($decorator)
-			$decorator->setOption('class', $decorator->getOption('class') . ' error');
+        $decorator = $element->getDecorator('HtmlTag');
+        if ($decorator)
+            $decorator->setOption('class', $decorator->getOption('class') . ' error');
 
         $separator = $this->getSeparator();
         $placement = $this->getPlacement();

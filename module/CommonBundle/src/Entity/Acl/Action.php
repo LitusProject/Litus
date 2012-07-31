@@ -45,7 +45,7 @@ class Action
      */
     private $name;
 
-	/**
+    /**
      * @var \CommonBundle\Entity\Acl\Resource The name of the resource
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Acl\Resource")

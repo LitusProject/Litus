@@ -16,13 +16,13 @@
 namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
-	CudiBundle\Entity\Files\Mapping as FileMapping,
-	Zend\Form\Element\Checkbox,
-	Zend\Form\Element\File as FileElement,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
+    CudiBundle\Entity\Files\Mapping as FileMapping,
+    Zend\Form\Element\Checkbox,
+    Zend\Form\Element\File as FileElement,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add File
@@ -39,21 +39,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      
         $field = new Text('description');
         $field->setLabel('Description')
-			->setAttrib('size', 70)
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('size', 70)
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new FileElement('file');
         $field->setLabel('File')
-        	->setAttrib('size', 70)
-        	->setRequired()
-        	->setDecorators(array(new FileDecorator()));
+            ->setAttrib('size', 70)
+            ->setRequired()
+            ->setDecorators(array(new FileDecorator()));
         $this->addElement($field);
         
         $field = new Checkbox('printable');
         $field->setLabel('Printable')
-        	->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Submit('submit');
@@ -65,11 +65,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     
     public function populateFromFile(FileMapping $mapping)
     {
-    	$this->populate(
-    	    array(
-    		    'description' => $mapping->getFile()->getDescription(),
-    		    'printable' => $mapping->isPrintable()
-    	    )
-    	);
+        $this->populate(
+            array(
+                'description' => $mapping->getFile()->getDescription(),
+                'printable' => $mapping->isPrintable()
+            )
+        );
     }
 }

@@ -25,42 +25,42 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function initConfig()
-	{
-		$this->_installLanguages();				
-	}
-	
-	protected function initAcl()
-	{
-	    $this->installAcl(
-	        array(
-	            'newsBundle' => array(
-	                'admin_news' => array(
-	                    'add', 'delete', 'edit', 'manage'
-	                ),
-	            ),
-	        )
-	    );
-	}
-	
-	private function _installLanguages()
-	{
-		$languages = array(
-			'en' => 'English',
-			'nl' => 'Dutch'
-		);
-		
-		foreach($languages as $abbrev => $name) {
-			$language = $this->getEntityManager()
-				->getRepository('CommonBundle\Entity\General\Language')
-				->findOneByAbbrev($abbrev);
-				
-			if (null == $language) {
-				$language = new Language($abbrev, $name);
-				$this->getEntityManager()->persist($language);
-			}
-		}
-		
-		$this->getEntityManager()->flush();
-	}
+    protected function initConfig()
+    {
+        $this->_installLanguages();                
+    }
+    
+    protected function initAcl()
+    {
+        $this->installAcl(
+            array(
+                'newsBundle' => array(
+                    'admin_news' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                ),
+            )
+        );
+    }
+    
+    private function _installLanguages()
+    {
+        $languages = array(
+            'en' => 'English',
+            'nl' => 'Dutch'
+        );
+        
+        foreach($languages as $abbrev => $name) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($abbrev);
+                
+            if (null == $language) {
+                $language = new Language($abbrev, $name);
+                $this->getEntityManager()->persist($language);
+            }
+        }
+        
+        $this->getEntityManager()->flush();
+    }
 }

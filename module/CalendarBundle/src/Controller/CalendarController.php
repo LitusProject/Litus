@@ -45,20 +45,20 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     
     public function _getTranslationByName()
     {
-    	if (null === $this->getParam('name')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
     
         $translation = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Translation')
             ->findOneByName($this->getParam('name'));
-    	
-    	if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
-    	
-    	return $translation;
+        
+        if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        return $translation;
     }
 }

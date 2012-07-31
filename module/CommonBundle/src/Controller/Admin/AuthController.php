@@ -16,9 +16,9 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Authentication\Authentication,
-	CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-	CommonBundle\Form\Admin\Auth\Login as LoginForm,
-	Zend\View\Model\ViewModel;
+    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Form\Admin\Auth\Login as LoginForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -27,37 +27,37 @@ use CommonBundle\Component\Authentication\Authentication,
  */
 class AuthController extends \CommonBundle\Component\Controller\ActionController
 {
-	public function authenticateAction()
+    public function authenticateAction()
     {
         $this->initAjax();
 
-		$authResult = array(
-		    'result' => false,
-		    'reason' => 'NOT_POST'
-		);
-		
+        $authResult = array(
+            'result' => false,
+            'reason' => 'NOT_POST'
+        );
+        
         if ($this->getRequest()->isPost()) {
-	        parse_str(
-	        	$this->getRequest()->post()->get('formData'), $formData
-	        );
+            parse_str(
+                $this->getRequest()->post()->get('formData'), $formData
+            );
 
-	        $this->getAuthentication()->authenticate(
-	        	$formData['username'], $formData['password'], $formData['remember_me']
-	        );
-	        
-	        if ($this->getAuthentication()->isAuthenticated()) {
-	            $authResult = array(
-	            	'result' => true,
-	            	'reason' => ''
-	            );
-	        } else {
-	            $authResult['reason'] = 'USERNAME_PASSWORD';
-	        }
+            $this->getAuthentication()->authenticate(
+                $formData['username'], $formData['password'], $formData['remember_me']
+            );
+            
+            if ($this->getAuthentication()->isAuthenticated()) {
+                $authResult = array(
+                    'result' => true,
+                    'reason' => ''
+                );
+            } else {
+                $authResult['reason'] = 'USERNAME_PASSWORD';
+            }
         }
 
         return new ViewModel(
             array(
-            	'authResult' => $authResult,
+                'authResult' => $authResult,
             )
         );
     }
@@ -71,11 +71,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             
             return new ViewModel();
         }
-		            
+                    
         return new ViewModel(
             array(
-            	'isAuthenticated' => $isAuthenticated,
-            	'form' => new LoginForm(),
+                'isAuthenticated' => $isAuthenticated,
+                'form' => new LoginForm(),
             )
         );
     }
@@ -85,7 +85,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         $this->getAuthentication()->forget();
 
         $this->redirect()->toRoute(
-        	'admin_auth'
+            'admin_auth'
         );
         
         return new ViewModel();
@@ -93,25 +93,25 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     
     public function shibbolethAction()
     {   
-    	$authentication = new Authentication(
-    		new ShibbolethAdapter(
-    			$this->getEntityManager(),
-    			'CommonBundle\Entity\Users\People\Academic',
-    			'universityIdentification'
-    		),
-    		$this->getLocator()->get('authentication_doctrineservice')
-    	);
-    	
-		$authentication->authenticate(
-			$this->getRequest()->server()->get('Shib-Person-uid', '')
-		);
-    	
-    	if ($authentication->isAuthenticated()) {
-	    	$this->redirect()->toRoute(
-	    		'admin_index'
-	    	);
-	    }
-	    
-	    return new ViewModel();
+        $authentication = new Authentication(
+            new ShibbolethAdapter(
+                $this->getEntityManager(),
+                'CommonBundle\Entity\Users\People\Academic',
+                'universityIdentification'
+            ),
+            $this->getLocator()->get('authentication_doctrineservice')
+        );
+        
+        $authentication->authenticate(
+            $this->getRequest()->server()->get('Shib-Person-uid', '')
+        );
+        
+        if ($authentication->isAuthenticated()) {
+            $this->redirect()->toRoute(
+                'admin_index'
+            );
+        }
+        
+        return new ViewModel();
     }
 }

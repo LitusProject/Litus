@@ -16,7 +16,7 @@
 namespace CommonBundle\Entity\General\Bank;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
-	CommonBundle\Entity\General\Bank\MoneyUnit;
+    CommonBundle\Entity\General\Bank\MoneyUnit;
 
 /**
  * A class that is used to store the contents of a counted register
@@ -38,88 +38,88 @@ class CashRegister
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each money unit
      *
-	 * @OneToMany(
-	 *		targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit\Amount", mappedBy="cashRegister", cascade={"remove"}
-	 * )
-	 */
-	private $moneyUnitAmounts;
-	
-	/**
+     * @OneToMany(
+     *        targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit\Amount", mappedBy="cashRegister", cascade={"remove"}
+     * )
+     */
+    private $moneyUnitAmounts;
+    
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each bank device
      *
-	 * @OneToMany(
-	 *		targetEntity="CommonBundle\Entity\General\Bank\BankDevice\Amount", mappedBy="cashRegister", cascade={"remove"}
-	 * )
-	 */
-	private $bankDeviceAmounts;
-	
-	/**
-	 * @return integer
-	 */
+     * @OneToMany(
+     *        targetEntity="CommonBundle\Entity\General\Bank\BankDevice\Amount", mappedBy="cashRegister", cascade={"remove"}
+     * )
+     */
+    private $bankDeviceAmounts;
+    
+    /**
+     * @return integer
+     */
     public function getId()
-	{
+    {
         return $this->id;
     }
 
-	/**
-	 * @return array
-	 */
-	public function getMoneyUnitAmounts()
-	{
-		return $this->moneyUnitAmounts->toArray();
-	}
+    /**
+     * @return array
+     */
+    public function getMoneyUnitAmounts()
+    {
+        return $this->moneyUnitAmounts->toArray();
+    }
 
-  	/**
-	 * @return array
-	 */
-	public function getBankDeviceAmounts()
-	{
-		return $this->bankDeviceAmounts->toArray();
-	}
+      /**
+     * @return array
+     */
+    public function getBankDeviceAmounts()
+    {
+        return $this->bankDeviceAmounts->toArray();
+    }
 
-	/**
-	 * Get the register's total amount.
-	 *
-	 * @return int
-	 */
-	public function getTotalAmount()
+    /**
+     * Get the register's total amount.
+     *
+     * @return int
+     */
+    public function getTotalAmount()
     {
         $amount = 0;
 
-		foreach($this->bankDeviceAmounts as $device)
-			$amount += $device->getAmount();
-		
-		foreach($this->moneyUnitAmounts as $number)
-			$amount += $number->getAmount() * $number->getUnit()->getUnit();
-		
-		return $amount;
+        foreach($this->bankDeviceAmounts as $device)
+            $amount += $device->getAmount();
+        
+        foreach($this->moneyUnitAmounts as $number)
+            $amount += $number->getAmount() * $number->getUnit()->getUnit();
+        
+        return $amount;
     }
 
-	/**
-	 * Get the amount object for a unit.
-	 *
-	 * @param \CommonBundle\Entity\General\Bank\MoneyUnit $unit The unit for which we want to get the amount
-	 * @return \CommonBundle\Entity\General\Bank\MoneyUnit\Amount
-	 */
-	public function getAmountForUnit(MoneyUnit $unit)
-	{
-		foreach($this->moneyUnitAmounts as $amount) {
-			if ($amount->getUnit() == $unit)
-				return $amount;
-		}
-	}
-	
-	/**
-	 * Get amount object for a bank device.
-	 *
-	 * @param \CommonBundle\Entity\General\Bank\BankDevice $device The device for which we want to get the amount
-	 * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount
-	 */
-	public function getAmountForDevice(BankDevice $device)
-	{
-		foreach($this->bankDeviceAmounts as $amount) {
-			if ($amount->getDevice() == $device)
-				return $amount;
-		}
-	}
+    /**
+     * Get the amount object for a unit.
+     *
+     * @param \CommonBundle\Entity\General\Bank\MoneyUnit $unit The unit for which we want to get the amount
+     * @return \CommonBundle\Entity\General\Bank\MoneyUnit\Amount
+     */
+    public function getAmountForUnit(MoneyUnit $unit)
+    {
+        foreach($this->moneyUnitAmounts as $amount) {
+            if ($amount->getUnit() == $unit)
+                return $amount;
+        }
+    }
+    
+    /**
+     * Get amount object for a bank device.
+     *
+     * @param \CommonBundle\Entity\General\Bank\BankDevice $device The device for which we want to get the amount
+     * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount
+     */
+    public function getAmountForDevice(BankDevice $device)
+    {
+        foreach($this->bankDeviceAmounts as $amount) {
+            if ($amount->getDevice() == $device)
+                return $amount;
+        }
+    }
 }

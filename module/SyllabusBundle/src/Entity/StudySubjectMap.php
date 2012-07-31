@@ -26,27 +26,27 @@ class StudySubjectMap
     /**
      * @var integer The ID of the mapping
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
     /**
      * @var \SyllabusBundle\Entity\Study The study of the mapping
      *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $study;
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @JoinColumn(referencedColumnName="id")
+     */
+    private $study;
 
-	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
-	 *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $subject;
+    /**
+     * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+     *
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+     * @JoinColumn(referencedColumnName="id")
+     */
+    private $subject;
 
     /**
      * @var boolean Flag whether the subject is mandatory

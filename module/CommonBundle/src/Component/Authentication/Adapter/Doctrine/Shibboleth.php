@@ -16,8 +16,8 @@
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\QueryBuilder;
 
 /**
  * An authentication adapter using Doctrine.
@@ -36,7 +36,7 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn)
     {
-    	parent::__construct($entityManager, $entityName, $identityColumn, false);
+        parent::__construct($entityManager, $entityName, $identityColumn, false);
     }
 
     /**
@@ -48,10 +48,10 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
     {
         $query = new QueryBuilder($this->getEntityManager());
         $query->from($this->getEntityName(), 'u')
-        	->select('u')
-        	->where('TRIM(LOWER(u.' . $this->getIdentityColumn() . ')) = :identity')
-        	->setParameter('identity', trim(strtolower($this->getIdentity())));
-		
+            ->select('u')
+            ->where('TRIM(LOWER(u.' . $this->getIdentityColumn() . ')) = :identity')
+            ->setParameter('identity', trim(strtolower($this->getIdentity())));
+        
         return $query;
     }
 
@@ -64,23 +64,23 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
     {
         if (!$this->getPersonObject()->canLogin()) {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::FAILURE,
-            		'messages' => array(
-            			'The given identity cannot login'
-            		)
-            	)
+                array(
+                    'code' => Result::FAILURE,
+                    'messages' => array(
+                        'The given identity cannot login'
+                    )
+                )
             );
         } else {
             $this->setAuthenticationResult(
-            	array(
-            		'code' => Result::SUCCESS,
-            		'identity' => $this->getIdentity(),
-            		'message' => array(
-            			'Authentication successful'
-            		),
-            		'personObject' => $this->getPersonObject()
-            	)
+                array(
+                    'code' => Result::SUCCESS,
+                    'identity' => $this->getIdentity(),
+                    'message' => array(
+                        'Authentication successful'
+                    ),
+                    'personObject' => $this->getPersonObject()
+                )
             );
         }
     }

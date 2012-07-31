@@ -40,8 +40,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         
         return new ViewModel(
             array(
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -85,10 +85,10 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'admin_stock_period',
-        	array(
-        		'action' => 'manage'
-        	)
+            'admin_stock_period',
+            array(
+                'action' => 'manage'
+            )
         );
         
         return new ViewModel();
@@ -125,92 +125,92 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         $period->setEntityManager($this->getEntityManager());
             
         switch($this->getParam('field')) {
-        	case 'title':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'));
-        		break;
-        	case 'barcode':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'));
-        		break;
-        	case 'supplier':
-        		$articles = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Stock\Period')
-        			->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
-        		break;
+            case 'title':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'));
+                break;
+            case 'barcode':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'));
+                break;
+            case 'supplier':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                    ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
+                break;
         }
         
         $numResults = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('search_max_results');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
         
         array_splice($articles, $numResults);
         
         $result = array();
         foreach($articles as $article) {
-        	$item = (object) array();
-        	$item->id = $article->getId();
-        	$item->title = $article->getMainArticle()->getTitle();
-        	$item->supplier = $article->getSupplier()->getName();
-        	$item->delivered = $period->getNbDelivered($article);
-        	$item->ordered = $period->getNbOrdered($article);
-        	$item->sold = $period->getNbSold($article);
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->supplier = $article->getSupplier()->getName();
+            $item->delivered = $period->getNbDelivered($article);
+            $item->ordered = $period->getNbOrdered($article);
+            $item->sold = $period->getNbSold($article);
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
     private function _getPeriod()
     {
         if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No ID was given to identify the period!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_stock_period',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the period!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_stock_period',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $period) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No period with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_stock_period',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $period;
+        
+        if (null === $period) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No period with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_stock_period',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $period;
     }
 }

@@ -23,9 +23,9 @@ class AcademicYearMap extends EntityRepository
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear->getId())
-        	->getQuery()
-        	->getResult();
-        	
+            ->getQuery()
+            ->getResult();
+            
         $result = array();
         
         $title = strtolower($title);
@@ -50,8 +50,8 @@ class AcademicYearMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('s.phase', 'ASC')
             ->addOrderBy('s.title', 'ASC')
-        	->getQuery()
-        	->getResult();
+            ->getQuery()
+            ->getResult();
                 
         return $resultSet;
     }

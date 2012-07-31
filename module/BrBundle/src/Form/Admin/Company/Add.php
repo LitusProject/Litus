@@ -16,12 +16,12 @@
 namespace BrBundle\Form\Admin\Company;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Form\Admin\Address\Add as AddressForm,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Form,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Form\Admin\Address\Add as AddressForm,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Form,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add a company.
@@ -30,13 +30,13 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param mixed $opts The validator's options
+     */
     public function __construct($opts = null)
     {
         parent::__construct($opts);
-		
+        
         $field = new Text('company_name');
         $field->setLabel('Company Name')
             ->setRequired()
@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
         
         $this->addSubForm(new AddressForm(), 'address');
-		
+        
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'companies_add')

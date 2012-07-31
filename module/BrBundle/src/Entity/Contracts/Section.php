@@ -16,8 +16,8 @@
 namespace BrBundle\Entity\Contracts;
 
 use CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Users\Person,
-	Doctrine\ORM\EntityManager;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager;
 
 /**
  * A section represents a part of a contract.
@@ -27,7 +27,7 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class Section
 {
-	const VAT_CONFIG_PREFIX = 'br.vat';
+    const VAT_CONFIG_PREFIX = 'br.vat';
 
     /**
      * @var int A generated ID
@@ -130,8 +130,8 @@ class Section
      */
     public function setName($name)
     {
-    	if ((null === $name) || !is_string($name))
-    		throw new \InvalidArgumentException('Invalid name');
+        if ((null === $name) || !is_string($name))
+            throw new \InvalidArgumentException('Invalid name');
     
         $this->name = $name;
         
@@ -153,8 +153,8 @@ class Section
     public function setAuthor(Person $author)
     {
         if (null === $auth)
-        	throw new \InvalidArgumentException('Invalid author');
-        	
+            throw new \InvalidArgumentException('Invalid author');
+            
         $this->author = $author;
         
         return $this;
@@ -174,9 +174,9 @@ class Section
      */
     public function setContent($content)
     {
-    	if ((null === $name) || !is_string($name))
-    		throw new \InvalidArgumentException('Invalid content');
-    		
+        if ((null === $name) || !is_string($name))
+            throw new \InvalidArgumentException('Invalid content');
+            
         $this->content = $content;
         
         return $this;
@@ -227,9 +227,9 @@ class Section
     public function getVatPercentage(EntityManager $entityManager)
     {
         return intval(
-			$entityManager->getRepository('CommonBundle\Entity\General\Config')
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue(self::VAT_CONFIG_PREFIX . '.' . $this->getVatType())
-		);
+        );
     }
 
     /**
@@ -238,12 +238,12 @@ class Section
      */
     public function setPrice($price)
     {
-    	if (
-    		(null === $price)
-    		|| !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)
-    	) {
-    	    throw new \InvalidArgumentException('Invalid price');
-    	}
+        if (
+            (null === $price)
+            || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)
+        ) {
+            throw new \InvalidArgumentException('Invalid price');
+        }
     
         $this->price = $price;
         
@@ -272,9 +272,9 @@ class Section
      */
     public function setInvoiceDescription($description)
     {
-    	if ((null === $name) || !is_string($name))
-    		throw new \InvalidArgumentException('Invalid description');
-    		
+        if ((null === $name) || !is_string($name))
+            throw new \InvalidArgumentException('Invalid description');
+            
         $this->invoiceDescription = $description;
         
         return $this;

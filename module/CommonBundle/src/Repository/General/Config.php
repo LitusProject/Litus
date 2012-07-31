@@ -16,10 +16,10 @@ class Config extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
-        	->from('CommonBundle\Entity\General\Config', 'c')
-        	->orderBy('c.key', 'ASC')
-        	->getQuery()
-        	->getResult();
+            ->from('CommonBundle\Entity\General\Config', 'c')
+            ->orderBy('c.key', 'ASC')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }

@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Form\Auth\Login as LoginForm,
-	Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -25,7 +25,7 @@ use CommonBundle\Form\Auth\Login as LoginForm,
  */
 class SiteController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
+    /**
      * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -33,25 +33,25 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function execute(MvcEvent $e)
     {
-		$this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
-		    ->plugin('headMeta')
-		    ->appendName('viewport', 'width=device-width, initial-scale=1.0');
-		
-		$result = parent::execute($e);
-		
-		$loginForm = new LoginForm(
-			$this->url()->fromRoute(
-				'index',
-				array(
-					'action' => 'login'
-				)
-			)
-		);
-		
-		$result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
-		$result->authenticated = $this->getAuthentication()->isAuthenticated();
-		$result->loginForm = $loginForm;
-  		
+        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+            ->plugin('headMeta')
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0');
+        
+        $result = parent::execute($e);
+        
+        $loginForm = new LoginForm(
+            $this->url()->fromRoute(
+                'index',
+                array(
+                    'action' => 'login'
+                )
+            )
+        );
+        
+        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
+        $result->authenticated = $this->getAuthentication()->isAuthenticated();
+        $result->loginForm = $loginForm;
+          
         $e->setResult($result);
         
         return $result;

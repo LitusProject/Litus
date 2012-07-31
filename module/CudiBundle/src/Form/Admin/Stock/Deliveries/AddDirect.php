@@ -30,7 +30,7 @@ class AddDirect extends Add
 
         $this->removeElement('article_id');
         $this->removeElement('article');
-		$this->getElement('add')
-		    ->setName('add_delivery');
+        $this->getElement('add')
+            ->setName('add_delivery');
     }
 }

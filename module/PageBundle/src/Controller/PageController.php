@@ -40,39 +40,39 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     
     public function _getTranslationByName()
     {
-    	if (null === $this->getParam('id')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
     
         $translation = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Translation')
             ->findOneByName($this->getParam('id'));
-    	
-    	if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
-    	
-    	return $translation;
+        
+        if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        return $translation;
     }
     
     public function _getTranslationById()
     {
-    	if (null === $this->getParam('id')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
     
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $page) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
-    	
-    	return $page->getTranslation($this->getLanguage());
+        
+        if (null === $page) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        return $page->getTranslation($this->getLanguage());
     }
 }

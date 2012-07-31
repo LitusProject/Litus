@@ -27,26 +27,26 @@ return array(
             
             'doctrine_config' => array(
                 'parameters' => array(
-                	'entityPaths' => array(
-                		'newsbundle' => __DIR__ . '/../../Entity',
-                	),
+                    'entityPaths' => array(
+                        'newsbundle' => __DIR__ . '/../../Entity',
+                    ),
                 ),
             ),
             
             'translator' => array(
-            	'parameters' => array(
-        		    'adapter' => 'ArrayAdapter',
-        			'translations' => array(
-                		'news_site_en' => array(
-                			'content' => __DIR__ . '/../translations/site.en.php',
-                			'locale' => 'en',
-                		),
-                		'news_site_nl' => array(
-                			'content' => __DIR__ . '/../translations/site.nl.php',
-                			'locale' => 'nl',
-                		),
-            		),
-            	),
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'news_site_en' => array(
+                            'content' => __DIR__ . '/../translations/site.en.php',
+                            'locale' => 'en',
+                        ),
+                        'news_site_nl' => array(
+                            'content' => __DIR__ . '/../translations/site.nl.php',
+                            'locale' => 'nl',
+                        ),
+                    ),
+                ),
             ),
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
@@ -76,8 +76,8 @@ return array(
                             'options' => array(
                                 'route'    => '/admin/site/news[/:action[/:id]]',
                                 'constraints' => array(
-                                	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                	'id'      => '[0-9]*',
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[0-9]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_news',
@@ -90,8 +90,8 @@ return array(
                             'options' => array(
                                 'route'    => '[/:language]/news[/:action[/:name]]',
                                 'constraints' => array(
-                                	'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                	'name'     => '[a-zA-Z0-9_-]*',
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'name'     => '[a-zA-Z0-9_-]*',
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(

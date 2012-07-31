@@ -42,8 +42,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         
         return new ViewModel(
             array(
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -66,7 +66,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         $formData['address_city'],
                         $formData['address_country']
                     ),
-					$formData['vat_number']
+                    $formData['vat_number']
                 );
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
@@ -80,10 +80,10 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
                 
                 $this->redirect()->toRoute(
-                	'admin_supplier',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_supplier',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -92,15 +92,15 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         
         return new ViewModel(
             array(
-        	    'form' => $form,
-        	)
+                'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return new ViewModel();
+            return new ViewModel();
         
         $form = new EditForm($supplier);
         
@@ -129,10 +129,10 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
                 
                 $this->redirect()->toRoute(
-                	'admin_supplier',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_supplier',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
@@ -141,55 +141,55 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         
         return new ViewModel(
             array(
-        	    'form' => $form,
-        	)
+                'form' => $form,
+            )
         );
     }
     
     private function _getSupplier()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the supplier!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_supplier',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the supplier!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $supplier) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No supplier with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_supplier',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $supplier;
+        
+        if (null === $supplier) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No supplier with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $supplier;
     }
 }

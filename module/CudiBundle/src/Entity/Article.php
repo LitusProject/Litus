@@ -128,11 +128,11 @@ abstract class Article
      * @var array The possible types of an article
      */
     public static $POSSIBLE_TYPES = array(
-    	'other' => 'Other',
-    	'exercises' => 'Exercises',
-    	'slides' => 'Slides',
-    	'student' => 'Student',
-    	'textbook' => 'Textbook',
+        'other' => 'Other',
+        'exercises' => 'Exercises',
+        'slides' => 'Slides',
+        'student' => 'Student',
+        'textbook' => 'Textbook',
     );
     
     /**
@@ -168,7 +168,7 @@ abstract class Article
      */
     public static function isValidArticleType($type)
     {
-    	return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
     
     /**
@@ -187,259 +187,259 @@ abstract class Article
         return $this->title;
     }
 
-	/**
+    /**
      * @param string $title
-	 *
+     *
      * @return \CudiBundle\Entity\Article
      */
-	public function setTitle($title)
-	{
-		$title = trim($title);
-		
-		if (strlen($title) == 0)
+    public function setTitle($title)
+    {
+        $title = trim($title);
+        
+        if (strlen($title) == 0)
             throw new \InvalidArgumentException('The article title is not valid.');
 
-		$this->title = $title;
-		return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getAuthors()
-	{
-		return $this->authors;
-	}
-	
-	/**
-	 * @param string $authors
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setAuthors($authors)
-	{
-		$this->authors = $authors;
-		return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getPublishers()
-	{
-		return $this->publishers;
-	}
-	
-	/**
-	 * @param string $publishers
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setPublishers($publishers)
-	{
-		$this->publishers = $publishers;
-		return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getYearPublished()
-	{
-		return $this->yearPublished;
-	}
-	
-	/**
-	 * @param string $yearPublished
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setYearPublished($yearPublished)
-	{
-		$this->yearPublished = $yearPublished;
-		return $this;
-	}
-	
-	/**
-	 * @return \DateTime
-	 */
-	public function getTimestamp()
-	{
-	    return $this->timestamp;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getVersionNumber()
-	{
-	    return $this->versionNumber;
-	}
-	
-	/**
-	 * @param integer $versionNumber
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setVersionNumber($versionNumber)
-	{
-	    $this->versionNumber = $versionNumber;
-	    return $this;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getISBN()
-	{
-	    return $this->isbn;
-	}
-	
-	/**
-	 * @param integer $isbn
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setISBN($isbn)
-	{
-	    if (strlen($isbn) == 0)
-	        $this->isbn = null;
-	    else
-	        $this->isbn = $isbn;
-	    
-	    return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getURL()
-	{
-	    return $this->url;
-	}
-	
-	/**
-	 * @param string $url
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setURL($url)
-	{
-	    $this->url = $url;
-	    return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isHistory()
-	{
-	    return $this->isHistory;
-	}
-	
-	/**
-	 * @param boolean $isHistory
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setIsHistory($isHistory)
-	{
-	    $this->isHistory = $isHistory;
-	    return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isProf()
-	{
-	    return $this->isProf;
-	}
-	
-	/**
-	 * @param boolean $isProf
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setIsProf($isProf)
-	{
-	    $this->isProf = $isProf;
-	    return $this;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isDownloadable()
-	{
-	    return $this->downloadable;
-	}
-	
-	/**
-	 * @param boolean $downloadable
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setIsDownloadable($downloadable)
-	{
-	    $this->downloadable = $downloadable;
-	    return $this;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getType()
-	{
-	    return $this->type;
-	}
-	
-	/**
-	 * @param string $type
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setType($type)
-	{
-	    $this->type = $type;
-	    return $this;
-	}
-	
-	/**
-	 * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-	 * 
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function getSaleArticle(AcademicYear $academicYear)
-	{
-	    return $this->_entityManager
-	        ->getRepository('CudiBundle\Entity\Sales\Article')
-	        ->findOneByArticleAndAcademicYear($this, $academicYear);
-	}
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 *
-	 * @return \CudiBundle\Entity\Article
-	 */
-	public function setEntityManager(EntityManager $entityManager)
-	{
-	    $this->_entityManager = $entityManager;
-	    return $this;
-	}
-	
-	/**
-	 * @return \CudiBundle\Entity\Article
-	 */
-	abstract public function duplicate();
-	
-	/**
-	 * @return boolean
-	 */
-	abstract public function isExternal();
-	
-	/**
-	 * @return boolean
-	 */
-	abstract public function isInternal();
+        $this->title = $title;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
+    
+    /**
+     * @param string $authors
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setAuthors($authors)
+    {
+        $this->authors = $authors;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getPublishers()
+    {
+        return $this->publishers;
+    }
+    
+    /**
+     * @param string $publishers
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setPublishers($publishers)
+    {
+        $this->publishers = $publishers;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getYearPublished()
+    {
+        return $this->yearPublished;
+    }
+    
+    /**
+     * @param string $yearPublished
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setYearPublished($yearPublished)
+    {
+        $this->yearPublished = $yearPublished;
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getVersionNumber()
+    {
+        return $this->versionNumber;
+    }
+    
+    /**
+     * @param integer $versionNumber
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setVersionNumber($versionNumber)
+    {
+        $this->versionNumber = $versionNumber;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getISBN()
+    {
+        return $this->isbn;
+    }
+    
+    /**
+     * @param integer $isbn
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setISBN($isbn)
+    {
+        if (strlen($isbn) == 0)
+            $this->isbn = null;
+        else
+            $this->isbn = $isbn;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getURL()
+    {
+        return $this->url;
+    }
+    
+    /**
+     * @param string $url
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setURL($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isHistory()
+    {
+        return $this->isHistory;
+    }
+    
+    /**
+     * @param boolean $isHistory
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsHistory($isHistory)
+    {
+        $this->isHistory = $isHistory;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isProf()
+    {
+        return $this->isProf;
+    }
+    
+    /**
+     * @param boolean $isProf
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsProf($isProf)
+    {
+        $this->isProf = $isProf;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function isDownloadable()
+    {
+        return $this->downloadable;
+    }
+    
+    /**
+     * @param boolean $downloadable
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsDownloadable($downloadable)
+    {
+        $this->downloadable = $downloadable;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * @param string $type
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+    
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * 
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function getSaleArticle(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByArticleAndAcademicYear($this, $academicYear);
+    }
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Article
+     */
+    abstract public function duplicate();
+    
+    /**
+     * @return boolean
+     */
+    abstract public function isExternal();
+    
+    /**
+     * @return boolean
+     */
+    abstract public function isInternal();
 }

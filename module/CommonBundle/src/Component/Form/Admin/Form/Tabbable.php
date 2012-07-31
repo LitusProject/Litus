@@ -22,9 +22,9 @@ namespace CommonBundle\Component\Form\Admin\Form;
  */
 class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @param mixed $options The form's options
-	 */
+    /**
+     * @param mixed $options The form's options
+     */
     public function __construct($options)
     {
         parent::__construct($options = null);

@@ -16,8 +16,8 @@
 namespace CudiBundle\Form\Admin\Supplier;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CudiBundle\Entity\Supplier,
-	Zend\Form\Element\Submit;
+    CudiBundle\Entity\Supplier,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit Supplier
@@ -32,7 +32,7 @@ class Edit extends \CudiBundle\Form\Admin\Supplier\Add
 
         $this->removeElement('submit');
         
-		$field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'supplier_edit')
                 ->setDecorators(array(new ButtonDecorator()));

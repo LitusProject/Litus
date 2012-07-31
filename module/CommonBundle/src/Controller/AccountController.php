@@ -41,7 +41,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
+            
             if ($form->isValid($formData)) {
                 $user->setCode(null)
                     ->setCredential(
@@ -62,7 +62,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 );
                 
                 $this->redirect()->toRoute(
-                	'index'
+                    'index'
                 );
                 
                 return new ViewModel();
@@ -81,42 +81,42 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     
     public function _getUser()
     {
-    	if (null === $this->getParam('code')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No code was given to identify the user!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'index'
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('code')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No code was given to identify the user!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'index'
+            );
+            
+            return;
+        }
     
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Code')
             ->findOneUserByCode($this->getParam('code'));
-    	
-    	if (null === $user) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'The given code is not valid!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'index'
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $user;
+        
+        if (null === $user) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'The given code is not valid!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'index'
+            );
+            
+            return;
+        }
+        
+        return $user;
     }
 }

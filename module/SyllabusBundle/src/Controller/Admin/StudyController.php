@@ -29,12 +29,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         if (!($academicYear = $this->_getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
     
         $paginator = $this->paginator()->createFromArray(
-        	$this->getEntityManager()
-        	    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-        	    ->findAllByAcademicYear($academicYear),
+            $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+                ->findAllByAcademicYear($academicYear),
             $this->getParam('page')
         );
         
@@ -46,8 +46,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -57,70 +57,70 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
         
         if (!($academicYear = $this->_getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
         
         switch($this->getParam('field')) {
-        	case 'name':
-        		$mappings = $this->getEntityManager()
-        			->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-        			->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
-        		break;
+            case 'name':
+                $mappings = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
+                break;
         }
         
         $numResults = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('search_max_results');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
         
         array_splice($mappings, $numResults);
         
         $result = array();
         foreach($mappings as $mapping) {
-        	$item = (object) array();
-        	$item->id = $mapping->getStudy()->getId();
-        	$item->title = $mapping->getStudy()->getFullTitle();
-        	$item->phase = $mapping->getStudy()->getPhase();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $mapping->getStudy()->getId();
+            $item->title = $mapping->getStudy()->getFullTitle();
+            $item->phase = $mapping->getStudy()->getPhase();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
-    		$start = AcademicYear::getStartOfAcademicYear();
-    	} else {
-    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-    	}
-    	$start->setTime(0, 0);
+            $start = AcademicYear::getStartOfAcademicYear();
+        } else {
+            $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
+        $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStartDate($start);
-    	
-    	if (null === $academicYear) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No academic year was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_study',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $academicYear;
+        
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $academicYear;
     }
 }

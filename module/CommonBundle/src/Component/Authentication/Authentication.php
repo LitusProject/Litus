@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action\Doctrine,
     Zend\Authentication\Adapter,
-	Zend\Authentication\AuthenticationService;
+    Zend\Authentication\AuthenticationService;
 
 /**
  * Implementing our own authentication mechanism.
@@ -27,97 +27,97 @@ use CommonBundle\Component\Authentication\Action\Doctrine,
  */
 class Authentication
 {
-	/**
+    /**
      * @var \CommonBundle\Component\Authentication\Adapter\Doctrine The authentication adapter
      */
-	private $_adapter = null;
-	
-	/**
+    private $_adapter = null;
+    
+    /**
      * @var \Zend\Authentication\AuthenticationService The authentication service
      */
-	private $_service = null;
-	
-	/**
+    private $_service = null;
+    
+    /**
      * @var \CommonBundle\Component\Authentication\Result The authentication result
      */
-	private $_result = null;
-	
+    private $_result = null;
+    
     /**
      * Construct a new Authentication object.
      *
      * @param \Zend\Authentication\Adapter $adapter The authentication adapter that should be used
      * @param \Zend\Authentication\AuthenticationService $service The service that should be used
      */
-	public function __construct(Adapter $adapter, AuthenticationService $service)
-	{
-		$this->_adapter = $adapter;
-		$this->_service = $service;
-	}
-	
-	/**
-	 * Authenticate the user.
-	 *
-	 * @param string $identity The provided identity
+    public function __construct(Adapter $adapter, AuthenticationService $service)
+    {
+        $this->_adapter = $adapter;
+        $this->_service = $service;
+    }
+    
+    /**
+     * Authenticate the user.
+     *
+     * @param string $identity The provided identity
      * @param string $credential The provided credential
      * @param boolean $rememberMe Remember this authentication session
      * @return void
-	 */
-	public function authenticate($identity = '', $credential = '', $rememberMe = false)
-	{
-		if (isset($this->_result) && $identity == '')
-			return;
+     */
+    public function authenticate($identity = '', $credential = '', $rememberMe = false)
+    {
+        if (isset($this->_result) && $identity == '')
+            return;
 
-		if ('' != $identity) {
-			$this->_adapter
-				->setIdentity($identity)
-				->setCredential($credential);
-		}
+        if ('' != $identity) {
+            $this->_adapter
+                ->setIdentity($identity)
+                ->setCredential($credential);
+        }
 
-		$this->_result = $this->_service->authenticate($this->_adapter, $rememberMe);
-	}
-	
-	/**
-	 * Forget the current user.
+        $this->_result = $this->_service->authenticate($this->_adapter, $rememberMe);
+    }
+    
+    /**
+     * Forget the current user.
      *
      * @return void
-	 */
-	public function forget()
-	{
-		$this->_service->clearIdentity();
-		
-		unset($this->_result);
-	}
-	
+     */
+    public function forget()
+    {
+        $this->_service->clearIdentity();
+        
+        unset($this->_result);
+    }
+    
     /**
      * Returns true if the provided user has been authenticated.
      *
      * @return bool
      */
-	public function isAuthenticated()
-	{
-	    if (isset($this->_result))
-	    	return $this->_result->isValid();
-	    
-		$this->authenticate();
-	
-		if (!isset($this->_result))
-			return false;
-			
-		return $this->_result->isValid();
-	}
-	
-	/**
-	 * Return the Doctrine person object.
-	 *
-	 * @return mixed
-	 */
-	public function getPersonObject()
-	{
-		$this->authenticate();
-	
-		if (!isset($this->_result))
-			return null;
+    public function isAuthenticated()
+    {
+        if (isset($this->_result))
+            return $this->_result->isValid();
+        
+        $this->authenticate();
+    
+        if (!isset($this->_result))
+            return false;
+            
+        return $this->_result->isValid();
+    }
+    
+    /**
+     * Return the Doctrine person object.
+     *
+     * @return mixed
+     */
+    public function getPersonObject()
+    {
+        $this->authenticate();
+    
+        if (!isset($this->_result))
+            return null;
 
-		return $this->_result->getPersonObject();
-	}
+        return $this->_result->getPersonObject();
+    }
 }

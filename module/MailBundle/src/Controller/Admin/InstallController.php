@@ -24,18 +24,18 @@ use Exception;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function initConfig()
-	{
-		$this->installConfig(
-	        array(
-	            array(
-	            	'key'         => 'mail.start_cudi_mail_subject',
-	            	'value'       => '[VTK Cursusdienst] Cursussen 1e semester academiejaar 2011-2012',
-	            	'description' => 'The subject of the mail send to profs at the start of a new semester',
-	            ),
-	            array(
-	            	'key'         => 'mail.start_cudi_mail',
-	            	'value'       => 'Geachte professor,
+    protected function initConfig()
+    {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'mail.start_cudi_mail_subject',
+                    'value'       => '[VTK Cursusdienst] Cursussen 1e semester academiejaar 2011-2012',
+                    'description' => 'The subject of the mail send to profs at the start of a new semester',
+                ),
+                array(
+                    'key'         => 'mail.start_cudi_mail',
+                    'value'       => 'Geachte professor,
 Geachte docent,
 
 Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. U ontvangt deze mail omdat het belangrijk is dat we tijdig over de juiste informatie beschikken, zo kunnen we de studenten in het begin van het academiejaar zo snel mogelijk verder helpen. Ook indien wij uw cursus ongewijzigd mogen heruitgeven, wachten wij hiervoor op uw bericht.
@@ -59,30 +59,30 @@ Met vriendelijke groeten en hartelijk dank bij voorbaat,
 Tom Van der Voorde,
 Philippe Blondeel,
 Jorn Hendrickx',
-	            	'description' => 'The mail send to profs at the start of a new semester',
-	            ),
-			)
-		);
-	}
-	
-	protected function initAcl()
-	{
-	    $this->installAcl(
-	        array(
-	            'mailbundle' => array(
-	                'admin_mail' => array(
-	                    'groups', 'send'
-	                ),
-	                'admin_mail_prof' => array(
-	                    'cudi', 'send'
-	                ),
-	            )
-	        )
-	    );
-	    
-	    $this->installRoles(
-	        array(
-	        )
-	    );
-	}
+                    'description' => 'The mail send to profs at the start of a new semester',
+                ),
+            )
+        );
+    }
+    
+    protected function initAcl()
+    {
+        $this->installAcl(
+            array(
+                'mailbundle' => array(
+                    'admin_mail' => array(
+                        'groups', 'send'
+                    ),
+                    'admin_mail_prof' => array(
+                        'cudi', 'send'
+                    ),
+                )
+            )
+        );
+        
+        $this->installRoles(
+            array(
+            )
+        );
+    }
 }

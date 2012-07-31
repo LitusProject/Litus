@@ -16,8 +16,8 @@
 namespace CommonBundle\Component\Acl;
 
 use Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
-	Zend\Cache\Storage\Adapter as CacheAdapter;
+    Doctrine\ORM\QueryBuilder,
+    Zend\Cache\Storage\Adapter as CacheAdapter;
 
 /**
  * Extending Zend's ACL implementation to support our own structure,

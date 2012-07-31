@@ -16,13 +16,13 @@
 namespace CommonBundle\Form\Admin\Role;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
-	Zend\Form\Form,
-	Zend\Form\Element\Multiselect,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\QueryBuilder,
+    Zend\Form\Form,
+    Zend\Form\Element\Multiselect,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add Role
@@ -31,20 +31,20 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The form's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
-		$this->_entityManager = $entityManager;
+        $this->_entityManager = $entityManager;
 
         $field = new Text('name');
         $field->setLabel('Name')
@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Allowed Actions')
             ->setRequired()
             ->setMultiOptions($this->_createActionsArray())
-			->setAttrib('style', 'height: 300px;')
+            ->setAttrib('style', 'height: 300px;')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -72,13 +72,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-	
-	/**
-	 * Returns an array that has all the roles, so that they are available in the
-	 * parents multiselect.
-	 *
-	 * @return array
-	 */
+    
+    /**
+     * Returns an array that has all the roles, so that they are available in the
+     * parents multiselect.
+     *
+     * @return array
+     */
     private function _createParentsArray()
     {
         $roles = $this->_entityManager
@@ -95,12 +95,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $parents;
     }
 
-	/**
-	 * Returns an array that has all the actions that are currently in the database
-	 * so that we can assign some to this role.
-	 *
-	 * @return array
-	 */
+    /**
+     * Returns an array that has all the actions that are currently in the database
+     * so that we can assign some to this role.
+     *
+     * @return array
+     */
     private function _createActionsArray()
     {
         $query = new QueryBuilder(

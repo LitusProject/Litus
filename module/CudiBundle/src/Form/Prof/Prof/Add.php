@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Prof\Prof;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-	CommonBundle\Component\Form\Bootstrap\Element\Text,
-	Zend\Form\Element\Hidden,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    Zend\Form\Element\Hidden,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Prof
@@ -31,20 +31,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($options);
          
-		$field = new Hidden('prof_id');
-		$field->setRequired()
-		    ->addValidator(new IntValidator())
-		    ->setAttrib('id', 'profId');
-		$this->addElement($field);
-		 
-		$field = new Text('prof');
-		$field->setLabel('Docent')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
-			->setAttrib('id', 'profSearch')
-			->setAttrib('autocomplete', 'off')
-			->setAttrib('data-provide', 'typeahead')
-			->setRequired();
-		$this->addElement($field);
+        $field = new Hidden('prof_id');
+        $field->setRequired()
+            ->addValidator(new IntValidator())
+            ->setAttrib('id', 'profId');
+        $this->addElement($field);
+         
+        $field = new Text('prof');
+        $field->setLabel('Docent')
+            ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
+            ->setAttrib('id', 'profSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired();
+        $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add');

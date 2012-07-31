@@ -16,9 +16,9 @@
 namespace CommonBundle\Form\Admin\Role;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Entity\Acl\Role,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CommonBundle\Entity\Acl\Role,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit Role
@@ -27,11 +27,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
+     * @param mixed $opts The form's options
+     */
     public function __construct(EntityManager $entityManager, Role $role, $opts = null)
     {
         parent::__construct($entityManager, $opts);
@@ -53,12 +53,12 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         );
     }
 
-	/**
-	 * Returns an array that is in the right format to populate the parents field.
-	 *
-	 * @param array $parents The role's parents
-	 * @return array
-	 */
+    /**
+     * Returns an array that is in the right format to populate the parents field.
+     *
+     * @param array $parents The role's parents
+     * @return array
+     */
     private function _createParentsPopulationArray(array $parents)
     {
         $parentsArray = array();
@@ -77,17 +77,17 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
      */
     public function _createActionsPopulationArray(array $actions, array $parents)
     {
-    	$actionsArray = array();   	
-    	foreach ($parents as $parent) {
-    		foreach ($parent->getActions() as $action) {
-    			$actionsArray[] = $action->getId();
-    		}
-    	}
-    	
-    	foreach ($actions as $action) {
-    		$actionsArray[] = $action->getId();
-    	}
-    	
-    	return $actionsArray;
+        $actionsArray = array();       
+        foreach ($parents as $parent) {
+            foreach ($parent->getActions() as $action) {
+                $actionsArray[] = $action->getId();
+            }
+        }
+        
+        foreach ($actions as $action) {
+            $actionsArray[] = $action->getId();
+        }
+        
+        return $actionsArray;
     }
 }

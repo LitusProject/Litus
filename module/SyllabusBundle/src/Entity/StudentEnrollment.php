@@ -27,34 +27,34 @@ class StudentEnrollment
     /**
      * @var integer The ID of the enrollment
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
-	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of the enrollment
-	 *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
-	 * @JoinColumn(referencedColumnName="id")
-	 */
-	private $subject;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-	 * @JoinColumn(name="academic_year", referencedColumnName="id")
-	 */
-	private $academicYear;
-	
-	/**
-	 * @var integer The number of students of the enrollment
-	 *
-	 * @Column(type="integer")
-	 */
-	private $number;
+    /**
+     * @var \SyllabusBundle\Entity\Subject The subject of the enrollment
+     *
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
+     * @JoinColumn(referencedColumnName="id")
+     */
+    private $subject;
+    
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+    
+    /**
+     * @var integer The number of students of the enrollment
+     *
+     * @Column(type="integer")
+     */
+    private $number;
     
     /**
      * @param \SyllabusBundle\Entity\Subject $subject

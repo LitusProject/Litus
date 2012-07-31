@@ -16,12 +16,12 @@
 namespace CudiBundle\Form\Admin\Supplier;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-	CommonBundle\Form\Admin\Address\Add as AddressForm,
-	CudiBundle\Entity\Supplier,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CommonBundle\Form\Admin\Address\Add as AddressForm,
+    CudiBundle\Entity\Supplier,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add Supplier
@@ -34,26 +34,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
          
-		$field = new Text('name');
+        $field = new Text('name');
         $field->setLabel('Name')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$field = new Text('phone_number');
+        $field = new Text('phone_number');
         $field->setLabel('Phone Number')
-        	->setRequired()
-        	->setAttrib('placeholder', '+CCAAANNNNNN')
-			->addValidator(new PhoneNumberValidator())
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setAttrib('placeholder', '+CCAAANNNNNN')
+            ->addValidator(new PhoneNumberValidator())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-		$this->addSubForm(new AddressForm(), 'address');
+        $this->addSubForm(new AddressForm(), 'address');
         
         $field = new Text('vat_number');
         $field->setLabel('VAT Number')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');
@@ -65,17 +65,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     
     public function populateFromSupplier(Supplier $supplier)
     {
-    	$data = array(
-    		'name' => $supplier->getName(),
-    		'phone_number' => $supplier->getPhoneNumber(),
-    		'vat_number' => $supplier->getVatNumber(),
-    		'address_street' => $supplier->getAddress()->getStreet(),
-    		'address_number' => $supplier->getAddress()->getNumber(),
-    		'address_postal' => $supplier->getAddress()->getPostal(),
-    		'address_city' => $supplier->getAddress()->getCity(),
-    		'address_country' => $supplier->getAddress()->getCountryCode(),
-    	);
-    					
-    	$this->populate($data);
+        $data = array(
+            'name' => $supplier->getName(),
+            'phone_number' => $supplier->getPhoneNumber(),
+            'vat_number' => $supplier->getVatNumber(),
+            'address_street' => $supplier->getAddress()->getStreet(),
+            'address_number' => $supplier->getAddress()->getNumber(),
+            'address_postal' => $supplier->getAddress()->getPostal(),
+            'address_city' => $supplier->getAddress()->getCity(),
+            'address_country' => $supplier->getAddress()->getCountryCode(),
+        );
+                        
+        $this->populate($data);
     }
 }

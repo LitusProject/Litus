@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Admin\Supplier\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Entity\Users\Person,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit a user's data.
@@ -27,12 +27,12 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
-{	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
-	 * @param mixed $opts The validator's options
-	 */
+{    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);

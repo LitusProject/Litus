@@ -24,21 +24,21 @@ use Zend\Loader\PrefixPathMapper;
  */
 class Actions extends \Zend\Form\DisplayGroup
 {
-	
-	/**
-	 * Constructor
-	 *
-	 * @param  string $name
-	 * @param  PrefixPathMapper $loader
-	 * @param  array|Config $options
-	 * @return void
-	 */
-	public function __construct($name, PrefixPathMapper $loader, $options = null)
-	{
-		parent::__construct($name, $loader, $options);
-		
-		$this->clearDecorators();
-		$this->addDecorator('FormElements')
-		     ->addDecorator('HtmlTag', array('class' => 'form-actions', 'tag' => 'div'));
-	}
+    
+    /**
+     * Constructor
+     *
+     * @param  string $name
+     * @param  PrefixPathMapper $loader
+     * @param  array|Config $options
+     * @return void
+     */
+    public function __construct($name, PrefixPathMapper $loader, $options = null)
+    {
+        parent::__construct($name, $loader, $options);
+        
+        $this->clearDecorators();
+        $this->addDecorator('FormElements')
+             ->addDecorator('HtmlTag', array('class' => 'form-actions', 'tag' => 'div'));
+    }
 }

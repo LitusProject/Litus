@@ -16,7 +16,7 @@
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
-	CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person;
 
 /**
  * Specifying the different types of memberships the organization has.
@@ -31,27 +31,27 @@ class Organization
      * @var array All the possible status values allowed
      */
     public static $possibleStatuses = array(
-    	'member'            => 'Member',
-    	'non_member'        => 'Non-Member',
-    	'honorary_member'   => 'Honorary Member',
-    	'supportive_member' => 'Supportive Member',
-    	'praesidium'        => 'Praesidium'
+        'member'            => 'Member',
+        'non_member'        => 'Non-Member',
+        'honorary_member'   => 'Honorary Member',
+        'supportive_member' => 'Supportive Member',
+        'praesidium'        => 'Praesidium'
     );
 
-	/**
+    /**
      * @var int The ID of this union status
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
      * @ManyToOne(
-     * 		targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
+     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
      * )
      * @JoinColumn(name="person", referencedColumnName="id")
      */

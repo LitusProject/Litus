@@ -28,35 +28,35 @@ class SubjectMap
     /**
      * @var integer The ID of the mapping
      *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Article The article of the mapping
      *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-	 * @JoinColumn(name="article", referencedColumnName="id")
-	 */
-	private $article;
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
+     * @JoinColumn(name="article", referencedColumnName="id")
+     */
+    private $article;
 
-	/**
-	 * @var \SyllabusBundle\Entity\Subject The subject of the mapping
-	 *
-	 * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-	 * @JoinColumn(name="subject", referencedColumnName="id")
-	 */
-	private $subject;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-	 * @JoinColumn(name="academic_year", referencedColumnName="id")
-	 */
-	private $academicYear;
+    /**
+     * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+     *
+     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+     * @JoinColumn(name="subject", referencedColumnName="id")
+     */
+    private $subject;
+    
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
 
     /**
      * @var boolean Flag whether the article is mandatory

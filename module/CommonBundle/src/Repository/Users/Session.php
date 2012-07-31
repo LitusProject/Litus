@@ -12,16 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class Session extends EntityRepository
 {
-	public function findAllExpired()
-	{
-		$query = $this->_em->createQueryBuilder();
-		$query->select('s')
-		    ->from('CommonBundle\Entity\Users\Session', 's')
-		    ->where(
-		    	$query->expr()->lt('s.expirationTime', ':expirationTime')
-		    )
-		    ->setParameter('expirationTime', new \DateTime('now'));
-		    
-		return $query->getQuery()->getResult();
-	}
+    public function findAllExpired()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('s')
+            ->from('CommonBundle\Entity\Users\Session', 's')
+            ->where(
+                $query->expr()->lt('s.expirationTime', ':expirationTime')
+            )
+            ->setParameter('expirationTime', new \DateTime('now'));
+            
+        return $query->getQuery()->getResult();
+    }
 }

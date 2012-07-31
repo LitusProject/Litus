@@ -16,9 +16,9 @@
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
-	BrBundle\Form\Admin\Company\User\Add as AddForm,
-	BrBundle\Form\Admin\Company\User\Edit as EditForm,
-	CommonBundle\Component\FlashMessenger\FlashMessage,
+    BrBundle\Form\Admin\Company\User\Add as AddForm,
+    BrBundle\Form\Admin\Company\User\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Credential,
     Zend\View\Model\ViewModel;
 
@@ -31,27 +31,27 @@ use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
 class UserController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
-	{
-	    if (!($company = $this->_getCompany()))
-	    	return;
-	    	
-		$paginator = $this->paginator()->createFromEntity(
-		    'BrBundle\Entity\Users\People\Corporate',
-		    $this->getParam('page'),
-		    array(
-		        'canLogin' => true,
-		        'company' => $company->getId()
-		    ),
-		    array(
-		        'username' => 'ASC'
-		    )
-		);
+    {
+        if (!($company = $this->_getCompany()))
+            return;
+            
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Users\People\Corporate',
+            $this->getParam('page'),
+            array(
+                'canLogin' => true,
+                'company' => $company->getId()
+            ),
+            array(
+                'username' => 'ASC'
+            )
+        );
         
         return new ViewModel(
             array(
                 'supplier' => $supplier,
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -59,10 +59,10 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     public function addAction()
     {
         if (!($company = $this->_getCompany()))
-        	return;
+            return;
         
         $form = new AddForm($this->getEntityManager());
-		
+        
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -78,8 +78,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $formData['last_name'],
                     $formData['email'],
                     $formData['phone_number'],
-					$formData['sex'],
-					$company
+                    $formData['sex'],
+                    $company
                 );
                 $this->getEntityManager()->persist($newUser);
                 $this->getEntityManager()->flush();
@@ -93,11 +93,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
                 
                 $this->redirect()->toRoute(
-                	'admin_company_user',
-                	array(
-                		'action' => 'manage',
-                		'id' => $supplier->getId(),
-                	)
+                    'admin_company_user',
+                    array(
+                        'action' => 'manage',
+                        'id' => $supplier->getId(),
+                    )
                 );
                 
                 return new ViewModel();
@@ -107,7 +107,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $supplier,
-            	'form' => $form,
+                'form' => $form,
             )
         );
     }
@@ -115,13 +115,13 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($user = $this->_getUser()))
-        	return;
-        			
+            return;
+                    
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+            
             if ($form->isValid($formData)) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
@@ -140,11 +140,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_supplier_user',
-                	array(
-                		'action' => 'manage',
-                		'id' => $user->getSupplier()->getId()
-                	)
+                    'admin_supplier_user',
+                    array(
+                        'action' => 'manage',
+                        'id' => $user->getSupplier()->getId()
+                    )
                 );
                 
                 return new ViewModel();
@@ -154,119 +154,119 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $user->getSupplier(),
-            	'form' => $form,
+                'form' => $form,
             )
         );
     }
     
     public function deleteAction()
-	{
-		$this->initAjax();
+    {
+        $this->initAjax();
 
-		if (!($user = $this->_getUser()))
-			return new ViewModel();
+        if (!($user = $this->_getUser()))
+            return new ViewModel();
 
-		$user->disableLogin();
-		$this->getEntityManager()->flush();
+        $user->disableLogin();
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
-	}
+    }
     
     private function _getCompany()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the company!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_company',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the company!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $company) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No company with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_company',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $company;
+        
+        if (null === $company) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $company;
     }
-	
-	private function _getUser()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the company!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_company',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $company = $this->getEntityManager()
-	        ->getRepository('BrBundle\Entity\Users\People\Corporate')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $company) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No company with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_company',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $company;
-	}
+    
+    private function _getUser()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the company!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+    
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Users\People\Corporate')
+            ->findOneById($this->getParam('id'));
+        
+        if (null === $company) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $company;
+    }
 }

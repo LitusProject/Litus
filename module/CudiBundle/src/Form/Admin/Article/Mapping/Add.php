@@ -16,12 +16,12 @@
 namespace CudiBundle\Form\Admin\Article\Mapping;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Hidden,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Checkbox,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Zend\Form\Element\Hidden,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Form\Element\Checkbox,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Add Mapping
@@ -44,18 +44,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
          
         $field = new Text('subject');
         $field->setLabel('Subject')
-			->setAttrib('size', 70)
-			->setAttrib('id', 'subjectSearch')
-			->setAttrib('autocomplete', 'off')
-			->setAttrib('data-provide', 'typeahead')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('size', 70)
+            ->setAttrib('id', 'subjectSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
          
         $field = new Checkbox('mandatory');
         $field->setLabel('Mandatory')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');

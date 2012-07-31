@@ -34,7 +34,7 @@ class File
         if ($filename === null)
             return null;
 
-		// Skip the replace, saves time
+        // Skip the replace, saves time
         if (DIRECTORY_SEPARATOR === '/')
             return $filename;
 

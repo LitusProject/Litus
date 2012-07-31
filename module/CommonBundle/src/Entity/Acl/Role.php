@@ -16,8 +16,8 @@
 namespace CommonBundle\Entity\Acl;
 
 use CommonBundle\Component\Acl\Acl,
-	CommonBundle\Entity\Acl\Action,
-	Doctrine\Common\Collections\ArrayCollection;
+    CommonBundle\Entity\Acl\Action,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Represents a group of users and is capable of determining which rights those users have.
@@ -94,7 +94,7 @@ class Role
      */
     public function getSystem()
     {
-    	return $this->system;
+        return $this->system;
     }
     
     /**
@@ -103,9 +103,9 @@ class Role
      */
     public function setParents(array $parents)
     {
-    	$this->parents = new ArrayCollection($parents);
-    	
-    	return $this;
+        $this->parents = new ArrayCollection($parents);
+        
+        return $this;
     }
     
     /**
@@ -115,36 +115,36 @@ class Role
     {
         return $this->parents->toArray();
     }
-	
-	/**
-	 * @param array $actions
-	 * @return \CommonBundle\Entity\Acl\Role
-	 */
-	public function setActions(array $actions)
-	{
-		$this->actions = new ArrayCollection($actions);
-		
-		return $this;
-	}
+    
+    /**
+     * @param array $actions
+     * @return \CommonBundle\Entity\Acl\Role
+     */
+    public function setActions(array $actions)
+    {
+        $this->actions = new ArrayCollection($actions);
+        
+        return $this;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getActions()
-	{
-	    return $this->actions->toArray();
-	}
-	
-	/**
-	 * Allow this role access to the given action.
-	 *
-	 * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
-	 * @return \CommonBundle\Entity\Acl\Role
-	 */
-	public function allow(Action $action)
-	{
-		$this->actions->add($action);
-	}
+    /**
+     * @return array
+     */
+    public function getActions()
+    {
+        return $this->actions->toArray();
+    }
+    
+    /**
+     * Allow this role access to the given action.
+     *
+     * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
+     * @return \CommonBundle\Entity\Acl\Role
+     */
+    public function allow(Action $action)
+    {
+        $this->actions->add($action);
+    }
 
     /**
      * Checks whether or not this role has sufficient permissions to access

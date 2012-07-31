@@ -27,10 +27,10 @@ class Username extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
 
     /**
      * @var array The error messages
@@ -39,16 +39,16 @@ class Username extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The username already exists'
     );
 
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
-	public function __construct(EntityManager $entityManager, $opts = null)
-	{
-		parent::__construct($opts);
-		
-		$this->_entityManager = $entityManager;
-	}
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
+    public function __construct(EntityManager $entityManager, $opts = null)
+    {
+        parent::__construct($opts);
+        
+        $this->_entityManager = $entityManager;
+    }
 
     /**
      * Returns true if no matching record is found in the database.
@@ -61,10 +61,10 @@ class Username extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-		$person = $this->_entityManager
-			->getRepository('CommonBundle\Entity\Users\Person')
-			->findOneByUsername($value);
-		
+        $person = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findOneByUsername($value);
+        
         if (null === $person)
             return true;
 

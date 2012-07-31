@@ -10,14 +10,14 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Group
 {
-	/**
+    /**
      * @var int The ID of this group
      *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
-	private $id;
+    private $id;
 
     /**
      * @var string The name of this group

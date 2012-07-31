@@ -16,40 +16,40 @@ class QueueItem extends EntityRepository
 {
     public function getNextQueueNumber(SessionEntity $session)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('MAX(i.queueNumber)')
-    		->from('CudiBundle\Entity\Sales\QueueItem', 'i')
-    		->where($query->expr()->eq('i.session', ':session'))
-    		->setParameter('session', $session->getId())
-    		->getQuery()
-    		->getResult();
-    	
-    	if (isset($resultSet[0]))
-    		return $resultSet[0][1] + 1;
-    	
-    	return 1;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('MAX(i.queueNumber)')
+            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->where($query->expr()->eq('i.session', ':session'))
+            ->setParameter('session', $session->getId())
+            ->getQuery()
+            ->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0][1] + 1;
+        
+        return 1;
     }
     
     public function findOneByPersonNotSold(SessionEntity $session, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-        	->from('CudiBundle\Entity\Sales\QueueItem', 'i')
-        	->where($query->expr()->andX(
-            	    $query->expr()->eq('i.session', ':session'),
-            	    $query->expr()->eq('i.person', ':person'),
-            	    $query->expr()->neq('i.status', ':sold')
-            	)
+            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->where($query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('i.person', ':person'),
+                    $query->expr()->neq('i.status', ':sold')
+                )
             )
-        	->setParameter('session', $session->getId())
-        	->setParameter('person', $person->getId())
-        	->setParameter('sold', 'sold')
-        	->setMaxResults(1)
-        	->getQuery()
-        	->getResult();
+            ->setParameter('session', $session->getId())
+            ->setParameter('person', $person->getId())
+            ->setParameter('sold', 'sold')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
         
         if (isset($resultSet[0]))
-        	return $resultSet[0];
+            return $resultSet[0];
         
         return null;
     }
@@ -58,39 +58,39 @@ class QueueItem extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
-        	->from('CudiBundle\Entity\Sales\QueueItem', 'i')
-        	->where($query->expr()->andX(
-        			$query->expr()->eq('i.session', ':session'),
-        			$query->expr()->eq('i.status', ':status')
-        		)
-        	)
-        	->setParameter('session', $session->getId())
-        	->setParameter('status', $status)
-        	->orderBy('i.queueNumber', 'ASC')
-        	->getQuery()
-        	->getResult();
+            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->where($query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->eq('i.status', ':status')
+                )
+            )
+            ->setParameter('session', $session->getId())
+            ->setParameter('status', $status)
+            ->orderBy('i.queueNumber', 'ASC')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }
     
     public function findAllBySession(SessionEntity $session)
     {
-    	$query = $this->_em->createQueryBuilder();
-    	$resultSet = $query->select('i')
-    		->from('CudiBundle\Entity\Sales\QueueItem', 'i')
-    		->where($query->expr()->andX(
-    				$query->expr()->eq('i.session', ':session'),
-    				$query->expr()->neq('i.status', ':sold'),
-    				$query->expr()->neq('i.status', ':cancelled')
-    			)
-    		)
-    		->setParameter('session', $session->getId())
-        	->setParameter('sold', 'sold')
-        	->setParameter('cancelled', 'cancelled')
-        	->orderBy('i.queueNumber', 'ASC')
-    		->getQuery()
-    		->getResult();
-    	
-    	return $resultSet;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('CudiBundle\Entity\Sales\QueueItem', 'i')
+            ->where($query->expr()->andX(
+                    $query->expr()->eq('i.session', ':session'),
+                    $query->expr()->neq('i.status', ':sold'),
+                    $query->expr()->neq('i.status', ':cancelled')
+                )
+            )
+            ->setParameter('session', $session->getId())
+            ->setParameter('sold', 'sold')
+            ->setParameter('cancelled', 'cancelled')
+            ->orderBy('i.queueNumber', 'ASC')
+            ->getQuery()
+            ->getResult();
+        
+        return $resultSet;
     }
 }

@@ -31,10 +31,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
+            
+            if ($form->isValid($formData)) {
                 $this->getAuthentication()->authenticate(
-                	$formData['username'], $formData['password'], $formData['remember_me']
+                    $formData['username'], $formData['password'], $formData['remember_me']
                 );
                 
                 if ($this->getAuthentication()->isAuthenticated()) {
@@ -56,12 +56,12 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         }
-		            
+                    
         $this->redirect()->toRoute(
-        	'supplier_index',
-        	array(
-        	    'language' => $this->getLanguage()->getAbbrev(),
-        	)
+            'supplier_index',
+            array(
+                'language' => $this->getLanguage()->getAbbrev(),
+            )
         );
         
         return new ViewModel();
@@ -80,10 +80,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
         
         $this->redirect()->toRoute(
-        	'supplier_index',
-        	array(
-        	    'language' => $this->getLanguage()->getAbbrev(),
-        	)
+            'supplier_index',
+            array(
+                'language' => $this->getLanguage()->getAbbrev(),
+            )
         );
 
         return new ViewModel();

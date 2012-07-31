@@ -14,14 +14,14 @@
  */
  
 namespace CudiBundle\Form\Admin\Mail;
-	
+    
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Zend\Form\Element\Hidden,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
     Zend\Form\Element\Textarea,
-	Zend\Validator\EmailAddress as EmailAddressValidator;
+    Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**
  * Send Mail
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Send extends \CommonBundle\Component\Form\Admin\Form
 {
-	public function __construct($email = null, $name = null, $opts = null)
+    public function __construct($email = null, $name = null, $opts = null)
     {
         parent::__construct($opts);
                 
@@ -51,14 +51,14 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
         
         $field = new Text('subject');
         $field->setLabel('Subject')
-			->setAttrib('style', 'width: 400px')
+            ->setAttrib('style', 'width: 400px')
             ->setRequired();
         $this->addElement($field);
          
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttrib('style', 'width: 500px')
-        	->setRequired();
+            ->setRequired();
         $this->addElement($field);
     }
 }

@@ -26,26 +26,26 @@ use CommonBundle\Entity\Users\Person,
  */
 class Booking
 {
-	/**
-	 * Send a mail for assigned bookings
-	 *
-	 * @param \Doctrine\ORM\EntityManager $entityManager
-	 * @param \CudiBundle\Entity\Stock\Order $order The order
-	 * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
-	 */
+    /**
+     * Send a mail for assigned bookings
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \CudiBundle\Entity\Stock\Order $order The order
+     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     */
     public static function sendMail(Transport $mailTransport, $bookings, Person $person, $message, $subject, $mailAddress, $mailName)
     {
         $list = '';
         foreach($bookings as $booking) {
-        	$list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
+            $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
         }
-        	
+            
         $mail = new Message();
         $mail->setBody(str_replace('{{ bookings }}', $list, $message))
-        	->setFrom($mailAddress, $mailName)
-        	->addTo($person->getEmail(), $person->getFullName())
-        	->setSubject($subject);
-        	
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($person->getEmail(), $person->getFullName())
+            ->setSubject($subject);
+            
         if ('production' == getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
     }

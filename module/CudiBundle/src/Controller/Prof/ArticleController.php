@@ -48,29 +48,29 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     public function addAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
 
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-				if ($formData['internal']) {
-					$binding = $this->getEntityManager()
-						->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-						->findOneById($formData['binding']);
+            
+            if ($form->isValid($formData)) {
+                if ($formData['internal']) {
+                    $binding = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                        ->findOneById($formData['binding']);
 
-	                $article = new Internal(
-						$formData['title'],
-						$formData['author'],
-						$formData['publisher'],
-						$formData['year_published'],
-						$formData['isbn'] != ''? $formData['isbn'] : null,
-						$formData['url'],
-						$formData['type'],
-						$formData['downloadable'],
-						0,
+                    $article = new Internal(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $formData['type'],
+                        $formData['downloadable'],
+                        0,
                         0,
                         $binding,
                         true,
@@ -78,22 +78,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         null,
                         false,
                         $formData['perforated']
-	                );
-				} else {
-					$article = new External(
-	                	$formData['title'],
-	                	$formData['author'],
-	                	$formData['publisher'],
-	                	$formData['year_published'],
-	                	$formData['isbn'] != ''? $formData['isbn'] : null,
-	                	$formData['url'],
-	                	$formData['type'],
-	                	$formData['downloadable']
-	           		);
-				}
-				
-				$article->setIsProf(true);
-					
+                    );
+                } else {
+                    $article = new External(
+                        $formData['title'],
+                        $formData['author'],
+                        $formData['publisher'],
+                        $formData['year_published'],
+                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['url'],
+                        $formData['type'],
+                        $formData['downloadable']
+                       );
+                }
+                
+                $article->setIsProf(true);
+                    
                 $this->getEntityManager()->persist($article);
                 
                 $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'add');
@@ -125,9 +125,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     foreach ($actions as $action)
                         $this->getEntityManager()->remove($action);
                 }
-				
-				$this->getEntityManager()->flush();
-				
+                
+                $this->getEntityManager()->flush();
+                
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -137,22 +137,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 );
                 
                 $this->redirect()->toRoute(
-                	'prof_article',
-                	array(
-                		'action' => 'manage',
-        				'language' => $this->getLanguage()->getAbbrev(),
-                	)
+                    'prof_article',
+                    array(
+                        'action' => 'manage',
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
                 );
                 
                 return new ViewModel();
-        	}
+            }
         }
         
-    	return new ViewModel(
-    	    array(
-    	        'form' => $form,
-    	    )
-    	);
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
     
     public function editAction()
@@ -164,117 +164,117 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    if (!$article->isProf()) {
+            
+            if ($form->isValid($formData)) {
+                if (!$article->isProf()) {
                     $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);
-            	    $edited = false;
-            	    
-            	    if ($article->getTitle() != $formData['title']) {
-                	    $duplicate->setTitle($formData['title']);
-                	    $edited = true;
-                	}
-                	
-            	    if ($article->getAuthors() != $formData['author']) {
-                	    $duplicate->setAuthors($formData['author']);
-                	    $edited = true;
-                	}
-                	if ($article->getPublishers() != $formData['publisher']) {
-                	    $duplicate->setPublishers($formData['publisher']);
-                	    $edited = true;
-                	}
-                	if ($article->getYearPublished() != $formData['year_published']) {
-                	    $duplicate->setYearPublished($formData['year_published']);
-                	    $edited = true;
-                	}
-                	if ($article->getISBN() != $formData['isbn']) {
-                	    $duplicate->setISBN($formData['isbn'] != ''? $formData['isbn'] : null);
-                	    $edited = true;
-                	}
-                	if ($article->getURL() != $formData['url']) {
-                	    $duplicate->setURL($formData['url']);
-                	    $edited = true;
-                	}
-                	if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
-                	    $duplicate->setIsDownloadable($formData['downloadable']);
-                	    $edited = true;
-                	}
-                	if ($article->getType() != $formData['type']) {
-                	    $duplicate->setType($formData['type']);
-                	    $edited = true;
-                	}
-    				
-				    if ($formData['internal']) {
-				        if ($article->getBinding()->getId() != $formData['binding']) {
-            	            $duplicate->setBinding($this->getEntityManager()
-            	            	->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
-            	            	->findOneById($formData['binding']));
-                    	    $edited = true;
-				        }
-    					if ($article->isRectoVerso() !== (bool) $formData['rectoverso']) {
-            	            $duplicate->setIsRectoVerso($formData['rectoverso']);
-                    	    $edited = true;
-        				}
-        				if ($article->isPerforated() !== (bool) $formData['perforated']) {
-            	            $duplicate->setIsPerforated($formData['perforated']);
-        				    $edited = true;
-        				}
-    				}
-    				
-    				if ($edited) {
-            	        $this->getEntityManager()->persist($duplicate);
+                    $edited = false;
+                    
+                    if ($article->getTitle() != $formData['title']) {
+                        $duplicate->setTitle($formData['title']);
+                        $edited = true;
+                    }
+                    
+                    if ($article->getAuthors() != $formData['author']) {
+                        $duplicate->setAuthors($formData['author']);
+                        $edited = true;
+                    }
+                    if ($article->getPublishers() != $formData['publisher']) {
+                        $duplicate->setPublishers($formData['publisher']);
+                        $edited = true;
+                    }
+                    if ($article->getYearPublished() != $formData['year_published']) {
+                        $duplicate->setYearPublished($formData['year_published']);
+                        $edited = true;
+                    }
+                    if ($article->getISBN() != $formData['isbn']) {
+                        $duplicate->setISBN($formData['isbn'] != ''? $formData['isbn'] : null);
+                        $edited = true;
+                    }
+                    if ($article->getURL() != $formData['url']) {
+                        $duplicate->setURL($formData['url']);
+                        $edited = true;
+                    }
+                    if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
+                        $duplicate->setIsDownloadable($formData['downloadable']);
+                        $edited = true;
+                    }
+                    if ($article->getType() != $formData['type']) {
+                        $duplicate->setType($formData['type']);
+                        $edited = true;
+                    }
+                    
+                    if ($formData['internal']) {
+                        if ($article->getBinding()->getId() != $formData['binding']) {
+                            $duplicate->setBinding($this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Articles\StockArticles\Binding')
+                                ->findOneById($formData['binding']));
+                            $edited = true;
+                        }
+                        if ($article->isRectoVerso() !== (bool) $formData['rectoverso']) {
+                            $duplicate->setIsRectoVerso($formData['rectoverso']);
+                            $edited = true;
+                        }
+                        if ($article->isPerforated() !== (bool) $formData['perforated']) {
+                            $duplicate->setIsPerforated($formData['perforated']);
+                            $edited = true;
+                        }
+                    }
+                    
+                    if ($edited) {
+                        $this->getEntityManager()->persist($duplicate);
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
-            	        $this->getEntityManager()->persist($action);
-            	    }
-				} else {
-				    $article->setAuthors($formData['author'])
-				        ->setPublishers($formData['publisher'])
-				        ->setYearPublished($formData['year_published'])
-				        ->setTitle($formData['title'])
-				        ->setISBN($formData['isbn'])
-				        ->setURL($formData['url'])
-				        ->setIsDownloadable($formData['downloadable'])
-				        ->setType($formData['type']);
-				    				    
-			        if ($formData['internal']) {
-			            $article->setBinding(
-				                $this->getEntityManager()
-    				                ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
-    				                ->findOneById($formData['binding'])
-				            )
-			                ->setIsRectoVerso($formData['rectoverso'])
-			                ->setIsPerforated($formData['perforated']);
-			    	}
-				}
-				$this->getEntityManager()->flush();
-        	    
-        	    $this->flashMessenger()->addMessage(
-        	        new FlashMessage(
-        	            FlashMessage::SUCCESS,
-        	            'SUCCESS',
-        	            'The article was successfully updated!'
-        	        )
-        	    );
-        	    
-        	    $this->redirect()->toRoute(
-        	    	'prof_article',
-        	    	array(
-        	    		'action' => 'manage',
-        	    		'language' => $this->getLanguage()->getAbbrev(),
-        	    	)
-        	    );
-        	    
-        	    return new ViewModel();
-        	}
+                        $this->getEntityManager()->persist($action);
+                    }
+                } else {
+                    $article->setAuthors($formData['author'])
+                        ->setPublishers($formData['publisher'])
+                        ->setYearPublished($formData['year_published'])
+                        ->setTitle($formData['title'])
+                        ->setISBN($formData['isbn'])
+                        ->setURL($formData['url'])
+                        ->setIsDownloadable($formData['downloadable'])
+                        ->setType($formData['type']);
+                                        
+                    if ($formData['internal']) {
+                        $article->setBinding(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
+                                    ->findOneById($formData['binding'])
+                            )
+                            ->setIsRectoVerso($formData['rectoverso'])
+                            ->setIsPerforated($formData['perforated']);
+                    }
+                }
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The article was successfully updated!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                    'prof_article',
+                    array(
+                        'action' => 'manage',
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+                
+                return new ViewModel();
+            }
         }
         
-    	return new ViewModel(
-    	    array(
-    	        'form' => $form,
-    	        'article' => $article,
-    	    )
-    	);
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'article' => $article,
+            )
+        );
     }
     
     public function typeaheadAction()
@@ -285,16 +285,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         
         $result = array();
         foreach($articles as $article) {
-        	$item = (object) array();
-        	$item->id = $article->getId();
-        	$item->value = $article->getTitle() . ' - ' . $article->getYearPublished();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->value = $article->getTitle() . ' - ' . $article->getYearPublished();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
@@ -302,50 +302,50 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-    	if (null === $id) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return new ViewModel();
-    	}
+        if (null === $id) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return new ViewModel();
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return new ViewModel();
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return new ViewModel();
+        }
+        
+        return $article;
     }
 }

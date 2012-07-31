@@ -20,25 +20,25 @@ class Study extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.title', ':title'),
-        	        $query->expr()->eq('s.phase', ':phase'),
-        	        $query->expr()->eq('s.language', ':language')
-        	    )
-        	)
-        	->setParameter('title', $title)
-        	->setParameter('phase', $phase)
-        	->setParameter('language', $language)
-        	->setMaxResults(1)
-    		->getQuery()
-    		->getResult();
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.title', ':title'),
+                    $query->expr()->eq('s.phase', ':phase'),
+                    $query->expr()->eq('s.language', ':language')
+                )
+            )
+            ->setParameter('title', $title)
+            ->setParameter('phase', $phase)
+            ->setParameter('language', $language)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
 
-    	if (isset($resultSet[0]))
-    		return $resultSet[0];
-    	
-    	return null;
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        
+        return null;
     }
     
     public function findOneByTitlePhaseLanguageAndParent($title, $phase, $language, StudyEntity $parent)
@@ -48,25 +48,25 @@ class Study extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
-        	->from('SyllabusBundle\Entity\Study', 's')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('s.title', ':title'),
-        	        $query->expr()->eq('s.phase', ':phase'),
-        	        $query->expr()->eq('s.language', ':language'),
-        	        ($parent ? $query->expr()->eq('s.parent', $parent->getId()) : $query->expr()->isNull('s.parent'))
-        	    )
-        	)
-        	->setParameter('title', $title)
-        	->setParameter('phase', $phase)
-        	->setParameter('language', $language)
-        	->setMaxResults(1)
-    		->getQuery()
-    		->getResult();
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.title', ':title'),
+                    $query->expr()->eq('s.phase', ':phase'),
+                    $query->expr()->eq('s.language', ':language'),
+                    ($parent ? $query->expr()->eq('s.parent', $parent->getId()) : $query->expr()->isNull('s.parent'))
+                )
+            )
+            ->setParameter('title', $title)
+            ->setParameter('phase', $phase)
+            ->setParameter('language', $language)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
 
-    	if (isset($resultSet[0]))
-    		return $resultSet[0];
-    	
-    	return null;
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        
+        return null;
     }
 }

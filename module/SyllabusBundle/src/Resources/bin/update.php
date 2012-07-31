@@ -59,6 +59,6 @@ try {
 }
 
 if (isset($opts->r)) {
-	$update = new \SyllabusBundle\Component\WebSocket\Syllabus\Update($diContainer->get('doctrine_em'), $diContainer->get('mail_transport'));
-	$update->process();
+    $update = new \SyllabusBundle\Component\WebSocket\Syllabus\Update($diContainer->get('doctrine_em'), $diContainer->get('mail_transport'));
+    $update->process();
 }

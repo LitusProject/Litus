@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Admin\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CudiBundle\Entity\Article,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CudiBundle\Entity\Article,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit Article
@@ -37,7 +37,7 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
             $this->removeElement($element->getName());
         $this->removeDisplayGroup('subject_form');
         
-		$field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));

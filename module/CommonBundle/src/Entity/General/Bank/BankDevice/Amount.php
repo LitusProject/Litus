@@ -16,7 +16,7 @@
 namespace CommonBundle\Entity\General\Bank\BankDevice;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
-	CommonBundle\Entity\General\Bank\CashRegister;
+    CommonBundle\Entity\General\Bank\CashRegister;
 
 /**
  * For a given register, this class has the amount 
@@ -26,82 +26,82 @@ use CommonBundle\Entity\General\Bank\BankDevice,
  */
 class Amount
 {
-	/**
-	 * @var string The amount's ID
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="bankDeviceAmounts")
-	 * @JoinColumn(name="cash_register_id", referencedColumnName="id")
-	 */
-	private $cashRegister;
-	
-	/**
-	 * @var \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\BankDevice")
-	 * @JoinColumn(name="device_id", referencedColumnName="id")
-	 */
-	private $device;
-	
-	/**
-	 * @var int The amount payed, multiplied by a 100 before it is stored
-	 *
-	 * @Column(type="integer")
-	 */
-	private $amount;
-	
-	/**
-	 * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
-	 * @param \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
-	 * @param float $amount The amount payed
-	 */
-	public function __construct(CashRegister $cashRegister, BankDevice $bankDevice, $amount)
-	{
-		$this->cashRegister = $cashRegister;
-		$this->device = $bankDevice;
-		$this->setAmount($amount);
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return \CommonBundle\Entity\General\Bank\BankDevice
-	 */
-	public function getDevice()
-	{
-		return $this->device;
-	}
-	
-	/**
-	 * @return float
-	 */
-	public function getAmount()
-	{
-		return $this->amount;
-	}
-	
-	/**
-	 * @param int $amount The amount payed
-	 * @return \CommonBundle\Entity\General\Bank\BankDevice	 
-	 */
-	public function setAmount($amount)
-	{
-		$this->amount = $amount * 100;
-		
-		return $this;
-	}
+    /**
+     * @var string The amount's ID
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="bankDeviceAmounts")
+     * @JoinColumn(name="cash_register_id", referencedColumnName="id")
+     */
+    private $cashRegister;
+    
+    /**
+     * @var \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\BankDevice")
+     * @JoinColumn(name="device_id", referencedColumnName="id")
+     */
+    private $device;
+    
+    /**
+     * @var int The amount payed, multiplied by a 100 before it is stored
+     *
+     * @Column(type="integer")
+     */
+    private $amount;
+    
+    /**
+     * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
+     * @param \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
+     * @param float $amount The amount payed
+     */
+    public function __construct(CashRegister $cashRegister, BankDevice $bankDevice, $amount)
+    {
+        $this->cashRegister = $cashRegister;
+        $this->device = $bankDevice;
+        $this->setAmount($amount);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\General\Bank\BankDevice
+     */
+    public function getDevice()
+    {
+        return $this->device;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+    
+    /**
+     * @param int $amount The amount payed
+     * @return \CommonBundle\Entity\General\Bank\BankDevice     
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount * 100;
+        
+        return $this;
+    }
 }

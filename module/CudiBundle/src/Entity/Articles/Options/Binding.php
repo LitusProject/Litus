@@ -21,18 +21,18 @@ namespace CudiBundle\Entity\Articles\Options;
  */
 class Binding
 {
-	/**
-	 * @var integer The ID of the binding
-	 *
+    /**
+     * @var integer The ID of the binding
+     *
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
-	private $id;
-	
-	/**
-	 * @var string The name of the binding
-	 *
+    private $id;
+    
+    /**
+     * @var string The name of the binding
+     *
      * @Column(type="string")
      */
     private $name;
@@ -43,36 +43,36 @@ class Binding
      * @Column(type="string")
      */
     private $code;
-	
-	/**
-	 * @param string $name
-	 */
-	public function __construct($code, $name) {
-		$this->code = $code;
-		$this->name = $name;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getCode()
-	{
-		return $this->code;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    
+    /**
+     * @param string $name
+     */
+    public function __construct($code, $name) {
+        $this->code = $code;
+        $this->name = $name;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

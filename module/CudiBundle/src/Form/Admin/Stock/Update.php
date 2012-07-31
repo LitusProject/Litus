@@ -16,38 +16,38 @@
 namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CudiBundle\Entity\Sales\Article,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Form\Element\Textarea,
-	Zend\Validator\Int as IntValidator,
-	Zend\Validator\GreaterThan as GreaterThanValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CudiBundle\Entity\Sales\Article,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Form\Element\Textarea,
+    Zend\Validator\Int as IntValidator,
+    Zend\Validator\GreaterThan as GreaterThanValidator;
 
 /**
  * Update Stock
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- */	
+ */    
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
     public function __construct(Article $article, $options = null)
     {
         parent::__construct($options);
-		
+        
         $field = new Text('number');
         $field->setLabel('Number')
-			->setAttrib('autocomplete', 'off')
-        	->setRequired()
-			->addValidator(new IntValidator())
-			->addValidator(new GreaterThanValidator(0))
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('autocomplete', 'off')
+            ->setRequired()
+            ->addValidator(new IntValidator())
+            ->addValidator(new GreaterThanValidator(0))
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Textarea('comment');
         $field->setLabel('Comment')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('updateStock');
@@ -57,8 +57,8 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
         
         $this->populate(array(
-        		'number' => $article->getStockValue()
-        	)
+                'number' => $article->getStockValue()
+            )
         );
     }
 }

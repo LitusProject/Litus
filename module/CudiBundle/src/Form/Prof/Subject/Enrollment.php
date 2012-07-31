@@ -16,9 +16,9 @@
 namespace CudiBundle\Form\Prof\Subject;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-	CommonBundle\Component\Form\Bootstrap\Element\Text,
-	SyllabusBundle\Entity\StudentEnrollment,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    SyllabusBundle\Entity\StudentEnrollment,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Update student enrollment
@@ -30,14 +30,14 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct(StudentEnrollment $enrollment = null, $options = null)
     {
         parent::__construct($options);
-		 
-		$field = new Text('students');
-		$field->setLabel('Students')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
-			->setAttrib('autocomplete', 'off')
-			->addValidator(new IntValidator())
-			->setRequired();
-		$this->addElement($field);
+         
+        $field = new Text('students');
+        $field->setLabel('Students')
+            ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
+            ->setAttrib('autocomplete', 'off')
+            ->addValidator(new IntValidator())
+            ->setRequired();
+        $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Update');

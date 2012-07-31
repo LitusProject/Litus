@@ -16,11 +16,11 @@ class News extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
-        	->from('NewsBundle\Entity\Nodes\News', 'n')
-        	->orderBy('n.createTime', 'DESC')
-        	->setMaxResults($nbResults)
-        	->getQuery()
-        	->getResult();
+            ->from('NewsBundle\Entity\Nodes\News', 'n')
+            ->orderBy('n.createTime', 'DESC')
+            ->setMaxResults($nbResults)
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }

@@ -49,10 +49,10 @@ class Discount extends \Zend\Validator\AbstractValidator
      */
     public function __construct(Article $article, EntityManager $entityManager, $opts = null)
     {
-    	parent::__construct($opts);
-    	
-    	$this->_article = $article;
-    	$this->_entityManager = $entityManager;
+        parent::__construct($opts);
+        
+        $this->_article = $article;
+        $this->_entityManager = $entityManager;
     }
 
 
@@ -67,11 +67,11 @@ class Discount extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
-		
-		$discount = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
-			->findOneByArticleAndType($this->_article, $value);
-		
+        
+        $discount = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+            ->findOneByArticleAndType($this->_article, $value);
+        
         if (null === $discount)
             return true;
 

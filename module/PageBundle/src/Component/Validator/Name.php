@@ -28,15 +28,15 @@ class Name extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @var \PageBundle\Entity\Nodes\Translation The translation exluded from this check
-	 */
-	private $_translation;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @var \PageBundle\Entity\Nodes\Translation The translation exluded from this check
+     */
+    private $_translation;
 
     /**
      * @var array The error messages
@@ -45,18 +45,18 @@ class Name extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The page title already exists'
     );
 
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param \PageBundle\Entity\Nodes\Translation The translation exluded from this check
-	 * @param mixed $opts The validator's options
-	 */
-	public function __construct(EntityManager $entityManager, Translation $translation = null, $opts = null)
-	{
-		parent::__construct($opts);
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \PageBundle\Entity\Nodes\Translation The translation exluded from this check
+     * @param mixed $opts The validator's options
+     */
+    public function __construct(EntityManager $entityManager, Translation $translation = null, $opts = null)
+    {
+        parent::__construct($opts);
 
-		$this->_entityManager = $entityManager;
-		$this->_translation = $translation;
-	}
+        $this->_entityManager = $entityManager;
+        $this->_translation = $translation;
+    }
 
     /**
      * Returns true if no matching record is found in the database.
@@ -69,10 +69,10 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-		$page = $this->_entityManager
-			->getRepository('PageBundle\Entity\Nodes\Translation')
-			->findOneByName(str_replace(' ', '_', strtolower($value)));
-				
+        $page = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Nodes\Translation')
+            ->findOneByName(str_replace(' ', '_', strtolower($value)));
+                
         if (null === $page || ($this->_translation && $page == $this->_translation))
             return true;
 

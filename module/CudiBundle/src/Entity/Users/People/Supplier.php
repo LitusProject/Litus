@@ -16,7 +16,7 @@
 namespace CudiBundle\Entity\Users\People;
 
 use CommonBundle\Entity\Users\Credential,
-	CudiBundle\Entity\Supplier as SupplierEntity;
+    CudiBundle\Entity\Supplier as SupplierEntity;
 
 /**
  * This is the entity for an supplier person.

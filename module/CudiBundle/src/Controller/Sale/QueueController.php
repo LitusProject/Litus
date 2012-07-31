@@ -16,9 +16,9 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-	CudiBundle\Entity\Sales\QueueItem,
-	CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
-	Zend\View\Model\ViewModel;
+    CudiBundle\Entity\Sales\QueueItem,
+    CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * QueueController
@@ -28,33 +28,33 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class QueueController extends \CudiBundle\Component\Controller\SaleController
 {
-	public function overviewAction()
-	{
-		return new ViewModel(
-		    array(
-			    'socketUrl' => $this->getSocketUrl(),
-			)
-		);
-	}
-	
-	public function screenAction()
-	{
-	    return new ViewModel(
-		    array(
-			    'socketUrl' => $this->getSocketUrl(),
-			)
-		);
-	}
+    public function overviewAction()
+    {
+        return new ViewModel(
+            array(
+                'socketUrl' => $this->getSocketUrl(),
+            )
+        );
+    }
+    
+    public function screenAction()
+    {
+        return new ViewModel(
+            array(
+                'socketUrl' => $this->getSocketUrl(),
+            )
+        );
+    }
 
     public function signInAction()
-	{
+    {
         $form = new SignInForm();
         
         return new ViewModel(
             array(
-        	    'form' => $form,
-        	    'socketUrl' => $this->getSocketUrl(),
-        	)
+                'form' => $form,
+                'socketUrl' => $this->getSocketUrl(),
+            )
         );
     }
 }

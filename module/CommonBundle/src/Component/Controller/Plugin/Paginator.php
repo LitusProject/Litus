@@ -16,8 +16,8 @@
  namespace CommonBundle\Component\Controller\Plugin;
  
  use Doctrine\ORM\EntityManager,
- 	 Zend\Paginator\Paginator as ZendPaginator,
- 	 Zend\Paginator\Adapter\ArrayAdapter;
+      Zend\Paginator\Paginator as ZendPaginator,
+      Zend\Paginator\Adapter\ArrayAdapter;
  
  /**
   * A controller plugin containing some utility methods for pagination.
@@ -25,52 +25,52 @@
   * @autor Pieter Maene <pieter.maene@litus.cc>
   */
  class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
- {	
- 	/**
- 	 * @var \Zend\Paginator\Paginator $paginator The paginator
- 	 */
- 	private $_paginator = null;
- 	
- 	/**
- 	 * @var int The number of items on each page
- 	 */
- 	private $_itemsPerPage = 25;
-	
-	/**
-	 * Setting the number of items per page, defaults to 25.
-	 *
-	 * @param int $itemsPerPage The number of items per page
-	 * @return void
-	 */
-	public function setItemsPerPage($itemsPerPage)
-	{
-		if (!is_int($itemsPerPage) || $itemsPerPage < 0)
-			throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
-			
-		$this->_itemsPerPage = $itemsPerPage;
-	}
+ {    
+     /**
+      * @var \Zend\Paginator\Paginator $paginator The paginator
+      */
+     private $_paginator = null;
+     
+     /**
+      * @var int The number of items on each page
+      */
+     private $_itemsPerPage = 25;
+    
+    /**
+     * Setting the number of items per page, defaults to 25.
+     *
+     * @param int $itemsPerPage The number of items per page
+     * @return void
+     */
+    public function setItemsPerPage($itemsPerPage)
+    {
+        if (!is_int($itemsPerPage) || $itemsPerPage < 0)
+            throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
+            
+        $this->_itemsPerPage = $itemsPerPage;
+    }
  
- 	/**
-	 * Create a paginator from a given array.
-	 *
-	 * @param array $records The array containing the paginated records
-	 * @param int $currentPage The page we now are on
-	 * @param int $itemsPerPage The number of items on each page
-	 * @return \Zend\Paginator\Paginator
-	 */
-	public function createFromArray(array $records, $currentPage)
-	{
-	    $this->_paginator = new ZendPaginator(
-	        new ArrayAdapter($records)
-	    );
-	    
-		$this->_paginator->setCurrentPageNumber($currentPage);
-	    $this->_paginator->setItemCountPerPage(
-	    	$this->_itemsPerPage
-	    );
-	    
-	    return $this->_paginator;
-	}
+     /**
+     * Create a paginator from a given array.
+     *
+     * @param array $records The array containing the paginated records
+     * @param int $currentPage The page we now are on
+     * @param int $itemsPerPage The number of items on each page
+     * @return \Zend\Paginator\Paginator
+     */
+    public function createFromArray(array $records, $currentPage)
+    {
+        $this->_paginator = new ZendPaginator(
+            new ArrayAdapter($records)
+        );
+        
+        $this->_paginator->setCurrentPageNumber($currentPage);
+        $this->_paginator->setItemCountPerPage(
+            $this->_itemsPerPage
+        );
+        
+        return $this->_paginator;
+    }
 
     /**
      * Create a paginator for a given entity.
@@ -84,11 +84,11 @@
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
     {
-		return $this->createFromArray(
-			(0 == count($conditions)) ?
-            	$this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy(array(), $orderBy) :
-            	$this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
-           	$currentPage      
+        return $this->createFromArray(
+            (0 == count($conditions)) ?
+                $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy(array(), $orderBy) :
+                $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
+               $currentPage      
         );
     }
     
@@ -107,13 +107,13 @@
                 unset($params[$key]);
                 
             if (isset($params['page']))
-            	unset($params['page']);
+                unset($params['page']);
         }
-    	return array(
-       	    'fullWidth' => $fullWidth,
-       		'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
-       		'matchedRouteParams' => $params,
-    		'pages' => $this->_paginator->getPages(),
-    	);
+        return array(
+               'fullWidth' => $fullWidth,
+               'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
+               'matchedRouteParams' => $params,
+            'pages' => $this->_paginator->getPages(),
+        );
     }
  }

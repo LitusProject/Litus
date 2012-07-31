@@ -19,23 +19,23 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-            	'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
-            	
+                'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
+                
                 'authentication'                   => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_action'            => 'CommonBundle\Component\Authentication\Action\Doctrine',
                 'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
-				
-				'index'                            => 'CommonBundle\Controller\IndexController',
-				'account'                          => 'CommonBundle\Controller\AccountController',
-				'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
+                
+                'index'                            => 'CommonBundle\Controller\IndexController',
+                'account'                          => 'CommonBundle\Controller\AccountController',
+                'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
                 'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
                 'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
                 'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
                 
-            	'translator'                       => 'CommonBundle\Component\Localisation\Translator',
+                'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
                 'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),
@@ -52,21 +52,21 @@ return array(
                             'commonbundle' => array(
                                 'root_path' => __DIR__ . '/../assets',
                                 'collections' => array(
-                                	'common_jquery' => array(
-                                	    'assets'  => array(
-                                	        'common/js/jquery-1.7.2.min.js',
-                                	    ),
-                                	),
-                                	'common_jqueryui' => array(
-                                	    'assets'  => array(
-                                	        'common/js/jqueryui-1.8.16.min.js',
-                                	    ),
-                                	),
-                                	'common_jquery_form' => array(
-                                	    'assets'  => array(
-                                	        'common/js/jquery.form.js',
-                                	    ),
-                                	),
+                                    'common_jquery' => array(
+                                        'assets'  => array(
+                                            'common/js/jquery-1.7.2.min.js',
+                                        ),
+                                    ),
+                                    'common_jqueryui' => array(
+                                        'assets'  => array(
+                                            'common/js/jqueryui-1.8.16.min.js',
+                                        ),
+                                    ),
+                                    'common_jquery_form' => array(
+                                        'assets'  => array(
+                                            'common/js/jquery.form.js',
+                                        ),
+                                    ),
                                     'common_form_upload_progress' => array(
                                         'assets'  => array(
                                             'common/js/jquery.form.js',
@@ -95,22 +95,22 @@ return array(
                                     ),
                                     
                                     'admin_css' => array(
-                                    	'assets' => array(
-                                    		'admin/less/admin.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'admin_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => true,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
+                                        'assets' => array(
+                                            'admin/less/admin.less',
+                                        ),
+                                        'filters' => array(
+                                            'admin_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => true,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
                                             'output' => 'admin_css.css',
                                             'media' => 'print'
                                         ),
@@ -122,63 +122,63 @@ return array(
                                     ),
                                     
                                     'site_css' => array(
-                                    	'assets' => array(
-                                    		'site/less/base.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'site_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => true,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
+                                        'assets' => array(
+                                            'site/less/base.less',
+                                        ),
+                                        'filters' => array(
+                                            'site_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => true,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
                                             'output' => 'site_css.css'
                                         ),
                                     ),
                                     
                                     'bootstrap_css' => array(
-                                    	'assets' => array(
-                                    		'bootstrap/less/bootstrap.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'bootstrap_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => true,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
+                                        'assets' => array(
+                                            'bootstrap/less/bootstrap.less',
+                                        ),
+                                        'filters' => array(
+                                            'bootstrap_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => true,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
                                             'output' => 'bootstrap_css.css',
                                         ),
                                     ),
                                     'bootstrap_responsive_css' => array(
-                                    	'assets' => array(
-                                    		'bootstrap/less/responsive.less',
-                                    	),
-                                    	'filters' => array(
-                                    		'bootstrap_responsive_less' => array(
-                                    			'name' => 'LessFilter',
-                                    			'parameters' => array(
-                                    				'nodeBin'   => '/usr/local/bin/node',
-                                    				'nodePaths' => array(
-                                    					'/usr/local/lib/node_modules',
-                                    				),
-                                    				'compress'  => false,
-                                    			),
-                                    		),
-                                    	),
-                                    	'options' => array(
+                                        'assets' => array(
+                                            'bootstrap/less/responsive.less',
+                                        ),
+                                        'filters' => array(
+                                            'bootstrap_responsive_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => false,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
                                             'output' => 'bootstrap_responsive_css.css',
                                         ),
                                     ),
@@ -262,10 +262,10 @@ return array(
             ),
                        
             'authentication' => array(
-            	'parameters' => array(
-            		'adapter' => 'authentication_credentialadapter',
-            		'service' => 'authentication_doctrineservice',
-            	),
+                'parameters' => array(
+                    'adapter' => 'authentication_credentialadapter',
+                    'service' => 'authentication_doctrineservice',
+                ),
             ),
             'authentication_action' => array(
                 'parameters' => array(
@@ -274,68 +274,68 @@ return array(
                 )
             ),
             'authentication_credentialadapter' => array(
-            	'parameters' => array(
-            		'entityManager'  => 'doctrine_em',
-            		'entityName'     => '"CommonBundle\Entity\Users\Person"',
-            		'identityColumn' => 'username',
-            	),
+                'parameters' => array(
+                    'entityManager'  => 'doctrine_em',
+                    'entityName'     => '"CommonBundle\Entity\Users\Person"',
+                    'identityColumn' => 'username',
+                ),
             ),
             'authentication_doctrineservice' => array(
-            	'parameters' => array(
-            		'entityManager' => 'doctrine_em',
-            		'entityName'    => '"CommonBundle\Entity\Users\Session"',
-            		'expire'        => 2678400,
-            		'storage'       => 'authentication_sessionstorage',
-            		'namespace'     => 'Litus_Auth',
-            		'cookieSuffix'  => 'Session',
-            		'action'        => 'authentication_action',
-            	),
+                'parameters' => array(
+                    'entityManager' => 'doctrine_em',
+                    'entityName'    => '"CommonBundle\Entity\Users\Session"',
+                    'expire'        => 2678400,
+                    'storage'       => 'authentication_sessionstorage',
+                    'namespace'     => 'Litus_Auth',
+                    'cookieSuffix'  => 'Session',
+                    'action'        => 'authentication_action',
+                ),
             ),
             'authentication_sessionstorage' => array(
-            	'parameters' => array(
-            		'namespace' => 'Litus_Auth',
-            		'member'    => 'storage',
-            	),
+                'parameters' => array(
+                    'namespace' => 'Litus_Auth',
+                    'member'    => 'storage',
+                ),
             ),
             
             'doctrine_config' => array(
                 'parameters' => array(
-                	'entityPaths' => array(
-                		'commonbundle' => __DIR__ . '/../../Entity',
-                	),
+                    'entityPaths' => array(
+                        'commonbundle' => __DIR__ . '/../../Entity',
+                    ),
                 ),
             ),
             
             'translator' => array(
-            	'parameters' => array(
-            	    'adapter' => 'ArrayAdapter',
-            		'translations' => array(
-                		'common_site_en' => array(
-                			'content' => __DIR__ . '/../translations/site.en.php',
-                			'locale' => 'en',
-                		),
-                		'common_site_nl' => array(
-                			'content' => __DIR__ . '/../translations/site.nl.php',
-                			'locale' => 'nl',
-                		),
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'common_site_en' => array(
+                            'content' => __DIR__ . '/../translations/site.en.php',
+                            'locale' => 'en',
+                        ),
+                        'common_site_nl' => array(
+                            'content' => __DIR__ . '/../translations/site.nl.php',
+                            'locale' => 'nl',
+                        ),
                         'validators_en' => array(
-                        	'content' => 'vendor/ZendFramework/resources/languages/en/Zend_Validate.php',
-                        	'locale' => 'en',
+                            'content' => 'vendor/ZendFramework/resources/languages/en/Zend_Validate.php',
+                            'locale' => 'en',
                         ),
                         'validators_nl' => array(
-                        	'content' => 'vendor/ZendFramework/resources/languages/nl/Zend_Validate.php',
-                        	'locale' => 'nl',
+                            'content' => 'vendor/ZendFramework/resources/languages/nl/Zend_Validate.php',
+                            'locale' => 'nl',
                         ),
                         'countries_en' => array(
-                        	'content' => __DIR__ . '/../translations/countries.en.php',
-                        	'locale' => 'en',
+                            'content' => __DIR__ . '/../translations/countries.en.php',
+                            'locale' => 'en',
                         ),
                         'countries_nl' => array(
-                        	'content' => __DIR__ . '/../translations/countries.nl.php',
-                        	'locale' => 'nl',
+                            'content' => __DIR__ . '/../translations/countries.nl.php',
+                            'locale' => 'nl',
                         ),
                     ),
-            	),
+                ),
             ),
             
             'Zend\View\Helper\Doctype' => array(
@@ -431,97 +431,97 @@ return array(
                             ),
                         ),
                         'common_install' => array(
-                        	'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        	'options' => array(
-                        		'route' => '/admin/install/common',
-                        		'defaults' => array(
-                        			'controller' => 'common_install',
-                        			'action'     => 'index',
-                        		),
-                        	),
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '/admin/install/common',
+                                'defaults' => array(
+                                    'controller' => 'common_install',
+                                    'action'     => 'index',
+                                ),
+                            ),
                         ),
-                    	'admin_academic' => array(
-                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    	    'options' => array(
-                    	        'route'    => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
-                    	        'constraints' => array(
-                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    	        	'id'      => '[0-9]*',
-                    				'page'    => '[0-9]*',
-                    				'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    				'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
-                    	        ),
-                    	        'defaults' => array(
-                    	            'controller' => 'admin_academic',
-                    	            'action'     => 'manage',
-                    	        ),
-                    	    ),
-                    	),
-                    	'admin_academic_typeahead' => array(
-                    		'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    		'options' => array(
-                    			'route' => '/admin/academic/typeahead[/:string]',
-                    			'constraints' => array(
-                    				'string'       => '[%a-zA-Z0-9_-]*',
-                    			),
-                    			'defaults' => array(
-                    				'controller' => 'admin_academic',
-                    				'action'     => 'typeahead',
-                    			),
-                    		),
-                    	),
-                    	'admin_config' => array(
-                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    	    'options' => array(
-                    	        'route'    => '/admin/config[/:action[/key:key]]',
-                    	        'constraints' => array(
-                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    	        	'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
-                    	        ),
-                    	        'defaults' => array(
-                    	            'controller' => 'admin_config',
-                    	            'action'     => 'manage',
-                    	        ),
-                    	    ),
-                    	),
-                    	'admin_index' => array(
-                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    	    'options' => array(
-                    	        'route'    => '/admin[/:action]',
-                    	        'defaults' => array(
-                    	            'controller' => 'admin_index',
-                    	            'action'     => 'index',
-                    	        ),
-                    	    ),
-                    	),
-                    	'admin_auth' => array(
-                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    	    'options' => array(
-                    	        'route'    => '/admin/auth[/:action]',
-                    	        'constraints' => array(
-                    	        	'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    	        ),
-                    	        'defaults' => array(
-                    	            'controller' => 'admin_auth',
-                    	            'action'     => 'login',
-                    	        ),
-                    	    ),
-                    	),
-                    	'admin_role' => array(
-                    	    'type'    => 'Zend\Mvc\Router\Http\Segment',
-                    	    'options' => array(
-                    	        'route'    => '/admin/role[/:action[/name:name][/page/:page]]',
-                    	        'constraints' => array(
-                    	        	'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    	        	'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    				'page'    => '[0-9]*',
-                    	        ),
-                    	        'defaults' => array(
-                    	            'controller' => 'admin_role',
-                    	            'action'     => 'manage',
-                    	        ),
-                    	    ),
-                    	),
+                        'admin_academic' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[0-9]*',
+                                    'page'    => '[0-9]*',
+                                    'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_academic',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'admin_academic_typeahead' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '/admin/academic/typeahead[/:string]',
+                                'constraints' => array(
+                                    'string'       => '[%a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_academic',
+                                    'action'     => 'typeahead',
+                                ),
+                            ),
+                        ),
+                        'admin_config' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/config[/:action[/key:key]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_config',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'admin_index' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin[/:action]',
+                                'defaults' => array(
+                                    'controller' => 'admin_index',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'admin_auth' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/auth[/:action]',
+                                'constraints' => array(
+                                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_auth',
+                                    'action'     => 'login',
+                                ),
+                            ),
+                        ),
+                        'admin_role' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/role[/:action[/name:name][/page/:page]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'page'    => '[0-9]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_role',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),

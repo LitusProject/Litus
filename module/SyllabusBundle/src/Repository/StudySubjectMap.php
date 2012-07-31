@@ -24,17 +24,17 @@ class StudySubjectMap extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->in('m.study', $parentIds),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('academicYear', $academicYear)
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.study', $parentIds),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
     
@@ -47,21 +47,21 @@ class StudySubjectMap extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, 
-        	    $query->expr()->like($query->expr()->lower('s.name'), ':name')
-        	)
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->in('m.study', $parentIds),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('name', '%' . strtolower($name) . '%')
-        	->setParameter('academicYear', $academicYear)
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's', Join::WITH, 
+                $query->expr()->like($query->expr()->lower('s.name'), ':name')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.study', $parentIds),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
     
@@ -74,21 +74,21 @@ class StudySubjectMap extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
-        	->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-        	->innerJoin('m.subject', 's', Join::WITH, 
-        	    $query->expr()->like($query->expr()->lower('s.code'), ':code')
-        	)
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->in('m.study', $parentIds),
-        	        $query->expr()->eq('m.academicYear', ':academicYear')
-        	    )
-        	)
-        	->setParameter('code', '%' . strtolower($code) . '%')
-        	->setParameter('academicYear', $academicYear)
-        	->getQuery()
-        	->getResult();
-        	
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->innerJoin('m.subject', 's', Join::WITH, 
+                $query->expr()->like($query->expr()->lower('s.code'), ':code')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.study', $parentIds),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('code', '%' . strtolower($code) . '%')
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+            
         return $resultSet;
     }
 }

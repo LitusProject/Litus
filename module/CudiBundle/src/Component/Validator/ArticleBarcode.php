@@ -43,9 +43,9 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-    	parent::__construct($opts);
-    	
-    	$this->_entityManager = $entityManager;
+        parent::__construct($opts);
+        
+        $this->_entityManager = $entityManager;
     }
 
 
@@ -62,14 +62,14 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
         
         if (! is_numeric($value)) {
-        	$this->error(self::NOT_VALID);
-        	return false;
+            $this->error(self::NOT_VALID);
+            return false;
         }
         
-		$article = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Article')
-			->findOneByBarcode($value);
-		
+        $article = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByBarcode($value);
+        
         if (null !== $article)
             return true;
 

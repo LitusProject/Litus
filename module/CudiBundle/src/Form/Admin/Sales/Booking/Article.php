@@ -16,11 +16,11 @@
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	Zend\Form\Element\Hidden,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text,
-	Zend\Validator\Int as IntValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Zend\Form\Element\Hidden,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Validator\Int as IntValidator;
 
 /**
  * Booking by article
@@ -44,12 +44,12 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')
-        	->setAttrib('style', 'width: 400px;')
-        	->setAttrib('id', 'articleSearch')
-        	->setAttrib('autocomplete', 'off')
-        	->setAttrib('data-provide', 'typeahead')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setAttrib('style', 'width: 400px;')
+            ->setAttrib('id', 'articleSearch')
+            ->setAttrib('autocomplete', 'off')
+            ->setAttrib('data-provide', 'typeahead')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Submit('submit');

@@ -16,12 +16,12 @@
 namespace CommonBundle\Form\Admin\Address;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Entity\General\Address,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Text,
-	Zend\Validator\Alpha as AlphaValidator,
-	Zend\Validator\Digits as DigitsValidator;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Entity\General\Address,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Text,
+    Zend\Validator\Alpha as AlphaValidator,
+    Zend\Validator\Digits as DigitsValidator;
 
 /**
  * Add Address
@@ -30,60 +30,60 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\SubForm
 {
-	/**
-	 * @param mixed $opts The form's options
-	 */
+    /**
+     * @param mixed $opts The form's options
+     */
     public function __construct($prefix = '', $opts = null)
     {
         parent::__construct($opts);
         
         $prefix = '' == $prefix ? '' : $prefix . '_';
-		
-		$field = new Text($prefix . 'address_street');
-		$field->setLabel('Street')
-			->setRequired()
-		    ->setDecorators(array(new FieldDecorator()))
-		    ->addValidator(new AlphaValidator(
-		    	array(
-		    		'allowWhiteSpace' => true
-		    	)
-		    ));
-		$this->addElement($field);
-		
-		$field = new Text($prefix . 'address_number');
-		$field->setLabel('Number')
-			->setRequired()
-			->setAttrib('size', 5)
-		    ->setDecorators(array(new FieldDecorator()))
-		    ->addValidator(new DigitsValidator());
-		$this->addElement($field);
-		
-		$field = new Text($prefix . 'address_postal');
-		$field->setLabel('Postal Code')
-			->setRequired()
-			->setAttrib('size', 10)
-		    ->setDecorators(array(new FieldDecorator()))
-		    ->addValidator(new DigitsValidator());
-		$this->addElement($field);
-		
-		$field = new Text($prefix . 'address_city');
-		$field->setLabel('City')
-			->setRequired()
-		    ->setDecorators(array(new FieldDecorator()))
-		    ->addValidator(new AlphaValidator());
-		$this->addElement($field);
-		
-		$field = new Select($prefix . 'address_country');
-		$field->setLabel('Country')
-			->setRequired()
-			->setMultiOptions(Address::$countries)
-			->setDecorators(array(new FieldDecorator()));
-		$this->addElement($field);
-		
-		$this->populate(
-			array(
-				'address_country' => 'BE'
-			)
-		);
+        
+        $field = new Text($prefix . 'address_street');
+        $field->setLabel('Street')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlphaValidator(
+                array(
+                    'allowWhiteSpace' => true
+                )
+            ));
+        $this->addElement($field);
+        
+        $field = new Text($prefix . 'address_number');
+        $field->setLabel('Number')
+            ->setRequired()
+            ->setAttrib('size', 5)
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new DigitsValidator());
+        $this->addElement($field);
+        
+        $field = new Text($prefix . 'address_postal');
+        $field->setLabel('Postal Code')
+            ->setRequired()
+            ->setAttrib('size', 10)
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new DigitsValidator());
+        $this->addElement($field);
+        
+        $field = new Text($prefix . 'address_city');
+        $field->setLabel('City')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new AlphaValidator());
+        $this->addElement($field);
+        
+        $field = new Select($prefix . 'address_country');
+        $field->setLabel('Country')
+            ->setRequired()
+            ->setMultiOptions(Address::$countries)
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $this->populate(
+            array(
+                'address_country' => 'BE'
+            )
+        );
     }
 }

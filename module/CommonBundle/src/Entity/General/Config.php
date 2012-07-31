@@ -23,11 +23,11 @@ namespace CommonBundle\Entity\General;
  */
 class Config 
 {
-	/**
-	 * @static
-	 * @var string The separator used to denote the bundles
-	 */
-	public static $separator = '.';
+    /**
+     * @static
+     * @var string The separator used to denote the bundles
+     */
+    public static $separator = '.';
 
     /**
      * @var string The entry's key
@@ -51,11 +51,11 @@ class Config
      */
     private $description;
 
-	/**
-	 * @param string $key The entry's key
-	 * @param string $value The entry's value
-	 * @throws \InvalidArgumentException Key must be a string
-	 */
+    /**
+     * @param string $key The entry's key
+     * @param string $value The entry's value
+     * @throws \InvalidArgumentException Key must be a string
+     */
     public function __construct($key, $value)
     {
         if(!is_string($key))
@@ -64,28 +64,28 @@ class Config
         $this->key = $key;
         $this->setValue($value);
     }
-	
-	/**
-	 * @return string
-	 */
+    
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;
     }
-	
-	/**
-	 * @return string
-	 */
+    
+    /**
+     * @return string
+     */
     public function getValue()
     {
         return $this->value;
     }
-	
-	/**
-	 * @param string $value The entry's value
-	 * @return \CommonBundle\Entity\Public\Config
-	 * @throws \InvalidArgumentException Value must be a string
-	 */
+    
+    /**
+     * @param string $value The entry's value
+     * @return \CommonBundle\Entity\Public\Config
+     * @throws \InvalidArgumentException Value must be a string
+     */
     public function setValue($value)
     {
         if(!is_string($value))
@@ -96,19 +96,19 @@ class Config
         return $this;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getDescription()
     {
         return $this->description;
     }
-	
-	/**
-	* @param string $description A description for this configuration entry
-	* @return \CommonBundle\Entity\Public\Config
-	* @throws \InvalidArgumentException Description must be a string or null
-	 */
+    
+    /**
+    * @param string $description A description for this configuration entry
+    * @return \CommonBundle\Entity\Public\Config
+    * @throws \InvalidArgumentException Description must be a string or null
+     */
     public function setDescription($description = null)
     {
         if(($description !== null) && !is_string($description))

@@ -23,59 +23,59 @@ use CommonBundle\Entity\General\Address;
  */
 class Supplier
 {
-	/**
-	 * @var integer The ID of the supplier
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var string The name of the supplier
-	 *
-	 * @Column(type="string")
-	 */
-	private $name;
-	
-	/**
-	 * @var string The phone number of the supplier
-	 *
-	 * @Column(type="string", name="phone_number")
-	 */
-	private $phoneNumber;
+    /**
+     * @var integer The ID of the supplier
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var string The name of the supplier
+     *
+     * @Column(type="string")
+     */
+    private $name;
+    
+    /**
+     * @var string The phone number of the supplier
+     *
+     * @Column(type="string", name="phone_number")
+     */
+    private $phoneNumber;
 
-	/**
-	 * @var \CommonBundle\Entity\General\Address The address of the supplier
-	 *
-	 * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
-	 * @JoinColumn(name="address", referencedColumnName="id")
-	 */
-	private $address;
+    /**
+     * @var \CommonBundle\Entity\General\Address The address of the supplier
+     *
+     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @JoinColumn(name="address", referencedColumnName="id")
+     */
+    private $address;
 
-	/**
-	 * @var string The vat number of the supplier
-	 *
-	 * @Column(type="string")
-	 */
-	private $vatNumber;
-	
-	/**
-	 * @param string $name
-	 * @param string $phoneNumber
-	 * @param \CommonBundle\Entity\General\Address $address
-	 * @param string $vatNumber
-	 */
-	public function __construct($name, $phoneNumber, Address $address, $vatNumber)
-	{
-		$this->setName($name)
-		    ->setPhoneNumber($phoneNumber)
-		    ->setAddress($address)
-		    ->setVatNumber($vatNumber);
-	}
-	
-	/**
+    /**
+     * @var string The vat number of the supplier
+     *
+     * @Column(type="string")
+     */
+    private $vatNumber;
+    
+    /**
+     * @param string $name
+     * @param string $phoneNumber
+     * @param \CommonBundle\Entity\General\Address $address
+     * @param string $vatNumber
+     */
+    public function __construct($name, $phoneNumber, Address $address, $vatNumber)
+    {
+        $this->setName($name)
+            ->setPhoneNumber($phoneNumber)
+            ->setAddress($address)
+            ->setVatNumber($vatNumber);
+    }
+    
+    /**
      * @return integer
      */
     public function getId()
@@ -83,7 +83,7 @@ class Supplier
         return $this->id;
     }
 
-	/**
+    /**
      * @return string
      */
     public function getName()

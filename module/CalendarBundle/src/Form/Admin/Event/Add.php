@@ -31,72 +31,72 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @var \CalendarBundle\Entity\Nodes\Event
-	 */
-	protected $event;
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @var \CalendarBundle\Entity\Nodes\Event
+     */
+    protected $event;
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
-		$this->_entityManager = $entityManager;
-		
-		$field = new Text('start_date');
-		$field->setLabel('Start Date')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-large')
-		    ->setRequired()
-		    ->addValidator(new DateValidator('dd/MM/yyyy H:m'));
-		$this->addElement($field);
-		
-		$field = new Text('end_date');
-		$field->setLabel('End Date')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-large')
-		    ->addValidator(new DateCompareValidator('start_date', 'd/m/Y H:i'))
-		    ->addValidator(new DateValidator('dd/MM/yyyy H:m'));
-		$this->addElement($field);
-		
-		$tabs = new Tabs('languages');
-		$this->addElement($tabs);
-		
-		$tabContent = new TabContent();
-		
-		foreach($this->_getLanguages() as $language) {
-		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-		    
-		    $pane = new TabPane('tab_' . $language->getAbbrev());
-		    
-		    $field = new Text('location_' . $language->getAbbrev());
-		    $field->setLabel('Location')
-		        ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
-		        ->setRequired();
-		    $pane->addElement($field);
-		    
-		    $field = new Text('title_' . $language->getAbbrev());
-		    $field->setLabel('Title')
-		        ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
-		        ->setRequired();
-		    $pane->addElement($field);
-		    
-		    $field = new Textarea('content_' . $language->getAbbrev());
-		    $field->setLabel('Content')
-		        ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
-		        ->setRequired();
-		    $pane->addElement($field);
-		    
-		    $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
-		}
-		
-		$this->addSubForm($tabContent, 'tab-content');
+        $this->_entityManager = $entityManager;
+        
+        $field = new Text('start_date');
+        $field->setLabel('Start Date')
+            ->setAttrib('class', $field->getAttrib('class') . ' input-large')
+            ->setRequired()
+            ->addValidator(new DateValidator('dd/MM/yyyy H:m'));
+        $this->addElement($field);
+        
+        $field = new Text('end_date');
+        $field->setLabel('End Date')
+            ->setAttrib('class', $field->getAttrib('class') . ' input-large')
+            ->addValidator(new DateCompareValidator('start_date', 'd/m/Y H:i'))
+            ->addValidator(new DateValidator('dd/MM/yyyy H:m'));
+        $this->addElement($field);
+        
+        $tabs = new Tabs('languages');
+        $this->addElement($tabs);
+        
+        $tabContent = new TabContent();
+        
+        foreach($this->_getLanguages() as $language) {
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+            
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+            
+            $field = new Text('location_' . $language->getAbbrev());
+            $field->setLabel('Location')
+                ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
+                ->setRequired();
+            $pane->addElement($field);
+            
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
+                ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
+                ->setRequired();
+            $pane->addElement($field);
+            
+            $field = new Textarea('content_' . $language->getAbbrev());
+            $field->setLabel('Content')
+                ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
+                ->setRequired();
+            $pane->addElement($field);
+            
+            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+        }
+        
+        $this->addSubForm($tabContent, 'tab-content');
         
         $field = new Submit('submit');
         $field->setLabel('Add');
@@ -147,8 +147,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
                 $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
 
                 $event = $this->_entityManager
-                	->getRepository('CalendarBundle\Entity\Nodes\Translation')
-                	->findOneByName($name);
+                    ->getRepository('CalendarBundle\Entity\Nodes\Translation')
+                    ->findOneByName($name);
 
                 if (!(null == $event || 
                     (null != $this->event && null != $event && $event->getEvent() == $this->event))) {

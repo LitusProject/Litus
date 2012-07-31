@@ -16,11 +16,11 @@
 namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
-	CommonBundle\Component\Authentication\Result\Doctrine as Result,
-	CommonBundle\Entity\Users\Session,
-	Doctrine\ORM\EntityManager,
-	Zend\Authentication\Adapter,
-	Zend\Authentication\Storage as Storage;
+    CommonBundle\Component\Authentication\Result\Doctrine as Result,
+    CommonBundle\Entity\Users\Session,
+    Doctrine\ORM\EntityManager,
+    Zend\Authentication\Adapter,
+    Zend\Authentication\Storage as Storage;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -30,21 +30,21 @@ use CommonBundle\Component\Authentication\Action,
  */
 class Doctrine extends \Zend\Authentication\AuthenticationService
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @var string The name of the entity that holds the sessions
-	 */
-	private $_entityName = '';
-	
-	/**
-	 * @var int The expiration time for the persistent storage
-	 */
-	private $_expire = -1;
-	
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @var string The name of the entity that holds the sessions
+     */
+    private $_entityName = '';
+    
+    /**
+     * @var int The expiration time for the persistent storage
+     */
+    private $_expire = -1;
+    
     /**
      * @var string The namespace the storage handlers will use
      */
@@ -74,12 +74,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     )
     {
         parent::__construct($storage);
-		
-		$this->_entityManager = $entityManager;
-		
-		// A bit of a dirty hack to get Zend's DI to play nice
-		$entityName = str_replace('"', '', $entityName);
-		
+        
+        $this->_entityManager = $entityManager;
+        
+        // A bit of a dirty hack to get Zend's DI to play nice
+        $entityName = str_replace('"', '', $entityName);
+        
         $this->_namespace = $namespace;
         $this->_expire = $expire;
         $this->_cookieSuffix = $cookieSuffix;
@@ -106,7 +106,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         
         if ('' == $this->getIdentity()) {
             $adapterResult = $adapter->authenticate();
-			
+            
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
@@ -116,7 +116,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
                 $this->_entityManager->persist($newSession);
-				
+                
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
                     setcookie(
@@ -144,7 +144,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
             if (null !== $session) {
                 $sessionValidation = $session->validateSession(
-                	$this->_entityManager,
+                    $this->_entityManager,
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR']
                 );
@@ -162,7 +162,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     }
                 }
 
-				$result = new Result(
+                $result = new Result(
                     Result::SUCCESS,
                     $session->getPerson()->getUsername(),
                     array(
@@ -174,7 +174,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 $this->clearIdentity();
             }
         }
-		
+        
         $this->_entityManager->flush();
 
         return $result;

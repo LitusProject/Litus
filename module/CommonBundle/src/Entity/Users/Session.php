@@ -25,7 +25,7 @@ use Doctrine\ORM\EntityManager;
  * @Table(name="users.sessions")
  */
 class Session
-{	
+{    
     /**
      * @var string The session ID
      *

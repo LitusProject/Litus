@@ -26,36 +26,36 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
-    		$start = AcademicYear::getStartOfAcademicYear();
-    	} else {
-    	    $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-    	}
-    	$start->setTime(0, 0);
+            $start = AcademicYear::getStartOfAcademicYear();
+        } else {
+            $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
+        $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStartDate($start);
-    	
-    	if (null === $academicYear) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No academic year was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_study',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $academicYear;
+        
+        if (null === $academicYear) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No academic year was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $academicYear;
     }
     
     protected function getActiveStockPeriod()
@@ -74,10 +74,10 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             );
             
             $this->redirect()->toRoute(
-            	'admin_stock_period',
-            	array(
-            		'action' => 'manage'
-            	)
+                'admin_stock_period',
+                array(
+                    'action' => 'manage'
+                )
             );
             
             return;

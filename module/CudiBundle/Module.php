@@ -16,20 +16,20 @@
 namespace CudiBundle;
 
 use Zend\EventManager\Event,
-	Zend\EventManager\StaticEventManager,
-	Zend\Module\Consumer\AutoloaderProvider,
-	Zend\Module\Manager,
+    Zend\EventManager\StaticEventManager,
+    Zend\Module\Consumer\AutoloaderProvider,
+    Zend\Module\Manager,
     Zend\Mvc\MvcEvent,
     Zend\View\Helper\Doctype;
 
 class Module implements AutoloaderProvider
 {
-	protected $locator = null;
-	protected $moduleManager = null;
+    protected $locator = null;
+    protected $moduleManager = null;
 
-	public function init(Manager $moduleManager)
+    public function init(Manager $moduleManager)
     {
-    	$this->moduleManager = $moduleManager;
+        $this->moduleManager = $moduleManager;
     }
 
     public function getAutoloaderConfig()
@@ -40,7 +40,7 @@ class Module implements AutoloaderProvider
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ 	=> __DIR__ . '/src/' . __NAMESPACE__,
+                    __NAMESPACE__     => __DIR__ . '/src/' . __NAMESPACE__,
                 )
             )
         );
@@ -56,8 +56,8 @@ class Module implements AutoloaderProvider
         /*$app = $e->getParam('application');
         $locator = $app->getLocator();
         $view = $locator->get('view');
-		
-		$view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CudiBundle/src/Resources/layouts');
+        
+        $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CudiBundle/src/Resources/layouts');
         $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
 
         $url = $view->plugin('url');

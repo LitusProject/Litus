@@ -16,8 +16,8 @@
 namespace CudiBundle\Form\Sale\Queue;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Reset,
-	CommonBundle\Component\Form\Bootstrap\Element\Button,
-	CommonBundle\Component\Form\Bootstrap\Element\Text;
+    CommonBundle\Component\Form\Bootstrap\Element\Button,
+    CommonBundle\Component\Form\Bootstrap\Element\Text;
 
 /**
  * Sign in to queue
@@ -33,15 +33,15 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('username');
         $field->setLabel('Student Number')
             ->setRequired()
-			->setAttrib('id', 'username')
-			->setAttrib('placeholder', "Student Number")
-			->setAttrib('autocomplete', 'off');
+            ->setAttrib('id', 'username')
+            ->setAttrib('placeholder', "Student Number")
+            ->setAttrib('autocomplete', 'off');
         $this->addElement($field);
-      	
+          
         $field = new Button('submit');
         $field->setLabel('Sign In')
-        	->addDecorator('ViewHelper')
-        	->setAttrib('id', 'signin');
+            ->addDecorator('ViewHelper')
+            ->setAttrib('id', 'signin');
         $this->addElement($field);
         
         $field = new Reset('cancel');

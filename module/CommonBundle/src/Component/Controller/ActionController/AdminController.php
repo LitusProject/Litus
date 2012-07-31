@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
-	Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language,
  */
 class AdminController extends \CommonBundle\Component\Controller\ActionController
 {
-	/**
+    /**
      * Execute the request.
      * 
      * @param \Zend\Mvc\MvcEvent $e The MVC event
@@ -35,24 +35,24 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     public function execute(MvcEvent $e)
     {
-		$result = parent::execute($e);
-		
-		$language = $this->getEntityManager()
-		    ->getRepository('CommonBundle\Entity\General\Language')
-		    ->findOneByAbbrev('en');
-		    
-		if (null === $language) {
-		    $language = new Language(
-		        'en', 'English'
-		    );
-		}
-		    
-		$result->language = $language;
-		$result->now = array(
-			'iso8601' => date('c', time()),
-			'display' => date('l, F j Y, H:i', time())
-		);
-  		
+        $result = parent::execute($e);
+        
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+            
+        if (null === $language) {
+            $language = new Language(
+                'en', 'English'
+            );
+        }
+            
+        $result->language = $language;
+        $result->now = array(
+            'iso8601' => date('c', time()),
+            'display' => date('l, F j Y, H:i', time())
+        );
+          
         $e->setResult($result);
         
         return $result;
@@ -83,8 +83,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
         
         if ($this->getAuthentication()->isAuthenticated()) {
-        	$this->getAuthentication()->getPersonObject()->setLanguage($language);
-        	$this->getEntityManager()->flush();
+            $this->getAuthentication()->getPersonObject()->setLanguage($language);
+            $this->getEntityManager()->flush();
         }
     }
 }

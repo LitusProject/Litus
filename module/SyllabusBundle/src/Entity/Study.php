@@ -21,14 +21,14 @@ namespace SyllabusBundle\Entity;
  */
 class Study
 {
-	/**
-	 * @var integer The ID of the study
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
+    /**
+     * @var integer The ID of the study
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
 
     /**
      * @var string The title of the study
@@ -67,10 +67,10 @@ class Study
      */
     public function __construct($title, $phase, $language, Study $parent = null)
     {
-    	$this->title = $title;
-    	$this->phase = $phase;
-    	$this->language = $language;
-    	$this->parent = $parent;
+        $this->title = $title;
+        $this->phase = $phase;
+        $this->language = $language;
+        $this->parent = $parent;
     }
     
     /**

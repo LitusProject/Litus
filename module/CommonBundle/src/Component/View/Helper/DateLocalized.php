@@ -24,16 +24,16 @@ use DateTime,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class DateLocalized extends \Zend\View\Helper\AbstractHelper
-{	
-	/**
-	 * @param \DateTime $date
-	 * @param string $format
-	 * 
-	 * @return Zend\Date\Date
-	 */
-	public function __invoke(DateTime $date, $format)
-	{
-		$date = new Zend_Date($date->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
-		return $date->toString($format);
-	}
+{    
+    /**
+     * @param \DateTime $date
+     * @param string $format
+     * 
+     * @return Zend\Date\Date
+     */
+    public function __invoke(DateTime $date, $format)
+    {
+        $date = new Zend_Date($date->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
+        return $date->toString($format);
+    }
 }

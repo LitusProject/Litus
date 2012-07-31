@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Form\Bootstrap;
 
 use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
-	Zend\Form\Decorator;
+    Zend\Form\Decorator;
 
 /**
  * Extending Zend's form element component, so that our forms look the way we want
@@ -43,7 +43,7 @@ class Element extends \Zend\Form\Element
                 return $decorator->getElement()->getId() . '-element';
             };
             $this->addDecorator('ViewHelper')
-            	->addDecorator(new Errors())
+                ->addDecorator(new Errors())
                 ->addDecorator('Description', array('tag' => 'span', 'class' => 'help-block'))
                 ->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'controls'))
                 ->addDecorator('Label', array('class' => 'control-label'))

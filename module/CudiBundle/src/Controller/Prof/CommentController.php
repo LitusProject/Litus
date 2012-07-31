@@ -43,18 +43,18 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             $formData = $this->getRequest()->post()->toArray();
 
             if($form->isValid($formData)) {
-				$comment = new Comment(
-				    $this->getEntityManager(),
-				    $this->getAuthentication()->getPersonObject(),
-				    $article,
-				    $formData['text'],
-				    'external'
-				);
-				
-				$this->getEntityManager()->persist($comment);
+                $comment = new Comment(
+                    $this->getEntityManager(),
+                    $this->getAuthentication()->getPersonObject(),
+                    $article,
+                    $formData['text'],
+                    'external'
+                );
+                
+                $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
                 
-				$this->flashMessenger()->addMessage(
+                $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
@@ -62,26 +62,26 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     )
                 );
                 
-				$this->redirect()->toRoute(
-					'prof_comment',
-					array(
-						'action' => 'manage',
-						'id' => $article->getId(),
-						'language' => $this->getLanguage()->getAbbrev(),
-					)
-				);
-				
-				return new ViewModel();
-			}
+                $this->redirect()->toRoute(
+                    'prof_comment',
+                    array(
+                        'action' => 'manage',
+                        'id' => $article->getId(),
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+                
+                return new ViewModel();
+            }
         }
                 
-    	return new ViewModel(
-    	    array(
-        	    'article' => $article,
-        	    'form' => $form,
-        	    'mappings' => $mappings,
-        	)
-    	);
+        return new ViewModel(
+            array(
+                'article' => $article,
+                'form' => $form,
+                'mappings' => $mappings,
+            )
+        );
     }
     
     public function deleteAction()
@@ -89,16 +89,16 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         $this->initAjax();
         
         if (!($mapping = $this->_getCommentMapping()))
-    	    return new ViewModel();
-    	    
-    	if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
-    		return array(
-    		    'result' => (object) array("status" => "error")
-    		);
-    	}
-    	
-    	$this->getEntityManager()->remove($mapping);
-    	$this->getEntityManager()->flush();
+            return new ViewModel();
+            
+        if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
+            return array(
+                'result' => (object) array("status" => "error")
+            );
+        }
+        
+        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
@@ -111,99 +111,99 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-    	if (null === $id) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $id) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $article;
     }
     
     private function _getCommentMapping()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the comment!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the comment!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $mapping = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No comment with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $mapping;
+        
+        if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No comment with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $mapping;
     }
 }

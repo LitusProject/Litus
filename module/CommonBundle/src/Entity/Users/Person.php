@@ -16,13 +16,13 @@
 namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Component\Util\AcademicYear,
-	CommonBundle\Entity\Acl\Role,
- 	CommonBundle\Entity\General\Address,
- 	CommonBundle\Entity\General\Language,
- 	CommonBundle\Entity\Users\Code,
- 	CommonBundle\Entity\Users\Credential,
-	Doctrine\Common\Collections\ArrayCollection,
-	Doctrine\ORM\EntityManager,
+    CommonBundle\Entity\Acl\Role,
+     CommonBundle\Entity\General\Address,
+     CommonBundle\Entity\General\Language,
+     CommonBundle\Entity\Users\Code,
+     CommonBundle\Entity\Users\Credential,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Zend\Mail\Message,
     Zend\Mail\Transport;
 
@@ -178,13 +178,13 @@ abstract class Person
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setEmail($email);
-		$this->setPhoneNumber($phoneNumber);
+        $this->setPhoneNumber($phoneNumber);
         $this->setSex($sex);
 
         $this->canLogin = true;
         
         $this->roles = new ArrayCollection($roles);        
-       	$this->organisationStatuses = new ArrayCollection();
+           $this->organisationStatuses = new ArrayCollection();
     }
 
     /**
@@ -303,9 +303,9 @@ abstract class Person
      */
     public function removeRole(Role $role)
     {
-    	$this->roles->removeElement($role);
-    	
-    	return $this;
+        $this->roles->removeElement($role);
+        
+        return $this;
     }
 
     /**
@@ -410,9 +410,9 @@ abstract class Person
      */
     public function setPhoneNumber($phoneNumber = null)
     {
-    	if ('' == $phoneNumber)
-    		return $this;
-    	
+        if ('' == $phoneNumber)
+            return $this;
+        
         if (!preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)) {
             throw new \InvalidArgumentException('Invalid phone number' . $phoneNumber);
         }
@@ -571,20 +571,20 @@ abstract class Person
             $this->setCode($code);
             
             $message = $entityManager
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('account_activated_mail');
-            	
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('account_activated_mail');
+                
             $subject = $entityManager
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('account_activated_subject');
-            	
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('account_activated_subject');
+                
             $mailAddress = $entityManager
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('system_mail_address');
-            	
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_mail_address');
+                
             $mailName = $entityManager
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('system_mail_name');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_mail_name');
             
             $mail = new Message();
             $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))

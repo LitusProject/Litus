@@ -22,68 +22,68 @@ namespace PageBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
-	{
-		$this->_installLanguages();
-	}
-	
-	protected function _initAcl()
-	{
-	    $this->installAclStructure(
-	        array(
-	            'pageBundle' => array(
-	                'admin_page' => array(
-	                    'add', 'delete', 'edit', 'manage'
-	                ),
-	                'common_page' => array(
-	                	'view'
-	                ),
-	            )
-	        )
-	    );
-	    
-	    $this->installRoles(
-	        array(
-    	        'guest' => array(
-    	            'parent_roles' => array(),
-    	            'actions' => array(
-    	                'common_page' => array(
-    	                	'view'
-    	                ),
-    	            )
-    	        ),
-    	        'sudo' => array(
-    	            'parent_roles' => array(
-    	                'guest'
-    	            ),
-    	            'actions' => array(
-    	                'admin_page' => array(
-    	                    'add', 'delete', 'edit', 'manage'
-    	                ),
-    	            )
-    	        )
-    	    )
-    	);
-	}
-	
-	private function _installLanguages()
-	{
-		$languages = array(
-			'en' => 'English',
-			'nl' => 'Dutch'
-		);
-		
-		foreach($languages as $abbrev => $name) {
-			$language = $this->getEntityManager()
-				->getRepository('CommonBundle\Entity\General\Language')
-				->findOneByAbbrev($abbrev);
-				
-			if (null == $language) {
-				$language = new Language($abbrev, $name);
-				$this->getEntityManager()->persist($language);
-			}
-		}
-		
-		$this->getEntityManager()->flush();
-	}
+    protected function _initConfig()
+    {
+        $this->_installLanguages();
+    }
+    
+    protected function _initAcl()
+    {
+        $this->installAclStructure(
+            array(
+                'pageBundle' => array(
+                    'admin_page' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'common_page' => array(
+                        'view'
+                    ),
+                )
+            )
+        );
+        
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'parent_roles' => array(),
+                    'actions' => array(
+                        'common_page' => array(
+                            'view'
+                        ),
+                    )
+                ),
+                'sudo' => array(
+                    'parent_roles' => array(
+                        'guest'
+                    ),
+                    'actions' => array(
+                        'admin_page' => array(
+                            'add', 'delete', 'edit', 'manage'
+                        ),
+                    )
+                )
+            )
+        );
+    }
+    
+    private function _installLanguages()
+    {
+        $languages = array(
+            'en' => 'English',
+            'nl' => 'Dutch'
+        );
+        
+        foreach($languages as $abbrev => $name) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($abbrev);
+                
+            if (null == $language) {
+                $language = new Language($abbrev, $name);
+                $this->getEntityManager()->persist($language);
+            }
+        }
+        
+        $this->getEntityManager()->flush();
+    }
 }

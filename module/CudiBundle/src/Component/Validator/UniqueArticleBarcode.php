@@ -20,16 +20,16 @@ use Doctrine\ORM\EntityManager;
 class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-   	
+       
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-	
-	/**
-	 * @var mixed The ids to be ignored
-	 */
-   	private $_ignoreIds = array();
+    
+    /**
+     * @var mixed The ids to be ignored
+     */
+       private $_ignoreIds = array();
 
     /**
      * Error messages
@@ -49,10 +49,10 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
      */
     public function __construct(EntityManager $entityManager, $ignoreIds = array(), $opts = null)
     {
-    	parent::__construct($opts);
-    	
-    	$this->_entityManager = $entityManager;
-    	$this->_ignoreIds = $ignoreIds;
+        parent::__construct($opts);
+        
+        $this->_entityManager = $entityManager;
+        $this->_ignoreIds = $ignoreIds;
     }
 
 
@@ -68,16 +68,16 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-		if (! is_numeric($value)) {
-			$this->error(self::NOT_VALID);
-			return false;
-		}
-		
-		$article = $this->_entityManager
-			->getRepository('CudiBundle\Entity\Sales\Article')
-			->findOneByBarcode($value);
+        if (! is_numeric($value)) {
+            $this->error(self::NOT_VALID);
+            return false;
+        }
+        
+        $article = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findOneByBarcode($value);
 
-       	if (null === $article || in_array($article->getId(), $this->_ignoreIds))
+           if (null === $article || in_array($article->getId(), $this->_ignoreIds))
             return true;
 
         $this->error(self::NOT_VALID);

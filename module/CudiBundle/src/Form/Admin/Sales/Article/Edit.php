@@ -16,10 +16,10 @@
 namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
-	CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Submit;
+    CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+    CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit Sale Article
@@ -38,7 +38,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
             ->removeValidator('UniqueArticleBarcode')
             ->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager, array($article->getId())));
         
-		$field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));

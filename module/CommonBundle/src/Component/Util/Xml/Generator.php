@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Util\Xml;
 
 use CommonBundle\Component\Util\File\TmpFile,
-	CommonBundle\Component\Util\Xml\Object;
+    CommonBundle\Component\Util\Xml\Object;
 
 /**
  * This generator creates an XML file from the supplied XML objects
@@ -34,10 +34,10 @@ class Generator
      * @var bool Whether or not the file should be destroyed, defaults to true
      */
     private $_destroy = true;
-	
-	/**
-	 * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file where the data will be saved to
-	 */
+    
+    /**
+     * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file where the data will be saved to
+     */
     public function __construct(TmpFile $tmpFile = null)
     {
         if($tmpFile === null) {
@@ -50,17 +50,17 @@ class Generator
 
         $this->_data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
     }
-	
-	/**
-	 * Append an XML object to the file.
-	 *
-	 * @param \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
-	 * @return void
-	 */
+    
+    /**
+     * Append an XML object to the file.
+     *
+     * @param \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
+     * @return void
+     */
     public function append(Object $object)
     {
         $this->_data->appendContent(
-        	$object->__toString()
+            $object->__toString()
         );
     }
 

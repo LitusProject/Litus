@@ -25,121 +25,121 @@ use CommonBundle\Entity\Users\Person,
  */
 class Retour
 {
-	/**
-	 * @var integer The ID of the retour
-	 *
-	 * @Id
-	 * @GeneratedValue
-	 * @Column(type="bigint")
-	 */
-	private $id;
-	
-	/**
-	 * @var \DateTime The time the retour item was created
-	 *
-	 * @Column(type="datetime")
-	 */
-	private $timestamp;
-	
-	/**
-	 * @var integer The number of the retour
-	 *
-	 * @Column(type="integer")
-	 */
-	private $number;
-	
-	/**
-	 * @var \CudiBundle\Entity\Sales\Article The article of the retour
-	 *
-	 * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-	 * @JoinColumn(name="article", referencedColumnName="id")
-	 */
-	private $article;
-	
-	/**
-	 * @var \CommonBundle\Entity\Users\Person The person of the retour
-	 *
-	 * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-	 * @JoinColumn(name="person_id", referencedColumnName="id")
-	 */
-	private $person;
-	
-	/**
-	 * @var string The comment of the retour
-	 *
-	 * @Column(type="text", nullable=true)
-	 */
-	private $comment;
-	
-	/**
-	 * @param \CudiBundle\Entity\Sales\Article $article The article of the retour
-	 * @param integer $number The number of the retour
-	 * @param \CommonBundle\Entity\Users\Person $person The person of the retour
-	 * @param string $comment The comment of the retour
-	 */
-	public function __construct(Article $article, $number, Person $person, $comment)
-	{
-	    $this->article = $article;
-	    $this->person = $person;
-	    $this->number = $number;
-	    $this->comment = $comment;
-	    $this->timestamp = new DateTime();
-		$article->addStockValue(-$number);
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
-	/**
-	 * @return \DateTime
-	 */
-	public function getTimestamp()
-	{
-	    return $this->timestamp;
-	}
-	
-	/**
-	 * @return \CudiBundle\Entity\Sales\Article
-	 */
-	public function getArticle()
-	{
-	    return $this->article;
-	}
-	
-	/**
-	 * @return \CommonBundle\Entity\Users\person
-	 */
-	public function getPerson()
-	{
-		return $this->person;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getNumber()
-	{
-		return $this->number;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getComment()
-	{
-		return $this->comment;
-	}
-	
-	/**
-	 * @return integer
-	 */
-	public function getPrice()
-	{
-		return $this->article->getPurchasePrice() * $this->number;
-	}
+    /**
+     * @var integer The ID of the retour
+     *
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    private $id;
+    
+    /**
+     * @var \DateTime The time the retour item was created
+     *
+     * @Column(type="datetime")
+     */
+    private $timestamp;
+    
+    /**
+     * @var integer The number of the retour
+     *
+     * @Column(type="integer")
+     */
+    private $number;
+    
+    /**
+     * @var \CudiBundle\Entity\Sales\Article The article of the retour
+     *
+     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @JoinColumn(name="article", referencedColumnName="id")
+     */
+    private $article;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Person The person of the retour
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @JoinColumn(name="person_id", referencedColumnName="id")
+     */
+    private $person;
+    
+    /**
+     * @var string The comment of the retour
+     *
+     * @Column(type="text", nullable=true)
+     */
+    private $comment;
+    
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article The article of the retour
+     * @param integer $number The number of the retour
+     * @param \CommonBundle\Entity\Users\Person $person The person of the retour
+     * @param string $comment The comment of the retour
+     */
+    public function __construct(Article $article, $number, Person $person, $comment)
+    {
+        $this->article = $article;
+        $this->person = $person;
+        $this->number = $number;
+        $this->comment = $comment;
+        $this->timestamp = new DateTime();
+        $article->addStockValue(-$number);
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
+    /**
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+    
+    /**
+     * @return \CommonBundle\Entity\Users\person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getPrice()
+    {
+        return $this->article->getPurchasePrice() * $this->number;
+    }
 }

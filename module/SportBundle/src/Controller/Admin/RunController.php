@@ -6,12 +6,12 @@ use \Admin\Form\Auth\Login as LoginForm;
 
 class RunController extends \Litus\Controller\Action
 {
-	private $currentLap = null;
+    private $currentLap = null;
     private $nextLap = null;
 
-	public function init()
-	{
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
         $this->currentLap = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
@@ -19,15 +19,15 @@ class RunController extends \Litus\Controller\Action
         $this->nextLap = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
             ->findNext();
-	}
-	
-	public function indexAction()
-	{
-		$this->_forward('queue');
-	}
-	
-	public function queueAction()
-	{
+    }
+    
+    public function indexAction()
+    {
+        $this->_forward('queue');
+    }
+    
+    public function queueAction()
+    {
         $this->view->currentLap = $this->currentLap;
         $this->view->nextLap = $this->nextLap;
 
@@ -59,7 +59,7 @@ class RunController extends \Litus\Controller\Action
         } else {
             $this->view->nbOfficialLaps = false;
         }
-	}
+    }
 
     public function startAction()
     {

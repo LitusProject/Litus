@@ -45,31 +45,31 @@ class AcademicYear
      * @Column(type="datetime")
      */
     private $endDate;
-	
-	/**
-	 * @param \DateTime $startDate
-	 * @param \DateTime $endDate
-	 */
-	public function __construct($startDate, $endDate)
-	{
-	    $startDate->setTime(0, 0);
-	    $endDate->setTime(0, 0);
-	    
-	    $this->startDate = $startDate;
-	    $this->endDate = $endDate;
-	}
-	
-	/**
-	 * @return integer
-	 */
+    
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     */
+    public function __construct($startDate, $endDate)
+    {
+        $startDate->setTime(0, 0);
+        $endDate->setTime(0, 0);
+        
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+    
+    /**
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
     }
-	
-	/**
-	 * @return \DateTime
-	 */
+    
+    /**
+     * @return \DateTime
+     */
     public function getStartDate()
     {
         return $this->startDate;
@@ -92,8 +92,8 @@ class AcademicYear
     public function getCode($short = false)
     {
         if (true === $short)
-        	return $this->startDate->format('y') . $this->endDate->format('y'); 
-        	
-		return $this->startDate->format('Y') . '-' . $this->endDate->format('Y'); 
+            return $this->startDate->format('y') . $this->endDate->format('y'); 
+            
+        return $this->startDate->format('Y') . '-' . $this->endDate->format('Y'); 
     }
 }

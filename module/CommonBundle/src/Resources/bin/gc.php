@@ -17,8 +17,8 @@
  * The socket server for the sale queue
  *
  * Usage:
- * --all|-a		Run Garbage Collection
- * --sessions|s	Sessions Only
+ * --all|-a        Run Garbage Collection
+ * --sessions|s    Sessions Only
  */
  
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
@@ -63,17 +63,17 @@ try {
 }
 
 if (isset($opts->a) || isset($opts->s)) {
-	echo 'Running Sessions GC...' . PHP_EOL;
+    echo 'Running Sessions GC...' . PHP_EOL;
 
-	$entityManager = $diContainer->get('doctrine_em');
-	$sessions = $entityManager
-	    ->getRepository('CommonBundle\Entity\Users\Session')
-	    ->findAllExpired();
-	
-	foreach($sessions as $session)
-		$entityManager->remove($sessions);
-	
-	echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
-		
-	$entityManager->flush();
+    $entityManager = $diContainer->get('doctrine_em');
+    $sessions = $entityManager
+        ->getRepository('CommonBundle\Entity\Users\Session')
+        ->findAllExpired();
+    
+    foreach($sessions as $session)
+        $entityManager->remove($sessions);
+    
+    echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
+        
+    $entityManager->flush();
 }

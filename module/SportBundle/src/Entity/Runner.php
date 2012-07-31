@@ -12,7 +12,7 @@ use \Zend\Registry;
  */
 class Runner
 {
-	/**
+    /**
      * @var string The runner's university identification
      *
      * @Id

@@ -30,27 +30,27 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class UserController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
-	{
-	    if (!($supplier = $this->_getSupplier()))
-	    	return new ViewModel();
-	    	
-		$paginator = $this->paginator()->createFromEntity(
-		    'CudiBundle\Entity\Users\People\Supplier',
-		    $this->getParam('page'),
-		    array(
-		        'canLogin' => true,
-		        'supplier' => $supplier->getId()
-		    ),
-		    array(
-		        'username' => 'ASC'
-		    )
-		);
+    {
+        if (!($supplier = $this->_getSupplier()))
+            return new ViewModel();
+            
+        $paginator = $this->paginator()->createFromEntity(
+            'CudiBundle\Entity\Users\People\Supplier',
+            $this->getParam('page'),
+            array(
+                'canLogin' => true,
+                'supplier' => $supplier->getId()
+            ),
+            array(
+                'username' => 'ASC'
+            )
+        );
         
         return new ViewModel(
             array(
                 'supplier' => $supplier,
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -58,10 +58,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function addAction()
     {
         if (!($supplier = $this->_getSupplier()))
-        	return new ViewModel();
+            return new ViewModel();
         
         $form = new AddForm($this->getEntityManager());
-		
+        
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -77,8 +77,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     $formData['last_name'],
                     $formData['email'],
                     $formData['phone_number'],
-					$formData['sex'],
-					$supplier
+                    $formData['sex'],
+                    $supplier
                 );
                 $newUser->activate($this->getEntityManager(), $this->getMailTransport());
                 $this->getEntityManager()->persist($newUser);
@@ -94,11 +94,11 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 );
                 
                 $this->redirect()->toRoute(
-                	'admin_supplier_user',
-                	array(
-                		'action' => 'manage',
-                		'id' => $supplier->getId(),
-                	)
+                    'admin_supplier_user',
+                    array(
+                        'action' => 'manage',
+                        'id' => $supplier->getId(),
+                    )
                 );
                 
                 return new ViewModel();
@@ -108,7 +108,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $supplier,
-            	'form' => $form,
+                'form' => $form,
             )
         );
     }
@@ -116,13 +116,13 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($user = $this->_getUser()))
-        	return new ViewModel();
-        			
+            return new ViewModel();
+                    
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-			
+            
             if ($form->isValid($formData)) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
@@ -141,11 +141,11 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_supplier_user',
-                	array(
-                		'action' => 'manage',
-                		'id' => $user->getSupplier()->getId()
-                	)
+                    'admin_supplier_user',
+                    array(
+                        'action' => 'manage',
+                        'id' => $user->getSupplier()->getId()
+                    )
                 );
                 
                 return new ViewModel();
@@ -155,119 +155,119 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $user->getSupplier(),
-            	'form' => $form,
+                'form' => $form,
             )
         );
     }
     
     public function deleteAction()
-	{
-		$this->initAjax();
+    {
+        $this->initAjax();
 
-		if (!($user = $this->_getUser()))
-			return new ViewModel();
+        if (!($user = $this->_getUser()))
+            return new ViewModel();
 
-		$user->disableLogin();
-		$this->getEntityManager()->flush();
+        $user->disableLogin();
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
-	}
+    }
     
     private function _getSupplier()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No id was given to identify the supplier!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_supplier',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the supplier!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $supplier) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No supplier with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_supplier',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $supplier;
+        
+        if (null === $supplier) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No supplier with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $supplier;
     }
-	
-	private function _getUser()
-	{
-		if (null === $this->getParam('id')) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No id was given to identify the supplier!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_supplier',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-	
-	    $supplier = $this->getEntityManager()
-	        ->getRepository('CudiBundle\Entity\Users\People\Supplier')
-	        ->findOneById($this->getParam('id'));
-		
-		if (null === $supplier) {
-			$this->flashMessenger()->addMessage(
-			    new FlashMessage(
-			        FlashMessage::ERROR,
-			        'Error',
-			        'No supplier with the given id was found!'
-			    )
-			);
-			
-			$this->redirect()->toRoute(
-				'admin_supplier',
-				array(
-					'action' => 'manage'
-				)
-			);
-			
-			return;
-		}
-		
-		return $supplier;
-	}
+    
+    private function _getUser()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No id was given to identify the supplier!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+    
+        $supplier = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Users\People\Supplier')
+            ->findOneById($this->getParam('id'));
+        
+        if (null === $supplier) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No supplier with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_supplier',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $supplier;
+    }
 }

@@ -43,7 +43,7 @@ class Uri extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
         
         $valid = \Zend\Uri\Uri::validateHost($value);
-		
+        
         if ($valid)
             return true;
 

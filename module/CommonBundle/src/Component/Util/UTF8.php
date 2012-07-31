@@ -38,7 +38,7 @@ class UTF8
             
         if (!is_string($utf8)) {
             throw new Exception\InvalidArgumentException(
-            	'Expected a string as first parameter, not ' . gettype($utf8)
+                'Expected a string as first parameter, not ' . gettype($utf8)
             );
         }
 

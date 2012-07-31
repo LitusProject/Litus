@@ -16,15 +16,15 @@
 namespace CudiBundle\Form\Admin\Sales\Discounts;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CommonBundle\Component\Validator\Price as PriceValidator,
-	CudiBundle\Component\Validator\Discount as DiscountValidator,
-	CudiBundle\Entity\Sales\Article,
-	Doctrine\ORM\EntityManager,
-	Zend\Form\Element\Hidden,
-	Zend\Form\Element\Select,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Text;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Validator\Price as PriceValidator,
+    CudiBundle\Component\Validator\Discount as DiscountValidator,
+    CudiBundle\Entity\Sales\Article,
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Hidden,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
  * Add Discount
@@ -48,13 +48,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttrib('id', 'discount_template')
             ->setLabel('Template')
             ->setMultiOptions($this->_getTemplates())
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $templates = $this->_entityManager
-        	->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
-        	->findAll();
+            ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
+            ->findAll();
         foreach($templates as $template) {
             $field = new Hidden('template_' . $template->getId() . '_value');
             $field->setAttrib('id', 'template_' . $template->getId() . '_value')
@@ -81,26 +81,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('value');
         $field->setAttrib('id', 'discount_template_value')
             ->setLabel('Value')
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new PriceValidator());
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new PriceValidator());
         $this->addElement($field);
         
         $field = new Select('method');
         $field->setAttrib('id', 'discount_template_method')
             ->setLabel('Method')
             ->setMultiOptions(array('percentage' => 'Percentage', 'fixed' => 'Fixed', 'override' => 'Override'))
-        	->setRequired()
-        	->setDecorators(array(new FieldDecorator()));
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
         $field = new Select('type');
         $field->setAttrib('id', 'discount_template_type')
             ->setLabel('Type')
-           	->setRequired()
-        	->setMultiOptions(array('member' => 'Member', 'acco' => 'Acco'))
+               ->setRequired()
+            ->setMultiOptions(array('member' => 'Member', 'acco' => 'Acco'))
             ->setDecorators(array(new FieldDecorator()))
-        	->addValidator(new DiscountValidator($article, $entityManager));
+            ->addValidator(new DiscountValidator($article, $entityManager));
         $this->addElement($field);
         
         $field = new Submit('submit');
@@ -112,49 +112,49 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     
     private function _getTemplates()
     {
-    	$templates = $this->_entityManager
-        	->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
-    		->findAll();
-    	$templateOptions = array(0 => 'none');
-    	foreach($templates as $template)
-    		$templateOptions[$template->getId()] = $template->getName();
-    	
-    	return $templateOptions;
+        $templates = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
+            ->findAll();
+        $templateOptions = array(0 => 'none');
+        foreach($templates as $template)
+            $templateOptions[$template->getId()] = $template->getName();
+        
+        return $templateOptions;
     }
     
     public function isValid($data)
     {
-    	if ($data['template'] != 0) {
-    		$validatorsInternal = array();
-    		$requiredInternal = array();
-    	    
-    	    $validatorsInternal['value'] = $this->getElement('value')->getValidators();
-    	    $requiredInternal['value'] = $this->getElement('value')->isRequired();
-    	    $this->getElement('value')->clearValidators()
-    	    	->setRequired(false);
-    	    	
-    		$validatorsInternal['method'] = $this->getElement('method')->getValidators();
-    		$requiredInternal['method'] = $this->getElement('method')->isRequired();
-    		$this->getElement('method')->clearValidators()
-    			->setRequired(false);
-    		
-    		$validatorsInternal['type'] = $this->getElement('type')->getValidators();
-    		$requiredInternal['type'] = $this->getElement('type')->isRequired();
-    		$this->getElement('type')->clearValidators()
-    			->setRequired(false);
-    	}
-    	
-    	$isValid = parent::isValid($data);
-    	
-    	if ($data['template'] != 0) {
-    	    $this->getElement('value')->setValidators($validatorsInternal['value'])
-    	        ->setRequired($requiredInternal['value']);
-    	    $this->getElement('method')->setValidators($validatorsInternal['method'])
-    	        ->setRequired($requiredInternal['method']);
-    	    $this->getElement('type')->setValidators($validatorsInternal['type'])
-    	        ->setRequired($requiredInternal['type']);
-    	}
-    	
-    	return $isValid;
+        if ($data['template'] != 0) {
+            $validatorsInternal = array();
+            $requiredInternal = array();
+            
+            $validatorsInternal['value'] = $this->getElement('value')->getValidators();
+            $requiredInternal['value'] = $this->getElement('value')->isRequired();
+            $this->getElement('value')->clearValidators()
+                ->setRequired(false);
+                
+            $validatorsInternal['method'] = $this->getElement('method')->getValidators();
+            $requiredInternal['method'] = $this->getElement('method')->isRequired();
+            $this->getElement('method')->clearValidators()
+                ->setRequired(false);
+            
+            $validatorsInternal['type'] = $this->getElement('type')->getValidators();
+            $requiredInternal['type'] = $this->getElement('type')->isRequired();
+            $this->getElement('type')->clearValidators()
+                ->setRequired(false);
+        }
+        
+        $isValid = parent::isValid($data);
+        
+        if ($data['template'] != 0) {
+            $this->getElement('value')->setValidators($validatorsInternal['value'])
+                ->setRequired($requiredInternal['value']);
+            $this->getElement('method')->setValidators($validatorsInternal['method'])
+                ->setRequired($requiredInternal['method']);
+            $this->getElement('type')->setValidators($validatorsInternal['type'])
+                ->setRequired($requiredInternal['type']);
+        }
+        
+        return $isValid;
     }
 }

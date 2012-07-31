@@ -29,27 +29,27 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 {
     public function sendAction()
     {
-	    $this->initAjax();
+        $this->initAjax();
 
         $form = new MailForm();
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
-        	if ($form->isValid($formData)) {
-        	    $mailAddress = $this->getEntityManager()
-        	    	->getRepository('CommonBundle\Entity\General\Config')
-        	    	->getConfigValue('cudi.mail');
-        	    	
-        	    $mailName = $this->getEntityManager()
-        	    	->getRepository('CommonBundle\Entity\General\Config')
-        	    	->getConfigValue('cudi.mail_name');
-        	    	
+            if ($form->isValid($formData)) {
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail');
+                    
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail_name');
+                    
                 $mail = new Message();
                 $mail->setBody($formData['message'])
-                	->setFrom($mailAddress, $mailName)
-                	->addTo($formData['email'], $formData['name'])
-                	->setSubject($formData['subject']);
+                    ->setFrom($mailAddress, $mailName)
+                    ->addTo($formData['email'], $formData['name'])
+                    ->setSubject($formData['subject']);
                 
                 if ('production' == getenv('APPLICATION_ENV'))
                     $mailTransport->send($mail);

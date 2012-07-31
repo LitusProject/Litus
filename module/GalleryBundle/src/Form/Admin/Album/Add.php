@@ -29,53 +29,53 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
-	
-	/**
-	 * @var \GalleryBundle\Entity\Album\Album
-	 */
-	protected $album;
-	
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+    
+    /**
+     * @var \GalleryBundle\Entity\Album\Album
+     */
+    protected $album;
+    
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
-		$this->_entityManager = $entityManager;
-		
-		$tabs = new Tabs('languages');
-		$this->addElement($tabs);
-		
-		$tabContent = new TabContent();
-		
-		foreach($this->_getLanguages() as $language) {
-		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-		    
-		    $pane = new TabPane('tab_' . $language->getAbbrev());
-		    
-		    $field = new Text('title_' . $language->getAbbrev());
-		    $field->setLabel('Title')
-		        ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
-		        ->setRequired();
-		    $pane->addElement($field);
-		    
-		    $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
-		}
-		
-		$this->addSubForm($tabContent, 'tab-content');
-		
-		$field = new Text('date');
-		$field->setLabel('Date')
-		    ->setAttrib('class', $field->getAttrib('class') . ' input-large')
-		    ->setRequired()
-		    ->addValidator(new DateValidator('dd/MM/yyyy'));
-		$this->addElement($field);
+        $this->_entityManager = $entityManager;
+        
+        $tabs = new Tabs('languages');
+        $this->addElement($tabs);
+        
+        $tabContent = new TabContent();
+        
+        foreach($this->_getLanguages() as $language) {
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+            
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+            
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
+                ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
+                ->setRequired();
+            $pane->addElement($field);
+            
+            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+        }
+        
+        $this->addSubForm($tabContent, 'tab-content');
+        
+        $field = new Text('date');
+        $field->setLabel('Date')
+            ->setAttrib('class', $field->getAttrib('class') . ' input-large')
+            ->setRequired()
+            ->addValidator(new DateValidator('dd/MM/yyyy'));
+        $this->addElement($field);
         
         $field = new Submit('submit');
         $field->setLabel('Add');
@@ -121,8 +121,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
                 $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
 
                 $album = $this->_entityManager
-                	->getRepository('GalleryBundle\Entity\Album\Translation')
-                	->findOneByName($name);
+                    ->getRepository('GalleryBundle\Entity\Album\Translation')
+                    ->findOneByName($name);
 
                 if (!(null == $album || 
                     (null != $this->album && null != $album && $album->getAlbum() == $this->album))) {

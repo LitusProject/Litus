@@ -31,18 +31,18 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     public function manageAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return new ViewModel();
-        	
+            return new ViewModel();
+            
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
         
-    	return new ViewModel(
-    	    array(
-        	    'subjects' => $subjects,
+        return new ViewModel(
+            array(
+                'subjects' => $subjects,
                 'academicYear' => $academicYear,
             )
-    	);
+        );
     }
     
     public function subjectAction()
@@ -51,7 +51,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
             
         if (!($academicYear = $this->getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
         
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
@@ -76,36 +76,36 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($enrollmentForm->isValid($formData)) {
-        	    if ($enrollment) {
-        	        $enrollment->setNumber($formData['students']);
-        	    } else {
-        	        $enrollment = new StudentEnrollment($subject, $academicYear, $formData['students']);
-        	        $this->getEntityManager()->persist($enrollment);
-        	    }
-        	    
-        	    $this->getEntityManager()->flush();
-        	    
-        	    $this->flashMessenger()->addMessage(
-        	        new FlashMessage(
-        	            FlashMessage::SUCCESS,
-        	            'SUCCESS',
-        	            'The student enrollment was successfully updated!'
-        	        )
-        	    );
-        	    
-        	    $this->redirect()->toRoute(
-        	    	'prof_subject',
-        	    	array(
-        	    		'action' => 'subject',
-        	    		'id' => $subject->getId(),
-        	    		'language' => $this->getLanguage()->getAbbrev(),
-        	    	)
-        	    );
-        	    
-        	    return new ViewModel();
-        	}
+            
+            if ($enrollmentForm->isValid($formData)) {
+                if ($enrollment) {
+                    $enrollment->setNumber($formData['students']);
+                } else {
+                    $enrollment = new StudentEnrollment($subject, $academicYear, $formData['students']);
+                    $this->getEntityManager()->persist($enrollment);
+                }
+                
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The student enrollment was successfully updated!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                    'prof_subject',
+                    array(
+                        'action' => 'subject',
+                        'id' => $subject->getId(),
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+                
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
@@ -122,51 +122,51 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     public function typeaheadAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return new ViewModel();
+            return new ViewModel();
         
         $subjects = $this->getEntityManager()
-        	->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-        	->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         $result = array();
         foreach($subjects as $subject) {
-        	$item = (object) array();
-        	$item->id = $subject->getSubject()->getId();
-        	$item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $subject->getSubject()->getId();
+            $item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-        	    'result' => $result,
-        	)
+                'result' => $result,
+            )
         );
     }
     
     private function _getSubject()
     {
         if (!($academicYear = $this->getAcademicYear()))
-        	return;
-        	
+            return;
+            
         if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the subject!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the subject!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -176,26 +176,26 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 $academicYear
             );
 
-    	if (null === $mapping) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No subject with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_subject',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $mapping->getSubject();
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No subject with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_subject',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $mapping->getSubject();
     }
 }

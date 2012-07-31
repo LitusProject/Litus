@@ -27,10 +27,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Edit extends Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, News $news, $opts = null)
     {
         parent::__construct($entityManager, $opts);
@@ -48,8 +48,8 @@ class Edit extends Add
         
         $field = new Submit('submit');
         $field->setLabel('Save')
-        	->setAttrib('class', 'news_edit')
-        	->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'news_edit')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
         
         $this->_populateFromNews($news);

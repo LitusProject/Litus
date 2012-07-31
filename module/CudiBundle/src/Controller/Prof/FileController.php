@@ -65,128 +65,128 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         
         return new ViewModel(
             array(
-        	    'form' => $form,
-            	'article' => $article,
-            	'mappings' => $fileMappings,
-            	'uploadProgressName' => ini_get('session.upload_progress.name'),
-            	'uploadProgressId' => uniqid(),
+                'form' => $form,
+                'article' => $article,
+                'mappings' => $fileMappings,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
             )
         );
     }
     
     public function downloadAction()
-	{
-		$filePath = $this->getEntityManager()
-			->getRepository('CommonBundle\Entity\General\Config')
-			->getConfigValue('cudi.file_path');
-			
-		if (!($mapping = $this->_getFileMapping()))
-		    return new ViewModel();
-		
-		$file = $mapping->getFile();
-		
-		$headers = new Headers();
-		$headers->addHeaders(array(
-			'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
-			'Content-type' => 'application/octet-stream',
-			'Content-Length' => filesize($filePath . $file->getPath()),
-		));
-		$this->getResponse()->setHeaders($headers);
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.file_path');
+            
+        if (!($mapping = $this->_getFileMapping()))
+            return new ViewModel();
+        
+        $file = $mapping->getFile();
+        
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
+            'Content-type' => 'application/octet-stream',
+            'Content-Length' => filesize($filePath . $file->getPath()),
+        ));
+        $this->getResponse()->setHeaders($headers);
 
-		$handle = fopen($filePath . $file->getPath(), 'r');
-		$data = fread($handle, filesize($filePath . $file->getPath()));
-		fclose($handle);
-		
-		return new ViewModel(
-		    array(
-			    'data' => $data,
-			)
-		);
-	}
-	
-	public function uploadAction()
-	{
-	    $this->initAjax();
+        $handle = fopen($filePath . $file->getPath(), 'r');
+        $data = fread($handle, filesize($filePath . $file->getPath()));
+        fclose($handle);
+        
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+    
+    public function uploadAction()
+    {
+        $this->initAjax();
 
-	    if (!($article = $this->_getArticle()))
-	        return new ViewModel();
-	    
-		$form = new AddForm();
-	    $formData = $this->getRequest()->post()->toArray();
-	            	
-    	if ($form->isValid($formData)) {
-    	    $filePath = $this->getEntityManager()
-    	    	->getRepository('CommonBundle\Entity\General\Config')
-    	    	->getConfigValue('cudi.file_path');
-    	    	
-    		$upload = new FileUpload();
-    		$originalName = $upload->getFileName(null, false);
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+        
+        $form = new AddForm();
+        $formData = $this->getRequest()->post()->toArray();
+                    
+        if ($form->isValid($formData)) {
+            $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.file_path');
+                
+            $upload = new FileUpload();
+            $originalName = $upload->getFileName(null, false);
 
-    		$fileName = '';
-    		do{
-    		    $fileName = '/' . sha1(uniqid());
-    		} while (file_exists($filePath . $fileName));
-    		
-    		$upload->addFilter('Rename', $filePath . $fileName);
-    		$upload->receive();
-    		
-    		$file = new File(
-    		    $this->getEntityManager(),
-    		    $fileName,
-    		    $originalName,
-    		    $formData['description'],
-    		    $article,
-    		    false
-    		);
-    		$this->getEntityManager()->persist($file);
-    		
-    		$this->getEntityManager()->flush();
+            $fileName = '';
+            do{
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+            
+            $upload->addFilter('Rename', $filePath . $fileName);
+            $upload->receive();
+            
+            $file = new File(
+                $this->getEntityManager(),
+                $fileName,
+                $originalName,
+                $formData['description'],
+                $article,
+                false
+            );
+            $this->getEntityManager()->persist($file);
+            
+            $this->getEntityManager()->flush();
 
-    		$mapping = $this->getEntityManager()
-    			->getRepository('CudiBundle\Entity\Files\Mapping')
-    			->findOneByFile($file);
-    		$mapping->setIsProf(true);
-    		
-    		$action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'add');
-    		$this->getEntityManager()->persist($action);
-    		
-    		$this->getEntityManager()->flush();
-    		
-    		return new ViewModel(
-    		    array(
-        		    'status' => 'success',
-        		    'info' => array(
-        		        'info' => (object) array(
-        		            'name' => $file->getName(),
-        		            'description' => $file->getDescription(),
-        		            'id' => $file->getId(),
-        		        )
-        		    ),
-    		    )
-    		);
-    	} else {
-    	    $errors = $form->getErrors();
-    	    $formErrors = array();
-    	    
-    	    foreach ($form->getElements() as $key => $element) {
-    	        $formErrors[$element->getId()] = array();
-    	        foreach ($errors[$element->getName()] as $error) {
-    	            $formErrors[$element->getId()][] = $element->getMessages()[$error];
-    	        }
-    	    }
-    	    
-    	    return new ViewModel(
-    	        array(
-        	        'status' => 'error',
-        	        'form' => array(
-        	            'errors' => $formErrors
-        	        ),
-        	    )
-    	    );
-    	}
-	}
-	
-	public function progressAction()
+            $mapping = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Files\Mapping')
+                ->findOneByFile($file);
+            $mapping->setIsProf(true);
+            
+            $action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'add');
+            $this->getEntityManager()->persist($action);
+            
+            $this->getEntityManager()->flush();
+            
+            return new ViewModel(
+                array(
+                    'status' => 'success',
+                    'info' => array(
+                        'info' => (object) array(
+                            'name' => $file->getName(),
+                            'description' => $file->getDescription(),
+                            'id' => $file->getId(),
+                        )
+                    ),
+                )
+            );
+        } else {
+            $errors = $form->getErrors();
+            $formErrors = array();
+            
+            foreach ($form->getElements() as $key => $element) {
+                $formErrors[$element->getId()] = array();
+                foreach ($errors[$element->getName()] as $error) {
+                    $formErrors[$element->getId()][] = $element->getMessages()[$error];
+                }
+            }
+            
+            return new ViewModel(
+                array(
+                    'status' => 'error',
+                    'form' => array(
+                        'errors' => $formErrors
+                    ),
+                )
+            );
+        }
+    }
+    
+    public function progressAction()
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
 
@@ -230,99 +230,99 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-    	if (null === $id) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $id) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $article;
     }
     
     private function _getFileMapping()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No id was given to identify the file!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No id was given to identify the file!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
     
         $file = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $file) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'ERROR',
-    		        'No file with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'prof_article',
-    			array(
-    				'action' => 'manage',
-    				'language' => $this->getLanguage()->getAbbrev(),
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $file;
+        
+        if (null === $file) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'No file with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'prof_article',
+                array(
+                    'action' => 'manage',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+            
+            return;
+        }
+        
+        return $file;
     }
 }

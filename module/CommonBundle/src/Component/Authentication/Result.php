@@ -26,8 +26,8 @@ abstract class Result extends \Zend\Authentication\Result
 {
     /**
      * Return the user object
-	 *
-	 * @return \CommonBundle\Entity\Users\Person
+     *
+     * @return \CommonBundle\Entity\Users\Person
      */
     public abstract function getPersonObject();
 }

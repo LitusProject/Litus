@@ -28,16 +28,16 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
     public function indexAction()
     {
         $address = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('syllabus.update_socket_remote_host');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_remote_host');
         $port = $this->getEntityManager()
-        	->getRepository('CommonBundle\Entity\General\Config')
-        	->getConfigValue('syllabus.update_socket_port');
-        	
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_port');
+            
         return new ViewModel(
             array(
-        	    'socketUrl' => 'ws://' . $address . ':' . $port,
-        	)
+                'socketUrl' => 'ws://' . $address . ':' . $port,
+            )
         );
     }
 }

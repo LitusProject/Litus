@@ -24,8 +24,8 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors;
  */
 class File extends \Zend\Form\Element\File
 {
-	
-	/**
+    
+    /**
      * Load default decorators
      *
      * @return CommonBundle\Component\Form\Bootstrap\Element

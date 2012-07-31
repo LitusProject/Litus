@@ -17,16 +17,16 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->isNull('a.refuseDate'),
-        	        $query->expr()->isNull('a.confirmDate')
-        	    )
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNull('a.refuseDate'),
+                    $query->expr()->isNull('a.confirmDate')
+                )
             )
-        	->orderBy('a.timestamp', 'ASC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'ASC')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }
@@ -35,13 +35,13 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-       	        $query->expr()->isNotNull('a.confirmDate')
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                   $query->expr()->isNotNull('a.confirmDate')
             )
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }
@@ -50,13 +50,13 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-       	        $query->expr()->isNotNull('a.refuseDate')
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                   $query->expr()->isNotNull('a.refuseDate')
             )
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
         
         return $resultSet;
     }
@@ -65,14 +65,14 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->eq('a.person', ':person')
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->eq('a.person', ':person')
             )
             ->setParameter('person', $person->getId())
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
@@ -81,20 +81,20 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('a.person', ':person'),
-        	        $query->expr()->eq('a.entity', ':entity'),
-        	        $query->expr()->eq('a.action', ':action')
-        	    )
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.person', ':person'),
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.action', ':action')
+                )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('entity', $entity)
             ->setParameter('action', $action)
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
@@ -103,22 +103,22 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('a.person', ':person'),
-        	        $query->expr()->eq('a.entity', ':entity'),
-        	        $query->expr()->eq('a.entityId', ':entityId'),
-        	        $query->expr()->eq('a.action', ':action')
-        	    )
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.person', ':person'),
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.entityId', ':entityId'),
+                    $query->expr()->eq('a.action', ':action')
+                )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('entity', $entity)
             ->setParameter('entityId', $entityId)
             ->setParameter('action', $action)
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
@@ -127,20 +127,20 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('a.person', ':person'),
-        	        $query->expr()->eq('a.entity', ':entity'),
-        	        $query->expr()->eq('a.entityId', ':entityId')
-        	    )
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.person', ':person'),
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.entityId', ':entityId')
+                )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('entity', $entity)
             ->setParameter('entityId', $entityId)
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
@@ -149,20 +149,20 @@ class Action extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
-        	->from('CudiBundle\Entity\Prof\Action', 'a')
-        	->where(
-        	    $query->expr()->andX(
-        	        $query->expr()->eq('a.entity', ':entity'),
-        	        $query->expr()->eq('a.previousId', ':previousId'),
-        	        $query->expr()->eq('a.action', ':action')
-        	    )
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.previousId', ':previousId'),
+                    $query->expr()->eq('a.action', ':action')
+                )
             )
             ->setParameter('entity', $entity)
             ->setParameter('previousId', $previousId)
             ->setParameter('action', $action)
-        	->orderBy('a.timestamp', 'DESC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
@@ -171,20 +171,20 @@ class Action extends EntityRepository
         {
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a')
-            	->from('CudiBundle\Entity\Prof\Action', 'a')
-            	->where(
-            	    $query->expr()->andX(
-            	        $query->expr()->eq('a.entity', ':entity'),
-            	        $query->expr()->eq('a.entityId', ':entityId'),
-            	        $query->expr()->eq('a.action', ':action')
-            	    )
+                ->from('CudiBundle\Entity\Prof\Action', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('a.entity', ':entity'),
+                        $query->expr()->eq('a.entityId', ':entityId'),
+                        $query->expr()->eq('a.action', ':action')
+                    )
                 )
                 ->setParameter('entity', $entity)
                 ->setParameter('entityId', $entityId)
                 ->setParameter('action', $action)
-            	->orderBy('a.timestamp', 'DESC')
-            	->getQuery()
-            	->getResult();
+                ->orderBy('a.timestamp', 'DESC')
+                ->getQuery()
+                ->getResult();
     
             return $resultSet;
         }

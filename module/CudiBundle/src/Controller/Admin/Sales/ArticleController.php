@@ -51,8 +51,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
-            	'paginator' => $paginator,
-            	'paginationControl' => $this->paginator()->createControl(true),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -66,14 +66,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         if ($article->isInternal()) {
             $priceBW = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_page_black_and_white') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_page_black_and_white') / 100;
             $priceColor = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_page_color') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_page_color') / 100;
             $pricePerforated = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_perforated') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_perforated') / 100;
             $precalculatedPrice = $article->getNbBlackAndWhite() * $priceBW
                 + $article->getNbColored() * $priceColor
                 + ($article->isPerforated() ? $pricePerforated : 0 );
@@ -83,45 +83,45 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    $supplier = $this->getEntityManager()
-        	    	->getRepository('CudiBundle\Entity\Supplier')
-        	    	->findOneById($formData['supplier']);
-        	    	
-        	    $saleArticle = new SaleArticle(
-        	        $article,
-        	        $formData['barcode'],
-        	        $formData['purchase_price'],
-        	        $formData['sell_price'],
-        	        $formData['bookable'],
-        	        $formData['unbookable'],
-        	        $supplier,
-        	        $formData['can_expire'],
-        	        $this->getCurrentAcademicYear()
-        	    );
-        	    
-        	    $this->getEntityManager()->persist($saleArticle);
-        	    
-        	    $this->getEntityManager()->flush();
-        	    
-        	    $this->flashMessenger()->addMessage(
-        	        new FlashMessage(
-        	            FlashMessage::SUCCESS,
-        	            'SUCCESS',
-        	            'The sale article was successfully created!'
-        	        )
-        	    );
-        	    
-        	    $this->redirect()->toRoute(
-        	    	'admin_sales_article',
-        	    	array(
-        	    		'action' => 'manage'
-        	    	)
-        	    );
-        	    
-        	    return new ViewModel();
-        	}
+            
+            if ($form->isValid($formData)) {
+                $supplier = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Supplier')
+                    ->findOneById($formData['supplier']);
+                    
+                $saleArticle = new SaleArticle(
+                    $article,
+                    $formData['barcode'],
+                    $formData['purchase_price'],
+                    $formData['sell_price'],
+                    $formData['bookable'],
+                    $formData['unbookable'],
+                    $supplier,
+                    $formData['can_expire'],
+                    $this->getCurrentAcademicYear()
+                );
+                
+                $this->getEntityManager()->persist($saleArticle);
+                
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The sale article was successfully created!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                    'admin_sales_article',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+                
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
@@ -133,23 +133,23 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
     
-	public function editAction()
-	{
-		if (!($saleArticle = $this->_getSaleArticle()))
-		    return new ViewModel();
+    public function editAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $saleArticle);
         
         if ($saleArticle->getMainArticle()->isInternal()) {
             $priceBW = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_page_black_and_white') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_page_black_and_white') / 100;
             $priceColor = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_page_color') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_page_color') / 100;
             $pricePerforated = $this->getEntityManager()
-            	->getRepository('CommonBundle\Entity\General\Config')
-            	->getConfigValue('cudi.price_perforated') / 100;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.price_perforated') / 100;
             $precalculatedPrice = $saleArticle->getMainArticle()->getNbBlackAndWhite() * $priceBW
                 + $saleArticle->getMainArticle()->getNbColored() * $priceColor
                 + ($saleArticle->getMainArticle()->isPerforated() ? $pricePerforated : 0);
@@ -159,25 +159,25 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    $history = new History($saleArticle);
-        		$this->getEntityManager()->persist($history);
-        		
-        		$supplier = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Supplier')
-        			->findOneById($formData['supplier']);
-        			
-        		$saleArticle->setBarcode($formData['barcode'])
-        		    ->setPurchasePrice($formData['purchase_price'])
-        		    ->setSellPrice($formData['sell_price'])
-        		    ->setIsBookable($formData['bookable'])
-        		    ->setIsUnbookable($formData['unbookable'])
-        		    ->setSupplier($supplier)
-        		    ->setCanExpire($formData['can_expire']);
-        		
-        		$this->getEntityManager()->flush();
-        		        	    
+            
+            if ($form->isValid($formData)) {
+                $history = new History($saleArticle);
+                $this->getEntityManager()->persist($history);
+                
+                $supplier = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Supplier')
+                    ->findOneById($formData['supplier']);
+                    
+                $saleArticle->setBarcode($formData['barcode'])
+                    ->setPurchasePrice($formData['purchase_price'])
+                    ->setSellPrice($formData['sell_price'])
+                    ->setIsBookable($formData['bookable'])
+                    ->setIsUnbookable($formData['unbookable'])
+                    ->setSupplier($supplier)
+                    ->setCanExpire($formData['can_expire']);
+                
+                $this->getEntityManager()->flush();
+                                
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -187,14 +187,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_sales_article',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_sales_article',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
-        	}
+            }
         }
         
         return new ViewModel(
@@ -204,37 +204,37 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'precalculatedPrice' => $precalculatedPrice,
             )
         );
-	}
-	
-	public function activateAction()
-	{
-		if (!($saleArticle = $this->_getSaleArticle()))
-		    return new ViewModel();
+    }
+    
+    public function activateAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
         
         $form = new ActivateForm($this->getEntityManager(), $saleArticle);
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        	
-        	if ($form->isValid($formData)) {
-        	    $new = $saleArticle->duplicate();
-        		
-        		$supplier = $this->getEntityManager()
-        			->getRepository('CudiBundle\Entity\Supplier')
-        			->findOneById($formData['supplier']);
-        			
-        		$new->setBarcode($formData['barcode'])
-        		    ->setPurchasePrice($formData['purchase_price'])
-        		    ->setSellPrice($formData['sell_price'])
-        		    ->setIsBookable($formData['bookable'])
-        		    ->setIsUnbookable($formData['unbookable'])
-        		    ->setSupplier($supplier)
-        		    ->setCanExpire($formData['can_expire'])
-        		    ->setAcademicYear($this->getCurrentAcademicYear());
-        		
-        		$this->getEntityManager()->persist($new);
-        		$this->getEntityManager()->flush();
-        		        	    
+            
+            if ($form->isValid($formData)) {
+                $new = $saleArticle->duplicate();
+                
+                $supplier = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Supplier')
+                    ->findOneById($formData['supplier']);
+                    
+                $new->setBarcode($formData['barcode'])
+                    ->setPurchasePrice($formData['purchase_price'])
+                    ->setSellPrice($formData['sell_price'])
+                    ->setIsBookable($formData['bookable'])
+                    ->setIsUnbookable($formData['unbookable'])
+                    ->setSupplier($supplier)
+                    ->setCanExpire($formData['can_expire'])
+                    ->setAcademicYear($this->getCurrentAcademicYear());
+                
+                $this->getEntityManager()->persist($new);
+                $this->getEntityManager()->flush();
+                                
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -244,14 +244,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                	'admin_sales_article',
-                	array(
-                		'action' => 'manage'
-                	)
+                    'admin_sales_article',
+                    array(
+                        'action' => 'manage'
+                    )
                 );
                 
                 return new ViewModel();
-        	}
+            }
         }
         
         return new ViewModel(
@@ -260,217 +260,217 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'article' => $saleArticle->getMainArticle(),
             )
         );
-	}
+    }
 
     public function deleteAction()
-	{
-	    $this->initAjax();
-	    	    
-		if (!($saleArticle = $this->_getSaleArticle()))
-		    return new ViewModel();
+    {
+        $this->initAjax();
+                
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
 
         $saleArticle->setIsHistory(true);
-		$this->getEntityManager()->flush();
+        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
-	}
+    }
 
-	public function searchAction()
-	{
-	    $this->initAjax();
-	    
-	    switch($this->getParam('field')) {
-	    	case 'title':
-	    		$articles = $this->getEntityManager()
-	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByTitleAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
-	    		break;
-	    	case 'author':
-	    		$articles = $this->getEntityManager()
-	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByAuthorAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
-	    		break;
-	    	case 'publisher':
-	    		$articles = $this->getEntityManager()
-	    			->getRepository('CudiBundle\Entity\Sales\Article')
-	    			->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
-	    		break;
-	    }
-	    
-	    $numResults = $this->getEntityManager()
-	    	->getRepository('CommonBundle\Entity\General\Config')
-	    	->getConfigValue('search_max_results');
-	    
-	    array_splice($articles, $numResults);
-	    
-	    $result = array();
-	    foreach($articles as $article) {
-	    	$item = (object) array();
-	    	$item->id = $article->getMainArticle()->getId();
-	    	$item->title = $article->getMainArticle()->getTitle();
-	    	$item->author = $article->getMainArticle()->getAuthors();
-	    	$item->publisher = $article->getMainArticle()->getPublishers();
-	    	$item->sellPrice = number_format($article->getSellPrice()/100, 2);
-	    	$item->stockValue = $article->getStockValue();
-	    	$result[] = $item;
-	    }
-	    
-	    return new ViewModel(
-	        array(
-    	    	'result' => $result,
-    	    )
-	    );
-	}
-	
-	public function sellProfAction()
-	{
-	    if (!($saleArticle = $this->_getSaleArticle()))
-	        return new ViewModel();
-	    
-	    $saleItem = new SaleItem(
-	        $saleArticle,
-	        1,
-	        0,
-	        null,
-	        $this->getEntityManager()
-	    );
-	    $this->getEntityManager()->persist($saleItem);
-	    
-	    $saleArticle->setStockValue($saleArticle->getStockValue() - 1);
-	    
-	    $this->getEntityManager()->flush();    
-	    
-	    $this->flashMessenger()->addMessage(
-    		new FlashMessage(
-        		FlashMessage::SUCCESS,
-            	'SUCCESS',
-            	'The article is successfully sold to a prof'
-        	)
-    	);
-
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
-	}
-	
-	public function typeaheadAction()
-	{
-	    $this->initAjax();
-	    
-	    $academicYear = $this->getAcademicYear();
+    public function searchAction()
+    {
+        $this->initAjax();
         
-        $articles = $this->getEntityManager()
-        	->getRepository('CudiBundle\Entity\Sales\Article')
-        	->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
-
+        switch($this->getParam('field')) {
+            case 'title':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
+                break;
+            case 'author':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByAuthorAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
+                break;
+            case 'publisher':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
+                break;
+        }
+        
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+        
+        array_splice($articles, $numResults);
+        
         $result = array();
         foreach($articles as $article) {
-        	$item = (object) array();
-        	$item->id = $article->getId();
-        	$item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
-        	$result[] = $item;
+            $item = (object) array();
+            $item->id = $article->getMainArticle()->getId();
+            $item->title = $article->getMainArticle()->getTitle();
+            $item->author = $article->getMainArticle()->getAuthors();
+            $item->publisher = $article->getMainArticle()->getPublishers();
+            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->stockValue = $article->getStockValue();
+            $result[] = $item;
         }
         
         return new ViewModel(
             array(
-            	'result' => $result,
+                'result' => $result,
             )
         );
-	}
+    }
+    
+    public function sellProfAction()
+    {
+        if (!($saleArticle = $this->_getSaleArticle()))
+            return new ViewModel();
+        
+        $saleItem = new SaleItem(
+            $saleArticle,
+            1,
+            0,
+            null,
+            $this->getEntityManager()
+        );
+        $this->getEntityManager()->persist($saleItem);
+        
+        $saleArticle->setStockValue($saleArticle->getStockValue() - 1);
+        
+        $this->getEntityManager()->flush();    
+        
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                'The article is successfully sold to a prof'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+    }
+    
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+        
+        $academicYear = $this->getAcademicYear();
+        
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+
+        $result = array();
+        foreach($articles as $article) {
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+            $result[] = $item;
+        }
+        
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
     
     private function _getSaleArticle()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No ID was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_sales_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_sales_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_sales_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_sales_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $article;
     }
     
     private function _getArticle()
     {
-    	if (null === $this->getParam('id')) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No ID was given to identify the article!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_sales_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the article!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_sales_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
     
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getParam('id'));
-    	
-    	if (null === $article) {
-    		$this->flashMessenger()->addMessage(
-    		    new FlashMessage(
-    		        FlashMessage::ERROR,
-    		        'Error',
-    		        'No article with the given id was found!'
-    		    )
-    		);
-    		
-    		$this->redirect()->toRoute(
-    			'admin_sales_article',
-    			array(
-    				'action' => 'manage'
-    			)
-    		);
-    		
-    		return;
-    	}
-    	
-    	return $article;
+        
+        if (null === $article) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No article with the given id was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_sales_article',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $article;
     }
 }

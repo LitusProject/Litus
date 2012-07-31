@@ -95,17 +95,17 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $isPerforated Whether the article is perforated or not
      */
     public function __construct(
-    	$title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
     ) {
-    	parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
-    	
-    	$this->setNbBlackAndWhite($nbBlackAndWhite)
-    		->setNbColored($nbColored)
-    		->setBinding($binding)
-    		->setIsOfficial($official)
-    		->setIsRectoVerso($rectoverso)
-    		->setFrontColor($frontPageColor)
-    		->setIsPerforated($isPerforated);
+        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
+        
+        $this->setNbBlackAndWhite($nbBlackAndWhite)
+            ->setNbColored($nbColored)
+            ->setBinding($binding)
+            ->setIsOfficial($official)
+            ->setIsRectoVerso($rectoverso)
+            ->setFrontColor($frontPageColor)
+            ->setIsPerforated($isPerforated);
     }
     
     /**
@@ -113,7 +113,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function getNbBlackAndWhite()
     {
-    	return $this->nbBlackAndWhite;
+        return $this->nbBlackAndWhite;
     }
     
     /**
@@ -123,8 +123,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setNbBlackAndWhite($nbBlackAndWhite)
     {
-    	$this->nbBlackAndWhite = $nbBlackAndWhite;
-    	return $this;
+        $this->nbBlackAndWhite = $nbBlackAndWhite;
+        return $this;
     }
     
     /**
@@ -132,7 +132,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function getNbColored()
     {
-    	return $this->nbColored;
+        return $this->nbColored;
     }
     
     /**
@@ -142,8 +142,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setNbColored($nbColored)
     {
-    	$this->nbColored = $nbColored;
-    	return $this;
+        $this->nbColored = $nbColored;
+        return $this;
     }
     
     /**
@@ -151,7 +151,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function getBinding()
     {
-    	return $this->binding;
+        return $this->binding;
     }
     
     /**
@@ -161,8 +161,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setBinding(Binding $binding)
     {
-    	$this->binding = $binding;
-    	return $this;
+        $this->binding = $binding;
+        return $this;
     }
     
     /**
@@ -170,7 +170,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function isOfficial()
     {
-    	return $this->official;
+        return $this->official;
     }
     
     /**
@@ -180,8 +180,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setIsOfficial($official)
     {
-    	$this->official = $official;
-    	return $this;
+        $this->official = $official;
+        return $this;
     }
     
     /**
@@ -189,7 +189,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function isRectoVerso()
     {
-    	return $this->rectoVerso;
+        return $this->rectoVerso;
     }
     
     /**
@@ -199,8 +199,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setIsRectoVerso($rectoVerso)
     {
-    	$this->rectoVerso = $rectoVerso;
-    	return $this;
+        $this->rectoVerso = $rectoVerso;
+        return $this;
     }
     
     /**
@@ -208,7 +208,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function getFrontColor()
     {
-    	return $this->frontPageColor;
+        return $this->frontPageColor;
     }
     
     /**
@@ -218,8 +218,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setFrontColor(Color $frontPageColor = null)
     {
-    	$this->frontPageColor = $frontPageColor;
-    	return $this;
+        $this->frontPageColor = $frontPageColor;
+        return $this;
     }
     
     /**
@@ -227,7 +227,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function getNbPages()
     {
-    	return $this->getNbBlackAndWhite() + $this->getNbColored();
+        return $this->getNbBlackAndWhite() + $this->getNbColored();
     }
     
     /**
@@ -235,7 +235,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function isPerforated()
     {
-    	return $this->isPerforated;
+        return $this->isPerforated;
     }
     
     /**
@@ -245,8 +245,8 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function setIsPerforated($isPerforated)
     {
-    	$this->isPerforated = $isPerforated;
-    	return $this;
+        $this->isPerforated = $isPerforated;
+        return $this;
     }
     
     /**

@@ -16,10 +16,10 @@
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-	CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-	CudiBundle\Entity\Sales\Session,
-	Zend\Form\Element\Submit,
-	Zend\Form\Element\Textarea;
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CudiBundle\Entity\Sales\Session,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Textarea;
 
 /**
  * Add Sale Session Comment

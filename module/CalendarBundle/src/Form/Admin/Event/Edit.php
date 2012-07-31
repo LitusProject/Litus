@@ -17,7 +17,7 @@ namespace CalendarBundle\Form\Admin\Event;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
+    Doctrine\ORM\QueryBuilder,
     CalendarBundle\Entity\Nodes\Event;
 
 /**
@@ -25,10 +25,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-	 * @param mixed $opts The validator's options
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param mixed $opts The validator's options
+     */
     public function __construct(EntityManager $entityManager, Event $event, $opts = null)
     {
         parent::__construct($entityManager, $opts);
