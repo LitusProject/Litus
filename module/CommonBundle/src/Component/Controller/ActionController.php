@@ -20,7 +20,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Language
+    CommonBundle\Entity\General\Language,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
