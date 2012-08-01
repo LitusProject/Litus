@@ -138,7 +138,7 @@ class Translation
      */
     private function _setName($name)
     {
-        $this->name = $this->news->getCreateTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
+        $this->name = $this->news->getCreationTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
         return $this;
     }
     

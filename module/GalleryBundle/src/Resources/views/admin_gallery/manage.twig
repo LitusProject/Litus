@@ -37,7 +37,7 @@
                 <tr class="item" data-id="{{ faq.getId() }}">
                     <td>{{ album.getTitle(language) }}</td>
                     <td>{{ dateLocalized(album.getDate(), 'dd/MM/y') }}</td>
-                    <td>{{ album.getCreatePerson().getFullName() }}</td>
+                    <td>{{ album.getCreationPerson().getFullName() }}</td>
                     <td class="actions">
                         {% if hasAccess('admin_gallery', 'edit') %}
                             <a href="{{ url('admin_gallery', {"action": "edit", "id": album.getId()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>

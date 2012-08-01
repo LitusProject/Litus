@@ -12,12 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class Code extends EntityRepository
 {
-    public function findOnePersonByCode($code)
+    public function findLastByUniversityIdentification($universityIdentification)
     {
-        $code = $this->findOneByCode($code);
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('CommonBundle\Entity\Users\Shibboleth\Code', 'c')
+            ->where(
+                $query->expr()->eq('c.universityIdentification', ':universityIdentification')
+            )
+            ->orderBy('c.creationTime', 'DESC')
+            ->setParameter('universityIdentification', $universityIdentification);
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+            
+        if (isset($resultSet[0]))
+            return 
         
-        return $this->_em
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($code->getUniversityIdentification());
+        return $resultSet[0];
     }
 }

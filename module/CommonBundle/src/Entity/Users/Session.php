@@ -35,16 +35,16 @@ class Session
     private $id;
 
     /**
-     * @var \Datetime The time at which this session was started
+     * @var \DateTime The time at which this session was started
      *
-     * @Column(name="start_time", type="datetime")
+     * @Column(name="start_time", type="DateTime")
      */
     private $startTime = null;
 
     /**
-     * @var \Datetime The time at which this session will end
+     * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="datetime")
+     * @Column(name="expiration_time", type="DateTime")
      */
     private $expirationTime = null;
 
@@ -78,17 +78,17 @@ class Session
     private $active = true;
 
     /**
-     * @param int $expirationTime The duration of the session
-     * @param \CommonBundle\Entity\Users\Person $person The person associated with this session
-     * @param string $userAgent The user agent used when the session was started
-     * @param $ip The IP address used when the session was started
+     * @param int $expirationTime
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param string $userAgent
+     * @param string $ip
      */
     public function __construct($expirationTime, Person $person, $userAgent, $ip)
     {
         $this->id = md5(uniqid(rand(), true));
 
-        $this->startTime = new \Datetime();
-        $this->expirationTime = new \Datetime(
+        $this->startTime = new \DateTime();
+        $this->expirationTime = new \DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
@@ -106,7 +106,7 @@ class Session
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getStartTime()
     {
@@ -114,7 +114,7 @@ class Session
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getExpirationTime()
     {
@@ -179,7 +179,7 @@ class Session
             return false;
         }
 
-        $now = new \Datetime();
+        $now = new \DateTime();
         if ($this->expirationTime < $now) {
             return false;
         }

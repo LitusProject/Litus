@@ -34,11 +34,18 @@ class Code
      * @Column(type="string", length=32)
      */
     private $id;
+    
+    /**
+     * @var \DateTime The time at which this code was created
+     *
+     * @Column(name="creation_time", type="DateTime")
+     */
+    private $creationTime = null;
 
     /**
-     * @var \Datetime The time at which this session will end
+     * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="datetime")
+     * @Column(name="expiration_time", type="DateTime")
      */
     private $expirationTime = null;
 
@@ -57,15 +64,16 @@ class Code
     private $code;
 
     /**
-     * @param string $universityIdentification The person associated with this session
+     * @param string $universityIdentification
      * @param string $code The code
-     * @param int $expirationTime How long is this code is valid for
+     * @param int $expirationTime
      */
     public function __construct($universityIdentification, $code, $expirationTime = null)
     {
         $this->id = md5(uniqid(rand(), true));
+        $this->creationTime = new \DateTime();
         
-        $this->expirationTime = new \Datetime(
+        $this->expirationTime = new \DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
         
@@ -82,7 +90,7 @@ class Code
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getExpirationTime()
     {
@@ -118,7 +126,7 @@ class Code
      */
     public function validate($hash)
     {
-        $now = new \Datetime();
+        $now = new \DateTime();
         if ($this->expirationTime < $now) {
             return false;
         }

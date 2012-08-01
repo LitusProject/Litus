@@ -72,5 +72,5 @@ if ('/' == substr($shibbolethHandler, -1))
 
 http_response_code(307);
 header(
-    'Location: ' . $shibbolethHandler . (isset($newCode) ? '/code/' . $newCode->hash() : '')
+    'Location: ' . $shibbolethHandler . (isset($newCode) ? '/identification/' . $newCode->getUniversityIdentification() . '/hash/' . $newCode->hash() : '')
 );

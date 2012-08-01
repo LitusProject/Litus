@@ -498,10 +498,11 @@ return array(
                         'admin_auth' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/auth[/:action[/code/:code]]',
+                                'route'    => '/admin/auth[/:action[/identification/:identification[/hash/:hash]]]',
                                 'constraints' => array(
-                                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'code'   => '[a-zA-Z0-9_-]*',
+                                    'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'identification' => '[mrsu][0-9]{7}',
+                                    'hash'           => '[a-zA-Z0-9_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_auth',
