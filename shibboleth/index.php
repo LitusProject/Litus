@@ -66,6 +66,9 @@ if (isset($_SERVER['Shib-Person-uid'], $_SERVER['Shib-Session-ID'])) {
 
 $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_code_handler_url');
+    
+if ('/' == substr($shibbolethHandler, -1))
+    $shibbolethHandler = substr($shibbolethHandler, 0, -1);
 
 http_response_code(307);
 header(
