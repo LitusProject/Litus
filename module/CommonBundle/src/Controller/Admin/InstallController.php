@@ -77,6 +77,16 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'value'       => 'https://arianna.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%2Fshibboleth',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
+                array(
+                    'key'         => 'shibboleth_code_handler_url',
+                    'value'       => 'https://dev.vtk.be/admin/auth/shibboleth',
+                    'description' => 'The Shibboleth handler URL, without a trailing slash',
+                ),
+                array(
+                    'key'         => 'shibboleth_code_expiration_time',
+                    'value'       => '300',
+                    'description' => 'The amount of time during which the generated Shibboleth code is valid (in seconds)',
+                ),
             )
         );
     }

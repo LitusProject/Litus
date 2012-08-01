@@ -78,18 +78,18 @@ class Session
     private $active = true;
 
     /**
-     * @param int $sessionExpire The duration of the session
+     * @param int $expirationTime The duration of the session
      * @param \CommonBundle\Entity\Users\Person $person The person associated with this session
      * @param string $userAgent The user agent used when the session was started
      * @param $ip The IP address used when the session was started
      */
-    public function __construct($sessionExpire, Person $person, $userAgent, $ip)
+    public function __construct($expirationTime, Person $person, $userAgent, $ip)
     {
         $this->id = md5(uniqid(rand(), true));
 
         $this->startTime = new \Datetime();
         $this->expirationTime = new \Datetime(
-            'now ' . (($sessionExpire < 0) ? '-' : '+') . abs($sessionExpire) . ' seconds'
+            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
         $this->person = $person;

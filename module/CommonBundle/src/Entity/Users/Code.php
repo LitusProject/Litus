@@ -35,9 +35,9 @@ class Code
     /**
      * @var \DateTime The expire time of this code
      *
-     * @Column(name="expire_time", type="datetime", nullable=true)
+     * @Column(name="expiration_time", type="datetime", nullable=true)
      */
-    private $expireTime;
+    private $expirationTime;
 
     /**
      * @var string The code
@@ -50,20 +50,23 @@ class Code
      * Constructs a new code
      *
      * @param string $code
-     * @param \DateTime|null $expireTime
+     * @param int $expirationTime How long is this code is valid for
      */
-    public function __construct($code, $expireTime = null)
+    public function __construct($code, $expirationTime = null)
     {
+        $this->expirationTime = new \Datetime(
+            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+        );
+        
         $this->code = $code;
-        $this->expireTime = $expireTime;
     }
     
     /**
      * @return \DateTime
      */
-    public function getExpireTime()
+    public function getExpirationTime()
     {
-        return $this->expireTime;
+        return $this->expirationTime;
     }
     
     /**
