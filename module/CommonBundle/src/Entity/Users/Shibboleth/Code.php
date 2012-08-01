@@ -38,14 +38,14 @@ class Code
     /**
      * @var \DateTime The time at which this code was created
      *
-     * @Column(name="creation_time", type="DateTime")
+     * @Column(name="creation_time", type="datetime")
      */
     private $creationTime = null;
 
     /**
      * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="DateTime")
+     * @Column(name="expiration_time", type="datetime")
      */
     private $expirationTime = null;
 
