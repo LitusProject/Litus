@@ -111,7 +111,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 ->findLastByUniversityIdentification($this->getParam('identification'));
                 
             if (null !== $code) { 
-                if ($code->validate($this->getParam('hash')) {
+                if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->purge($code);
                     $this->getEntityManager()->flush();
                     
