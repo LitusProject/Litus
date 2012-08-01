@@ -292,21 +292,23 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     protected function getCurrentAcademicYear()
     {
-        $start = AcademicYear::getStartOfAcademicYear();
-        $start->setTime(0, 0);
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
         
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+            ->findOneByUniversityStart($startAcademicYear);
 
         if (null === $academicYear) {
-            $now = new DateTime();
-            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                $now->add(
-                    new DateInterval('P1Y')
-                )
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
             );
-            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }

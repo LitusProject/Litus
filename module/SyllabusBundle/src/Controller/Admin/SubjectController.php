@@ -260,7 +260,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+            ->findOneByUniversityStart($start);
         
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
