@@ -423,6 +423,7 @@ return array(
                                 'constraints' => array(
                                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     'id'      => '[a-zA-Z0-9_-]*',
+                                    'code'    => '[a-zA-Z0-9_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'account',
@@ -497,9 +498,10 @@ return array(
                         'admin_auth' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/auth[/:action]',
+                                'route'    => '/admin/auth[/:action[/code/:code]]',
                                 'constraints' => array(
                                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'code'   => '[a-zA-Z0-9_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_auth',
