@@ -18,7 +18,7 @@
  * the server's hostname is registered as the IP.
  */
  
-chdir(dirname(dirname(__DIR__))))));
+chdir(dirname(__DIR__));
 
 // @NOTE: you can either use the git submodule or create an environment variable
 // ZF2_PATH that contains the path to your zf2 library (no trailing slash). 
@@ -46,10 +46,10 @@ $diConfig->configure($diContainer);
 
 $em = $diContainer->get('doctrine_em');
 
-if ('' !== $this->getRequest()->server()->get('Shib-Session-ID', '')) {
+if (isset($_SERVER['Shib-Session-ID'])) {
     $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
-        substr($this->getRequest()->server()->get('Shib-Person-uid', ''),
-        substr($this->getRequest()->server()->get('Shib-Session-ID', ''), 1),
+        $_SERVER['Shib-Person-uid'],
+        substr($_SERVER['Shib-Session-ID'], 1),
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_code_expiration_time')
     );
