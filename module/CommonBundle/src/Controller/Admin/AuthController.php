@@ -96,7 +96,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     
     public function shibbolethAction()
     {   
-        if (('' != $this->getParam('identification', '')) && ('' != $this->getParam('hash', ''))) {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
