@@ -21,7 +21,7 @@ class Code extends EntityRepository
                 $query->expr()->eq('c.universityIdentification', ':universityIdentification')
             )
             ->orderBy('c.creationTime', 'DESC')
-            ->setParameter('universityIdentification', $universityIdentification);
+            ->setParameter('universityIdentification', $universityIdentification)
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
