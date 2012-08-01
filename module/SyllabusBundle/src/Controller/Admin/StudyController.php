@@ -100,7 +100,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+            ->findOneByUniversityStart($start);
         
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

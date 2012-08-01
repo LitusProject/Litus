@@ -62,12 +62,12 @@ class Article extends EntityRepository
     
     public function findOneByBarcode($barcode)
     {
-           $start = AcademicYearUtil::getStartOfAcademicYear();
+        $start = AcademicYearUtil::getStartOfAcademicYear();
         $start->setTime(0, 0);
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+            ->findOneByUniversityStart($start);
                 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')

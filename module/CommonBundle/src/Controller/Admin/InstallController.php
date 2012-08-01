@@ -73,6 +73,11 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'description' => 'The mail subject when an account is deactivated',
                 ),
                 array(
+                    'key'         => 'start_organization_year',
+                    'value'       => '{{ year }}-7-15 0:0:0',
+                    'description' => 'The start date of the organization year',
+                ),
+                array(
                     'key'         => 'shibboleth_url',
                     'value'       => 'https://arianna.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%2Fshibboleth',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
