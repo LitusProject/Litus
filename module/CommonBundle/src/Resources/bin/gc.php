@@ -66,8 +66,7 @@ try {
 if (isset($opts->a) || isset($opts->se)) {
     echo 'Running Sessions GC...' . PHP_EOL;
 
-    $entityManager = $diContainer->get('doctrine_em');
-    $sessions = $entityManager
+    $sessions = $em
         ->getRepository('CommonBundle\Entity\Users\Session')
         ->findAllExpired();
     
@@ -77,20 +76,25 @@ if (isset($opts->a) || isset($opts->se)) {
     echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
         
     $entityManager->flush();
+    
+    // Memory Considerations
+    unset($session, $sessions);
 }
 
 if (isset($opts->a) || isset($opts->sh)) {
     echo 'Running Shibboleth GC...' . PHP_EOL;
 
-    $entityManager = $diContainer->get('doctrine_em');
-    $codes = $entityManager
+    $codes = $em
         ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findAllExpired();
     
     foreach($codes as $code)
         $entityManager->remove($code);
     
-    echo 'Removed ' . count($sessions) . ' expired codes' . PHP_EOL;
+    echo 'Removed ' . count($codes) . ' expired codes' . PHP_EOL;
         
     $entityManager->flush();
+    
+    // Memory Considerations
+    unset($code, $codes);
 }
