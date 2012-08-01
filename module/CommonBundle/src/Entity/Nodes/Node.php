@@ -32,25 +32,25 @@ abstract class Node
     /**
      * @var \DateTime The time of creation of this node
      *
-     * @Column(name="create_time", type="datetime")
+     * @Column(name="creation_time", type="datetime")
      */
-    private $createTime;
+    private $creationTime;
     
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this node
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="create_person", referencedColumnName="id")
+     * @JoinColumn(name="creation_person", referencedColumnName="id")
      */
-    private $createPerson;
+    private $creationPerson;
     
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      */
     public function __construct(Person $person)
     {
-        $this->createTime = new DateTime();
-        $this->createPerson = $person;
+        $this->creationTime = new DateTime();
+        $this->creationPerson = $person;
     }
     
     /**
@@ -64,16 +64,16 @@ abstract class Node
     /**
      * @return \DateTime
      */
-    public function getCreateTime()
+    public function getCreationTime()
     {
-        return $this->createTime;
+        return $this->creationTime;
     }
     
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function getCreatePerson()
+    public function getCreationPerson()
     {
-        return $this->createPerson;
+        return $this->creationPerson;
     }
 }

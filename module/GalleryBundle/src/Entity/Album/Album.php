@@ -26,17 +26,17 @@ class Album
     /**
      * @var \DateTime The time of creation of this album
      *
-     * @Column(name="create_time", type="datetime")
+     * @Column(name="creation_time", type="datetime")
      */
-    private $createTime;
+    private $creationTime;
     
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this album
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="create_person", referencedColumnName="id")
+     * @JoinColumn(name="creation_person", referencedColumnName="id")
      */
-    private $createPerson;
+    private $creationPerson;
     
     /**
      * @var \DateTime The date the photo's of this album were created
@@ -66,13 +66,13 @@ class Album
      */
     public function __construct(Person $person, DateTime $date)
     {
-        $this->createTime = new DateTime();
-        $this->createPerson = $person;
+        $this->creationTime = new DateTime();
+        $this->creationPerson = $person;
         $this->dateActivity = $date;
     }
     
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -82,17 +82,17 @@ class Album
     /**
      * @return \DateTime
      */
-    public function getCreateTime()
+    public function getCreationTime()
     {
-        return $this->createTime;
+        return $this->creationTime;
     }
     
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function getCreatePerson()
+    public function getCreationPerson()
     {
-        return $this->createPerson;
+        return $this->creationPerson;
     }
     
     /**

@@ -96,23 +96,36 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     
     public function shibbolethAction()
     {   
-        $authentication = new Authentication(
-            new ShibbolethAdapter(
-                $this->getEntityManager(),
-                'CommonBundle\Entity\Users\People\Academic',
-                'universityIdentification'
-            ),
-            $this->getLocator()->get('authentication_doctrineservice')
-        );
-        
-        $authentication->authenticate(
-            $this->getRequest()->server()->get('Shib-Person-uid', '')
-        );
-        
-        if ($authentication->isAuthenticated()) {
-            $this->redirect()->toRoute(
-                'admin_index'
+        if (isset($this->getParam('identification'), $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getLocator()->get('authentication_doctrineservice')
             );
+            
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+                
+            if (null !== $code) { 
+                if ($code->validate($this->getParam('hash')) {
+                    $this->getEntityManager()->purge($code);
+                    $this->getEntityManager()->flush();
+                    
+                    $authentication->authenticate(
+                        $this->getParam('identification')
+                    );
+                    
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'admin_index'
+                        );
+                    }
+                }
+            }
         }
         
         return new ViewModel();

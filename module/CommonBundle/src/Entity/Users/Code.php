@@ -50,11 +50,11 @@ class Code
      * Constructs a new code
      *
      * @param string $code
-     * @param int $expirationTime How long is this code is valid for
+     * @param int $expirationTime
      */
     public function __construct($code, $expirationTime = null)
     {
-        $this->expirationTime = new \Datetime(
+        $this->expirationTime = new \DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
         
