@@ -99,7 +99,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Code')
-            ->findOneUserByCode($this->getParam('code'));
+            ->findOnePersonByCode($this->getParam('code'));
         
         if (null === $user) {
             $this->flashMessenger()->addMessage(

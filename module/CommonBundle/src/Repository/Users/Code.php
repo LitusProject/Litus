@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository,
  */
 class Code extends EntityRepository
 {
-    public function findOneUserByCode($code)
+    public function findOnePersonByCode($code)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
