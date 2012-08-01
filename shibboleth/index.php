@@ -51,7 +51,7 @@ if (isset($_SERVER['Shib-Person-uid'], $_SERVER['Shib-Session-ID'])) {
         ->findOneByCode(substr($_SERVER['Shib-Session-ID'], 1));
         
     if (null !== $checkCode)
-        break 2;
+        break 1;
 
     $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
         $_SERVER['Shib-Person-uid'],
