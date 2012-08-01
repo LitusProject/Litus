@@ -76,6 +76,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'isAuthenticated' => $isAuthenticated,
                 'form' => new LoginForm(),
+                'shibbolethUrl' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shibboleth_url'),
             )
         );
     }

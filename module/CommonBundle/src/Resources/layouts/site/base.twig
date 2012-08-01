@@ -69,9 +69,9 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		        	<li style="text-align: center;">
-        		        		<button class="btn btn-info" href="">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</button>
+			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
         		        	</li>
-        		        	<li class="divider"></li>
+                            <li class="divider"></li>
         		            <li>
         		                {% autoescape false %}
         		                	{{ loginForm }}

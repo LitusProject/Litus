@@ -72,6 +72,11 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'value'       => 'Account created',
                     'description' => 'The mail subject when an account is deactivated',
                 ),
+                array(
+                    'key'         => 'shibboleth_url',
+                    'value'       => 'https://dev.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Fdev.vtk.be%2Fadmin%2Fauth%2Fshibboleth',
+                    'description' => 'The url to login with Shibboleth',
+                ),
             )
         );
     }

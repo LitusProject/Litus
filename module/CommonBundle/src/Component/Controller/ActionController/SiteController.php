@@ -51,6 +51,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = $loginForm;
+        $result->shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
           
         $e->setResult($result);
         
