@@ -199,6 +199,12 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
+                
+            if (null === $language) {
+                $language = new Language(
+                    'en', 'English'
+                );
+            }
         }
         
         $this->_language = $language;
@@ -215,7 +221,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     protected function initLocalization()
     {
         $language = $this->getLanguage();
-
+        
         $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
 
         \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
