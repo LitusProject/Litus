@@ -37,14 +37,14 @@ class Session
     /**
      * @var \DateTime The time at which this session was started
      *
-     * @Column(name="start_time", type="DateTime")
+     * @Column(name="start_time", type="datetime")
      */
     private $startTime = null;
 
     /**
      * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="DateTime")
+     * @Column(name="expiration_time", type="datetime")
      */
     private $expirationTime = null;
 
