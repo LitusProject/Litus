@@ -15,6 +15,8 @@
  
 namespace CommonBundle\Entity\General;
 
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+
 /**
  * This class represents an academic year entry that is saved in the database
  *
@@ -37,26 +39,26 @@ class AcademicYear
      *
      * @Column(type="datetime")
      */
-    private $startDate;
+    private $start;
 
     /**
      * @var \DateTime The end date of this academic year
      *
-     * @Column(type="datetime")
+     * @Column(name="university_start", type="datetime")
      */
-    private $endDate;
+    private $universityStart;
     
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param \DateTime $start
+     * @param \DateTime $universityStart
      */
-    public function __construct($startDate, $endDate)
+    public function __construct($start, $universityStart)
     {
-        $startDate->setTime(0, 0);
-        $endDate->setTime(0, 0);
+        $start->setTime(0, 0);
+        $universityStart->setTime(0, 0);
         
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->start = $start;
+        $this->universityStart = $universityStart;
     }
     
     /**
@@ -72,7 +74,7 @@ class AcademicYear
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->start;
     }
     
     /**
@@ -80,7 +82,26 @@ class AcademicYear
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        $date = clone $this->universityStart;
+        return $date->add(
+            new DateInterval('P1Y')
+        );
+    }
+        
+    /**
+     * @return \DateTime
+     */
+    public function getUniversityStartDate()
+    {
+        return $this->universityStart;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getUniversityEndDate()
+    {
+        return AcademicYearUtil::getEndOfAcademicYear($this->start);
     }
     
     /**
@@ -92,8 +113,8 @@ class AcademicYear
     public function getCode($short = false)
     {
         if (true === $short)
-            return $this->startDate->format('y') . $this->endDate->format('y'); 
+            return $this->universityStart->format('y') . $this->getUniversityEndDate()->format('y'); 
             
-        return $this->startDate->format('Y') . '-' . $this->endDate->format('Y'); 
+        return $this->universityStart->format('Y') . '-' . $this->getUniversityEndDate()->format('Y'); 
     }
 }

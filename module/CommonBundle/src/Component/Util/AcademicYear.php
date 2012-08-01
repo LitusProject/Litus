@@ -141,6 +141,23 @@ class AcademicYear
     }
     
     /**
+     * Returns the end of the academic year. Only the date is returned, any time should be ignored.
+     *
+     * @static
+     * @param \DateTime|null $date the date, if null, the current date is used.
+     * @return \DateTime the end of the academic year
+     */
+    public static function getEndOfAcademicYear(DateTime $date = null)
+    {
+        $date = self::getStartOfAcademicYear($date);
+        return self::getStartOfAcademicYear(
+            $date->add(
+                new DateInterval('P1Y3M')
+            )
+        );
+    }
+    
+    /**
      * Returns the start of the Academic year for the given Academic year.
      *
      * @static

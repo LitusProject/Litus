@@ -130,29 +130,32 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     
     private function _getAcademicYear()
     {
-           $start = AcademicYear::getStartOfAcademicYear();
-        $start->setTime(0, 0);
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
                 
         $now = new DateTime();
         $profStart = new DateTime($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.prof_start_academic_year'));
         if ($now > $profStart) {
-            $start->add(new DateInterval('P1Y2M'));
-            $start = AcademicYear::getStartOfAcademicYear($start);
+            $startAcademicYear->add(new DateInterval('P1Y2M'));
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
         }
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($start);
+            ->findOneByUniversityStart($startAcademicYear);
         
         if (null === $academicYear) {
-            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                $now->add(
-                    new DateInterval('P1Y')
-                )
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
             );
-            $academicYear = new AcademicYearEntity($start, $endAcademicYear);
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }

@@ -77,6 +77,11 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'value'       => 'https://dev.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Fdev.vtk.be%2Fadmin%2Fauth%2Fshibboleth',
                     'description' => 'The url to login with Shibboleth',
                 ),
+                array(
+                    'key'         => 'start_organization_year',
+                    'value'       => '{{ year }}-7-15 0:0:0',
+                    'description' => 'The start date of the organization year',
+                ),
             )
         );
     }

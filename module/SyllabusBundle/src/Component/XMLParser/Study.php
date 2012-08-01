@@ -101,13 +101,18 @@ class Study
                 new DateTime($xml->properties->academiejaar->startjaar . '-12-25 0:0')
             );
             $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByStartDate($startAcademicYear);
+                ->findOneByUniversityStart($startAcademicYear);
     
             if (null === $academicYear) {
-                $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                    new DateTime($xml->properties->academiejaar->eindjaar . '-12-25 0:0')
+                $organizationStart = str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
                 );
-                $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+                $organizationStart = new DateTime($organizationStart);
+                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
                 $entityManager->persist($academicYear);
             }
             $this->_academicYear = $academicYear;
