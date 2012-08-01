@@ -29,6 +29,6 @@ class Code extends EntityRepository
         if (isset($resultSet[0]))
             return $resultSet[0];
         
-        return $resultSet[0];
+        return null;
     }
 }
