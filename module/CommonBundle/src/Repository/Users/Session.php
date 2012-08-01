@@ -15,13 +15,15 @@ class Session extends EntityRepository
     public function findAllExpired()
     {
         $query = $this->_em->createQueryBuilder();
-        $query->select('s')
+        $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\Users\Session', 's')
             ->where(
                 $query->expr()->lt('s.expirationTime', ':expirationTime')
             )
-            ->setParameter('expirationTime', new \DateTime('now'));
+            ->setParameter('expirationTime', new \DateTime('now'))
+            ->getQuery()
+            ->getResult();
             
-        return $query->getQuery()->getResult();
+        return $resultSet;
     }
 }

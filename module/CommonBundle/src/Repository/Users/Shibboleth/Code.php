@@ -31,4 +31,19 @@ class Code extends EntityRepository
         
         return null;
     }
+    
+    public function findAllExpired()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('CommonBundle\Entity\Users\Shibboleth\Code', 'c')
+            ->where(
+                $query->expr()->lt('c.expirationTime', ':expirationTime')
+            )
+            ->setParameter('expirationTime', new \DateTime('now'))
+            ->getQuery()
+            ->getResult();
+            
+        return $resultSet;
+    }
 }
