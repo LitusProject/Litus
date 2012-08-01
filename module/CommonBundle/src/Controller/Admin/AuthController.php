@@ -112,7 +112,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 
             if (null !== $code) { 
                 if ($code->validate($this->getParam('hash'))) {
-                    $this->getEntityManager()->purge($code);
+                    $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
                     
                     $authentication->authenticate(
