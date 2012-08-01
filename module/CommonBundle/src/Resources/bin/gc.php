@@ -50,8 +50,9 @@ $diConfig->configure($diContainer);
 $em = $diContainer->get('doctrine_em');
 
 $rules = array(
-    'all|a'    => 'Run Garbage Collection',
-    'sessions|s' => 'Sessions Only'
+    'all|a'         => 'Run Garbage Collection',
+    'sessions|se'   => 'Sessions Only',
+    'shibboleth|sh' => 'Shibboleth Only'
 );
 
 try {
@@ -62,7 +63,7 @@ try {
     exit(2);
 }
 
-if (isset($opts->a) || isset($opts->s)) {
+if (isset($opts->a) || isset($opts->se)) {
     echo 'Running Sessions GC...' . PHP_EOL;
 
     $entityManager = $diContainer->get('doctrine_em');
@@ -71,9 +72,25 @@ if (isset($opts->a) || isset($opts->s)) {
         ->findAllExpired();
     
     foreach($sessions as $session)
-        $entityManager->remove($sessions);
+        $entityManager->remove($session);
     
     echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
+        
+    $entityManager->flush();
+}
+
+if (isset($opts->a) || isset($opts->sh)) {
+    echo 'Running Shibboleth GC...' . PHP_EOL;
+
+    $entityManager = $diContainer->get('doctrine_em');
+    $codes = $entityManager
+        ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+        ->findAllExpired();
+    
+    foreach($codes as $code)
+        $entityManager->remove($code);
+    
+    echo 'Removed ' . count($sessions) . ' expired codes' . PHP_EOL;
         
     $entityManager->flush();
 }
