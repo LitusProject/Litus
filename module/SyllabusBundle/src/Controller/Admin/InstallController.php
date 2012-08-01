@@ -191,17 +191,39 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStartDate($startAcademicYear);
+            ->findOneByUniversityStart($startAcademicYear);
+            
+        $organizationStart = str_replace(
+            '{{ year }}',
+            $startAcademicYear->format('Y'),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('start_organization_year')
+        );
+        $organizationStart = new DateTime($organizationStart);
 
         if (null === $academicYear) {
-            $endAcademicYear = AcademicYear::getStartOfAcademicYear(
-                $now->add(
-                    new DateInterval('P1Y')
-                )
-            );
-            $academicYear = new AcademicYearEntity($startAcademicYear, $endAcademicYear);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
+        }
+        
+        $organizationStart->add(
+            new DateInterval('P1Y')
+        );
+        
+        if ($organizationStart < new DateTime()) {
+            $academicYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByStart($organizationStart);
+            if (null == $academicYear) {
+                $startAcademicYear = AcademicYear::getEndOfAcademicYear(
+                    $organizationStart
+                );
+                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+                $this->getEntityManager()->persist($academicYear);
+                $this->getEntityManager()->flush();
+            }
         }
     }
 }
