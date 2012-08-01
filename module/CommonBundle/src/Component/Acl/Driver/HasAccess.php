@@ -60,7 +60,7 @@ class HasAccess
             throw new Exception\RuntimeException('No authentication object was provided');
     
         // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('production' != getenv('APPLICATION_ENV'))
+        if ('development' == getenv('APPLICATION_ENV'))
             return true;
             
         if (!$this->_acl->hasResource($resource))

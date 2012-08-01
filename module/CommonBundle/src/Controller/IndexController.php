@@ -26,6 +26,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
+        if ('production' == getenv('APPLICATION_ENV'))
+            $this->redirect()->toUrl('http://www.vtk.be/');
+    
         $newsItems = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findAll();
