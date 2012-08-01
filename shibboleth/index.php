@@ -46,7 +46,13 @@ $diConfig->configure($diContainer);
 
 $em = $diContainer->get('doctrine_em');
 
-if (isset($_SERVER['Shib-Session-ID'])) {
+if (isset($_SERVER['Shib-Person-uid'], $_SERVER['Shib-Session-ID'])) {
+    $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+        ->findOneByCode(substr($_SERVER['Shib-Session-ID'], 1));
+        
+    if (null !== $checkCode)
+        break 2;
+
     $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
         $_SERVER['Shib-Person-uid'],
         substr($_SERVER['Shib-Session-ID'], 1),
@@ -63,5 +69,5 @@ $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
 
 http_response_code(307);
 header(
-    'Location: ' . $shibbolethHandler . (isset($newCode) ? '/' . $newCode->hash() : '')
+    'Location: ' . $shibbolethHandler . (isset($newCode) ? '/code/' . $newCode->hash() : '')
 );
