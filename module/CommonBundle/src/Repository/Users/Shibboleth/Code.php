@@ -27,7 +27,7 @@ class Code extends EntityRepository
             ->getResult();
             
         if (isset($resultSet[0]))
-            return 
+            return $resultSet[0];
         
         return $resultSet[0];
     }
