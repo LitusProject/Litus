@@ -32,7 +32,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($opts);
         
         $field = new Checkbox('test_it');
-        $field->setLabel('Test to IT')
+        $field->setLabel('Send Test to IT')
             ->setValue(true)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
