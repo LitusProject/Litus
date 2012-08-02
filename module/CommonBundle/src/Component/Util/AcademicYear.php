@@ -150,11 +150,10 @@ class AcademicYear
     public static function getEndOfAcademicYear(DateTime $date = null)
     {
         $date = self::getStartOfAcademicYear($date);
-        return self::getStartOfAcademicYear(
-            $date->add(
-                new DateInterval('P1Y3M')
-            )
+        $date->add(
+            new DateInterval('P1Y3M')
         );
+        return self::getStartOfAcademicYear($date);
     }
     
     /**
