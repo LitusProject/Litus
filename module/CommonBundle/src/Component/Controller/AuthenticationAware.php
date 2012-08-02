@@ -32,10 +32,10 @@ interface AuthenticationAware
     public function getAuthentication();
     
     /**
-     * We need to be able to specify a differenet login route depending on
-     * which part of the site is currently being used.
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
      *
-     * @return string
+     * @return array
      */
-    public function getLoginRoute();
+    public function getAuthenticationHandler();
 }

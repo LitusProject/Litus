@@ -54,14 +54,20 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     }
     
     /**
-     * We need to be able to specify a differenet login route depending on
-     * which part of the site is currently being used.
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
      *
-     * @return string
+     * @return array
      */
-    public function getLoginRoute()
+    public function getAuthenticationHandler()
     {
-        return 'supplier_index';
+        return array(
+            'action'         => 'index',
+            'controller'     => 'index',
+            
+            'auth_route'     => 'supplier_index',
+            'redirect_route' => 'supplier_index'
+        );
     }
     
     /**
