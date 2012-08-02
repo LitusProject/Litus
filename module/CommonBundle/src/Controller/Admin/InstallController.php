@@ -83,6 +83,16 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
+                    'key'         => 'shibboleth_person_key',
+                    'value'       => 'Shib-Person-uid',
+                    'description' => 'The key in the $_SERVER array that accesses the university identification',
+                ),
+                array(
+                    'key'         => 'shibboleth_session_key',
+                    'value'       => 'Shib-Session-ID',
+                    'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
+                ),
+                array(
                     'key'         => 'shibboleth_code_handler_url',
                     'value'       => 'https://dev.vtk.be/admin/auth/shibboleth',
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
