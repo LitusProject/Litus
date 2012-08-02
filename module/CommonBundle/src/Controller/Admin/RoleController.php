@@ -70,7 +70,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     foreach ($formData['actions'] as $action) {
                         $actions[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Action')
-                            ->findOneByName($action);
+                            ->findOneById($action);
                     }
                 }
                 
