@@ -324,6 +324,89 @@ VTK Cudi
                         ),
                     )
                 ),
+                'cudi' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'admin_article' => array(
+                            'add', 'edit', 'manage', 'search'
+                        ),
+                        'admin_article_comment' => array(
+                            'delete', 'manage'
+                        ),
+                        'admin_article_file' => array(
+                            'delete', 'download', 'edit', 'manage', 'progress', 'upload'
+                        ),
+                        'admin_article_subject' => array(
+                            'delete', 'manage'
+                        ),
+                        'admin_cudi_mail' => array(
+                            'send'
+                        ),
+                        'admin_prof_action' => array(
+                            'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'refuse', 'view'
+                        ),
+                        'admin_sales_article' => array(
+                            'activate', 'add', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
+                        ),
+                        'admin_sales_booking' => array(
+                            'add', 'article', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
+                        ),
+                        'admin_sales_discount' => array(
+                            'delete', 'manage'
+                        ),
+                        'admin_sales_financial' => array(
+                            'deliveries', 'retours', 'sales', 'stock', 'supplier'
+                        ),
+                        'admin_stock' => array(
+                            'delta', 'edit', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        ),
+                        'admin_stock_delivery' => array(
+                            'add', 'delete', 'manage', 'supplier', 'typeahead'
+                        ),
+                        'admin_stock_order' => array(
+                            'add', 'delete', 'edit', 'export', 'manage', 'place', 'pdf', 'supplier'
+                        ),
+                        'admin_stock_retour' => array(
+                            'add', 'delete', 'manage', 'supplier'
+                        ),
+                        'sale_queue' => array(
+                            'overview', 'screen', 'signin'
+                        ),
+                        'sale_sale' => array(
+                            'return', 'sale', 'saveComment'
+                        ),
+                    )
+                ),
+                'cudi_groco' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'admin_article' => array(
+                            'delete'
+                        ),
+                        'admin_sales_article' => array(
+                            'delete'
+                        ),
+                        'admin_sales_financial' => array(
+                            'deliveries', 'retours', 'sales', 'stock', 'supplier'
+                        ),
+                        'admin_sales_session' => array(
+                            'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems'
+                        ),
+                        'admin_stock_period' => array(
+                            'manage', 'new', 'search', 'view'
+                        ),
+                        'admin_supplier' => array(
+                            'add', 'edit', 'manage'
+                        ),
+                        'admin_supplier_user' => array(
+                            'add', 'delete', 'edit', 'manage'
+                        ),
+                    )
+                ),
                 'prof' => array(
                     'system' => true,
                     'parents' => array(

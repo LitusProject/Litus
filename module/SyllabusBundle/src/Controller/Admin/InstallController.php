@@ -177,7 +177,33 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'actions' => array(
                     ),
-                )
+                ),
+                'cudi' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'admin_prof' => array(
+                            'add', 'delete', 'typeahead'
+                        ),
+                        'admin_study' => array(
+                            'manage', 'search'
+                        ),
+                        'admin_subject' => array(
+                            'manage', 'search', 'subject', 'typeahead'
+                        ),
+                    )
+                ),
+                'cudi_groco' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'admin_update_syllabus' => array(
+                            'index'
+                        ),
+                    )
+                ),
             )
         );
     }
