@@ -513,7 +513,7 @@ return array(
                         'admin_role' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/role[/:action[/name:name][/page/:page]]',
+                                'route'    => '/admin/role[/:action[/name/:name][/page/:page]]',
                                 'constraints' => array(
                                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',

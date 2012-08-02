@@ -46,16 +46,21 @@ $diConfig->configure($diContainer);
 
 $em = $diContainer->get('doctrine_em');
 
-if (isset($_SERVER['Shib-Person-uid'], $_SERVER['Shib-Session-ID'])) {
+$shibbolethPersonKey = $em->getRepository('CommonBundle\Entity\General\Config')
+    ->getConfigValue('shibboleth_person_key');
+$shibbolethSessionKey = $em->getRepository('CommonBundle\Entity\General\Config')
+    ->getConfigValue('shibboleth_session_key');
+
+if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-        ->findOneByCode(substr($_SERVER['Shib-Session-ID'], 1));
+        ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
         
     if (null !== $checkCode)
         break 1;
 
     $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
-        $_SERVER['Shib-Person-uid'],
-        substr($_SERVER['Shib-Session-ID'], 1),
+        $_SERVER[$shibbolethPersonKey],
+        substr($_SERVER[$shibbolethSessionKey], 1),
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_code_expiration_time')
     );
