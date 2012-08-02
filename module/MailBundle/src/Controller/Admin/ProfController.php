@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     DateInterval,
     DateTime,
+    MailBundle\Form\Admin\Cudi\Mail as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -32,102 +33,118 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     public function cudiAction()
     {
-        $subject = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.start_cudi_mail_subject');
+        $academicYear = $this->_getAcademicYear();
+    
+        $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
+        
+        $subject = str_replace(
+            array(
+                '{{ semester }}',
+                '{{ academicYear }}',
+            ),
+            array(
+                $semester,
+                $academicYear->getCode(),
+            ),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('mail.start_cudi_mail_subject')
+        );
         
         $mail = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.start_cudi_mail');
-            
-        $academicYear = $this->_getAcademicYear();
         
-        $semester = (new DateTime() < $academicYear->getStartDate()) ? 1 : 2;
+        $form = new MailForm();
+        
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+            
+            if ($form->isValid($formData)) {
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail');
+                    
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.mail_name');
+                    
+                $statuses = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\Statuses\University')
+                    ->findAllByStatus('professor', $academicYear);
+                
+                foreach($statuses as $status) {
+                    $allSubjects = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                        ->findAllByProfAndAcademicYear($status->getPerson(), $academicYear);
+                        
+                    $subjects = array();
+                    foreach($allSubjects as $subject) {
+                        if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
+                            $subjects[] = $subject->getSubject();
+                        }
+                    }
+                    
+                    if (sizeof($subjects) == 0)
+                        continue;
+                        
+                    $text = '';
+                    foreach($subjects as $subject)
+                        $text .= ' - ' . $subject->getName() . PHP_EOL;
+        
+                    $body = str_replace('{{ subjects }}', ' ' . trim($text), $mail);
+
+                    $message = new Message();
+                    $message->setBody($body)
+                        ->setFrom($mailAddress, $mailName)
+                        ->setSubject($mailSubject);
+                    
+                    if ($formData['test_it']) {
+                        $message->addTo(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('system_administrator_mail'),
+                            'System Administrator'
+                        );
+                    } else {
+                        $message->addTo($status->getPerson()->getEmail(), $status->getPerson()->getFullName());                    
+                    }
+                       
+                    if ('production' == getenv('APPLICATION_ENV'))
+                        $mailTransport->send($message);
+                    
+                    if ($formData['test_it'])
+                        break;
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The mail was successfully send!'
+                    )
+                );
+                
+                $this->redirect()->toRoute(
+                    'admin_mail_prof',
+                    array(
+                        'action' => 'cudi'
+                    )
+                );
+                
+                return new ViewModel();
+            }
+        }
         
         return new ViewModel(
             array(
                 'subject' => $subject,
                 'mail' => $mail,
                 'semester' => $semester,
+                'form' => $form,
             )
         );
-    }
-    
-    public function sendAction()
-    {
-        $academicYear = $this->_getAcademicYear();
-                    
-        $semester = (new DateTime() < $academicYear->getStartDate()) ? 1 : 2;
-        
-        $statuses = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Statuses\University')
-            ->findAllByStatus('professor', $academicYear);
-            
-        $mailSubject = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.start_cudi_mail_subject');
-        
-        $mail = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.start_cudi_mail');
-            
-        $mailAddress = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail');
-            
-        $mailName = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail_name');
-        
-        foreach($statuses as $status) {
-            $allSubjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-                ->findAllByProfAndAcademicYear($status->getPerson(), $academicYear);
-                
-            $subjects = array();
-            foreach($allSubjects as $subject) {
-                if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
-                    $subjects[] = $subject->getSubject();
-                }
-            }
-            
-            if (sizeof($subjects) == 0)
-                continue;
-                
-            $text = '';
-            foreach($subjects as $subject)
-                $text .= ' - ' . $subject->getName() . PHP_EOL;
-
-            $body = str_replace('{{ subjects }}', ' ' . trim($text), $mail);
-                
-            $message = new Message();
-            $message->setBody($body)
-                ->setFrom($mailAddress, $mailName)
-                ->addTo($status->getPerson()->getEmail(), $status->getPerson()->getFullName())
-                ->setSubject($mailSubject);
-               
-            if ('production' == getenv('APPLICATION_ENV'))
-                $mailTransport->send($message);
-        }
-
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The mail was successfully send!'
-            )
-        );
-        
-        $this->redirect()->toRoute(
-            'admin_mail_prof',
-            array(
-                'action' => 'cudi'
-            )
-        );
-                                
-        return new ViewModel();
-    }
-    
+    }    
     private function _getAcademicYear()
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();

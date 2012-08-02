@@ -19,17 +19,10 @@
 	        <b>Body:</b>
 	        <pre style="border: 1px solid #ccc;margin: 5px;padding: 5px;background: #ddd;word-break: normal;">{{ mail }}</pre>
 	    </p>
-	    <br />
-	    <input type="button" id="send" value="Send Mail " />
+	    {% if hasAccess('admin_mail_prof', 'send') %}
+	        {% autoescape false %}
+    	        {{ form }}
+    	    {% endautoescape %}
+	    {% endif %}
 	</div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#send').click(function () {
-                window.location = '{{ url('admin_mail_prof', {'action':'send'}) }}';
-            });
-        });
-    </script>
 {% endblock %}
