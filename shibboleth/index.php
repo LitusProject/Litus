@@ -47,13 +47,13 @@ $diConfig->configure($diContainer);
 $em = $diContainer->get('doctrine_em');
 
 $shibbolethPersonKey = $em->getRepository('CommonBundle\Entity\General\Config')
-    ->getConfigValue('shibboleth_person_key')
+    ->getConfigValue('shibboleth_person_key');
 $shibbolethSessionKey = $em->getRepository('CommonBundle\Entity\General\Config')
-    ->getConfigValue('shibboleth_session_key')
+    ->getConfigValue('shibboleth_session_key');
 
 if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-        ->findOneByCode(substr($_SERVER['Shib-Session-ID'], 1));
+        ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
         
     if (null !== $checkCode)
         break 1;
