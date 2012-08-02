@@ -92,6 +92,11 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                     'value'       => '300',
                     'description' => 'The amount of time during which the generated Shibboleth code is valid (in seconds)',
                 ),
+                array(
+                    'key'         => 'system_administrator_mail',
+                    'value'       => 'it@vtk.be',
+                    'description' => 'The mail address of system administrator',
+                ),
             )
         );
     }
