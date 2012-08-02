@@ -37,7 +37,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     
         $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
         
-        $subject = str_replace(
+        $mailSubject = str_replace(
             array(
                 '{{ semester }}',
                 '{{ academicYear }}',
@@ -111,7 +111,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     }
                        
                     if ('production' == getenv('APPLICATION_ENV'))
-                        $mailTransport->send($message);
+                        $this->getMailTransport()->send($message);
                     
                     if ($formData['test_it'])
                         break;
@@ -144,7 +144,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 'form' => $form,
             )
         );
-    }    
+    }
+     
     private function _getAcademicYear()
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();

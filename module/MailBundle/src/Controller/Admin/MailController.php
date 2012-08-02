@@ -87,7 +87,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                     $mail->addTo($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
                 
                 if ('production' == getenv('APPLICATION_ENV'))
-                    $mailTransport->send($mail);
+                    $this->getMailTransport()->send($mail);
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
