@@ -89,7 +89,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         continue;
                         
                     $text = '';
-                    for($i = 0; isset($subjects[$i]; $i++) {
+                    for($i = 0; isset($subjects[$i]); $i++) {
                         if ($i != 0)
                              $text .= PHP_EOL;
                              
