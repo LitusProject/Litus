@@ -121,7 +121,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'The mail was successfully send!'
+                        'The mail was successfully sent!'
                     )
                 );
                 
