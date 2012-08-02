@@ -76,9 +76,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'isAuthenticated' => $isAuthenticated,
                 'form' => new LoginForm(),
-                'shibbolethUrl' => $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shibboleth_url'),
+                'shibbolethUrl' => $this->_getShibbolethUrl()
             )
         );
     }
@@ -129,5 +127,17 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
         
         return new ViewModel();
+    }
+    
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+        
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+            
+        return $shibbolethUrl . '?source=admin';
     }
 }

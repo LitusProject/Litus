@@ -51,12 +51,38 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = $loginForm;
-        $result->shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
+        $result->shibbolethUrl = $this->_getShibbolethUrl();
           
         $e->setResult($result);
         
         return $result;
+    }
+    
+    /**
+     * We need to be able to specify a differenet login route depending on
+     * which part of the site is currently being used.
+     *
+     * @return string
+     */
+    public function getLoginRoute()
+    {
+        return 'auth';
+    }
+    
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+        
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+            
+        return $shibbolethUrl . '?source=site';
     }
 }

@@ -71,6 +71,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
 
 $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_code_handler_url');
+$shibbolethHandler = unserialize($shibbolethHandler)[$_GET['source']];
     
 if ('/' == substr($shibbolethHandler, -1))
     $shibbolethHandler = substr($shibbolethHandler, 0, -1);

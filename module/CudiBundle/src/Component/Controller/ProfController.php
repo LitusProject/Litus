@@ -43,10 +43,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
-        $result->shibbolethUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_url');
-                    
+        $result->shibbolethUrl = $this->_getShibbolethUrl();
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
@@ -55,6 +52,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
     
+    /**
+     * Returns the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     protected function getAcademicYear()
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
@@ -88,5 +90,33 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $academicYear;
+    }
+    
+    /**
+     * We need to be able to specify a differenet login route depending on
+     * which part of the site is currently being used.
+     *
+     * @return string
+     */
+    public function getLoginRoute()
+    {
+        return 'prof_index';
+    }
+    
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+        
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+            
+        return $shibbolethUrl . '?source=prof';
     }
 }

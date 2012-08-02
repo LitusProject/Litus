@@ -23,6 +23,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ActionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    /**
+     * Returns the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     protected function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
@@ -58,6 +63,11 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         return $academicYear;
     }
     
+    /**
+     * Returns the active stock period.
+     *
+     * @return \CudiBundle\Entity\Stock\Period
+     */
     protected function getActiveStockPeriod()
     {
         $period = $this->getEntityManager()

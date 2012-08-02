@@ -28,7 +28,7 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
     public function indexAction()
     {
         if ($this->getAuthentication()->isAuthenticated()) {
-              $this->paginator()->setItemsPerPage(5);
+            $this->paginator()->setItemsPerPage(5);
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -46,6 +46,7 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         }
+        
         return new ViewModel();
     }
 }

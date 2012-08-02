@@ -25,9 +25,17 @@ use CommonBundle\Entity\Users\Person;
 interface AuthenticationAware
 {
     /**
-     * Implementing the Singleton pattern for the Authentication object.
+     * Returns the Authentication instance.
      *
-     * @return \Litus\Authentication\Authentication
+     * @return \CommonBundle\Component\Authentication\Authentication
      */
     public function getAuthentication();
+    
+    /**
+     * We need to be able to specify a differenet login route depending on
+     * which part of the site is currently being used.
+     *
+     * @return string
+     */
+    public function getLoginRoute();
 }

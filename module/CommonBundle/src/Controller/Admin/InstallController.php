@@ -40,8 +40,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'account_deactivated_mail',
                     'value'       => 'Dear,
 
-Your account of litus.cc is deactivated.
-Click here to activate it again: http://litus/account/activate/{{ code }}',
+Your account on Litus is deactivated.
+Click here to activate it again: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
@@ -63,8 +63,8 @@ Click here to activate it again: http://litus/account/activate/{{ code }}',
                     'key'         => 'account_activated_mail',
                     'value'       => 'Dear {{ name }},
 
-An account for you is created on litus.cc with username {{ username }}.
-Click here to activate it: http://litus/account/activate/{{ code }}',
+An account for you is created on Litus with username {{ username }}.
+Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
@@ -79,7 +79,7 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_url',
-                    'value'       => 'https://arianna.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%2Fshibboleth',
+                    'value'       => 'https://arianna.vtk.be/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%2Fshibboleth%2F',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
@@ -94,7 +94,13 @@ Click here to activate it: http://litus/account/activate/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_code_handler_url',
-                    'value'       => 'https://dev.vtk.be/admin/auth/shibboleth',
+                    'value'       => serialize(
+                        array(
+                            'admin' => 'https://dev.vtk.be/admin/auth/shibboleth',
+                            'prof'  => 'https://dev.vtk.be/cudi/prof/auth/shibboleth',
+                            'site'  => 'https://dev.vtk.be/auth/shibboleth',
+                        )
+                    ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
                 ),
                 array(

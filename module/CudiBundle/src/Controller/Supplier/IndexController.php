@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Controller\Supplier;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    Zend\View\Model\ViewModel;
 
 /**
  * IndexController
