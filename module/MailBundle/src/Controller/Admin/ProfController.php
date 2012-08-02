@@ -98,6 +98,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $message->setBody($body)
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($mailSubject);
+                        
+                    $message->addBcc($mailAddress);
                     
                     if ($formData['test_it']) {
                         $message->addTo(

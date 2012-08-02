@@ -51,40 +51,22 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         $startExecutionTime = microtime(true);
 
-        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')->plugin('headMeta')->setCharset('utf-8');
+        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+            ->plugin('headMeta')
+            ->setCharset('utf-8');
+            
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
         
+        $this->initAuthentication();
+        $this->initLocalization();
+        
         $authenticatedUser = 'Guest';
-        
-        if (
-            $this->hasAccess()->resourceAction(
-                $this->getParam('controller'), $this->getParam('action')
-            )
-        ) {
-            if ($this->getAuthentication()->isAuthenticated()) {
-                $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
-
-                if ('auth' == $this->getParam('controller') && 'login' == $this->getParam('action'))
-                    $this->redirect()->toRoute('admin_dashboard');
-            }
-        } else {
-            if (!$this->getAuthentication()->isAuthenticated()) {
-                if ('auth' != $this->getParam('controller') && 'login' != $this->getParam('action'))
-                    $this->redirect()->toRoute(
-                        $this->getLoginRoute()
-                    );
-            } else {
-                throw new Exception\HasNoAccessException(
-                    'You do not have sufficient permissions to access this resource'
-                );
-            }
-        }
-        
-           $this->initLocalization();
+        if ($this->getAuthentication()->isAuthenticated())
+            $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
         
         $result = parent::execute($e);
-
+        
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -216,6 +198,45 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         return $language;
     }
     
+    /**
+     * Initializes the authentication.
+     *
+     * @return void
+     */
+    protected function initAuthentication()
+    {
+        if (
+            $this->hasAccess()->resourceAction(
+                $this->getParam('controller'), $this->getParam('action')
+            )
+        ) {
+            if ($this->getAuthentication()->isAuthenticated()) {
+                if (
+                    $this->getAuthenticationHandler()['controller'] == $this->getParam('controller') 
+                        && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
+                ) {
+                    $this->redirect()->toRoute(
+                        $this->getAuthenticationHandler()['redirect_route']
+                    );
+                }
+            }
+        } else {
+            if (!$this->getAuthentication()->isAuthenticated()) {
+                if (
+                    $this->getAuthenticationHandler()['controller'] != $this->getParam('controller') 
+                        && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
+                ) {
+                    $this->redirect()->toRoute(
+                        $this->getAuthenticationHandler()['auth_route']
+                    );
+                }
+            } else {
+                throw new Exception\HasNoAccessException(
+                    'You do not have sufficient permissions to access this resource'
+                );
+            }
+        }
+    }
     
     /**
      * Initializes the localization
@@ -262,14 +283,20 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
     
     /**
-     * We need to be able to specify a differenet login route depending on
-     * which part of the site is currently being used.
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
      *
-     * @return string
+     * @return array
      */
-    public function getLoginRoute()
+    public function getAuthenticationHandler()
     {
-        return 'admin_auth';
+        return array(
+            'action'         => 'login',
+            'controller'     => 'auth',
+            
+            'auth_route'     => 'admin_auth',
+            'redirect_route' => 'admin_index'
+        );
     }
 
     /**
