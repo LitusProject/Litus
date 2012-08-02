@@ -66,16 +66,15 @@ try {
 if (isset($opts->a) || isset($opts->se)) {
     echo 'Running Sessions GC...' . PHP_EOL;
 
-    $sessions = $em
-        ->getRepository('CommonBundle\Entity\Users\Session')
+    $sessions = $em->getRepository('CommonBundle\Entity\Users\Session')
         ->findAllExpired();
     
     foreach($sessions as $session)
-        $entityManager->remove($session);
+        $em->remove($session);
     
     echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
         
-    $entityManager->flush();
+    $em->flush();
     
     // Memory Considerations
     unset($session, $sessions);
@@ -84,16 +83,15 @@ if (isset($opts->a) || isset($opts->se)) {
 if (isset($opts->a) || isset($opts->sh)) {
     echo 'Running Shibboleth GC...' . PHP_EOL;
 
-    $codes = $em
-        ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+    $codes = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findAllExpired();
     
     foreach($codes as $code)
-        $entityManager->remove($code);
+        $em->remove($code);
     
     echo 'Removed ' . count($codes) . ' expired codes' . PHP_EOL;
         
-    $entityManager->flush();
+    $em->flush();
     
     // Memory Considerations
     unset($code, $codes);

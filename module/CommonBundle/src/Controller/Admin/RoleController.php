@@ -60,8 +60,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
                         $parents[] = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\Acl\Role')
-                                ->findOneByName($parent);
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($parent);
                     }
                 }
                 
@@ -70,7 +70,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     foreach ($formData['actions'] as $action) {
                         $actions[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Action')
-                            ->findOneByName($action);
+                            ->findOneById($action);
                     }
                 }
                 

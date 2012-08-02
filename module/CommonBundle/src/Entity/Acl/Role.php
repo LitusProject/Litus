@@ -48,8 +48,8 @@ class Role
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
      *      name="acl.roles_inheritance",
-     *      joinColumns={@JoinColumn(name="parent", referencedColumnName="name")},
-     *      inverseJoinColumns={@JoinColumn(name="child", referencedColumnName="name")}
+     *      joinColumns={@JoinColumn(name="child", referencedColumnName="name")},
+     *      inverseJoinColumns={@JoinColumn(name="parent", referencedColumnName="name")}
      * )
      */
     private $parents;
@@ -78,7 +78,7 @@ class Role
         $this->system = $system;
 
         $this->parents = new ArrayCollection($parents);
-        $this->actions = new ArrayCollection();
+        $this->actions = new ArrayCollection($actions);
     }
 
     /**
@@ -166,7 +166,7 @@ class Role
         }
 
         foreach ($this->getParents() as $parent) {
-            if ($parent->isAllowed($resource, $action))
+            if ($parent->isAllowed($acl, $resource, $action))
                 return true;
         }
 
