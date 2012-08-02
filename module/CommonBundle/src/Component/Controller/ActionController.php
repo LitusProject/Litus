@@ -71,7 +71,9 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if ('auth' != $this->getParam('controller') && 'login' != $this->getParam('action'))
-                    $this->redirect()->toRoute('admin_auth');
+                    $this->redirect()->toRoute(
+                        $this->getLoginRoute()
+                    );
             } else {
                 throw new Exception\HasNoAccessException(
                     'You do not have sufficient permissions to access this resource'
@@ -236,7 +238,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
     
     /**
-     * Returns the ACL object
+     * Returns the ACL object.
      *
      * @TODO Figure out how Zend\Cache works
      *
@@ -250,13 +252,24 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
     
     /**
-     * Returns the Authentication instance
+     * Returns the Authentication instance.
      *
      * @return \CommonBundle\Component\Authentication\Authentication
      */
     public function getAuthentication()
     {
         return $this->getLocator()->get('authentication');
+    }
+    
+    /**
+     * We need to be able to specify a differenet login route depending on
+     * which part of the site is currently being used.
+     *
+     * @return string
+     */
+    public function getLoginRoute()
+    {
+        return 'admin_auth';
     }
 
     /**

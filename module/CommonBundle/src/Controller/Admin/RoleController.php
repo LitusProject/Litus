@@ -200,7 +200,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
         
-    public function _getRole()
+    private function _getRole()
     {
         if (null === $this->getParam('name')) {
             $this->flashMessenger()->addMessage(

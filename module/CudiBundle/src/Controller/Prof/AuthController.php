@@ -89,4 +89,41 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel();
     }
+    
+    public function shibbolethAction()
+    {   
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getLocator()->get('authentication_doctrineservice')
+            );
+            
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+                
+            if (null !== $code) { 
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+                    
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+                    
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'prof_index'
+                        );
+                    }
+                }
+            }
+        }
+        
+        return new ViewModel();
+    }
 }

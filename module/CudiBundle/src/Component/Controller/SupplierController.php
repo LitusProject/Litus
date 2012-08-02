@@ -35,7 +35,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function execute(MvcEvent $e)
     {
-        if (! method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
+        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
         
         $result = parent::execute($e);
@@ -53,6 +53,22 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         return $result;
     }
     
+    /**
+     * We need to be able to specify a differenet login route depending on
+     * which part of the site is currently being used.
+     *
+     * @return string
+     */
+    public function getLoginRoute()
+    {
+        return 'supplier_index';
+    }
+    
+    /**
+     * Returns the supplier for the user that is currently logged in.
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
     protected function getSupplier()
     {
         if ($this->getAuthentication()->isAuthenticated())
