@@ -78,7 +78,7 @@ class Role
         $this->system = $system;
 
         $this->parents = new ArrayCollection($parents);
-        $this->actions = new ArrayCollection();
+        $this->actions = new ArrayCollection($actions);
     }
 
     /**

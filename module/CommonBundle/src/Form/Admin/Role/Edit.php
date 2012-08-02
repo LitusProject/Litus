@@ -48,7 +48,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
             array(
                 'name' => $role->getName(),
                 'parents' => $this->_createParentsPopulationArray($role->getParents()),
-                'actions' => $this->_createActionsPopulationArray($role->getActions(), $role->getParents())
+                'actions' => $this->_createActionsPopulationArray($role->getActions())
             )
         );
     }
@@ -72,18 +72,11 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
      * Returns an array that is in the right format to populate the actions field.
      *
      * @param array $actions The role's actions
-     * @param array $parents The role's parents
      * @return array
      */
-    public function _createActionsPopulationArray(array $actions, array $parents)
+    public function _createActionsPopulationArray(array $actions)
     {
-        $actionsArray = array();       
-        foreach ($parents as $parent) {
-            foreach ($parent->getActions() as $action) {
-                $actionsArray[] = $action->getId();
-            }
-        }
-        
+        $actionsArray = array();
         foreach ($actions as $action) {
             $actionsArray[] = $action->getId();
         }
