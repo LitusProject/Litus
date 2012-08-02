@@ -74,6 +74,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->findAllByStatus('professor', $academicYear);
                 
                 foreach($statuses as $status) {
+                    if ('' == $status->getPerson()->getEmail())
+                        continue;
+                
                     $allSubjects = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                         ->findAllByProfAndAcademicYear($status->getPerson(), $academicYear);
@@ -113,7 +116,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                             'System Administrator'
                         );
                     } else {
-                        $message->addTo($status->getPerson()->getEmail(), $status->getPerson()->getFullName());                    
+                        $message->addTo(
+                            $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
+                        );                    
                     }
                        
                     if ('production' == getenv('APPLICATION_ENV'))
