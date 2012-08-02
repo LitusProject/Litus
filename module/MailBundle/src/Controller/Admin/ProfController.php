@@ -89,8 +89,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         continue;
                         
                     $text = '';
-                    foreach($subjects as $subject)
-                        $text .= '    [' . $subject->getCode() . '] - ' . $subject->getName() . PHP_EOL;
+                    for($i = 0; isset($subjects[$i]; $i++) {
+                        if ($i != 0)
+                             $text .= PHP_EOL;
+                             
+                        $text .= '    [' . $subjects[$i]->getCode() . '] - ' . $subjects[$i]->getName();
+                    }
         
                     $body = str_replace('{{ subjects }}', $text, $mail);
 
