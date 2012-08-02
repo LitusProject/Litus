@@ -90,9 +90,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         
                     $text = '';
                     foreach($subjects as $subject)
-                        $text .= '[' . $subject->getCode() . '] - ' . $subject->getName() . PHP_EOL;
+                        $text .= '    [' . $subject->getCode() . '] - ' . $subject->getName() . PHP_EOL;
         
-                    $body = str_replace('{{ subjects }}', ' ' . trim($text), $mail);
+                    $body = str_replace('{{ subjects }}', trim($text), $mail);
 
                     $message = new Message();
                     $message->setBody($body)
