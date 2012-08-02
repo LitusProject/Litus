@@ -138,7 +138,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         
         return new ViewModel(
             array(
-                'subject' => $subject,
+                'subject' => $mailSubject,
                 'mail' => $mail,
                 'semester' => $semester,
                 'form' => $form,
