@@ -48,8 +48,8 @@ class Role
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
      *      name="acl.roles_inheritance",
-     *      joinColumns={@JoinColumn(name="parent", referencedColumnName="name")},
-     *      inverseJoinColumns={@JoinColumn(name="child", referencedColumnName="name")}
+     *      joinColumns={@JoinColumn(name="child", referencedColumnName="name")},
+     *      inverseJoinColumns={@JoinColumn(name="parent", referencedColumnName="name")}
      * )
      */
     private $parents;
