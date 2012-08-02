@@ -101,7 +101,7 @@ class AcademicYear
      */
     public function getUniversityEndDate()
     {
-        return AcademicYearUtil::getEndOfAcademicYear($this->start);
+        return AcademicYearUtil::getEndOfAcademicYear($this->universityStart);
     }
     
     /**
