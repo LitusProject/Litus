@@ -25,7 +25,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Checkbox,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\Form\Element\Text,
+    Zend\Validator\Isbn as IsbnValidator;
 
 /**
  * Confirm Article add action
@@ -77,7 +78,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $field = new Text('isbn');
         $field->setLabel('ISBN')
             ->setDecorators(array(new FieldDecorator()))
-            ->addValidator('isbn');
+            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)));
         $this->addElement($field);
         
         $field = new Text('url');

@@ -22,9 +22,12 @@
 	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
 	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
 	</p>
-	{% autoescape false %}
-	    {{ form }}
-	{% endautoescape %}
+	
+	{% if nbArticles > 0 %}
+    	{% autoescape false %}
+    	    {{ form }}
+    	{% endautoescape %}
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
