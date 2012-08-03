@@ -22,8 +22,8 @@ class Code extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('c.code', ':code'),
                     $query->expr()->orX(
-                        $query->expr()->gt('c.expireTime', ':now'),
-                        $query->expr()->isNull('c.expireTime')
+                        $query->expr()->gt('c.expirationTime', ':now'),
+                        $query->expr()->isNull('c.expirationTime')
                     )
                 )
             )

@@ -116,7 +116,7 @@
 
     <section> 
         <div id="form_container">
-			<a class="shibboleth" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+			<a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
             <div class="divider"></div>
         	{% autoescape false %}
             	{{ form }}
