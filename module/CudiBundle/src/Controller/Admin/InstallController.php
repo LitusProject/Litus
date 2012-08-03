@@ -233,7 +233,7 @@ VTK Cudi
                         'send'
                     ),
                     'admin_prof_action' => array(
-                        'completed', 'confirmArticle', 'confirmFile', 'manage', 'refused', 'refuse', 'view'
+                        'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'admin_sales_article' => array(
                         'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
