@@ -16,7 +16,9 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    DateInterval,
+    DateTime;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -31,15 +33,30 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
-            $start = AcademicYear::getStartOfAcademicYear();
+            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         } else {
-            $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
-        $start->setTime(0, 0);
-
+        $startAcademicYear->setTime(0, 0);
+        
+        $start = new DateTime(
+            str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            )
+        );
+        
+        $next = clone $start;
+        $next->add(new DateInterval('P1Y'));
+        if ($next <= new DateTime())
+            $start = $next;
+        
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+            ->findOneByStart($start);
         
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

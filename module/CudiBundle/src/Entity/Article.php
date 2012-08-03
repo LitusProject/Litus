@@ -128,6 +128,7 @@ abstract class Article
      * @var array The possible types of an article
      */
     public static $POSSIBLE_TYPES = array(
+        'common' => 'Common',
         'other' => 'Other',
         'exercises' => 'Exercises',
         'notes' => 'Notes',

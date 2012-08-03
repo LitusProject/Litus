@@ -6,7 +6,6 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 	
 	<div id="controller_action">
-		
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
@@ -16,6 +15,10 @@
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+		    $('#type').change(function () {
+		        if ($(this).find(':selected').val() == 'common')
+		            $('#subjectSearch, #subjectId').val('');
+		    });
 			$('#internal').click(toggleInternal);
 			toggleInternal();
 			
