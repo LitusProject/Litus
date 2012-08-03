@@ -84,11 +84,18 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 );
             }
         }
+        
+        $nbArticles = sizeof(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findAllByProf($this->getAuthentication()->getPersonObject())
+        );
             
         return new ViewModel(
             array(
                 'subject' => $subject,
                 'form' => $form,
+                'nbArticles' => $nbArticles,
             )
         );
     }
