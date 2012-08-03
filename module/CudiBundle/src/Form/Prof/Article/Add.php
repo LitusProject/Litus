@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($opts);
         
-           $this->_entityManager = $entityManager;
+        $this->_entityManager = $entityManager;
 
         $field = new Text('title');
         $field->setLabel('Title')

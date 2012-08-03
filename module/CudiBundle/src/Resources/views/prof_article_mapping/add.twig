@@ -1,6 +1,16 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
+    {% if nbArticles == 0 %}
+        <div class="flashmessage alert alert-error fade" id="comment_removed_error">
+            <a class="close" data-dismiss="alert">&times;</a>
+        	<div class="title">{{ translator().translate('Error') }}</div>
+        	<div class="content">
+        		<p>{% autoescape false %}{{ translator().translate('There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.') }}{% endautoescape %}</p>
+        	</div>
+        </div>
+    {% endif %}
+    
 	<div class="page-header">
 	    <h2>{{ translator().translate('Add Article') }}</h2>
 	</div>

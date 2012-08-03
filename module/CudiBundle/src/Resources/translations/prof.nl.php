@@ -106,6 +106,7 @@ return array(
     'Remove Docent' => 'Vewijder Docent',
     'Are you sure you want to remove the following article' => 'Ben je zeker dat je volgend artikel wil verwijderen',
     'Are you sure you want to remove the following docent' => 'Ben je zeker dat je volgende docent wil verwijderen',
+    'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
     
     'URL' => 'URL',
     'Downloadable' => 'Downloadbaar',
