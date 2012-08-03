@@ -62,7 +62,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($article = $this->_getArticle()))
             return new ViewModel();
         
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
         
         if ($article->isInternal()) {
             $priceBW = $this->getEntityManager()
@@ -138,7 +138,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($saleArticle = $this->_getSaleArticle()))
             return new ViewModel();
         
-        $form = new EditForm($this->getEntityManager(), $saleArticle);
+        $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
         
         if ($saleArticle->getMainArticle()->isInternal()) {
             $priceBW = $this->getEntityManager()
@@ -211,7 +211,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($saleArticle = $this->_getSaleArticle()))
             return new ViewModel();
         
-        $form = new ActivateForm($this->getEntityManager(), $saleArticle);
+        $form = new ActivateForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();

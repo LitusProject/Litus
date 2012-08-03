@@ -34,25 +34,35 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (null === $this->getParam('academicyear')) {
             $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+            
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
+            
+            $next = clone $start;
+            $next->add(new DateInterval('P1Y'));
+            if ($next <= new DateTime())
+                $start = $next;
         } else {
             $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
+            
+            $start = new DateTime(
+                str_replace(
+                    '{{ year }}',
+                    $startAcademicYear->format('Y'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('start_organization_year')
+                )
+            );
         }
         $startAcademicYear->setTime(0, 0);
-        
-        $start = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            )
-        );
-        
-        $next = clone $start;
-        $next->add(new DateInterval('P1Y'));
-        if ($next <= new DateTime())
-            $start = $next;
         
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')

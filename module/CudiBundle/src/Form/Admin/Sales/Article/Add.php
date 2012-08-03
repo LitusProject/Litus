@@ -18,6 +18,7 @@ namespace CudiBundle\Form\Admin\Sales\Article;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Component\Validator\Price as PriceValidator,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
@@ -25,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
-    Zend\Validator\Isbn as IsbnValidator;
+    Zend\Validator\Barcode as BarcodeValidator;
 
 /**
  * Add Article
@@ -39,11 +40,11 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
      */
     protected $_entityManager = null;
 
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $opts = null)
     {
         parent::__construct($opts);
         
-           $this->_entityManager = $entityManager;
+        $this->_entityManager = $entityManager;
          
         $field = new Text('purchase_price');
         $field->setLabel('Purchase Price')
@@ -63,8 +64,15 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $field->setLabel('Barcode')
             ->setAttrib('class', 'disableEnter')
             ->setRequired()
-            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)))
-            ->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager))
+            ->addValidator(
+                new BarcodeValidator(
+                    array(
+                        'adapter'     => 'Ean12',
+                        'useChecksum' => false,
+                    )
+                )
+            )
+            ->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager, $academicYear))
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
