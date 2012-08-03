@@ -84,10 +84,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Downloadable');
         $this->addElement($field);
         
+        $types = Article::$POSSIBLE_TYPES;
+        unset($types['common']);
         $field = new Select('type');
         $field->setLabel('Type')
-               ->setRequired()
-            ->setMultiOptions(Article::$POSSIBLE_TYPES);
+            ->setRequired()
+            ->setMultiOptions($types);
         $this->addElement($field);
 
         $field = new Checkbox('internal');
@@ -109,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'article_form'
         );
         $this->getDisplayGroup('article_form')
-               ->setLegend('Article')
+            ->setLegend('Article')
             ->setAttrib('id', 'article_form')
             ->removeDecorator('DtDdWrapper');
 
