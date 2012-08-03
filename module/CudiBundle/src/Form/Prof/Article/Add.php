@@ -24,7 +24,8 @@ use CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Zend\Form\Element\Hidden,
-    Zend\Validator\Int as IntValidator;
+    Zend\Validator\Int as IntValidator,
+    Zend\Validator\Isbn as IsbnValidator;
 
 /**
  * Add Article
@@ -71,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         
         $field = new Text('isbn');
         $field->setLabel('ISBN')
-            ->addValidator('isbn');
+            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)));
         $this->addElement($field);
         
         $field = new Text('url');
