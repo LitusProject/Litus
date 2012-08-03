@@ -19,7 +19,10 @@ use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\Subject")
- * @Table(name="syllabus.subject")
+ * @Table(
+ *    name="syllabus.subject",
+ *    indexes={@index(name="typahead_idx", columns={"name", "code"})}
+ * )
  */
 class Subject
 {

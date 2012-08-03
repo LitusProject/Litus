@@ -42,7 +42,7 @@ class Supplier
     /**
      * @var string The phone number of the supplier
      *
-     * @Column(type="string", name="phone_number")
+     * @Column(type="string", name="phone_number", nullable=true)
      */
     private $phoneNumber;
 
@@ -57,7 +57,7 @@ class Supplier
     /**
      * @var string The vat number of the supplier
      *
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      */
     private $vatNumber;
     
