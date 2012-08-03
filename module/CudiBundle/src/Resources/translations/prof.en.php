@@ -106,6 +106,7 @@ return array(
     'Remove Docent' => 'Remove Docent',
     'Are you sure you want to remove the following article' => 'Are you sure you want to remove the following article',
     'Are you sure you want to remove the following docent' => 'Are you sure you want to remove the following docent',
+    'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
     
     'URL' => 'URL',
     'Downloadable' => 'Downloadable',
