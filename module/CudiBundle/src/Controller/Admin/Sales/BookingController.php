@@ -250,23 +250,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         
         $booking->setStatus('assigned');
         
-        $message = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail');
-            
-        $subject = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail_subject');
-            
-        $mailAddress = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail');
-            
-        $mailName = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail_name');
-        
-        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson(), $message, $subject, $mailAddress, $mailName);
+        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson());
 
         $this->getEntityManager()->flush();
             
