@@ -16,7 +16,8 @@
 namespace CudiBundle\Entity\Stock\Deliveries;
 
 use CommonBundle\Entity\Users\Person,
-    CudiBundle\Entity\Sales\Article;
+    CudiBundle\Entity\Sales\Article,
+    DateTime;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Delivery")
@@ -71,7 +72,7 @@ class Delivery
     public function __construct(Article $article, $number, Person $person)
     {
         $this->article = $article;
-        $this->timestamp = new \DateTime();
+        $this->timestamp = new DateTime();
         $this->number = $number;
         $this->person = $person;
         $article->addStockValue($number);
