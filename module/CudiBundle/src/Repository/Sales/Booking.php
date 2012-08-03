@@ -494,24 +494,8 @@ class Booking extends EntityRepository
         }
         $this->getEntityManager()->flush();
         
-        $message = $this->_em
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail');
-            
-        $subject = $this->_em
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_assigned_mail_subject');
-            
-        $mailAddress = $this->_em
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail');
-            
-        $mailName = $this->_em
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.mail_name');
-        
         foreach($persons as $person)
-            BookingMail::sendMail($mailTransport, $person['bookings'], $person['person'], $message, $subject, $mailAddress, $mailName);
+            BookingMail::sendMail($mailTransport, $person['bookings'], $person['person']);
         
         return $counter;
     }
