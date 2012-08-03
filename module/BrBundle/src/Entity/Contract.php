@@ -19,6 +19,7 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Contracts\Composition,
     BrBundle\Entity\Contracts\Section,
     CommonBundle\Entity\Users\Person,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection;
     
 /**
@@ -150,7 +151,7 @@ class Contract
      */
     public function setDate()
     {
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
 
         return $this;
     }

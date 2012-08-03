@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Session
@@ -20,7 +21,7 @@ class Session extends EntityRepository
             ->where(
                 $query->expr()->lt('s.expirationTime', ':expirationTime')
             )
-            ->setParameter('expirationTime', new \DateTime('now'))
+            ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()
             ->getResult();
             

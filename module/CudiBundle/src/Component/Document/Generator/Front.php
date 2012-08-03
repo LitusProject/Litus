@@ -19,6 +19,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Entity\Sales\Article,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -63,7 +64,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configs = $this->getConfigRepository();
         
-        $now = new \DateTime();
+        $now = new DateTime();
         $union_short_name = $configs->getConfigValue('union_short_name');
         $union_name = $configs->getConfigValue('union_name');
         $logo = $configs->getConfigValue('union_logo');

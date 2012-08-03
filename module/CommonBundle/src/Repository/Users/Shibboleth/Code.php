@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users\Shibboleth;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Code
@@ -40,7 +41,7 @@ class Code extends EntityRepository
             ->where(
                 $query->expr()->lt('c.expirationTime', ':expirationTime')
             )
-            ->setParameter('expirationTime', new \DateTime('now'))
+            ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()
             ->getResult();
             

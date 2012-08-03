@@ -17,6 +17,7 @@ namespace PageBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
+    DateTime,
     PageBundle\Entity\Category,
     PageBundle\Entity\Nodes\Page;
 
@@ -72,7 +73,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         parent::__construct($person);
         
-        $this->startTime = new \DateTime('now');
+        $this->startTime = new DateTime('now');
         
         $this->setCategory($category);
         $this->setParent($parent);
@@ -184,6 +185,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function close()
     {
         if (null === $this->endTime)
-            $this->endTime = new \DateTime('now');
+            $this->endTime = new DateTime('now');
     }
 }

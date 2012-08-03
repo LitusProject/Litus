@@ -15,7 +15,8 @@
  
 namespace CalendarBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
+use DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given faq title against the database to check whether it is
@@ -91,7 +92,7 @@ class DateCompare extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        if (\DateTime::createFromFormat($this->_format, $value) <= \DateTime::createFromFormat($this->_format, $endDate)) {
+        if (DateTime::createFromFormat($this->_format, $value) <= DateTime::createFromFormat($this->_format, $endDate)) {
             $this->error(self::NOT_VALID);
             return false;
         }
