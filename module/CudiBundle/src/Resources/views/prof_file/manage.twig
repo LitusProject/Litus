@@ -141,11 +141,12 @@
 			        if (data.errors) {
 			            $('#file_uploaded').removeClass('in');
 				        $('#uploadFile').find('ul.errors').remove();
+				        $('#uploadFile').find('.control-group').removeClass('error');
 				        for(element in data.errors) {
 				            var list = $('<ul>', {class: 'errors'})
-				            for (error in data[element])
-				                list.append($('<li>').html(data[element][error]));
-				            $('#uploadFile').find('#' + element).parent().parent().after(list);
+				            for (error in data.errors[element])
+				                list.append($('<li>').html(data.errors[element][error]));
+				            $('#uploadFile').find('#' + element).parent().parent().addClass('error').after(list);
 				        }
 				    } else if (data.info) {
 				        $('#uploadFile').resetForm();
@@ -169,9 +170,8 @@
 				        {% endif %}
 				        
 				        $('#articleFiles').append(item);
+				        $('#progressModal').permanentModal('hide');
 				    }
-				    var progressModal = $('#progressModal');
-				    progressModal.permanentModal('hide');
 			    },
 			    onSubmit: function () {
 			        $('#file_uploaded').removeClass('in');
