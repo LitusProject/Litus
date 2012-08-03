@@ -185,8 +185,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->removeDecorator('DtDdWrapper');
             
         $field = new Hidden('subject_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
+        $field->addValidator(new IntValidator())
             ->setAttrib('id', 'subjectId')
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
@@ -198,13 +197,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttrib('id', 'subjectSearch')
             ->setAttrib('autocomplete', 'off')
             ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
          
         $field = new Checkbox('mandatory');
         $field->setLabel('Mandatory')
-            ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
@@ -291,6 +288,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $formElement->clearValidators()
                     ->setRequired(false);
             }
+        }
+        
+        if (isset($data['type']) && $data['type'] !== 'common' && $data['subject_id'] == '') {
+            $this->getElement('subject_id')->setRequired();
+            $this->getElement('subject')->setRequired();
         }
         
         $isValid = parent::isValid($data);

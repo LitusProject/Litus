@@ -63,7 +63,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
             
-            if ($form->isValid($formData) || true) {
+            if ($form->isValid($formData)) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -105,17 +105,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 
                 $this->getEntityManager()->persist($article);
                 
-                $subject = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($formData['subject_id']);
+                if ($formData['type'] != 'common') {
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneById($formData['subject_id']);
+                        
+                    $mapping = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                        ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
                     
-                $mapping = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
-                
-                if (null === $mapping) {
-                    $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
-                    $this->getEntityManager()->persist($mapping);
+                    if (null === $mapping) {
+                        $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
+                        $this->getEntityManager()->persist($mapping);
+                    }
                 }
                 
                 $this->getEntityManager()->flush();
@@ -173,7 +175,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
-                    ->setType($formData['type']);
+                    ->setType(isset($formData['type']) ? $formData['type'] : 'common');
                 
                 if ($article->isInternal()) {
                     $binding = $this->getEntityManager()

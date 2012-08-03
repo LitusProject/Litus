@@ -26,7 +26,7 @@ class Subject extends EntityRepository
             ->getQuery()
             ->getResult();
             
-        $ids = array();
+        $ids = array(0);
         foreach($resultSet as $subject)
             $ids[] = $subject->getSubject()->getId();
 

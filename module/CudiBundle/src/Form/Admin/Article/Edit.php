@@ -36,6 +36,11 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
         foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
             $this->removeElement($element->getName());
         $this->removeDisplayGroup('subject_form');
+
+        if ($article->getType() == 'common') {
+            $this->getElement('type')->setAttrib('disabled', 'disabled')
+                ->setRequired(false);
+        }
         
         $field = new Submit('submit');
         $field->setLabel('Save')
