@@ -29,12 +29,28 @@ class Booking
     /**
      * Send a mail for assigned bookings
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CudiBundle\Entity\Stock\Order $order The order
-     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     * @param \Zend\Mail\Transport $mailTransport
+     * @param array $bookings
+     * @param \CommonBundle\Entity\Users\Person $person
      */
-    public static function sendMail(Transport $mailTransport, $bookings, Person $person, $message, $subject, $mailAddress, $mailName)
+    public static function sendMail(Transport $mailTransport, $bookings, Person $person)
     {
+        $message = $this->_em
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_assigned_mail');
+            
+        $subject = $this->_em
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_assigned_mail_subject');
+            
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail');
+            
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail_name');
+        
         $list = '';
         foreach($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
@@ -44,6 +60,13 @@ class Booking
         $mail->setBody(str_replace('{{ bookings }}', $list, $message))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
+            ->addCc($mailAddress, $mailName)
+            ->addBcc(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
             ->setSubject($subject);
             
         if ('production' == getenv('APPLICATION_ENV'))
