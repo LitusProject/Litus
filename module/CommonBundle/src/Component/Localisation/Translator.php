@@ -16,7 +16,7 @@ class Translator extends \Zend\Translator\Translator
      */
     public function __construct($adapter, $translations)
     {
-        if (sizeof($translations) === 0)
+        if (empty($translations))
             throw new InvalidArgumentException("At least one translator file must be given.");
         
         $first = current($translations);

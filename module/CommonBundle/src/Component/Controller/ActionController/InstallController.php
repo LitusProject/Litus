@@ -109,7 +109,7 @@ abstract class InstallController extends AdminController
                 );
                 
                 $this->getEntityManager()->persist($role);
-            } elseif(isset($config['parents']) && sizeof($config['parents']) > 0) {
+            } elseif(!empty($config['parents'])) {
                 $role->setParents($parents);
             }
             
