@@ -64,7 +64,7 @@ abstract class Article
     /**
      * @var integer The year the article was published
      *
-     * @Column(name="year_published", type="integer", length=4)
+     * @Column(name="year_published", type="integer", length=4, nullable=true)
      */
     private $yearPublished;
     
