@@ -70,7 +70,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
          
         $field = new Text('year_published');
         $field->setLabel('Year Published')
-            ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator('int')
             ->addValidator(new YearValidator());
