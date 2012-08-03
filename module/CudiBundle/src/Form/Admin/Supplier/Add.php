@@ -42,7 +42,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('phone_number');
         $field->setLabel('Phone Number')
-            ->setRequired()
             ->setAttrib('placeholder', '+CCAAANNNNNN')
             ->addValidator(new PhoneNumberValidator())
             ->setDecorators(array(new FieldDecorator()));
@@ -52,7 +51,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         
         $field = new Text('vat_number');
         $field->setLabel('VAT Number')
-            ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
