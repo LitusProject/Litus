@@ -26,7 +26,8 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator;
+    Zend\Validator\Int as IntValidator,
+    Zend\Validator\Isbn as IsbnValidator;
 
 /**
  * Add Article
@@ -78,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('isbn');
         $field->setLabel('ISBN')
             ->setDecorators(array(new FieldDecorator()))
-            ->addValidator('isbn');
+            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)));
         $this->addElement($field);
         
         $field = new Text('url');
