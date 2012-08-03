@@ -130,6 +130,7 @@ abstract class Article
     public static $POSSIBLE_TYPES = array(
         'other' => 'Other',
         'exercises' => 'Exercises',
+        'notes' => 'Notes',
         'slides' => 'Slides',
         'student' => 'Student',
         'textbook' => 'Textbook',
