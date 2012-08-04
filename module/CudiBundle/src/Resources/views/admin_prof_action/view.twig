@@ -97,7 +97,7 @@
 	        Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
 	        <br />
 	        {% if hasAccess('admin_article_file', 'download') %}
-	        	<input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " />
+	        	<input type="button" class="download downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " />
 	        {% endif %}
 	    {% endif %}
 	</div>
