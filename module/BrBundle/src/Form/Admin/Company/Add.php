@@ -15,13 +15,14 @@
  
 namespace BrBundle\Form\Admin\Company;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+use BrBundle\Entity\Company,
+    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Form,
+    Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\Form\Element\Text,
+    Zend\Form\Element\Textarea;
 
 /**
  * Add a company.
@@ -42,6 +43,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
+        
+        $field = new Textarea('history');
+        $field->setLabel('History')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new Textarea('description');
+        $field->setLabel('Description')
+            ->setRequired()
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $field = new Select('sector');
+        $field->setLabel('Sector')
+            ->setRequired()
+            ->setMultiOptions($this->_getSectors())
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
         $field = new Text('vat_number');
         $field->setLabel('VAT Number')
@@ -56,5 +76,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttrib('class', 'companies_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+    }
+    
+    public function populateFromCompany(Company $company)
+    {
+        $this->populate(
+            array(
+                'company_name' => $company->getName(),
+            )
+        );
+    }
+    
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$POSSIBLE_SECTORS as $key => $sector)
+            $sectorArray[$key] = $sector;
+
+        return $sectorArray;
     }
 }

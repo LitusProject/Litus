@@ -405,6 +405,8 @@ abstract class Article
      */
     public function setType($type)
     {
+        if (!self::isValidArticleType($type))
+            throw new \InvalidArgumentException('The article type is not valid.');
         $this->type = $type;
         return $this;
     }
