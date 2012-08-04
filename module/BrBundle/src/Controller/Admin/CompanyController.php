@@ -18,6 +18,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Company,
     BrBundle\Form\Admin\Company\Add as AddForm,
     BrBundle\Form\Admin\Company\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     Zend\View\Model\ViewModel;
 
@@ -48,7 +49,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
@@ -83,7 +84,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'admin_company',
                     array(
-                        'action' => 'add'
+                        'action' => 'manage'
                     )
                 );
                 
@@ -104,18 +105,74 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         if (!($company = $this->_getCompany()))
             return new ViewModel();
             
-        $form = new EditForm($company);
+        $form = new EditForm($this->getEntityManager(), $company);
+        
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+            
+            if ($form->isValid($formData)) {
+                $company->setName($formData['company_name'])
+                    ->setVatNumber($formData['vat_number'])
+                    ->setHistory($formData['history'])
+                    ->setDescription($formData['description'])
+                    ->setSector($formData['sector'])
+                    ->getAddress()
+                        ->setStreet($formData['address_street'])
+                        ->setNumber($formData['address_number'])
+                        ->setPostal($formData['address_postal'])
+                        ->setCity($formData['address_city'])
+                        ->setCountry($formData['address_country']);
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The company was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_company',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+                
+                return new ViewModel();
+            }
+        }
         
         return new ViewModel(
             array(
                 'form' => $form,
+                'company' => $company,
             )
         );
     }
 
     public function deleteAction()
     {
+        $this->initAjax();
+                
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+
+        $company->deactivate();
+        $this->getEntityManager()->flush();
         
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+    
+    public function logoAction()
+    {
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+        
+        return new ViewModel();
     }
     
     private function _getCompany()
