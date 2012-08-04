@@ -5,6 +5,7 @@ return array(
     'BrBundle\Component\Document\Pdf\ContractGenerator' => __DIR__ . '/src/Component/Document/Generator/Pdf/Contract.php',
     'Litus\Br\InvoiceGenerator'                         => __DIR__ . '/src/Component/Document/Generator/Pdf/Invoice.php',
     'Litus\Br\LetterGenerator'                          => __DIR__ . '/src/Component/Document/Generator/Pdf/Letter.php',
+    'BrBundle\Component\Validator\CompanyName'          => __DIR__ . '/src/Component/Validator/CompanyName.php',
     'BrBundle\Controller\Admin\Company\UserController'  => __DIR__ . '/src/Controller/Admin/Company/UserController.php',
     'BrBundle\Controller\Admin\CompanyController'       => __DIR__ . '/src/Controller/Admin/CompanyController.php',
     'Admin\ContractController'                          => __DIR__ . '/src/Controller/Admin/ContractController.php',

@@ -15,7 +15,8 @@
  
 namespace BrBundle\Form\Admin\Company;
 
-use BrBundle\Entity\Company,
+use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
+    BrBundle\Entity\Company,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
@@ -32,9 +33,13 @@ class Edit extends Add
     /**
      * @param mixed $opts The validator's options
      */
-    public function __construct(Company $company, $opts = null)
+    public function __construct(EntityManager $entityManager, Company $company, $opts = null)
     {
-        parent::__construct($opts);
+        parent::__construct($entityManager, $opts);
+        
+        $field = $this->getElement('company_name');
+        $field->clearValidators();
+        $field->addValidator(new CompanyNameValidator($entityManager, $company));
         
         $this->removeElement('submit');
         

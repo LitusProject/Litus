@@ -15,10 +15,12 @@
  
 namespace BrBundle\Form\Admin\Company;
 
-use BrBundle\Entity\Company,
+use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
+    BrBundle\Entity\Company,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
@@ -34,13 +36,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param mixed $opts The validator's options
      */
-    public function __construct($opts = null)
+    public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
         
         $field = new Text('company_name');
         $field->setLabel('Company Name')
             ->setRequired()
+            ->addValidator(new CompanyNameValidator($entityManager))
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
@@ -83,6 +86,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->populate(
             array(
                 'company_name' => $company->getName(),
+                'history' => $company->getHistory(),
+                'description' => $company->getDescription(),
+                'sector' => $company->getSectorCode(),
+                'vat_number' => $company->getVatNumber(),
+                'address_street' => $company->getAddress()->getStreet(),
+                'address_number' => $company->getAddress()->getNumber(),
+                'address_postal' => $company->getAddress()->getPostal(),
+                'address_city' => $company->getAddress()->getCity(),
+                'address_country' => $company->getAddress()->getCountryCode(),
             )
         );
     }
