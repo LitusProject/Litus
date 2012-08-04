@@ -4,16 +4,7 @@
 	{% include 'admin_company/partials/navigation.twig' %}
 	
 	<div id="controller_action">
-		{% if companyCreated %}
-			<div class="flashmessage success_message">
-				<div class="title">Success</div>
-				<div class="content">
-					<p>The company was successfully created!</p>
-				</div>
-			</div>
-		{% endif %}
-	
-		{% autoescape false %}
+	    {% autoescape false %}
 	    	{{ form }}
 	    {% endautoescape %}
 	</div>

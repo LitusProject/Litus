@@ -17,6 +17,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
     BrBundle\Form\Admin\Company\Add as AddForm,
+    BrBundle\Form\Admin\Company\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     Zend\View\Model\ViewModel;
 
@@ -47,16 +48,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = new AddForm(
-            $this->getEntityManager()
-        );
+        $form = new AddForm();
         
-        $companyCreated = false;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {                
-                $newCompany = new Company(
+                $company = new Company(
                     $formData['company_name'],
                     $formData['vat_number'],
                     new Address(
@@ -65,36 +63,105 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
+                    ),
+                    $formData['history'],
+                    $formData['description'],
+                    $formData['sector']
+                );
+                
+                $this->getEntityManager()->persist($company);
+                $this->getEntityManager()->flush();
+                
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The company was successfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_company',
+                    array(
+                        'action' => 'add'
                     )
                 );
                 
-                $this->getEntityManager()->persist($newCompany);
-
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
-
-                $companyCreated = true;
+                return new ViewModel();
             }
         }
         
-        $this->getEntityManager()->flush();
         
         return new ViewModel(
             array(
                 'form' => $form,
-                'companyCreated' => $companyCreated,
             )
         );
     }
 
     public function editAction()
     {
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+            
+        $form = new EditForm($company);
         
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()
     {
         
+    }
+    
+    private function _getCompany()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the company!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+    
+        $user = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneById($this->getParam('id'));
+        
+        if (null === $user) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given ID was found!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+            
+            return;
+        }
+        
+        return $user;
     }
 }
