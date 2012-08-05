@@ -1,0 +1,24 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin_company/partials/navigation.twig' %}
+	
+	<div id="controller_action">
+	    <h1>Company</h1>
+	    
+	    <p>Name: <b>{{ company.getName() }}</b></p>
+	    <p>Description: <b>{{ company.getDescription() }}</b></p>
+	    <p>Sector: <b>{{ company.getSector() }}</b></p>
+	    <br />
+	    <h1>Current Logo</h1>
+	    {% if company.getLogo() %}
+	        <img src="{{ url('admin_company', {'action': 'logo', 'id': company.getLogo()}) }}" alt="{{ company.getName() }}">
+	    {% else %}
+	        <i>This company currently has no logo.</i>
+	    {% endif %}
+	    <h1>Change Logo</h1>
+	    {% autoescape false %}
+	        {{ form }}
+	    {% endautoescape %}
+	</div>
+{% endblock %}

@@ -284,7 +284,7 @@ class Company
      */
     public function setLogo($logo)
     {
-        $this->logo = $logo;
+        $this->logo = trim($logo, '/');
         
         return $this;
     }
