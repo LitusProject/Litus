@@ -139,7 +139,7 @@ return array(
     'ERROR' => 'FOUT',
     'No id was given to identify the article!' => 'Er was geen id opgegeven om het artikel te identificeren!',
     'No article with the given id was found!' => 'Er is geen artikel gevonden met de opgegeven id!',
-    'The mapping was successfully added' => 'De verbinding is succesvol aangemaakt',
+    'The mapping was successfully added!' => 'De verbinding is succesvol aangemaakt!',
     'No id was given to identify the mapping!' => 'Er was geen id opgegeven om de verbinding te identificeren!',
     'No mapping with the given id was found!' => 'Er is geen verbinding gevonden met de opgegeven id!',
     'No id was given to identify the subject!' => 'Er was geen id opgegeven om het vak te identificerent!',
