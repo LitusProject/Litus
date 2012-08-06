@@ -90,8 +90,9 @@
 							.append('<td>' + this.semester + '</td>')
 							.append('<td>' + this.credits + '</td>')
 							.append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
+							.append('<td>' + this.credits + '</td>')
 							.append(actions = $('<td>', {'class': 'actions'}));
-						{% if hasAccess('admin_prof', 'subject') %}
+						{% if hasAccess('admin_subject', 'subject') %}
 						    actions.append('<a href="{{ url('admin_subject', {"action": "subject"}) }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 						{% endif %}
 					});
