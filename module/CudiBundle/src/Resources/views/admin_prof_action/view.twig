@@ -89,7 +89,7 @@
 	    {% elseif action.getEntityName() == 'mapping' %}
 	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} Mapping</b><br />
 	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
-	        Subject: <b>{{ action.getEntity().getSubject().getName() }}</b>
+	        Subject: <b>{{ action.getEntity().getSubject().getName() }}</b><br />
 	        Mandatory: <b>{% if action.getEntity().isMandatory() %}yes{% else %}no{% endif %}</b>
 	    {% elseif action.getEntityName() == 'file' %}
 	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} File</b><br />
