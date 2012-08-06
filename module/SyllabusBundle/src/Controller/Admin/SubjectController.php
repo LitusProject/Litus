@@ -121,6 +121,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $item->semester = $subject->getSubject()->getSemester();
             $item->credits = $subject->getSubject()->getCredits();
             $item->mandatory = $subject->isMandatory();
+            $item->students = $subject->getSubject()->getNbEnrollment($academicYear);
             $result[] = $item;
         }
         
