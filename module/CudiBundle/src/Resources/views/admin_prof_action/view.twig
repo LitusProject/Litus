@@ -90,6 +90,7 @@
 	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} Mapping</b><br />
 	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
 	        Subject: <b>{{ action.getEntity().getSubject().getName() }}</b>
+	        Mandatory: <b>{% if action.getEntity().isMandatory() %}yes{% else %}no{% endif %}</b>
 	    {% elseif action.getEntityName() == 'file' %}
 	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} File</b><br />
 	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
@@ -116,7 +117,7 @@
     	        </div>
     	    </div>
     	{% endif %}
-	    {% if hasAccess('admin_prof_action', 'confirm') and not action.isCompleted() %}
+	    {% if hasAccess('admin_prof_action', 'confirm') and action.isUnCompleted() %}
     	    <div class="sidebox">
     	        <div class="title">Confirm Action</div>
     	        <div class="content">
