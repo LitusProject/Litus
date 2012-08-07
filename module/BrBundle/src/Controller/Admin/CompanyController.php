@@ -30,6 +30,7 @@ use BrBundle\Entity\Company,
  * CompanyController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class CompanyController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -95,7 +96,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel();
             }
         }
-        
         
         return new ViewModel(
             array(

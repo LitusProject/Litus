@@ -23,6 +23,45 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_company_event', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Events</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the events of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_internship', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Internships</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the internships of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_internship', {"action": "manage", "id": company.getId()}) }}">&rarr; Internships</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_vacancy', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Vacancies</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the vacancy of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_vacancy', {"action": "manage", "id": company.getId()}) }}">&rarr; Vacancies</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 
