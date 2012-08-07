@@ -5,8 +5,20 @@
 	
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
-	
-	    <table class="full_width">
+	    <div class="flashmessage success_message full_width company_removed_success hide">
+	    	<div class="title">Success</div>
+	    	<div class="content">
+	    		<p>The company was successfully removed!</p>
+	    	</div>
+	    </div>
+	    <div class="flashmessage error_message full_width company_removed_error hide">
+	    	<div class="title">Error</div>
+	    	<div class="content">
+	    		<p>An error occurred while trying to delete an company.</p>
+	    	</div>
+	    </div>
+	    
+	    <table class="full_width manage">
 	        <thead>
 	            <tr>
 	                <th>Name</th>
@@ -17,14 +29,17 @@
 	
 	        <tbody>
 	            {% for company in paginator %}
-	                <tr>
+	                <tr class="item item-{{ company.getId() }}">
 	                    <td>{{ company.getName() }}</td>
 	                    <td>{{ company.getVatNumber() }}</td>
-	                    <td>
+	                    <td class="actions">
 	                        <ul>
-	                        	{% if hasAccess('admin_supplier', 'edit') %}
+	                        	{% if hasAccess('admin_company', 'edit') %}
 	                            	<li><a href="{{ url('admin_company', {"action": "edit", "id": company.getId()}) }}" class="edit">Edit</a></li>
 	                            {% endif %}
+                            	{% if hasAccess('admin_company', 'delete') %}
+                                	<li><a href="#" class="delete" data-id="{{ company.getId() }}" data-name="{{ company.getName() }}">Delete</a></li>
+                                {% endif %}
 	                            {% if hasAccess('admin_company_user', 'manage') %}
 	                                <a href="{{ url('admin_company_user', {"action": "manage", "id": company.getId()}) }}" class="view">Users</a>
 	                            {% endif %}
@@ -37,4 +52,60 @@
 	
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
+	
+	<div class="modal hide fade" id="removeCompany">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Company
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following company: <b class="companyName"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+			
+			e.preventDefault();
+			var removeCompany = $('#removeCompany');
+			removeCompany.find('.companyName').html($(this).data('name'));
+			var id = $this.data('id');
+			removeCompany.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_company', {"action": "delete"})}}/' + id, function  (data) {
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.company_removed_success').removeClass('hide');
+    					$('.item-' + id).remove();
+    					removeCompany.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			removeCompany.modal();
+		}
+		
+		function errorRemove() {
+    		$('.flashmessage').addClass('hide');
+    		$('.company_removed_error').removeClass('hide');
+    		$('#removeCompany').modal('hide');
+		}
+	</script>
 {% endblock %}

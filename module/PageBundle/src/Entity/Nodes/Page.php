@@ -19,6 +19,7 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    PageBundle\Entity\Category,
     PageBundle\Entity\Nodes\Page;
 
 /**
@@ -213,6 +214,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function close()
     {
         if (null === $this->endTime)
-            $this->endTime = new \DateTime('now');
+            $this->endTime = new DateTime('now');
     }
 }

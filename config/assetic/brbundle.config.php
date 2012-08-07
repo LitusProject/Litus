@@ -15,10 +15,19 @@
  
 return array(
     'controllers'  => array(
+        'br_install' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'admin_company' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@gollum_css',
+            '@gollum_js',
         ),
         'admin_user' => array(
             '@common_jquery',

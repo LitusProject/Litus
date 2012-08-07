@@ -16,6 +16,7 @@
 namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
@@ -27,9 +28,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Activate extends \CudiBundle\Form\Admin\Sales\Article\Add
 {
-    public function __construct(EntityManager $entityManager, Article $article, $options = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Article $article, $options = null)
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($entityManager, $academicYear, $options);
 
         $this->removeElement('submit');
         

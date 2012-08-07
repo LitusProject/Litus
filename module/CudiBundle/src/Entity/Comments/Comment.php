@@ -17,6 +17,7 @@ namespace CudiBundle\Entity\Comments;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Article,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -82,7 +83,7 @@ class Comment
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $text, $type) {
         $this->person = $person;
         $this->text = $text;
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
         
         $entityManager->persist(new Mapping($article, $this));
         

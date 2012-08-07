@@ -8,6 +8,22 @@
 	    	{{ form }}
 	    {% endautoescape %}
 	</div>
+    
+    <aside>
+        {% if hasAccess('admin_company', 'logo') %}
+            <div class="sidebox">
+                <div class="title">Edit Logo</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to edit the logo of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit Logo</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}

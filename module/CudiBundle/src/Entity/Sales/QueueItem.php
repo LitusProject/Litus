@@ -18,6 +18,7 @@ namespace CudiBundle\Entity\Sales;
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\PayDesk,
     CudiBundle\Entity\Sales\Session,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -129,7 +130,7 @@ class QueueItem
      */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
-           $this->person = $person;
+        $this->person = $person;
         $this->session = $session;
         $this->setStatus('signed_in');
 
@@ -238,10 +239,10 @@ class QueueItem
         
         switch ($status) {
             case 'signed_in':
-                $this->signInTime = new \DateTime();
+                $this->signInTime = new DateTime();
                 break;
             case 'sold':
-                $this->soldTime = new \DateTime();
+                $this->soldTime = new DateTime();
                 break;
         }
         

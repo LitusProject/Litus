@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Entity\Users\Shibboleth;
 
-use Doctrine\ORM\EntityManager;
+use DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * We register the server's hostname as the Shibboleth SP with the KU Leuven.
@@ -71,9 +72,9 @@ class Code
     public function __construct($universityIdentification, $code, $expirationTime = null)
     {
         $this->id = md5(uniqid(rand(), true));
-        $this->creationTime = new \DateTime();
+        $this->creationTime = new DateTime();
         
-        $this->expirationTime = new \DateTime(
+        $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
         
@@ -126,7 +127,7 @@ class Code
      */
     public function validate($hash)
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->expirationTime < $now) {
             return false;
         }

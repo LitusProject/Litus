@@ -23,6 +23,7 @@
         progressURL: '',
         uploadProgressName: '',
         progressId: 1,
+        width: '600px',
     };
     
     var methods = {
@@ -56,6 +57,7 @@
 	        .wrap($('<div>', {'class': 'gollum-editor'}));
 
 	    var wrapper = $that.closest('.gollum-editor');
+	    wrapper.css('width', options.width);
 	        
 	    var functionbar = $('<div>', {'class': 'gollum-editor-function-bar'});
 	    wrapper.prepend(functionbar);

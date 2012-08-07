@@ -110,7 +110,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 );
                 
                 return new ViewModel();
-                
             }
         }
         

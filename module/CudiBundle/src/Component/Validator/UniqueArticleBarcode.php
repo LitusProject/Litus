@@ -15,7 +15,8 @@
  
 namespace CudiBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager;
 
 class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 {
@@ -27,9 +28,14 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
     
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The academicyear instance
+     */
+    private $_academicYear = null;
+    
+    /**
      * @var mixed The ids to be ignored
      */
-       private $_ignoreIds = array();
+    private $_ignoreIds = array();
 
     /**
      * Error messages
@@ -44,14 +50,16 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
      * Create a new Unique Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param mixed $ignoreIds The ids to be ignored
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, $ignoreIds = array(), $opts = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $ignoreIds = array(), $opts = null)
     {
         parent::__construct($opts);
         
         $this->_entityManager = $entityManager;
+        $this->_academicYear = $academicYear;
         $this->_ignoreIds = $ignoreIds;
     }
 
@@ -75,7 +83,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
         
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findOneByBarcode($value);
+            ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);
 
            if (null === $article || in_array($article->getId(), $this->_ignoreIds))
             return true;

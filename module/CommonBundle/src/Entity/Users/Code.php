@@ -15,6 +15,8 @@
  
 namespace CommonBundle\Entity\Users;
 
+use DateTime;
+
 /**
  * This entity stores a user's codes.
  *
@@ -54,7 +56,7 @@ class Code
      */
     public function __construct($code, $expirationTime = null)
     {
-        $this->expirationTime = new \DateTime(
+        $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
         
