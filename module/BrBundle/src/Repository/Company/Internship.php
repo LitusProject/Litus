@@ -2,7 +2,8 @@
 
 namespace BrBundle\Repository\Company;
 
-use Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Internship
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class Internship extends EntityRepository
 {
+    public function findAllByCompany(CompanyEntity $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('BrBundle\Entity\Company\Internship', 'i')
+            ->where(
+                $query->expr()->eq('i.company', ':company')
+            )
+            ->setParameter('company', $company->getId())
+            ->orderBy('i.name', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

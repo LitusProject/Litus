@@ -2,7 +2,8 @@
 
 namespace BrBundle\Repository\Company;
 
-use Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Vacancy
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class Vacancy extends EntityRepository
 {
+    public function findAllByCompany(CompanyEntity $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v')
+            ->from('BrBundle\Entity\Company\Vacancy', 'v')
+            ->where(
+                $query->expr()->eq('v.company', ':company')
+            )
+            ->setParameter('company', $company->getId())
+            ->orderBy('v.name', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
