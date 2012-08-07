@@ -126,6 +126,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
+                $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
                         $parents[] = $this->getEntityManager()
