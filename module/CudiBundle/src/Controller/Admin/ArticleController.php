@@ -106,10 +106,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($article);
                 
                 if ($formData['type'] != 'common') {
-                    $subject = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Subject')
-                        ->findOneById($formData['subject_id']);
-                        
+                    if ($formData['subject_id'] == '') {
+                        $subject = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Subject')
+                            ->findOneByCode($formData['subject']);
+                    } else {
+                        $subject = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Subject')
+                            ->findOneById($formData['subject_id']);
+                    }
                     $mapping = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
