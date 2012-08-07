@@ -35,15 +35,21 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
         
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
         
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
-                $subject = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($formData['subject_id']);
+                if ($formData['subject_id'] == '') {
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneByCode($formData['subject']);
+                } else {
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneById($formData['subject_id']);
+                }
                     
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Articles\SubjectMap')

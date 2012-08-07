@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
+    CudiBundle\Component\Validator\SubjectCode as SubjectCodeValidator,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Checkbox,
@@ -289,9 +290,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             }
         }
         
-        if (isset($data['type']) && $data['type'] !== 'common' && $data['subject_id'] == '') {
-            $this->getElement('subject_id')->setRequired();
-            $this->getElement('subject')->setRequired();
+        if (isset($data['type']) && $data['type'] !== 'common') {
+            if ($data['subject_id'] == '') {
+                $this->getElement('subject')
+                    ->setRequired()
+                    ->addValidator(new SubjectCodeValidator($this->_entityManager));
+            }
         }
         
         $isValid = parent::isValid($data);
