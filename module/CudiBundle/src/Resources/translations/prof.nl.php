@@ -98,7 +98,7 @@ return array(
     'The mapping between this subject and the article was succesfully removed.' => 'De verbinding tussen dit vak en het artikel is succesvol verwijderd.',
     'An error occurred while removing the mapping between this subject and the docent.' => 'Er is een fout opgetreden tijdens het verwijderen van de verbinding tussen dit vak en de docent.',
     'The mapping between this subject and the docent was succesfully removed.' => 'De verbinding tussen dit vak en de docent is succesvol verwijderd.',
-    'Number of student' => 'Aantal studenten',
+    'Number of student (Optional)' => 'Aantal studenten (Optioneel)',
     'Docents' => 'Docenten',
     'Identification' => 'Identificatie',
     'Add Docent' => 'Docent Toevoegen',

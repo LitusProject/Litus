@@ -42,7 +42,7 @@
 	    {{ translator().translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
 	</p>
 	
-	<h3>{{ translator().translate('Number of students') }}:</h3>
+	<h3>{{ translator().translate('Number of students (Optional)') }}:</h3>
 	{% autoescape false %}
     	{{ enrollmentForm }}
     {% endautoescape %}

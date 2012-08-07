@@ -98,7 +98,7 @@ return array(
     'The mapping between this subject and the article was succesfully removed.' => 'The mapping between this subject and the article was succesfully removed.',
     'An error occurred while removing the mapping between this subject and the docent.' => 'An error occurred while removing the mapping between this subject and the docent.',
     'The mapping between this subject and the docent was succesfully removed.' => 'The mapping between this subject and the docent was succesfully removed.',
-    'Number of student' => 'Number of student',
+    'Number of student (Optional)' => 'Number of student (Optional)',
     'Docents' => 'Docents',
     'Identification' => 'Identification',
     'Add Docent' => 'Add Docent',
