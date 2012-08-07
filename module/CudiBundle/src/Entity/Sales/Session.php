@@ -92,7 +92,7 @@ class Session
      */
     public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
     {
-        $this->openDate = new \DateTime();
+        $this->openDate = new DateTime();
         $this->openRegister = $openRegister;
         $this->comment = $comment;
         $this->manager = $manager;

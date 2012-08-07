@@ -59,6 +59,34 @@ class Company
     private $address;
     
     /**
+     * @var string The history of the company
+     *
+     * @Column(type="text")
+     */
+    private $history;
+    
+    /**
+     * @var string The description of the company
+     *
+     * @Column(type="text")
+     */
+    private $description;
+    
+    /**
+     * @var string The sector of the company
+     *
+     * @Column(type="string")
+     */
+    private $sector;
+    
+    /**
+     * @var string The logo of the company
+     *
+     * @Column(type="string", nullable=true)
+     */
+    private $logo;
+    
+    /**
      * @var bool Whether or not this is an active company
      *
      * @Column(type="boolean")
@@ -77,16 +105,39 @@ class Company
     private $contacts;
     
     /**
+     * @var array The possible sectors of a company
+     */
+    public static $POSSIBLE_SECTORS = array(
+        'research' => 'Research',
+        'finance' => 'Finance',
+    );
+    
+    /**
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
+     * @param \CommonBundle\Entity\General\Address $address The company's address
+     * @param string $history The company's history
+     * @param string $description The company's description
+     * @param string $sector The company's sector
      */
-    public function __construct($name, $vatNumber, Address $address)
+    public function __construct($name, $vatNumber, Address $address, $history, $description, $sector)
     {
         $this->setName($name);
         $this->setVatNumber($vatNumber);
         $this->setAddress($address);
-        
+        $this->setHistory($history);
+        $this->setDescription($description);
+        $this->setSector($sector);
+
         $this->active = true;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function isValidSector($sector)
+    {
+        return array_key_exists($sector, self::$POSSIBLE_SECTORS);
     }
     
     /**
@@ -161,9 +212,95 @@ class Company
     }
     
     /**
+     * @param string $history
+     * @return \BrBundle\Entity\Company
+     */
+    public function setHistory($history)
+    {
+        $this->history = $history;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+    
+    /**
+     * @param string $description
+     * @return \BrBundle\Entity\Company
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    
+    /**
+     * @param string $sector
+     * @return \BrBundle\Entity\Company
+     */
+    public function setSector($sector)
+    {
+        if (!self::isValidSector($sector))
+            throw new \InvalidArgumentException('The sector is not valid.');
+        $this->sector = $sector;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSector()
+    {
+        return self::$POSSIBLE_SECTORS[$this->sector];
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSectorCode()
+    {
+        return $this->sector;
+    }
+    
+    /**
+     * @param string $logo
+     * @return \BrBundle\Entity\Company
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = trim($logo, '/');
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+    
+    /**
      * @return bool
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }

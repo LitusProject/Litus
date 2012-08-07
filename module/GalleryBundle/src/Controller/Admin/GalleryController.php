@@ -3,6 +3,7 @@
 namespace GalleryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Translation,
     GalleryBundle\Entity\Album\Photo,
@@ -38,7 +39,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
-                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d/m/Y', $formData['date']));
+                $album = new Album($this->getAuthentication()->getPersonObject(), DateTime::createFromFormat('d/m/Y', $formData['date']));
                 $this->getEntityManager()->persist($album);
 
                 $languages = $this->getEntityManager()
@@ -98,7 +99,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
-                $album->setDate(\DateTime::createFromFormat('d/m/Y', $formData['date']));
+                $album->setDate(DateTime::createFromFormat('d/m/Y', $formData['date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')

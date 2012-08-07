@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Entity\Users;
 
-use Doctrine\ORM\EntityManager;
+use DateTime,
+    Doctrine\ORM\EntityManager;
 
 /**
  * We store all sessions in the database, so that we have a tidbit more information and
@@ -87,8 +88,8 @@ class Session
     {
         $this->id = md5(uniqid(rand(), true));
 
-        $this->startTime = new \DateTime();
-        $this->expirationTime = new \DateTime(
+        $this->startTime = new DateTime();
+        $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
@@ -179,7 +180,7 @@ class Session
             return false;
         }
 
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->expirationTime < $now) {
             return false;
         }

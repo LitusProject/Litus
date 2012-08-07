@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Tabs,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    DateTime,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Entity\Album\Album,
     Zend\Validator\Date as DateValidator;
@@ -113,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
         $valid = parent::isValid($data);
         
         $form = $this->getSubForm('tab-content');
-        $date = \DateTime::createFromFormat('d/m/Y', $data['date']);
+        $date = DateTime::createFromFormat('d/m/Y', $data['date']);
         
         if ($date) {
             foreach($this->_getLanguages() as $language) {

@@ -19,6 +19,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Multiselect,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text;
 
@@ -40,6 +41,13 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
         $this->removeElement('username');
         
+        $field = new Multiselect('system_roles');
+        $field->setLabel('System Groups')
+            ->setMultiOptions($this->_createSystemRolesArray())
+            ->setAttrib('disabled', 'disabled')
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
         $field = new Text('code');
         $field->setLabel('Code')
             ->setAttrib('disabled', 'disabled')
@@ -54,6 +62,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
                 'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
                 'roles' => $this->_createRolesPopulationArray($person->getRoles()),
+                'system_roles' => $this->_createSystemRolesPopulationArray($person->getRoles()),
                 'code' => $person->getCode() ? $person->getCode()->getCode() : '',
             )
         );
@@ -73,6 +82,46 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
                 continue;
 
             $rolesArray[] = $role->getName();
+        }
+        return $rolesArray;
+    }
+
+    /**
+     * Returns an array that is in the right format to populate the roles field.
+     *
+     * @param array $toles The user's roles
+     * @return array
+     */
+    private function _createSystemRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if (!$role->getSystem())
+                continue;
+
+            $rolesArray[] = $role->getName();
+        }
+        return $rolesArray;
+    }
+        
+    /**
+     * Returns an array that has all the roles, so that they are available in the
+     * roles multiselect.
+     *
+     * @return array
+     */
+    private function _createSystemRolesArray()
+    {
+        $roles = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if (!$role->getSystem())
+                continue;
+            
+            $rolesArray[$role->getName()] = $role->getName();
         }
         return $rolesArray;
     }

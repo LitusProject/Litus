@@ -2,7 +2,8 @@
 
 namespace CalendarBundle\Repository\Nodes;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Event
@@ -21,7 +22,7 @@ class Event extends EntityRepository
                 $query->expr()->gt('e.endDate', ':now')
             )
             ->orderBy('e.startDate', 'ASC')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
         

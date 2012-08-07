@@ -39,7 +39,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance

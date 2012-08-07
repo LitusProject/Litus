@@ -2,6 +2,8 @@
 
 namespace CalendarBundle\Controller;
 
+use DateTime;
+
 /**
  * Handles system calendar controller.
  *
@@ -21,7 +23,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             if (!isset($ordered[$key])) {
                 $ordered[$key] = (object) array(
                     'events' => array(),
-                    'date' => \DateTime::createFromFormat('Y_m', $key)
+                    'date' => DateTime::createFromFormat('Y_m', $key)
                 );
             }
                         

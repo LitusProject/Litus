@@ -119,7 +119,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                 
-                //$this->getEntityManager()->flush();    
+                $this->getEntityManager()->flush();    
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

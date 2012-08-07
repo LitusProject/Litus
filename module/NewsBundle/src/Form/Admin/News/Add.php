@@ -20,6 +20,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+    DateTime,
     Doctrine\ORM\EntityManager,
     NewsBundle\Entity\Nodes\News,
     Zend\Form\Element\Select,
@@ -101,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $valid = parent::isValid($data);
         
         $form = $this->getSubForm('tab_content');
-        $date = new \DateTime();
+        $date = new DateTime();
         
         if ($date) {
             foreach($this->getLanguages() as $language) {

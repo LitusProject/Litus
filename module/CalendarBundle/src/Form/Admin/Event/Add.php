@@ -21,6 +21,7 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     CommonBundle\Component\Form\Bootstrap\Element\Tabs,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+    DateTime,
     Doctrine\ORM\EntityManager,
     CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
     CalendarBundle\Entity\Nodes\Event,
@@ -139,7 +140,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
         $valid = parent::isValid($data);
         
         $form = $this->getSubForm('tab-content');
-        $date = \DateTime::createFromFormat('d/m/Y H:i', $data['start_date']);
+        $date = DateTime::createFromFormat('d/m/Y H:i', $data['start_date']);
         
         if ($date) {
             foreach($this->_getLanguages() as $language) {

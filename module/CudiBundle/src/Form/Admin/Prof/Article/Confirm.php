@@ -78,7 +78,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $field = new Text('isbn');
         $field->setLabel('ISBN')
             ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::ISBN13)));
+            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::AUTO)));
         $this->addElement($field);
         
         $field = new Text('url');

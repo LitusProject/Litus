@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users;
 
-use Doctrine\ORM\EntityRepository,
+use DateTime,
+    Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -28,7 +29,7 @@ class Code extends EntityRepository
                 )
             )
             ->setParameter('code', $code)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
