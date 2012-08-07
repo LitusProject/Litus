@@ -88,15 +88,14 @@ return array(
                         'news' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '[/:language]/news[/:action[/:name]]',
+                                'route'    => '[/:language]/news[/:title]',
                                 'constraints' => array(
-                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'name'     => '[a-zA-Z0-9_-]*',
+                                    'title'    => '[a-zA-Z0-9_-]*',
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'news',
-                                    'action'     => 'overview',
+                                    'action'     => 'view',
                                 ),
                             ),
                         ),

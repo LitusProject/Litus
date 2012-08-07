@@ -19,7 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Entity\Nodes\Page,
     PageBundle\Entity\Nodes\Translation,
     PageBundle\Form\Admin\Page\Add as AddForm,
-    PageBundle\Form\Admin\Page\Edit as EditForm;
+    PageBundle\Form\Admin\Page\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * PageController
@@ -30,16 +31,19 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Nodes\Page')
-                ->findAll(),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'PageBundle\Entity\Nodes\Page',
+            $this->getParam('page'),
+            array(
+                'endTime' => null
+            )
         );
         
-        return array(
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
