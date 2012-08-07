@@ -20,10 +20,9 @@ return array(
         'instance' => array(
             'alias' => array(
                 'page_install' => 'PageBundle\Controller\Admin\InstallController',
-                
-                'admin_page'   => 'PageBundle\Controller\Admin\PageController',
+                'page_news'    => 'PageBundle\Controller\Admin\PageController',
 
-                'page'          => 'PageBundle\Controller\PageController',
+                'news'         => 'PageBundle\Controller\PageController',
             ),
             
             'doctrine_config' => array(
@@ -33,46 +32,74 @@ return array(
                     ),
                 ),
             ),
-        ),
-    ),
-    'routes' => array(
-        'page' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '[/:language]/page[/:id]',
-                'constraints' => array(
-                    'id'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'page',
-                    'action'     => 'view',
-                ),
-            ),
-        ),
-        'page_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/install/page',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'page_install',
-                    'action'     => 'index',
+            
+            'translator' => array(
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'page_site_en' => array(
+                            'content' => __DIR__ . '/../translations/site.en.php',
+                            'locale' => 'en',
+                        ),
+                        'page_site_nl' => array(
+                            'content' => __DIR__ . '/../translations/site.nl.php',
+                            'locale' => 'nl',
+                        ),
+                    ),
                 ),
             ),
-        ),
-        'admin_page' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/content/page[/:action[/:id]]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'page_views' => __DIR__ . '/../views',
+                    ),
                 ),
-                'defaults' => array(
-                    'controller' => 'admin_page',
-                    'action'     => 'manage',
+            ),
+            
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
+                    'routes' => array(
+                        'page_install' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/install/page',
+                                'constraints' => array(
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'page_install',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'admin_page' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/site/page[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[0-9]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_page',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'page' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '[/:language]/page[/:title]',
+                                'constraints' => array(
+                                    'title'    => '[a-zA-Z0-9_-]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'page',
+                                    'action'     => 'view',
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

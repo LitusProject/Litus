@@ -141,12 +141,15 @@
 		                			News &amp; Calendar
 		                		</div>
 		                		<ul
-		                			{% if 'admin_news' == getParam('controller') %}
+		                			{% if 'admin_news' == getParam('controller') or 'admin_page' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
 		                		    {% if hasAccess('admin_news', 'manage') %}
 		                		        <li><a href="{{ url('admin_news') }}">News</a></li>
+		                		    {% endif %}
+		                		    {% if hasAccess('admin_page', 'manage') %}
+		                		        <li><a href="{{ url('admin_page') }}">Pages</a></li>
 		                		    {% endif %}
 		                		</ul>
 		                	</li>
