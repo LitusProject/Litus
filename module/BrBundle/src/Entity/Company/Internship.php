@@ -15,6 +15,8 @@
  
 namespace BrBundle\Entity\Company;
 
+use BrBundle\Entity\Company;
+
 /**
  * This is the entity for an internship.
  *
@@ -114,6 +116,14 @@ class Internship
     public function getDescription()
     {
         return $this->description;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSummary($length = 50)
+    {
+        return substr($this->description, 0, $length) . (strlen($this->description) > $length ? '...' : '');
     }
     
     /**

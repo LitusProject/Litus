@@ -34,6 +34,12 @@
 	                    <td>{{ company.getVatNumber() }}</td>
 	                    <td class="actions">
 	                        <ul>
+	                        	{% if hasAccess('admin_company_internship', 'manage') %}
+	                            	<li><a href="{{ url('admin_company_internship', {"action": "manage", "id": company.getId()}) }}" class="view">Internship</a></li>
+	                            {% endif %}
+                            	{% if hasAccess('admin_company_vacancy', 'manage') %}
+                                	<li><a href="{{ url('admin_company_vacancy', {"action": "manage", "id": company.getId()}) }}" class="view">Vacancy</a></li>
+                                {% endif %}
 	                        	{% if hasAccess('admin_company_event', 'manage') %}
 	                            	<li><a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}" class="view">Events</a></li>
 	                            {% endif %}

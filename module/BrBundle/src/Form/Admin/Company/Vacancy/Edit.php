@@ -13,16 +13,16 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace BrBundle\Form\Admin\Company\Event;
+namespace BrBundle\Form\Admin\Company\Vacancy;
 
-use BrBundle\Entity\Company\Event,
+use BrBundle\Entity\Company\Vacancy,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**
- * Edit an event.
+ * Edit an vacancy.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -31,7 +31,7 @@ class Edit extends Add
     /**
      * @param mixed $opts The validator's options
      */
-    public function __construct(Event $event, $opts = null)
+    public function __construct(Vacancy $vacancy, $opts = null)
     {
         parent::__construct($opts);
         
@@ -43,6 +43,6 @@ class Edit extends Add
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
         
-        $this->populateFromEvent($event);
+        $this->populateFromVacancy($vacancy);
     }
 }

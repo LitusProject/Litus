@@ -13,18 +13,17 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace BrBundle\Form\Admin\Company\Event;
+namespace BrBundle\Form\Admin\Company\Vacancy;
 
-use BrBundle\Entity\Company\Event,
+use BrBundle\Entity\Company\Vacancy,
     CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea,
-    Zend\Validator\Date as DateValidator;
+    Zend\Form\Element\Textarea;
 
 /**
- * Add an event.
+ * Add an vacancy.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -37,29 +36,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($opts);
         
-        $field = new Text('event_name');
-        $field->setLabel('Event Name')
+        $field = new Text('vacancy_name');
+        $field->setLabel('Vacancy Name')
             ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-        
-        $field = new Text('location');
-        $field->setLabel('Location')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-        
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setRequired()
-            ->addValidator(new DateValidator('dd/MM/yyyy H:m'))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-        
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setRequired()
-            ->addValidator(new DateValidator('dd/MM/yyyy H:m'))
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
         
@@ -76,15 +55,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addElement($field);
     }
     
-    public function populateFromEvent(Event $event)
+    public function populateFromVacancy(Vacancy $vacancy)
     {
         $this->populate(
             array(
-                'event_name' => $event->getName(),
-                'location' => $event->getLocation(),
-                'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
-                'end_date' => $event->getEndDate()->format('d/m/Y H:i'),
-                'description' => $event->getDescription(),
+                'vacancy_name' => $vacancy->getName(),
+                'description' => $vacancy->getDescription(),
             )
         );
     }
