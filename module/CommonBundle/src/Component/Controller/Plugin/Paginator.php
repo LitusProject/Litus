@@ -85,10 +85,8 @@
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
     {
         return $this->createFromArray(
-            (0 == count($conditions)) ?
-                $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy(array(), $orderBy) :
-                $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
-               $currentPage      
+            $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
+            $currentPage
         );
     }
     
