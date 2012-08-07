@@ -17,10 +17,12 @@ return array(
     'di' => array(
         'instance' => array(
             'alias'           => array(
-                'br_install'         => 'BrBundle\Controller\Admin\InstallController',
-                'admin_company'      => 'BrBundle\Controller\Admin\CompanyController',
-                'admin_company_user' => 'BrBundle\Controller\Admin\Company\UserController',
-                'admin_section'      => 'BrBundle\Controller\Admin\SectionController',
+                'br_install'             => 'BrBundle\Controller\Admin\InstallController',
+
+                'admin_company'          => 'BrBundle\Controller\Admin\CompanyController',
+                'admin_company_event'    => 'BrBundle\Controller\Admin\Company\EventController',
+                'admin_company_user'     => 'BrBundle\Controller\Admin\Company\UserController',
+                'admin_section'          => 'BrBundle\Controller\Admin\SectionController',
               ),
               'doctrine_config' => array(
                   'parameters' => array(
@@ -61,6 +63,21 @@ return array(
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_company',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'admin_company_event' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/company/event[/:action[/:id]]',
+                                'constraints' => array(
+                                    'company' => '[a-zA-Z0-9_-]*',
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_company_event',
                                     'action'     => 'manage',
                                 ),
                             ),

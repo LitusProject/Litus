@@ -29,6 +29,13 @@ return array(
             '@gollum_css',
             '@gollum_js',
         ),
+        'admin_company_event' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'admin_user' => array(
             '@common_jquery',
             '@admin_css',
