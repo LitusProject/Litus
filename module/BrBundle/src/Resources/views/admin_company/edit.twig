@@ -23,6 +23,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('admin_company_event', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Events</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the events of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 
