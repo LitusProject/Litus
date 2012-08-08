@@ -8,6 +8,7 @@ return array(
                 'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
                 'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
                 'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
+                'admin_subject_comment'  => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
                 'admin_prof'             => 'SyllabusBundle\Controller\Admin\ProfController',
             ),
             'doctrine_config' => array(
@@ -83,6 +84,21 @@ return array(
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_subject',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'admin_subject_comment' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '/admin/syllabus/subject/comments[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'           => '[0-9]*',
+                                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_subject_comment',
                                     'action'     => 'manage',
                                 ),
                             ),

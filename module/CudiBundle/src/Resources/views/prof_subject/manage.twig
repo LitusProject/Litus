@@ -11,8 +11,7 @@
 	        <th>{{ translator().translate('Name') }}</th>
 	        <th width="80px">{{ translator().translate('Semester') }}</th>
 	        <th width="80px">{{ translator().translate('Credits') }}</th>
-	        <th width="80px">{{ translator().translate('Students') }}</th>
-	        <th width="80px">{{ translator().translate('Actions') }}</th>
+	        <th width="160px">{{ translator().translate('Actions') }}</th>
 	    </tr>
 	    
 		{% for subject in subjects %}
@@ -21,8 +20,10 @@
 		        <td>{{ subject.getSubject().getName() }}</td>
 		        <td>{{ subject.getSubject().getSemester() }}</td>
 		        <td>{{ subject.getSubject().getCredits() }}</td>
-		        <td>{{ subject.getSubject().getNbEnrollment(academicYear) }}</td>
 		        <td class="actions">
+		            {% if hasAccess('prof_subject_comment', 'manage') %}
+		                <a href="{{ url("prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translator().translate('Comments') }}</a>
+		            {% endif %}
 		            {% if hasAccess('prof_subject', 'subject') %}
 		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translator().translate('View') }}</a>
 		            {% endif %}

@@ -8,10 +8,10 @@
     	    {% endautoescape %}
     	</div>
     	<div class="span3 columns">
-    	    {% if hasAccess('prof_comment', 'manage') %}
+    	    {% if hasAccess('prof_article_comment', 'manage') %}
         	    <h3>{{ translator().translate('Comments') }}</h3>
         	    <p>{{ translator().translate('View comments on this article and add one.') }}</p>
-        	    <p><a href="{{ url("prof_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translator().translate('Comments') }}</a></p>
+        	    <p><a href="{{ url("prof_article_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn">{{ translator().translate('Comments') }}</a></p>
         	{% endif %}
     	    {% if hasAccess('prof_file', 'manage') and article.isInternal() %}
         	    <h3>{{ translator().translate('Files') }}</h3>

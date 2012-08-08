@@ -277,7 +277,10 @@ VTK Cudi
                     'prof_article_mapping' => array(
                         'add', 'delete'
                     ),
-                    'prof_comment' => array(
+                    'prof_article_comment' => array(
+                        'delete', 'manage'
+                    ),
+                    'prof_subject_comment' => array(
                         'delete', 'manage'
                     ),
                     'prof_file' => array(
@@ -336,7 +339,7 @@ VTK Cudi
                         'prof_article_mapping' => array(
                             'add', 'delete'
                         ),
-                        'prof_comment' => array(
+                        'prof_article_comment' => array(
                             'delete', 'manage'
                         ),
                         'prof_file' => array(
