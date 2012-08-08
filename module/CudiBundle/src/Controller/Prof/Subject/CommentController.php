@@ -13,11 +13,10 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Controller\Prof;
+namespace CudiBundle\Controller\Prof\Subject;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comments\Comment,
+    SyllabusBundle\Entity\Subject\Comment,
     CudiBundle\Form\Prof\Comment\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -30,12 +29,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($subject = $this->_getSubject()))
             return new ViewModel();
             
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Mapping')
-            ->findByArticle($article);
+        $comments = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+            ->findBySubject($subject);
                 
         $form = new AddForm();
         
@@ -46,7 +45,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 $comment = new Comment(
                     $this->getEntityManager(),
                     $this->getAuthentication()->getPersonObject(),
-                    $article,
+                    $subject,
                     $formData['text'],
                     'external'
                 );
@@ -63,10 +62,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 );
                 
                 $this->redirect()->toRoute(
-                    'prof_comment',
+                    'prof_subject_comment',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
+                        'id' => $subject->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -77,9 +76,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 
         return new ViewModel(
             array(
-                'article' => $article,
+                'subject' => $subject,
                 'form' => $form,
-                'mappings' => $mappings,
+                'comments' => $comments,
             )
         );
     }
@@ -88,16 +87,16 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
         
-        if (!($mapping = $this->_getCommentMapping()))
+        if (!($comment = $this->_getComment()))
             return new ViewModel();
             
-        if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
+        if ($comment->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
                 'result' => (object) array("status" => "error")
             );
         }
         
-        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->remove($comment);
         $this->getEntityManager()->flush();
         
         return new ViewModel(
@@ -106,22 +105,25 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
-    private function _getArticle($id = null)
+        
+    private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
+        if (!($academicYear = $this->getAcademicYear()))
+            return;
+            
         if (null === $id) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the article!'
+                    'No id was given to identify the subject!'
                 )
             );
             
             $this->redirect()->toRoute(
-                'prof_article',
+                'prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -131,21 +133,25 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
     
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-        
-        if (null === $article) {
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->findOneBySubjectIdAndProfAndAcademicYear(
+                $id,
+                $this->getAuthentication()->getPersonObject(),
+                $academicYear
+            );
+
+        if (null === $mapping) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No article with the given id was found!'
+                    'No subject with the given id was found!'
                 )
             );
             
             $this->redirect()->toRoute(
-                'prof_article',
+                'prof_subject',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -155,10 +161,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
         
-        return $article;
+        return $mapping->getSubject();
     }
     
-    private function _getCommentMapping()
+    private function _getComment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -180,11 +186,11 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
     
-        $mapping = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comments\Mapping')
+        $comment = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findOneById($this->getParam('id'));
         
-        if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
+        if (null === $comment || null === $this->_getSubject($comment->getSubject()->getId())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -204,6 +210,6 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
         
-        return $mapping;
+        return $comment;
     }
 }

@@ -75,17 +75,32 @@
 	</div>
 	
 	<aside>
-		<div class="sidebox">
-		    <div class="title">Add Docent</div>
-		    <div class="content">
-		        <p>
-		            <i>Please hit the link below to add a docent to this subject!</i>
-		        </p>
-		    	<p>
-		    		<a href="{{ url("admin_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
-		    	</p>
-		    </div>
-		</div>
+	    {% if hasAccess('admin_prof', 'add') %}
+			<div class="sidebox">
+			    <div class="title">Add Docent</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to add a docent to this subject!</i>
+			        </p>
+			    	<p>
+			    		<a href="{{ url("admin_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
+			    	</p>
+			    </div>
+			</div>
+		{% endif %}
+		{% if hasAccess('admin_subject_comment', 'manage') %}
+			<div class="sidebox">
+			    <div class="title">View Comments</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to view the comments to this subject!</i>
+			        </p>
+			    	<p>
+			    		<a href="{{ url("admin_subject_comment", {"action": "manage", "id": subject.getId()}) }}">&rarr; View Comments</a>
+			    	</p>
+			    </div>
+			</div>
+		{% endif %}
 	</aside>
 	
 	<div class="modal hide fade" id="removeMapping">

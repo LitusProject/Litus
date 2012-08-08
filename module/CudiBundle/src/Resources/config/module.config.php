@@ -52,7 +52,8 @@ return array(
                 'prof_prof'             => 'CudiBundle\Controller\Prof\ProfController',
                 'prof_subject'          => 'CudiBundle\Controller\Prof\SubjectController',
                 'prof_file'             => 'CudiBundle\Controller\Prof\FileController',
-                'prof_comment'          => 'CudiBundle\Controller\Prof\CommentController',
+                'prof_article_comment'  => 'CudiBundle\Controller\Prof\Article\CommentController',
+                'prof_subject_comment'  => 'CudiBundle\Controller\Prof\Subject\CommentController',
             ),
             'assetic_configuration' => array(
                 'parameters' => array(
@@ -691,17 +692,32 @@ return array(
                                 ),
                             ),
                         ),
-                        'prof_comment' => array(
+                        'prof_article_comment' => array(
                             'type' => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route' => '[/:language]/cudi/prof/comments[/:action[/:id]]',
+                                'route' => '[/:language]/cudi/prof/article/comments[/:action[/:id]]',
                                 'constraints' => array(
                                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     'id'       => '[0-9]*',
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
-                                    'controller' => 'prof_comment',
+                                    'controller' => 'prof_article_comment',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'prof_subject_comment' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '[/:language]/cudi/prof/subject/comments[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'       => '[0-9]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'prof_subject_comment',
                                     'action'     => 'manage',
                                 ),
                             ),
