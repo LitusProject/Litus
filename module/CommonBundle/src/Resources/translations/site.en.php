@@ -40,6 +40,7 @@ return array(
     'News' => 'News',
     'Warning' => 'Warning',
     'No news items were posted yet.' => 'No news items were posted yet.',
+    'No events were posted yet.' => 'No events were posted yet.',
     
     'Username' => 'Username',
     'Password' => 'Password',

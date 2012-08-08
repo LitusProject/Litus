@@ -15,10 +15,11 @@
  
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
-    CalendarBundle\Entity\Nodes\Event;
+    CalendarBundle\Entity\Nodes\Event,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit an event.
@@ -38,11 +39,11 @@ class Edit extends Add
         $this->event = $event;
         
         $field = new Submit('submit');
-        $field->setLabel('Save');
+        $field->setLabel('Save')
+            ->setAttrib('class', 'calendar_edit')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
-        $this->setActionsGroup(array('submit'));
-        
+                
         $this->populateFromEvent($event);
     }
 }

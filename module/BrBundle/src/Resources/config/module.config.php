@@ -36,7 +36,6 @@ return array(
               'Zend\View\Resolver\TemplatePathStack' => array(
                   'parameters' => array(
                       'paths'  => array(
-                          'br_layouts' => __DIR__ . '/../layouts',
                           'br_views' => __DIR__ . '/../views',
                       ),
                   ),

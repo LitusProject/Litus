@@ -24,7 +24,7 @@ use BrBundle\Entity\Company,
  * @Entity(repositoryClass="BrBundle\Repository\Company\Event")
  * @Table(name="br.company_events")
  */
-class Event
+class Event 
 {
     /**
      * @var string The event's ID

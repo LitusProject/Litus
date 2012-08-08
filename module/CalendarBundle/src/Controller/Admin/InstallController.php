@@ -11,15 +11,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function _initConfig()
     {
-        $this->_installConfig(
-            array(
-                /*array(
-                    'key'         => 'search_max_results',
-                    'value'       => '30',
-                    'description' => 'The maximum number of search results shown',
-                ),*/
-            )
-        );
     }
     
     protected function _initAcl()
@@ -27,9 +18,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAclStructure(
             array(
                 'calendarBundle' => array(
-                    'common_calendar' => array(
-                        'overview', 'view'
-                    ),
                     'admin_calendar' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
@@ -42,21 +30,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 'guest' => array(
                     'parent_roles' => array(),
                     'actions' => array(
-                        'common_calendar' => array(
-                            'overview', 'view'
-                        ),
                     )
                 ),
-                'sudo' => array(
-                    'parent_roles' => array(
-                        'guest'
-                    ),
-                    'actions' => array(
-                        'admin_calendar' => array(
-                            'add', 'delete', 'edit', 'manage'
-                        ),
-                    )
-                )
             )
         );
     }

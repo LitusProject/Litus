@@ -33,9 +33,26 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findAll();
             
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->findAllActive();
+        
+        $calendarItems = array();
+        foreach($events as $event) {
+            $date = $event->getStartDate()->format('d-M');
+            if (!isset($calendarItems[$date])) {
+                $calendarItems[$date] = (object) array(
+                    'date' => $event->getStartDate(),
+                    'events' => array()
+                );
+            }
+            $calendarItems[$date]->events[] = $event;
+        }
+            
         return new ViewModel(
             array(
                 'newsItems' => $newsItems,
+                'calendarItems' => $calendarItems,
             )
         );
     }
