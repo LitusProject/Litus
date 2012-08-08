@@ -7,14 +7,15 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CalendarBundle\Entity\Nodes\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
     CalendarBundle\Form\Admin\Event\Edit as EditForm,
-    DateTime;
+    DateTime,
+    Zend\View\Model\ViewModel;
 
 /**
  * Handles system admin for calendar.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class CalendarController extends \CommonBundle\Component\Controller\ActionController
+class CalendarController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -25,9 +26,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $this->getParam('page')
         );
         
-        return array(
-            'paginator' => $paginator,
-            'paginationControl' => $this->paginator()->createControl(),
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+            )
         );
     }
     
@@ -59,19 +62,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         $formData['content_' . $language->getAbbrev()]
                     );
                     $this->getEntityManager()->persist($translation);
-                    
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();
-                
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Event added: ' . $title
-                );
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -88,19 +81,21 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
     public function editAction()
     {
         if (!($event = $this->_getEvent()))
-            return;
+            return new ViewModel();
         
         $form = new EditForm($this->getEntityManager(), $event);
         
@@ -108,8 +103,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
-                $event->setUpdatePerson($this->getAuthentication()->getPersonObject())
-                    ->setStartDate(DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']))
+                $event->setStartDate(DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d/m/Y H:i', $formData['end_date']));
 
                 $languages = $this->getEntityManager()
@@ -133,19 +127,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         );
                         $this->getEntityManager()->persist($translation);
                     }
-                    
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();
-                
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Event edited: ' . $title
-                );
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -162,12 +146,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
                 
-                return;
+                return new ViewModel();
             }
         }
         
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
     
@@ -176,27 +162,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $this->initAjax();
         
         if (!($event = $this->_getEvent()))
-            return;
+            return new ViewModel();
         
         $this->getEntityManager()->remove($event);
-        
         $this->getEntityManager()->flush();
         
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Event deleted: ' . $event->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
-                )
-        );
-        
-        return array(
-            'result' => array(
-                'status' => 'success'
-            ),
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
         );
     }
     

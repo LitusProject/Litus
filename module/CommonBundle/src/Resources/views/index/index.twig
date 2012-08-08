@@ -9,37 +9,24 @@
 	    <div class="span3">
 	    	<img class="headingIcon" src="/_site/img/glyphicons-calendar.png" />
 	    	<h2>{{ translator().translate('Calendar') }}</h2>
+		    
+		    {% for day in calendarItems %}
+		        <div class="item">
+		        	<span class="date calendar">{{ dateLocalized(day.date, 'd MMM') }}</span>
+		        	
+		        	<p>
+		        	    {% for event in day.events %}
+    		        		<i class="icon-time"></i> <a href="#" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ markdown(event.getContent(language)) }}">{{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+    		        	{% endfor %}
+		        	</p>
+		        </div>
+		    {% else %}
+		    	<div class="headingSpacer"></div>
 		    	
-			<div class="item">
-	    		<span class="date calendar">10 Mei</span>
-		    		
-		    	<p>
-		    		<i class="icon-time"></i> <a href="#" rel="popover" data-original-title="AfrekeningsTD" data-content="And here's some amazing content. It's very engaging right?">18:00&mdash;AfrekeningsTD</a><br />
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i>
-		    	</p>
-		    </div>
-		    
-		    <div class="item">
-		    	<span class="date calendar">11 Mei</span>
-		    		
-		    	<p>
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i><br />
-		    	</p>
-		    </div>
-		    
-		    <div class="item">
-		    	<span class="date calendar">12 Mei</span>
-		    		
-		    	<p>
-		    		<i class="icon-time"></i><br />
-		    		<i class="icon-time"></i><br />
-		    	</p>
-		    </div>
+		    	<div class="alert">
+		    	    <strong>{{ translator().translate('Warning') }}</strong> {{ translator().translate('No events were posted yet.') }}
+		    	</div>
+		    {% endfor %}
 	    </div>
 	    
 	   	<div class="span3">

@@ -13,34 +13,12 @@
  * @license http://litus.cc/LICENSE
  */
  
-$asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
-
 return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'install_calendar'  => 'CalendarBundle\Controller\Admin\InstallController',
+                'calendar_install'  => 'CalendarBundle\Controller\Admin\InstallController',
                 'admin_calendar'    => 'CalendarBundle\Controller\Admin\CalendarController',
-
-                'common_calendar'   => 'CalendarBundle\Controller\CalendarController',
-            ),
-            'assetic_configuration' => array(
-                'parameters' => array(
-                    'config' => array(
-                        'modules'      => array(
-                            'calendarbundle' => array(
-                                'root_path' => __DIR__ . '/../assets',
-                                'collections' => array(
-                                    'calendar' => array(
-                                        'assets'  => array(
-                                            'css/calendar.css',
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
             ),
             
             'doctrine_config' => array(
@@ -51,7 +29,15 @@ return array(
                 ),
             ),
             
-            'translator' => array(
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'calendar_views' => __DIR__ . '/../views',
+                    ),
+                ),
+            ),
+            
+            /*'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',
                     'translations' => array(
@@ -65,50 +51,40 @@ return array(
                         ),
                     ),
                 ),
+            ),*/
+            
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
+                    'routes' => array(
+                        'calendar_install' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/install/calendar',
+                                'constraints' => array(
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'calendar_install',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'admin_calendar' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/admin/content/calendar[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[0-9]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_calendar',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             ),
         ),
-    ),
-    'routes' => array(
-        'install_calendar' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/install/calendar',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'install_calendar',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'admin_calendar' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/content/calendar[/:action[/:id]]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'admin_calendar',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        /*'common_calendar' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route'    => '[/:language]/calendar[/:action[/:name]]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'name'  => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'common_calendar',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),*/
     ),
 );
