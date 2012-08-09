@@ -301,7 +301,7 @@ return array(
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
-                        //'commonbundle' => __DIR__ . '/../../Entity',
+                        'commonbundle' => __DIR__ . '/../../Entity',
                     ),
                 ),
             ),
