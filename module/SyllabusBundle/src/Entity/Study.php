@@ -12,12 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\Study")
- * @Table(name="syllabus.study")
+ * @Table(name="syllabus.studies")
  */
 class Study
 {
@@ -43,14 +43,14 @@ class Study
      * @Column(type="smallint")
      */
     private $phase;
-    
+
     /**
      * @var string The language of the study
      *
      * @Column(type="string", length=2)
      */
     private $language;
-    
+
     /**
      * @var \SyllabusBundle\Entity\Study The parent study of the study
      *
@@ -58,7 +58,7 @@ class Study
      * @JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
-    
+
     /**
      * @param string $title
      * @param string $subTitle
@@ -72,7 +72,7 @@ class Study
         $this->language = $language;
         $this->parent = $parent;
     }
-    
+
     /**
      * @return integer
      */
@@ -80,7 +80,7 @@ class Study
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -88,7 +88,7 @@ class Study
     {
         return $this->title;
     }
-    
+
     /**
      * @return string
      */
@@ -104,7 +104,7 @@ class Study
             }
         }
     }
-    
+
     /**
      * @return integer
      */
@@ -112,7 +112,7 @@ class Study
     {
         return $this->phase;
     }
-    
+
     /**
      * @return string
      */
@@ -120,7 +120,7 @@ class Study
     {
         return $this->language;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Study
      */
@@ -128,7 +128,7 @@ class Study
     {
         return $this->parent;
     }
-    
+
     /**
      * @return array
      */

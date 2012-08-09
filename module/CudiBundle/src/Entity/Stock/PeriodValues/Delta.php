@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Delta")
- * @Table(name="cudi.stock_period_values_deltas")
+ * @Table(name="cudi.stock_periods_values_deltas")
  */
 class Delta
 {

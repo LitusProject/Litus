@@ -20,7 +20,7 @@ use CudiBundle\Entity\Sales\Article,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Start")
- * @Table(name="cudi.stock_period_values_starts")
+ * @Table(name="cudi.stock_periods_values_starts")
  */
 class Start
 {
