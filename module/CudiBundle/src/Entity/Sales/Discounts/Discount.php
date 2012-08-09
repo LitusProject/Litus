@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales\Discounts;
 
 use CudiBundle\Entity\Sales\Article as Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
- * @Table(name="cudi.sales_discounts_discount")
+ * @Table(name="cudi.sales_discounts_discounts")
  */
 class Discount
 {
@@ -39,28 +39,28 @@ class Discount
      * @JoinColumn(name="template", referencedColumnName="id")
      */
     private $template;
-    
+
     /**
      * @var integer The value of the discount
      *
      * @Column(type="bigint", nullable=true)
      */
     private $value;
-    
+
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
      * @Column(type="string", nullable=true)
      */
     private $method;
-    
+
     /**
      * @var string The type of discount (member, acco)
      *
      * @Column(type="string", nullable=true)
      */
     private $type;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
@@ -68,21 +68,21 @@ class Discount
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var array The possible types of a discount
      */
     private static $POSSIBLE_TYPES = array(
         'member', 'acco'
     );
-    
+
     /**
      * @var array The possible methods of a discount
      */
     private static $POSSIBLE_METHODS = array(
         'percentage', 'fixed', 'override'
     );
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article The article of the discount
      */
@@ -90,7 +90,7 @@ class Discount
     {
         $this->article = $article;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Discounts\Template The template of the discount
      *
@@ -104,7 +104,7 @@ class Discount
         $this->type = null;
         return $this;
     }
-    
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -118,17 +118,17 @@ class Discount
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
-            
+
         if (!self::isValidDiscountMethod($method))
             throw new \InvalidArgumentException('The discount method is not valid.');
-        
+
         $this->template = null;
         $this->value = $value * 100;
         $this->method = $method;
         $this->type = $type;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -136,7 +136,7 @@ class Discount
     {
         return in_array($type, self::$POSSIBLE_TYPES);
     }
-    
+
     /**
      * @return boolean
      */
@@ -144,7 +144,7 @@ class Discount
     {
         return in_array($method, self::$POSSIBLE_METHODS);
     }
-    
+
     /**
      * @return integer
      */
@@ -152,7 +152,7 @@ class Discount
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Discounts\Template
      */
@@ -160,7 +160,7 @@ class Discount
     {
         return $this->template;
     }
-    
+
     /**
      * @return integer
      */
@@ -170,7 +170,7 @@ class Discount
             return $this->template->getValue();
         return $this->value;
     }
-    
+
     /**
      * @return string
      */
@@ -180,7 +180,7 @@ class Discount
             return $this->template->getMethod();
         return $this->method;
     }
-    
+
     /**
      * @return string
      */
@@ -190,7 +190,7 @@ class Discount
             return $this->template->getType();
         return $this->type;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Articl
      */
@@ -198,7 +198,7 @@ class Discount
     {
         return $this->article;
     }
-    
+
     /**
      * @param integer $price
      *

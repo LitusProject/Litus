@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\Users\Person,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")
- * @Table(name="syllabus.subject_comment")
+ * @Table(name="syllabus.subjects_comments")
  */
 class Comment
 {
@@ -34,21 +34,21 @@ class Comment
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time the comment was created
-     * 
+     *
      * @Column(type="datetime")
      */
     private $date;
-    
+
     /**
      * @var string The content of the comment
      *
      * @Column(type="text")
      */
     private $text;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person that created the comment
      *
@@ -56,7 +56,7 @@ class Comment
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var \SyllabusBundle\Entity\Subject The subject of the comment
      *
@@ -64,21 +64,21 @@ class Comment
      * @JoinColumn(name="subject", referencedColumnName="id")
      */
     private $subject;
-    
+
     /**
      * @var string The type of the comment
      *
      * @Column(type="string")
      */
     private $type;
-    
+
     /**
      * @var array The possible types of a comment
      */
     private static $POSSIBLE_TYPES = array(
         'external', 'internal'
     );
-    
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -93,12 +93,12 @@ class Comment
         $this->text = $text;
         $this->date = new DateTime();
         $this->subject = $subject;
-        
+
         if (!self::isValidCommentType($type))
             throw new \InvalidArgumentException('The comment type is not valid.');
         $this->type = $type;
     }
-    
+
     /**
      * @return boolean
      */
@@ -106,7 +106,7 @@ class Comment
     {
         return in_array($type, self::$POSSIBLE_TYPES);
     }
-    
+
     /**
      * @return integer
      */
@@ -114,7 +114,7 @@ class Comment
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -122,7 +122,7 @@ class Comment
     {
         return $this->date;
     }
-    
+
     /**
      * @return string
      */
@@ -130,7 +130,7 @@ class Comment
     {
         return $this->text;
     }
-    
+
     /**
      * @return string
      */
@@ -138,7 +138,7 @@ class Comment
     {
         return substr($this->text, 0, $length) . (strlen($this->text) > $length ? '...' : '');
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -146,7 +146,7 @@ class Comment
     {
         return $this->person;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Subject
      */
@@ -154,7 +154,7 @@ class Comment
     {
         return $this->subject;
     }
-    
+
     /**
      * @return string
      */

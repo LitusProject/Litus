@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Articles\Options\Binding,
@@ -30,14 +30,14 @@ class Internal extends \CudiBundle\Entity\Article
      * @Column(name="nb_black_and_white", type="smallint")
      */
     private $nbBlackAndWhite;
-    
+
     /**
      * @var integer The number of colored pages
      *
      * @Column(name="nb_colored", type="smallint")
      */
     private $nbColored;
-    
+
     /**
      * @var \CudiBundle\Entity\Articles\Options\Binding The binding of this article
      *
@@ -45,21 +45,21 @@ class Internal extends \CudiBundle\Entity\Article
      * @JoinColumn(name="binding", referencedColumnName="id")
      */
     private $binding;
-    
+
     /**
      * @var boolean Whether the aricle is an official one.
      *
      * @Column(type="boolean")
      */
     private $official;
-    
+
     /**
      * @var boolean Flag whether the article is rectoverso or not.
      *
      * @Column(name="recto_verso", type="boolean")
      */
     private $rectoVerso;
-    
+
     /**
      * @var \CudiBundle\Entity\Articles\Options\Color The color of the front page.
      *
@@ -67,14 +67,14 @@ class Internal extends \CudiBundle\Entity\Article
      * @JoinColumn(name="front_page_color", referencedColumnName="id")
      */
     private $frontPageColor;
-    
+
     /**
      * @var boolean Whether the aricle is perforated or not.
      *
      * @Column(type="boolean")
      */
     private $isPerforated;
-    
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -98,7 +98,7 @@ class Internal extends \CudiBundle\Entity\Article
         $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
     ) {
         parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
-        
+
         $this->setNbBlackAndWhite($nbBlackAndWhite)
             ->setNbColored($nbColored)
             ->setBinding($binding)
@@ -107,7 +107,7 @@ class Internal extends \CudiBundle\Entity\Article
             ->setFrontColor($frontPageColor)
             ->setIsPerforated($isPerforated);
     }
-    
+
     /**
      * @return int
      */
@@ -115,7 +115,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->nbBlackAndWhite;
     }
-    
+
     /**
      * @param integer $nbBlackAndWhite
      *
@@ -126,7 +126,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->nbBlackAndWhite = $nbBlackAndWhite;
         return $this;
     }
-    
+
     /**
      * @return int
      */
@@ -134,7 +134,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->nbColored;
     }
-    
+
     /**
      * @param integer $nbColored
      *
@@ -145,7 +145,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->nbColored = $nbColored;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Articles\Options\Binding
      */
@@ -153,7 +153,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->binding;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Articles\Options\Binding $binding
      *
@@ -164,7 +164,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->binding = $binding;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -172,7 +172,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->official;
     }
-    
+
     /**
      * @param boolean $official
      *
@@ -183,7 +183,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->official = $official;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -191,7 +191,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->rectoVerso;
     }
-    
+
     /**
      * @param boolean $rectoVerso
      *
@@ -202,7 +202,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->rectoVerso = $rectoVerso;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Articles\Options\Color
      */
@@ -210,7 +210,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->frontPageColor;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Articles\Options\Color $frontPageColor
      *
@@ -221,7 +221,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->frontPageColor = $frontPageColor;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -229,7 +229,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->getNbBlackAndWhite() + $this->getNbColored();
     }
-    
+
     /**
      * @return boolean
      */
@@ -237,7 +237,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return $this->isPerforated;
     }
-    
+
     /**
      * @param boolean $isPerforated
      *
@@ -248,7 +248,7 @@ class Internal extends \CudiBundle\Entity\Article
         $this->isPerforated = $isPerforated;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Article
      */
@@ -272,7 +272,7 @@ class Internal extends \CudiBundle\Entity\Article
             $this->isPerforated()
         );
     }
-    
+
     /**
      * @return boolean
      */
@@ -280,7 +280,7 @@ class Internal extends \CudiBundle\Entity\Article
     {
         return false;
     }
-    
+
     /**
      * @return boolean
      */

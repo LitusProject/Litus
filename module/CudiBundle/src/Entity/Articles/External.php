@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Articles;
 
 /**
@@ -37,7 +37,7 @@ class External extends \CudiBundle\Entity\Article
             $this->isDownloadable()
         );
     }
-    
+
     /**
      * @return boolean
      */
@@ -45,7 +45,7 @@ class External extends \CudiBundle\Entity\Article
     {
         return true;
     }
-    
+
     /**
      * @return boolean
      */

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company;
@@ -21,7 +21,7 @@ use BrBundle\Entity\Company;
  * This is the entity for an internship.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Company\Internship")
- * @Table(name="br.company_internships")
+ * @Table(name="br.companies_internships")
  */
 class Internship
 {
@@ -33,21 +33,21 @@ class Internship
      * @GeneratedValue
      */
     private $id;
-    
+
     /**
      * @var string The internship's name
      *
      * @Column(type="string", length=50)
      */
     private $name;
-    
+
     /**
      * @var string The description of the internship
      *
      * @Column(type="text")
      */
     private $description;
-    
+
     /**
      * @var \BrBundle\Entity\Company The company of the internship
      *
@@ -55,7 +55,7 @@ class Internship
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
-    
+
     /**
      * @param string $name The internship's name
      * @param string $description The internship's description
@@ -65,10 +65,10 @@ class Internship
     {
         $this->setName($name);
         $this->setDescription($description);
-        
+
         $this->company = $company;
     }
-    
+
     /**
      * @return string
      */
@@ -76,7 +76,7 @@ class Internship
     {
         return $this->id;
     }
-    
+
     /**
      * @param string $name
      * @return \BrBundle\Entity\Company\Internship
@@ -85,12 +85,12 @@ class Internship
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-            
+
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -98,7 +98,7 @@ class Internship
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $description
      * @return \BrBundle\Entity\Company\Internship
@@ -106,10 +106,10 @@ class Internship
     public function setDescription($description)
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -117,7 +117,7 @@ class Internship
     {
         return $this->description;
     }
-    
+
     /**
      * @return string
      */
@@ -125,7 +125,7 @@ class Internship
     {
         return substr($this->description, 0, $length) . (strlen($this->description) > $length ? '...' : '');
     }
-    
+
     /**
      * @return \BrBundle\Entity\Company
      */

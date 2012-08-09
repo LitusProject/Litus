@@ -12,12 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Articles\Options;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\Options\Color")
- * @Table(name="cudi.articles_options_color")
+ * @Table(name="cudi.articles_options_colors")
  */
 class Color
 {
@@ -29,21 +29,21 @@ class Color
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The name of the color
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @param string $name
      */
     public function __construct($name) {
         $this->name = $name;
     }
-    
+
     /**
      * @return integer
      */
@@ -51,7 +51,7 @@ class Color
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */

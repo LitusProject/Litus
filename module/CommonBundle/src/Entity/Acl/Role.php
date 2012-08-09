@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Acl;
 
 use CommonBundle\Component\Acl\Acl,
@@ -34,7 +34,7 @@ class Role
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var boolean Whether or not this is a system role
      *
@@ -47,7 +47,7 @@ class Role
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
-     *      name="acl.roles_inheritance",
+     *      name="acl.roles_inheritance_map",
      *      joinColumns={@JoinColumn(name="child", referencedColumnName="name")},
      *      inverseJoinColumns={@JoinColumn(name="parent", referencedColumnName="name")}
      * )
@@ -59,7 +59,7 @@ class Role
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
      * @JoinTable(
-     *      name="acl.roles_actions",
+     *      name="acl.roles_actions_map",
      *      joinColumns={@JoinColumn(name="role", referencedColumnName="name")},
      *      inverseJoinColumns={@JoinColumn(name="action", referencedColumnName="id")}
      * )
@@ -88,7 +88,7 @@ class Role
     {
         return $this->name;
     }
-    
+
     /**
      * @return boolean
      */
@@ -96,7 +96,7 @@ class Role
     {
         return $this->system;
     }
-    
+
     /**
      * @param array $parents
      * @return \CommonBundle\Entity\Acl\Role
@@ -104,10 +104,10 @@ class Role
     public function setParents(array $parents)
     {
         $this->parents = new ArrayCollection($parents);
-        
+
         return $this;
     }
-    
+
     /**
      * @return array
      */
@@ -115,7 +115,7 @@ class Role
     {
         return $this->parents->toArray();
     }
-    
+
     /**
      * @param array $actions
      * @return \CommonBundle\Entity\Acl\Role
@@ -123,7 +123,7 @@ class Role
     public function setActions(array $actions)
     {
         $this->actions = new ArrayCollection($actions);
-        
+
         return $this;
     }
 
@@ -134,7 +134,7 @@ class Role
     {
         return $this->actions->toArray();
     }
-    
+
     /**
      * Allow this role access to the given action.
      *

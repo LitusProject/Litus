@@ -12,17 +12,17 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General\Bank\BankDevice;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
     CommonBundle\Entity\General\Bank\CashRegister;
 
 /**
- * For a given register, this class has the amount 
+ * For a given register, this class has the amount
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice\Amount")
- * @Table(name="general.bank_bank_device_amount")
+ * @Table(name="general.bank_bank_devices_amounts")
  */
 class Amount
 {
@@ -34,7 +34,7 @@ class Amount
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      *
@@ -42,7 +42,7 @@ class Amount
      * @JoinColumn(name="cash_register_id", referencedColumnName="id")
      */
     private $cashRegister;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
      *
@@ -50,14 +50,14 @@ class Amount
      * @JoinColumn(name="device_id", referencedColumnName="id")
      */
     private $device;
-    
+
     /**
      * @var int The amount payed, multiplied by a 100 before it is stored
      *
      * @Column(type="integer")
      */
     private $amount;
-    
+
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      * @param \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
@@ -69,7 +69,7 @@ class Amount
         $this->device = $bankDevice;
         $this->setAmount($amount);
     }
-    
+
     /**
      * @return string
      */
@@ -77,7 +77,7 @@ class Amount
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Bank\BankDevice
      */
@@ -85,7 +85,7 @@ class Amount
     {
         return $this->device;
     }
-    
+
     /**
      * @return float
      */
@@ -93,15 +93,15 @@ class Amount
     {
         return $this->amount;
     }
-    
+
     /**
      * @param int $amount The amount payed
-     * @return \CommonBundle\Entity\General\Bank\BankDevice     
+     * @return \CommonBundle\Entity\General\Bank\BankDevice
      */
     public function setAmount($amount)
     {
         $this->amount = $amount * 100;
-        
+
         return $this;
     }
 }

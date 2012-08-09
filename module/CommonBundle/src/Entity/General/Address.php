@@ -12,16 +12,16 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General;
 
 /**
  * This class represents a address entry that is saved in the database
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Address")
- * @Table(name="general.address")
+ * @Table(name="general.addresses")
  */
-class Address 
+class Address
 {
     /**
      * @static
@@ -293,7 +293,7 @@ class Address
     );
 
     /**
-     * @var integer The ID of the address 
+     * @var integer The ID of the address
      *
      * @Id
      * @GeneratedValue
@@ -314,28 +314,28 @@ class Address
      * @Column(type="string")
      */
     private $number;
-    
+
     /**
      * @var string The postal
      *
      * @Column(type="string")
      */
     private $postal;
-    
+
     /**
      * @var string The city
      *
      * @Column(type="string")
      */
     private $city;
-    
+
     /**
      * @var string The country
      *
      * @Column(type="string")
      */
     private $country;
-    
+
     /**
      * @param string $street
      * @param string $number
@@ -351,7 +351,7 @@ class Address
             ->setCity($city)
             ->setCountry($country);
     }
-    
+
     /**
      * @return integer
      */
@@ -359,7 +359,7 @@ class Address
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -367,7 +367,7 @@ class Address
     {
         return $this->street;
     }
-    
+
     /**
      * @param string $street
      *
@@ -378,7 +378,7 @@ class Address
         $this->street = $street;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -386,7 +386,7 @@ class Address
     {
         return $this->number;
     }
-    
+
     /**
      * @param string $number
      *
@@ -397,7 +397,7 @@ class Address
         $this->number = $number;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -405,7 +405,7 @@ class Address
     {
         return $this->postal;
     }
-    
+
     /**
      * @param string $postal
      *
@@ -416,7 +416,7 @@ class Address
         $this->postal = $postal;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -424,7 +424,7 @@ class Address
     {
         return $this->city;
     }
-    
+
     /**
      * @param string $city
      *
@@ -435,7 +435,7 @@ class Address
         $this->city = $city;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -443,7 +443,7 @@ class Address
     {
         return $this->country;
     }
-    
+
     /**
      * @return string
      */
@@ -455,7 +455,7 @@ class Address
         }
         return '';
     }
-    
+
     /**
      * @param string $number
      *
@@ -465,10 +465,10 @@ class Address
     {
         if (self::isValidCountry($country))
             $this->country = $country;
-        
+
         return $this;
     }
-    
+
     /**
      * Checks whether the given status is valid.
      *

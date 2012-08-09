@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\General\Address;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Supplier")
- * @Table(name="cudi.supplier")
+ * @Table(name="cudi.suppliers")
  */
 class Supplier
 {
@@ -31,14 +31,14 @@ class Supplier
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The name of the supplier
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var string The phone number of the supplier
      *
@@ -60,7 +60,7 @@ class Supplier
      * @Column(type="string", nullable=true)
      */
     private $vatNumber;
-    
+
     /**
      * @param string $name
      * @param string $phoneNumber
@@ -74,7 +74,7 @@ class Supplier
             ->setAddress($address)
             ->setVatNumber($vatNumber);
     }
-    
+
     /**
      * @return integer
      */
@@ -90,7 +90,7 @@ class Supplier
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $name
      *
@@ -101,7 +101,7 @@ class Supplier
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -109,7 +109,7 @@ class Supplier
     {
         return $this->phoneNumber;
     }
-    
+
     /**
      * @param string $phoneNumber
      *
@@ -120,7 +120,7 @@ class Supplier
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Address
      */
@@ -128,7 +128,7 @@ class Supplier
     {
         return $this->address;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Address $address
      *
@@ -139,7 +139,7 @@ class Supplier
         $this->address = $address;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -147,7 +147,7 @@ class Supplier
     {
         return $this->vatNumber;
     }
-    
+
     /**
      * @param string $vatNumber
      *

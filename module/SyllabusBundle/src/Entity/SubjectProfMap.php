@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\AcademicYear,
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\SubjectProfMap")
- * @Table(name="syllabus.subject_prof_map")
+ * @Table(name="syllabus.subjects_profs_map")
  */
 class SubjectProfMap
 {
@@ -48,7 +48,7 @@ class SubjectProfMap
      * @JoinColumn(referencedColumnName="id")
      */
     private $subject;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
      *
@@ -56,7 +56,7 @@ class SubjectProfMap
      * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
-    
+
     /**
      * @param \SyllabusBundle\Entity\Subject $subject
      * @param \CommonBundle\Entity\Users\People\Academic $prof
@@ -68,7 +68,7 @@ class SubjectProfMap
         $this->prof = $prof;
         $this->academicYear = $academicYear;
     }
-    
+
     /**
      * @return integer
      */
@@ -76,7 +76,7 @@ class SubjectProfMap
     {
         return $this->id;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Subject
      */
@@ -84,7 +84,7 @@ class SubjectProfMap
     {
         return $this->subject;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\People\Academic
      */
@@ -92,7 +92,7 @@ class SubjectProfMap
     {
         return $this->prof;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */

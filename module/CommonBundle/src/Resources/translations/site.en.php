@@ -17,7 +17,7 @@ return array(
     'Vlaamse Technische Kring Leuven' => 'Vlaamse Technische Kring Leuven',
     'VTK Leuven vzw' => 'VTK Leuven vzw',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
-    
+
     'Recreation' => 'Recreation',
     'Studies' => 'Studies',
     'Company relations' => 'Company relations',
@@ -27,21 +27,21 @@ return array(
     'About VTK' => 'About VTK',
     'Login' => 'Login',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
-    
+
     'Language' => 'Language',
     'Dutch' => 'Nederlands',
     'English' => 'English',
-    
+
     'Links' => 'Links',
     'Partners' => 'Partners',
-    
+
     'Calendar' => 'Calendar',
     'Twitter' => 'Twitter',
     'News' => 'News',
     'Warning' => 'Warning',
     'No news items were posted yet.' => 'No news items were posted yet.',
-    'No events were posted yet.' => 'No events were posted yet.',
-    
+    'No events were created yet.' => 'No events were created yet.',
+
     'Username' => 'Username',
     'Password' => 'Password',
     'Remember Me' => 'Remember Me',
