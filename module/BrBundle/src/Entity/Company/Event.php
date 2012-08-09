@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
@@ -22,9 +22,9 @@ use BrBundle\Entity\Company,
  * This is the entity for an event.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Company\Event")
- * @Table(name="br.company_events")
+ * @Table(name="br.companies_events")
  */
-class Event 
+class Event
 {
     /**
      * @var string The event's ID
@@ -34,42 +34,42 @@ class Event
      * @GeneratedValue
      */
     private $id;
-    
+
     /**
      * @var string The event's name
      *
      * @Column(type="string", length=50)
      */
     private $name;
-    
+
     /**
      * @var string The event's location
      *
      * @Column(type="string")
      */
     private $location;
-    
+
     /**
      * @var string The event's start date
      *
      * @Column(name="start_date", type="datetime")
      */
     private $startDate;
-    
+
     /**
      * @var string The event's end date
      *
      * @Column(name="end_date", type="datetime")
      */
     private $endDate;
-    
+
     /**
      * @var string The description of the event
      *
      * @Column(type="text")
      */
     private $description;
-    
+
     /**
      * @var \BrBundle\Entity\Company The company of the event
      *
@@ -77,7 +77,7 @@ class Event
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
-    
+
     /**
      * @param string $name The event's name
      * @param string $location The company's location
@@ -93,10 +93,10 @@ class Event
         $this->setStartDate($startDate);
         $this->setEndDate($endDate);
         $this->setDescription($description);
-        
+
         $this->company = $company;
     }
-    
+
     /**
      * @return string
      */
@@ -104,7 +104,7 @@ class Event
     {
         return $this->id;
     }
-    
+
     /**
      * @param string $name
      * @return \BrBundle\Entity\Company\Event
@@ -113,12 +113,12 @@ class Event
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-            
+
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -126,7 +126,7 @@ class Event
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $location
      * @return \BrBundle\Entity\Company\Event
@@ -135,12 +135,12 @@ class Event
     {
         if ((null === $location) || !is_string($location))
             throw new \InvalidArgumentException('Invalid location');
-            
+
         $this->location = $location;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -148,7 +148,7 @@ class Event
     {
         return $this->location;
     }
-    
+
     /**
      * @param \DateTime $startDate
      * @return \BrBundle\Entity\Company\Event
@@ -156,10 +156,10 @@ class Event
     public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -167,7 +167,7 @@ class Event
     {
         return $this->startDate;
     }
-    
+
     /**
      * @param \DateTime $endDate
      * @return \BrBundle\Entity\Company\Event
@@ -175,10 +175,10 @@ class Event
     public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -186,7 +186,7 @@ class Event
     {
         return $this->endDate;
     }
-    
+
     /**
      * @param string $description
      * @return \BrBundle\Entity\Company\Event
@@ -194,10 +194,10 @@ class Event
     public function setDescription($description)
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -205,7 +205,7 @@ class Event
     {
         return $this->description;
     }
-    
+
     /**
      * @return \BrBundle\Entity\Company
      */

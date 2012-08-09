@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\Orders;
 
 use CommonBundle\Entity\Users\Person,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Order")
- * @Table(name="cudi.stock_order", indexes={@index(name="stock_order_time", columns={"date_created"})})
+ * @Table(name="cudi.stock_orders", indexes={@index(name="stock_orders_time", columns={"date_created"})})
  */
 class Order
 {
@@ -33,7 +33,7 @@ class Order
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CudiBundle\Entity\Supplier The supplier of the order
      *
@@ -41,28 +41,28 @@ class Order
      * @JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
-    
+
     /**
      * @var \DateTime The time the order was created
      *
      * @Column(name="date_created", type="datetime")
      */
     private $dateCreated;
-    
+
     /**
      * @var \DateTime The time the order was ordered
      *
      * @Column(name="date_ordered", type="datetime", nullable=true)
      */
     private $dateOrdered;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
      * @OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
      */
     private $items;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who ordered the order
      *
@@ -70,7 +70,7 @@ class Order
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @param \CudiBundle\Entity\Supplier $supplier The supplier of this order
      */
@@ -80,7 +80,7 @@ class Order
         $this->person = $person;
         $this->dateCreated = new DateTime();
     }
-    
+
     /**
      * Get the id of this delivery
      *
@@ -90,7 +90,7 @@ class Order
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Supplier
      */
@@ -98,7 +98,7 @@ class Order
     {
         return $this->supplier;
     }
-    
+
     /**
      * Get the price of this order
      *
@@ -111,7 +111,7 @@ class Order
             $price += $item->getPrice();
         return $price;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -119,7 +119,7 @@ class Order
     {
         return $this->dateCreated;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -127,7 +127,7 @@ class Order
     {
         return $this->dateOrdered;
     }
-    
+
     /**
      * @return \Doctrine\Common\Collection\ArrayCollection
      */
@@ -135,7 +135,7 @@ class Order
     {
         return $this->items;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -143,10 +143,10 @@ class Order
     {
         return $this->person;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * 
+     *
      * @return \CudiBundle\Entity\Stock\Orders\Order
      */
     public function setPerson(Person $person)
@@ -154,7 +154,7 @@ class Order
         $this->person = $person;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -162,7 +162,7 @@ class Order
     {
         return null !== $this->dateOrdered;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Orders\Order
      */
@@ -171,7 +171,7 @@ class Order
         $this->dateOrdered = new DateTime();
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Orders\Order
      */

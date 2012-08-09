@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users;
 
 use DateTime;
@@ -21,7 +21,7 @@ use DateTime;
  * This entity stores a user's codes.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\Code")
- * @Table(name="users.code")
+ * @Table(name="users.codes")
  */
 class Code
 {
@@ -59,10 +59,10 @@ class Code
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
-        
+
         $this->code = $code;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -70,7 +70,7 @@ class Code
     {
         return $this->expirationTime;
     }
-    
+
     /**
      * @return string
      */

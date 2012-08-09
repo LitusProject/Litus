@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\AcademicYearMap")
- * @Table(name="syllabus.studies_academic_year_map")
+ * @Table(name="syllabus.studies_academic_years_map")
  */
 class AcademicYearMap
 {
@@ -47,7 +47,7 @@ class AcademicYearMap
      * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
-    
+
     /**
      * @param \SyllabusBundle\Entity\Study $study
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
@@ -57,7 +57,7 @@ class AcademicYearMap
         $this->study = $study;
         $this->academicYear = $academicYear;
     }
-    
+
     /**
      * @return integer
      */
@@ -65,7 +65,7 @@ class AcademicYearMap
     {
         return $this->id;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Study
      */
@@ -73,7 +73,7 @@ class AcademicYearMap
     {
         return $this->study;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */

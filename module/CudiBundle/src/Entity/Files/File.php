@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Files;
 
 use CudiBundle\Entity\Articles\Internal as InternalArticle,
@@ -20,7 +20,7 @@ use CudiBundle\Entity\Articles\Internal as InternalArticle,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Files\File")
- * @Table(name="cudi.files_file")
+ * @Table(name="cudi.files_files")
  */
 class File
 {
@@ -32,28 +32,28 @@ class File
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The path to the file
-     * 
+     *
      * @Column(type="string")
      */
     private $path;
-    
+
     /**
      * @var string The name of the file
-     * 
+     *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var string The description of the file
-     * 
+     *
      * @Column(type="string")
      */
     private $description;
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param string $path The path to the file
@@ -67,27 +67,27 @@ class File
         $this->setPath($path)
             ->setName($name)
             ->setDescription($description);
-            
+
         $entityManager->persist(new Mapping($article, $this, $printable));
     }
-    
-    /** 
+
+    /**
      * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-    
-    /** 
+
+    /**
      * @return string
      */
     public function getPath()
     {
         return $this->path;
     }
-    
-    /** 
+
+    /**
      * @param string $path
      *
      * @return \CudiBundle\Entity\Files\File
@@ -97,16 +97,16 @@ class File
         $this->path = $path;
         return $this;
     }
-    
-    /** 
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
     }
-    
-    /** 
+
+    /**
      * @param string $name
      *
      * @return \CudiBundle\Entity\Files\File
@@ -116,16 +116,16 @@ class File
         $this->name = $name;
         return $this;
     }
-    
-    /** 
+
+    /**
      * @return string
      */
     public function getDescription()
     {
         return $this->description;
     }
-    
-    /** 
+
+    /**
      * @param string $description
      *
      * @return \CudiBundle\Entity\Files\File

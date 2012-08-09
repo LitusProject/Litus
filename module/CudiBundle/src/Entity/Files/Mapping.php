@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Files;
 
 use CudiBundle\Entity\Articles\Internal as InternalArticle;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
- * @Table(name="cudi.files_mapping")
+ * @Table(name="cudi.files_articles_map")
  */
 class Mapping
 {
@@ -54,21 +54,21 @@ class Mapping
      * @Column(type="boolean")
      */
     private $printable;
-    
+
     /**
      * @var boolean The flag whether the file is just created by a prof
      *
      * @Column(type="boolean")
      */
     private $isProf;
-    
+
     /**
      * @var boolean The flag whether the file is removed
      *
      * @Column(type="boolean")
      */
     private $removed;
-    
+
     /**
      * @param \CudiBundle\Entity\Articles\Internal $article The article of the mapping
      * @param \CudiBundle\Entity\Files\File $file The file of the mapping
@@ -82,7 +82,7 @@ class Mapping
             ->setIsProf(false);
         $this->removed = false;
     }
-    
+
     /**
      * @return integer
      */
@@ -90,7 +90,7 @@ class Mapping
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Articles\Internal
      */
@@ -98,7 +98,7 @@ class Mapping
     {
         return $this->article;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Files\File
      */
@@ -106,7 +106,7 @@ class Mapping
     {
         return $this->file;
     }
-    
+
     /**
      * @return boolean
      */
@@ -114,7 +114,7 @@ class Mapping
     {
         return $this->printable;
     }
-    
+
     /**
      * @param boolean $printable Flag whether the file is the printable one or not
      *
@@ -125,7 +125,7 @@ class Mapping
         $this->printable = $printable;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -133,7 +133,7 @@ class Mapping
     {
         return $this->isProf;
     }
-    
+
     /**
      * @param boolean $isProf
      *
@@ -144,7 +144,7 @@ class Mapping
         $this->isProf = $isProf;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Files\Mapping
      */

@@ -12,15 +12,15 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\PeriodValues;
 
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period;
-    
+
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Start")
- * @Table(name="cudi.stock_period_values_start")
+ * @Table(name="cudi.stock_period_values_starts")
  */
 class Start
 {
@@ -32,14 +32,14 @@ class Start
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var integer The value of the value
      *
      * @Column(type="integer")
      */
     private $value;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the value
      *
@@ -47,7 +47,7 @@ class Start
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \CudiBundle\Entity\Stock\Period The period of the value
      *
@@ -55,7 +55,7 @@ class Start
      * @JoinColumn(name="period", referencedColumnName="id")
      */
     private $period;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $stockItem The article of the value
      * @param \CudiBundle\Entity\Stock\Period $period The period of the value
@@ -67,7 +67,7 @@ class Start
         $this->period = $period;
         $this->value = $value;
     }
-    
+
     /**
      * Get the id of the value
      *
@@ -77,7 +77,7 @@ class Start
     {
         return $this->id;
     }
-    
+
     /**
      * @return integer
      */
@@ -85,7 +85,7 @@ class Start
     {
         return $this->value;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -93,7 +93,7 @@ class Start
     {
         return $this->article;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Period
      */

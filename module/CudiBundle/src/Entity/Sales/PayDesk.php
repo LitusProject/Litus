@@ -12,12 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\PayDesk")
- * @Table(name="cudi.sales_pay_desk")
+ * @Table(name="cudi.sales_pay_desks")
  */
 class PayDesk
 {
@@ -29,21 +29,21 @@ class PayDesk
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The name of the paydesk
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var string The code of the paydesk
      *
      * @Column(type="string")
      */
     private $code;
-    
+
     /**
      * @param string $code The code of the paydesk
      * @param string $name The name of the paydesk
@@ -53,7 +53,7 @@ class PayDesk
         $this->code = $code;
         $this->name = $name;
     }
-    
+
     /**
      * @return integer
      */
@@ -61,7 +61,7 @@ class PayDesk
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -69,7 +69,7 @@ class PayDesk
     {
         return $this->name;
     }
-    
+
     /**
      * @return string
      */

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Articles;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\AcademicYear,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\SubjectMap")
- * @Table(name="cudi.articles_subject_map")
+ * @Table(name="cudi.articles_subjects_map")
  */
 class SubjectMap
 {
@@ -49,7 +49,7 @@ class SubjectMap
      * @JoinColumn(name="subject", referencedColumnName="id")
      */
     private $subject;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
      *
@@ -64,21 +64,21 @@ class SubjectMap
      * @Column(type="boolean")
      */
     private $mandatory;
-    
+
     /**
      * @var boolean The flag whether the article is just created by a prof
      *
      * @Column(type="boolean")
      */
     private $isProf;
-    
+
     /**
      * @var boolean The flag whether the file is removed
      *
      * @Column(type="boolean")
      */
     private $removed;
-    
+
     /**
      * @param \CudiBundle\Entity\Article $article The article of the mapping
      * @param \SyllabusBundle\Entity\Subject $subject The subject of the mapping
@@ -94,7 +94,7 @@ class SubjectMap
         $this->setIsProf(false);
         $this->removed = false;
     }
-    
+
     /**
      * @return integer
      */
@@ -102,7 +102,7 @@ class SubjectMap
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Article
      */
@@ -110,7 +110,7 @@ class SubjectMap
     {
         return $this->article;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Subject
      */
@@ -118,7 +118,7 @@ class SubjectMap
     {
         return $this->subject;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
@@ -126,7 +126,7 @@ class SubjectMap
     {
         return $this->academicYear;
     }
-    
+
     /**
      * @return boolean
      */
@@ -134,7 +134,7 @@ class SubjectMap
     {
         return $this->mandatory;
     }
-    
+
     /**
      * @return boolean
      */
@@ -142,7 +142,7 @@ class SubjectMap
     {
         return $this->isProf;
     }
-    
+
     /**
      * @param boolean $isProf
      *
@@ -153,7 +153,7 @@ class SubjectMap
         $this->isProf = $isProf;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Articles\SubjectMap
      */

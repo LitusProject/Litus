@@ -19,7 +19,7 @@ namespace CommonBundle\Entity\General\Bank;
  * This entity represents an appliance thtat is when someone pays by card.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice")
- * @Table(name="general.bank_bank_device")
+ * @Table(name="general.bank_bank_devices")
  */
 class BankDevice
 {
@@ -31,14 +31,14 @@ class BankDevice
      * @Column(type="integer")
      */
     private $id;
-    
+
     /**
      * @var string The device's name
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @param string $name The device's name
      */
@@ -46,7 +46,7 @@ class BankDevice
     {
         $this->name = $name;
     }
-    
+
     /**
      * @return int
      */
@@ -54,7 +54,7 @@ class BankDevice
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */

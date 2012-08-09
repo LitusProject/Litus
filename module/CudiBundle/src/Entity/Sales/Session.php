@@ -11,8 +11,8 @@
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
- */ 
- 
+ */
+
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Bank\CashRegister,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
- * @Table(name="cudi.sales_session")
+ * @Table(name="cudi.sales_sessions")
  */
 class Session
 {
@@ -34,21 +34,21 @@ class Session
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The open date of the sale session
      *
      * @Column(name="open_date", type="datetime")
      */
     private $openDate;
-    
+
     /**
      * @var \DateTime The close date of the sale session
      *
      * @Column(name="close_date", type="datetime", nullable=true)
      */
     private $closeDate;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister open status
      *
@@ -56,7 +56,7 @@ class Session
      * @JoinColumn(name="open_register", referencedColumnName="id")
      */
     private $openRegister;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister close status
      *
@@ -64,7 +64,7 @@ class Session
      * @JoinColumn(name="close_register", referencedColumnName="id")
      */
     private $closeRegister;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person responsible for the sale session
      *
@@ -72,19 +72,19 @@ class Session
      * @JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
-    
+
     /**
      * @var string The comment on this sale session
      *
      * @Column(type="string")
      */
     private $comment;
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
-    
+
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
      * @param \CommonBundle\Entity\Users\Person $manager The manager of the session
@@ -105,7 +105,7 @@ class Session
     {
         return $this->id;
     }
-    
+
     /**
      * @param \DateTime $openDate
      *
@@ -123,7 +123,7 @@ class Session
     {
         return $this->openDate;
     }
-    
+
     /**
      * @return DateTime
      */
@@ -131,7 +131,7 @@ class Session
     {
         return $this->closeDate;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Bank\CashRegister
      */
@@ -151,7 +151,7 @@ class Session
         $this->closeDate = new DateTime();
         return $this;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Bank\CashRegister
      */
@@ -167,7 +167,7 @@ class Session
     {
         return $this->manager;
     }
-    
+
     /**
      * @param string $comment
      *
@@ -178,14 +178,14 @@ class Session
         $this->comment = $comment;
         return $this;
     }
-    
+
     /**
      * @return string
      */
     public function getComment() {
         return $this->comment;
     }
-    
+
     /**
      * @return boolean
      */
@@ -193,13 +193,13 @@ class Session
     {
         if(null === $this->getCloseDate())
             return true;
-        
+
         if($this->getCloseDate() >= $this->getOpenDate())
             return false;
-        
+
         return true;
     }
-    
+
     /**
      * Calculates the theoretical revenue of a given session --
      * that is, the revenue expected on the basis of sold stock items
@@ -212,7 +212,7 @@ class Session
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->getTheoreticalRevenue($this);
     }
-    
+
     /**
      * Calculates the actual revenue of a given session --
      * that is, the register difference between opening and closure of
@@ -224,10 +224,10 @@ class Session
     {
         if ($this->isOpen())
             return 0;
-        
+
         return $this->closeRegister->getTotalAmount() - $this->openRegister->getTotalAmount();
     }
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
