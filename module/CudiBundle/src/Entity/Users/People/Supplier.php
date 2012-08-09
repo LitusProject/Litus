@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Credential,
  * This is the entity for an supplier person.
  *
  * @Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
- * @Table(name="users.people_supplier")
+ * @Table(name="users.people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\Users\Person
 {

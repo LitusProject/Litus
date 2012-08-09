@@ -19,7 +19,7 @@ namespace PageBundle\Entity;
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="PageBundle\Repository\Category")
- * @Table(name="nodes.categories")
+ * @Table(name="nodes.pages_categories")
  */
 class Category
 {
