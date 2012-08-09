@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-  
+
 namespace PageBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
@@ -43,7 +43,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      * @Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
-    
+
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
@@ -51,26 +51,26 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      * @JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
-    
+
     /**
      * @var array The translations of this page
      *
     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
     * @JoinTable(
-    *      name="nodes.page_edit_roles",
+    *      name="nodes.pages_roles_map",
     *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
     * )
      */
     private $editRoles;
-    
+
     /**
      * @var array The translations of this page
      *
      * @OneToMany(targetEntity="PageBundle\Entity\Nodes\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \PageBunlde\Entity\Node\Page $parent
@@ -79,13 +79,13 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function __construct(Person $person, Page $parent, array $editGroups = array())
     {
         parent::__construct($person);
-        
+
         $this->startTime = new DateTime('now');
-        
+
         $this->setParent($parent);
         $this->editGroups = new ArrayCollection($editGroups);
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -93,7 +93,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->startTime;
     }
-    
+
     /**
      * @param \DateTime $endTime
      * @return \PageBundle\Entity\Nodes\Page
@@ -103,16 +103,16 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         $this->endTime = $endTime;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
-     * @return \PageBundle\Entity\Nodes\Page     
+     * @return \PageBundle\Entity\Nodes\Page
      */
     public function getEndTime()
     {
         return $this->endTime;
     }
-    
+
     /**
      * @param \PageBundle\Entity\Nodes\Page $category The page's category
      * @return \PageBundle\Entity\Nodes\Page
@@ -121,10 +121,10 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         if ($this->canHaveAsParent($parent))
             $this->parent = $parent;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \PageBundle\Entity\Nodes\Page
      */
@@ -132,7 +132,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->parent;
     }
-    
+
     /**
      * Checks whether or not the given page can be used as a parent.
      *
@@ -142,7 +142,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         return null === $parent->getParent();
     }
-    
+
     /**
      * @param array $editGroups
      * @return \PageBundle\Entity\Nodes\Page
@@ -152,7 +152,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         $this->editGroups = new ArrayCollection($editGroups);
         return $this;
     }
-    
+
     /**
      * @return array
      */
@@ -160,7 +160,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->editGroups->toArray();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @return \PageBundle\Entity\Nodes\Translation
@@ -172,7 +172,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
                 return $translation;
         }
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
@@ -183,7 +183,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getTitle();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
@@ -194,7 +194,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getName();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @return string
@@ -205,7 +205,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getContent();
     }
-    
+
     /**
      * Closes this version of the page.
      *
