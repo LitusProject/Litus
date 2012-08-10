@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\Orders;
 
 use CudiBundle\Entity\Sales\Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Item")
- * @Table(name="cudi.stock_orders_item")
+ * @Table(name="cudi.stock_orders_items")
  */
 class Item
 {
@@ -31,7 +31,7 @@ class Item
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the item
      *
@@ -39,7 +39,7 @@ class Item
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \CudiBundle\Entity\Stock\Orders\Order The order of the item
      *
@@ -47,14 +47,14 @@ class Item
      * @JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;
-    
+
     /**
      * @var integer The number of items ordered
      *
      * @Column(type="integer")
      */
     private $number;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article The article of the item
      * @param \CudiBundle\Entity\Stock\Orders\Order $order The order of the item
@@ -66,7 +66,7 @@ class Item
         $this->order = $order;
         $this->setNumber($number);
     }
-    
+
     /**
      * @return integer
      */
@@ -74,7 +74,7 @@ class Item
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Orders\Order
      */
@@ -82,7 +82,7 @@ class Item
     {
         return $this->order;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -90,7 +90,7 @@ class Item
     {
         return $this->article;
     }
-    
+
     /**
      * @return integer
      */
@@ -98,7 +98,7 @@ class Item
     {
         return $this->number;
     }
-    
+
     /**
      * @param integer $number
      *
@@ -109,7 +109,7 @@ class Item
         $this->number = $number;
         return $this;
     }
-    
+
     /**
      * @return integer
      */

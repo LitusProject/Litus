@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Period")
- * @Table(name="cudi.stock_period")
+ * @Table(name="cudi.stock_periods")
  */
 class Period
 {
@@ -34,7 +34,7 @@ class Period
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created the period
      *
@@ -42,26 +42,26 @@ class Period
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var \DateTime The start time of the period
      *
      * @Column(name="start_date", type="datetime")
      */
     private $startDate;
-    
+
     /**
      * @var \DateTime The end time of the period
      *
      * @Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person who created the period
      */
@@ -70,7 +70,7 @@ class Period
         $this->person = $person;
         $this->startDate = new DateTime();
     }
-    
+
     /**
      * Get the id of this period
      *
@@ -80,7 +80,7 @@ class Period
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -88,7 +88,7 @@ class Period
     {
         return $this->person;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -96,7 +96,7 @@ class Period
     {
         return $this->startDate;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -104,7 +104,7 @@ class Period
     {
         return $this->endDate;
     }
-    
+
     /**
      * @return boolean
      */
@@ -112,7 +112,7 @@ class Period
     {
         return $this->endDate == null;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Period
      */
@@ -121,7 +121,7 @@ class Period
         $this->endDate = new DateTime();
         return $this;
     }
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
@@ -132,8 +132,8 @@ class Period
         $this->_entityManager = $entityManager;
         return $this;
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer
@@ -145,8 +145,8 @@ class Period
             ->getNbDelivered($this, $article);
         return $value < 0 ? 0 : $value;
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer
@@ -157,8 +157,8 @@ class Period
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbOrdered($this, $article);
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer
@@ -169,8 +169,8 @@ class Period
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbSold($this, $article);
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer
@@ -181,8 +181,8 @@ class Period
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbBooked($this, $article);
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer
@@ -193,8 +193,8 @@ class Period
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbAssigned($this, $article);
     }
-    
-    /** 
+
+    /**
      * @param \CudiBundle\Entity\Sales\Article $article
      *
      * @return integer

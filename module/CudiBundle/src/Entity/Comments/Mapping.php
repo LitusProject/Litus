@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Comments;
 
 use CudiBundle\Entity\Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")
- * @Table(name="cudi.comments_mapping")
+ * @Table(name="cudi.comments_articles_map")
  */
 class Mapping
 {
@@ -47,7 +47,7 @@ class Mapping
      * @JoinColumn(name="comment", referencedColumnName="id")
      */
     private $comment;
-    
+
     /**
      * @param \CudiBundle\Entity\Article $article
      * @param \CudiBundle\Entity\Comments\Comment $file
@@ -57,7 +57,7 @@ class Mapping
         $this->article = $article;
         $this->comment = $comment;
     }
-    
+
     /**
      * @return integer
      */
@@ -65,7 +65,7 @@ class Mapping
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Article
      */
@@ -73,7 +73,7 @@ class Mapping
     {
         return $this->article;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Comments\Comment
      */

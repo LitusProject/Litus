@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\Deliveries;
 
 use CommonBundle\Entity\Users\Person,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Delivery")
- * @Table(name="cudi.stock_delivery", indexes={@index(name="stock_delivery_time", columns={"timestamp"})})
+ * @Table(name="cudi.stock_deliveries", indexes={@index(name="stock_deliveries_time", columns={"timestamp"})})
  */
 class Delivery
 {
@@ -33,7 +33,7 @@ class Delivery
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the delivery
      *
@@ -41,21 +41,21 @@ class Delivery
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \DateTime The time of the delivery
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var integer The number of the delivery
      *
      * @Column(type="integer")
      */
     private $number;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who ordered the order
      *
@@ -63,7 +63,7 @@ class Delivery
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article The article of the delivery
      * @param integer $number The number of the article
@@ -77,7 +77,7 @@ class Delivery
         $this->person = $person;
         $article->addStockValue($number);
     }
-    
+
     /**
      * @return integer
      */
@@ -85,7 +85,7 @@ class Delivery
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -93,7 +93,7 @@ class Delivery
     {
         return $this->article;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -101,7 +101,7 @@ class Delivery
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return integer
      */
@@ -109,7 +109,7 @@ class Delivery
     {
         return $this->number;
     }
-        
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -117,7 +117,7 @@ class Delivery
     {
         return $this->person;
     }
-    
+
     /**
      * @return integer
      */

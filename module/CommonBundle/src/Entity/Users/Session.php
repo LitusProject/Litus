@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users;
 
 use DateTime,
@@ -21,12 +21,12 @@ use DateTime,
 /**
  * We store all sessions in the database, so that we have a tidbit more information and
  * the authentication process can be made slightly more secure.
- * 
+ *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\Session")
  * @Table(name="users.sessions")
  */
 class Session
-{    
+{
     /**
      * @var string The session ID
      *
@@ -89,9 +89,14 @@ class Session
         $this->id = md5(uniqid(rand(), true));
 
         $this->startTime = new DateTime();
-        $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
-        );
+
+        if (is_int($expirationTime)) {
+            $this->expirationTime = new DateTime(
+                'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            );
+        } else {
+            $this->expirationTime = $expirationTime;
+        }
 
         $this->person = $person;
         $this->userAgent = $userAgent;

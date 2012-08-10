@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales\Discounts;
 
 use CudiBundle\Entity\Sales\Article as Article;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Template")
- * @Table(name="cudi.sales_discounts_template")
+ * @Table(name="cudi.sales_discounts_templates")
  */
 class Template
 {
@@ -31,35 +31,35 @@ class Template
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The name of the discount template
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var integer The value of the discount
      *
      * @Column(type="bigint")
      */
     private $value;
-    
+
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
      * @Column(type="string")
      */
     private $method;
-    
+
     /**
      * @var string The type of discount (member, acco)
      *
      * @Column(type="string")
      */
     private $type;
-    
+
     /**
      * @param integer The value of the discount
      * @param string The method of the discount
@@ -72,7 +72,7 @@ class Template
         $this->method = $method;
         $this->type = $type;
     }
-    
+
     /**
      * @return integer
      */
@@ -80,7 +80,7 @@ class Template
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -88,7 +88,7 @@ class Template
     {
         return $this->name;
     }
-    
+
     /**
      * @return integer
      */
@@ -96,7 +96,7 @@ class Template
     {
         return $this->value;
     }
-    
+
     /**
      * @return string
      */
@@ -104,7 +104,7 @@ class Template
     {
         return $this->method;
     }
-    
+
     /**
      * @return string
      */

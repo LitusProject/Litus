@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Contracts;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -23,7 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * A section represents a part of a contract.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Contracts\Section")
- * @Table(name="br.contract_sections")
+ * @Table(name="br.contracts_sections")
  */
 class Section
 {
@@ -132,9 +132,9 @@ class Section
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-    
+
         $this->name = $name;
-        
+
         return $this;
     }
 
@@ -154,9 +154,9 @@ class Section
     {
         if (null === $auth)
             throw new \InvalidArgumentException('Invalid author');
-            
+
         $this->author = $author;
-        
+
         return $this;
     }
 
@@ -176,9 +176,9 @@ class Section
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid content');
-            
+
         $this->content = $content;
-        
+
         return $this;
     }
 
@@ -204,9 +204,9 @@ class Section
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
         }
-        
+
         $this->vatType = $vatType;
-        
+
         return $this;
     }
 
@@ -244,9 +244,9 @@ class Section
         ) {
             throw new \InvalidArgumentException('Invalid price');
         }
-    
+
         $this->price = $price;
-        
+
         return $this;
     }
 
@@ -274,9 +274,9 @@ class Section
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid description');
-            
+
         $this->invoiceDescription = $description;
-        
+
         return $this;
     }
 }

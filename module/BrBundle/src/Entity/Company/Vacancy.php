@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company;
@@ -21,7 +21,7 @@ use BrBundle\Entity\Company;
  * This is the entity for an internship.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Company\Vacancy")
- * @Table(name="br.company_vacancies")
+ * @Table(name="br.companies_vacancies")
  */
 class Vacancy
 {
@@ -33,21 +33,21 @@ class Vacancy
      * @GeneratedValue
      */
     private $id;
-    
+
     /**
      * @var string The vacancy's name
      *
      * @Column(type="string", length=50)
      */
     private $name;
-    
+
     /**
      * @var string The description of the vacancy
      *
      * @Column(type="text")
      */
     private $description;
-    
+
     /**
      * @var \BrBundle\Entity\Company The company of the vacancy
      *
@@ -55,7 +55,7 @@ class Vacancy
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
-    
+
     /**
      * @param string $name The vacancy's name
      * @param string $description The vacancy's description
@@ -65,10 +65,10 @@ class Vacancy
     {
         $this->setName($name);
         $this->setDescription($description);
-        
+
         $this->company = $company;
     }
-    
+
     /**
      * @return string
      */
@@ -76,7 +76,7 @@ class Vacancy
     {
         return $this->id;
     }
-    
+
     /**
      * @param string $name
      * @return \BrBundle\Entity\Company\Vacancy
@@ -85,12 +85,12 @@ class Vacancy
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-            
+
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -98,7 +98,7 @@ class Vacancy
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $description
      * @return \BrBundle\Entity\Company\Vacancy
@@ -106,10 +106,10 @@ class Vacancy
     public function setDescription($description)
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -117,7 +117,7 @@ class Vacancy
     {
         return $this->description;
     }
-    
+
     /**
      * @return string
      */
@@ -125,7 +125,7 @@ class Vacancy
     {
         return substr($this->description, 0, $length) . (strlen($this->description) > $length ? '...' : '');
     }
-    
+
     /**
      * @return \BrBundle\Entity\Company
      */

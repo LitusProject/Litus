@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -24,7 +24,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * This is the entity for an academic person, e.g. a student or professor.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
- * @Table(name="users.academic_people")
+ * @Table(name="users.people_academic")
  */
 class Academic extends \CommonBundle\Entity\Users\Person
 {
@@ -78,7 +78,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
         $this->setUniversityIdentification($universityIdentification);
-        
+
         $this->universityStatuses = new ArrayCollection();
     }
 
@@ -91,9 +91,9 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         if (($personalEmail === null) || !filter_var($personalEmail, FILTER_VALIDATE_EMAIL))
             throw new \InvalidArgumentException('Invalid personal e-mail');
-            
+
         $this->personalEmail = $personalEmail;
-        
+
         return $this;
     }
 
@@ -114,7 +114,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         if (($primaryEmail === null) || !filter_var($primaryEmail, FILTER_VALIDATE_EMAIL))
             throw new \InvalidArgumentException('Invalid primary e-mail');
-            
+
         $this->primaryEmail = $primaryEmail;
 
         return $this;
@@ -137,7 +137,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         if (($universityIdentification === null) || !is_string($universityIdentification))
             throw new \InvalidArgumentException('Invalid university identification');
-            
+
         $this->universityIdentification = $universityIdentification;
 
         return $this;
@@ -160,9 +160,9 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         if (($photoPath === null) || !is_string($photoPath))
             throw new \InvalidArgumentException('Invalid photo path');
-        
+
         $this->photoPath = $photoPath;
-        
+
         return $this;
     }
 
@@ -173,18 +173,18 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         return $this->photoPath;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Statuses\University $universityStatus
      * @return \CommonBundle\Entity\Users\People\Academic
      */
     public function addUniversityStatus(UniversityStatus $universityStatus)
-    {    
+    {
         $this->universityStatuses->add($universityStatus);
 
         return $this;
     }
-    
+
     /**
      * @param integer $shortYear
      * @throws \RuntimeException
@@ -203,7 +203,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
                 return false;
             }
         }
-        
+
         return true;
     }
 }

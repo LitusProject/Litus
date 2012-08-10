@@ -12,19 +12,19 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Users\People;
 
 use BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Credential,
     Doctrine\Common\Collections\ArrayCollection;
-    
+
 /**
  * This is a person that represents a contact in a company.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Users\People\Corporate")
- * @Table(name="users.corporate_people")
+ * @Table(name="users.people_corporate")
  */
 class Corporate extends \CommonBundle\Entity\Users\Person
 {
@@ -61,9 +61,9 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     {
         if (($name === null) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-            
+
         $this->name = $name;
-        
+
         return $this;
     }
 
@@ -84,9 +84,9 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     {
         if (($vatNumber === null) || !is_string($vatNumber))
             throw new \InvalidArgumentException('Invalid VAT number');
-            
+
         $this->vatNumber = $vatNumber;
-        
+
         return $this;
     }
 
@@ -97,7 +97,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     {
         return $this->vatNumber;
     }
-    
+
     /**
      * Adds a corporate status to the list, if possible.
      *
@@ -110,15 +110,15 @@ class Corporate extends \CommonBundle\Entity\Users\Person
     {
         if (null === $corporateStatus)
             throw new \InvalidArgumentException('Invalid status');
-        
+
         if (!$this->canHaveCorporateStatus())
             throw \RuntimeException('The corporate status cannot be set');
-            
+
         $this->corporateStatuses->add($corporateStatus);
-        
+
         return $this;
     }
-    
+
     /**
      * If this person already has a corporate status for this academic year, a new
      * one cannot be set.
@@ -131,7 +131,7 @@ class Corporate extends \CommonBundle\Entity\Users\Person
             if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear())
                 return false;
         }
-        
+
         return true;
     }
 }
