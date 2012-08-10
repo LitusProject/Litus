@@ -23,7 +23,7 @@ use BrBundle\Entity\Company,
  * This is the entity for an event.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Company\Event")
- * @Table(name="br.company_events")
+ * @Table(name="br.companies_events")
  */
 class Event
 {
