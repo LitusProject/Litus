@@ -291,7 +291,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
         
         if (isset($data['type']) && $data['type'] !== 'common') {
-            if ($data['subject_id'] == '') {
+            if ($data['subject_id'] == '' && $this->getElement('subject')) {
                 $this->getElement('subject')
                     ->setRequired()
                     ->addValidator(new SubjectCodeValidator($this->_entityManager));
