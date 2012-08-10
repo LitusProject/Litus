@@ -35,14 +35,14 @@
 	        <tbody>
 	            {% for event in paginator %}
 	                <tr class="item item-{{ event.getId() }}">
-	                    <td>{{ event.getName() }}</td>
-	                    <td>{{ event.getLocation() }}</td>
-	                    <td>{{ event.getStartDate().format('d/m/Y H:i') }}</td>
-	                    <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
+	                    <td>{{ event.getEvent().getTitle(language) }}</td>
+	                    <td>{{ event.getEvent().getLocation(language) }}</td>
+	                    <td>{{ event.getEvent().getStartDate().format('d/m/Y H:i') }}</td>
+	                    <td>{{ event.getEvent().getEndDate().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 	                        <ul>
 	                        	{% if hasAccess('admin_company_event', 'delete') %}
-	                            	<li><a href="#" class="delete" data-id="{{ event.getId() }}" data-name="{{ event.getName() }}">Delete</a></li>
+	                            	<li><a href="#" class="delete" data-id="{{ event.getId() }}" data-name="{{ event.getEvent().getTitle(language) }}">Delete</a></li>
 	                            {% endif %}
                             	{% if hasAccess('admin_company_event', 'edit') %}
                                 	<li><a href="{{ url('admin_company_event', {"action": "edit", "id": event.getId()}) }}" class="edit">Edit</a></li>

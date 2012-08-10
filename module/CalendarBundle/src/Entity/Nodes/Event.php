@@ -14,15 +14,6 @@ use CommonBundle\Entity\General\Language,
 class Event extends \CommonBundle\Entity\Nodes\Node
 {
     /**
-     * @var int The ID of this event
-     *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    private $id;
-    
-    /**
      * @var array The translations of this event
      *
      * @OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
@@ -44,6 +35,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     private $endDate;
     
     /**
+     * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      */
