@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Sales\Article,
@@ -22,7 +22,7 @@ use CudiBundle\Entity\Sales\Article,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
- * @Table(name="cudi.sales_saleitem", indexes={@index(name="sales_saleitem_time", columns={"timestamp"})})
+ * @Table(name="cudi.sales_sale_items", indexes={@index(name="sales_sale_item_time", columns={"timestamp"})})
  */
 class SaleItem
 {
@@ -34,14 +34,14 @@ class SaleItem
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time the sale item was created
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Session The session of the sale item
      *
@@ -49,7 +49,7 @@ class SaleItem
      * @JoinColumn(name="session", referencedColumnName="id")
      */
     private $session;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the sale item
      *
@@ -57,21 +57,21 @@ class SaleItem
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var integer The number sold of the article
      *
      * @Column(type="integer")
      */
     private $number;
-    
+
     /**
      * @var integer The price of the selling
      *
      * @Column(type="integer")
      */
     private $price;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\QueueItem The queue item belonging to the sale item
      *
@@ -79,7 +79,7 @@ class SaleItem
      * @JoinColumn(name="queue_item", referencedColumnName="id")
      */
     private $queueItem;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article
      * @param integer $number
@@ -103,7 +103,7 @@ class SaleItem
         $this->price = $price * 100;
         $this->timestamp = new DateTime();
     }
-    
+
     /**
      * @return integer
      */
@@ -111,7 +111,7 @@ class SaleItem
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -119,7 +119,7 @@ class SaleItem
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Session
      */
@@ -127,7 +127,7 @@ class SaleItem
     {
         return $this->session;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -135,7 +135,7 @@ class SaleItem
     {
         return $this->article;
     }
-    
+
     /**
      * @param integer $number
      *
@@ -147,7 +147,7 @@ class SaleItem
         $this->number = $number;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -155,7 +155,7 @@ class SaleItem
     {
         return $this->number;
     }
-    
+
     /**
      * @return integer
      */
@@ -163,7 +163,7 @@ class SaleItem
     {
         return $this->price;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\QueueItem
      */
@@ -171,7 +171,7 @@ class SaleItem
     {
         return $this->queueItem;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\person
      */

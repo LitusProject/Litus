@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\StudySubjectMap")
- * @Table(name="syllabus.study_subject_map")
+ * @Table(name="syllabus.studies_subjects_map")
  */
 class StudySubjectMap
 {
@@ -54,7 +54,7 @@ class StudySubjectMap
      * @Column(type="boolean")
      */
     private $mandatory;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
      *
@@ -62,7 +62,7 @@ class StudySubjectMap
      * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
-    
+
     /**
      * @param \SyllabusBundle\Entity\Study $study
      * @param \SyllabusBundle\Entity\Subject $subject
@@ -76,7 +76,7 @@ class StudySubjectMap
         $this->mandatory = $mandatory;
         $this->academicYear = $academicYear;
     }
-    
+
     /**
      * @return integer
      */
@@ -84,7 +84,7 @@ class StudySubjectMap
     {
         return $this->id;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Study
      */
@@ -92,7 +92,7 @@ class StudySubjectMap
     {
         return $this->study;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Subject
      */
@@ -100,7 +100,7 @@ class StudySubjectMap
     {
         return $this->subject;
     }
-    
+
     /**
      * @return boolean
      */
@@ -108,7 +108,7 @@ class StudySubjectMap
     {
         return $this->mandatory;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */

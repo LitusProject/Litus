@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Prof;
 
 use CommonBundle\Entity\Users\Person,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Prof\Action")
- * @Table(name="cudi.prof_action")
+ * @Table(name="cudi.prof_actions")
  */
 class Action
 {
@@ -33,35 +33,35 @@ class Action
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The entity name
      *
      * @Column(type="string")
      */
     private $entity;
-    
+
     /**
      * @var integer The entity id
      *
      * @Column(name="entity_id", type="integer")
      */
     private $entityId;
-    
+
     /**
      * @var integer The previous entity id
      *
      * @Column(name="previous_id", type="integer", nullable=true)
      */
     private $previousId;
-    
+
     /**
      * @var string The action type
      *
      * @Column(type="string")
      */
     private $action;
-    
+
     /**
      * @var \DateTime The time this action was executed
      *
@@ -76,7 +76,7 @@ class Action
      * @JoinColumn(referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person completed this action
      *
@@ -84,26 +84,26 @@ class Action
      * @JoinColumn(name="completed_person", referencedColumnName="id")
      */
     private $completedPerson;
-    
+
     /**
      * @var \DateTime The time this action was confirmed
      *
      * @Column(name="confirm_date", type="datetime", nullable=true)
      */
     private $confirmDate;
-    
+
     /**
      * @var \DateTime The time this action was refused
      *
      * @Column(name="refuse_date", type="datetime", nullable=true)
      */
     private $refuseDate;
-    
-    /** 
+
+    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person executed this action
      * @param string $entity The entity name
@@ -120,7 +120,7 @@ class Action
         $this->action = $action;
         $this->timestamp = new DateTime();
     }
-    
+
     /**
      * @return integer
      */
@@ -128,7 +128,7 @@ class Action
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -136,7 +136,7 @@ class Action
     {
         return $this->entity;
     }
-    
+
     /**
      * @return mixed
      */
@@ -155,7 +155,7 @@ class Action
                 ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                 ->findOneById($this->entityId);
     }
-    
+
     /**
      * @param integer $entityId
      *
@@ -166,7 +166,7 @@ class Action
         $this->entityId = $entityId;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -174,7 +174,7 @@ class Action
     {
         return $this->entityId;
     }
-    
+
     /**
      * @return mixed
      */
@@ -193,7 +193,7 @@ class Action
                 ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                 ->findOneById($this->previousId);
     }
-    
+
     /**
      * @param integer $previousId
      *
@@ -204,7 +204,7 @@ class Action
         $this->previousId = $previousId;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -212,7 +212,7 @@ class Action
     {
         return $this->action;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -220,7 +220,7 @@ class Action
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -228,7 +228,7 @@ class Action
     {
         return $this->person;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -236,7 +236,7 @@ class Action
     {
         return $this->completedPerson;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -244,7 +244,7 @@ class Action
     {
         return $this->completeDate;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -252,7 +252,7 @@ class Action
     {
         return $this->refuseDate;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $completedPerson
      *
@@ -265,7 +265,7 @@ class Action
         $this->refuseDate = null;
         return $this;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $completedPerson
      *
@@ -278,7 +278,7 @@ class Action
         $this->confirmDate = null;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -286,7 +286,7 @@ class Action
     {
         return ($this->confirmDate !== null);
     }
-    
+
     /**
      * @return boolean
      */
@@ -294,7 +294,7 @@ class Action
     {
         return ($this->refuseDate !== null);
     }
-    
+
     /**
      * @return boolean
      */
@@ -302,7 +302,7 @@ class Action
     {
         return !$this->isCompleted() && !$this->isRefused();
     }
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *

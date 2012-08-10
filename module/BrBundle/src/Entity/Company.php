@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
@@ -35,21 +35,21 @@ class Company
      * @GeneratedValue
      */
     private $id;
-    
+
     /**
      * @var string The company's name
      *
      * @Column(type="string", length=50)
      */
     private $name;
-    
+
     /**
      * @var string The company's VAT number
      *
      * @Column(type="string", name="vat_number")
      */
     private $vatNumber;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Address The address of the company
      *
@@ -57,53 +57,54 @@ class Company
      * @JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
-    
+
     /**
      * @var string The history of the company
      *
      * @Column(type="text")
      */
     private $history;
-    
+
     /**
      * @var string The description of the company
      *
      * @Column(type="text")
      */
     private $description;
-    
+
     /**
      * @var string The sector of the company
      *
      * @Column(type="string")
      */
     private $sector;
-    
+
     /**
      * @var string The logo of the company
      *
      * @Column(type="string", nullable=true)
      */
     private $logo;
-    
+
     /**
      * @var bool Whether or not this is an active company
      *
      * @Column(type="boolean")
      */
     private $active;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
      * @ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
-     * @JoinTable(name="br.companies_contacts",
+     * @JoinTable(
+     *      name="br.companies_contacts_map",
      *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
      * )
      */
     private $contacts;
-    
+
     /**
      * @var array The possible sectors of a company
      */
@@ -111,7 +112,7 @@ class Company
         'research' => 'Research',
         'finance' => 'Finance',
     );
-    
+
     /**
      * @param string $name The company's name
      * @param string $vatNumber The company's VAT number
@@ -131,7 +132,7 @@ class Company
 
         $this->active = true;
     }
-    
+
     /**
      * @return boolean
      */
@@ -139,7 +140,7 @@ class Company
     {
         return array_key_exists($sector, self::$POSSIBLE_SECTORS);
     }
-    
+
     /**
      * @return string
      */
@@ -147,7 +148,7 @@ class Company
     {
         return $this->id;
     }
-    
+
     /**
      * @param string $name
      * @return \BrBundle\Entity\Company
@@ -156,12 +157,12 @@ class Company
     {
         if ((null === $name) || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
-            
+
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -169,7 +170,7 @@ class Company
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $vatNumber
      * @return \BrBundle\Entity\Company
@@ -178,12 +179,12 @@ class Company
     {
         if ((null === $vatNumber) || !is_string($vatNumber))
             throw new \InvalidArgumentException('Invalid VAT number');
-            
+
         $this->vatNumber = $vatNumber;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -191,7 +192,7 @@ class Company
     {
         return $this->vatNumber;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Address $address
      * @return \BrBundle\Entity\Company
@@ -199,10 +200,10 @@ class Company
     public function setAddress(Address $address)
     {
         $this->address = $address;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Address
      */
@@ -210,7 +211,7 @@ class Company
     {
         return $this->address;
     }
-    
+
     /**
      * @param string $history
      * @return \BrBundle\Entity\Company
@@ -218,10 +219,10 @@ class Company
     public function setHistory($history)
     {
         $this->history = $history;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -229,7 +230,7 @@ class Company
     {
         return $this->history;
     }
-    
+
     /**
      * @param string $description
      * @return \BrBundle\Entity\Company
@@ -237,10 +238,10 @@ class Company
     public function setDescription($description)
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -248,7 +249,7 @@ class Company
     {
         return $this->description;
     }
-    
+
     /**
      * @param string $sector
      * @return \BrBundle\Entity\Company
@@ -258,10 +259,10 @@ class Company
         if (!self::isValidSector($sector))
             throw new \InvalidArgumentException('The sector is not valid.');
         $this->sector = $sector;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -269,7 +270,7 @@ class Company
     {
         return self::$POSSIBLE_SECTORS[$this->sector];
     }
-    
+
     /**
      * @return string
      */
@@ -277,7 +278,7 @@ class Company
     {
         return $this->sector;
     }
-    
+
     /**
      * @param string $logo
      * @return \BrBundle\Entity\Company
@@ -285,10 +286,10 @@ class Company
     public function setLogo($logo)
     {
         $this->logo = trim($logo, '/');
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -296,7 +297,7 @@ class Company
     {
         return $this->logo;
     }
-    
+
     /**
      * @return bool
      */
@@ -304,7 +305,7 @@ class Company
     {
         return $this->active;
     }
-    
+
     /**
      * Deactivates the given company.
      *
@@ -313,10 +314,10 @@ class Company
     public function deactivate()
     {
         $this->active = false;
-        
-        return $this;        
+
+        return $this;
     }
-    
+
     /**
      * @return array
      */
@@ -324,19 +325,19 @@ class Company
     {
         return $this->contacts->toArray();
     }
-    
+
     /**
      * @param array $contact The contacts that should be added
      * @return \BrBundle\Entity\Company
      * @throws \InvalidArugmentException
      */
     public function addContact(Corporate $contact)
-    {    
+    {
         if ((null === $contact) || $this->contacts->contains($contact))
             throw new \InvalidArgumentException('Invalid contact');
-            
-        $this->contacts->add($contact);    
-            
+
+        $this->contacts->add($contact);
+
         return $this;
     }
 }

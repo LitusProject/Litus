@@ -12,19 +12,19 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General;
 
 /**
  * This class represents a language entry that is saved in the database
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Language")
- * @Table(name="general.language")
+ * @Table(name="general.languages")
  */
-class Language 
+class Language
 {
     /**
-     * @var integer The ID of the language 
+     * @var integer The ID of the language
      *
      * @Id
      * @GeneratedValue
@@ -45,7 +45,7 @@ class Language
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @param string $abbrev The language abbrev
      * @param string $name The language name
@@ -55,7 +55,7 @@ class Language
         $this->abbrev = $abbrev;
         $this->name = $name;
     }
-    
+
     /**
      * @return integer
      */
@@ -63,7 +63,7 @@ class Language
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -71,7 +71,7 @@ class Language
     {
         return $this->abbrev;
     }
-    
+
     /**
      * @return string
      */

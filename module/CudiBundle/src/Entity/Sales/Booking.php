@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
@@ -23,7 +23,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
- * @Table(name="cudi.sales_booking", indexes={@index(name="sales_booking_time", columns={"bookDate"})})
+ * @Table(name="cudi.sales_bookings", indexes={@index(name="sales_booking_time", columns={"bookDate"})})
  */
 class Booking
 {
@@ -35,7 +35,7 @@ class Booking
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the booking
      *
@@ -43,7 +43,7 @@ class Booking
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The booked article
      *
@@ -51,63 +51,63 @@ class Booking
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var integer The number of articles booked
      *
      * @Column(type="smallint")
      */
     private $number;
-    
+
     /**
      * @var string The status of the booking
      *
      * @Column(type="string", length=50)
      */
     private $status;
-    
+
     /**
      * @var \DateTime The time the booking will expire
      *
      * @Column(name="expirationdate", type="datetime", nullable=true)
      */
     private $expirationDate;
-    
+
     /**
      * @var \DateTime The time the booking was assigned
      *
      * @Column(name="assignmentdate", type="datetime", nullable=true)
      */
     private $assignmentDate;
-    
+
     /**
      * @var \DateTime The time the booking was made
      *
      * @Column(name="bookdate", type="datetime")
      */
     private $bookDate;
-    
+
     /**
      * @var \DateTime The time the booking was sold
      *
      * @Column(name="saledate", type="datetime", nullable=true)
      */
     private $saleDate;
-    
+
     /**
      * @var \DateTime The time the booking was canceled
      *
      * @Column(name="cancelationdate", type="datetime", nullable=true)
      */
     private $cancelationDate;
-    
+
     /**
      * @var array The possible states of a booking
      */
     private static $POSSIBLE_STATUSES = array(
         'booked', 'assigned', 'sold', 'expired', 'canceled'
     );
-    
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -121,23 +121,23 @@ class Booking
     {
         if (!$article->isBookable())
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
-        
+
         $this->person = $person;
         $this->setArticle($article)
             ->setNumber($number)
             ->setStatus($status);
         $this->bookDate = new DateTime();
-        
+
         if ($article->canExpire()) {
             $expireTime = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.reservation_expire_time');
-    
+
             $now = new DateTime();
             $this->expirationDate = $now->add(new DateInterval($expireTime));
         }
     }
-    
+
     /**
      * @return boolean
      */
@@ -145,7 +145,7 @@ class Booking
     {
         return in_array($status, self::$POSSIBLE_STATUSES);
     }
-    
+
     /**
      * @return integer
      */
@@ -153,7 +153,7 @@ class Booking
     {
         return $this->id;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -161,7 +161,7 @@ class Booking
     {
         return $this->person;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -169,10 +169,10 @@ class Booking
     {
         return $this->article;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\Booking
      */
     public function setArticle($article)
@@ -180,7 +180,7 @@ class Booking
         $this->article = $article;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -188,10 +188,10 @@ class Booking
     {
         return $this->number;
     }
-    
+
     /**
      * @param integer $number
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\Booking
      */
     public function setNumber($number)
@@ -199,7 +199,7 @@ class Booking
         $this->number = $number;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -207,7 +207,7 @@ class Booking
     {
         return $this->bookDate;
     }
-    
+
     /**
      * @return string
      */
@@ -215,10 +215,10 @@ class Booking
     {
         return $this->status;
     }
-    
+
     /**
      * @param \DateTime $expirationDate
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\Booking
      */
     public function setExpirationDate(DateTime $expirationDate)
@@ -226,7 +226,7 @@ class Booking
         $this->expirationDate = $expirationDate;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -234,7 +234,7 @@ class Booking
     {
         return $this->expirationDate;
     }
-    
+
     /**
      * @param string $status
      *
@@ -244,7 +244,7 @@ class Booking
     {
         if (!self::isValidBookingStatus($status))
             throw new \InvalidArgumentException('The BookingStatus is not valid.');
-        
+
         if ($status == 'booked') {
             $this->bookDate = new DateTime();
             $this->assignmentDate = null;
@@ -264,11 +264,11 @@ class Booking
             $this->saleDate = null;
             $this->cancelationDate = new DateTime();
         }
-        
+
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\Deliveries;
 
 use CommonBundle\Entity\Users\Person,
@@ -21,7 +21,10 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Retour")
- * @Table(name="cudi.stock_deliveries_retour", indexes={@index(name="stock_delviveries_retour_time", columns={"timestamp"})})
+ * @Table(
+ *    name="cudi.stock_deliveries_retours",
+ *    indexes={@index(name="stock_deliveries_retours_time", columns={"timestamp"})}
+ * )
  */
 class Retour
 {
@@ -33,21 +36,21 @@ class Retour
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time the retour item was created
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var integer The number of the retour
      *
      * @Column(type="integer")
      */
     private $number;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the retour
      *
@@ -55,7 +58,7 @@ class Retour
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the retour
      *
@@ -63,14 +66,14 @@ class Retour
      * @JoinColumn(name="person_id", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var string The comment of the retour
      *
      * @Column(type="text", nullable=true)
      */
     private $comment;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article The article of the retour
      * @param integer $number The number of the retour
@@ -86,7 +89,7 @@ class Retour
         $this->timestamp = new DateTime();
         $article->addStockValue(-$number);
     }
-    
+
     /**
      * @return integer
      */
@@ -94,7 +97,7 @@ class Retour
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -102,7 +105,7 @@ class Retour
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -110,7 +113,7 @@ class Retour
     {
         return $this->article;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\person
      */
@@ -118,7 +121,7 @@ class Retour
     {
         return $this->person;
     }
-    
+
     /**
      * @return integer
      */
@@ -126,7 +129,7 @@ class Retour
     {
         return $this->number;
     }
-    
+
     /**
      * @return string
      */
@@ -134,7 +137,7 @@ class Retour
     {
         return $this->comment;
     }
-    
+
     /**
      * @return integer
      */

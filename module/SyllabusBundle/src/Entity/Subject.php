@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear;
@@ -20,8 +20,8 @@ use CommonBundle\Entity\General\AcademicYear;
 /**
  * @Entity(repositoryClass="SyllabusBundle\Repository\Subject")
  * @Table(
- *    name="syllabus.subject",
- *    indexes={@index(name="typahead_idx", columns={"name", "code"})}
+ *    name="syllabus.subjects",
+ *    indexes={@index(name="subjects_name", columns={"name", "code"})}
  * )
  */
 class Subject
@@ -55,21 +55,21 @@ class Subject
      * @Column(type="smallint")
      */
     private $semester;
-    
+
     /**
      * @var integer The credits of the subject
      *
      * @Column(type="smallint")
      */
     private $credits;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The enrollments of the subject
      *
      * @OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
      */
     private $enrollments;
-    
+
     /**
      * @param string $code
      * @param string $name
@@ -83,7 +83,7 @@ class Subject
         $this->semester = $semester;
         $this->credits = $credits;
     }
-    
+
     /**
      * @return integer
      */
@@ -91,7 +91,7 @@ class Subject
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -99,7 +99,7 @@ class Subject
     {
         return $this->code;
     }
-    
+
     /**
      * @return string
      */
@@ -107,7 +107,7 @@ class Subject
     {
         return $this->name;
     }
-    
+
     /**
      * @return integer
      */
@@ -115,7 +115,7 @@ class Subject
     {
         return $this->semester;
     }
-    
+
     /**
      * @return integer
      */
@@ -123,7 +123,7 @@ class Subject
     {
         return $this->credits;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      *
@@ -137,7 +137,7 @@ class Subject
         }
         return 0;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      *

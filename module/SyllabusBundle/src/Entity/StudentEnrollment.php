@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -40,7 +40,7 @@ class StudentEnrollment
      * @JoinColumn(referencedColumnName="id")
      */
     private $subject;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
      *
@@ -48,14 +48,14 @@ class StudentEnrollment
      * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
-    
+
     /**
      * @var integer The number of students of the enrollment
      *
      * @Column(type="integer")
      */
     private $number;
-    
+
     /**
      * @param \SyllabusBundle\Entity\Subject $subject
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
@@ -67,7 +67,7 @@ class StudentEnrollment
         $this->academicYear = $academicYear;
         $this->number = $number;
     }
-    
+
     /**
      * @return integer
      */
@@ -75,7 +75,7 @@ class StudentEnrollment
     {
         return $this->id;
     }
-    
+
     /**
      * @return \SyllabusBundle\Entity\Subject
      */
@@ -83,7 +83,7 @@ class StudentEnrollment
     {
         return $this->subject;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
@@ -91,7 +91,7 @@ class StudentEnrollment
     {
         return $this->academicYear;
     }
-    
+
     /**
      * @param integer $number
      *
@@ -102,7 +102,7 @@ class StudentEnrollment
         $this->number = $number;
         return $this;
     }
-    
+
     /**
      * @return integer
      */

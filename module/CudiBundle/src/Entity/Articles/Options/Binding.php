@@ -12,12 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Articles\Options;
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Articles\Options\Binding")
- * @Table(name="cudi.articles_options_binding")
+ * @Table(name="cudi.articles_options_bindings")
  */
 class Binding
 {
@@ -29,21 +29,21 @@ class Binding
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The name of the binding
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @var string The code of the binding
      *
      * @Column(type="string")
      */
     private $code;
-    
+
     /**
      * @param string $name
      */
@@ -51,7 +51,7 @@ class Binding
         $this->code = $code;
         $this->name = $name;
     }
-    
+
     /**
      * @return integer
      */
@@ -59,7 +59,7 @@ class Binding
     {
         return $this->id;
     }
-    
+
     /**
      * @return string
      */
@@ -67,7 +67,7 @@ class Binding
     {
         return $this->code;
     }
-    
+
     /**
      * @return string
      */

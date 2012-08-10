@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
-  
+
 namespace PageBundle\Entity;
 
 /**
  * This entity stores the node item.
  *
  * @Entity(repositoryClass="PageBundle\Repository\Category")
- * @Table(name="nodes.page_categories")
+ * @Table(name="nodes.pages_categories")
  */
 class Category
 {
@@ -31,14 +31,14 @@ class Category
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var string The category's name
      *
      * @Column(type="string")
      */
     private $name;
-    
+
     /**
      * @param string $name The category's name
      */
@@ -46,7 +46,7 @@ class Category
     {
         $this->setName($name);
     }
-    
+
     /**
      * @param string $name
      * @return \PageBundle\Entity\Category
@@ -54,10 +54,10 @@ class Category
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
-    
+
     /**
      * @return string
      */

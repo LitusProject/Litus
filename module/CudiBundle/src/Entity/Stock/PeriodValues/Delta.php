@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Stock\PeriodValues;
 
 use CommonBundle\Entity\Users\Person,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Delta")
- * @Table(name="cudi.stock_period_values_delta")
+ * @Table(name="cudi.stock_periods_values_deltas")
  */
 class Delta
 {
@@ -34,14 +34,14 @@ class Delta
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time of the delta
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who added the delta
      *
@@ -49,14 +49,14 @@ class Delta
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var integer The value of the delta
      *
      * @Column(type="integer")
      */
     private $value;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the delta
      *
@@ -64,7 +64,7 @@ class Delta
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \CudiBundle\Entity\Stock\Period The period of the delta
      *
@@ -72,14 +72,14 @@ class Delta
      * @JoinColumn(name="period", referencedColumnName="id")
      */
     private $period;
-    
+
     /**
      * @var string The comment of the delta
      *
      * @Column(type="text")
      */
     private $comment;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person The person who added the delta
      * @param \CudiBundle\Entity\Sales\Article $stockItem The article of the delta
@@ -96,7 +96,7 @@ class Delta
         $this->value = $value;
         $this->comment = $comment;
     }
-    
+
     /**
      * Get the id of the delta
      *
@@ -106,7 +106,7 @@ class Delta
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -114,7 +114,7 @@ class Delta
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -122,7 +122,7 @@ class Delta
     {
         return $this->person;
     }
-    
+
     /**
      * @return integer
      */
@@ -130,7 +130,7 @@ class Delta
     {
         return $this->value;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */
@@ -138,7 +138,7 @@ class Delta
     {
         return $this->article;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Stock\Period
      */
@@ -146,7 +146,7 @@ class Delta
     {
         return $this->period;
     }
-    
+
     /**
      * @return string
      */
@@ -154,7 +154,7 @@ class Delta
     {
         return $this->comment;
     }
-    
+
     /**
      * @return string
      */

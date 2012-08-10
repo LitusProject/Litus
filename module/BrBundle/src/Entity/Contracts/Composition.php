@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Contracts;
 
 use BrBundle\Entity\Contract,
@@ -22,14 +22,15 @@ use BrBundle\Entity\Contract,
  * This entity represents the composition of a contract.
  *
  * @Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
- * @Table(name="br.contract_compositions",
+ * @Table(
+ *      name="br.contracts_compositions",
  *      uniqueConstraints={
  *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
  *      }
  * )
  */
 class Composition
-{    
+{
     /**
      * @var \BrBundle\Entity\Contract The contract this object is a part of
      *
@@ -86,7 +87,7 @@ class Composition
     {
         if ($contract === null)
             throw new \InvalidArgumentException('Contract cannot be null');
-            
+
         $this->contract = $contract;
 
         return $this;
@@ -109,7 +110,7 @@ class Composition
     {
         if ($section === null)
             throw new \InvalidArgumentException('Contract cannot be null.');
-            
+
         $this->section = $section;
 
         return $this;
@@ -134,7 +135,7 @@ class Composition
     {
         if ($position < 0)
             throw new \InvalidArgumentException("Position must be a positive number");
-            
+
         $this->position = round($position);
 
         return $this;

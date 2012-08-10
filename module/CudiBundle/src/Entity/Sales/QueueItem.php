@@ -11,8 +11,8 @@
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
- */ 
- 
+ */
+
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\Users\Person,
@@ -23,7 +23,7 @@ use CommonBundle\Entity\Users\Person,
 
 /**
  * @Entity(repositoryClass="CudiBundle\Repository\Sales\QueueItem")
- * @Table(name="cudi.sales_queue_item")
+ * @Table(name="cudi.sales_queue_items")
  */
 class QueueItem
 {
@@ -35,7 +35,7 @@ class QueueItem
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the queue item
      *
@@ -43,7 +43,7 @@ class QueueItem
      * @JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Session The session of the queue item
      *
@@ -51,7 +51,7 @@ class QueueItem
      * @JoinColumn(name="session", referencedColumnName="id")
      */
     private $session;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\PayDesk The pay desk of the queue item
      *
@@ -59,49 +59,49 @@ class QueueItem
      * @JoinColumn(name="pay_desk", referencedColumnName="id")
      */
     private $payDesk;
-    
+
     /**
      * @var integer The number of the queue item
      *
      * @Column(type="smallint", name="queue_number")
      */
     private $queueNumber;
-    
+
     /**
      * @var string The status of the queue item
      *
      * @Column(type="string", length=50)
      */
     private $status;
-    
+
     /**
      * @var \DateTime The time the queue item was created
      *
      * @Column(type="datetime", name="sign_in_time")
      */
     private $signInTime;
-    
+
     /**
      * @var \DateTime The time there were articles sold to the queue item
      *
      * @Column(type="datetime", name="sold_time", nullable=true)
      */
     private $soldTime;
-    
+
     /**
      * @var string The comment of the queue item
      *
      * @Column(type="text", nullable=true)
      */
     private $comment;
-    
+
     /**
      * @var string The pay method of the queue item
      *
      * @Column(type="text", nullable=true)
      */
     private $payMethod;
-    
+
     /**
      * @var array The possible states of a queue item
      */
@@ -114,7 +114,7 @@ class QueueItem
         'canceled' => 'Canceled',
         'sold' => 'Sold',
     );
-    
+
     /**
      * @var array The possible pay methods of a queue item
      */
@@ -138,7 +138,7 @@ class QueueItem
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->getNextQueueNumber($session);
     }
-    
+
     /**
      * @return boolean
      */
@@ -146,7 +146,7 @@ class QueueItem
     {
         return array_key_exists($status, self::$POSSIBLE_STATUSES);
     }
-    
+
     /**
      * @return boolean
      */
@@ -154,7 +154,7 @@ class QueueItem
     {
         return array_key_exists($payMethod, self::$POSSIBLE_PAY_METHODS);
     }
-    
+
     /**
      * @return integer
      */
@@ -170,7 +170,7 @@ class QueueItem
     {
         return $this->person;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Session
      */
@@ -178,7 +178,7 @@ class QueueItem
     {
         return $this->session;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\PayDesk $payDesk
      *
@@ -189,7 +189,7 @@ class QueueItem
         $this->payDesk = $payDesk;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\PayDesk
      */
@@ -197,15 +197,15 @@ class QueueItem
     {
         return $this->payDesk;
     }
-    
+
     /**
      * @return integer
      */
-    public function getQueueNumber() 
+    public function getQueueNumber()
         {
         return $this->queueNumber;
     }
-    
+
     /**
      * @return string
      */
@@ -213,7 +213,7 @@ class QueueItem
     {
         return $this->status;
     }
-    
+
     /**
      * @return string
      */
@@ -221,7 +221,7 @@ class QueueItem
     {
         return self::$POSSIBLE_STATUSES[$this->status];
     }
-    
+
     /**
      * @param string $status
      *
@@ -231,12 +231,12 @@ class QueueItem
     {
         if (!self::isValidQueueStatus($status))
             throw new \InvalidArgumentException('The queue status is not valid.');
-        
+
         $this->status = $status;
-        
+
         if ($status != 'sold' && $status != 'selling')
             $this->payDesk = null;
-        
+
         switch ($status) {
             case 'signed_in':
                 $this->signInTime = new DateTime();
@@ -245,10 +245,10 @@ class QueueItem
                 $this->soldTime = new DateTime();
                 break;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -256,7 +256,7 @@ class QueueItem
     {
         return $this->signInTime;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -264,10 +264,10 @@ class QueueItem
     {
         return $this->soldTime;
     }
-    
+
     /**
      * @param string $comment
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\QueueItem
      */
     public function setComment($comment)
@@ -275,7 +275,7 @@ class QueueItem
         $this->comment = $comment;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -283,21 +283,21 @@ class QueueItem
     {
         return $this->comment;
     }
-    
+
     /**
      * @param string $payMethod
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\QueueItem
      */
     public function setPayMethod($payMethod)
     {
         if (!self::isValidPayMethod($payMethod) && $payMethod !== null)
             throw new \InvalidArgumentException('The pay method is not valid.');
-            
+
         $this->payMethod = $payMethod;
         return $this;
     }
-    
+
     /**
      * @return string
      */

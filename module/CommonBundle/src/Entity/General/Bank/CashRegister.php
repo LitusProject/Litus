@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General\Bank;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Bank\BankDevice,
  * A class that is used to store the contents of a counted register
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\CashRegister")
- * @Table(name="general.bank_cash_register")
+ * @Table(name="general.bank_cash_registers")
  */
 class CashRegister
 {
@@ -43,7 +43,7 @@ class CashRegister
      * )
      */
     private $moneyUnitAmounts;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each bank device
      *
@@ -52,7 +52,7 @@ class CashRegister
      * )
      */
     private $bankDeviceAmounts;
-    
+
     /**
      * @return integer
      */
@@ -88,10 +88,10 @@ class CashRegister
 
         foreach($this->bankDeviceAmounts as $device)
             $amount += $device->getAmount();
-        
+
         foreach($this->moneyUnitAmounts as $number)
             $amount += $number->getAmount() * $number->getUnit()->getUnit();
-        
+
         return $amount;
     }
 
@@ -108,7 +108,7 @@ class CashRegister
                 return $amount;
         }
     }
-    
+
     /**
      * Get amount object for a bank device.
      *

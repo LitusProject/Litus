@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\AcademicYear,
  * @Entity(repositoryClass="CommonBundle\Repository\Users\Person")
  * @Table(
  *      name="users.people",
- *      uniqueConstraints={@UniqueConstraint(name="person_unique_username", columns={"username"})}
+ *      uniqueConstraints={@UniqueConstraint(name="username_unique", columns={"username"})}
  * )
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="inheritance_type", type="string")
@@ -72,7 +72,8 @@ abstract class Person
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @JoinTable(name="users.people_roles",
+     * @JoinTable(
+     *      name="users.people_roles_map",
      *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
      * )
@@ -128,18 +129,18 @@ abstract class Person
      * @Column(name="can_login", type="boolean")
      */
     private $canLogin;
-    
+
     /**
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
      */
     private $organisationStatuses;
-    
+
     /**
      * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
      * @OrderBy({"time" = "ASC"})
      */
     private $barcodes;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Code A unique code to activate this account
      *
@@ -147,14 +148,14 @@ abstract class Person
      * @JoinColumn(name="code", referencedColumnName="id")
      */
     private $code;
-    
+
     /**
      * @var integer The number of failed logins.
      *
      * @Column(name="failed_logins", type="smallint")
      */
     private $failedLogins = 0;
-    
+
     /**
      * @var \CommonBundle\Entity\General\Language The last used language of this person
      *
@@ -182,8 +183,8 @@ abstract class Person
         $this->setSex($sex);
 
         $this->canLogin = true;
-        
-        $this->roles = new ArrayCollection($roles);        
+
+        $this->roles = new ArrayCollection($roles);
            $this->organisationStatuses = new ArrayCollection();
     }
 
@@ -204,7 +205,7 @@ abstract class Person
     {
         if (($username === null) || !is_string($username))
             throw new \InvalidArgumentException('Invalid username');
-            
+
         $this->username = $username;
 
         return $this;
@@ -227,7 +228,7 @@ abstract class Person
     {
         if ($credential === null)
             throw new \InvalidArgumentException('Credential cannot be null');
-            
+
         $this->credential = $credential;
 
         return $this;
@@ -294,7 +295,7 @@ abstract class Person
 
         return $this;
     }
-    
+
     /**
      * Removes the given role.
      *
@@ -304,7 +305,7 @@ abstract class Person
     public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
-        
+
         return $this;
     }
 
@@ -317,7 +318,7 @@ abstract class Person
     {
         if (($firstName === null) || !is_string($firstName))
             throw new \InvalidArgumentException('Invalid first name');
-            
+
         $this->firstName = $firstName;
 
         return $this;
@@ -340,9 +341,9 @@ abstract class Person
     {
         if (($lastName === null) || !is_string($lastName))
             throw new \InvalidArgumentException('Invalid last name');
-            
+
         $this->lastName = $lastName;
-        
+
         return $this;
     }
 
@@ -371,7 +372,7 @@ abstract class Person
     {
         if ($email !== null && !filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new \InvalidArgumentException('Invalid e-mail');
-            
+
         $this->email = $email;
 
         return $this;
@@ -412,13 +413,13 @@ abstract class Person
     {
         if ('' == $phoneNumber)
             return $this;
-        
+
         if (!preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)) {
             throw new \InvalidArgumentException('Invalid phone number' . $phoneNumber);
         }
-            
+
         $this->phoneNumber = $phoneNumber;
-        
+
         return $this;
     }
 
@@ -439,7 +440,7 @@ abstract class Person
     {
         if(($sex !== 'm') && ($sex !== 'f') && ($sex !== null))
             throw new \InvalidArgumentException('Invalid sex');
-            
+
         $this->sex = $sex;
 
         return $this;
@@ -469,7 +470,7 @@ abstract class Person
         $this->canLogin = false;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -481,7 +482,7 @@ abstract class Person
         }
         return false;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Barcode
      */
@@ -489,7 +490,7 @@ abstract class Person
     {
         return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Code
      */
@@ -497,7 +498,7 @@ abstract class Person
     {
         return $this->code;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Code|null $code
      *
@@ -508,7 +509,7 @@ abstract class Person
         $this->code = $code;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -516,7 +517,7 @@ abstract class Person
     {
         return $this->failedLogins;
     }
-    
+
     /**
      * @param integer $failedLogins
      *
@@ -527,7 +528,7 @@ abstract class Person
         $this->failedLogins = $failedLogins;
         return $this;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -538,7 +539,7 @@ abstract class Person
         $this->language = $language;
         return $this;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Language
      */
@@ -546,7 +547,7 @@ abstract class Person
     {
         return $this->language;
     }
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param \Zend\Mail\Transport $mailTransport
@@ -565,37 +566,37 @@ abstract class Person
                     ->getRepository('CommonBundle\Entity\Users\Code')
                     ->findOneByCode($code);
             } while(isset($found));
-            
+
             $code = new Code($code);
             $entityManager->persist($code);
             $this->setCode($code);
-            
+
             $message = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('account_activated_mail');
-                
+
             $subject = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('account_activated_subject');
-                
+
             $mailAddress = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_address');
-                
+
             $mailName = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_name');
-            
+
             $mail = new Message();
             $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
                 ->setFrom($mailAddress, $mailName)
                 ->addTo($this->getEmail(), $this->getFullName())
                 ->setSubject($subject);
-    
+
             if ('production' == getenv('APPLICATION_ENV'))
                 $mailTransport->send($mail);
         }
-        
+
         return $this;
     }
 }

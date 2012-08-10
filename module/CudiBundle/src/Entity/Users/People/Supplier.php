@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Users\People;
 
 use CommonBundle\Entity\Users\Credential,
@@ -22,7 +22,7 @@ use CommonBundle\Entity\Users\Credential,
  * This is the entity for an supplier person.
  *
  * @Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
- * @Table(name="users.supplier_people")
+ * @Table(name="users.people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\Users\Person
 {
@@ -47,10 +47,10 @@ class Supplier extends \CommonBundle\Entity\Users\Person
     public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
     {
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
-        
+
         $this->supplier = $supplier;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Supplier
      */
@@ -58,7 +58,7 @@ class Supplier extends \CommonBundle\Entity\Users\Person
     {
         return $this->supplier;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Supplier $supplier
      *

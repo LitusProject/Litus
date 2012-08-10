@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General\Bank;
 
 /**
  * This class represnts a money unit, e.g. a €1 coin.
  *
  * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit")
- * @Table(name="general.bank_money_unit")
+ * @Table(name="general.bank_money_units")
  */
 class MoneyUnit
 {
@@ -31,14 +31,14 @@ class MoneyUnit
      * @Column(type="integer")
      */
     private $id;
-    
+
     /**
      * @var int The unit's size
      *
      * @Column(type="integer")
      */
     private $unit;
-    
+
     /**
      * @param float $unit The unit's size, multiplied by a 100 before it is stored
      */
@@ -46,7 +46,7 @@ class MoneyUnit
     {
         $this->unit = $unit * 100;
     }
-    
+
     /**
      * @return int
      */
@@ -54,7 +54,7 @@ class MoneyUnit
     {
         return $this->id;
     }
-    
+
     /**
      * @return float
      */
