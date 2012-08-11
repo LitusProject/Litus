@@ -17,26 +17,6 @@ $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
     'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Zend\Cache\Storage\Adapter\Apc' => array(
-                    'instantiator' => array(
-                        'Zend\Cache\StorageFactory',
-                        'factory'
-                    ),
-                ),
-                'Zend\Cache\StorageFactory' => array(
-                    'methods' => array(
-                        'factory' => array(
-                            'config' => array(
-                                'required' => true,
-                                'type' => false,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
         'instance' => array(
             'alias' => array(
                 'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
@@ -57,7 +37,6 @@ return array(
 
                 'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
-                'cache'                            => 'Zend\Cache\Storage\Adapter\Apc',
                 'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),
             'assetic_configuration' => array(
@@ -323,19 +302,6 @@ return array(
                 'parameters' => array(
                     'entityPaths' => array(
                         'commonbundle' => __DIR__ . '/../../Entity',
-                    ),
-                ),
-            ),
-
-            'cache' => array(
-                'parameters' => array(
-                    'config' => array(
-                        'adapter' => array(
-                            'name' => 'apc',
-                            'options' => array(
-                                'ttl' => 0,
-                            ),
-                        ),
                     ),
                 ),
             ),

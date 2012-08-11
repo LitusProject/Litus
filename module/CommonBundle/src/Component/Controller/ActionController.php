@@ -265,15 +265,21 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _getAcl()
     {
-        if (!$this->getCache()->hasItem('acl')) {
-            $acl = new Acl(
-                $this->getEntityManager()
-            );
+        if (null !== $this->getCache()) {
+            if(!$this->getCache()->hasItem('acl')) {
+                $acl = new Acl(
+                    $this->getEntityManager()
+                );
 
-            $this->getCache()->setItem($acl, 'acl');
+                $this->getCache()->setItem($acl, 'acl');
+            }
+
+            return $this->getCache()->getItem('acl');
         }
 
-        return $this->getCache()->getItem('acl');
+        return new Acl(
+            $this->getEntityManager()
+        );
     }
 
     /**
@@ -312,7 +318,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getCache()
     {
-        return $this->getLocator()->get('cache');
+        if ($this->getLocator()->definitions()->hasClass('cache'))
+            return $this->getLocator()->get('cache');
+
+        return null;
     }
 
     /**
