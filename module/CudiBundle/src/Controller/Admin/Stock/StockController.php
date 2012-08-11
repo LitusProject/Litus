@@ -19,8 +19,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
     CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
     CudiBundle\Form\Admin\Stock\Update as StockForm,
-    CudiBundle\Entity\Stock\Deliveries\Delivery,
-    CudiBundle\Entity\Stock\PeriodValues\Delta,
+    CudiBundle\Entity\Stock\Delivery,
+    CudiBundle\Entity\Stock\Periods\Values\Delta,
     Zend\View\Model\ViewModel;
 
 /**
@@ -291,7 +291,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
             
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\PeriodValues\Delta',
+            'CudiBundle\Entity\Stock\Periods\Values\Delta',
             $this->getParam('page'),
             array(
                 'article' => $article,

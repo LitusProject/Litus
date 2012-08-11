@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Stock\PeriodValues;
+namespace CudiBundle\Repository\Stock\Periods\Values;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -16,7 +16,7 @@ class Delta extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('CudiBundle\Entity\Stock\PeriodValues\Delta', 'v')
+            ->from('CudiBundle\Entity\Stock\Periods\Values\Delta', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.article', ':article'),

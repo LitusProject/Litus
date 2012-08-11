@@ -13,13 +13,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\PeriodValues;
+namespace CudiBundle\Entity\Stock\Periods\Values;
 
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Start")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Start")
  * @Table(name="cudi.stock_periods_values_starts")
  */
 class Start

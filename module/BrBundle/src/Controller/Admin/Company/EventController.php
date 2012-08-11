@@ -16,8 +16,10 @@
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Event,
-    BrBundle\Form\Admin\Company\Event\Add as AddForm,
-    BrBundle\Form\Admin\Company\Event\Edit as EditForm,
+    CalendarBundle\Form\Admin\Event\Add as AddForm,
+    CalendarBundle\Form\Admin\Event\Edit as EditForm,
+    CalendarBundle\Entity\Nodes\Event as CommonEvent,
+    CalendarBundle\Entity\Nodes\Translation,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
@@ -55,20 +57,37 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($company = $this->_getCompany()))
             return new ViewModel();
             
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
             
-            if ($form->isValid($formData)) {                
+            if ($form->isValid($formData)) {  
+                $commonEvent = new CommonEvent(
+                    $this->getAuthentication()->getPersonObject(),
+                    DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']),
+                    DateTime::createFromFormat('d/m/Y H:i',$formData['end_date'])
+                );
+                              
                 $event = new Event(
-                    $formData['event_name'],
-                    $formData['location'],
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $formData['description'],
+                    $commonEvent,
                     $company
                 );
+                
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+                
+                foreach($languages as $language) {
+                    $translation = new Translation(
+                        $commonEvent,
+                        $language,
+                        $formData['location_' . $language->getAbbrev()],
+                        $formData['title_' . $language->getAbbrev()],
+                        $formData['content_' . $language->getAbbrev()]
+                    );
+                    $this->getEntityManager()->persist($translation);
+                }
                 
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
@@ -106,17 +125,39 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($event = $this->_getEvent()))
             return new ViewModel();
             
-        $form = new EditForm($event);
+        $form = new EditForm($this->getEntityManager(), $event->getEvent());
         
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
             
             if ($form->isValid($formData)) {
-                $event->setName($formData['event_name'])
-                    ->setLocation($formData['location'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setDescription($formData['description']);
+                $event->getEvent()
+                    ->setStartDate(DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d/m/Y H:i', $formData['end_date']));
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+                
+                foreach($languages as $language) {
+                    $translation = $event->getEvent()->getTranslation($language);
+                    
+                    if ($translation) {
+                        $translation->setLocation($formData['location_' . $language->getAbbrev()])
+                            ->setTitle($formData['title_' . $language->getAbbrev()])
+                            ->setContent($formData['content_' . $language->getAbbrev()]);
+                    } else {
+                        $translation = new Translation(
+                            $event,
+                            $language,
+                            $formData['location_' . $language->getAbbrev()],
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['content_' . $language->getAbbrev()]
+                        );
+                        $this->getEntityManager()->persist($translation);
+                    }
+                }
+                $this->getEntityManager()->flush();
                 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

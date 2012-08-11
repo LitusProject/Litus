@@ -36,6 +36,7 @@
 	        	<tr>
 	            	<th>Title</th>
 	            	<th width="170px">Author</th>
+		            <th width="100px" class="wider">Barcode</th>
 		            <th width="90px">Sell Price</th>
 		            <th width="90px">Stock</th>
 	            	<th width="70px">Action</th>
@@ -48,6 +49,7 @@
 		        <tr>
 		            <th>Title</th>
 		            <th width="170px">Author</th>
+		            <th width="100px" class="wider">Barcode</th>
 		            <th width="90px">Sell Price</th>
 		            <th width="90px">Stock</th>
 		            <th width="70px">Action</th>
@@ -57,6 +59,7 @@
 		            <tr class="item item-{{ article.getId() }}">
 		                <td>{{ article.getMainArticle().getTitle() }}</td>
 		                <td>{{ article.getMainArticle().getAuthors() }}</td>
+		                <td class="wider">{{ article.getBarcode() }}</td>
 		                <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
 		                <td>{{ article.getStockValue() }}</td>
 						<td class="actions">
@@ -118,6 +121,7 @@
 		    			$('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
 		    			row.append('<td>' + this.title + '</td>')
 		    				.append('<td>' + this.author + '</td>')
+		    				.append('<td class="wider">' + this.barcode + '</td>')
 		    				.append('<td>&euro; ' + this.sellPrice + '</td>')
 		    				.append('<td>' + this.stockValue + '</td>')
 		    				.append(
