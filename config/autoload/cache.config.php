@@ -42,7 +42,7 @@ return array(
             'alias' => array(
                 'cache' => 'Zend\Cache\Storage\Adapter\Apc',
             ),
-            
+
             'cache' => array(
                 'parameters' => array(
                     'config' => array(
@@ -51,6 +51,9 @@ return array(
                             'options' => array(
                                 'ttl' => 0,
                             ),
+                        ),
+                        'plugins' => array(
+                            'serializer'
                         ),
                     ),
                 ),
