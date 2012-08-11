@@ -1,6 +1,6 @@
 <?php
 
-namespace CudiBundle\Repository\Stock\PeriodValues;
+namespace CudiBundle\Repository\Stock\Periods\Values;
 
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period,
@@ -18,7 +18,7 @@ class Start extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
-            ->from('CudiBundle\Entity\Stock\PeriodValues\Start', 'v')
+            ->from('CudiBundle\Entity\Stock\Periods\Values\Start', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.article', ':article'),

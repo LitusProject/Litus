@@ -16,8 +16,7 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Stock\Deliveries\Delivery,
-    CudiBundle\Entity\Stock\Deliveries\Retour,
+    CudiBundle\Entity\Stock\Retour,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm,
     Zend\View\Model\ViewModel;
@@ -63,7 +62,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Deliveries\Retour')
+                ->getRepository('CudiBundle\Entity\Stock\Retour')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
@@ -128,7 +127,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         }
         
         $retours = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Deliveries\Retour')
+            ->getRepository('CudiBundle\Entity\Stock\Retour')
             ->findAllByPeriod($period);
         
         array_splice($retours, 25);
@@ -186,11 +185,11 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
     
-        $delivery = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Deliveries\Retour')
+        $retour = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Retour')
             ->findOneById($this->getParam('id'));
         
-        if (null === $delivery) {
+        if (null === $retour) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -209,7 +208,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
         
-        return $delivery;
+        return $retour;
     }
     
     private function _getSupplier()

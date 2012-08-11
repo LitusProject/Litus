@@ -16,7 +16,7 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Stock\Deliveries\Delivery,
+    CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -61,7 +61,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Deliveries\Delivery')
+                ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
@@ -126,7 +126,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         }
         
         $deliveries = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Deliveries\Delivery')
+            ->getRepository('CudiBundle\Entity\Stock\Delivery')
             ->findAllByPeriod($period);
         
         array_splice($deliveries, 25);
@@ -214,7 +214,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         }
     
         $delivery = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Deliveries\Delivery')
+            ->getRepository('CudiBundle\Entity\Stock\Delivery')
             ->findOneById($this->getParam('id'));
         
         if (null === $delivery) {

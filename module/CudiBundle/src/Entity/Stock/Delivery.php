@@ -13,14 +13,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Deliveries;
+namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Delivery")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
  * @Table(name="cudi.stock_deliveries", indexes={@index(name="stock_deliveries_time", columns={"timestamp"})})
  */
 class Delivery
