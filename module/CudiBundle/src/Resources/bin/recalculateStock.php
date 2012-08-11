@@ -77,7 +77,7 @@ if (isset($opts->r)) {
         
     foreach($articles as $article) {
         $number = $entityManager
-                ->getRepository('CudiBundle\Entity\Stock\PeriodValues\Start')
+                ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
                 ->findValueByArticleAndPeriod($article, $period)
             + $period->getNbDelivered($article) - $period->getNbSold($article);
         

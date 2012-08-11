@@ -70,7 +70,7 @@ class Period extends EntityRepository
         
         $query = $this->_em->createQueryBuilder();
         $query->select('d')
-            ->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'd')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('d.timestamp', ':startDate'),
@@ -214,7 +214,7 @@ class Period extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(d.number)')
-            ->from('CudiBundle\Entity\Stock\Deliveries\Delivery', 'd')
+            ->from('CudiBundle\Entity\Stock\Delivery', 'd')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('d.timestamp', ':startDate'),
@@ -233,7 +233,7 @@ class Period extends EntityRepository
             
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(r.number)')
-            ->from('CudiBundle\Entity\Stock\Deliveries\Retour', 'r')
+            ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('r.timestamp', ':startDate'),

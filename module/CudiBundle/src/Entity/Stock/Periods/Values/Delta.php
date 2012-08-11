@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\PeriodValues;
+namespace CudiBundle\Entity\Stock\Periods\Values;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
     DateTime;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\PeriodValues\Delta")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Delta")
  * @Table(name="cudi.stock_periods_values_deltas")
  */
 class Delta
