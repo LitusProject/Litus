@@ -12,21 +12,41 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
     'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Zend\Cache\Storage\Adapter\Apc' => array(
+                    'instantiator' => array(
+                        'Zend\Cache\StorageFactory',
+                        'factory'
+                    ),
+                ),
+                'Zend\Cache\StorageFactory' => array(
+                    'methods' => array(
+                        'factory' => array(
+                            'config' => array(
+                                'required' => true,
+                                'type' => false,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
         'instance' => array(
             'alias' => array(
                 'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
-                
+
                 'authentication'                   => 'CommonBundle\Component\Authentication\Authentication',
                 'authentication_action'            => 'CommonBundle\Component\Authentication\Action\Doctrine',
                 'authentication_credentialadapter' => 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential',
                 'authentication_doctrineservice'   => 'CommonBundle\Component\Authentication\Service\Doctrine',
                 'authentication_sessionstorage'    => 'Zend\Authentication\Storage\Session',
-                
+
                 'index'                            => 'CommonBundle\Controller\IndexController',
                 'account'                          => 'CommonBundle\Controller\AccountController',
                 'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
@@ -34,9 +54,10 @@ return array(
                 'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
                 'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
-                
+
                 'translator'                       => 'CommonBundle\Component\Localisation\Translator',
 
+                'cache'                            => 'Zend\Cache\Storage\Adapter\Apc',
                 'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),
             'assetic_configuration' => array(
@@ -93,7 +114,7 @@ return array(
                                             'common/js/typeaheadRemote.js',
                                         ),
                                     ),
-                                    
+
                                     'admin_css' => array(
                                         'assets' => array(
                                             'admin/less/admin.less',
@@ -120,7 +141,7 @@ return array(
                                             'admin/js/*.js',
                                         ),
                                     ),
-                                    
+
                                     'site_css' => array(
                                         'assets' => array(
                                             'site/less/base.less',
@@ -141,7 +162,7 @@ return array(
                                             'output' => 'site_css.css'
                                         ),
                                     ),
-                                    
+
                                     'bootstrap_css' => array(
                                         'assets' => array(
                                             'bootstrap/less/bootstrap.less',
@@ -242,7 +263,7 @@ return array(
                                             'bootstrap/js/bootstrap-typeahead.js',
                                         ),
                                     ),
-                                    
+
                                     'gollum_css' => array(
                                         'assets' => array(
                                             'gollum/css/editor.css'
@@ -260,7 +281,7 @@ return array(
                     ),
                 ),
             ),
-                       
+
             'authentication' => array(
                 'parameters' => array(
                     'adapter' => 'authentication_credentialadapter',
@@ -297,7 +318,7 @@ return array(
                     'member'    => 'storage',
                 ),
             ),
-            
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
@@ -305,7 +326,20 @@ return array(
                     ),
                 ),
             ),
-            
+
+            'cache' => array(
+                'parameters' => array(
+                    'config' => array(
+                        'adapter' => array(
+                            'name' => 'apc',
+                            'options' => array(
+                                'ttl' => 0,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+
             'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',
@@ -337,7 +371,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\View\Helper\Doctype' => array(
                 'parameters' => array(
                     'doctype' => 'HTML5',
@@ -356,7 +390,7 @@ return array(
                     'exceptionTemplate' => 'error/index',
                 ),
             ),
-            
+
             'Zend\Mvc\Controller\ActionController' => array(
                 'parameters' => array(
                     'broker'       => 'Zend\Mvc\Controller\PluginBroker',
@@ -367,7 +401,7 @@ return array(
                     'loader' => 'Zend\Mvc\Controller\PluginLoader',
                 ),
             ),
-            
+
             'Zend\View\Resolver\AggregateResolver' => array(
                 'injections' => array(
                     'Zend\View\Resolver\TemplateMapResolver',
@@ -400,7 +434,7 @@ return array(
                     'resolver' => 'Zend\View\Resolver\AggregateResolver',
                 ),
             ),
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(
