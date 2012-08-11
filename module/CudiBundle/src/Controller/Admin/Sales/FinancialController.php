@@ -16,7 +16,7 @@
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel;
 
 /**
  * FinancialController
@@ -102,7 +102,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             ->findAll();
             
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Deliveries\Delivery',
+            'CudiBundle\Entity\Stock\Delivery',
             $this->getParam('page'),
             array(),
             array(
@@ -130,7 +130,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             ->findAll();
             
         $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Stock\Deliveries\Retour',
+            'CudiBundle\Entity\Stock\Retour',
             $this->getParam('page'),
             array(),
             array(

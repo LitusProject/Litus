@@ -18,11 +18,12 @@ class Event extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Company\Event', 'e')
+            ->innerJoin('e.event', 'c')
             ->where(
                 $query->expr()->eq('e.company', ':company')
             )
             ->setParameter('company', $company->getId())
-            ->orderBy('e.startDate', 'DESC')
+            ->orderBy('c.startDate', 'DESC')
             ->getQuery()
             ->getResult();
 

@@ -13,17 +13,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Stock\Deliveries;
+namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Deliveries\Retour")
+ * @Entity(repositoryClass="CudiBundle\Repository\Stock\Retour")
  * @Table(
- *    name="cudi.stock_deliveries_retours",
- *    indexes={@index(name="stock_deliveries_retours_time", columns={"timestamp"})}
+ *    name="cudi.stock_retours",
+ *    indexes={@index(name="stock_retours_time", columns={"timestamp"})}
  * )
  */
 class Retour

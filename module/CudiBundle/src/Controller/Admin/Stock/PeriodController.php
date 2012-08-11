@@ -17,7 +17,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\PeriodValues\Start as StartValue,
+    CudiBundle\Entity\Stock\Periods\Values\Start as StartValue,
     Zend\View\Model\ViewModel;
 
 /**
@@ -64,7 +64,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllArticlesByPeriod($previous);
             foreach($articles as $article) {
                 $value = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\PeriodValues\Start')
+                        ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
                         ->findValueByArticleAndPeriod($article, $previous)
                     + $previous->getNbDelivered($article)
                     - $previous->getNbSold($article);
