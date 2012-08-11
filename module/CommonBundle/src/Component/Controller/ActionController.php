@@ -318,7 +318,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getCache()
     {
-        if ($this->getLocator()->definitions()->hasClass('cache'))
+        if ($this->getLocator()->instancemanager()->hasAlias('cache'))
             return $this->getLocator()->get('cache');
 
         return null;
