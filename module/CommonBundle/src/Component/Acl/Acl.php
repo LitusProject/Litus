@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Acl;
 
 use Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ class Acl extends \Zend\Acl\Acl
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      */
@@ -42,6 +42,8 @@ class Acl extends \Zend\Acl\Acl
 
         $this->loadResources();
         $this->loadRoles();
+
+        unset($this->_entityManager);
     }
 
     /**
@@ -74,7 +76,7 @@ class Acl extends \Zend\Acl\Acl
                 $resource->getName(),
                 (null === $resource->getParent()) ? null : $resource->getParent()->getName()
             );
-            
+
             $this->_addResources($resource->getChildren($this->_entityManager));
         }
     }
@@ -104,7 +106,7 @@ class Acl extends \Zend\Acl\Acl
             foreach($role->getParents() as $parentRole) {
                 $parents[] = $parentRole->getName();
             }
-            
+
             $this->addRole(
                 $role->getName(),
                 (0 == count($role->getParents())) ? null : $parents

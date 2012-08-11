@@ -271,7 +271,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                     $this->getEntityManager()
                 );
 
-                $this->getCache()->setItem($acl, 'acl');
+                $this->getCache()->setItem('acl', $acl);
             }
 
             return $this->getCache()->getItem('acl');

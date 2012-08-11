@@ -52,9 +52,6 @@ return array(
                                 'ttl' => 0,
                             ),
                         ),
-                        'plugins' => array(
-                            'serializer'
-                        ),
                     ),
                 ),
             ),
