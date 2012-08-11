@@ -138,6 +138,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50630521.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50630513.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016928.xml',
+                            'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016872.xml',
                         )
                     ),
                     'description' => 'The url to the xml',
