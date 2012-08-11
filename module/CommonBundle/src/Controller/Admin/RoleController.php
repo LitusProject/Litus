@@ -15,7 +15,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Role\Add as AddForm,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action as AclAction,
@@ -36,7 +37,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             'CommonBundle\Entity\Acl\Role',
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -64,7 +65,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                             ->findOneByName($parent);
                     }
                 }
-                
+
                 $actions = array();
                 if (isset($formData['actions'])) {
                     foreach ($formData['actions'] as $action) {
@@ -73,7 +74,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                             ->findOneById($action);
                     }
                 }
-                
+
                 $newRole = new Role(
                     $formData['name'], false, $parents, $actions
                 );
@@ -81,11 +82,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->persist($newRole);
 
                 $this->getEntityManager()->flush();
-                
+
+                $this->_updateCache();
+
                 $form = new AddForm(
                     $this->getEntityManager()
                 );
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -100,11 +103,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                         'action' => 'add'
                     )
                 );
-                
+
                 return new ViewModel();
             }
-        }       
-        
+        }
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -117,14 +120,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($role = $this->_getRole()))
             return new ViewModel();
-        
+
         $form = new EditForm(
             $this->getEntityManager(), $role
         );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $parents = array();
                 if (isset($formData['parents'])) {
@@ -135,7 +138,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     }
                 }
                 $role->setParents($parents);
-                
+
                 $actions = array();
                 if (isset($formData['actions'])) {
                     foreach ($formData['actions'] as $action) {
@@ -145,9 +148,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     }
                 }
                 $role->setActions($actions);
-                
+
                 $this->getEntityManager()->flush();
-                
+
+                $this->_updateCache();
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -162,36 +167,38 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($role = $this->_getRole()))
             return new ViewModel();
-        
+
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Person')
             ->findAllByRole($role->getName());
-        
+
         foreach ($users as $user) {
             $user->removeRole($role);
         }
         $this->getEntityManager()->remove($role);
-        
+
         $this->getEntityManager()->flush();
-        
+
+        $this->_updateCache();
+
         return new ViewModel(
             array(
                 'result' => array(
@@ -200,7 +207,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-        
+
     private function _getRole()
     {
         if (null === $this->getParam('name')) {
@@ -211,21 +218,21 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     'No name was given to identify the role!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_role',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $role = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findOneByName($this->getParam('name'));
-        
+
         if (null === $role) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -234,17 +241,29 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     'No role with the given name was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_role',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $role;
+    }
+
+    private function _updateCache()
+    {
+        if (null !== $this->getCache() && $this->getCache()->hasItem('acl')) {
+            $this->getCache()->replaceItem(
+                'acl',
+                new Acl(
+                    $this->getEntityManager()
+                )
+            );
+        }
     }
 }
