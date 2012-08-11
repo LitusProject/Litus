@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
@@ -42,7 +42,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
 
     /**
      * Execute the request.
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
@@ -54,19 +54,19 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->setCharset('utf-8');
-            
+
         $this->_initControllerPlugins();
         $this->_initViewHelpers();
-        
+
         $this->initAuthentication();
         $this->initLocalization();
-        
+
         $authenticatedUser = 'Guest';
         if ($this->getAuthentication()->isAuthenticated())
             $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
-        
+
         $result = parent::execute($e);
-        
+
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -79,7 +79,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             'doctrineUnitOfWork' => $this->getEntityManager()->getUnitOfWork()->size()
         );
         $result->setTerminal(true);
-                    
+
         $e->setResult($result);
         return $result;
     }
@@ -91,17 +91,17 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * @throws \CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
      */
     protected function initAjax()
-    {        
+    {
         if (
             !$this->getRequest()->headers()->get('X_REQUESTED_WITH')
-            || 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
+                || 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
         ) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );
         }
     }
-    
+
     /**
      * Initializes our custom controller plugins.
      *
@@ -112,19 +112,19 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         // HasAccess Plugin
         $this->getBroker()->getClassLoader()->registerPlugin(
             'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
-        );        
+        );
         $this->hasAccess()->setDriver(
             new HasAccess(
                 $this->_getAcl(), $this->getAuthentication()
             )
         );
-        
+
         // Paginator Plugin
         $this->getBroker()->getClassLoader()->registerPlugin(
             'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
         );
     }
-    
+
     /**
      * Initializes our custom view helpers.
      *
@@ -134,12 +134,12 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         $renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
         $renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
-        
+
         // DateLocalized View Helper
         $renderer->getBroker()->getClassLoader()->registerPlugin(
             'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
         );
-        
+
         // GetParam View Helper
         $renderer->getBroker()->getClassLoader()->registerPlugin(
             'getparam', 'CommonBundle\Component\View\Helper\GetParam'
@@ -147,57 +147,57 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $renderer->plugin('getParam')->setRouteMatch(
             $this->getEvent()->getRouteMatch()
         );
-        
+
         // HasAccess View Helper
         $renderer->getBroker()->getClassLoader()->registerPlugin(
             'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
-        );        
+        );
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccess(
                 $this->_getAcl(), $this->getAuthentication()
             )
         );
     }
-        
+
     /**
      * Returns the language that is currently requested.
-     * 
+     *
      * @return \CommonBundle\Entity\General\Language
      */
     protected function getLanguage()
     {
         if (null !== $this->_language)
             return $this->_language;
-        
+
         if ($this->getParam('language')) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($this->getParam('language'));
         }
-        
+
         if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
         }
-        
+
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
-                
+
             if (null === $language) {
                 $language = new Language(
                     'en', 'English'
                 );
             }
         }
-        
+
         $this->_language = $language;
-        
+
         return $language;
     }
-    
+
     /**
      * Initializes the authentication.
      *
@@ -212,7 +212,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         ) {
             if ($this->getAuthentication()->isAuthenticated()) {
                 if (
-                    $this->getAuthenticationHandler()['controller'] == $this->getParam('controller') 
+                    $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
                         && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
                 ) {
                     $this->redirect()->toRoute(
@@ -223,7 +223,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
                 if (
-                    $this->getAuthenticationHandler()['controller'] != $this->getParam('controller') 
+                    $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
                         && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
                 ) {
                     $this->redirect()->toRoute(
@@ -237,7 +237,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             }
         }
     }
-    
+
     /**
      * Initializes the localization
      *
@@ -246,34 +246,39 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     protected function initLocalization()
     {
         $language = $this->getLanguage();
-        
+
         $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
 
         \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
-        
+
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);
             $this->getEntityManager()->flush();
         }
     }
-    
+
     /**
      * Returns the ACL object.
-     *
-     * @TODO Figure out how Zend\Cache works
      *
      * @return \CommonBundle\Component\Acl\Acl
      */
     private function _getAcl()
     {
-        return new Acl(
-            $this->getEntityManager()
-        );
+        if (!$this->getCache()->hasItem('acl')) {
+            $acl = new Acl(
+                $this->getEntityManager()
+            );
+
+            $this->getCache()->setItem($acl, 'acl');
+        }
+
+        return $this->getCache()->getItem('acl');
     }
-    
+
     /**
-     * Returns the Authentication instance.
+     * We want an easy method to retrieve the Authentication from
+     * the DI container.
      *
      * @return \CommonBundle\Component\Authentication\Authentication
      */
@@ -281,7 +286,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         return $this->getLocator()->get('authentication');
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
@@ -293,15 +298,26 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         return array(
             'action'         => 'login',
             'controller'     => 'auth',
-            
+
             'auth_route'     => 'admin_auth',
             'redirect_route' => 'admin_index'
         );
     }
 
     /**
-     * Singleton implementation for the Entity Manager, retrieved
-     * from the Zend Registry.
+     * We want an easy method to retrieve the Cache from
+     * the DI container.
+     * 
+     * @return \Zend\Cache\Storage\Adapter\Apc
+     */
+    public function getCache()
+    {
+        return $this->getLocator()->get('cache');
+    }
+
+    /**
+     * We want an easy method to retrieve the EntityManager from
+     * the DI container.
      *
      * @return \Doctrine\ORM\EntityManager
      */
@@ -309,10 +325,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         return $this->getLocator()->get('doctrine_em');
     }
-    
+
     /**
-     * Singleton implementation for the Mail Transport, retrieved
-     * from the Zend Registry.
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
      *
      * @return \Zend\Mail\Transport
      */
@@ -320,10 +336,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         return $this->getLocator()->get('mail_transport');
     }
-    
+
     /**
-     * Gets a parameter from a GET request.  
-     * 
+     * Gets a parameter from a GET request.
+     *
      * @param string $param The parameter's key
      * @param mixed $default The default value, returned when the parameter is not found
      * @return string
@@ -332,7 +348,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
     }
-    
+
     /**
      * Get the current academic year.
      *
@@ -342,7 +358,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
-        
+
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);

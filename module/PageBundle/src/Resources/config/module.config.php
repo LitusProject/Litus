@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
@@ -24,7 +24,7 @@ return array(
 
                 'news'         => 'PageBundle\Controller\PageController',
             ),
-            
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
@@ -32,7 +32,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',
@@ -55,7 +55,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(

@@ -1,7 +1,10 @@
 # We don't want to version the folders some IDE's create
 .idea
 .project
+
 *.esproj
+*.sublime-project
+*.sublime-workspace
 
 # Excluding all nasty .DS_Store files
 .DS_Store
