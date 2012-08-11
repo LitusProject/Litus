@@ -5,8 +5,8 @@
 
     {{ headMeta() }}
 	{{ headTitle('Litus Admin', 'PREPEND') }}
-	
-	{{ headLink() }}   
+
+	{{ headLink() }}
 </head>
 
 <body>
@@ -15,7 +15,7 @@
 	<div id="content">
 		<header id="content_header">
 			<a href="#" title="Litus Manager"></a>
-            
+
 			<p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
 			<p id="tag">
                 Welcome, {{ authenticatedUser }} |
@@ -43,11 +43,11 @@
 		            </ul>
 		    	</li>
             </ul>
-            
+
             <ul class="submenu">
             	<li>
 	                <div class="title">Divisions</div>
-	                
+
 	                <ul class="subsubmenu">
 	                	{% if hasAccess('admin_company', 'manage') or hasAccess('admin_section', 'manage') or hasAccess('admin_contract', 'manage') %}
 	                	    <li>
@@ -55,7 +55,7 @@
 	                	    		<b>Corporate Relations</b><br />
 	                	    		Companies &amp; Contracts
 	                	        </div>
-	                	        
+
 	                	        <ul
 	                	        	{% if 'admin_company' == getParam('controller') or 'admin_company_event' == getParam('controller') or 'admin_company_internship' == getParam('controller') or 'admin_company_vacancy' == getParam('controller') or 'admin_section' == getParam('controller') or 'admin_contract' == getParam('controller') %}
 	                	        		style="display: block;"
@@ -73,7 +73,7 @@
 	                	        </ul>
 	                		</li>
 	                	{% endif %}
-	                
+
 		                {% if hasAccess('admin_article', 'manage') or hasAccess('admin_sales_article', 'manage') or hasAccess('admin_sales_booking', 'manage') or hasAccess('admin_sales_session', 'manage') or hasAccess('admin_sales_financial', 'manage') or hasAccess('admin_stock', 'manage') or hasAccess('admin_supplier', 'manage') or hasAccess('admin_prof_action', 'manage') %}
 		            		<li>
 		            			<div class="subtitle">
@@ -112,7 +112,7 @@
 		            			</ul>
 		            		</li>
 		                {% endif %}
-		                
+
 		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'cudi') %}
 		                	<li>
 		                		<div class="subtitle">
@@ -133,7 +133,7 @@
 		                		</ul>
 		                	</li>
 		                {% endif %}
-		                
+
 		                {% if hasAccess('admin_news', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
@@ -157,14 +157,14 @@
 		                		</ul>
 		                	</li>
 		                {% endif %}
-		                
+
 		                {% if hasAccess('admin_run', 'index') %}
 		                    <li>
 			                    <div class="subtitle">
 			                    		<b>Sport</b><br />
 			                    		Twenty Four
 			                    </div>
-			                    
+
 			                    <ul
 			                    	{% if 'admin_run' == getParam('controller') %}
 			                    		style="display: block;"
@@ -176,7 +176,7 @@
 			                    </ul>
 			            	</li>
 		                {% endif %}
-		                
+
 		                {% if hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
 		                	<li>
 		                		<div class="subtitle">
