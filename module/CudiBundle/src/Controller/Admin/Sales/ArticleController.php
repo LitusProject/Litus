@@ -313,6 +313,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->id = $article->getMainArticle()->getId();
             $item->title = $article->getMainArticle()->getTitle();
             $item->author = $article->getMainArticle()->getAuthors();
+            $item->barcode = $article->getBarcode();
             $item->publisher = $article->getMainArticle()->getPublishers();
             $item->sellPrice = number_format($article->getSellPrice()/100, 2);
             $item->stockValue = $article->getStockValue();

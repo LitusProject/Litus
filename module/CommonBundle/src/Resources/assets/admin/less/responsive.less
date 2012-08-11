@@ -1,4 +1,21 @@
+.wider {
+    display: none !important;
+}
+.widest {
+    display: none !important;
+}
+
 @media (min-width: 1220px) {
+    .wider {
+        display: inherit !important;
+    }
+    
+    td, th {
+        &.wider {
+            display: table-cell !important;
+        }
+    }
+    
     #layout {
         width: @layoutWidth + 200;
     }
@@ -68,6 +85,16 @@
 }
 
 @media (min-width: 1420px) {
+    .widest {
+        display: inherit !important;
+    }
+    
+    td, th {
+        &.widest {
+            display: table-cell !important;
+        }
+    }
+    
     #layout {
         width: @layoutWidth + 400;
     }
