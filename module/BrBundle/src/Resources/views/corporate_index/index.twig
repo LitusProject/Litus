@@ -1,0 +1,12 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+    {% if authenticated %}
+        <h2>{% autoescape false %}{{ translator().translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%':authenticatedUser, '%company%':company.getName()}) }}{% endautoescape %}</h2>
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translator().translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}
