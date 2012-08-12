@@ -25,24 +25,60 @@ return array(
                 'admin_company_vacancy'    => 'BrBundle\Controller\Admin\Company\VacancyController',
                 'admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
                 'admin_section'            => 'BrBundle\Controller\Admin\SectionController',
-              ),
-              'doctrine_config' => array(
-                  'parameters' => array(
-                      'entityPaths' => array(
-                          'brbundle' => __DIR__ . '/../../Entity',
-                      ),
-                  ),
-              ),
-              'Zend\View\Resolver\TemplatePathStack' => array(
-                  'parameters' => array(
-                      'paths'  => array(
-                          'br_views' => __DIR__ . '/../views',
-                      ),
-                  ),
-              ),
-              
-              'Zend\Mvc\Router\RouteStack' => array(
-                  'parameters' => array(
+
+                'corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
+                'corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
+            ),
+            'assetic_configuration' => array(
+                'parameters' => array(
+                    'config' => array(
+                        'modules' => array(
+                            'brbundle' => array(
+                                'root_path' => __DIR__ . '/../assets',
+                                'collections' => array(
+                                    'corporate_css' => array(
+                                        'assets' => array(
+                                            'corporate/less/base.less',
+                                        ),
+                                        'filters' => array(
+                                            'corporate_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => true,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
+                                            'output' => 'corporate_css.css',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'doctrine_config' => array(
+                'parameters' => array(
+                    'entityPaths' => array(
+                        'brbundle' => __DIR__ . '/../../Entity',
+                    ),
+                ),
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'br_layouts' => __DIR__ . '/../layouts',
+                        'br_views' => __DIR__ . '/../views',
+                    ),
+                ),
+            ),
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
                     'routes' => array(
                         'br_install' => array(
                             'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -137,6 +173,36 @@ return array(
                                 'defaults' => array(
                                     'controller' => 'admin_section',
                                     'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'corporate_index' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '[/:language]/corporate[/:action]',
+                                'constraints' => array(
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'session'  => '[0-9]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'corporate_index',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
+                        'corporate_auth' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '[/:language]/corporate/auth[/:action]',
+                                'constraints' => array(
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'session'  => '[0-9]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'corporate_auth',
+                                    'action'     => 'login',
                                 ),
                             ),
                         ),

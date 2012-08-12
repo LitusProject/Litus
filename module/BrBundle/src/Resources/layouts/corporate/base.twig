@@ -1,0 +1,119 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+    {{ headTitle('Litus Corporate', 'PREPEND') }}
+    
+    {{ headLink() }}   
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a href="{{ unionUrl }}" class="brand"><img src="/_corporate/img/logo.png" /></a>
+            <ul class="nav">
+                {% if hasAccess('corporate_index', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'corporate_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("corporate_index", {"language": language.getAbbrev()}) }}">{{ translator().translate('Home') }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav pull-right lang-nav visible-desktop">
+                <li class="dropdown" id="langDropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ translator().translate('Language') }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for language in languages %}
+                            <li>
+                                <a href="{{ url("corporate_index", {"language": language.getAbbrev()}) }}">{{ translator().translate(language.getName()) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right auth-nav">
+                {% if authenticated %}
+                    <li class="dropdown" id="accountDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="profile-wrapper">
+                                <i class="profile"></i>
+                            </span>
+                            <span class="caret"></span>
+                        </a> 
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="">
+                                    <b class="fullName">{{ authenticatedUserObject.getFullName() }}</b>
+                                    <small class="metadata">{{ company.getName() }}</small>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url("corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translator().translate('Logout') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="dropdown" id="loginDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {{ translator().translate('Login') }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                {% autoescape false %}
+                                    {{ loginForm }}
+                                {% endautoescape %}
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header>
+    <div class="inner">
+        <div class="container">
+            <h1>{{ translator().translate('Litus Corporate') }}</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    {% include 'corporate/partials/flashMessenger.twig' %}
+
+    <div id="content_controller">
+        {% block content %} {% endblock %}
+    </div>
+    
+    <footer>
+        Litus Corporate | Code by <a href="http://litus.cc">Litus</a>
+    
+        {% if 'development' == environment %}
+            <span class="development_information">
+                Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+            </span>
+        {% endif %}
+    </footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown form').on('click', function (e) {
+                e.stopPropagation()
+            });
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>

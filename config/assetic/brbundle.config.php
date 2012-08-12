@@ -66,6 +66,13 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'corporate_index' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@corporate_css',
+        ),
     ),
     'routes' => array(),
 );
