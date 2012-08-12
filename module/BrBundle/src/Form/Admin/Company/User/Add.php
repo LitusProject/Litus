@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Supplier\User;
+namespace BrBundle\Form\Admin\Company\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,

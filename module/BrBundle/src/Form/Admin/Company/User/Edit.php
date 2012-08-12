@@ -13,33 +13,35 @@
  * @license http://litus.cc/LICENSE
  */
  
-namespace CudiBundle\Form\Admin\Supplier\User;
+namespace BrBundle\Form\Admin\Company\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**
- * Add a user to the database.
+ * Edit a user's data.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Form\Admin\Person\Add
-{
+class Edit extends \CommonBundle\Form\Admin\Person\Edit
+{    
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $person, $opts);
         
         $this->removeElement('roles');
         
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'user_add')
+        $field->setLabel('Save')
+            ->setAttrib('class', 'user_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
