@@ -20,7 +20,7 @@
 	    <xsl:text>Uitgever</xsl:text>
 	</xsl:template>
 	
-	<xsl:template name="number">
+	<xsl:template name="amount">
 	    <xsl:text>Aantal</xsl:text>
 	</xsl:template>
 	

@@ -118,7 +118,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
                             (string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored())
                         ),
                         new Object(
-                            'number',
+                            'amount',
                             null,
                             (string) $item->getNumber()
                         )

@@ -27,7 +27,7 @@
 			<title>Digital and Analog Communication Systems</title>
 			<author>Couch</author>
 			<publisher>Pearson</publisher>
-			<number>25</number>
+			<amount>25</amount>
 		</external_item>
 	</external_items>
 	<internal_items>
@@ -37,7 +37,7 @@
 			<recto_verso>0</recto_verso>
 			<binding>GELIJMD</binding>
 			<nb_pages>200</nb_pages>
-			<number>2</number>
+			<amount>2</amount>
 		</internal_item>
 	</internal_items>
 </order>

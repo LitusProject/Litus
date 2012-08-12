@@ -69,7 +69,7 @@
 	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="publisher"/></fo:block>
 	                				        </fo:table-cell>
 	                				        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	                				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="number"/></fo:block>
+	                				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="amount"/></fo:block>
 	                				        </fo:table-cell>
 	                				    </fo:table-row>
 	                				</fo:table-header>
@@ -125,7 +125,7 @@
 			        				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="nb_pages"/></fo:block>
 			        				        </fo:table-cell>
 			        				        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-			        				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="number"/></fo:block>
+			        				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="amount"/></fo:block>
 			        				        </fo:table-cell>
 			        				    </fo:table-row>
 			        				</fo:table-header>
@@ -267,7 +267,7 @@
 	            <fo:block text-align="left"><xsl:apply-templates select="publisher"/></fo:block>
 	        </fo:table-cell>
 	        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	            <fo:block text-align="center"><xsl:apply-templates select="number"/></fo:block>
+	            <fo:block text-align="center"><xsl:apply-templates select="amount"/></fo:block>
 	        </fo:table-cell>
 	    </fo:table-row>
 	</xsl:template>
@@ -299,7 +299,7 @@
 	            <fo:block text-align="center"><xsl:apply-templates select="nb_pages"/></fo:block>
 	        </fo:table-cell>
 	        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	            <fo:block text-align="center"><xsl:apply-templates select="number"/></fo:block>
+	            <fo:block text-align="center"><xsl:apply-templates select="amount"/></fo:block>
 	        </fo:table-cell>
 	    </fo:table-row>
 	</xsl:template>
