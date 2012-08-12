@@ -49,7 +49,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         
         return new ViewModel(
             array(
-                'supplier' => $supplier,
+                'company' => $company,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
@@ -67,7 +67,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $newUser = new CorporatePerson(
+                $user = new CorporatePerson(
+                    $company,
                     $formData['username'],
                     array(
                         $this->getEntityManager()
@@ -81,7 +82,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $formData['sex'],
                     $company
                 );
-                $this->getEntityManager()->persist($newUser);
+                $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
                 
                 $this->flashMessenger()->addMessage(
@@ -96,7 +97,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'admin_company_user',
                     array(
                         'action' => 'manage',
-                        'id' => $supplier->getId(),
+                        'id' => $company->getId(),
                     )
                 );
                 
@@ -106,7 +107,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
+                'company' => $company,
                 'form' => $form,
             )
         );
@@ -135,15 +136,15 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The supplier user was successfully updated!'
+                        'The corporate user was successfully updated!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_supplier_user',
+                    'admin_company_user',
                     array(
                         'action' => 'manage',
-                        'id' => $user->getSupplier()->getId()
+                        'id' => $user->getCompany()->getId()
                     )
                 );
                 
@@ -153,7 +154,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         
         return new ViewModel(
             array(
-                'supplier' => $user->getSupplier(),
+                'company' => $user->getCompany(),
                 'form' => $form,
             )
         );
@@ -230,7 +231,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the company!'
+                    'No id was given to identify the corporate user!'
                 )
             );
             
@@ -253,7 +254,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No company with the given id was found!'
+                    'No corporate user with the given id was found!'
                 )
             );
             

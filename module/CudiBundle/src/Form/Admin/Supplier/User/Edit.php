@@ -41,7 +41,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         
         $field = new Submit('submit');
         $field->setLabel('Save')
-            ->setAttrib('class', 'supplier_edit')
+            ->setAttrib('class', 'user_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }

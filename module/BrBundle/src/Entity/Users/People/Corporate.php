@@ -15,7 +15,8 @@
 
 namespace BrBundle\Entity\Users\People;
 
-use BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Credential,
     Doctrine\Common\Collections\ArrayCollection;
@@ -29,73 +30,42 @@ use BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
 class Corporate extends \CommonBundle\Entity\Users\Person
 {
     /**
-     * @OneToMany(
-     *         targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"}
-     * )
+     * @var \BrBundle\Entity\Company The user's company
+     *
+     * @ManyToOne(targetEntity="BrBundle\Entity\Company")
+     * @JoinColumn(name="company", referencedColumnName="id")
+     */
+    private $company;
+
+    /**
+     * @OneToMany(targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"})
      */
     private $corporateStatuses;
 
     /**
-     * @param string $username The contact's username
-     * @param \CommonBundle\Entity\Users\Credential $credential The contact's credential
-     * @param array $roles The contact's roles
-     * @param string $firstName The contact's first name
-     * @param string $lastName The contact's last name
-     * @param string $email  The contact's e-mail address
-     * @param string $phoneNumber The contact's phone number
-     * @param string $sex The contact's sex ('m' or 'f')
+     * @param \BrBundle\Entity\Company $company The user's company
+     * @param string $username The user's username
+     * @param array $roles The user's roles
+     * @param string $firstName The user's first name
+     * @param string $lastName The user's last name
+     * @param string $email The user's e-mail address
+     * @param string $phoneNumber The user's phone number
+     * @param string $sex The users sex
      */
-    public function __construct($username, Credential $credential, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex)
+    public function __construct(Company $company, $username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
     {
-        parent::__construct($username, $credential, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
+        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
+        $this->company = $company;
         $this->corporateStatuses = new ArrayCollection();
     }
 
     /**
-     * @param string $name
-     * @return \BrBundle\Entity\Users\People\Corporate
-     * @throws \InvalidArgumentException
+     * @return \BrBundle\Entity\Company
      */
-    public function setName($name)
+    public function getCompany()
     {
-        if (($name === null) || !is_string($name))
-            throw new \InvalidArgumentException('Invalid name');
-
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $vatNumber
-     * @return \BrBundle\Entity\Users\People\Corporate
-     * @throws \InvalidArgumentException
-     */
-    public function setVatNumber($vatNumber)
-    {
-        if (($vatNumber === null) || !is_string($vatNumber))
-            throw new \InvalidArgumentException('Invalid VAT number');
-
-        $this->vatNumber = $vatNumber;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVatNumber()
-    {
-        return $this->vatNumber;
+        return $this->company;
     }
 
     /**

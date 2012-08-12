@@ -48,6 +48,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         
         $this->installRoles(
             array(
+                'corporate' => array(
+                    'system' => true,
+                    'parents' => array(
+                        'guest',
+                    ),
+                    'actions' => array(
+                    ),
+                ),
             )
         );
     }
