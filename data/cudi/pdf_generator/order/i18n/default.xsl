@@ -19,8 +19,8 @@
 	    <xsl:text>Publisher</xsl:text>
 	</xsl:template>
 	
-	<xsl:template name="number">
-	    <xsl:text>Number</xsl:text>
+	<xsl:template name="amount">
+	    <xsl:text>Amount</xsl:text>
 	</xsl:template>
 	
 	<xsl:template name="barcode">
