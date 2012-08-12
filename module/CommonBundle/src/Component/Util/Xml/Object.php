@@ -92,7 +92,7 @@ class Object
      */
     private function _escape($value)
     {
-        return UTF8::utf8toHtml($value, false);
+        return UTF8::utf8toHtml($value, true);
     }
     
     /**

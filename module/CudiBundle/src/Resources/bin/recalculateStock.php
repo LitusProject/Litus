@@ -14,7 +14,7 @@
  */
 
 /**
- * The socket server for the sale queue
+ * The script to update the stock
  *
  * Usage:
  * --run|-r      Run the update script
@@ -49,7 +49,7 @@ $diConfig->configure($diContainer);
 $em = $diContainer->get('doctrine_em');
 
 $rules = array(
-    'run|r' => 'Run the Socket',
+    'run|r' => 'Run the update script',
 );
 
 try {
