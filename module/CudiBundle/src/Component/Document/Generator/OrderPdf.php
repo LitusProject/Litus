@@ -150,7 +150,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
                             $item->getArticle()->getMainArticle()->getPublishers()
                         ),
                         new Object(
-                            'number',
+                            'amount',
                             null,
                             (string) $item->getNumber()
                         )
