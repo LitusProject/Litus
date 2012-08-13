@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Role;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -35,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The form's options
@@ -60,7 +60,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Multiselect('actions');
         $field->setLabel('Allowed Actions')
-            ->setRequired()
             ->setMultiOptions($this->_createActionsArray())
             ->setAttrib('style', 'height: 300px;')
             ->setDecorators(array(new FieldDecorator()));
@@ -72,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     /**
      * Returns an array that has all the roles, so that they are available in the
      * parents multiselect.
@@ -89,9 +88,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         foreach ($roles as $role) {
             $parents[$role->getName()] = $role->getName();
         }
-        
+
         ksort($parents);
-        
+
         return $parents;
     }
 
@@ -124,11 +123,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 foreach ($childActions as $childAction) {
                     $actions[$resourceChild->getName()][$childAction->getId()] = $childAction->getName();
                 }
-                
+
                 asort($actions[$resourceChild->getName()]);
             }
         }
-        
+
         ksort($actions);
 
         return $actions;
