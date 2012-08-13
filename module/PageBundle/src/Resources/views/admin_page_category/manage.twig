@@ -4,16 +4,16 @@
 	{% include 'admin_page/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message page_removed_success hide">
+    <div class="flashmessage success_message page_category_removed_success hide">
     	<div class="title">Success</div>
     	<div class="content">
-    		<p>The page was successfully removed!</p>
+    		<p>The category was successfully removed!</p>
     	</div>
     </div>
-    <div class="flashmessage error_message page_removed_error hide">
+    <div class="flashmessage error_message page_category_removed_error hide">
     	<div class="title">Error</div>
     	<div class="content">
-    		<p>An error occurred while trying to delete the page.</p>
+    		<p>An error occurred while trying to delete the category.</p>
     	</div>
     </div>
 
@@ -21,25 +21,23 @@
 	    <table class="manage">
 	        <thead>
 	            <tr>
-	                <th>Title</th>
-	                <th width="150px">Time</th>
-	                <th width="160px">Author</th>
-	                <th width="70px">Actions</th>
+	                <th>Name</th>
+	                <th width="70px">Action</th>
 	            </tr>
 	        </thead>
 
 	        <tbody>
-	            {% for page in paginator %}
+	            {% for page_category in paginator %}
 	                <tr class="item">
-	                    <td>{{ page.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(page.getCreationTime(), 'dd/MM/y H:m') }}</td>
-	                    <td>{{ page.getUpdatePerson().getFullName() }}</td>
+	                    <td>{{ page_category.getTitle(language) }}</td>
+	                    <td>{{ dateLocalized(page_category.getCreationTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ page_category.getUpdatePerson().getFullName() }}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_page', 'edit') %}
-	                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('admin_page_category', 'edit') %}
+	                            <a href="{{ url('admin_page_category', {"action": "edit", "id": page_category.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="delete">Delete</a>
+	                            <a href="#" data-id="{{ page_category.getId() }}" data-title="{{ page_category.getTitle(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -69,14 +67,14 @@
 		</div>
 	</aside>
 
-	<div class="modal hide fade" id="removePage">
+	<div class="modal hide fade" id="removePageCategory">
 		<div class="modal-header">
 			<span>Litus Admin</span>
-			/Delete Page
+			/Delete page_category
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following page: <b class="title"></b>?
+				You are about to delete the following page_category: <b class="title"></b>?
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -99,31 +97,31 @@
 		function openModal(e) {
 			var $this = $(this);
 			e.preventDefault();
-			var removePage = $('#removePage');
-			removePage.find('.title').html($(this).data('title'));
-			removePage.find('.cancel').one('click', function () {
-				removePage.modal('hide');
+			var removePageCategory = $('#removePageCategory');
+			removePageCategory.find('.title').html($(this).data('title'));
+			removePageCategory.find('.cancel').one('click', function () {
+				removePageCategory.modal('hide');
 			});
 			var id = $this.data('id');
-			removePage.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_page', {"action": "delete"})}}/' + id, function  (data) {
+			removePageCategory.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_page_category', {"action": "delete"})}}/' + id, function  (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
-						$('.page_removed_success').removeClass('hide');
+						$('.page_category_removed_success').removeClass('hide');
 						$('.item-' + id).remove();
-						removePage.modal('hide');
+						removePageCategory.modal('hide');
 					} else {
 					    errorRemove();
 					}
 				}, 'json').error(errorRemove);
 			});
-			removePage.modal();
+			removePageCategory.modal();
 		}
 
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
-		    $('.page_removed_error').removeClass('hide');
-		    $('#removePage').modal('hide');
+		    $('.page_category_removed_error').removeClass('hide');
+		    $('#removePageCategory').modal('hide');
 		}
 	</script>
 {% endblock %}

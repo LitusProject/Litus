@@ -12,8 +12,6 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
-$asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 
 return array(
     'di' => array(
@@ -24,7 +22,7 @@ return array(
 
                 'common_gallery'   => 'GalleryBundle\Controller\GalleryController',
             ),
-            
+
             'assetic_configuration' => array(
                 'parameters' => array(
                     'config' => array(
@@ -60,7 +58,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
@@ -68,7 +66,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',

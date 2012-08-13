@@ -114,7 +114,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @param \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Nodes\Translation
      */
     public function setTitle($title)
     {
@@ -134,7 +134,7 @@ class Translation
     /**
      * @param string $name
      *
-     * @param \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Nodes\Translation
      */
     private function _setName($name)
     {
@@ -153,7 +153,7 @@ class Translation
     /**
      * @param string $content
      *
-     * @param \PageBundle\Entity\Nodes\Page
+     * @return \PageBundle\Entity\Nodes\Translation
      */
     public function setContent($content)
     {

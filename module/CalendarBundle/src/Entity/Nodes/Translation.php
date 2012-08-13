@@ -109,7 +109,7 @@ class Translation
     /**
      * @param string $location
      *
-     * @param \CalendarBundle\Entity\Nodes\Translation
+     * @return \CalendarBundle\Entity\Nodes\Translation
      */
     public function setLocation($location)
     {

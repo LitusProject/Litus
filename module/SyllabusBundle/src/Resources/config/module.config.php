@@ -4,7 +4,7 @@ return array(
         'instance' => array(
             'alias' => array(
                 'syllabus_install'       => 'SyllabusBundle\Controller\Admin\InstallController',
-                
+
                 'admin_update_syllabus'  => 'SyllabusBundle\Controller\Admin\UpdateController',
                 'admin_study'            => 'SyllabusBundle\Controller\Admin\StudyController',
                 'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
@@ -25,7 +25,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(
