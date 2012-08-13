@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="mail">CuDi</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_mail_prof', 'cudi') %}
+                <li><a{% if 'cudi' == getParam('action') %} class="active" {% endif %} href="{{ url('admin_mail_prof', {'action': 'cudi'}) }}">Start Cudi</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

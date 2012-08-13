@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
@@ -34,7 +34,7 @@ class Translation
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \NewsBundle\Entity\Nodes\News The news of this translation
      *
@@ -42,7 +42,7 @@ class Translation
      * @JoinColumn(name="news", referencedColumnName="id")
      */
     private $news;
-        
+
     /**
      * @var \CommonBundle\Entity\General\Language The language of this tanslation
      *
@@ -50,28 +50,28 @@ class Translation
      * @JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
-    
+
     /**
      * @var string The title of this tanslation
      *
      * @Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var string The name of this tanslation
      *
      * @Column(type="string", unique=true)
      */
     private $name;
-    
+
     /**
      * @var string The content of this tanslation
      *
      * @Column(type="text")
      */
     private $content;
-    
+
     /**
      * @param \NewsBundle\Entity\Nodes\News $news
      * @param \CommonBundle\Entity\General\Language $language
@@ -86,7 +86,7 @@ class Translation
         $this->title = $title;
         $this->_setName($title);
     }
-    
+
     /**
      * @return \NewsBundle\Entity\Nodes\News
      */
@@ -94,7 +94,7 @@ class Translation
     {
         return $this->news;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Language
      */
@@ -102,7 +102,7 @@ class Translation
     {
         return $this->language;
     }
-    
+
     /**
      * @return string
      */
@@ -110,7 +110,7 @@ class Translation
     {
         return $this->title;
     }
-    
+
     /**
      * @param string $title
      *
@@ -122,7 +122,7 @@ class Translation
         $this->_setName($title);
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -130,7 +130,7 @@ class Translation
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $name
      *
@@ -141,7 +141,7 @@ class Translation
         $this->name = $this->news->getCreationTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -149,7 +149,7 @@ class Translation
     {
         return $this->content;
     }
-    
+
     /**
      * @return string
      */
@@ -158,7 +158,7 @@ class Translation
         $content = strip_tags($this->content);
         return substr($content, 0, $length) . (strlen($content) > $length ? '...' : '');
     }
-    
+
     /**
      * @param string $content
      *

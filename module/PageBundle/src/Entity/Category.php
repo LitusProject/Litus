@@ -33,11 +33,11 @@ class Category
     private $id;
 
     /**
-     * @var string The category's name
+     * @var array The translations of this category
      *
-     * @Column(type="string")
+     * @OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
      */
-    private $name;
+    private $translations;
 
     /**
      * @param string $name The category's name
