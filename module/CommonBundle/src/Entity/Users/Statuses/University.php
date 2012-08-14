@@ -133,7 +133,7 @@ class University
     {
         if (self::isValidStatus($status))
             $this->status = $status;
-            
+
         return $this;
     }
 
@@ -154,5 +154,13 @@ class University
     public function getYear()
     {
         return $this->academicYear->getCode(true);
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 }
