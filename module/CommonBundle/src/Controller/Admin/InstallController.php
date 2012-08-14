@@ -28,7 +28,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'common.profile_path',
-                    'value'       => 'data/images/profile',
+                    'value'       => 'data/common/profile',
                     'description' => 'The path for profile photo\'s',
                 ),
                 array(

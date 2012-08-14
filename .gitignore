@@ -15,7 +15,8 @@ config/database.config.php
 # Cached data doesn't have to be versioned
 data/cache
 data/cudi/files
-data/images/profile
+data/common/profile
 data/proxies
+data/br/companies
 
 public/_assetic

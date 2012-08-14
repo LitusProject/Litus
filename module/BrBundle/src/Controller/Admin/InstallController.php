@@ -30,7 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'br.logo_path',
-                    'value'       => 'data/br/logos',
+                    'value'       => 'data/br/companies',
                     'description' => 'The path to the company logo files',
                 ),
             )
