@@ -126,7 +126,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         
         $form = new EditForm(
-            $this->getEntityManager(), $user
+            $this->getEntityManager(), $this->getCurrentAcademicYear(), $user
         );
 
         if ($this->getRequest()->isPost()) {
@@ -149,7 +149,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setPhoneNumber($formData['phone_number'])
                     ->setUniversityIdentification($formData['university_identification'])
                     ->updateRoles($roles);
-                
+
+                $user->getUniversityStatus($this->getCurrentAcademicYear())
+                    ->setStatus($formData['university_status']);
+
                 $this->getEntityManager()->flush();
                 
                 $this->flashMessenger()->addMessage(
@@ -163,7 +166,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'admin_academic',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
                 
