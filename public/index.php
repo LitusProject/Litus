@@ -17,7 +17,7 @@ if ('development' == getenv('APPLICATION_ENV')) {
     ini_set('display_errors', true);
     error_reporting(E_ALL);
 }
-     
+
 chdir(dirname(__DIR__));
 
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';

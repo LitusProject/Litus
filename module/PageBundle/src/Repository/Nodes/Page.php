@@ -20,7 +20,7 @@ class Page extends EntityRepository
             ->where('p.endTime is null')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

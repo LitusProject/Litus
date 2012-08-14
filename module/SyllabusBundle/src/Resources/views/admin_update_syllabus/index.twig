@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage error_message full_width hide" id="syllabus_update_error">
 		<div class="title">Error</div>
@@ -16,24 +16,26 @@
 			<p>The syllabus was successfully updated.</p>
 		</div>
 	</div>
-	
+
 	<div id="controller_action">
 	</div>
-	
-	<aside>
-		<div class="sidebox">
-		    <div class="title">Update Syllabus</div>
-		    <div class="content">
-		        <p>
-		            <i>Please hit the link below to update the syllabus!</i>
-		        </p>
-		    	<p>
-		    		<a href="#" id="updateNow">&rarr; Update Syllabus</a>
-		    	</p>
-		    </div>
-		</div>
-	</aside>
-	
+
+	{% if hasAccess('admin_update_syllabus', 'updateNow') %}
+		<aside>
+			<div class="sidebox">
+			    <div class="title">Update Syllabus</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to update the syllabus!</i>
+			        </p>
+			    	<p>
+			    		<a href="#" id="updateNow">&rarr; Update Syllabus</a>
+			    	</p>
+			    </div>
+			</div>
+		</aside>
+	{% endif %}
+
 	<div class="modal hide fade" id="updateSyllabus">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -63,12 +65,12 @@
 				},
 				message: function (e, data) {
 					$('#syllabus_update_error, #syllabus_update_success').addClass('hide');
-                    
+
                     if ('progress' !== data.status.type)
 				        $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
 				    else
 				        $('#updateSyllabus .bar').width(data.status.extra + '%');
-				    
+
 				    if ('done' == data.status.type) {
 				        $('#syllabus_update_success').removeClass('hide');
 		                $('#updateSyllabus').permanentModal('hide');
@@ -90,7 +92,7 @@
 		        }
 		    );
 		});
-		
+
 		function translateStatus(status) {
 		    var text = '';
 		    switch(status.type) {
@@ -113,10 +115,10 @@
 		            text += 'Saving Data';
 		            break;
 		    }
-		    
+
 		    if (! status.extra)
 		        return text;
-		    
+
 		    var extra = status.extra;
 		    if (extra.length > 70)
 		        extra = extra.substr(0, 70) + '...';
