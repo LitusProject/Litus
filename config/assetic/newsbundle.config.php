@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'controllers'  => array(
         'news_install' => array(
@@ -20,7 +20,7 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-    
+
         'admin_news' => array(
             '@common_jquery',
             '@admin_js',

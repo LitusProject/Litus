@@ -13,16 +13,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-$asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
-
 return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'page_install' => 'PageBundle\Controller\Admin\InstallController',
-                'page_news'    => 'PageBundle\Controller\Admin\PageController',
+                'page_install'        => 'PageBundle\Controller\Admin\InstallController',
+                'admin_page'          => 'PageBundle\Controller\Admin\PageController',
+                'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
 
-                'news'         => 'PageBundle\Controller\PageController',
+                'page'                => 'PageBundle\Controller\PageController',
             ),
 
             'doctrine_config' => array(
@@ -39,18 +38,19 @@ return array(
                     'translations' => array(
                         'page_site_en' => array(
                             'content' => __DIR__ . '/../translations/site.en.php',
-                            'locale' => 'en',
+                            'locale'  => 'en',
                         ),
                         'page_site_nl' => array(
                             'content' => __DIR__ . '/../translations/site.nl.php',
-                            'locale' => 'nl',
+                            'locale'  => 'nl',
                         ),
                     ),
                 ),
             ),
+
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
-                    'paths'  => array(
+                    'paths' => array(
                         'page_views' => __DIR__ . '/../views',
                     ),
                 ),
@@ -62,7 +62,7 @@ return array(
                         'page_install' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/install/page',
+                                'route' => '/admin/install/page',
                                 'constraints' => array(
                                 ),
                                 'defaults' => array(
@@ -74,7 +74,7 @@ return array(
                         'admin_page' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/site/page[/:action[/:id]]',
+                                'route' => '/admin/site/page[/:action[/:id]]',
                                 'constraints' => array(
                                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     'id'      => '[0-9]*',
@@ -85,8 +85,22 @@ return array(
                                 ),
                             ),
                         ),
-                        'page' => array(
+                        'admin_page_category' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route' => '/admin/site/page/category[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[0-9]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'admin_page_category',
+                                    'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'page' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
                                 'route'    => '[/:language]/page[/:title]',
                                 'constraints' => array(

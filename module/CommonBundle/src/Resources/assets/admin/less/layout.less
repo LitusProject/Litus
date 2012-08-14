@@ -160,40 +160,40 @@ h1 {
                 color: @cBlack;
             }
         }
-        
+
         .subsubmenu {
         	padding: 0;
         	list-style: none;
-        	
+
         	li {
         		padding: 0;
         	}
-        	
+
         	ul {
         		display: none;
         		padding: @defaultSpacing 0;
-        		
+
 	            li {
 	                display: block;
 	                padding-left: @tIndent;
 	                line-height: @menuItemHeight;
-	
+
 	                a {
 	                    display: block;
 	                    line-height: @menuItemHeight;
 	                    text-decoration: none;
 	                    color: inherit;
 	                }
-	
+
 	                a:hover {
 	                    color: @cBlack;
 	                }
-	
+
 	                a:hover:before {
 	                    color: @cAccent;
 	                }
 	            }
-        		
+
         	}
         }
     }
@@ -207,7 +207,7 @@ h1 {
     height: auto !important;
     height: @contentHeight;
     padding-bottom: @defaultSpacing;
-    
+
     #controller_sub_header,
     #controller_header {
         height: @contentHeaderHeight;
@@ -218,13 +218,13 @@ h1 {
         .title {
             float: left;
             margin-top: @iconHeight / 2;
-            
+
             span {
                 margin-left: 0;
                 padding-left: @iconWidth + 4;
             }
         }
-        
+
         #controller_sub_nav,
         #controller_nav {
             display: block;
@@ -264,27 +264,27 @@ h1 {
                 content: none;
             }
         }
-        
+
         #controller_sub_nav {
             float: left;
         }
     }
-    
+
     #controller_sub_header {
         overflow: hidden;
     }
 
     #controller_action {
         float: left;
-    		
+
 	    .form {
 	        padding: 0;
-	
+
 	        .row {
 	            clear: both;
 	            padding-top: 2 * @defaultSpacing;
 	            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-	
+
 	            .label {
 	                float: left;
 	                width: @formLabelWidth;
@@ -292,78 +292,78 @@ h1 {
 	                height: 0px;
 	                text-align: right;
 	            }
-	
+
 	            .field {
 	                float: right;
 	                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
 	                text-align: left;
 	            }
 	        }
-	
+
 	        .errors {
 	            clear: both;
 	            margin-left: @formLabelWidth + 2 * @defaultSpacing;
 	            padding-top: @formSpacing;
-	
+
 	            li {
 	                color: @cError;
 	            }
 	        }
-	
+
 			.required {
 				font-weight: bold;
 			}
-	
+
 	        .required:after {
 	            content: @formRequired;
 	        }
 	    }
-	
+
 	    .pagination {
 	        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-	
+
 	        tr {
 	            td {
 	                height: @paginationHeight;
 	                text-align: center;
 	                background: none;
 	            }
-	
+
 	            td:first-child, td:last-child {
 	                width: @paginationSideWidth;
 	            }
-	
+
 	            td:first-child {
 	                padding-left: @defaultSpacing;
 	                text-indent: 0;
 	                text-align: left;
 	            }
-	
+
 	            td:last-child {
 	                padding-right: @defaultSpacing;
 	                text-align: right;
 	            }
 	        }
 	    }
-	    
+
 	    .sortable {
 	        ul {
 	            margin: 2 * @defaultSpacing;
-	
+
 	            li {
 	                margin: @defaultSpacing / 2 0;
 	                padding-left: @iconWidth + 4;
-	
+
 	                .disableSelect;
 	            }
-	
+
 	            li:hover {
 	                cursor: move;
 	            }
 	        }
 	    }
     }
-    
+
     .flashmessage {
 		width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
         margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
@@ -403,7 +403,7 @@ h1 {
             }
         }
 	}
-	
+
 	.success_message {
         .title {
             background: @cSuccessTitleBackground;
@@ -443,7 +443,7 @@ h1 {
             background: @cNoticeBackground;
         }
     }
-    
+
     .full_width {
         width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
     }
@@ -482,9 +482,15 @@ h1 {
                     margin-top: 2 * @defaultSpacing;
 
                     a {
+                        display: block;
+                        margin-top: 2px;
                         padding-left: @defaultSpacing;
                         text-decoration: none;
                         color: @cWhite;
+                    }
+
+                    a:first-child {
+                        margin-top: 0;
                     }
 
                     a:hover {
