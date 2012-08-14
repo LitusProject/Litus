@@ -140,6 +140,34 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'index' => array(
                         'index'
                     ),
+
+                    'syllabus_install' => array(
+                        'index'
+                    ),
+                    'page_install' => array(
+                        'index'
+                    ),
+                    'news_install' => array(
+                        'index'
+                    ),
+                    'mail_install' => array(
+                        'index'
+                    ),
+                    'gallery_install' => array(
+                        'index'
+                    ),
+                    'cudi_install' => array(
+                        'index'
+                    ),
+                    'common_install' => array(
+                        'index'
+                    ),
+                    'calendar_install' => array(
+                        'index'
+                    ),
+                    'br_install' => array(
+                        'index'
+                    ),
                 )
             )
         );

@@ -15,7 +15,8 @@
  
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Entity\Acl\Action as AclAction,
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Entity\Acl\Action as AclAction,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
     CommonBundle\Entity\General\Config,
@@ -180,5 +181,14 @@ abstract class InstallController extends AdminController
             }
         }
         $this->getEntityManager()->flush();
+
+        if (null !== $this->getCache() && $this->getCache()->hasItem('acl')) {
+            $this->getCache()->replaceItem(
+                'acl',
+                new Acl(
+                    $this->getEntityManager()
+                )
+            );
+        }
     }
 }
