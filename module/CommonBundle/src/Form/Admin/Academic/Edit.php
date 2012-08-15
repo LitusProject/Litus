@@ -12,11 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
-
+ 
 namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
     CommonBundle\Entity\Users\Statuses\University,
     Doctrine\ORM\EntityManager,
@@ -35,28 +36,49 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @param mixed $opts The form's options
      */
-    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
-
+        
         $field = new Text('university_identification');
-        $field->setLabel('University Identification')
+        $field->setLabel('Identification')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator());
         $this->addElement($field);
-
+        
+        $field = new Select('university_status');
+        $field->setLabel('Status')
+            ->setRequired()
+            ->setMultiOptions(University::$possibleStatuses)
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+        
+        $this->addDisplayGroup(
+            array(
+                'university_identification',
+                'university_status'
+            ),
+            'academic_form'
+        );
+        $this->getDisplayGroup('academic_form')
+               ->setLegend('University')
+            ->setAttrib('id', 'academic_form')
+            ->removeDecorator('DtDdWrapper');
+        
          $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'academic_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-
+        
         $this->populate(
             array(
-                'university_identification' => $person->getUniversityIdentification()
+                'university_identification' => $person->getUniversityIdentification(),
+                'university_status' => $person->getUniversityStatus($academicYear)->getStatus(),
             )
         );
     }

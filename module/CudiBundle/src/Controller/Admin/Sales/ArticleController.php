@@ -299,6 +299,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findAllByPublisherAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
                 break;
+            case 'barcode':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
+                break;
         }
 
         $numResults = $this->getEntityManager()
