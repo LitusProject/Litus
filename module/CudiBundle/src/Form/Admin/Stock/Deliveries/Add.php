@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -36,7 +36,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($options);
 
         $this->setAttrib('id', 'deliveryForm');
-        
+
         $field = new Hidden('article_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')
@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Text('number');
         $field->setLabel('Number')
             ->setAttrib('autocomplete', 'off')

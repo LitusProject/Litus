@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users;
 
 /**
@@ -64,10 +64,10 @@ class Credential
     {
         if (!in_array($algorithm, hash_algos()))
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
-            
+
         $this->algorithm = $algorithm;
         $this->salt = md5(uniqid(rand(), true));
-        
+
         $this->hash = hash_hmac(
             $algorithm, $credential, $this->salt
         );

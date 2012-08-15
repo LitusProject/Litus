@@ -6,7 +6,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\People\Academic,
     Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
-    
+
 /**
  * SubjectProfMap
  *
@@ -19,7 +19,7 @@ class SubjectProfMap extends EntityRepository
     {
         return $this->findOneBySubjectIdAndProfAndAcademicYear($subject->getId(), $prof, $academicYear);
     }
-    
+
     public function findOneBySubjectIdAndProfAndAcademicYear($subjectId, Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -38,13 +38,13 @@ class SubjectProfMap extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -60,10 +60,10 @@ class SubjectProfMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByProfAndAcademicYear(Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -79,10 +79,10 @@ class SubjectProfMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByNameAndProfAndAcademicYearTypeAhead($name, Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -98,7 +98,7 @@ class SubjectProfMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

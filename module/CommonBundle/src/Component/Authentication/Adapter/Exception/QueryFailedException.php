@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Adapter\Exception;
 
 /**
@@ -23,5 +23,5 @@ namespace CommonBundle\Component\Authentication\Adapter\Exception;
  */
 class QueryFailedException extends \RuntimeException implements \Zend\Authentication\Exception
 {
-    
+
 }

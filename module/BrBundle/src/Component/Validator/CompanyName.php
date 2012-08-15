@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ class CompanyName extends \Zend\Validator\AbstractValidator
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @var \BrBundle\Entity\Company The company exluded from this check
      */
@@ -72,12 +72,12 @@ class CompanyName extends \Zend\Validator\AbstractValidator
         $company = $this->_entityManager
             ->getRepository('BrBundle\Entity\Company')
             ->findOneByName($value);
-                
+
         if (null === $company || ($this->_company && ($company == $this->_company || $company->isActive())))
             return true;
 
         $this->error(self::NOT_VALID);
-        
+
         return false;
     }
 }

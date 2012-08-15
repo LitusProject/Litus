@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -34,7 +34,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (null === $this->getParam('academicyear')) {
             $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-            
+
             $start = new DateTime(
                 str_replace(
                     '{{ year }}',
@@ -44,14 +44,14 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
                         ->getConfigValue('start_organization_year')
                 )
             );
-            
+
             $next = clone $start;
             $next->add(new DateInterval('P1Y'));
             if ($next <= new DateTime())
                 $start = $next;
         } else {
             $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-            
+
             $start = new DateTime(
                 str_replace(
                     '{{ year }}',
@@ -63,11 +63,11 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             );
         }
         $startAcademicYear->setTime(0, 0);
-        
+
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStart($start);
-        
+
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -76,20 +76,20 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
                     'No academic year was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $academicYear;
     }
-    
+
     /**
      * Returns the active stock period.
      *
@@ -100,7 +100,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
-            
+
         if (null === $period) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -109,17 +109,17 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
                     'There is no active stock period!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_period',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         $period->setEntityManager($this->getEntityManager());
         return $period;
     }

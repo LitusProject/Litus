@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'Page' => 'Pagina',
 );

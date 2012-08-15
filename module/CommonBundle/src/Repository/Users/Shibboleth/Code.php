@@ -26,13 +26,13 @@ class Code extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-            
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findAllExpired()
     {
         $query = $this->_em->createQueryBuilder();
@@ -44,7 +44,7 @@ class Code extends EntityRepository
             ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

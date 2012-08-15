@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_article/partials/navigation.twig' %}
-		
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width file_removed_success hide">
 		<div class="title">Success</div>
@@ -25,12 +25,12 @@
 
 	<div id="controller_action">
 		<h1>Article</h1>
-		
+
 		<p>Title: <b>{{ article.getTitle() }}</b></p>
 		<p>Author: <b>{{ article.getAuthors() }}</b></p>
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
-		
+
 		{% if hasAccess('admin_article_file', 'upload') %}
     		{% autoescape false %}
     			{{ form }}
@@ -38,7 +38,7 @@
     		<br style="clear:both"/>
     	{% endif %}
 
-   		<br style="clear:both"/>		
+   		<br style="clear:both"/>
 
 		<table class="full_width manage" id="articleFiles">
 	        <tr>
@@ -47,7 +47,7 @@
 	            <th width="80px">Printable</th>
 	            <th width="70px">Action</th>
 	        </tr>
-	        
+
 	        {% if article.isInternal() and saleArticle is not null %}
     	        <tr class="item">
     	            <td>front.pdf</td>
@@ -60,7 +60,7 @@
     	            </td>
     	        </tr>
 	        {% endif %}
-	        
+
 	        {% for mapping in mappings %}
 	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getFile().getName() }}</td>
@@ -81,7 +81,7 @@
 	        {% endfor %}
 	    </table>
 	</div>
-	
+
 	<div class="modal hide fade" id="removeFile">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -101,7 +101,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal hide fade" id="progressModal">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -126,7 +126,7 @@
 			$('.downloadFile').each(function () {
 				$(this).downloadFile($(this).data('file'));
 			});
-			
+
 			$('#uploadFile').formUploadProgress({
 			    url: '{{ url('admin_article_file', {"action": "progress"}) }}',
 			    name: '{{ uploadProgressId }}',
@@ -149,14 +149,14 @@
     			        $('#uploadFile').resetForm();
         			    $('.flashmessage').addClass('hide');
     			        $('.file_uploaded').removeClass('hide');
-    			        
+
     			        var item = $('<tr>', {class: 'item'});
     			        item.append(
     			            $('<td>').html(data.info.name),
     			            $('<td>').html(data.info.description),
     			            actions = $('<td>')
     			        );
-    			        
+
     			        {% if hasAccess('admin_article_file', 'download') %}
     			            actions.append(downloadFile = $('<a>', {class: 'downloadFile view'}).html('Download'));
     			            downloadFile.downloadFile('{{ url('admin_article_file', {"action": "download"}) }}/' + data.info.id);
@@ -166,7 +166,7 @@
     			            deleteFile.data(data.info)
     			                .click(openDeleteModal);
     			        {% endif %}
-    			        
+
     			        $('#articleFiles').append(item);
     			    }
     			    var progressModal = $('#progressModal');
@@ -183,13 +183,13 @@
 			        progressModal.permanentModal('hide');
 			    }
 			});
-			
+
 			$('.item .delete').click(openDeleteModal);
 		});
-		
+
 		function openDeleteModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeFile = $('#removeFile');
 			removeFile.find('.fileName').html($(this).data('name'));
@@ -209,7 +209,7 @@
 			});
 			removeFile.modal();
 		}
-		
+
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
 			$('.file_removed_error').removeClass('hide');

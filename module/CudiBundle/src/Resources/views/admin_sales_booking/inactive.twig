@@ -2,15 +2,15 @@
 
 {% block content %}
 	{% include 'admin_sales_booking/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_sales_booking/partials/periods.twig' %}
 
 	<div id="controller_action">
 	    <div id="booking_search" style="display:none;">
 	    	<div style="padding:4px;text-align:right">
-	    		Search: 
+	    		Search:
 	    		<select id="searchField">
 	    			<option value="article">Article</option>
 	    			<option value="person">Person</option>
@@ -19,7 +19,7 @@
 	    		is
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
-	    	
+
 	    	<table class="full_width">
 	        	<tr>
 		            <th width="140px">Person</th>
@@ -30,7 +30,7 @@
 	    		</tr>
 	    	</table>
 	    </div>
-	    
+
 		<div id="default_page">
 			<table class="full_width">
 		        <tr>
@@ -40,7 +40,7 @@
 		            <th width="100px">Date</th>
 		            <th width="55px">Status</th>
 		        </tr>
-		        
+
 		        {% for booking in paginator %}
 		            <tr class="item">
 		                <td>{{ booking.getPerson().getFullName() }}</td>
@@ -51,7 +51,7 @@
 		            </tr>
 		        {% endfor %}
 		    </table>
-	
+
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
@@ -62,7 +62,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $('#controller_nav .assignAll').click(openAssignAllModal);
-		    
+
 		    {% if hasAccess('admin_sales_booking', 'search') %}
 			$.searchDatabase({
 				defaultPage: $('#default_page'),

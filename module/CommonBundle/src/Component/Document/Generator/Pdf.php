@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\File\TmpFile,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 abstract class Pdf
-{    
+{
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -36,17 +36,17 @@ abstract class Pdf
      * @var string The path to the document's XSL file
      */
     private $_xslPath;
-    
+
     /**
      * @var \CommonBundle\Component\Util\TmpFile A tempory file which holds the generated XML structure
      */
     private $_xmlFile;
-    
+
     /**
-     * @var string The 
+     * @var string The
      */
     private $_pdfPath;
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $xslPath The path to the document's XSL file
@@ -56,18 +56,18 @@ abstract class Pdf
     {
         if(($xslPath === null) || !is_string($xslPath))
             throw new \InvalidArgumentException('Invalid xsl');
-            
+
         if(($pdfPath === null) || !is_string($pdfPath))
             throw new \InvalidArgumentException('Invalid pdf');
 
         $this->_entityManager = $entityManager;
-                
+
         $this->_xslPath = $xslPath;
         $this->_pdfPath = $pdfPath;
-        
+
         $this->_xmlFile = new TmpFile();
     }
-        
+
     /**
      * Returns our configuration repository.
      *
@@ -79,7 +79,7 @@ abstract class Pdf
     }
 
     /**
-     * Format 
+     * Format
      *
      * @param $address string
      * @return string
@@ -88,7 +88,7 @@ abstract class Pdf
     {
         return str_replace(',', '<br/>', $address);
     }
-    
+
     /**
      * Generate the document.
      *
@@ -99,10 +99,10 @@ abstract class Pdf
         $this->generateXml(
             $this->_xmlFile
         );
-        
+
         $this->generatePdf();
     }
-    
+
     /**
      * Generate the document's XML structure.
      *
@@ -110,7 +110,7 @@ abstract class Pdf
      * @return void
      */
     abstract protected function generateXml(TmpFile $xmlFile);
-    
+
     /**
      * Generate the PDF document using the specified XSL and XML files, using FOP.
      *
@@ -128,19 +128,19 @@ abstract class Pdf
         }
 
         $resultValue = 0;
-        
+
         $fop_command = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('fop_command');;
-        
+
         $result = system(
             escapeshellcmd($fop_command . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
-        
+
         if ($resultValue != 0)
             throw new \RuntimeException('The FOP command failed with return value ' . $resultValue);
     }
-    
+
     /**
      * @return \Doctrine\ORM\EntityManager
      */

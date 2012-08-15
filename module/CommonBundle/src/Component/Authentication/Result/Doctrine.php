@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Result;
 
 use CommonBundle\Entity\Users\Person;
@@ -41,7 +41,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     public function __construct($code, $identity, array $messages = array(), Person $personObject = null)
     {
         parent::__construct($code, $identity, $messages);
-        
+
         $this->_personObject = $personObject;
     }
 

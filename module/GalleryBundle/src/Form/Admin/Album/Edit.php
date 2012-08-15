@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -32,17 +32,17 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Album $album, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $this->album = $album;
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit'));
-        
+
         $this->populateFromAlbum($album);
     }
 }

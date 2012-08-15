@@ -23,10 +23,10 @@ class Period extends EntityRepository
             ->orderBy('p.startDate', 'DESC')
             ->getQuery()
             ->getResult();
-       
+
        return $resultSet;
     }
-        
+
     public function findOneActive()
     {
         $query = $this->_em->createQueryBuilder();
@@ -41,10 +41,10 @@ class Period extends EntityRepository
 
        if (isset($resultSet[0]))
            return $resultSet[0];
-       
+
        return null;
     }
-    
+
     private function _findAllArticleIds(PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
@@ -57,17 +57,17 @@ class Period extends EntityRepository
                 )
             )
             ->setParameter('startDate', $period->getStartDate());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getResult();
 
         $articles = array(0);
         foreach ($resultSet as $item)
             $articles[$item->getArticle()->getId()] = $item->getArticle()->getId();
-        
+
         $query = $this->_em->createQueryBuilder();
         $query->select('d')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
@@ -78,10 +78,10 @@ class Period extends EntityRepository
                 )
             )
             ->setParameter('startDate', $period->getStartDate());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-            
+
         $resultSet = $query->getQuery()
             ->getResult();
 
@@ -98,19 +98,19 @@ class Period extends EntityRepository
                 )
             )
             ->setParameter('startDate', $period->getStartDate());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getResult();
-        
+
         foreach ($resultSet as $item)
             $articles[$item->getArticle()->getId()] = $item->getArticle()->getId();
-        
+
         return $articles;
     }
-    
+
     public function findAllArticlesByPeriod(PeriodEntity $period, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
@@ -121,23 +121,23 @@ class Period extends EntityRepository
             )
             ->getQuery()
             ->getResult();
-            
+
         if ($notDelivered) {
             for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
-            
+
         return $resultSet;
     }
-    
+
     public function findAllArticlesByPeriodAndTitle(PeriodEntity $period, $title, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
-            ->innerJoin('a.mainArticle', 'm', Join::WITH, 
+            ->innerJoin('a.mainArticle', 'm', Join::WITH,
                 $query->expr()->like($query->expr()->lower('m.title'), ':title')
             )
             ->where(
@@ -146,17 +146,17 @@ class Period extends EntityRepository
             ->setParameter('title', '%'.strtolower($title).'%')
             ->getQuery()
             ->getResult();
-        
+
         if ($notDelivered) {
             for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
-            
+
         return $resultSet;
     }
-    
+
     public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode, $notDelivered = false)
     {
         if (!is_numeric($barcode))
@@ -174,23 +174,23 @@ class Period extends EntityRepository
             ->setParameter('barcode', $barcode . '%')
             ->getQuery()
             ->getResult();
-        
+
         if ($notDelivered) {
             for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
-            
+
         return $resultSet;
     }
-    
+
     public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier, $notDelivered = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sales\Article', 'a')
-            ->innerJoin('a.supplier', 's', Join::WITH, 
+            ->innerJoin('a.supplier', 's', Join::WITH,
                 $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
             )
             ->where(
@@ -199,17 +199,17 @@ class Period extends EntityRepository
             ->setParameter('supplier', '%'.strtolower($supplier).'%')
             ->getQuery()
             ->getResult();
-        
+
         if ($notDelivered) {
             for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
         }
-            
+
         return $resultSet;
     }
-    
+
     public function getNbDelivered(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -224,13 +224,13 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $delivered = $query->getQuery()
             ->getSingleScalarResult();
-            
+
         $query = $this->_em->createQueryBuilder();
         $query->select('SUM(r.number)')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
@@ -243,21 +243,21 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $retour = $query->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null === $delivered)
             $delivered = 0;
         if (null === $retour)
             $retour = 0;
-            
+
         return $delivered - $retour;
     }
-    
+
     public function getNbOrdered(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -274,18 +274,18 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null !== $resultSet)
             return $resultSet;
         return 0;
     }
-    
+
     public function getNbSold(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -300,18 +300,18 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null !== $resultSet)
             return $resultSet;
         return 0;
     }
-    
+
     public function getNbBooked(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -327,18 +327,18 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null !== $resultSet)
             return $resultSet;
         return 0;
     }
-    
+
     public function getNbAssigned(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -354,18 +354,18 @@ class Period extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
-        
+
         if (!$period->isOpen())
             $query->setParameter('endDate', $period->getEndDate());
-        
+
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null !== $resultSet)
             return $resultSet;
         return 0;
     }
-    
+
     public function getNbQueueOrder(PeriodEntity $period, Article $article)
     {
         $query = $this->_em->createQueryBuilder();
@@ -380,7 +380,7 @@ class Period extends EntityRepository
             ->setParameter('article', $article->getId())
             ->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null !== $resultSet)
             return $resultSet;
         return 0;

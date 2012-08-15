@@ -14,7 +14,7 @@
 		$(document).ready(function () {
 			$('#internal').click(toggleInternal);
 			toggleInternal();
-			
+
 			$('#subjectSearch').typeaheadRemote(
 			    {
 			        source: '{{ url("prof_subject_typeahead", {"language": language.getAbbrev()})}}',
@@ -27,7 +27,7 @@
 			    }
 			});
 		});
-		
+
 		function toggleInternal() {
 			if ($('#internal').is(':checked'))
 				$('#internal_form').show();

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -40,14 +40,14 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         parent::__construct($entityManager, $opts);
 
         $this->removeElement('username');
-        
+
         $field = new Multiselect('system_roles');
         $field->setLabel('System Groups')
             ->setMultiOptions($this->_createSystemRolesArray())
             ->setAttrib('disabled', 'disabled')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Text('code');
         $field->setLabel('Code')
             ->setAttrib('disabled', 'disabled')
@@ -103,7 +103,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         }
         return $rolesArray;
     }
-        
+
     /**
      * Returns an array that has all the roles, so that they are available in the
      * roles multiselect.
@@ -120,7 +120,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
         foreach ($roles as $role) {
             if (!$role->getSystem())
                 continue;
-            
+
             $rolesArray[$role->getName()] = $role->getName();
         }
         return $rolesArray;

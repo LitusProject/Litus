@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Controller\Admin;
 
 use Zend\View\Model\ViewModel;
@@ -33,7 +33,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         $port = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.update_socket_port');
-            
+
         return new ViewModel(
             array(
                 'socketUrl' => 'ws://' . $address . ':' . $port,

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,

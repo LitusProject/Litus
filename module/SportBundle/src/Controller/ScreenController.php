@@ -76,7 +76,7 @@ class ScreenController extends \Litus\Controller\Action
                 foreach ($member->getLaps() as $lap) {
                     if (null === $lap->getEndTime())
                         continue;
-                    
+
                     $startTime = $lap->getStartTime()->format('H');
                     $endTime = $lap->getEndTime()->format('H');
 

@@ -15,6 +15,8 @@
 
 namespace PageBundle\Entity;
 
+use CommonBundle\Entity\General\Language;
+
 /**
  * This entity stores the node item.
  *
@@ -40,29 +42,46 @@ class Category
     private $translations;
 
     /**
-     * @param string $name The category's name
-     */
-    public function __construct($name)
-    {
-        $this->setName($name);
-    }
-
-    /**
-     * @param string $name
-     * @return \PageBundle\Entity\Category
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
-    public function getName()
+    public function getId()
     {
-        return $this->name;
+        return $this->id;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \PageBundle\Entity\Nodes\Translation
+     */
+    public function getTranslation(Language $language, $allowFallback = true)
+    {
+        foreach($this->translations as $translation) {
+            if ($translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getName(Language $language, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getName();
+
+        return '';
     }
 }

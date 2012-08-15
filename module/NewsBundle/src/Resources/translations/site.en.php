@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'News' => 'News',
     'No news items were posted yet.' => 'No news items were posted yet.'

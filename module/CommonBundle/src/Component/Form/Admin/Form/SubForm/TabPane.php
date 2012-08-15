@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin\Form\SubForm;
 
 /**
@@ -33,12 +33,12 @@ class TabPane extends \Zend\Form\SubForm
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+
         $this->clearDecorators();
         $this->addDecorator('FormElements')
             ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_pane', 'id' => $options));
     }
-    
+
     /**
      * Get name of array elements belong to
      *

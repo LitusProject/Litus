@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Users\Statuses;
 
 use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
@@ -20,7 +20,7 @@ use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
 
 /**
  * A classification of a user based on his status at our Alma Mater.
- * 
+ *
  * @Entity(repositoryClass="BrBundle\Repository\Users\Statuses\Corporate")
  * @Table(name="users.corporate_statuses")
  */
@@ -76,9 +76,9 @@ class Corporate
     {
         if (!self::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
-            
+
         $this->person = $person;
-        
+
         $this->setStatus($status);
         $this->year = AcademicYear::getShortAcademicYear();
     }
@@ -127,7 +127,7 @@ class Corporate
     {
         if (self::isValidStatus($status))
             $this->status = $status;
-            
+
         return $this;
     }
 

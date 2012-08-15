@@ -2,23 +2,23 @@
 
 {% block content %}
 	{% include 'admin_article/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
 		<h1>Article</h1>
-		
+
 		<p>Title: <b>{{ article.getTitle() }}</b></p>
 		<p>Author: <b>{{ article.getAuthors() }}</b></p>
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
-		
+
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
 		<br class="clear" />
 		<br class="clear" />
-		
+
 		<h1>Last Comments</h1>
 		<table>
 	        <tr>
@@ -28,7 +28,7 @@
 	            <th width="80px">Type</th>
 	            <th width="70px">Action</th>
 	        </tr>
-	
+
 	        {% for mapping in comments %}
 	            <tr class="item item-{{ mapping.getId() }}">
 	                <td>{{ mapping.getComment().getDate().format('d/m/Y H:i') }}</td>
@@ -42,7 +42,7 @@
 	        {% endfor %}
 	    </table>
 	</div>
-	
+
 	<aside>
 	    {% if saleArticle is not null and hasAccess('admin_sales_article', 'edit') %}
 	        <div class="sidebox">
@@ -109,7 +109,7 @@
 			</div>
 		{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="viewComment">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -133,16 +133,16 @@
 			toggleInternal();
 			$('.item .viewComment').click(openViewModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var viewComment = $('#viewComment');
 			viewComment.find('.text').html($this.data('text'));
 			viewComment.modal();
 		}
-		
+
 		function toggleInternal() {
 			if ($('#internal').is(':checked'))
 				$('#internal_form').show();

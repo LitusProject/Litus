@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return function ($class) {
     static $map;
     if (!$map) {

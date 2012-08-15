@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Supplier;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -31,13 +31,13 @@ class Edit extends \CudiBundle\Form\Admin\Supplier\Add
         parent::__construct($options);
 
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'supplier_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromSupplier($supplier);
     }
 }

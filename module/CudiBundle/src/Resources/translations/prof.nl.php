@@ -20,7 +20,7 @@ return array(
     'Articles' => 'Artikels',
     'Logout' => 'Afmelden',
     'Login' => 'Aanmelden',
-    
+
     'Add Article' => 'Artikel Toevoegen',
     'Comments' => 'Commentaar',
     'View comments on this article and add one.' => 'Bekijk commentaar op dit artikel en voeg er toe.',
@@ -35,13 +35,13 @@ return array(
     'Actions' => 'Acties',
     'Edit' => 'Bewerk',
     'Create Article' => 'Artikel Toevoegen',
-    
+
     'Subject' => 'Vak',
     'Code' => 'Code',
     'Name' => 'Naam',
     'Semester' => 'Semester',
     'Credits' => 'Studiepunten',
-    
+
     'Error' => 'Fout',
     'An error occurred while removing the comment.' => 'Er is een fout opgetreden tijdens het verwijderen van de commentaar.',
     'Success' => 'Succes',
@@ -61,7 +61,7 @@ return array(
     'Are you sure you want to remove your comment?' => 'Ben je zeker dat je de commentaar wil verwijderen?',
     'Yes' => 'Ja',
     'No' => 'Neen',
-    
+
     'The file was succesfully uploaded.' => 'Het bestand is succesvol geupload.',
     'The file was succesfully removed.' => 'Het bestand is succesvol verwijderd.',
     'An error occurred while removing the file.' => 'Er is een fout opgetreden tijdens het verwijderen van het bestand.',
@@ -75,7 +75,7 @@ return array(
     'You are about to delete the following file' => 'Je staat op het punt om het volgende bestand te verwijderen',
     'Please note that this operation cannot be undone!' => 'Deze bewerking kan niet ongedaan gemaakt worden!',
     'Are you sure you want to continue?' => 'Ben je zeker dat je wil verder gaan?',
-    
+
     'Your Recent Activity' => 'Je Recente Activiteiten',
     'added an article on <b>%date%</b>' => 'voegde een artikel toe op <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'bewerkte een artikel op <b>%date%</b>',
@@ -90,7 +90,7 @@ return array(
     'added a file on <b>%date%</b>' => 'voegde een bestand toe op <b>%date%</b>',
     'removed a file on <b>%date%</b>' => 'verwijderde een bestand op <b>%date%</b>',
     'Please login to get access to these pages.' => 'Gelieve aan te melden om toegang te krijgen tot deze pagina\'s.',
-    
+
     'Your Subjects' => 'Jouw Vakken',
     'Students' => 'Studenten',
     'View' => 'Bekijk',
@@ -107,7 +107,7 @@ return array(
     'Are you sure you want to remove the following article' => 'Ben je zeker dat je volgend artikel wil verwijderen',
     'Are you sure you want to remove the following docent' => 'Ben je zeker dat je volgende docent wil verwijderen',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
-    
+
     'URL' => 'URL',
     'Downloadable' => 'Downloadbaar',
     'Type' => 'Type',
@@ -124,7 +124,7 @@ return array(
     'Update' => 'Update',
     'The uri is not valid' => 'De uri is niet geldig',
     'The given year is not valid' => 'Het opgegeven jaar is niet geldig',
-    
+
     'Other' => 'Andere',
     'Exercises' => 'Oefeningen',
     'Slides' => 'Presentaties',
@@ -132,7 +132,7 @@ return array(
     'Stapled' => 'Geniet',
     'None' => 'Los',
     'Glued' => 'Gelijmd',
-    
+
     'SUCCESS' => 'SUCCES',
     'The article was successfully created!' => 'Het artikel is succesvol aangemaakt!',
     'The article was successfully updated!' => 'Het artikel is succesvol aangepast!',

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin\Decorator;
 
 use Zend\Form\Decorator\AbstractDecorator,

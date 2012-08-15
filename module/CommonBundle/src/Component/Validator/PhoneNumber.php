@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Validator;
 
 /**
@@ -24,7 +24,7 @@ class PhoneNumber extends \Zend\Validator\Regex
 {
     function __construct() {
         parent::__construct('/^\+(?:[0-9] ?){6,14}[0-9]$/');
-        
+
         parent::setMessage(
             'The given phone number is not in the international format (+CCAAANNNNNN)'
         );

@@ -25,19 +25,19 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $albums = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findAll();
-        
+
         return array(
             'albums' => $albums,
         );
     }
-    
+
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $album = new Album($this->getAuthentication()->getPersonObject(), DateTime::createFromFormat('d/m/Y', $formData['date']));
                 $this->getEntityManager()->persist($album);
@@ -45,24 +45,24 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
-                
+
                 foreach($languages as $language) {
                     $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
                     $this->getEntityManager()->persist($translation);
-                    
+
                     if ($language->getAbbrev() == 'en')
                         $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();
-                
+
                 \CommonBundle\Component\Log\Log::createLog(
                     $this->getEntityManager(),
                     'action',
                     $this->getAuthentication()->getPersonObject(),
                     'Gallery album added: ' . $title
                 );
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -78,56 +78,56 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                         'id' => $album->getId(),
                     )
                 );
-                
+
                 return;
             }
         }
-        
+
         return array(
             'form' => $form,
         );
     }
-    
+
     public function editAction()
     {
         if (!($album = $this->_getAlbum()))
             return;
-        
+
         $form = new EditForm($this->getEntityManager(), $album);
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $album->setDate(DateTime::createFromFormat('d/m/Y', $formData['date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
-                
+
                 foreach($languages as $language) {
                     $translation = $album->getTranslation($language);
-                    
+
                     if ($translation) {
                         $translation->setTitle($formData['title_' . $language->getAbbrev()]);
                     } else {
                         $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
                         $this->getEntityManager()->persist($translation);
                     }
-                    
+
                     if ($language->getAbbrev() == 'en')
                         $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();
-                
+
                 \CommonBundle\Component\Log\Log::createLog(
                     $this->getEntityManager(),
                     'action',
                     $this->getAuthentication()->getPersonObject(),
                     'Gallery album edited: ' . $title
                 );
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -142,27 +142,27 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                         'action' => 'manage'
                     )
                 );
-                
+
                 return;
             }
         }
-        
+
         return array(
             'form' => $form,
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($album = $this->_getAlbum()))
             return;
-        
+
         $this->getEntityManager()->remove($album);
-        
+
         $this->getEntityManager()->flush();
-        
+
         \CommonBundle\Component\Log\Log::createLog(
             $this->getEntityManager(),
             'action',
@@ -173,29 +173,29 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneByAbbrev('en')
                 )
         );
-        
+
         return array(
             'result' => array(
                 'status' => 'success'
             ),
         );
     }
-    
+
     public function photosAction()
     {
         if (!($album = $this->_getAlbum()))
             return;
-            
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
-            
+
         return array(
             'album' => $album,
             'filePath' => $filePath,
         );
     }
-    
+
     public function addPhotosAction()
     {
         if (!($album = $this->_getAlbum()))
@@ -205,12 +205,12 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             'album' => $album,
         );
     }
-    
+
     public function uploadAction()
     {
         if (!($album = $this->_getAlbum()))
             return;
-            
+
         $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
@@ -220,18 +220,18 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 mkdir($filePath . '/' . $album->getId() . '/');
             mkdir($filePath . '/' . $album->getId() . '/thumbs/');
         }
-        
+
         $file = new FileTransfer();
         $file->receive();
-        
+
         do {
             $filename = '/' . sha1(uniqid());
         } while(file_exists($filePath . '/' . $album->getId() . $filename));
-        
+
         $image = new Imagick($file->getFileName());
-        
+
         $exif = exif_read_data($file->getFileName());
-        
+
         switch($exif['Orientation']) {
             case 1: // nothing
                 break;
@@ -252,38 +252,38 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 $image->rotateImage(new ImagickPixel(), 90);
                 break;
             case 7: // horizontal flip + 90 rotate clockwise
-                $image->flopImage();    
+                $image->flopImage();
                 $image->rotateImage(new ImagickPixel(), 90);
                 break;
             case 8:    // 90 rotate counter clockwise
                 $image->rotateImage(new ImagickPixel(), -90);
                 break;
         }
-        
+
         $image->scaleImage(640, 480, true);
         $image->writeImage($filePath . '/' . $album->getId() . $filename);
         $image->cropThumbnailImage(150, 150);
         $image->writeImage($filePath . '/' . $album->getId() . '/thumbs'. $filename);
-        
+
         $photo = new Photo($album, $filename);
         $this->getEntityManager()->persist($photo);
         $this->getEntityManager()->flush();
-        
+
         return array(
             'result' => array(
                 'status' => 'success'
             ),
         );
     }
-    
+
     public function censorPhotoAction()
     {
         if (!($photo = $this->_getPhoto()))
             return;
-            
+
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
-        
+
         \CommonBundle\Component\Log\Log::createLog(
             $this->getEntityManager(),
             'action',
@@ -294,7 +294,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneByAbbrev('en')
                 ) . ' with id ' . $photo->getId()
         );
-        
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -302,20 +302,20 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 'The photo was successfully censored!'
             )
         );
-        
+
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
-        
+
         return;
     }
-    
+
     public function UnCensorPhotoAction()
     {
         if (!($photo = $this->_getPhoto()))
             return;
-            
+
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
-        
+
         \CommonBundle\Component\Log\Log::createLog(
             $this->getEntityManager(),
             'action',
@@ -326,7 +326,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneByAbbrev('en')
                 ) . ' with id ' . $photo->getId()
         );
-        
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -334,38 +334,38 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 'The photo was successfully uncensored!'
             )
         );
-        
+
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
-        
+
         return;
     }
-    
+
     public function viewPhotoAction()
     {
         if (!($photo = $this->_getPhoto()))
             return;
-        
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
-        
+
         $path = $filePath . '/' . $photo->getAlbum()->getId() . $photo->getFilePath();
-        
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-type' => mime_content_type($path),
         ));
         $this->getResponse()->setHeaders($headers);
-        
+
         $handle = fopen($path, 'r');
         $data = fread($handle, filesize($path));
         fclose($handle);
-        
+
         return array(
             'data' => $data,
         );
     }
-    
+
     public function _getAlbum()
     {
         if (null === $this->getParam('id')) {
@@ -376,21 +376,21 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     'No id was given to identify the album!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_gallery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $album) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -399,20 +399,20 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     'No album with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_gallery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $album;
     }
-    
+
     public function _getPhoto()
     {
         if (null === $this->getParam('id')) {
@@ -423,21 +423,21 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     'No id was given to identify the photo!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_gallery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $album) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -446,17 +446,17 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     'No photo with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_gallery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $album;
     }
 }

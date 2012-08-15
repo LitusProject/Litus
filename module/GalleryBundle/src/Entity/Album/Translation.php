@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace GalleryBundle\Entity\Album;
 
 use CommonBundle\Entity\General\Language;
@@ -20,7 +20,7 @@ class Translation
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \GalleryBundle\Entity\Album\Album The album of this translation
      *
@@ -28,7 +28,7 @@ class Translation
      * @JoinColumn(name="album", referencedColumnName="id")
      */
     private $album;
-        
+
     /**
      * @var \CommonBundle\Entity\General\Language The language of this tanslation
      *
@@ -36,21 +36,21 @@ class Translation
      * @JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
-        
+
     /**
      * @var string The title of this tanslation
      *
      * @Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var string The name of this tanslation
      *
      * @Column(type="string", unique=true)
      */
     private $name;
-    
+
     /**
      * @param \GalleryBundle\Entity\Album\Album $album
      * @param \CommonBundle\Entity\General\Language $language
@@ -64,7 +64,7 @@ class Translation
         $this->title = $title;
         $this->_setName($title);
     }
-    
+
     /**
      * @return \GalleryBundle\Entity\Album\Album
      */
@@ -72,7 +72,7 @@ class Translation
     {
         return $this->album;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\Language
      */
@@ -80,7 +80,7 @@ class Translation
     {
         return $this->language;
     }
-    
+
     /**
      * @return string
      */
@@ -88,7 +88,7 @@ class Translation
     {
         return $this->title;
     }
-    
+
     /**
      * @param string $title
      *
@@ -100,7 +100,7 @@ class Translation
         $this->_setName($title);
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -108,7 +108,7 @@ class Translation
     {
         return $this->name;
     }
-    
+
     /**
      * @param string $name
      *

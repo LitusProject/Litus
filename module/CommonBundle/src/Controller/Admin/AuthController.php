@@ -35,7 +35,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             'result' => false,
             'reason' => 'NOT_POST'
         );
-        
+
         if ($this->getRequest()->isPost()) {
             parse_str(
                 $this->getRequest()->post()->get('formData'), $formData
@@ -44,7 +44,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $this->getAuthentication()->authenticate(
                 $formData['username'], $formData['password'], $formData['remember_me']
             );
-            
+
             if ($this->getAuthentication()->isAuthenticated()) {
                 $authResult = array(
                     'result' => true,
@@ -65,13 +65,13 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     public function loginAction()
     {
         $isAuthenticated = $this->getAuthentication()->isAuthenticated();
-        
+
         if ($isAuthenticated) {
             $this->redirect()->toRoute('admin_index');
-            
+
             return new ViewModel();
         }
-                    
+
         return new ViewModel(
             array(
                 'isAuthenticated' => $isAuthenticated,
@@ -88,12 +88,12 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'admin_auth'
         );
-        
+
         return new ViewModel();
     }
-    
+
     public function shibbolethAction()
-    {   
+    {
         if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
@@ -103,20 +103,20 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 ),
                 $this->getLocator()->get('authentication_doctrineservice')
             );
-            
+
             $code = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
-                
-            if (null !== $code) { 
+
+            if (null !== $code) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
-                    
+
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
                     );
-                    
+
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
                             'admin_index'
@@ -125,19 +125,19 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         }
-        
+
         return new ViewModel();
     }
-    
+
     private function _getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
-        
+
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
-            
+
         return $shibbolethUrl . '?source=admin';
     }
 }

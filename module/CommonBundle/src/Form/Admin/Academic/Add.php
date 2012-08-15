@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -39,26 +39,26 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $field = new Checkbox('activation_code');
         $field->setLabel('Activation Code')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Text('university_identification');
         $field->setLabel('Identification')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator());
         $this->addElement($field);
-        
+
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
             ->setMultiOptions(University::$possibleStatuses)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->addDisplayGroup(
             array(
                 'university_identification',
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                ->setLegend('University')
             ->setAttrib('id', 'academic_form')
             ->removeDecorator('DtDdWrapper');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'academic_add')

@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace GalleryBundle\Entity\Album;
 
 /**
@@ -18,7 +18,7 @@ class Photo
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \GalleryBundle\Entity\Album\Album The album of this translation
      *
@@ -26,21 +26,21 @@ class Photo
      * @JoinColumn(name="album", referencedColumnName="id")
      */
     private $album;
-        
+
     /**
      * @var string The path of this photo
      *
      * @Column(type="string")
      */
     private $filePath;
-    
+
     /**
      * @var boolean Whether the photo is censored
      *
      * @Column(type="boolean")
      */
     private $censored = false;
-    
+
     /**
      * @param \GalleryBundle\Entity\Album\Album $album
      * @param string $filePath
@@ -50,7 +50,7 @@ class Photo
         $this->album = $album;
         $this->filePath = $filePath;
     }
-    
+
     /**
      * @return integer
      */
@@ -58,7 +58,7 @@ class Photo
     {
         return $this->id;
     }
-    
+
     /**
      * @return \GalleryBundle\Entity\Album\Album
      */
@@ -66,7 +66,7 @@ class Photo
     {
         return $this->album;
     }
-    
+
     /**
      * @return string
      */
@@ -74,7 +74,7 @@ class Photo
     {
         return $this->filePath;
     }
-    
+
     /**
      * @return string
      */
@@ -82,7 +82,7 @@ class Photo
     {
         return '/thumbs' . $this->filePath;
     }
-    
+
     /**
      * @return boolean
      */
@@ -90,7 +90,7 @@ class Photo
     {
         return $this->censored;
     }
-    
+
     /**
      * @param boolean $censored
      *

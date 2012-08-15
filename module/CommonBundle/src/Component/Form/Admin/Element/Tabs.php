@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin\Element;
 
 use \CommonBundle\Component\Form\Admin\Decorator\TabsDecorator as TabsDecorator;
@@ -43,7 +43,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
             )
         );
     }
-    
+
     /**
      * @param array $tabs
      *
@@ -54,7 +54,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
         $this->tabs = $tabs;
         return $this;
     }
-    
+
     /**
      * @return array
      */
@@ -62,7 +62,7 @@ class Tabs extends \Zend\Form\Element\Xhtml
     {
         return $this->tabs;
     }
-    
+
     /**
      * @param array $tab
      *

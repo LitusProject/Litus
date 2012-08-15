@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
@@ -21,7 +21,7 @@ use BrBundle\Entity\Company,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection;
-    
+
 /**
  * This is the entity for a contract.
  *
@@ -173,7 +173,7 @@ class Contract
     {
         if ($author === null)
             throw new \InvalidArgumentException('Author cannot be null');
-            
+
         $this->author = $author;
 
         return $this;
@@ -196,7 +196,7 @@ class Contract
     {
         if ($company === null)
             throw new \InvalidArgumentException('Company cannot be null');
-            
+
         $this->company = $company;
 
         return $this;
@@ -255,7 +255,7 @@ class Contract
     {
         if (($discount < 0) || ($discount > 100))
             throw new \InvalidArgumentException('Invalid discount');
-            
+
         $this->discount = $discount;
 
         return $this;
@@ -286,7 +286,7 @@ class Contract
     {
         if (($title === null) || !is_string($title))
             throw new \InvalidArgumentException('Invalid title');
-            
+
         $this->title = $title;
 
         return $this;
@@ -335,7 +335,7 @@ class Contract
     {
         if (($invoiceNb === null) || !is_numeric($invoiceNb))
             throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
-            
+
         $this->invoiceNb = $invoiceNb;
 
         return $this;
@@ -357,7 +357,7 @@ class Contract
     {
         if(($contractNb === null) || !is_numeric($contractNb))
             throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
-            
+
         $this->contractNb = $contractNb;
 
         return $this;

@@ -2,9 +2,9 @@
 
 {% block content %}
 	{% include 'admin_sales_booking/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-    
+
     {% include 'admin_sales_booking/partials/periods.twig' %}
     <div class="flashmessage success_message full_width mail_send_success hide">
     	<div class="title">Success</div>
@@ -18,17 +18,17 @@
     		<p>An error occurred while trying to send a mail.</p>
     	</div>
     </div>
-    
+
     <div id="controller_action">
         <h1>Booking</h1>
-        
+
         <p>Person: <b>{{ booking.getPerson().getFullName() }}</b></p>
         <p>Article: <b>{{ booking.getArticle().getMainArticle().getTitle() }} - {{ booking.getArticle().getBarcode() }}</b></p>
         <p>Number: <b>{{ booking.getNumber() }}</b></p>
         <p>Date: <b>{{ booking.getBookDate().format('d/m/Y H:i') }}</b></p>
         <p>Expires: <b>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</b></p>
         <p>Status: <b>{{ booking.getStatus()|capitalize }}</b></p>
-        
+
         <h1>Other bookings of {{ booking.getPerson().getFullName() }}</h1>
         <table class="manage">
             <tr>
@@ -38,7 +38,7 @@
                 <th width="55px">Status</th>
                 <th width="70px">Actions</th>
             </tr>
-            
+
             {% for booking in paginator %}
                 <tr class="item">
                     <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
@@ -56,7 +56,7 @@
 
 		{% include 'admin/partials/paginationControl.twig' %}
     </div>
-    
+
     <aside>
         {% if hasAccess('admin_cudi_mail', 'send') %}
         	<div class="sidebox">
@@ -137,7 +137,7 @@
         	</div>
         {% endif %}
     </aside>
-    
+
     <div class="modal hide fade" id="sendMail">
     	<div class="modal-header">
     		<span>Litus Admin</span>
@@ -258,10 +258,10 @@
             $('aside .extend').click(openExtendModal);
             $('aside .sendMail').click(openSendMailModal);
         });
-        
+
         function openSendMailModal(e) {
             var $this = $(this);
-            
+
 			e.preventDefault();
 			var sendMail = $('#sendMail');
 			sendMail.find('.send').one('click', function () {
@@ -292,7 +292,7 @@
 			});
 			sendMail.modal();
         }
-        
+
         function openRemoveModal(e) {
 			var $this = $(this);
 
@@ -303,7 +303,7 @@
 			});
 			removeBooking.modal();
 		}
-		
+
 		function openAssignModal(e) {
 			var $this = $(this);
 
@@ -314,7 +314,7 @@
 			});
 			assignBooking.modal();
 		}
-		
+
 		function openUnassignModal(e) {
 			var $this = $(this);
 
@@ -325,7 +325,7 @@
 			});
 			unassignBooking.modal();
 		}
-		
+
 		function openExpireModal(e) {
 			var $this = $(this);
 
@@ -336,7 +336,7 @@
 			});
 			expireBooking.modal();
 		}
-		
+
 		function openExtendModal(e) {
 			var $this = $(this);
 

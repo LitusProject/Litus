@@ -2,20 +2,20 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_study/partials/years.twig' %}
 
 	<div id="controller_action">
 	    <h1>Subject</h1>
-	    
+
 	    <p>Code: <b>{{ subject.getCode() }}</b></p>
 	    <p>Name: <b>{{ subject.getName() }}</b></p>
 	    <p>Semester: <b>{{ subject.getSemester() }}</b></p>
 	    <p>Credits: <b>{{ subject.getCredits() }}</b></p>
 	    <br />
-	    
+
 		{% autoescape false %}
 		    {{ form }}
 		{% endautoescape %}

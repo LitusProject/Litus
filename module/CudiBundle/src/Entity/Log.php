@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
@@ -32,14 +32,14 @@ class Log
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time of the log
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the log
      *
@@ -54,7 +54,7 @@ class Log
      * @Column(type="text")
      */
     private $text;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $text
@@ -65,7 +65,7 @@ class Log
         $this->text = $text;
         $this->timestamp = new DateTime();
     }
-    
+
     /**
      * @return integer
      */
@@ -81,7 +81,7 @@ class Log
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -89,7 +89,7 @@ class Log
     {
         return $this->phoneNumber;
     }
-    
+
     /**
      * @return string
      */

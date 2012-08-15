@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace CommonBundle\Entity\Nodes;
 
 use CommonBundle\Entity\Users\Person,
@@ -28,14 +28,14 @@ abstract class Node
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time of creation of this node
      *
      * @Column(name="creation_time", type="datetime")
      */
     private $creationTime;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this node
      *
@@ -43,7 +43,7 @@ abstract class Node
      * @JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      */
@@ -52,7 +52,7 @@ abstract class Node
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;
     }
-    
+
     /**
      * @return integer
      */
@@ -60,7 +60,7 @@ abstract class Node
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -68,7 +68,7 @@ abstract class Node
     {
         return $this->creationTime;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */

@@ -24,7 +24,7 @@ class Comment extends EntityRepository
             ->setParameter('article', $article->getId())
             ->getQuery()
             ->getResult();
-            
+
         $comments = array();
         foreach($resultSet as $mapping)
             $comments[] = $mapping->getComment();

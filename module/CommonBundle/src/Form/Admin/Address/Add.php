@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Address;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -36,9 +36,9 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
     public function __construct($prefix = '', $opts = null)
     {
         parent::__construct($opts);
-        
+
         $prefix = '' == $prefix ? '' : $prefix . '_';
-        
+
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
             ->setRequired()
@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
                 )
             ));
         $this->addElement($field);
-        
+
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
             ->setRequired()
@@ -57,7 +57,7 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new DigitsValidator());
         $this->addElement($field);
-        
+
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
             ->setRequired()
@@ -65,21 +65,21 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new DigitsValidator());
         $this->addElement($field);
-        
+
         $field = new Text($prefix . 'address_city');
         $field->setLabel('City')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlphaValidator());
         $this->addElement($field);
-        
+
         $field = new Select($prefix . 'address_country');
         $field->setLabel('Country')
             ->setRequired()
             ->setMultiOptions(Address::$countries)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->populate(
             array(
                 'address_country' => 'BE'

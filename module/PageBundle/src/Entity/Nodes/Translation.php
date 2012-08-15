@@ -66,13 +66,6 @@ class Translation
     private $title;
 
     /**
-     * @var string The name of this tanslation
-     *
-     * @Column(type="string", unique=true)
-     */
-    private $name;
-
-    /**
      * @param \PageBundle\Entity\Nodes\Page $page
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $content

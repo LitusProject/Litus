@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Controller\Admin;
 
 use Exception;
@@ -36,7 +36,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -45,7 +45,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'corporate' => array(

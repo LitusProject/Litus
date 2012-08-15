@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Validator;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -21,17 +21,17 @@ use CommonBundle\Entity\General\AcademicYear,
 class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-       
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The academicyear instance
      */
     private $_academicYear = null;
-    
+
     /**
      * @var mixed The ids to be ignored
      */
@@ -45,7 +45,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::NOT_VALID => 'The article barcode already exists'
     );
-    
+
     /**
      * Create a new Unique Article Barcode validator.
      *
@@ -57,7 +57,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $ignoreIds = array(), $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
         $this->_academicYear = $academicYear;
         $this->_ignoreIds = $ignoreIds;
@@ -80,7 +80,7 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
             $this->error(self::NOT_VALID);
             return false;
         }
-        
+
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);

@@ -30,7 +30,7 @@ class Module implements AutoloaderProvider
     public function init(Manager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
-    
+
         $events = StaticEventManager::getInstance();
         $events->attach(
             'bootstrap', 'bootstrap', array($this, 'initializeView')
@@ -68,7 +68,7 @@ class Module implements AutoloaderProvider
         $twigStrategy = $locator->get('ZfTwig\TwigRenderingStrategy');
         $view->events()->attach($twigStrategy, 100);
     }
-    
+
     public function getProvides()
     {
         return array(

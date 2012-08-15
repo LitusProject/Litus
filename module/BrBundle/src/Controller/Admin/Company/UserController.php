@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
@@ -34,7 +34,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($company = $this->_getCompany()))
             return;
-            
+
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Users\People\Corporate',
             $this->getParam('page'),
@@ -46,7 +46,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 'username' => 'ASC'
             )
         );
-        
+
         return new ViewModel(
             array(
                 'company' => $company,
@@ -55,14 +55,14 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function addAction()
     {
         if (!($company = $this->_getCompany()))
             return;
-        
+
         $form = new AddForm($this->getEntityManager());
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -84,7 +84,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 );
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -92,7 +92,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                         'The corporate user was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_company_user',
                     array(
@@ -100,11 +100,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                         'id' => $company->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-                
+
         return new ViewModel(
             array(
                 'company' => $company,
@@ -112,26 +112,26 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($user = $this->_getUser()))
             return;
-                    
+
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number']);
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -147,11 +147,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                         'id' => $user->getCompany()->getId()
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'company' => $user->getCompany(),
@@ -159,7 +159,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
@@ -169,14 +169,14 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
         $user->disableLogin();
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -187,21 +187,21 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'No id was given to identify the company!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $company) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -210,20 +210,20 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'No company with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $company;
     }
-    
+
     private function _getUser()
     {
         if (null === $this->getParam('id')) {
@@ -234,21 +234,21 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'No id was given to identify the corporate user!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Users\People\Corporate')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $company) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -257,17 +257,17 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'No corporate user with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $company;
     }
 }

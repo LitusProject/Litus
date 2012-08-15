@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -142,7 +142,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'key'         => 'cudi.booking_assigned_mail',
                     'value'       => 'Dear,
-            
+
 The following bookings are assigned to you:
 {{ bookings }}
 
@@ -202,7 +202,7 @@ VTK Cudi
                 ),
             )
         );
-        
+
         $this->_installAddresses();
         $this->_installBinding();
         $this->_installAcademicYear();
@@ -211,7 +211,7 @@ VTK Cudi
         $this->_installBankDevice();
         $this->_installPayDesks();
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -310,7 +310,7 @@ VTK Cudi
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'supplier' => array(
@@ -359,7 +359,7 @@ VTK Cudi
             )
         );
     }
-    
+
     private function _installBinding()
     {
         $bindings = array(
@@ -367,7 +367,7 @@ VTK Cudi
             'none' => 'None',
             'glued' => 'Glued',
         );
-        
+
         foreach($bindings as $code => $name) {
             $binding = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -379,11 +379,11 @@ VTK Cudi
         }
         $this->getEntityManager()->flush();
     }
-    
+
     private function _installColor()
     {
         $colors = array('Red', 'Yellow');
-        
+
         foreach($colors as $item) {
             $color = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Articles\Options\Color')
@@ -395,7 +395,7 @@ VTK Cudi
         }
         $this->getEntityManager()->flush();
     }
-    
+
     private function _installAcademicYear()
     {
         $now = new DateTime('now');
@@ -406,7 +406,7 @@ VTK Cudi
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
-            
+
         $organizationStart = str_replace(
             '{{ year }}',
             $startAcademicYear->format('Y'),
@@ -421,11 +421,11 @@ VTK Cudi
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }
-        
+
         $organizationStart->add(
             new DateInterval('P1Y')
         );
-        
+
         if ($organizationStart < new DateTime()) {
             $academicYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -440,7 +440,7 @@ VTK Cudi
             }
         }
     }
-    
+
     private function _installAddresses()
     {
         try {
@@ -460,7 +460,7 @@ VTK Cudi
             $config->setDescription('The delivery address of the cudi');
             $this->getEntityManager()->persist($config);
         }
-        
+
         try {
             $config = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -479,11 +479,11 @@ VTK Cudi
             $this->getEntityManager()->persist($config);
         }
     }
-    
+
     private function _installMoneyUnit()
     {
         $units = array(500, 200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01);
-        
+
         foreach($units as $item) {
             $unit = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
@@ -495,11 +495,11 @@ VTK Cudi
         }
         $this->getEntityManager()->flush();
     }
-    
+
     private function _installBankDevice()
     {
         $bankdevices = array('Device 1', 'Device 2');
-        
+
         foreach($bankdevices as $item) {
             $bankdevice = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
@@ -511,7 +511,7 @@ VTK Cudi
         }
         $this->getEntityManager()->flush();
     }
-    
+
     private function _installPayDesks()
     {
         $paydesks = array(
@@ -519,7 +519,7 @@ VTK Cudi
             'paydesk_2' => '2',
             'paydesk_3' => '3',
         );
-        
+
         foreach($paydesks as $code => $name) {
             $paydesk = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\PayDesk')

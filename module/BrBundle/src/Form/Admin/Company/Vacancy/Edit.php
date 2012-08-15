@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company\Vacancy;
 
 use BrBundle\Entity\Company\Vacancy,
@@ -34,15 +34,15 @@ class Edit extends Add
     public function __construct(Vacancy $vacancy, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Edit')
             ->setAttrib('class', 'companies_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromVacancy($vacancy);
     }
 }

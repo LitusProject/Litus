@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Component\WebSocket\Syllabus;
 
 use CommonBundle\Component\WebSocket\User,
@@ -31,17 +31,17 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
-    
-    /** 
+
+    /**
      * @var \Zend\Mail\Transport
      */
     private $_mailTransport;
-    
+
     /**
      * @var string
      */
     private $_status = 'done';
-    
+
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
      * @param string $address The url for the websocket master socket
@@ -55,9 +55,9 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         $port = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.update_socket_port');
-    
+
         parent::__construct($address, $port);
-            
+
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
     }
@@ -78,14 +78,14 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             $this->_status = 'done';
         }
     }
-    
+
     /**
      * @param string $type
      * @param null|string $extra
      */
     public function callback($type, $extra = null)
     {
-        $this->sendTextToAll( 
+        $this->sendTextToAll(
             json_encode(
                 (object) array(
                     'status' => (object) array(

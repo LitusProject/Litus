@@ -2,21 +2,21 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_stock_delivery/partials/suppliers.twig' %}
 
 	<div id="controller_action">
     	{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
-		
+
 		<br style="clear:both"/>
-			
+
 		<h1>Last Deliveries</h1>
 		<table>
-	    
+
 	        <tr>
 				<th width="110px">Date</th>
 				<th>Article</th>
@@ -24,9 +24,9 @@
 				<th width="60px">Price</th>
 				<th width="120px">Person</th>
 	        </tr>
-	        
+
 	        {% for delivery in deliveries %}
-	
+
 	            <tr>
 	                <td>{{ delivery.getTimestamp().format('Y-m-d H:i') }}</td>
 	                <td>{{ delivery.getArticle().getMainArticle().getTitle() }}</td>
@@ -34,11 +34,11 @@
 	                <td>&euro; {{ (delivery.getPrice()/100)|number_format(2) }}</td>
 	                <td>{{ delivery.getPerson().getFullName() }}</td>
 	            </tr>
-	    
+
 	        {% endfor %}
 	    </table>
 	</div>
-	
+
 	<aside>
 		{% if hasAccess('admin_stock_delivery', 'manage') %}
     		<div class="sidebox">
@@ -54,7 +54,7 @@
     		</div>
 		{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="overDelivery">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -89,7 +89,7 @@
                     $('#articleId').val('');
                 }
             });
-            
+
             $('#stock_add').click(function (e) {
                 if ($('#delivery_number').val() > $('#articleSearch').data('value').maximum) {
                     e.preventDefault();
@@ -97,7 +97,7 @@
                 }
             });
         });
-        
+
         function openModal() {
 			var $this = $(this);
 

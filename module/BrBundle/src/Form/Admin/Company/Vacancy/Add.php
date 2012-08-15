@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company\Vacancy;
 
 use BrBundle\Entity\Company\Vacancy,
@@ -35,26 +35,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($opts = null)
     {
         parent::__construct($opts);
-        
+
         $field = new Text('vacancy_name');
         $field->setLabel('Vacancy Name')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Textarea('description');
         $field->setLabel('Description')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-                
+
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'companies_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     public function populateFromVacancy(Vacancy $vacancy)
     {
         $this->populate(

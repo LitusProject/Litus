@@ -17,6 +17,7 @@ namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -56,6 +57,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             ->setCharset('utf-8');
 
         $this->_initControllerPlugins();
+        $this->_initFallbackLanguage();
         $this->_initViewHelpers();
 
         $this->initAuthentication();
@@ -126,6 +128,35 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     }
 
     /**
+     * Initializes the fallback language and stores it in the Registry so that it is
+     * accessible troughout the application.
+     *
+     * @return void
+     */
+    private function _initFallbackLanguage()
+    {
+        $fallbackLanguage = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('fallback_language')
+            );
+
+        if (null === $fallbackLanguage) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::WARNING,
+                    'Warning',
+                    'The specified fallback language does not exist!'
+                )
+            );
+        } else {
+            \Zend\Registry::set('Litus_Localization_FallbackLanguage', $fallbackLanguage);
+        }
+    }
+
+    /**
      * Initializes our custom view helpers.
      *
      * @return void
@@ -157,45 +188,6 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                 $this->_getAcl(), $this->getAuthentication()
             )
         );
-    }
-
-    /**
-     * Returns the language that is currently requested.
-     *
-     * @return \CommonBundle\Entity\General\Language
-     */
-    protected function getLanguage()
-    {
-        if (null !== $this->_language)
-            return $this->_language;
-
-        if ($this->getParam('language')) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev($this->getParam('language'));
-        }
-
-        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
-        }
-
-        if (!isset($language)) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
-
-            if (null === $language) {
-                $language = new Language(
-                    'en', 'English'
-                );
-            }
-        }
-
-        $this->_language = $language;
-
-        return $language;
     }
 
     /**
@@ -313,7 +305,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     /**
      * We want an easy method to retrieve the Cache from
      * the DI container.
-     * 
+     *
      * @return \Zend\Cache\Storage\Adapter\Apc
      */
     public function getCache()
@@ -324,41 +316,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         return null;
     }
 
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getLocator()->get('doctrine_em');
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport
-     */
-    public function getMailTransport()
-    {
-        return $this->getLocator()->get('mail_transport');
-    }
-
-    /**
-     * Gets a parameter from a GET request.
-     *
-     * @param string $param The parameter's key
-     * @param mixed $default The default value, returned when the parameter is not found
-     * @return string
-     */
-    public function getParam($param, $default = null)
-    {
-        return $this->getEvent()->getRouteMatch()->getParam($param, $default);
-    }
-
-    /**
+        /**
      * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
@@ -387,5 +345,78 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         }
 
         return $academicYear;
+    }
+
+    /**
+     * We want an easy method to retrieve the EntityManager from
+     * the DI container.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->getLocator()->get('doctrine_em');
+    }
+
+    /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->_language)
+            return $this->_language;
+
+        if ($this->getParam('language')) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getParam('language'));
+        }
+
+        if (!isset($language) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, strpos($_SERVER['HTTP_ACCEPT_LANGUAGE'], '-')));
+        }
+
+        if (!isset($language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+
+            if (null === $language) {
+                $language = new Language(
+                    'en', 'English'
+                );
+            }
+        }
+
+        $this->_language = $language;
+
+        return $language;
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport
+     */
+    public function getMailTransport()
+    {
+        return $this->getLocator()->get('mail_transport');
+    }
+
+    /**
+     * Gets a parameter from a GET request.
+     *
+     * @param string $param The parameter's key
+     * @param mixed $default The default value, returned when the parameter is not found
+     * @return string
+     */
+    public function getParam($param, $default = null)
+    {
+        return $this->getEvent()->getRouteMatch()->getParam($param, $default);
     }
 }

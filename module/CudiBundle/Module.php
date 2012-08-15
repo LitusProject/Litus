@@ -56,17 +56,17 @@ class Module implements AutoloaderProvider
         /*$app = $e->getParam('application');
         $locator = $app->getLocator();
         $view = $locator->get('view');
-        
+
         $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/../CudiBundle/src/Resources/layouts');
         $view->getEnvironment()->getLoader()->addPath(__DIR__ . '/src/Resources/views');
 
         $url = $view->plugin('url');
         $url->setRouter($app->getRouter());
-        
+
         $view->plugin('doctype')->setDoctype(Doctype::HTML5);
         $view->plugin('headTitle')->setSeparator('&mdash;');*/
     }
-    
+
     public function getProvides()
     {
         return array(

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\View\Helper;
 
 use Zend\Mvc\Router\RouteMatch;
@@ -36,10 +36,10 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->_routeMatch = $routeMatch;
-        
+
         return $this;
     }
-    
+
     /**
      * @param string $key The parameter's key
      * @param mixed $default A default value for when the key is not present
@@ -49,7 +49,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     {
         if (null === $this->_routeMatch)
             throw new Exception\RuntimeException('No matched route was provided');
-        
+
         return $this->_routeMatch->getParam($key, $default);
     }
 }

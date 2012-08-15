@@ -59,7 +59,7 @@ class TabsDecorator extends \Zend\Form\Decorator\AbstractDecorator
         if (!$element instanceof Tabs) {
             return $content;
         }
-        
+
         $name      = $element->getName();
         $attribs   = $element->getAttribs();
         if (!array_key_exists('id', $attribs)) {
@@ -72,7 +72,7 @@ class TabsDecorator extends \Zend\Form\Decorator\AbstractDecorator
             $attribs['tag'] = 'ul';
         }
         unset($attribs['helper']);
-        
+
         foreach($element->getTabs() as $label => $href) {
             $tab = new HtmlTag();
             $tab->setOptions(
@@ -80,7 +80,7 @@ class TabsDecorator extends \Zend\Form\Decorator\AbstractDecorator
                     'tag' => 'li',
                 )
             );
-            
+
             $link = new HtmlTag();
             $link->setOptions(
                 array(
@@ -89,17 +89,17 @@ class TabsDecorator extends \Zend\Form\Decorator\AbstractDecorator
                     'data-toggle' => 'tab',
                 )
             );
-            
+
             if (null !== ($translator = $element->getTranslator())) {
                 $label = $translator->translate($label);
             }
-            
+
             $content .= $tab->render($link->render($label));
         }
-        
+
         $container = new HtmlTag();
         $container->setOptions($attribs);
-        
+
         return $container->render($content);
     }
 }

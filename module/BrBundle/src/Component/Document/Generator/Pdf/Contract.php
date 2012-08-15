@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Component\Document\Pdf;
 
 use BrBundle\Entity\Contract,
@@ -32,7 +32,7 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
      * @var \Litus\Entity\Br\Contract
      */
     private $_contract;
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Contract $contract The contract for which we want to generate a PDF
@@ -82,65 +82,65 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
         $xml->append(
             new XmlObject(
                 'contract',
-                
+
                 // params of <contract>
                 array(
                     'location' => $location,
                     'date' => $date
                 ),
-    
+
                 // children of <contract>
                 array(
                     new XmlObject('title', null, $title),
-    
+
                     new XmlObject(
                         'our_union',
-    
+
                         // params of <our_union>
                         array(
                              'short_name' => $unionNameShort,
                              'contact_person' => $ourContactPerson
                         ),
-    
+
                         // children of <our_union>
                         array(
                             new XmlObject('name', null, $brName),
                             new XmlObject('logo', null, $logo)
                         )
                     ),
-    
+
                     new XmlObject(
                         'company',
-                        
+
                         // params of <company>
                         array(
                             'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
                         ),
-    
+
                         // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
                             new XmlObject('address', null, self::_formatAddress($company->getAddress()))
                         )
                     ),
-    
+
                     new XmlObject(
                         'union_address',
-                        
+
                         // params of <union_address>
                         null,
-                        
+
                         // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
                             new XmlObject('address', null, self::_formatAddress($unionAddress))
                         )
                     ),
-    
+
                     new XmlObject('entries', null, $entry_s),
-    
+
                     new XmlObject('sub_entries', null, $sub_entries),
-    
+
                     new XmlObject('footer', null, $footer)
                 )
             )

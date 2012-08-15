@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'di' => array(
         'instance' => array(
@@ -20,7 +20,7 @@ return array(
                 'calendar_install'  => 'CalendarBundle\Controller\Admin\InstallController',
                 'admin_calendar'    => 'CalendarBundle\Controller\Admin\CalendarController',
             ),
-            
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
@@ -28,7 +28,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
@@ -36,7 +36,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             /*'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',
@@ -52,7 +52,7 @@ return array(
                     ),
                 ),
             ),*/
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(

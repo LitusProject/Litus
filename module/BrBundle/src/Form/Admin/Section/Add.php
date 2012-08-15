@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     /**
      * Retrieve the different VAT types applicable.
      *

@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -75,7 +75,7 @@
 			{{ stockForm }}
 		{% endautoescape %}
 	</div>
-	
+
 	<aside>
 	    {% if hasAccess('admin_stock', 'delta') %}
 			<div class="sidebox">

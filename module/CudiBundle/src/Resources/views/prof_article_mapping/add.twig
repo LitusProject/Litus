@@ -10,11 +10,11 @@
         	</div>
         </div>
     {% endif %}
-    
+
 	<div class="page-header">
 	    <h2>{{ translator().translate('Add Article') }}</h2>
 	</div>
-	
+
 	<h3>{{ translator().translate('Subject') }}</h3>
 	<p>
 	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
@@ -22,7 +22,7 @@
 	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
 	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
 	</p>
-	
+
 	{% if nbArticles > 0 %}
     	{% autoescape false %}
     	    {{ form }}

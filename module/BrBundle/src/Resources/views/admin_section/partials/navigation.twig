@@ -8,8 +8,8 @@
             {% endif %}
             {% if hasAccess('admin_company', 'manage') %}
                 <li>
-                	<a 
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %} 
+                	<a
+                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                 		href="{{ url('admin_section', {"action": "manage"}) }}"
                 	>
                 		Manage

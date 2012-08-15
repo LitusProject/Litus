@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-		
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width order_removed_success hide">
 		<div class="title">Success</div>
@@ -24,15 +24,15 @@
 		<p>Supplier: <b>{{ order.getSupplier().getName() }}</b></p>
 		<p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s')}}{% else %}(new){% endif %}</b></p>
 		<br />
-		
+
 		<table class="manage">
-			
+
 			<tr>
 				<th>Article</th>
 				<th width="80px">Amount</th>
 				<th width="70px">Actions</th>
 			</tr>
-	
+
 			{% for item in order.getItems() %}
 				<tr class="item item-{{ item.getId() }}">
 					<td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
@@ -46,7 +46,7 @@
 			{% endfor %}
 		</table>
 	</div>
-	
+
 	<aside>
 		{% if not order.isOrdered() %}
 		    {% if hasAccess('admin_stock_order', 'place') %}
@@ -117,7 +117,7 @@
     		{% endif %}
 		{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="removeOrder">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -167,7 +167,7 @@
 			$('.item .delete').click(openModalRemove);
 			$('#cancelOrder').click(openModalCancel);
 		});
-		
+
 		function openModalCancel(e) {
 			var $this = $(this);
 
@@ -178,7 +178,7 @@
 			});
 			cancelOrder.modal();
 		}
-				
+
 		function openModalRemove(e) {
 			var $this = $(this);
 
@@ -201,7 +201,7 @@
 			});
 			removeOrder.modal();
 		}
-		
+
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
 		    $('.order_removed_error').removeClass('hide');

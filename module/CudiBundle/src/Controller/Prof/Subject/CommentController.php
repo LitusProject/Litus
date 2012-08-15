@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof\Subject;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,13 +31,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
-            
+
         $comments = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
-                
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -49,10 +49,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $formData['text'],
                     'external'
                 );
-                
+
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -60,7 +60,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                         'The comment was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'prof_subject_comment',
                     array(
@@ -69,11 +69,11 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-                
+
         return new ViewModel(
             array(
                 'subject' => $subject,
@@ -82,37 +82,37 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($comment = $this->_getComment()))
             return new ViewModel();
-            
+
         if ($comment->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
                 'result' => (object) array("status" => "error")
             );
         }
-        
+
         $this->getEntityManager()->remove($comment);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-        
+
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (!($academicYear = $this->getAcademicYear()))
             return;
-            
+
         if (null === $id) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -121,7 +121,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the subject!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -129,10 +129,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
@@ -149,7 +149,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No subject with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -157,13 +157,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping->getSubject();
     }
-    
+
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
@@ -174,7 +174,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the comment!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -182,14 +182,14 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $comment = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $comment || null === $this->_getSubject($comment->getSubject()->getId())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -198,7 +198,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No comment with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -206,10 +206,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $comment;
     }
 }

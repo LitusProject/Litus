@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,7 +31,7 @@ class ArticleController extends \CudiBundle\Component\Controller\SupplierControl
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllBySupplierAndAcademicYear($this->getSupplier(), $this->getCurrentAcademicYear());
-        
+
         return new ViewModel(
             array(
                 'articles' => $articles,

@@ -20,10 +20,10 @@ class Config extends EntityRepository
             ->orderBy('c.key', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllByPrefix($prefix)
     {
         $configs = $this->_em

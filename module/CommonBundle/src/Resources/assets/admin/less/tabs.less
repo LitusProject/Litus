@@ -8,35 +8,35 @@
  *
  * Author: Pieter Maene <pieter.maene@litus.cc>
  */
- 
+
 .tabs {
 	#gradient > .vertical(@cTabsGradientStart, @cTabsGradientStop);
 	.border-radius(@defaultSpacing);
-	
+
 	margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
 	padding: 0 @defaultSpacing;
-	
+
 	width: @layoutWidth - (@leftSidebarWidth + 5 * @defaultSpacing) !important;
 	height: @tabsHeight;
 	line-height: @tabsHeight;
-	
+
 	font-weight: bold;
-	
+
 	li {
 		display: inline;
-	
+
 		a{
 			color: @cWhite;
 			padding: 0 @defaultSpacing;
-			
+
 			text-decoration: none;
 		}
-		
+
 		a:hover{
 			color: @cTabsAccent;
 		}
 	}
-	
+
 	.active {
 		a{
 			color: @cTabsAccent;

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Entity\Users\Person,
@@ -34,7 +34,7 @@ class Barcode
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person associated with this barcode
      *
@@ -49,7 +49,7 @@ class Barcode
      * @Column(type="bigint")
      */
     private $barcode;
-    
+
     /**
      * @var \DateTime The time of creation
      *
@@ -67,16 +67,16 @@ class Barcode
     {
         $this->person = $person;
         $this->time = new DateTime();
-        
+
         if (strlen($barcode) == 13)
             $barcode = floor($barcode / 10);
-            
+
         if (strlen($barcode) != 12)
             throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
-        
+
         $this->barcode = $barcode;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */

@@ -1,14 +1,14 @@
 <h2>{{ message }}</h2>
-	
+
 {% if display_exceptions is defined and display_exceptions %}
 
 	{% if exception is defined %}
-        
+
         <h3>Exception Information</h3>
         <p>
             <b>Message:</b> {{ exception.getMessage() }}
         </p>
-        			
+
 		<h3>Stack Trace</h3>
 		<table>
 		    <tr>
@@ -17,7 +17,7 @@
 		        <th>Function</th>
 		        <th>Class</th>
 		    </tr>
-		
+
 		    {% for traceNumber, traceItem in exception.getTrace() %}
 			    <tr>
 			        <td>{{ traceNumber }}</td>
@@ -26,13 +26,13 @@
 			        <td>{{ traceItem.class }}</td>
 			    </tr>
 		    {% endfor %}
-		
+
 		</table>
 
     {% else %}
-    
+
         <h3>No Exception available</h3>
-        
+
     {% endif %}
-    	
+
 {% endif %}

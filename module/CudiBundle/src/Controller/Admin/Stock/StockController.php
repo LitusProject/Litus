@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -34,14 +34,14 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($period),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'period' => $period,
@@ -50,19 +50,19 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function notDeliveredAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($period, true),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'period' => $period,
@@ -71,12 +71,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function searchAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -94,13 +94,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
                 break;
         }
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        
+
         array_splice($articles, $numResults);
-        
+
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
@@ -113,19 +113,19 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     public function searchNotDeliveredAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -143,13 +143,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'), true);
                 break;
         }
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        
+
         array_splice($articles, $numResults);
-        
+
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
@@ -162,26 +162,26 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->nbReserved = $period->getNbBooked($article) + $period->getNbAssigned($article);
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-        
+
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-            
+
         $deliveryForm = new DeliveryForm($this->getEntityManager());
         $orderForm = new OrderForm($this->getEntityManager());
         $stockForm = new StockForm($article);
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -197,9 +197,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($delta);
 
                     $article->setStockValue($formData['number']);
-                    
+
                     $this->getEntityManager()->flush();
-                    
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -207,7 +207,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'The stock was successfully updated!'
                         )
                     );
-                    
+
                     $this->redirect()->toRoute(
                         'admin_stock',
                         array(
@@ -215,7 +215,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'id' => $article->getId(),
                         )
                     );
-                    
+
                     return new ViewModel();
                 }
             } elseif (isset($formData['add_order'])) {
@@ -223,9 +223,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                         ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
-                    
+
                     $this->getEntityManager()->flush();
-                    
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -233,7 +233,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'The order was successfully added!'
                         )
                     );
-                    
+
                     $this->redirect()->toRoute(
                         'admin_stock',
                         array(
@@ -241,7 +241,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'id' => $article->getId(),
                         )
                     );
-                    
+
                     return new ViewModel();
                 }
             } elseif (isset($formData['add_delivery'])) {
@@ -257,7 +257,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'The delivery was successfully added!'
                         )
                     );
-                    
+
                     $this->redirect()->toRoute(
                         'admin_stock',
                         array(
@@ -265,12 +265,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             'id' => $article->getId(),
                         )
                     );
-                    
+
                     return new ViewModel();
                 }
             }
         }
-        
+
         return new ViewModel(
             array(
                 'article' => $article,
@@ -281,15 +281,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function deltaAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-        
+
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\Periods\Values\Delta',
             $this->getParam('page'),
@@ -299,7 +299,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ),
             array('timestamp' => 'DESC')
         );
-        
+
         return new ViewModel(
             array(
                 'article' => $article,
@@ -308,7 +308,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
@@ -319,21 +319,21 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the sale article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $item = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $item) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -342,17 +342,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     'No sale article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $item;
     }
 }

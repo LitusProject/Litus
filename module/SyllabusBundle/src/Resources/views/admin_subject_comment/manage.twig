@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-		
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width comment_removed_success hide">
 		<div class="title">Success</div>
@@ -16,21 +16,21 @@
 			<p>An error occurred while trying to delete an comment.</p>
 		</div>
 	</div>
-	
+
 	<div id="controller_action">
 		<h1>Subject</h1>
-		
+
 		<p>Code: <b>{{ subject.getCode() }}</b></p>
 		<p>Name: <b>{{ subject.getName() }}</b></p>
 		<p>Semester: <b>{{ subject.getSemester() }}</b></p>
 		<p>Credits: <b>{{ subject.getCredits() }}</b></p>
 		<br />
-		
+
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
 		<br style="clear:both"/>
-			
+
 		<table class="full_width manage" id="subjectComments">
 	        <tr>
 	            <th width="100px">Date</th>
@@ -39,7 +39,7 @@
 	            <th width="80px">Type</th>
 	            <th width="70px">Action</th>
 	        </tr>
-	
+
 	        {% for comment in comments %}
 	            <tr class="item item-{{ comment.getId() }}">
 	                <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
@@ -56,7 +56,7 @@
 	        {% endfor %}
 	    </table>
 	</div>
-	
+
 	<div class="modal hide fade" id="viewComment">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal hide fade" id="removeComment">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -98,19 +98,19 @@
 			$('.item .view').click(openViewModal);
 			$('.item .delete').click(openRemoveModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var viewComment = $('#viewComment');
 			viewComment.find('.text').html($this.data('text'));
 			viewComment.modal();
 		}
-		
+
 		function openRemoveModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeComment = $('#removeComment');
 			removeComment.find('.author').html($(this).data('author'));
@@ -129,7 +129,7 @@
 			});
 			removeComment.modal();
 		}
-		
+
 		function errorRemove() {
 			$('.flashmessage').addClass('hide');
 			$('.comment_removed_error').removeClass('hide');

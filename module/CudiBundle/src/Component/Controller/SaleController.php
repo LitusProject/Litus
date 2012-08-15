@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Controller;
 
 use Exception,
@@ -27,7 +27,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
      * Execute the request
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
@@ -37,28 +37,28 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Session')
             ->findOneById($this->getParam('session'));
-        
+
         if (null == $session || !$session->isOpen())
             throw new Exception('No valid session is given');
-        
+
         $result = parent::execute($e);
-        
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
-            
+
         $result->language = $language;
-        
+
         $result->session = $session;
-        
+
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
-          
+
         $e->setResult($result);
         return $result;
     }
-        
+
     /**
      * Initializes the localization
      *
@@ -74,13 +74,13 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
-        
+
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);
             $this->getEntityManager()->flush();
         }
     }
-    
+
     /**
      * Returns the WebSocket URL.
      *
@@ -94,7 +94,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         $port = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_port');
-            
+
         return 'ws://' . $address . ':' . $port;
     }
 }

@@ -29,11 +29,11 @@
     		<p>{{ translator().translate('The mapping between this subject and the docent was succesfully removed.') }}</p>
     	</div>
     </div>
-    
+
     <div class="page-header">
         <h2>{{ translator().translate('Subject') }}</h2>
     </div>
-	
+
 	<p>
 	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
 	    {{ translator().translate('Name') }}: <b>{{ subject.getName() }}</b><br />
@@ -41,12 +41,12 @@
 	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
 	    {{ translator().translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
 	</p>
-	
+
 	<h3>{{ translator().translate('Number of students (Optional)') }}:</h3>
 	{% autoescape false %}
     	{{ enrollmentForm }}
     {% endautoescape %}
-    
+
     <h3>{{ translator().translate('Articles') }}:</h3>
     <table class="table table-bordered table-striped">
         <tr>
@@ -57,7 +57,7 @@
             <th width="100px">{{ translator().translate('ISBN') }}</th>
             <th width="90px">{{ translator().translate('Actions') }}</th>
         </tr>
-        
+
     	{% for mapping in articleMappings %}
     	    <tr>
     	        <td>{{ mapping.getArticle().getTitle() }}</td>
@@ -79,7 +79,7 @@
         {% endif %}
     </div>
     <br class="clear" />
-    
+
     <h3>{{ translator().translate('Docents') }}</h3>
     <table class="table table-bordered table-striped">
         <tr>
@@ -87,7 +87,7 @@
             <th>{{ translator().translate('Name') }}</th>
             <th width="90px">{{ translator().translate('Actions') }}</th>
         </tr>
-        
+
         {% for mapping in profMappings %}
             <tr class="item">
                 <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
@@ -106,7 +106,7 @@
         {% endif %}
     </div>
     <br class="clear" />
-    
+
     <div id="modalRemoveArticle" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -120,7 +120,7 @@
     		<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
     	</div>
     </div>
-    
+
     <div id="modalRemoveProf" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -142,10 +142,10 @@
 		    $('.removeArticle').click(openRemoveArticleModal);
 		    $('.removeProf').click(openRemoveProfModal);
 		});
-		
+
 		function openRemoveArticleModal(e) {
 		    var $this = $(this);
-		    
+
 		    e.preventDefault();
 		    var removeArticle = $('#modalRemoveArticle');
 		    removeArticle.find('.articleTitle').html($(this).data('article'));
@@ -163,16 +163,16 @@
 		    });
 		    removeArticle.modal();
 		}
-		
+
 		function errorRemoveArticle() {
 		    $('.flashmessage').removeClass('in');
 		    $('#article_removed_error').addClass('in');
 		    $('#modalRemoveArticle').modal('hide');
 		}
-		
+
 		function openRemoveProfModal(e) {
 		    var $this = $(this);
-		    
+
 		    e.preventDefault();
 		    var removeProf = $('#modalRemoveProf');
 		    removeProf.find('.profName').html($(this).data('name'));
@@ -190,7 +190,7 @@
 		    });
 		    removeProf.modal();
 		}
-		
+
 		function errorRemoveProf() {
 		    $('.flashmessage').removeClass('in');
 		    $('#prof_removed_error').addClass('in');

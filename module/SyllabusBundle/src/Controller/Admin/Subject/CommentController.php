@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,13 +32,13 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
-            
+
         $comments = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
-        
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -50,10 +50,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData['text'],
                     $formData['type']
                 );
-                
+
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -61,7 +61,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                         'The comment was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_subject_comment',
                     array(
@@ -69,11 +69,11 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                         'id' => $subject->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'subject' => $subject,
@@ -82,28 +82,28 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($comment = $this->_getComment()))
             return new ViewModel();
-        
+
         $this->getEntityManager()->remove($comment);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
-        
+
         if (null === $id) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -112,21 +112,21 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No id was given to identify the subject!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($id);
-        
+
         if (null === $subject) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -135,20 +135,20 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No subject with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $subject;
     }
-    
+
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
@@ -159,21 +159,21 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No id was given to identify the comment!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $comment = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $comment) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -182,17 +182,17 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No comment with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $comment;
     }
 }

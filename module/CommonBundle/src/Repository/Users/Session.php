@@ -24,7 +24,7 @@ class Session extends EntityRepository
             ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

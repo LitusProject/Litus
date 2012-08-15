@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
-{    
+{
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
@@ -36,9 +36,9 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     public function __construct(EntityManager $entityManager, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
-        
+
         $this->removeElement('roles');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'user_edit')

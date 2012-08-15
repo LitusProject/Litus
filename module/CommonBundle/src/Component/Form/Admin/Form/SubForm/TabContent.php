@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin\Form\SubForm;
 
 /**
@@ -40,7 +40,7 @@ class TabContent extends \Zend\Form\SubForm
         }
         return $this;
     }
-    
+
     /**
      * Get name of array elements belong to
      *

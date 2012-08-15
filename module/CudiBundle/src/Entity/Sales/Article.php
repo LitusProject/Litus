@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -34,7 +34,7 @@ class Article
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time the article was created
      *
@@ -49,28 +49,28 @@ class Article
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $mainArticle;
-    
+
     /**
      * @var integer The barcode of the article
      *
      * @Column(type="bigint")
      */
     private $barcode;
-    
+
     /**
      * @var integer The purchase price of the article
      *
      * @Column(name="purchase_price", type="bigint")
      */
     private $purchasePrice;
-    
+
     /**
      * @var integer The sell price of the article
      *
      * @Column(name="sell_price", type="bigint")
      */
     private $sellPrice;
-    
+
     /**
      * @var boolean Flag whether the article is bookable
      *
@@ -99,7 +99,7 @@ class Article
      * @Column(type="boolean")
      */
     private $canExpire;
-    
+
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the article
      *
@@ -107,35 +107,35 @@ class Article
      * @JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
-    
+
     /**
      * @var integer The version number of this article
-     * 
+     *
      * @Column(name="version_number", type="smallint", nullable=true)
      */
     private $versionNumber;
-    
+
     /**
      * @var integer The current number in stock
      *
      * @Column(name="stock_value", type="bigint")
      */
     private $stockValue;
-    
+
     /**
      * @var boolean The flag whether the article is old or not
      *
      * @Column(name="is_history", type="boolean")
      */
     private $isHistory;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The discounts of the article
      *
      * @OneToMany(targetEntity="CudiBundle\Entity\Sales\Discounts\Discount", mappedBy="article")
      */
     private $discounts;
-    
+
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
      * @param integer $barcode  The barcode of the article
@@ -162,7 +162,7 @@ class Article
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
-    
+
     /**
      * @return integer
      */
@@ -170,7 +170,7 @@ class Article
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -197,7 +197,7 @@ class Article
         $this->mainArticle = $mainArticle;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -205,7 +205,7 @@ class Article
     {
         return $this->barcode;
     }
-    
+
     /**
      * @param integer $barcode
      *
@@ -216,7 +216,7 @@ class Article
         $this->barcode = $barcode;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -224,7 +224,7 @@ class Article
     {
         return $this->purchasePrice;
     }
-    
+
     /**
      * @param float $purchasePrice
      *
@@ -235,7 +235,7 @@ class Article
         $this->purchasePrice = $purchasePrice * 100;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -243,7 +243,7 @@ class Article
     {
         return $this->sellPrice;
     }
-    
+
     /**
      * @param float $sellPrice
      *
@@ -254,7 +254,7 @@ class Article
         $this->sellPrice = $sellPrice * 100;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -262,7 +262,7 @@ class Article
     {
         return $this->bookable;
     }
-    
+
     /**
      * @param boolean $bookable
      *
@@ -273,7 +273,7 @@ class Article
         $this->bookable = $bookable;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -281,7 +281,7 @@ class Article
     {
         return $this->unbookable;
     }
-    
+
     /**
      * @param boolean $unbookable
      *
@@ -292,7 +292,7 @@ class Article
         $this->unbookable = $unbookable;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Suppplier
      */
@@ -300,7 +300,7 @@ class Article
     {
         return $this->supplier;
     }
-    
+
     /**
      * @param \CudiBundle\Entity\Supplier $supplier
      *
@@ -311,7 +311,7 @@ class Article
         $this->supplier = $supplier;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -319,7 +319,7 @@ class Article
     {
         return $this->canExpire;
     }
-    
+
     /**
      * @param boolean $canExpire
      *
@@ -330,7 +330,7 @@ class Article
         $this->canExpire = $canExpire;
         return $this;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
@@ -338,7 +338,7 @@ class Article
     {
         return $this->academicYear;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      *
@@ -349,7 +349,7 @@ class Article
         $this->academicYear = $academicYear;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -357,7 +357,7 @@ class Article
     {
         return $this->versionNumber;
     }
-    
+
     /**
      * @param integer $versionNumber
      *
@@ -368,7 +368,7 @@ class Article
         $this->versionNumber = $versionNumber;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -376,7 +376,7 @@ class Article
     {
         return $this->stockValue;
     }
-    
+
     /**
      * @param integer $stockValue
      *
@@ -387,7 +387,7 @@ class Article
         $this->stockValue = $stockValue < 0 ? 0 : $stockValue;
         return $this;
     }
-    
+
     /**
      * @param integer $stockValue
      *
@@ -398,7 +398,7 @@ class Article
         $this->setStockValue($this->stockValue + $stockValue);
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -406,7 +406,7 @@ class Article
     {
         return $this->isHistory;
     }
-    
+
     /**
      * @param boolean $isHistory
      *
@@ -417,7 +417,7 @@ class Article
         $this->isHistory = $isHistory;
         return $this;
     }
-    
+
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -425,7 +425,7 @@ class Article
     {
         return $this->discounts;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Sales\Article
      */

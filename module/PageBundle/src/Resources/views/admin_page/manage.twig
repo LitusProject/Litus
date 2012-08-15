@@ -18,7 +18,7 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="manage">
+	    <table class="{% if not hasAccess('admin_page_category', 'manage') %} full_width {% endif %} manage">
 	        <thead>
 	            <tr>
 	                <th>Title</th>
@@ -50,24 +50,21 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 
-	<aside>
-		<div class="sidebox">
-		    <div class="title">Categories</div>
-		    <div class="content">
-		        <p>
-		            <i>Categories are used to create a structure for the pages.</i>
-		        </p>
-		    	<p>
-		    		{% if hasAccess('admin_page_category', 'add') %}
-		    			<a href="{{ url('admin_page_category', {"action": "add"}) }}">&rarr; Add Category</a>
-		    		{% endif %}
-		    		{% if hasAccess('admin_page_category', 'manage') %}
-		    			<a href="{{ url('admin_page_category', {"action": "manage"}) }}">&rarr; Manage Categories</a>
-		    		{% endif %}
-		    	</p>
-		    </div>
-		</div>
-	</aside>
+	{% if hasAccess('admin_page_category', 'manage') %}
+		<aside>
+			<div class="sidebox">
+			    <div class="title">Categories</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to manage and create categories!</i>
+			        </p>
+			    	<p>
+			    		<a href="{{ url('admin_page_category', {"action": "manage"}) }}">&rarr; Categories</a>
+			    	</p>
+			    </div>
+			</div>
+		</aside>
+	{% endif %}
 
 	<div class="modal hide fade" id="removePage">
 		<div class="modal-header">

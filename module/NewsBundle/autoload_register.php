@@ -12,5 +12,5 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 spl_autoload_register(include __DIR__ . '/autoload_function.php');
