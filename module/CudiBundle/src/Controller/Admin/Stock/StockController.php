@@ -37,8 +37,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Period')
-                ->findAllArticlesByPeriod($period),
+                ->getRepository('CudiBundle\Entity\Sales\Article')
+                ->findAllByAcademicYear($this->getAcademicYear()),
             $this->getParam('page')
         );
 
@@ -80,18 +80,18 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Period')
-                    ->findAllArticlesByPeriodAndTitle($period, $this->getParam('string'));
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByTitleAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
                 break;
             case 'barcode':
                 $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Period')
-                    ->findAllArticlesByPeriodAndBarcode($period, $this->getParam('string'));
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllByBarcodeAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
                 break;
             case 'supplier':
                 $articles = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Period')
-                    ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findAllBySupplierStringAndAcademicYear($this->getParam('string'), $this->getAcademicYear());
                 break;
         }
 

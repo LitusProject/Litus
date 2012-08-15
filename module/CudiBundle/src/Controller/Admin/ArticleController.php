@@ -31,7 +31,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ArticleController extends \CudiBundle\Component\Controller\ActionController
 {
-
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
@@ -126,7 +125,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 }
 
                 $this->getEntityManager()->flush();
-
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -276,6 +274,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByPublisher($this->getParam('string'));
                 break;
+            case 'subject':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllBySubject($this->getParam('string'), $this->getCurrentAcademicYear());
+                break;
         }
 
         $numResults = $this->getEntityManager()
@@ -291,7 +294,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->title = $article->getTitle();
             $item->author = $article->getAuthors();
             $item->publisher = $article->getPublishers();
-            $item->yearPublished = $article->getYearPublished();
+            $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
             $result[] = $item;
         }

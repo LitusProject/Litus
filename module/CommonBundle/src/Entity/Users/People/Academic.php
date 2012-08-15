@@ -16,6 +16,7 @@
 namespace CommonBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\Common\Collections\ArrayCollection;
@@ -183,6 +184,20 @@ class Academic extends \CommonBundle\Entity\Users\Person
         $this->universityStatuses->add($universityStatus);
 
         return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @throws \RuntimeException
+     */
+    public function getUniversityStatus(AcademicYearEntity $academicYear)
+    {
+        if ($this->universityStatuses->count() >= 1) {
+            foreach($this->universityStatuses as $status) {
+                if ($status->getAcademicYear() == $academicYear)
+                    return $status;
+            }
+        }
     }
 
     /**

@@ -2,7 +2,8 @@
 
 namespace CudiBundle\Repository;
 
-use CommonBundle\Entity\Users\Person,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -88,6 +89,45 @@ class Article extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    public function findAllBySubject($subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $subjects = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                    $query->expr()->like($query->expr()->lower('s.code'), ':name')
+                )
+            )
+            ->setParameter('name', strtolower(trim($subject)) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($subjects as $subject)
+            $ids[] = $subject->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CudiBundle\Entity\Articles\SubjectMap', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('s.subject', $ids),
+                    $query->expr()->eq('s.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        $articles = array();
+        foreach($resultSet as $mapping)
+            $articles[] = $mapping->getArticle();
+
+        return $articles;
     }
 
     public function findAllByProf(Person $person)

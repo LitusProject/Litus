@@ -30,7 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'br.logo_path',
-                    'value'       => 'data/br/logos',
+                    'value'       => 'data/br/companies',
                     'description' => 'The path to the company logo files',
                 ),
             )
@@ -42,6 +42,21 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'brbundle' => array(
+                    'admin_company' => array(
+                        'add', 'delete', 'editLogo', 'edit', 'logo', 'manage'
+                    ),
+                    'admin_company_event' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'admin_company_intership' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'admin_company_user' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'admin_company_vacancy' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
                 )
             )
         );

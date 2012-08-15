@@ -155,4 +155,12 @@ class University
     {
         return $this->academicYear->getCode(true);
     }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
 }
