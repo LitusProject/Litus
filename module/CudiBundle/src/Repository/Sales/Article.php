@@ -6,7 +6,8 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
-    Doctrine\ORM\EntityRepository;
+    Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Article
@@ -202,6 +203,32 @@ class Article extends EntityRepository
                 )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
+            ->setParameter('academicYear', $academicYear->getId())
+            ->orderBy('m.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Sales\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->innerJoin('a.supplier', 's', Join::WITH,
+                $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
+            )
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.academicYear', ':academicYear'),
+                    $query->expr()->eq('m.isHistory', 'false'),
+                    $query->expr()->eq('m.isProf', 'false')
+                )
+            )
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->setParameter('academicYear', $academicYear->getId())
             ->orderBy('m.title', 'ASC')
             ->getQuery()
