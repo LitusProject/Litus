@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -42,21 +42,21 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Person $person, $opts = null)
     {
         parent::__construct($entityManager, $person, $opts);
-        
+
         $field = new Text('university_identification');
         $field->setLabel('Identification')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new AlnumValidator());
         $this->addElement($field);
-        
+
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
             ->setMultiOptions(University::$possibleStatuses)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->addDisplayGroup(
             array(
                 'university_identification',
@@ -68,13 +68,13 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                ->setLegend('University')
             ->setAttrib('id', 'academic_form')
             ->removeDecorator('DtDdWrapper');
-        
+
          $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'academic_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populate(
             array(
                 'university_identification' => $person->getUniversityIdentification(),
