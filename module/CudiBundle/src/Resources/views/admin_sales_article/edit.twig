@@ -19,6 +19,19 @@
 	</div>
 	
 	<aside>
+		{% if hasAccess('admin_article', 'edit') %}
+	    	<div class="sidebox">
+	    	    <div class="title">Edit Article</div>
+	    	   	<div class="content">
+	    	    	<p>
+	    	        	<i>Please hit the link below to edit the common information of this article!</i>
+	    	        </p>
+	    	        <p>
+	    	           	<a href="{{ url('admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
+	    	        </p>
+	    	    </div>
+	    	</div>
+	    {% endif %}
 	    {% if hasAccess('admin_sales_discount', 'manage') %}
 	    	<div class="sidebox">
 	    	    <div class="title">Manage Article Discounts</div>

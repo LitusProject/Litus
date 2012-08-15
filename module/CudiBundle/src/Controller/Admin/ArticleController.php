@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,7 +31,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class ArticleController extends \CudiBundle\Component\Controller\ActionController
 {
-
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
@@ -40,12 +39,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 ->findAll(),
             $this->getParam('page')
         );
-        
+
         foreach($paginator as $item)
             $item->setEntityManager($this->getEntityManager());
-        
+
         $academicYear = $this->getAcademicYear();
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -59,10 +58,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $form = new AddForm($this->getEntityManager());
         $academicYear = $this->getAcademicYear();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
@@ -102,9 +101,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['downloadable']
                        );
                 }
-                
+
                 $this->getEntityManager()->persist($article);
-                
+
                 if ($formData['type'] != 'common') {
                     if ($formData['subject_id'] == '') {
                         $subject = $this->getEntityManager()
@@ -118,16 +117,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     $mapping = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
-                    
+
                     if (null === $mapping) {
                         $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                         $this->getEntityManager()->persist($mapping);
                     }
                 }
-                
+
                 $this->getEntityManager()->flush();
-                
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -142,7 +140,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         'action' => 'manage',
                     )
                 );
-                
+
                 return new ViewModel(
                     array(
                         'currentAcademicYear' => $academicYear,
@@ -150,7 +148,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 );
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -158,21 +156,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-        
+
         $form = new EditForm($this->getEntityManager(), $article);
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
-                
+
                    $article->setTitle($formData['title'])
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
@@ -181,7 +179,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
                     ->setType(isset($formData['type']) ? $formData['type'] : 'common');
-                
+
                 if ($article->isInternal()) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -190,7 +188,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     $frontPageColor = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Color')
                         ->findOneById($formData['front_color']);
-                    
+
                     $article->setNbBlackAndWhite($formData['nb_black_and_white'])
                         ->setNbColored($formData['nb_colored'])
                         ->setBinding($binding)
@@ -199,9 +197,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->setFrontColor($frontPageColor)
                         ->setIsPerforated($formData['perforated']);
                 }
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -216,19 +214,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByArticleAndAcademicYear($article, $this->getAcademicYear());
-            
+
         $comments = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findByArticle($article);
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -242,13 +240,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
         $article->setIsHistory(true);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
@@ -259,7 +257,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function searchAction()
     {
         $this->initAjax();
-        
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -276,14 +274,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByPublisher($this->getParam('string'));
                 break;
+            case 'subject':
+                $articles = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article')
+                    ->findAllBySubject($this->getParam('string'), $this->getCurrentAcademicYear());
+                break;
         }
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        
+
         array_splice($articles, $numResults);
-        
+
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
@@ -291,18 +294,18 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->title = $article->getTitle();
             $item->author = $article->getAuthors();
             $item->publisher = $article->getPublishers();
-            $item->yearPublished = $article->getYearPublished();
+            $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
@@ -313,21 +316,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'No ID was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -336,17 +339,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
 }
