@@ -32,16 +32,16 @@ class Retour extends EntityRepository
             ->setParameter('supplier', $supplier->getId())
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('r.timestamp', 'DESC');
-        
+
         if (!$period->isOpen())
-            $query->setParameter('endDate', $period->getEndDate());    
-        
+            $query->setParameter('endDate', $period->getEndDate());
+
         $resultSet = $query->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByPeriod(Period $period)
     {
         $query = $this->_em->createQueryBuilder();
@@ -55,13 +55,13 @@ class Retour extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('r.timestamp', 'DESC');
-        
+
         if (!$period->isOpen())
-            $query->setParameter('endDate', $period->getEndDate());    
-        
+            $query->setParameter('endDate', $period->getEndDate());
+
         $resultSet = $query->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

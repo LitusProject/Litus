@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_company_event/partials/navigation.twig' %}
-	
+
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
 	    <div class="flashmessage success_message full_width event_removed_success hide">
@@ -17,7 +17,7 @@
 	    		<p>An error occurred while trying to delete an event.</p>
 	    	</div>
 	    </div>
-	    
+
 	    <h1>Company</h1>
 	    <p>Name: <b>{{ company.getName() }}</b></p>
 	    <br />
@@ -31,7 +31,7 @@
 	                <th width="120px">Action</th>
 	            </tr>
 	        </thead>
-	
+
 	        <tbody>
 	            {% for event in paginator %}
 	                <tr class="item item-{{ event.getId() }}">
@@ -53,10 +53,10 @@
 	            {% endfor %}
 	        </tbody>
 	    </table>
-	
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<div class="modal hide fade" id="removeEvent">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -83,10 +83,10 @@
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeEvent = $('#removeEvent');
 			removeEvent.find('.eventName').html($(this).data('name'));
@@ -105,7 +105,7 @@
 			});
 			removeEvent.modal();
 		}
-		
+
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
     		$('.event_removed_error').removeClass('hide');

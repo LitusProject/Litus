@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Acl;
 
 use Doctrine\ORM\EntityManager;

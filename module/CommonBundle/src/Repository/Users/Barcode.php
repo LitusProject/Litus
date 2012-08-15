@@ -16,12 +16,12 @@ class Barcode extends EntityRepository
     {
         if (!is_numeric($barcode))
             return null;
-        
+
         if (strlen($barcode) == 13)
             $barcode = floor($barcode / 10);
         if (strlen($barcode) > 12)
             return null;
-            
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CommonBundle\Entity\Users\Barcode', 'b')
@@ -30,10 +30,10 @@ class Barcode extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
 }

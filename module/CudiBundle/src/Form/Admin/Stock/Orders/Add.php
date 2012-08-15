@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')
@@ -53,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Text('number');
         $field->setLabel('Number')
             ->setAttrib('autocomplete', 'off')

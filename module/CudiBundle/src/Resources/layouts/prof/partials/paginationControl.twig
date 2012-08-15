@@ -8,7 +8,7 @@
                     <a href="#">&larr;</a>
                 {% endif %}
             </li>
-            
+
             {% if paginationControl.pages.pageCount > 9 %}
                 {% if paginationControl.pages.current - 4 <= 1 %}
                     {% for i in 1 .. 9 %}
@@ -48,7 +48,7 @@
                     </li>
                 {% endfor %}
             {% endif %}
-            
+
             <li {% if paginationControl.pages.next is sameas(null) %}class="disabled"{% endif %}>
                 {% if paginationControl.pages.next is not sameas(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">&rarr;</a>

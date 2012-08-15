@@ -2,13 +2,13 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
 		<div id="stock_search" style="display:none;">
 			<div style="padding:4px;text-align:right">
-				Search: 
+				Search:
 				<select id="searchField">
 					<option value="title">Title</option>
 					<option value="barcode">Barcode</option>
@@ -17,7 +17,7 @@
 				is
 				<input type="text" id="searchString" size="30" />
 			</div>
-			
+
 			<table class="full_width manage">
 		    	<tr>
 		        	<th>Article</th>
@@ -29,7 +29,7 @@
 				</tr>
 			</table>
 		</div>
-		
+
 		<div id="default_page">
 	    	<table class="full_width manage">
 	        	<tr>
@@ -40,7 +40,7 @@
 	            	<th width="95px">Reserved</th>
 	            	<th width="70px">Actions</th>
 				</tr>
-	
+
 		        {% for article in paginator %}
 		            <tr>
 		                <td>{{ article.getMainArticle().getTitle() }}</td>
@@ -56,7 +56,7 @@
 		            </tr>
 		        {% endfor %}
 		    </table>
-	
+
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>

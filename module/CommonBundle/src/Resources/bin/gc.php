@@ -20,11 +20,11 @@
  * --all|-a        Run Garbage Collection
  * --sessions|s    Sessions Only
  */
- 
+
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
 // @NOTE: you can either use the git submodule or create an environment variable
-// ZF2_PATH that contains the path to your zf2 library (no trailing slash). 
+// ZF2_PATH that contains the path to your zf2 library (no trailing slash).
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
  array('Zend\Loader\StandardAutoloader' => array())
@@ -68,14 +68,14 @@ if (isset($opts->a) || isset($opts->se)) {
 
     $sessions = $em->getRepository('CommonBundle\Entity\Users\Session')
         ->findAllExpired();
-    
+
     foreach($sessions as $session)
         $em->remove($session);
-    
+
     echo 'Removed ' . count($sessions) . ' expired sessions' . PHP_EOL;
-        
+
     $em->flush();
-    
+
     // Memory Considerations
     unset($session, $sessions);
 }
@@ -85,14 +85,14 @@ if (isset($opts->a) || isset($opts->sh)) {
 
     $codes = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findAllExpired();
-    
+
     foreach($codes as $code)
         $em->remove($code);
-    
+
     echo 'Removed ' . count($codes) . ' expired codes' . PHP_EOL;
-        
+
     $em->flush();
-    
+
     // Memory Considerations
     unset($code, $codes);
 }

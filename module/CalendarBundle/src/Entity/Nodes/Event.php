@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace CalendarBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
@@ -19,21 +19,21 @@ class Event extends \CommonBundle\Entity\Nodes\Node
      * @OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
      */
     private $translations;
-    
+
     /**
      * @var \DateTime The start date of this event
      *
      * @Column(type="datetime")
      */
     private $startDate;
-    
+
     /**
      * @var \DateTime The end date of this event
      *
      * @Column(type="datetime", nullable=true)
      */
     private $endDate;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $startDate
@@ -42,11 +42,11 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     public function __construct(Person $person, $startDate, $endDate)
     {
         parent::__construct($person);
-        
+
         $this->startDate = $startDate;
         $this->endDate = $endDate;
     }
-    
+
     /**
      * @param \DateTime $startDate
      *
@@ -57,7 +57,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         $this->startDate = $startDate;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -65,7 +65,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->startDate;
     }
-    
+
     /**
      * @param \DateTime $endDate
      *
@@ -76,7 +76,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         $this->endDate = $endDate;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -84,7 +84,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->endDate;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -97,7 +97,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
                 return $translation;
         }
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -109,7 +109,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getLocation();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -121,7 +121,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getTitle();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -133,7 +133,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getName();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *

@@ -5,8 +5,8 @@
 
     {{ headMeta() }}
 	{{ headTitle(translator().translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
-	
-	{{ headLink() }}   
+
+	{{ headLink() }}
 </head>
 
 <body data-offset="40">
@@ -83,14 +83,14 @@
     		</div>
     	</div>
     </nav>
-    
+
     <div id="page">
         <header>
         	<div class="inner">
         		<div class="container">
         			<img class="headingIcon" src="/_site/img/logo.png" />
         			<h1>{{ translator().translate('Vlaamse Technische Kring Leuven') }}</h1>
-        			
+
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
                             <div class="active item">
@@ -109,14 +109,14 @@
         		</div>
         	</div>
         </header>
-        
+
         <div id="content">
             <div class="container">
             	{% block content %} {% endblock %}
             </div>
         </div>
     </div>
-    
+
     <footer>
     	<div class="light">
     		<div class="container">
@@ -130,19 +130,19 @@
 		        </div>
 		    </div>
 	    </div>
-        
+
         <div class="container bottom">
         	<span class="title">
         		&copy; 2012 {{ translator().translate('Vlaamse Technische Kring vzw') }}
         	</span>
-        	
+
         	<span class="social">
         		<a href="http://facebook.com/vtk"><img src="/_site/img/facebook.png" /></a>
         		<a href="http://twitter.com/vtk_leuven"><img src="/_site/img/twitter.png" /></a>
         	</span>
         </div>
     </footer>
-    
+
     {{ inlineScript() }}
 
     <script type="text/javascript">
@@ -150,11 +150,11 @@
             $('.dropdown form').on('click', function (e) {
                 e.stopPropagation();
             });
-            
+
             $('.carousel').carousel();
         });
     </script>
-    
+
     {% block content_script %} {% endblock %}
 
 </body>

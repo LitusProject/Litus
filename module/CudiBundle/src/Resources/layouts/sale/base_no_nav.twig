@@ -5,8 +5,8 @@
 
     {{ headMeta() }}
 	{{ headTitle('Litus Sale', 'PREPEND') }}
-	
-	{{ headLink() }}   
+
+	{{ headLink() }}
 </head>
 
 <body>
@@ -31,10 +31,10 @@
 	{% include 'sale/partials/flashMessenger.twig' %}
 
     {% block content %} {% endblock %}
-	
+
 	<footer>
 	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
-	
+
 		{% if 'development' == environment %}
 		    <span class="development_information">
 		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}

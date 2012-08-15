@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Action;
 
 use CommonBundle\Entity\Users\Code,
@@ -31,7 +31,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
-    
+
     /**
      * @var \Zend\Mail\Transport
      */
@@ -42,10 +42,10 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
     }
-    
+
     /**
      * The authorization has failed.
-     * 
+     *
      * @param $result
      * @return void
      */
@@ -53,7 +53,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     {
         if (null === $result->getPersonObject())
             return;
-        
+
         $result->getPersonObject()
             ->setFailedLogins($result->getPersonObject()->getFailedLogins() + 1);
 
@@ -64,41 +64,41 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                     ->getRepository('CommonBundle\Entity\Users\Code')
                     ->findOneByCode($code);
             } while(isset($found));
-            
+
             $code = new Code($code);
             $this->_entityManager->persist($code);
-            
+
             $result->getPersonObject()
                 ->setCode($code);
-            
+
             $email = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('account_deactivated_mail');
-                
+
             $subject = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('account_deactivated_subject');
-                
+
             $mailaddress = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_address');
-                
+
             $mailname = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_name');
-                
+
             $mail = new Message();
             $mail->setBody(str_replace('{{ code }}', $code->getCode() , $email))
                 ->setFrom($mailaddress, $mailname)
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
-                
+
             if ('production' == getenv('APPLICATION_ENV'))
                 $this->_mailTransport->send($mail);
         }
         $this->_entityManager->flush();
     }
-    
+
     /**
      * The authorization was successful.
      *

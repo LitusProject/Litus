@@ -50,7 +50,7 @@ class Module implements AutoloaderProvider
     {
         return include __DIR__ . '/src/Resources/config/module.config.php';
     }
-    
+
     public function getProvides()
     {
         return array(

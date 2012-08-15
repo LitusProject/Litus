@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -33,35 +33,35 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 {
     /**
      * Execute the request.
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function execute(MvcEvent $e)
     {
         $result = parent::execute($e);
-        
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
-            
+
         if (null === $language) {
             $language = new Language(
                 'en', 'English'
             );
         }
-            
+
         $result->language = $language;
         $result->now = array(
             'iso8601' => date('c', time()),
             'display' => date('l, F j Y, H:i', time())
         );
-          
+
         $e->setResult($result);
-        
+
         return $result;
     }
-    
+
     /**
      * Initializes the localization
      *
@@ -72,7 +72,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
-            
+
         if (null === $language) {
             $language = new Language(
                 'en', 'English'
@@ -85,13 +85,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
         \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
-        
+
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);
             $this->getEntityManager()->flush();
         }
     }
-    
+
     /**
      * Get the current academic year.
      *
@@ -101,7 +101,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
-        
+
         $start = new DateTime(
             str_replace(
                 '{{ year }}',
@@ -111,12 +111,12 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getConfigValue('start_organization_year')
             )
         );
-        
+
         $next = clone $start;
         $next->add(new DateInterval('P1Y'));
         if ($next <= new DateTime())
             $start = $next;
-        
+
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStart($start);

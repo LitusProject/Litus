@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CudiBundle\Entity\Article,
@@ -35,10 +35,10 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
                     ->findAllByPerson($this->getAuthentication()->getPersonObject()),
                 $this->getParam('page')
             );
-            
+
             foreach($paginator as $action)
                 $action->setEntityManager($this->getEntityManager());
-                    
+
             return new ViewModel(
                 array(
                     'paginator' => $paginator,
@@ -46,7 +46,7 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         }
-        
+
         return new ViewModel();
     }
 }

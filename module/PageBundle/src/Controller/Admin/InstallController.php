@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-   
+
 namespace PageBundle\Controller\Admin;
 
 /**
@@ -26,7 +26,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->_installLanguages();
     }
-    
+
     protected function _initAcl()
     {
         $this->installAclStructure(
@@ -41,7 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'guest' => array(
@@ -65,25 +65,25 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     private function _installLanguages()
     {
         $languages = array(
             'en' => 'English',
             'nl' => 'Dutch'
         );
-        
+
         foreach($languages as $abbrev => $name) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
-                
+
             if (null == $language) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
             }
         }
-        
+
         $this->getEntityManager()->flush();
     }
 }

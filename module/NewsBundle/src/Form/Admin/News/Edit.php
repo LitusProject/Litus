@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace NewsBundle\Form\Admin\News;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -24,44 +24,47 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  * Edit News
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param \NewsBundle\Entity\Nodes\News $news The news item we're going to modify
+     * @param mixed $opts The form's options
      */
     public function __construct(EntityManager $entityManager, News $news, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $this->news = $news;
-        
+
         $form = $this->getSubForm('tab_content');
-        
+
         foreach ($this->getLanguages() as $language) {
             $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
             $title->clearValidators();
         }
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'news_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->_populateFromNews($news);
     }
-    
+
     private function _populateFromNews(News $news)
     {
         $data = array();
         foreach($this->getLanguages() as $language) {
-            $data['content_' . $language->getAbbrev()] = $news->getContent($language);
-            $data['title_' . $language->getAbbrev()] = $news->getTitle($language);
+            $data['content_' . $language->getAbbrev()] = $news->getContent($language, false);
+            $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
         }
+
         $this->populate($data);
     }
 }

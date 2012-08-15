@@ -19,11 +19,11 @@
  * Usage:
  * --run|-r      Run the socket
  */
- 
+
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
 // @NOTE: you can either use the git submodule or create an environment variable
-// ZF2_PATH that contains the path to your zf2 library (no trailing slash). 
+// ZF2_PATH that contains the path to your zf2 library (no trailing slash).
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
  array('Zend\Loader\StandardAutoloader' => array())

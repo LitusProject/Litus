@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'di' => array(
         'instance' => array(
@@ -28,7 +28,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(

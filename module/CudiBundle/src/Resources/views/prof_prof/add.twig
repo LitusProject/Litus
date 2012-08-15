@@ -4,14 +4,14 @@
 	<div class="page-header">
 	    <h2>{{ translator().translate('Subject') }}</h2>
 	</div>
-	
+
 	<p>
 	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
 	    {{ translator().translate('Name') }}: <b>{{ subject.getName() }}</b><br />
 	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
 	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
 	</p>
-	
+
 	{% autoescape false %}
 	    {{ form }}
 	{% endautoescape %}

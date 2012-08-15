@@ -20,12 +20,12 @@ class RunController extends \Litus\Controller\Action
             ->getRepository('Litus\Entity\Sport\Lap')
             ->findNext();
     }
-    
+
     public function indexAction()
     {
         $this->_forward('queue');
     }
-    
+
     public function queueAction()
     {
         $this->view->currentLap = $this->currentLap;
@@ -41,18 +41,18 @@ class RunController extends \Litus\Controller\Action
         $this->view->nbLaps = $this->getEntityManager()
             ->getRepository('Litus\Entity\Sport\Lap')
             ->countAll();
-        
+
         $resultPage = $this->getEntityManager()
             ->getRepository('Litus\Entity\General\Config')
             ->getConfigValue('sport.run_result_page');
 
         $resultPageContent = @simplexml_load_file($resultPage);
-        
+
         if (false !== $resultPageContent) {
             $teamId = $this->getEntityManager()
                 ->getRepository('Litus\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
-            
+
             $teamData = $resultPageContent->xpath('//team[@id=\'' . $teamId . '\']');
 
             $this->view->nbOfficialLaps = $teamData[0]->rounds->__toString();

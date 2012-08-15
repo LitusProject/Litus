@@ -20,7 +20,7 @@ class Language extends EntityRepository
             ->orderBy('l.name', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

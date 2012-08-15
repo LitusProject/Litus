@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\Authentication\Authentication,
@@ -31,15 +31,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     public function loginAction()
     {
         $form = new LoginForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
-                
+
                 if ($this->getAuthentication()->isAuthenticated()) {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -59,14 +59,14 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         }
-                    
+
         $this->redirect()->toRoute(
             'prof_index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
         );
-        
+
         return new ViewModel();
     }
 
@@ -81,7 +81,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 'You are successfully logged out!'
             )
         );
-        
+
         $this->redirect()->toRoute(
             'prof_index',
             array(
@@ -91,9 +91,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel();
     }
-    
+
     public function shibbolethAction()
-    {   
+    {
         if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
@@ -103,20 +103,20 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 ),
                 $this->getLocator()->get('authentication_doctrineservice')
             );
-            
+
             $code = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
-                
-            if (null !== $code) { 
+
+            if (null !== $code) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
-                    
+
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
                     );
-                    
+
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
                             'prof_index'
@@ -125,7 +125,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         }
-        
+
         return new ViewModel();
     }
 }

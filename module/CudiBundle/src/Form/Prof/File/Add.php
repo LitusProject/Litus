@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\File;
 
 use CommonBundle\Component\Form\Bootstrap\Element\File as FileElement,
@@ -28,15 +28,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-                
+
         $this->setAttrib('id', 'uploadFile');
-     
+
         $field = new Text('description');
         $field->setLabel('Description')
             ->setAttrib('size', 70)
             ->setRequired();
         $this->addElement($field);
-        
+
         $field = new FileElement('file');
         $field->setLabel('File')
             ->setAttrib('size', 70)

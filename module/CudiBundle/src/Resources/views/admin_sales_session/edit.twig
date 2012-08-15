@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_sales_session/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -12,12 +12,12 @@
         {% if not session.isOpen() %}<p>Date closed: <b>{{ session.getCloseDate().format('Y-m-d H:i:s')}}</b></p>{% endif %}
         <br />
         <table class="half_width">
-        
+
             <tr>
                 <th>Cash register start</th>
                 <th>Amount</th>
             </tr>
-    
+
             <tr>
                 <td></td>
                 <td>
@@ -43,7 +43,7 @@
             </tr>
 
         </table>
-        
+
         {% if not session.isOpen() %}
             <table class="half_width">
                 <tr>
@@ -77,13 +77,13 @@
 
             </table>
         {% endif %}
-        
+
         <br style="clear:both" />
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}
 	</div>
-	
+
 	<aside>
 		{% if session.isOpen() %}
 		    {% if hasAccess('admin_sales_session', 'close') %}
@@ -127,7 +127,7 @@
 			</div>
 		{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="closeSession">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -154,10 +154,10 @@
         $(document).ready(function () {
             $('.closeSession').click(openModal);
         });
-        
+
         function openModal(e) {
         	var $this = $(this);
-        	
+
         	e.preventDefault();
         	var closeSession = $('#closeSession');
         	closeSession.find('.yes').unbind('click').click(function () {

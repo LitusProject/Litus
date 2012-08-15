@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Util\File;
 
 use CommonBundle\Component\Util\File as FileUtil;
@@ -33,7 +33,7 @@ class TmpFile
      * @var resource The file handler
      */
     private $_fileHandler;
-    
+
     /**
      * @param string $tmpDirectory The path to the directory that holds the temporary files
      * @throws \CommonBundle\Component\Util\File\Exception\FailedToOpenException Failed to open the temporary file
@@ -56,7 +56,7 @@ class TmpFile
             );
         }
     }
-    
+
     /**
      * Returns this file's content.
      *
@@ -66,7 +66,7 @@ class TmpFile
     {
         $this->_checkOpen();
         fseek($this->_fileHandler, 0);
-        
+
         return fread(
             $this->_fileHandler, filesize($this->_filename)
         );
@@ -74,17 +74,17 @@ class TmpFile
 
     /**
      * Append content to the file.
-     *    
+     *
      * @param string $content The content that should be appended
      * @return void
      */
     public function appendContent($content)
     {
         $this->_checkOpen();
-        
+
         fwrite($this->_fileHandler, $content);
     }
-    
+
     /**
      * Return the name of this file.
      *
@@ -93,10 +93,10 @@ class TmpFile
     public function getFilename()
     {
         $this->_checkOpen();
-        
+
         return $this->_filename;
     }
-    
+
     /**
      * Check whether or not this file is open.
      *
@@ -106,7 +106,7 @@ class TmpFile
     {
         return $this->_fileHandler !== null;
     }
-    
+
     /**
      * Removes this file.
      *
@@ -117,13 +117,13 @@ class TmpFile
         if ($this->isOpen()) {
             $fileHandler = $this->_fileHandler;
             $this->_fileHanlder = null;
-            
+
             fclose($fileHandler);
             if (file_exists($this->_filename))
                 unlink($this->_filename);
         }
     }
-    
+
     /**
      * Checks whether or not this file is open, throwing an exception if it is not.
      *
@@ -135,7 +135,7 @@ class TmpFile
         if (!$this->isOpen())
             throw new Exception\TmpFileClosedException($this);
     }
-    
+
     /**
      * @return void
      */

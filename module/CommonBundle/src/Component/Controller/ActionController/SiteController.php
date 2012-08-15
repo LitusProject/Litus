@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Form\Auth\Login as LoginForm,
@@ -27,7 +27,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
      * Execute the request.
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
@@ -36,9 +36,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
-        
+
         $result = parent::execute($e);
-        
+
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
                 'index',
@@ -47,17 +47,17 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 )
             )
         );
-        
+
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = $loginForm;
         $result->shibbolethUrl = $this->_getShibbolethUrl();
-          
+
         $e->setResult($result);
-        
+
         return $result;
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
@@ -69,12 +69,12 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         return array(
             'action'         => 'login',
             'controller'     => 'auth',
-            
+
             'auth_route'     => 'auth',
             'redirect_route' => 'index'
         );
     }
-    
+
     /**
      * Create the full Shibboleth URL.
      *
@@ -85,10 +85,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
-        
+
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
-            
+
         return $shibbolethUrl . '?source=site';
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -32,7 +32,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+
         $field = new Hidden('person_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
@@ -40,7 +40,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('person');
         $field->setLabel('Person')
             ->setAttrib('style', 'width: 400px;')

@@ -4,7 +4,7 @@
 	{% include 'admin_prof_action/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div id="controller_action">
 	    {% autoescape false %}
 	        {{ form }}
@@ -19,7 +19,7 @@
 				.parent().parent().hide();
 			toggleInternal();
 		});
-		
+
 		function toggleInternal() {
 			if ($('#internal').is(':checked'))
 				$('#internal_form').show();

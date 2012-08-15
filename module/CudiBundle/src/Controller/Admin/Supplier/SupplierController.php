@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -39,7 +39,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 'name' => 'ASC'
             )
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -47,14 +47,14 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
-    
+
     public function addAction()
     {
         $form = new AddForm();
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $supplier = new Supplier(
                     $formData['name'],
@@ -70,7 +70,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 );
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -78,35 +78,35 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         'The supplier was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_supplier',
                     array(
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-        
+
         $form = new EditForm($supplier);
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-        
+
             if ($form->isValid($formData)) {
                 $supplier->setName($formData['name'])
                     ->setPhoneNumber($formData['phone_number'])
@@ -119,7 +119,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         ->setCountry($formData['address_country']);
 
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -127,25 +127,25 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         'The supplier was successfully updated!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_supplier',
                     array(
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -156,21 +156,21 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     'No id was given to identify the supplier!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_supplier',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $supplier) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -179,17 +179,17 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     'No supplier with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_supplier',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $supplier;
     }
 }

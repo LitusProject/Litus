@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
@@ -36,19 +36,19 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Company $company, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $field = $this->getElement('company_name');
         $field->clearValidators();
         $field->addValidator(new CompanyNameValidator($entityManager, $company));
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Edit')
             ->setAttrib('class', 'companies_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromCompany($company);
     }
 }

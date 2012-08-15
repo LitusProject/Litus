@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Internship,
@@ -32,14 +32,14 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
     {
         if (!($company = $this->_getCompany()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Internship')
                 ->findAllByCompany($company),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -48,27 +48,27 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
             )
         );
     }
-    
+
     public function addAction()
     {
         if (!($company = $this->_getCompany()))
             return new ViewModel();
-            
+
         $form = new AddForm();
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
-            if ($form->isValid($formData)) {                
+
+            if ($form->isValid($formData)) {
                 $internship = new Internship(
                     $formData['internship_name'],
                     $formData['description'],
                     $company
                 );
-                
+
                 $this->getEntityManager()->persist($internship);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -84,11 +84,11 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                         'id' => $company->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-            
+
         return new ViewModel(
             array(
                 'company' => $company,
@@ -96,21 +96,21 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($internship = $this->_getInternship()))
             return new ViewModel();
-            
+
         $form = new EditForm($internship);
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $internship->setName($formData['internship_name'])
                     ->setDescription($formData['description']);
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -126,11 +126,11 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                         'id' => $internship->getCompany()->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-                
+
         return new ViewModel(
             array(
                 'company' => $internship->getCompany(),
@@ -138,24 +138,24 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-                
+
         if (!($internship = $this->_getInternship()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($internship);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -166,21 +166,21 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                     'No ID was given to identify the company!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $company) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -189,20 +189,20 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                     'No company with the given ID was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $company;
     }
-    
+
     private function _getInternship()
     {
         if (null === $this->getParam('id')) {
@@ -213,21 +213,21 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                     'No ID was given to identify the internship!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $internship = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Internship')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $internship) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -236,17 +236,17 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
                     'No internship with the given ID was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $internship;
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Entity\Users\Person;
@@ -30,7 +30,7 @@ interface AuthenticationAware
      * @return \CommonBundle\Component\Authentication\Authentication
      */
     public function getAuthentication();
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.

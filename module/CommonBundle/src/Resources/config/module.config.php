@@ -35,7 +35,7 @@ return array(
                 'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
                 'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
 
-                'translator'                       => 'CommonBundle\Component\Localisation\Translator',
+                'translator'                       => 'CommonBundle\Component\Localization\Translator',
 
                 'mail_transport'                   => 'Zend\Mail\Transport\Sendmail',
             ),

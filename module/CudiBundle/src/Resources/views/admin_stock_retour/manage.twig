@@ -2,19 +2,19 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	{% include 'admin_stock_retour/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		<table>
-		
+
 		    <tr>
 		        <th>Name</th>
 				<th width="200px">Actions</th>
 		    </tr>
-		    
+
 		    {% for supplier in paginator %}
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
@@ -27,7 +27,7 @@
 		    {% endfor %}
 		</table>
 	</div>
-	
+
 	<aside>
     	{% if hasAccess('admin_stock_retour', 'add') %}
     		<div class="sidebox">

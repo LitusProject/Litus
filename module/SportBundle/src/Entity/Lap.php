@@ -16,7 +16,7 @@ class Lap
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \Litus\Entity\Sport\Runner The person who ran this lap
      *
@@ -45,17 +45,17 @@ class Lap
      * @Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
-    
+
     /**
      * @param \Litus\Entity\Sport\Runner $runner The person who ran this lap
      */
     public function __construct(Runner $runner)
     {
         $this->setRunner($runner);
-        
+
         $this->registrationTime = new \DateTime();
     }
-    
+
     /**
      * @return int
      */
@@ -73,10 +73,10 @@ class Lap
         if (null === $runner)
             throw new \InvalidArgumentException('Invalid runner');
         $this->runner = $runner;
-        
+
         return $this;
     }
-    
+
     /**
      * @return \Litus\Entity\Sport\Runner
      */
@@ -140,10 +140,10 @@ class Lap
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
             $now = new \DateTime();
-            
+
             $lapTime = $now->diff($this->startTime);
         }
-        
+
         return $lapTime;
     }
 }

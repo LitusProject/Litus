@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace CalendarBundle\Controller\Admin;
 
 /**
@@ -12,7 +12,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     protected function _initConfig()
     {
     }
-    
+
     protected function _initAcl()
     {
         $this->installAclStructure(
@@ -24,7 +24,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'guest' => array(

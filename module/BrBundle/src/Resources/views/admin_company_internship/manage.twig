@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_company_internship/partials/navigation.twig' %}
-	
+
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
 	    <div class="flashmessage success_message full_width internship_removed_success hide">
@@ -17,7 +17,7 @@
 	    		<p>An error occurred while trying to delete an internship.</p>
 	    	</div>
 	    </div>
-	    
+
 	    <h1>Company</h1>
 	    <p>Name: <b>{{ company.getName() }}</b></p>
 	    <br />
@@ -29,7 +29,7 @@
 	                <th width="120px">Action</th>
 	            </tr>
 	        </thead>
-	
+
 	        <tbody>
 	            {% for internship in paginator %}
 	                <tr class="item item-{{ internship.getId() }}">
@@ -49,10 +49,10 @@
 	            {% endfor %}
 	        </tbody>
 	    </table>
-	
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<div class="modal hide fade" id="removeInternship">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -79,10 +79,10 @@
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeInternship = $('#removeInternship');
 			removeInternship.find('.internshipName').html($(this).data('name'));
@@ -101,7 +101,7 @@
 			});
 			removeInternship.modal();
 		}
-		
+
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
     		$('.internship_removed_error').removeClass('hide');

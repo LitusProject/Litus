@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CalendarBundle\Form\Admin\Event;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -33,17 +33,17 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Event $event, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $this->removeElement('submit');
-        
+
         $this->event = $event;
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'calendar_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-                
+
         $this->populateFromEvent($event);
     }
 }

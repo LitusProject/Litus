@@ -1,5 +1,5 @@
-<?php 
-/* 
+<?php
+/*
 In order to upload files to S3 using Flash runtime, one should start by placing crossdomain.xml into the bucket.
 crossdomain.xml can be as simple as this:
 
@@ -23,7 +23,7 @@ $accessKeyId = 'ACCESS_KEY_ID';
 $secret = 'SECRET_ACCESS_KEY';
 
 
-// hash_hmac — Generate a keyed hash value using the HMAC method 
+// hash_hmac — Generate a keyed hash value using the HMAC method
 // (PHP 5 >= 5.1.2, PECL hash >= 1.1)
 if (!function_exists('hash_hmac')) :
 // based on: http://www.php.net/manual/en/function.sha1.php#39492
@@ -32,12 +32,12 @@ function hash_hmac($algo, $data, $key, $raw_output = false)
     $blocksize = 64;
     if (strlen($key) > $blocksize)
         $key = pack('H*', $algo($key));
-    
+
     $key = str_pad($key, $blocksize, chr(0x00));
     $ipad = str_repeat(chr(0x36), $blocksize);
     $opad = str_repeat(chr(0x5c), $blocksize);
     $hmac = pack('H*', $algo(($key^$opad) . pack('H*', $algo(($key^$ipad) . $data))));
-    
+
     return $raw_output ? $hmac : bin2hex($hmac);
 }
 endif;
@@ -45,23 +45,23 @@ endif;
 // prepare policy
 $policy = base64_encode(json_encode(array(
     // ISO 8601 - date('c'); generates uncompatible date, so better do it manually
-    'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),  
+    'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),
     'conditions' => array(
         array('bucket' => $bucket),
         array('acl' => 'public-read'),
         array('starts-with', '$key', ''),
         // for demo purposes we are accepting only images
         array('starts-with', '$Content-Type', 'image/'),
-        // "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body. 
+        // "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body.
         // To configure POST to return a response that does not have an empty body, set success_action_status to 201.
-        // When set, Amazon S3 returns an XML document with a 201 status code." 
+        // When set, Amazon S3 returns an XML document with a 201 status code."
         // http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
         array('success_action_status' => '201'),
         // Plupload internally adds name field, so we need to mention it here
-        array('starts-with', '$name', ''),     
+        array('starts-with', '$name', ''),
         // One more field to take into account: Filename - gets silently sent by FileReference.upload() in Flash
         // http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
-        array('starts-with', '$Filename', ''), 
+        array('starts-with', '$Filename', ''),
     )
 )));
 
@@ -117,7 +117,7 @@ $(function() {
         runtimes : 'flash,silverlight',
         url : 'http://<?php echo $bucket; ?>.s3.amazonaws.com/',
         max_file_size : '10mb',
-        
+
         multipart: true,
         multipart_params: {
             'key': '${filename}', // use filename as a key
@@ -125,18 +125,18 @@ $(function() {
             'acl': 'public-read',
             'Content-Type': 'image/jpeg',
             'success_action_status': '201',
-            'AWSAccessKeyId' : '<?php echo $accessKeyId; ?>',        
+            'AWSAccessKeyId' : '<?php echo $accessKeyId; ?>',
             'policy': '<?php echo $policy; ?>',
             'signature': '<?php echo $signature; ?>'
         },
-        
-        // !!!Important!!! 
+
+        // !!!Important!!!
         // this is not recommended with S3, since it will force Flash runtime into the mode, with no progress indication
-        //resize : {width : 800, height : 600, quality : 60},  // Resize images on clientside, if possible 
-        
+        //resize : {width : 800, height : 600, quality : 60},  // Resize images on clientside, if possible
+
         // optional, but better be specified directly
         file_data_name: 'file',
-        
+
         // re-use widget (not related to S3, but to Plupload UI Widget)
         multiple_queues: true,
 

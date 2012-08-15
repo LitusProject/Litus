@@ -36,13 +36,13 @@ class SubjectMap extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-            
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findAllBySubjectAndAcademicYear(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
@@ -63,10 +63,10 @@ class SubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByArticleAndAcademicYear(Article $article, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
@@ -84,7 +84,7 @@ class SubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace PageBundle\Form\Admin\Page;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -33,23 +33,23 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Page $page, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $form = $this->getSubForm('tab-content');
-        
+
         foreach ($this->_getLanguages() as $language) {
             $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
             $title->clearValidators();
             $title->addValidator(new PageNameValidator($entityManager, $page->getTranslation($language)));
         }
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit'));
-        
+
         $this->populateFromPage($page);
     }
 }

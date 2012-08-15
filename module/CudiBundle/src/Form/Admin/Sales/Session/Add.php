@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $units = $entityManager
             ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
             ->findAll();
-        
+
         foreach($units as $unit) {
             $field = new Text('unit_' . $unit->getId());
             $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
@@ -49,11 +49,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setDecorators(array(new FieldDecorator()));
             $this->addElement($field);
         }
-        
+
         $devices = $entityManager
             ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
-        
+
         foreach($devices as $device) {
             $field = new Text('device_' . $device->getId());
             $field->setLabel($device->getName())
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     public function populateFromCashRegister(CashRegister $cashRegister)
     {
         $data = array();
@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
         foreach($cashRegister->getMoneyUnitAmounts() as $amount)
             $data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
-        
+
         $this->populate($data);
     }
 }

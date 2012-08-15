@@ -20,7 +20,7 @@ class AcademicYear extends EntityRepository
             ->orderBy('y.universityStart')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

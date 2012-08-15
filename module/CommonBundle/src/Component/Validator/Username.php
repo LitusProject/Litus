@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -46,7 +46,7 @@ class Username extends \Zend\Validator\AbstractValidator
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
     }
 
@@ -64,12 +64,12 @@ class Username extends \Zend\Validator\AbstractValidator
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Users\Person')
             ->findOneByUsername($value);
-        
+
         if (null === $person)
             return true;
 
         $this->error(self::NOT_VALID);
-        
+
         return false;
     }
 }

@@ -28,86 +28,86 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * ProfController
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
- */    
+ */
 class ProfController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function cudiAction()
     {
         $academicYear = $this->_getAcademicYear();
-    
+
         $semester = (new DateTime() < $academicYear->getUniversityStartDate()) ? 1 : 2;
-        
+
         $mailSubject = str_replace(
             array(
                 '{{ semester }}',
                 '{{ academicYear }}',
             ),
             array(
-                $semester,
+                (1 == $semester ? 'Eerste' : 'Tweede'),
                 $academicYear->getCode(),
             ),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('mail.start_cudi_mail_subject')
         );
-        
+
         $mail = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.start_cudi_mail');
-        
+
         $form = new MailForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail');
-                    
+
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail_name');
-                    
+
                 $statuses = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\Statuses\University')
                     ->findAllByStatus('professor', $academicYear);
-                
+
                 foreach($statuses as $status) {
                     if ('' == $status->getPerson()->getEmail())
                         continue;
-                
+
                     $allSubjects = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                         ->findAllByProfAndAcademicYear($status->getPerson(), $academicYear);
-                        
+
                     $subjects = array();
                     foreach($allSubjects as $subject) {
                         if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
                             $subjects[] = $subject->getSubject();
                         }
                     }
-                    
+
                     if (empty($subjects))
                         continue;
-                        
+
                     $text = '';
                     for($i = 0; isset($subjects[$i]); $i++) {
                         if ($i != 0)
                              $text .= PHP_EOL;
-                             
+
                         $text .= '    [' . $subjects[$i]->getCode() . '] - ' . $subjects[$i]->getName();
                     }
-        
+
                     $body = str_replace('{{ subjects }}', $text, $mail);
 
                     $message = new Message();
                     $message->setBody($body)
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($mailSubject);
-                        
+
                     $message->addBcc($mailAddress);
-                    
+
                     if ($formData['test_it']) {
                         $message->addTo(
                             $this->getEntityManager()
@@ -118,12 +118,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     } else {
                         $message->addTo(
                             $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
-                        );                    
+                        );
                     }
-                       
+
                     if ('production' == getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($message);
-                    
+
                     if ($formData['test_it'])
                         break;
                 }
@@ -135,18 +135,18 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         'The mail was successfully sent!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_mail_prof',
                     array(
                         'action' => 'cudi'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'subject' => $mailSubject,
@@ -156,12 +156,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-     
+
     private function _getAcademicYear()
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
-                
+
         $now = new DateTime();
         $profStart = new DateTime($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -174,7 +174,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
-        
+
         if (null === $academicYear) {
             $organizationStart = str_replace(
                 '{{ year }}',

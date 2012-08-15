@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,13 +31,13 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-            
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findByArticle($article);
-        
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -49,10 +49,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData['text'],
                     $formData['type']
                 );
-                
+
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -60,7 +60,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                         'The comment was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_article_comment',
                     array(
@@ -68,11 +68,11 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                         'id' => $article->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'article' => $article,
@@ -81,28 +81,28 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getCommentMapping()))
             return new ViewModel();
-        
+
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
-        
+
         if (null === $id) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -111,21 +111,21 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($id);
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -134,20 +134,20 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
-    
+
     private function _getCommentMapping()
     {
         if (null === $this->getParam('id')) {
@@ -158,21 +158,21 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No id was given to identify the comment!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $comment = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $comment) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -181,17 +181,17 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'No comment with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $comment;
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Discounts;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -37,11 +37,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var \Doctrine\ORM\EntityManager
      */
     protected $_entityManager = null;
-    
+
     public function __construct(Article $article, EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
-        
+
         $this->_entityManager = $entityManager;
 
         $field = new Select('template');
@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $templates = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
             ->findAll();
@@ -62,14 +62,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->clearDecorators()
                 ->setDecorators(array('ViewHelper'));
             $this->addElement($field);
-            
+
             $field = new Hidden('template_' . $template->getId() . '_method');
             $field->setAttrib('id', 'template_' . $template->getId() . '_method')
                 ->setValue($template->getMethod())
                 ->clearDecorators()
                 ->setDecorators(array('ViewHelper'));
             $this->addElement($field);
-            
+
             $field = new Hidden('template_' . $template->getId() . '_type');
             $field->setAttrib('id', 'template_' . $template->getId() . '_type')
                 ->setValue($template->getType())
@@ -77,7 +77,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setDecorators(array('ViewHelper'));
             $this->addElement($field);
         }
-                     
+
         $field = new Text('value');
         $field->setAttrib('id', 'discount_template_value')
             ->setLabel('Value')
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new PriceValidator());
         $this->addElement($field);
-        
+
         $field = new Select('method');
         $field->setAttrib('id', 'discount_template_method')
             ->setLabel('Method')
@@ -93,7 +93,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Select('type');
         $field->setAttrib('id', 'discount_template_type')
             ->setLabel('Type')
@@ -102,14 +102,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new DiscountValidator($article, $entityManager));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
                 ->setAttrib('class', 'discount_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     private function _getTemplates()
     {
         $templates = $this->_entityManager
@@ -118,34 +118,34 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $templateOptions = array(0 => 'none');
         foreach($templates as $template)
             $templateOptions[$template->getId()] = $template->getName();
-        
+
         return $templateOptions;
     }
-    
+
     public function isValid($data)
     {
         if ($data['template'] != 0) {
             $validatorsInternal = array();
             $requiredInternal = array();
-            
+
             $validatorsInternal['value'] = $this->getElement('value')->getValidators();
             $requiredInternal['value'] = $this->getElement('value')->isRequired();
             $this->getElement('value')->clearValidators()
                 ->setRequired(false);
-                
+
             $validatorsInternal['method'] = $this->getElement('method')->getValidators();
             $requiredInternal['method'] = $this->getElement('method')->isRequired();
             $this->getElement('method')->clearValidators()
                 ->setRequired(false);
-            
+
             $validatorsInternal['type'] = $this->getElement('type')->getValidators();
             $requiredInternal['type'] = $this->getElement('type')->isRequired();
             $this->getElement('type')->clearValidators()
                 ->setRequired(false);
         }
-        
+
         $isValid = parent::isValid($data);
-        
+
         if ($data['template'] != 0) {
             $this->getElement('value')->setValidators($validatorsInternal['value'])
                 ->setRequired($requiredInternal['value']);
@@ -154,7 +154,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $this->getElement('type')->setValidators($validatorsInternal['type'])
                 ->setRequired($requiredInternal['type']);
         }
-        
+
         return $isValid;
     }
 }

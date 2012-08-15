@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -36,7 +36,7 @@
 
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<div class="modal hide fade" id="viewComment">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -57,10 +57,10 @@
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var viewComment = $('#viewComment');
 			viewComment.find('.text').html($this.data('text'));

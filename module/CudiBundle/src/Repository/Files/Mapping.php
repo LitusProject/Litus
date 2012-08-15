@@ -29,10 +29,10 @@ class Mapping extends EntityRepository
             ->setParameter('article', $article->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByArticle(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
@@ -48,7 +48,7 @@ class Mapping extends EntityRepository
             ->setParameter('article', $article->getId())
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

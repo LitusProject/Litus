@@ -12,9 +12,9 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Prof\Article;
-    
+
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Component\Validator\Uri as UriValidator,
@@ -43,30 +43,30 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     public function __construct(EntityManager $entityManager, Article $article, $opts = null)
     {
         parent::__construct($opts);
-        
+
            $this->_entityManager = $entityManager;
-         
+
         $field = new Text('title');
         $field->setLabel('Title')
             ->setAttrib('size', 70)
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Text('author');
         $field->setLabel('Author')
             ->setAttrib('size', 60)
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Text('publisher');
         $field->setLabel('Publisher')
             ->setAttrib('size', 40)
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Text('year_published');
         $field->setLabel('Year Published')
             ->setRequired()
@@ -74,24 +74,24 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
             ->addValidator('int')
             ->addValidator(new YearValidator());
         $this->addElement($field);
-        
+
         $field = new Text('isbn');
         $field->setLabel('ISBN')
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new IsbnValidator(array('type' => IsbnValidator::AUTO)));
         $this->addElement($field);
-        
+
         $field = new Text('url');
         $field->setLabel('URL')
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new UriValidator());
         $this->addElement($field);
-        
+
         $field = new Checkbox('downloadable');
         $field->setLabel('Downloadable')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Select('type');
         $field->setLabel('Type')
                ->setRequired()
@@ -160,12 +160,12 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
             ->setMultiOptions($this->_getColors())
                ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Checkbox('perforated');
         $field->setLabel('Perforated')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->addDisplayGroup(
                     array(
                         'nb_black_and_white',
@@ -191,7 +191,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 
         $this->populateFromArticle($article);
     }
-    
+
     private function _getBindings()
     {
         $bindings = $this->_entityManager
@@ -200,10 +200,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $bindingOptions = array();
         foreach($bindings as $item)
             $bindingOptions[$item->getId()] = $item->getName();
-        
+
         return $bindingOptions;
     }
-    
+
     private function _getColors()
     {
         $colors = $this->_entityManager
@@ -212,10 +212,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $colorOptions = array();
         foreach($colors as $item)
             $colorOptions[$item->getId()] = $item->getName();
-        
+
         return $colorOptions;
     }
-    
+
     public function populateFromArticle(Article $article)
     {
         $data = array(
@@ -229,23 +229,23 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
             'type' => $article->getType(),
             'internal' => $article->isInternal()
         );
-        
+
         if ($article->isInternal()) {
             $data['binding'] = $article->getBinding()->getId();
             $data['official'] = $article->isOfficial();
             $data['rectoverso'] = $article->isRectoVerso();
             $data['perforated'] = $article->isPerforated();
         }
-                        
+
         $this->populate($data);
     }
-    
+
     public function isValid($data)
     {
         if (!$data['internal']) {
             $validatorsInternal = array();
             $requiredInternal = array();
-            
+
             foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
                 $validatorsInternal[$formElement->getName()] = $formElement->getValidators();
                 $requiredInternal[$formElement->getName()] = $formElement->isRequired();
@@ -253,9 +253,9 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
                     ->setRequired(false);
             }
         }
-        
+
         $isValid = parent::isValid($data);
-        
+
         if (!$data['internal']) {
             foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
                 if (array_key_exists ($formElement->getName(), $validatorsInternal))
@@ -264,7 +264,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
                     $formElement->setRequired($requiredInternal[$formElement->getName()]);
             }
         }
-        
+
         return $isValid;
     }
 }

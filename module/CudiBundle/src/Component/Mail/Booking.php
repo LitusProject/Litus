@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
@@ -38,24 +38,24 @@ class Booking
         $message = $this->_em
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail');
-            
+
         $subject = $this->_em
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail_subject');
-            
+
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail');
-            
+
         $mailName = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail_name');
-        
+
         $list = '';
         foreach($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . " " . ($booking->getExpirationDate() ? "(expires " . $booking->getExpirationDate()->format('d M Y') : "") . ")\r\n";
         }
-            
+
         $mail = new Message();
         $mail->setBody(str_replace('{{ bookings }}', $list, $message))
             ->setFrom($mailAddress, $mailName)
@@ -68,7 +68,7 @@ class Booking
                 'System Administrator'
             )
             ->setSubject($subject);
-            
+
         if ('production' == getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
     }

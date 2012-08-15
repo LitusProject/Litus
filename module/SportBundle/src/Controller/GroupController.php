@@ -67,7 +67,7 @@ class GroupController extends \Litus\Controller\Action
                         $repositoryCheck = $this->getEntityManager()
                             ->getRepository('Litus\Entity\Sport\Runner')
                             ->find($formData['university_identification_' . $memberNb]);
-                        
+
                         if (null === $repositoryCheck) {
                             $newRunner = new Runner(
                                 $formData['university_identification_' . $memberNb],
@@ -88,7 +88,7 @@ class GroupController extends \Litus\Controller\Action
 
                     if (0 != count($groupMembers)) {
                         $newGroup->setMembers($groupMembers);
-                        
+
                         $this->getEntityManager()->persist($newGroup);
 
                         $this->view->groupCreated = true;

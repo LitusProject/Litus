@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\General;
 
 /**
@@ -21,7 +21,7 @@ namespace CommonBundle\Entity\General;
  * @Entity(repositoryClass="CommonBundle\Repository\General\Config")
  * @Table(name="general.config")
  */
-class Config 
+class Config
 {
     /**
      * @static
@@ -60,11 +60,11 @@ class Config
     {
         if(!is_string($key))
             throw new \InvalidArgumentException('Key must be a string');
-            
+
         $this->key = $key;
         $this->setValue($value);
     }
-    
+
     /**
      * @return string
      */
@@ -72,7 +72,7 @@ class Config
     {
         return $this->key;
     }
-    
+
     /**
      * @return string
      */
@@ -80,7 +80,7 @@ class Config
     {
         return $this->value;
     }
-    
+
     /**
      * @param string $value The entry's value
      * @return \CommonBundle\Entity\Public\Config
@@ -90,9 +90,9 @@ class Config
     {
         if(!is_string($value))
             throw new \InvalidArgumentException('Value must be a string');
-            
+
         $this->value = $value;
-        
+
         return $this;
     }
 
@@ -103,7 +103,7 @@ class Config
     {
         return $this->description;
     }
-    
+
     /**
     * @param string $description A description for this configuration entry
     * @return \CommonBundle\Entity\Public\Config
@@ -113,7 +113,7 @@ class Config
     {
         if(($description !== null) && !is_string($description))
             throw new \InvalidArgumentException('Description must be a string or null');
-            
+
         $this->description = $description;
     }
 }

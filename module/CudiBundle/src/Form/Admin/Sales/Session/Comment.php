@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -40,7 +40,7 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Edit Comment')
             ->setAttrib('class', 'sale_edit');
         $this->addElement($field);
-        
+
         $this->populate(
             array(
                 'comment' => $session->getComment(),

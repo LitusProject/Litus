@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -23,7 +23,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ValidUsername extends \Zend\Validator\AbstractValidator
+class Role extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -36,7 +36,7 @@ class ValidUsername extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $_messageTemplates = array(
-        self::NOT_VALID => 'The username does not exists'
+        self::NOT_VALID => 'The role already exists'
     );
 
     /**
@@ -46,7 +46,7 @@ class ValidUsername extends \Zend\Validator\AbstractValidator
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
     }
 
@@ -61,15 +61,15 @@ class ValidUsername extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $person = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Users\Person')
-            ->findOneByUsername($value);
-        
-        if (null !== $person)
+        $role = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findOneByName($value);
+
+        if (null === $role)
             return true;
 
         $this->error(self::NOT_VALID);
-        
+
         return false;
     }
 }

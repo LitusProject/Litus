@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace PageBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @var \PageBundle\Entity\Nodes\Translation The translation exluded from this check
      */
@@ -72,12 +72,12 @@ class Name extends \Zend\Validator\AbstractValidator
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Translation')
             ->findOneByName(str_replace(' ', '_', strtolower($value)));
-                
+
         if (null === $page || ($this->_translation && $page == $this->_translation))
             return true;
 
         $this->error(self::NOT_VALID);
-        
+
         return false;
     }
 }

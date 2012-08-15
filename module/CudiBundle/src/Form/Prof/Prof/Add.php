@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\Prof;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -30,13 +30,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-         
+
         $field = new Hidden('prof_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
             ->setAttrib('id', 'profId');
         $this->addElement($field);
-         
+
         $field = new Text('prof');
         $field->setLabel('Docent')
             ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Submit('submit');
         $field->setLabel('Add');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit'));
     }
 }

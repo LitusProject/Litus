@@ -10,7 +10,7 @@
             <th width="100px">{{ translator().translate('Barcode') }}</th>
             <th width="70px">{{ translator().translate('In Stock') }}</th>
         </tr>
-        
+
     	{% for article in articles %}
     	    <tr>
     	        <td>{{ article.getMainArticle().getTitle() }}</td>

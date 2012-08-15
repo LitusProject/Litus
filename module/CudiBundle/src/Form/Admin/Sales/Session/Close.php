@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
@@ -38,7 +38,7 @@ class Close extends Add
             ->setAttrib('class', 'sale_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromCashRegister($cashRegister);
     }
 }

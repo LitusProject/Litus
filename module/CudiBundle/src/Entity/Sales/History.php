@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity\Sales;
 
 use CudiBundle\Entity\Sales\Article;
@@ -39,7 +39,7 @@ class History
      * @JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
-    
+
     /**
      * @var \CudiBundle\Entity\Sales\Article The oldest version of the two
      *
@@ -47,7 +47,7 @@ class History
      * @JoinColumn(name="precursor", referencedColumnName="id")
      */
     private $precursor;
-    
+
     /**
      * @param \CudiBundle\Entity\Sales\Article $article The new version of the article
      * @param \CudiBundle\Entity\Sales\Article $precursor The old version of the article
@@ -58,9 +58,9 @@ class History
 
         $this->precursor->setVersionNumber($article->getVersionNumber())
             ->setIsHistory(true);
-        
+
         $article->setVersionNumber($article->getVersionNumber()+1);
-        
+
         $this->article = $article;
     }
 }

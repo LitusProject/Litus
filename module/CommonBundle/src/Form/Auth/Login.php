@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Auth;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
@@ -49,14 +49,14 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Password')
             ->setRequired(true);
         $this->addElement($field);
-        
+
         $field = new Checkbox('remember_me');
         $field->setLabel('Remember Me')
             ->addDecorator('Label', array('placement' => 'APPEND'))
             ->addDecorator('HtmlTag', array('class' => 'remember_me'))
             ->removeDecorator('div');
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Login')
             ->setAttrib('class', 'btn pull-right');

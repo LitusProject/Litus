@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -30,18 +30,18 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
-    
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
                 ->findAllByAcademicYear($academicYear),
             $this->getParam('page')
         );
-        
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'academicYears' => $academicYears,
@@ -51,14 +51,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-    
+
     public function searchAction()
     {
         $this->initAjax();
-        
+
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
-        
+
         switch($this->getParam('field')) {
             case 'name':
                 $mappings = $this->getEntityManager()
@@ -66,13 +66,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
                 break;
         }
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        
+
         array_splice($mappings, $numResults);
-        
+
         $result = array();
         foreach($mappings as $mapping) {
             $item = (object) array();
@@ -81,14 +81,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $item->phase = $mapping->getStudy()->getPhase();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
@@ -101,7 +101,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
-        
+
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -110,17 +110,17 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     'No academic year was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $academicYear;
     }
 }

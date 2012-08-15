@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
@@ -145,10 +145,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
-        
+
         $this->_installAcademicYear();
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -172,7 +172,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'prof' => array(
@@ -186,7 +186,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     private function _installAcademicYear()
     {
         $now = new DateTime('now');
@@ -197,7 +197,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
-            
+
         $organizationStart = str_replace(
             '{{ year }}',
             $startAcademicYear->format('Y'),
@@ -212,11 +212,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }
-        
+
         $organizationStart->add(
             new DateInterval('P1Y')
         );
-        
+
         if ($organizationStart < new DateTime()) {
             $academicYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')

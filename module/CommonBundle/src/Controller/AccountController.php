@@ -31,17 +31,17 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     {
         return new ViewModel();
     }
-    
+
     public function activateAction()
     {
         if (!($user = $this->_getUser()))
             return new ViewModel();
-        
+
         $form = new ActivateForm();
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $user->setCode(null)
                     ->setCredential(
@@ -50,9 +50,9 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             $formData['credential']
                         )
                     );
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -60,15 +60,15 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         'Your account was succesfully activated!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'index'
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -78,7 +78,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         // show field to enter new password
         // on post: save new password, set code = null
     }
-    
+
     public function _getUser()
     {
         if (null === $this->getParam('code')) {
@@ -89,18 +89,18 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     'No code was given to identify the user!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'index'
             );
-            
+
             return;
         }
-    
+
         $user = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Code')
             ->findOnePersonByCode($this->getParam('code'));
-        
+
         if (null === $user) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -109,14 +109,14 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     'The given code is not valid!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'index'
             );
-            
+
             return;
         }
-        
+
         return $user;
     }
 }

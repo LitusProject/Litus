@@ -25,7 +25,7 @@ class Subject extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         $ids = array(0);
         foreach($resultSet as $subject)
             $ids[] = $subject->getSubject()->getId();
@@ -45,7 +45,7 @@ class Subject extends EntityRepository
             ->setParameter('name', strtolower(trim($name)) . '%')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

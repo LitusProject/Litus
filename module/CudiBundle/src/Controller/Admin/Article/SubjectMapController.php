@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,15 +31,15 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-            
+
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
-        
+
         $form = new AddForm($this->getEntityManager());
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 if ($formData['subject_id'] == '') {
                     $subject = $this->getEntityManager()
@@ -50,17 +50,17 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                         ->getRepository('SyllabusBundle\Entity\Subject')
                         ->findOneById($formData['subject_id']);
                 }
-                    
+
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
-                
+
                 if (null === $mapping) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
                 }
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -79,15 +79,15 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 );
             }
         }
-        
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findAllByArticleAndAcademicYear($article, $academicYear);
-        
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
-            
+
         return new ViewModel(
             array(
                 'academicYears' => $academicYears,
@@ -98,24 +98,24 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
@@ -126,21 +126,21 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     'No id was given to identify the mapping!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article_subject',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -149,20 +149,20 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     'No mapping with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article_subject',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
-    
+
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
@@ -173,21 +173,21 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -196,17 +196,17 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
 }

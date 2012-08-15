@@ -2,22 +2,22 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_study/partials/years.twig' %}
 
 	<div id="controller_action">
 	    <div id="study_search" style="display:none;">
 	    	<div style="padding:4px;text-align:right">
-	    		Search: 
+	    		Search:
 	    		<select id="searchField">
 	    			<option value="name">Name</option>
 	    		</select>
 	    		is
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
-	    	
+
 	    	<table class="full_width manage">
 	        	<tr>
 	        	    <th>Name</th>
@@ -26,7 +26,7 @@
 	        	</tr>
 	    	</table>
 	    </div>
-	    
+
 		<div id="default_page">
 			<table class="full_width manage">
 		        <tr>
@@ -34,7 +34,7 @@
 		            <th width="50px">Phase</th>
 		            <th width="70px">Actions</th>
 		        </tr>
-		        
+
 		        {% for mapping in paginator %}
 		            <tr class="item">
 		                <td>{{ mapping.getStudy().getFullTitle() }}</td>
@@ -47,7 +47,7 @@
 		            </tr>
 		        {% endfor %}
 		    </table>
-	        
+
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
@@ -72,7 +72,7 @@
 							.append(
 								actions = $('<td>', {'class': 'actions'})
 							);
-							
+
 							{% if hasAccess('admin_subject', 'manage') %}
 							    actions.append('<a href="{{ url('admin_subject') }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
 							{% endif %}

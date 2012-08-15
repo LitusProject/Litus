@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Controller\Corporate;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -29,15 +29,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     public function loginAction()
     {
         $form = new LoginForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
-                
+
                 if ($this->getAuthentication()->isAuthenticated()) {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -57,14 +57,14 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
         }
-                    
+
         $this->redirect()->toRoute(
             'corporate_index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
         );
-        
+
         return new ViewModel();
     }
 
@@ -79,7 +79,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 'You are successfully logged out!'
             )
         );
-        
+
         $this->redirect()->toRoute(
             'corporate_index',
             array(

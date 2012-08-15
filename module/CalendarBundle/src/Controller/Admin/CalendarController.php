@@ -25,7 +25,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 ->findAll(),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -33,14 +33,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
     }
-    
+
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $event = new Event(
                     $this->getAuthentication()->getPersonObject(),
@@ -52,7 +52,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
-                
+
                 foreach($languages as $language) {
                     $translation = new Translation(
                         $event,
@@ -65,7 +65,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -80,28 +80,28 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($event = $this->_getEvent()))
             return new ViewModel();
-        
+
         $form = new EditForm($this->getEntityManager(), $event);
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $event->setStartDate(DateTime::createFromFormat('d/m/Y H:i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d/m/Y H:i', $formData['end_date']));
@@ -109,10 +109,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
-                
+
                 foreach($languages as $language) {
                     $translation = $event->getTranslation($language);
-                    
+
                     if ($translation) {
                         $translation->setLocation($formData['location_' . $language->getAbbrev()])
                             ->setTitle($formData['title_' . $language->getAbbrev()])
@@ -130,7 +130,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -145,28 +145,28 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($event = $this->_getEvent()))
             return new ViewModel();
-        
+
         $this->getEntityManager()->remove($event);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => array(
@@ -175,7 +175,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
     }
-    
+
     public function _getEvent()
     {
         if (null === $this->getParam('id')) {
@@ -186,21 +186,21 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     'No id was given to identify the event!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_calendar',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $event) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -209,17 +209,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     'No event with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_calendar',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $event;
     }
 }

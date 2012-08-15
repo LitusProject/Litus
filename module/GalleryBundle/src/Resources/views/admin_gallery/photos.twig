@@ -4,11 +4,11 @@
     <div class="page-header">
         <h1>{{ translator().translate('Gallery') }}</h1>
     </div>
-    
+
     {% include 'admin_gallery/partials/navigation.twig' %}
-    
+
     <h2>{{ album.getTitle(language) }}</h2>
-    
+
     <div class="pull-right">
         <a href="{{ url('admin_gallery', {"action": "addPhotos", "id": album.getId()}) }}" class="btn btn-success">{{ translator().translate('Add Photos') }}</a>
     </div>
@@ -28,7 +28,7 @@
                     {% if hasAccess('admin_gallery', 'viewPhoto') %}
                         <a href="#" data-url="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="btn btn-info view">{{ translator().translate('View') }}</a>
                     {% endif %}
-                    
+
                     {% if not photo.isCensored() %}
                         {% if hasAccess('admin_gallery', 'censorPhoto') %}
                             <a href="{{ url('admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="btn btn-danger">{{ translator().translate('Censor') }}</a>
@@ -42,7 +42,7 @@
             </tr>
         {% endfor %}
     </table>
-    
+
     <div id="showPhoto" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -61,7 +61,7 @@
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
 

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\AcademicYear,
 
 /**
  * A classification of a user based on his status at our Alma Mater.
- * 
+ *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\University")
  * @Table(name="users.university_statuses")
  */
@@ -81,9 +81,9 @@ class University
     {
         if (!self::isValidPerson($person, $academicYear))
             throw new \InvalidArgumentException('Invalid person');
-            
+
         $this->person = $person;
-        
+
         $this->setStatus($status);
         $this->academicYear = $academicYear;
     }
@@ -133,7 +133,7 @@ class University
     {
         if (self::isValidStatus($status))
             $this->status = $status;
-            
+
         return $this;
     }
 

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action\Doctrine,
@@ -31,17 +31,17 @@ class Authentication
      * @var \CommonBundle\Component\Authentication\Adapter\Doctrine The authentication adapter
      */
     private $_adapter = null;
-    
+
     /**
      * @var \Zend\Authentication\AuthenticationService The authentication service
      */
     private $_service = null;
-    
+
     /**
      * @var \CommonBundle\Component\Authentication\Result The authentication result
      */
     private $_result = null;
-    
+
     /**
      * Construct a new Authentication object.
      *
@@ -53,7 +53,7 @@ class Authentication
         $this->_adapter = $adapter;
         $this->_service = $service;
     }
-    
+
     /**
      * Authenticate the user.
      *
@@ -75,7 +75,7 @@ class Authentication
 
         $this->_result = $this->_service->authenticate($this->_adapter, $rememberMe);
     }
-    
+
     /**
      * Forget the current user.
      *
@@ -84,10 +84,10 @@ class Authentication
     public function forget()
     {
         $this->_service->clearIdentity();
-        
+
         unset($this->_result);
     }
-    
+
     /**
      * Returns true if the provided user has been authenticated.
      *
@@ -97,15 +97,15 @@ class Authentication
     {
         if (isset($this->_result))
             return $this->_result->isValid();
-        
+
         $this->authenticate();
-    
+
         if (!isset($this->_result))
             return false;
-            
+
         return $this->_result->isValid();
     }
-    
+
     /**
      * Return the Doctrine person object.
      *
@@ -114,7 +114,7 @@ class Authentication
     public function getPersonObject()
     {
         $this->authenticate();
-    
+
         if (!isset($this->_result))
             return null;
 

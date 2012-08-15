@@ -33,7 +33,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             'BrBundle\Entity\Contracts\Section',
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -65,7 +65,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                     $newSection->setInvoiceDescription(null);
                 else
                     $newSection->setInvoiceDescription($formData['invoice_description']);
-                
+
                 $this->getEntityManager()->persist($newSection);
 
                 $this->view->form = new AddForm();
@@ -81,7 +81,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                     ->find($this->getRequest()->getParam('id'));
 
         $form = new EditForm($section);
-        
+
         $this->view->form = $form;
         $this->view->sectionEdited = false;
 

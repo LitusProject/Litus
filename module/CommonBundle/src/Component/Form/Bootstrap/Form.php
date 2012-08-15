@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Bootstrap;
 
 use CommonBundle\Component\Form\Bootstrap\DisplayGroup\Actions;
@@ -33,11 +33,11 @@ class Form extends \Zend\Form\Form
         parent::__construct($options = null);
 
         $this->setMethod('post');
-        
+
         $this->setAttrib('class', 'form-horizontal');
         $this->removeDecorator('HtmlTag');
     }
-    
+
     public function setActionsGroup($elements)
     {
         $group = array();
@@ -50,7 +50,7 @@ class Form extends \Zend\Form\Form
                 }
             }
         }
-        
+
         $actions = new Actions('form_actions', $this->getPluginLoader(self::DECORATOR), array('elements' => $group));
         $this->_addDisplayGroupObject($actions);
     }
