@@ -5,6 +5,7 @@ return array(
     'CalendarBundle\Component\Validator\DateCompare'     => __DIR__ . '/src/Component/Validator/DateCompare.php',
     'CalendarBundle\Controller\Admin\CalendarController' => __DIR__ . '/src/Controller/Admin/CalendarController.php',
     'CalendarBundle\Controller\Admin\InstallController'  => __DIR__ . '/src/Controller/Admin/InstallController.php',
+    'CalendarBundle\Controller\CalendarController'       => __DIR__ . '/src/Controller/CalendarController.php',
     'CalendarBundle\Entity\Nodes\Event'                  => __DIR__ . '/src/Entity/Nodes/Event.php',
     'CalendarBundle\Entity\Nodes\Translation'            => __DIR__ . '/src/Entity/Nodes/Translation.php',
     'CalendarBundle\Form\Admin\Event\Add'                => __DIR__ . '/src/Form/Admin/Event/Add.php',

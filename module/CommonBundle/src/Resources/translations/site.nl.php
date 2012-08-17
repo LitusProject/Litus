@@ -35,7 +35,7 @@ return array(
     'Links' => 'Links',
     'Partners' => 'Partners',
 
-    'Calendar' => 'Kalendar',
+    'Calendar' => 'Kalender',
     'Twitter' => 'Twitter',
     'News' => 'Nieuws',
     'Warning' => 'Opmerking',

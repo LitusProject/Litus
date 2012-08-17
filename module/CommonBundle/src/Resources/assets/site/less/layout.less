@@ -1,320 +1,325 @@
 /**
- * Layout
- *
- * Copyright 2011 Litus
- *
- * Author: Kristof Mariën <kristof.marien@litus.cc>
- * Author: Pieter Maene <pieter.maene@litus.cc>
- */
+* Layout
+*
+* Copyright 2011 Litus
+*
+* Author: Kristof Mariën <kristof.marien@litus.cc>
+* Author: Pieter Maene <pieter.maene@litus.cc>
+*/
 
- body {
-     background: #252525;
- }
+body {
+    background: #252525;
+}
 
- header {
-     .verticalGradient(@cHeaderDark, @cHeaderLight);
-     margin-bottom: 15px;
+header {
+    .verticalGradient(@cHeaderDark, @cHeaderLight);
+    margin-bottom: 15px;
 
-     h1 {
-         color: @cWhite;
-         text-shadow: 0 1px 1px rgba(0,0,0,.3);
-         padding: 10px 0 20px 20px;
-     }
+    h1 {
+        color: @cWhite;
+        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        padding: 10px 0 20px 20px;
+    }
 
-     .headingIcon {
-     	float: left;
-     	margin: 10px 20px 0 20px;
-     	height: 35px;
-     }
+    .headingIcon {
+        float: left;
+        margin: 10px 20px 0 20px;
+        height: 35px;
+    }
 
-     .inner {
-     	background: transparent url(/_site/img/grid-18px.png) top center;
-     	padding: 45px 0 10px 0;
-     	.box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
-     }
+    .inner {
+        background: transparent url(/_site/img/grid-18px.png) top center;
+        padding: 45px 0 10px 0;
+        .box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
+    }
 
-     .carousel {
-         img {
-             width: 940px;
-             height: 100px;
-         }
-     }
- }
+    .carousel {
+        img {
+            width: 940px;
+            height: 100px;
+        }
+    }
+}
 
 @media (min-width: 1200px) {
 
-  // Fixed grid
-  #grid > .core(@gridColumnWidth, @gridGutterWidth);
+    // Fixed grid
+    #grid > .core(@gridColumnWidth, @gridGutterWidth);
 
-  // Fluid grid
-  #grid > .fluid(@fluidGridColumnWidth, @fluidGridGutterWidth);
+    // Fluid grid
+    #grid > .fluid(@fluidGridColumnWidth, @fluidGridGutterWidth);
 
-  // Input grid
-  #grid > .input(@gridColumnWidth, @gridGutterWidth);
+    // Input grid
+    #grid > .input(@gridColumnWidth, @gridGutterWidth);
 
-  // Thumbnails
-  .thumbnails {
-    margin-left: -@gridGutterWidth;
-  }
-  .thumbnails > li {
-    margin-left: @gridGutterWidth;
-  }
-  .row-fluid .thumbnails {
-    margin-left: 0;
-  }
+    // Thumbnails
+    .thumbnails {
+        margin-left: -@gridGutterWidth;
+    }
+    .thumbnails > li {
+        margin-left: @gridGutterWidth;
+    }
+    .row-fluid .thumbnails {
+        margin-left: 0;
+    }
 
 }
 
 
- @media (max-width: 767px) {
-     body {
-         padding-left: 0;
-         padding-right: 0;
-     }
- }
+@media (max-width: 767px) {
+    body {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
 
- .navbar {
-     .title {
-       float: left;
-       padding: 8px 20px 12px;
-       font-size: 20px;
-       font-weight: 200;
-       line-height: 1;
-       color: @cWhite;
+.navbar {
+    .title {
+        float: left;
+        padding: 8px 20px 12px;
+        font-size: 20px;
+        font-weight: 200;
+        line-height: 1;
+        color: @cWhite;
 
-       &:hover {
-           text-decoration: none;
-       }
-     }
+        &:hover {
+            text-decoration: none;
+        }
+    }
 
-     ul.main-nav {
-         padding: 0 20px;
-     }
+    ul.main-nav {
+        padding: 0 20px;
+    }
 
-     .btn-navbar {
-         .buttonBackground(@navbarBackgroundHighlight, @navbarBackground);
-     }
+    .btn-navbar {
+        .buttonBackground(@navbarBackgroundHighlight, @navbarBackground);
+    }
 
- 	.auth-nav {
- 	    #accountDropdown {
- 	        .profile-wrapper {
- 	            height: 18px;
- 	            display: block;
- 	            position: relative;
- 	            float: left;
- 	        }
+    .auth-nav {
+        #accountDropdown {
+            .profile-wrapper {
+                height: 18px;
+                display: block;
+                position: relative;
+                float: left;
+            }
 
- 	        .profile {
- 	            margin: -2px 4px 0 0;
- 	            background: transparent url(../img/profile.png) 0 0;
- 	            display: inline-block;
- 	            width: 21px;
- 	            height: 22px;
- 	        }
+            .profile {
+                margin: -2px 4px 0 0;
+                background: transparent url(../img/profile.png) 0 0;
+                display: inline-block;
+                width: 21px;
+                height: 22px;
+            }
 
- 	        &:hover,
- 	        &.open {
- 	            .profile {
- 	                background-position: 0 -30px;
- 	            }
- 	        }
+            &:hover,
+            &.open {
+                .profile {
+                    background-position: 0 -30px;
+                }
+            }
 
- 	        .fullName {
- 	            display: block;
- 	        }
+            .fullName {
+                display: block;
+            }
 
- 	        .metadata {
- 	            display: block;
- 	            font-size: 12px;
- 	            color: @cGray;
- 	        }
- 	    }
+            .metadata {
+                display: block;
+                font-size: 12px;
+                color: @cGray;
+            }
+        }
 
- 	    #loginDropdown {
-             ul {
-                 padding-bottom: 10px;
+        #loginDropdown {
+            ul {
+                padding-bottom: 10px;
 
-                 li {
-                     padding: 10px;
+                li {
+                    padding: 10px;
 
-                     input[type="checkbox"],
-                     label {
-                         margin: 0;
-                     }
+                    input[type="checkbox"],
+                    label {
+                        margin: 0;
+                    }
 
-                     a.btn {
-                         color: #fff;
-                     }
+                    a.btn {
+                        color: #fff;
+                    }
 
-                     .remember_me {
-                         float: left;
-                         margin-top: 8px;
-                     }
-                 }
+                    .remember_me {
+                        float: left;
+                        margin-top: 8px;
+                    }
+                }
 
-                 .divider {
-                 	padding: 0;
-                 }
-             }
-         }
- 	 }
- }
+                .divider {
+                    padding: 0;
+                }
+            }
+        }
+    }
+}
 
- .navbar-fixed-top {
-     margin: 0px !important;
- }
+.navbar-fixed-top {
+    margin: 0px !important;
+}
 
- .navbar-inner {
- 	min-height: @navbarHeight;
- 	padding-left:  20px;
- 	padding-right: 20px;
- 	background-color: @navbarBackgroundHighlight;
- 	background-image: none;
- 	.box-shadow(~"0 1px 3px rgba(0,0,0,.25)");
- }
+.navbar-inner {
+    min-height: @navbarHeight;
+    padding-left:  20px;
+    padding-right: 20px;
+    background-color: @navbarBackgroundHighlight;
+    background-image: none;
+    .box-shadow(~"0 1px 3px rgba(0,0,0,.25)");
+}
 
- .navbar .nav > li > a {
-   float: none;
-   // Vertically center the text given @navbarHeight
-   @elementHeight: 20px;
-   padding: ((@navbarHeight - @elementHeight) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
-   line-height: 19px;
-   color: @navbarLinkColor;
-   text-decoration: none;
-   text-shadow: none !important;
- }
+.navbar .nav > li > a {
+    float: none;
+    // Vertically center the text given @navbarHeight
+    @elementHeight: 20px;
+    padding: ((@navbarHeight - @elementHeight) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
+    line-height: 19px;
+    color: @navbarLinkColor;
+    text-decoration: none;
+    text-shadow: none !important;
+}
 
- .navbar .nav > li.open > a {
- 	color: @navbarLinkColorActive;
- }
+.navbar .nav > li.open > a {
+    color: @navbarLinkColorActive;
+}
 
- .navbar .nav > li > a:hover {
-   background-color: @navbarLinkBackgroundHover; // "transparent" is default to differentiate :hover from .active
-   color: @navbarLinkColorHover;
-   text-decoration: none;
- }
+.navbar .nav > li > a:hover {
+    background-color: @navbarLinkBackgroundHover; // "transparent" is default to differentiate :hover from .active
+    color: @navbarLinkColorHover;
+    text-decoration: none;
+}
 
- .navbar .nav .active > a,
- .navbar .nav .active > a:hover {
-	@elementHeight: 28px;
-	@elementMargin: 4px;
-	padding: ((@navbarHeight - @elementHeight - @elementMargin) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
-	margin: @elementMargin 0;
-	line-height: 19px;
-	color: @navbarLinkColorActive;
-	text-decoration: none;
-	background-color: @navbarLinkBackgroundActive;
-	.border-radius(4px);
-	border: 1px solid @grayLight;
- }
+.navbar .nav .active > a,
+.navbar .nav .active > a:hover {
+    @elementHeight: 28px;
+    @elementMargin: 4px;
+    padding: ((@navbarHeight - @elementHeight - @elementMargin) / 2) 10px ((@navbarHeight - @elementHeight) / 2 + 1);
+    margin: @elementMargin 0;
+    line-height: 19px;
+    color: @navbarLinkColorActive;
+    text-decoration: none;
+    background-color: @navbarLinkBackgroundActive;
+    .border-radius(4px);
+    border: 1px solid @grayLight;
+}
 
- .navbar .nav li.dropdown .dropdown-toggle .caret,
- .navbar .nav li.dropdown.open .caret {
-   	border-top-color: @navbarLinkColorActive;
-   	border-bottom-color: @navbarLinkColorActive;
- }
+.navbar .nav li.dropdown .dropdown-toggle .caret,
+.navbar .nav li.dropdown.open .caret {
+    border-top-color: @navbarLinkColorActive;
+    border-bottom-color: @navbarLinkColorActive;
+}
 
- .carousel-control {
- 	top: 50%;
- }
+.carousel-control {
+    top: 50%;
+}
 
- #page {
-     background: #eee;
-     padding-bottom: 30px;
+#page {
+    background: #eee;
+    padding-bottom: 30px;
 
-     #content {
-         padding:0 40px;
+    #content {
+        padding:0 40px;
 
-	    .container {
- 	    	padding: 20px 0px;
- 	    	margin: 0 auto;
- 	    }
+        .page-header {
+            border-bottom-color: #ccc;
+        }
 
-     	.headingIcon {
-     		float: left;
-     		margin: 7px 10px 0 0;
-     		opacity: .8;
-     	}
+        .container {
+            padding: 20px 0px;
+            margin: 0 auto;
+        }
 
-     	.headingSpacer {
-     		margin: 10px;
-     	}
+        .headingIcon {
+            float: left;
+            margin: 7px 10px 0 0;
+            opacity: .8;
+        }
 
-     	.item {
-     		margin-top: 10px;
-     		position: relative;
+        .headingSpacer {
+            margin: 10px;
+        }
 
-     		min-height: 75px;
+        .item {
+            margin-top: 10px;
+            position: relative;
 
-     		.date {
-     			position: absolute;
+            min-height: 75px;
 
-     			text-transform: uppercase;
-     			width: auto !important;
-     			display: inline-block;
+            .date {
+                position: absolute;
 
- 				margin: 0;
- 				font-family: @headingsFontFamily;
- 				font-weight: @headingsFontWeight;
- 				font-size: 18px;
- 				color: @headingsColor;
- 				text-rendering: optimizelegibility;
+                text-transform: uppercase;
+                width: auto !important;
+                display: inline-block;
 
-     			&.calendar {
-     				margin-left: -45px !important;
-     				margin-top: 21px;
+                margin: 0;
+                font-family: @headingsFontFamily;
+                font-weight: @headingsFontWeight;
+                font-size: 18px;
+                color: @headingsColor;
+                text-rendering: optimizelegibility;
 
-     				.rotate(-90deg);
-     			}
+                &.calendar {
+                    width: 150px !important;
+                    text-align: right;
+                    margin-left: -170px !important;
 
-     			&.news {
-     	            margin-top: 30px;
-     				margin-right: -45px !important;
- 					right: 0;
+                    .rotate(-90deg);
+                    .rotate-origin(100% 0%);
+                }
 
- 					.rotate(90deg);
-     			}
-     		}
-     	}
-     }
+                &.news {
+                    margin-top: 30px;
+                    margin-right: -45px !important;
+                    right: 0;
 
-     p {
-     	text-align: justify;
-     }
- }
+                    .rotate(90deg);
+                }
+            }
+        }
+    }
 
- footer {
- 	margin-bottom: 20px;
-     color: #fff;
+    p {
+        text-align: justify;
+    }
+}
 
-     .light {
-     	margin-bottom: 10px;
-     	padding: 16px 0 16px 0;
-     	background: #333;
-     }
+footer {
+    margin-bottom: 20px;
+    color: #fff;
 
-     .container {
-         padding: 0 20px;
-     	color: @headingsColor;
+    .light {
+        margin-bottom: 10px;
+        padding: 16px 0 16px 0;
+        background: #333;
+    }
 
-     	.title {
-     		font-family: @headingsFontFamily;
-     		font-weight: @headingsFontWeight;
-     		font-size: 18px;
-     		text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+    .container {
+        padding: 0 20px;
+        color: @headingsColor;
 
-     		color: #000;
+        .title {
+            font-family: @headingsFontFamily;
+            font-weight: @headingsFontWeight;
+            font-size: 18px;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
 
-     		line-height: 40px;
-     	}
+            color: #000;
 
- 	    .social {
- 	    	float: right;
+            line-height: 40px;
+        }
 
- 	    	img {
- 	    		height: 32px;
- 	    	}
- 	    }
- 	}
- }
+        .social {
+            float: right;
 
+            img {
+                height: 32px;
+            }
+        }
+    }
+}

@@ -55,7 +55,7 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
-               '@site_css',
+            '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',

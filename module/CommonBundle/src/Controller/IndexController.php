@@ -37,6 +37,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllActive();
 
+        array_splice($newsItems, 15);
+        array_splice($events, 15);
+
         $calendarItems = array();
         foreach($events as $event) {
             $date = $event->getStartDate()->format('d-M');
