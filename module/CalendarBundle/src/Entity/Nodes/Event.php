@@ -1,9 +1,10 @@
 <?php
- 
+
 namespace CalendarBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    DateTime;
 
 /**
  * This entity stores the node item.
@@ -19,34 +20,41 @@ class Event extends \CommonBundle\Entity\Nodes\Node
      * @OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
      */
     private $translations;
-    
+
     /**
      * @var \DateTime The start date of this event
      *
      * @Column(type="datetime")
      */
     private $startDate;
-    
+
     /**
      * @var \DateTime The end date of this event
      *
      * @Column(type="datetime", nullable=true)
      */
     private $endDate;
-    
+
+    /**
+     * @var string The poster of this event
+     *
+     * @Column(type="string", nullable=true)
+     */
+    private $poster;
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      */
-    public function __construct(Person $person, $startDate, $endDate)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
     {
         parent::__construct($person);
-        
+
         $this->startDate = $startDate;
         $this->endDate = $endDate;
     }
-    
+
     /**
      * @param \DateTime $startDate
      *
@@ -57,7 +65,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         $this->startDate = $startDate;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -65,7 +73,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->startDate;
     }
-    
+
     /**
      * @param \DateTime $endDate
      *
@@ -76,7 +84,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         $this->endDate = $endDate;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -84,7 +92,26 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     {
         return $this->endDate;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * @param string $poster
+     *
+     * @return \CalendarBundle\Entity\Nodes\Event
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = trim($poster, '/');
+        return $this;
+    }
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -97,7 +124,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
                 return $translation;
         }
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -109,7 +136,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getLocation();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -121,7 +148,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getTitle();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -133,7 +160,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         if (null !== $translation)
             return $translation->getName();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *

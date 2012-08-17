@@ -37,6 +37,9 @@
                         <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getLocation(language) }}</td>
                         <td class="actions">
+                            {% if hasAccess('admin_calendar', 'poster') %}
+                                <a href="{{ url('admin_calendar', {"action": "editPoster", "id": event.getId()}) }}" class="calendar_edit">Poster</a>
+                            {% endif %}
                             {% if hasAccess('admin_calendar', 'edit') %}
                                 <a href="{{ url('admin_calendar', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a>
                             {% endif %}
