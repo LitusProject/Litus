@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'di' => array(
         'instance' => array(
@@ -20,7 +20,7 @@ return array(
                 'calendar_install'  => 'CalendarBundle\Controller\Admin\InstallController',
                 'admin_calendar'    => 'CalendarBundle\Controller\Admin\CalendarController',
             ),
-            
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
@@ -28,7 +28,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
@@ -36,23 +36,7 @@ return array(
                     ),
                 ),
             ),
-            
-            /*'translator' => array(
-                'parameters' => array(
-                    'adapter' => 'ArrayAdapter',
-                    'translations' => array(
-                        'calendar_admin_en' => array(
-                            'content' => __DIR__ . '/../translations/admin.en.php',
-                            'locale' => 'en',
-                        ),
-                        'calendar_admin_nl' => array(
-                            'content' => __DIR__ . '/../translations/admin.nl.php',
-                            'locale' => 'nl',
-                        ),
-                    ),
-                ),
-            ),*/
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(
@@ -74,7 +58,7 @@ return array(
                                 'route'    => '/admin/content/calendar[/:action[/:id]]',
                                 'constraints' => array(
                                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'id'      => '[0-9]*',
+                                    'id'      => '[a-zA-Z0-9_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'admin_calendar',
