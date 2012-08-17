@@ -53,22 +53,14 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $category;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Page The page's parent
-     *
-     * @ManyToOne(targetEntity="\PageBundle\Entity\Nodes\Page")
-     * @JoinColumn(name="parent", referencedColumnName="id")
-     */
-    private $parent;
-
-    /**
      * @var array The translations of this page
      *
-    * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-    * @JoinTable(
-    *      name="nodes.pages_roles_map",
-    *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
-    *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
-    * )
+     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @JoinTable(
+     *      name="nodes.pages_roles_map",
+     *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     * )
      */
     private $editRoles;
 
@@ -129,24 +121,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function getEndTime()
     {
         return $this->endTime;
-    }
-
-    /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function setParent(Page $parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function getParent()
-    {
-        return $this->parent;
     }
 
     /**

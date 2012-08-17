@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     PageBundle\Entity\Category,
+    Zend\Form\Element\Select,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text;
 
@@ -58,15 +59,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
 
-            $name = new Text('name_' . $language->getAbbrev());
-            $name->setLabel('Name')
+            $field = new Text('name_' . $language->getAbbrev());
+            $field->setLabel('Name')
                 ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($name);
+
+            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $field->setRequired();
+
+            $pane->addElement($field);
 
             $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
         }
 
         $this->addSubForm($tabContent, 'tab_content');
+
+        $field = new Select('parent');
+        $field->setLabel('Parent')
+            ->setMultiOptions($this->_getPages())
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
 
         $field = new Submit('submit');
         $field->setLabel('Add')
@@ -82,38 +93,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
     }
 
-    public function isValid($data)
+    private function _getPages()
     {
-        $valid = parent::isValid($data);
+        $pages = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findAll();
 
-        $form = $this->getSubForm('tab_content');
+        $pageOptions = array(
+            null => ''
+        );
+        foreach($pages as $page)
+            $pages[$page->getId()] = $page->getTitle();
 
-        $validTranslations = false;
-        foreach($this->getLanguages() as $language) {
-            $name = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('name_' . $language->getAbbrev());
-
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage')) {
-                if ('' == $name->getValue()) {
-                    $name->addError('The translation in this language is required');
-                    $valid = false;
-                }
-            }
-
-            if ('' != $name->getValue()) {
-                $validTranslations = true;
-                break;
-            }
-        }
-
-        if (!$validTranslations) {
-            foreach($this->getLanguages() as $language) {
-                $name = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('name_' . $language->getAbbrev());
-                $name->addError('At least one translation is required');
-            }
-
-            $valid = false;
-        }
-
-        return $valid;
+        return $pageOptions;
     }
 }

@@ -35,6 +35,14 @@ class Category
     private $id;
 
     /**
+     * @var \PageBundle\Entity\Nodes\Page The page's parent
+     *
+     * @ManyToOne(targetEntity="\PageBundle\Entity\Nodes\Page")
+     * @JoinColumn(name="parent", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+    /**
      * @var array The translations of this category
      *
      * @OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
@@ -47,6 +55,24 @@ class Category
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function setParent(Page $parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
     /**
