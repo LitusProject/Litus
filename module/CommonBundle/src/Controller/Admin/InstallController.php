@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Controller\Admin;
 
 /**
@@ -113,10 +113,15 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => 'it@vtk.be',
                     'description' => 'The mail address of system administrator',
                 ),
+                array(
+                    'key'         => 'fallback_language',
+                    'value'       => 'nl',
+                    'description' => 'The abbreviation of the language that will be used of no other translation is present',
+                ),
             )
         );
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -124,7 +129,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 'commonbundle' => array(
                     'admin_academic' => array(
                         'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
-                    ),  
+                    ),
                     'admin_auth' => array(
                         'authenticate', 'login', 'logout'
                     ),
@@ -171,7 +176,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'guest' => array(

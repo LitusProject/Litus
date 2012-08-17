@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
@@ -32,7 +32,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"remove"})
      */
     private $translations;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $category
@@ -41,69 +41,70 @@ class News extends \CommonBundle\Entity\Nodes\Node
     {
         parent::__construct($person);
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return \NewsBundle\Entity\Nodes\Translation
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
             if ($translation->getLanguage() == $language)
                 return $translation;
+
+            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $fallbackTranslation = $translation;
         }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getTitle(Language $language)
+    public function getTitle(Language $language, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
-        
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getTitle();
+
+        return '';
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getName(Language $language)
+    public function getContent(Language $language, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
-        
-        if (null !== $translation)
-            return $translation->getName();
-    }
-    
-    /**
-     * @param \CommonBundle\Entity\General\Language $language
-     *
-     * @return string
-     */
-    public function getContent(Language $language)
-    {
-        $translation = $this->getTranslation($language);
-        
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getContent();
+
+        return '';
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getSummary(Language $language)
+    public function getSummary(Language $language, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
-        
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getSummary();
+
+        return '';
     }
 }

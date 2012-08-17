@@ -28,13 +28,13 @@ class Session extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function getTheoreticalRevenue(SessionEntity $session)
     {
         $query = $this->_em->createQueryBuilder();
@@ -46,13 +46,13 @@ class Session extends EntityRepository
             ->setParameter('session', $session->getId())
             ->getQuery()
             ->getSingleScalarResult();
-        
+
         if (null === $resultSet)
             return 0;
 
         return $resultSet;
     }
-    
+
     public function getLast()
     {
         $query = $this->_em->createQueryBuilder();
@@ -62,10 +62,10 @@ class Session extends EntityRepository
             ->orderBy('s.openDate', 'DESC')
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
 }

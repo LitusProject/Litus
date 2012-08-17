@@ -5,8 +5,8 @@
 
     {{ headMeta() }}
 	{{ headTitle('Litus Sale', 'PREPEND') }}
-	
-	{{ headLink() }}   
+
+	{{ headLink() }}
 </head>
 
 <body>
@@ -60,10 +60,10 @@
 	<div id="content_controller">
 	    {% block content %} {% endblock %}
 	</div>
-	
+
 	<footer>
 	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
-	
+
 		{% if 'development' == environment %}
 		    <span class="development_information">
 		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}

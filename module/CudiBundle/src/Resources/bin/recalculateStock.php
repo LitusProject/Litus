@@ -19,11 +19,11 @@
  * Usage:
  * --run|-r      Run the update script
  */
- 
+
 chdir(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
 // @NOTE: you can either use the git submodule or create an environment variable
-// ZF2_PATH that contains the path to your zf2 library (no trailing slash). 
+// ZF2_PATH that contains the path to your zf2 library (no trailing slash).
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
  array('Zend\Loader\StandardAutoloader' => array())
@@ -62,33 +62,33 @@ try {
 
 if (isset($opts->r)) {
     echo 'Updating stock...' . PHP_EOL;
-    
+
     $entityManager = $diContainer->get('doctrine_em');
-    
+
     $period = $entityManager
         ->getRepository('CudiBundle\Entity\Stock\Period')
         ->findOneActive();
-        
+
     $period->setEntityManager($entityManager);
-        
+
     $articles = $entityManager
         ->getRepository('CudiBundle\Entity\Stock\Period')
         ->findAllArticlesByPeriod($period);
-        
+
     foreach($articles as $article) {
         $number = $entityManager
                 ->getRepository('CudiBundle\Entity\Stock\Periods\Values\Start')
                 ->findValueByArticleAndPeriod($article, $period)
             + $period->getNbDelivered($article) - $period->getNbSold($article);
-        
+
         if ($number < 0)
             $number = 0;
-        
+
         if ($article->getStockValue() != $number) {
             echo 'Updated ' . $article->getMainArticle()->getTitle() . ': ' . $article->getStockValue() . ' to ' . $number . PHP_EOL;
             $article->setStockValue($number);
         }
     }
-    
+
     $entityManager->flush();
 }

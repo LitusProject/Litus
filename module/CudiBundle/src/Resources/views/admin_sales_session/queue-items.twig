@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_sales_session/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -15,7 +15,7 @@
                 <th width="70px">PayDesk</th>
                 <th width="70px">Action</th>
             </tr>
-    
+
             {% for item in items %}
                 <tr class="item">
                     <td>{{ item.getSignInTime().format('d/m/Y H:i') }}</td>
@@ -30,7 +30,7 @@
             {% endfor %}
         </table>
 	</div>
-	
+
 	<div class="modal hide fade" id="viewComment">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -51,10 +51,10 @@
 		$(document).ready(function () {
 			$('.item .view').click(openViewModal);
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var viewComment = $('#viewComment');
 			viewComment.find('.text').html($this.data('text'));

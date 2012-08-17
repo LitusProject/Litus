@@ -21,7 +21,7 @@ class News extends EntityRepository
             ->setMaxResults($nbResults)
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

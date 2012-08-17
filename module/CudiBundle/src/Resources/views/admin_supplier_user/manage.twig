@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_supplier/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width user_removed_success hide">
     	<div class="title">Success</div>
@@ -16,17 +16,17 @@
     		<p>An error occurred while trying to delete a user.</p>
     	</div>
     </div>
-    
+
 	<div id="controller_action">
 	    <h1>Supplier</h1>
-	    
+
 	    <p>Name: <b>{{ supplier.getName() }}</b></p>
 	    <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
 	    <p>Street: <b>{{ supplier.getAddress().getStreet() }} {{ supplier.getAddress().getNumber() }}</b></p>
 	    <p>City: <b>{{ supplier.getAddress().getPostal() }} {{ supplier.getAddress().getCity() }}</b></p>
 	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
 	    <br />
-	    
+
 	    <table class="manage">
             <tr>
                 <th width="150px">Username</th>
@@ -34,7 +34,7 @@
                 <th width="160px">E-mail</th>
                 <th width="70px">Action</th>
             </tr>
-	
+
             {% for user in paginator %}
                 <tr class="item item-{{ user.getId() }}">
                     <td>{{ user.getUsername() }}</td>
@@ -54,7 +54,7 @@
 
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<aside>
 	    {% if hasAccess('admin_supplier_user', 'add') %}
     		<div class="sidebox">
@@ -70,7 +70,7 @@
     		</div>
     	{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="removeUser">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -97,10 +97,10 @@
 		$(document).ready(function () {
 		    $('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeUser = $('#removeUser');
 			removeUser.find('.fullName').html($(this).data('name'));
@@ -120,7 +120,7 @@
 			});
 			removeUser.modal();
 		}
-		
+
 		function errorRemove() {
 		    $('.flashmessage').hide();
 		    $('.user_removed_error').show();

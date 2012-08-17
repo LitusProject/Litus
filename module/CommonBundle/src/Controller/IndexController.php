@@ -28,15 +28,15 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if ('production' == getenv('APPLICATION_ENV'))
             $this->redirect()->toUrl('http://www.vtk.be/');
-    
+
         $newsItems = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findAll();
-            
+
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllActive();
-        
+
         $calendarItems = array();
         foreach($events as $event) {
             $date = $event->getStartDate()->format('d-M');
@@ -48,7 +48,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             }
             $calendarItems[$date]->events[] = $event;
         }
-            
+
         return new ViewModel(
             array(
                 'newsItems' => $newsItems,

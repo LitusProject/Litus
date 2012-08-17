@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,7 +32,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
         $this->initAjax();
 
         $form = new MailForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -40,21 +40,21 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail');
-                    
+
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail_name');
-                    
+
                 $mail = new Message();
                 $mail->setBody($formData['message'])
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);
-                
+
                 if ('production' == getenv('APPLICATION_ENV'))
                     $mailTransport->send($mail);
-               
-                
+
+
                 return new ViewModel(
                     array(
                         'status' => 'success',
@@ -64,14 +64,14 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             } else {
                 $errors = $form->getErrors();
                 $formErrors = array();
-                
+
                 foreach ($form->getElements() as $key => $element) {
                     $formErrors[$element->getId()] = array();
                     foreach ($errors[$element->getName()] as $error) {
                         $formErrors[$element->getId()][] = $element->getMessages()[$error];
                     }
                 }
-                
+
                 return new ViewModel(
                     array(
                         'status' => 'error',
@@ -82,7 +82,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 );
             }
         }
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "error")

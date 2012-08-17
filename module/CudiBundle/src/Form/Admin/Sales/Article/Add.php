@@ -12,9 +12,9 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Article;
-    
+
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     CommonBundle\Component\Validator\Price as PriceValidator,
@@ -43,23 +43,23 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
-         
+
         $field = new Text('purchase_price');
         $field->setLabel('Purchase Price')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new PriceValidator());
         $this->addElement($field);
-         
+
         $field = new Text('sell_price');
         $field->setLabel('Sell Price')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new PriceValidator());
         $this->addElement($field);
-        
+
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttrib('class', 'disableEnter')
@@ -75,19 +75,19 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
             ->addValidator(new UniqueArticleBarcodeValidator($this->_entityManager, $academicYear))
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Select('supplier');
         $field->setLabel('Supplier')
             ->setRequired()
             ->setMultiOptions($this->_getSuppliers())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Checkbox('bookable');
         $field->setLabel('Bookable')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Checkbox('unbookable');
         $field->setLabel('Unbookable')
             ->setDecorators(array(new FieldDecorator()));
@@ -104,7 +104,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     private function _getSuppliers()
     {
         $suppliers = $this->_entityManager
@@ -113,10 +113,10 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
         $supplierOptions = array();
         foreach($suppliers as $item)
             $supplierOptions[$item->getId()] = $item->getName();
-        
+
         return $supplierOptions;
     }
-    
+
     public function populateFromArticle(Article $article)
     {
         $this->populate(array(

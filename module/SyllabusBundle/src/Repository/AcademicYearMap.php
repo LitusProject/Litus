@@ -25,19 +25,19 @@ class AcademicYearMap extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-            
+
         $result = array();
-        
+
         $title = strtolower($title);
-        
+
         foreach($resultSet as $mapping) {
             if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false)
                 $result[] = $mapping;
         }
-        
+
         return $result;
     }
-    
+
     public function findAllByAcademicYear(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -52,7 +52,7 @@ class AcademicYearMap extends EntityRepository
             ->addOrderBy('s.title', 'ASC')
             ->getQuery()
             ->getResult();
-                
+
         return $resultSet;
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Vacancy,
@@ -32,14 +32,14 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($company = $this->_getCompany()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Vacancy')
                 ->findAllByCompany($company),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -48,27 +48,27 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function addAction()
     {
         if (!($company = $this->_getCompany()))
             return new ViewModel();
-            
+
         $form = new AddForm();
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
-            if ($form->isValid($formData)) {                
+
+            if ($form->isValid($formData)) {
                 $vacancy = new Vacancy(
                     $formData['vacancy_name'],
                     $formData['description'],
                     $company
                 );
-                
+
                 $this->getEntityManager()->persist($vacancy);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -84,11 +84,11 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                         'id' => $company->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-            
+
         return new ViewModel(
             array(
                 'company' => $company,
@@ -96,21 +96,21 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($vacancy = $this->_getVacancy()))
             return new ViewModel();
-            
+
         $form = new EditForm($vacancy);
-        
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $vacancy->setName($formData['vacancy_name'])
                     ->setDescription($formData['description']);
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -126,11 +126,11 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                         'id' => $vacancy->getCompany()->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-                
+
         return new ViewModel(
             array(
                 'company' => $vacancy->getCompany(),
@@ -138,24 +138,24 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-                
+
         if (!($vacancy = $this->_getVacancy()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($vacancy);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -166,21 +166,21 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                     'No ID was given to identify the company!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $company) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -189,20 +189,20 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                     'No company with the given ID was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $company;
     }
-    
+
     private function _getVacancy()
     {
         if (null === $this->getParam('id')) {
@@ -213,21 +213,21 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                     'No ID was given to identify the vacancy!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $vacancy = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Vacancy')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $vacancy) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -236,17 +236,17 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
                     'No vacancy with the given ID was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_company',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $vacancy;
     }
 }

@@ -2,9 +2,9 @@
 
 {% block content %}
 	{% include 'admin_article/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div id="controller_action">
 		{% autoescape false %}
 			{{ form }}
@@ -21,7 +21,7 @@
 		    });
 			$('#internal').click(toggleInternal);
 			toggleInternal();
-			
+
 			$('#subjectSearch').typeaheadRemote(
 			    {
 			        source: '{{ url("admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
@@ -34,7 +34,7 @@
 			    }
 			});
 		});
-		
+
 		function toggleInternal() {
 			if ($('#internal').is(':checked'))
 				$('#internal_form').show();

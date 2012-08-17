@@ -20,7 +20,7 @@ return array(
     'Articles' => 'Articles',
     'Logout' => 'Logout',
     'Login' => 'Login',
-    
+
     'Add Article' => 'Add Article',
     'Comments' => 'Comments',
     'View comments on this article and add one.' => 'View comments on this article and add one.',
@@ -35,13 +35,13 @@ return array(
     'Actions' => 'Actions',
     'Edit' => 'Edit',
     'Create Article' => 'Create Article',
-    
+
     'Subject' => 'Subject',
     'Code' => 'Code',
     'Name' => 'Name',
     'Semester' => 'Semester',
     'Credits' => 'Credits',
-    
+
     'Error' => 'Error',
     'An error occurred while removing the comment.' => 'An error occurred while removing the comment.',
     'Success' => 'Success',
@@ -61,7 +61,7 @@ return array(
     'Are you sure you want to remove your comment?' => 'Are you sure you want to remove your comment?',
     'Yes' => 'Yes',
     'No' => 'No',
-    
+
     'The file was succesfully uploaded.' => 'The file was succesfully uploaded.',
     'The file was succesfully removed.' => 'The file was succesfully removed.',
     'An error occurred while removing the file.' => 'An error occurred while removing the file.',
@@ -75,7 +75,7 @@ return array(
     'You are about to delete the following file' => 'You are about to delete the following file',
     'Please note that this operation cannot be undone!' => 'Please note that this operation cannot be undone!',
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
-    
+
     'Your Recent Activity' => 'Your Recent Activity',
     'added an article on <b>%date%</b>' => 'added an article on <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'edited an article on <b>%date%</b>',
@@ -90,7 +90,7 @@ return array(
     'added a file on <b>%date%</b>' => 'added a file on <b>%date%</b>',
     'removed a file on <b>%date%</b>' => 'removed a file on <b>%date%</b>',
     'Please login to get access to these pages.' => 'Please login to get access to these pages.',
-    
+
     'Your Subjects' => 'Your Subjects',
     'Students' => 'Students',
     'View' => 'View',
@@ -107,7 +107,7 @@ return array(
     'Are you sure you want to remove the following article' => 'Are you sure you want to remove the following article',
     'Are you sure you want to remove the following docent' => 'Are you sure you want to remove the following docent',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
-    
+
     'URL' => 'URL',
     'Downloadable' => 'Downloadable',
     'Type' => 'Type',
@@ -124,7 +124,7 @@ return array(
     'Update' => 'Update',
     'The uri is not valid' => 'The uri is not valid',
     'The given year is not valid' => 'The given year is not valid',
-    
+
     'Other' => 'Other',
     'Exercises' => 'Exercises',
     'Slides' => 'Slides',
@@ -132,7 +132,7 @@ return array(
     'Stapled' => 'Stapled',
     'None' => 'None',
     'Glued' => 'Glued',
-    
+
     'SUCCESS' => 'SUCCESS',
     'The article was successfully created!' => 'The article was successfully created!',
     'The article was successfully updated!' => 'The article was successfully updated!',

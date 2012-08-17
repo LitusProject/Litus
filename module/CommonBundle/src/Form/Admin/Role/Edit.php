@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Role;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -67,7 +67,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         }
         return $parentsArray;
     }
-    
+
     /**
      * Returns an array that is in the right format to populate the actions field.
      *
@@ -80,7 +80,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         foreach ($actions as $action) {
             $actionsArray[] = $action->getId();
         }
-        
+
         return $actionsArray;
     }
 }

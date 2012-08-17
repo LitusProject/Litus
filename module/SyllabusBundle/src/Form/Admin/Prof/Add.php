@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Form\Admin\Prof;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -32,13 +32,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-         
+
         $field = new Hidden('prof_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
             ->setAttrib('id', 'profId');
         $this->addElement($field);
-         
+
         $field = new Text('prof');
         $field->setLabel('Docent')
             ->setAttrib('size', 70)

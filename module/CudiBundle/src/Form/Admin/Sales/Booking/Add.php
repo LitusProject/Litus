@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -33,7 +33,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($options);
-        
+
         $field = new Hidden('person_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('person');
         $field->setLabel('Person')
             ->setAttrib('style', 'width: 400px;')
@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Hidden('article_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', 'disableEnter')

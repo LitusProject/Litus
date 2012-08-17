@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManager;
 class SubjectCode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -34,7 +34,7 @@ class SubjectCode extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::NOT_VALID => 'The subject code does not exist'
     );
-    
+
     /**
      * Create a new Article Barcode validator.
      *
@@ -44,7 +44,7 @@ class SubjectCode extends \Zend\Validator\AbstractValidator
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
     }
 
@@ -60,11 +60,11 @@ class SubjectCode extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
-        
+
         $subject = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneByCode($value);
-        
+
         if (null !== $subject)
             return true;
 

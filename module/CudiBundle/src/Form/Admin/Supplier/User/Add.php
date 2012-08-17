@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Supplier\User;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -34,9 +34,9 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-        
+
         $this->removeElement('roles');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'user_add')

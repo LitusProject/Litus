@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace GalleryBundle\Entity\Album;
 
 use CommonBundle\Entity\General\Language,
@@ -22,14 +22,14 @@ class Album
      * @Column(type="bigint")
      */
     private $id;
-    
+
     /**
      * @var \DateTime The time of creation of this album
      *
      * @Column(name="creation_time", type="datetime")
      */
     private $creationTime;
-    
+
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this album
      *
@@ -37,21 +37,21 @@ class Album
      * @JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
-    
+
     /**
      * @var \DateTime The date the photo's of this album were created
      *
      * @Column(name="date_activity", type="datetime")
      */
     private $dateActivity;
-    
+
     /**
      * @var array The translations of this album
      *
      * @OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
      */
     private $translations;
-    
+
     /**
      * @var array The photos of this album
      *
@@ -59,7 +59,7 @@ class Album
      * @OrderBy({"id": "ASC"})
      */
     private $photos;
-    
+
     /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $date
@@ -70,7 +70,7 @@ class Album
         $this->creationPerson = $person;
         $this->dateActivity = $date;
     }
-    
+
     /**
      * @return int
      */
@@ -78,7 +78,7 @@ class Album
     {
         return $this->id;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -86,7 +86,7 @@ class Album
     {
         return $this->creationTime;
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
@@ -94,7 +94,7 @@ class Album
     {
         return $this->creationPerson;
     }
-    
+
     /**
      * @param \DateTime $date
      *
@@ -105,7 +105,7 @@ class Album
         $this->dateActivity = $date;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -113,7 +113,7 @@ class Album
     {
         return $this->dateActivity;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -126,7 +126,7 @@ class Album
                 return $translation;
         }
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -138,7 +138,7 @@ class Album
         if (null !== $translation)
             return $translation->getTitle();
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\Language $language
      *
@@ -150,7 +150,7 @@ class Album
         if (null !== $translation)
             return $translation->getName();
     }
-    
+
     /**
      * @return array
      */
@@ -158,7 +158,7 @@ class Album
     {
         return $this->photos;
     }
-    
+
     /**
      * @return \GalleryBundle\Entity\Album\Photo
      */

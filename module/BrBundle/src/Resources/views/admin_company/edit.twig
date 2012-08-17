@@ -2,13 +2,13 @@
 
 {% block content %}
 	{% include 'admin_company/partials/navigation.twig' %}
-	
+
 	<div id="controller_action">
 	    {% autoescape false %}
 	    	{{ form }}
 	    {% endautoescape %}
 	</div>
-    
+
     <aside>
         {% if hasAccess('admin_company', 'logo') %}
             <div class="sidebox">

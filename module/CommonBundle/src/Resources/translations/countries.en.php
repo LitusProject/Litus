@@ -6,7 +6,7 @@ return array(
     'Asia' => 'Asia',
     'Europe' => 'Europe',
     'Oceania' => 'Oceania',
-    
+
     'Algeria' => 'Algeria',
     'Angola' => 'Angola',
     'Benin' => 'Benin',

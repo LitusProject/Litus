@@ -2,12 +2,12 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
 	    <table class="manage">
-	    
+
 	        <tr>
 	            <th>Manager</th>
 	            <th width="50px">Open</th>
@@ -15,7 +15,7 @@
 	        	<th width="120px">End</th>
 	    		<th width="70px">Action</th>
 	        </tr>
-	        
+
 	        {% for period in paginator %}
 	            <tr>
 	                <td>{{ period.getPerson().getFullName() }}</td>
@@ -30,10 +30,10 @@
 	            </tr>
 	        {% endfor %}
 	    </table>
-	    
+
 	    {% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<aside>
 	    {% if hasAccess('admin_stock_period', 'new') %}
 	    	<div class="sidebox">
@@ -49,7 +49,7 @@
 	    	</div>
 	    {% endif %}
 	</div>
-	
+
 	<div class="modal hide fade" id="newPeriod">
 		<div class="modal-header">
 			<span>Litus Admin</span>

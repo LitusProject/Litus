@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CalendarBundle\Component\Validator;
 
 use DateTime,
@@ -45,7 +45,7 @@ class DateCompare extends \Zend\Validator\AbstractValidator
      * @var string
      */
     protected $_endDate;
-    
+
     /**
      * @var string
      */
@@ -62,10 +62,10 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     {
         $this->_endDate = $endDate;
         $this->_format = $format;
-        
+
         parent::__construct(is_array($endDate) ? $endDate : null);
     }
-    
+
     /**
      * Returns true if and only if the end date is after the start date
      *
@@ -79,7 +79,7 @@ class DateCompare extends \Zend\Validator\AbstractValidator
 
         if (null === $value || '' == $value)
             return true;
-        
+
         if (($context !== null) && isset($context) && array_key_exists($this->_endDate, $context)) {
             $endDate = $context[$this->_endDate];
         } else {

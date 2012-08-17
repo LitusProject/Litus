@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 /**
@@ -22,7 +22,7 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  */
 class Reset extends \Zend\Form\Element\Reset
 {
-  
+
     /**
      * Create new Reset button
      *

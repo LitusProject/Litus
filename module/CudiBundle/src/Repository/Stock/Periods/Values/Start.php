@@ -33,14 +33,14 @@ class Start extends EntityRepository
 
        if (isset($resultSet[0]))
            return $resultSet[0];
-       
+
        return null;
     }
-    
+
     public function findValueByArticleAndPeriod(Article $article, Period $period)
     {
         $value = $this->findOneByArticleAndPeriod($article, $period);
-        
+
         if (null == $value)
             return 0;
         return $value->getValue();

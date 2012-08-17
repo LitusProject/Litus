@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,34 +32,34 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
-        
+
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
-        
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
-            
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $docent = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findOneById($formData['prof_id']);
-                    
+
                 $mapping = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
-                
+
                 if (null === $mapping) {
                     $mapping = new SubjectProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
                 }
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -78,7 +78,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
         }
-        
+
         return new ViewModel(
             array(
                 'academicYears' => $academicYears,
@@ -88,24 +88,24 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
-            
+
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     public function typeaheadAction()
     {
         $docents = array_merge(
@@ -116,7 +116,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\Users\People\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'))
         );
-            
+
         $result = array();
         foreach($docents as $docent) {
             $item = (object) array();
@@ -124,14 +124,14 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             $item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getSubject()
     {
         if (null === $this->getParam('id')) {
@@ -142,21 +142,21 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     'No id was given to identify the subject!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $study = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $study) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -165,20 +165,20 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     'No subject with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $study;
     }
-    
+
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
@@ -189,21 +189,21 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     'No id was given to identify the mapping!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $mapping) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -212,20 +212,20 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     'No mapping with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping;
     }
-    
+
     private function _getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
@@ -238,7 +238,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
-        
+
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -247,17 +247,17 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     'No academic year was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_study',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $academicYear;
     }
 }

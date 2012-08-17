@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,15 +31,15 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
-        
+
         $form = new AddForm($article, $this->getEntityManager());
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                    $discount = new Discount($article);
-                   
+
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
                         $formData['value'],
@@ -50,14 +50,14 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     $template = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
                         ->findOneById($formData['template']);
-                        
+
                     $discount->setTemplate($template);
                 }
-                
+
                 $this->getEntityManager()->persist($discount);
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -65,7 +65,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                         'The discount was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_sales_discount',
                     array(
@@ -73,15 +73,15 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                         'id' => $article->getId(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         $discounts = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findByArticle($article);
-                    
+
         return new ViewModel(
             array(
                 'article' => $article,
@@ -94,20 +94,20 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     public function deleteAction()
     {
         $this->initAjax();
-                
+
         if (!($discount = $this->_getDiscount()))
             return new ViewModel();
-        
+
         $this->getEntityManager()->remove($discount);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
@@ -118,21 +118,21 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     'No ID was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -141,20 +141,20 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
-    
+
     private function _getDiscount()
     {
         if (null === $this->getParam('id')) {
@@ -165,21 +165,21 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     'No ID was given to identify the discount!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -188,17 +188,17 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     'No discount with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_article',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
 }

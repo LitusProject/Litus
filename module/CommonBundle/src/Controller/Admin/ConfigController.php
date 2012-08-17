@@ -32,7 +32,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         $configValues = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->findAll();
-            
+
         $formattedValues = array();
         foreach($configValues as $entry) {
             if (strstr($entry->getKey(), Config::$separator)) {
@@ -48,9 +48,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 );
             }
         }
-        
+
         ksort($formattedValues, SORT_STRING);
-        
+
         return new ViewModel(
             array(
                 'configValues' => $formattedValues,
@@ -62,19 +62,19 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
-        
+
         $form = new EditForm(
             $entry
         );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 $entry->setValue($formData['value']);
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -89,11 +89,11 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                         'action' => 'manage'
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'entry' => $entry,
@@ -101,7 +101,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             )
         );
     }
-        
+
     public function _getEntry()
     {
         if (null === $this->getParam('key')) {
@@ -112,21 +112,21 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                     'No key was given to identify the configuration entry!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_config',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $role = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->findOneByKey($this->getParam('key'));
-        
+
         if (null === $role) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -135,17 +135,17 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                     'No configuraiton entry with the given key was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_config',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $role;
     }
 }

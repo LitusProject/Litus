@@ -5,8 +5,8 @@
 
     {{ headMeta() }}
 	{{ headTitle('Litus Supplier', 'PREPEND') }}
-	
-	{{ headLink() }}   
+
+	{{ headLink() }}
 </head>
 
 <body>
@@ -49,7 +49,7 @@
 			                    <i class="profile"></i>
 			                </span>
 			                <span class="caret"></span>
-			            </a> 
+			            </a>
 			            <ul class="dropdown-menu">
 			                <li>
 			                    <a href="">
@@ -96,10 +96,10 @@
 	<div id="content_controller">
 	    {% block content %} {% endblock %}
 	</div>
-	
+
 	<footer>
 	    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
-	
+
 		{% if 'development' == environment %}
 		    <span class="development_information">
 		    	Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}

@@ -17,7 +17,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $albums = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findAll();
-        
+
         $sorted = array();
         foreach($albums as $album) {
             $year = AcademicYear::getAcademicYear($album->getDate());
@@ -29,7 +29,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             }
             $sorted[$year]->albums[] = $album;
         }
-        
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
@@ -40,7 +40,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             'filePath' => $filePath,
         );
     }
-    
+
     public function yearAction()
     {
         $start = AcademicYear::getDateTime($this->getParam('id'));
@@ -50,11 +50,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $albums = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findAllFromTo($start, $end);
-            
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
-            
+
         return array(
             'albums' => $albums,
             'filePath' => $filePath,
@@ -66,7 +66,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($album = $this->_getTranslationByName()))
             return;
-            
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery_path');
@@ -76,42 +76,42 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             'filePath' => $filePath,
         );
     }
-    
+
     public function _getTranslationByName()
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-    
+
         $translation = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Translation')
             ->findOneByName($this->getParam('id'));
-        
+
         if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         return $translation;
     }
-    
+
     public function _getPhoto()
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-    
+
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $album) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         return $album;
     }
 }

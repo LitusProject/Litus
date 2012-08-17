@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Util\Xml;
 
 use CommonBundle\Component\Util\File\TmpFile,
@@ -34,7 +34,7 @@ class Generator
      * @var bool Whether or not the file should be destroyed, defaults to true
      */
     private $_destroy = true;
-    
+
     /**
      * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file where the data will be saved to
      */
@@ -50,7 +50,7 @@ class Generator
 
         $this->_data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
     }
-    
+
     /**
      * Append an XML object to the file.
      *
@@ -68,7 +68,7 @@ class Generator
     {
         return $this->_data->getContent();
     }
-    
+
     public function __destruct()
     {
         if($this->_destroy)

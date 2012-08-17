@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -34,35 +34,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-                
+
         $this->setAttrib('id', 'uploadFile');
-     
+
         $field = new Text('description');
         $field->setLabel('Description')
             ->setAttrib('size', 70)
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new FileElement('file');
         $field->setLabel('File')
             ->setAttrib('size', 70)
             ->setRequired()
             ->setDecorators(array(new FileDecorator()));
         $this->addElement($field);
-        
+
         $field = new Checkbox('printable');
         $field->setLabel('Printable')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
                 ->setAttrib('class', 'file_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     public function populateFromFile(FileMapping $mapping)
     {
         $this->populate(

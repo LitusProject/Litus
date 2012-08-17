@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -37,14 +37,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
-                            
+
         return new ViewModel(
             array(
                 'articles' => $articles,
             )
         );
     }
-    
+
     public function addAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
@@ -54,7 +54,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
@@ -91,14 +91,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['downloadable']
                        );
                 }
-                
+
                 $article->setIsProf(true);
-                    
+
                 $this->getEntityManager()->persist($article);
-                
+
                 $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'add');
                 $this->getEntityManager()->persist($action);
-                
+
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectIdAndProfAndAcademicYear(
@@ -106,16 +106,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $this->getAuthentication()->getPersonObject(),
                         $academicYear
                     );
-                
+
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject->getSubject(), $academicYear, true);
-                
+
                 if (null === $mapping) {
                     $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
                     $mapping->setIsProf(true);
                     $this->getEntityManager()->persist($mapping);
-                    
+
                     $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
                     $this->getEntityManager()->persist($action);
                 } else {
@@ -125,9 +125,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     foreach ($actions as $action)
                         $this->getEntityManager()->remove($action);
                 }
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -135,7 +135,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         'The article was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'prof_article',
                     array(
@@ -143,39 +143,39 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-        
+
         $form = new EditForm($this->getEntityManager(), $article);
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 if (!$article->isProf()) {
                     $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);
                     $edited = false;
-                    
+
                     if ($article->getTitle() != $formData['title']) {
                         $duplicate->setTitle($formData['title']);
                         $edited = true;
                     }
-                    
+
                     if ($article->getAuthors() != $formData['author']) {
                         $duplicate->setAuthors($formData['author']);
                         $edited = true;
@@ -204,7 +204,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $duplicate->setType($formData['type']);
                         $edited = true;
                     }
-                    
+
                     if ($formData['internal']) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
@@ -221,7 +221,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                             $edited = true;
                         }
                     }
-                    
+
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
@@ -236,7 +236,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         ->setURL($formData['url'])
                         ->setIsDownloadable($formData['downloadable'])
                         ->setType($formData['type']);
-                                        
+
                     if ($formData['internal']) {
                         $article->setBinding(
                                 $this->getEntityManager()
@@ -248,7 +248,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     }
                 }
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -256,7 +256,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         'The article was successfully updated!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'prof_article',
                     array(
@@ -264,11 +264,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -276,13 +276,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function typeaheadAction()
     {
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
-        
+
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
@@ -290,14 +290,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $item->value = $article->getTitle() . ' - ' . $article->getYearPublished();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -310,7 +310,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -318,14 +318,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return new ViewModel();
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -334,7 +334,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -342,10 +342,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return new ViewModel();
         }
-        
+
         return $article;
     }
 }

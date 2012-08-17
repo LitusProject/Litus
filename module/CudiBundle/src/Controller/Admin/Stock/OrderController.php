@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -25,7 +25,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 
 /**
  * OrderController
- * 
+ *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class OrderController extends \CudiBundle\Component\Controller\ActionController
@@ -40,11 +40,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'name' => 'ASC'
             )
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -58,21 +58,21 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-            
+
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'supplier' => $supplier,
@@ -82,12 +82,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function editAction()
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
@@ -100,13 +100,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-        
+
         $academicYear = $this->getAcademicYear();
-                
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -114,13 +114,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
-                
+
                 $item = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
-                
-                $this->getEntityManager()->flush();    
-                
+
+                $this->getEntityManager()->flush();
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -128,7 +128,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                         'The order item was successfully added!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_stock_order',
                     array(
@@ -136,7 +136,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                         'id' => $item->getOrder()->getId(),
                     )
                 );
-                
+
                 return new ViewModel(
                     array(
                         'currentAcademicYear' => $academicYear,
@@ -144,11 +144,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 );
             }
         }
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -157,33 +157,33 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($item = $this->_getOrderItem()))
             return new ViewModel();
-            
+
         $this->getEntityManager()->remove($item);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     public function placeAction()
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-            
+
         $order->order();
-        
+
         $this->getEntityManager()->flush();
-        
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -191,7 +191,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'The order is successfully placed!'
             )
         );
-            
+
         $this->redirect()->toRoute(
             'admin_stock_order',
             array(
@@ -199,15 +199,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'id' => $order->getId(),
             )
         );
-        
+
         return new ViewModel();
     }
-    
+
     public function pdfAction()
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-            
+
         $file = new TmpFile();
         $document = new OrderPdfGenerator($this->getEntityManager(), $order, $file);
         $document->generate();
@@ -218,51 +218,51 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'Content-type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
-        
+
         return new ViewModel(
             array(
                 'data' => $file->getContent(),
             )
         );
     }
-    
+
     public function exportAction()
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-            
+
         $document = new OrderXmlGenerator($this->getEntityManager(), $order);
-        
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="order.zip"',
             'Content-type'        => 'application/zip',
         ));
         $this->getResponse()->setHeaders($headers);
-        
+
         $archive = new TmpFile();
         $document->generateArchive($archive);
-        
+
         $handle = fopen($archive->getFileName(), 'r');
         $data = fread($handle, filesize($archive->getFileName()));
         fclose($handle);
-        
+
         return new ViewModel(
             array(
                 'data' => $data,
             )
         );
     }
-    
+
     public function cancelAction()
     {
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-            
+
         $order->cancel();
-        
+
         $this->getEntityManager()->flush();
-            
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -270,12 +270,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'The order was successfully canceled!'
             )
         );
-        
+
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
-        
+
         return new ViewModel();
     }
-    
+
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -286,21 +286,21 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the supplier!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $supplier) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -309,20 +309,20 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No supplier with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $supplier;
     }
-    
+
     private function _getOrder()
     {
         if (null === $this->getParam('id')) {
@@ -333,21 +333,21 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the order!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $order = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $order) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -356,20 +356,20 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No order with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $order;
     }
-    
+
     private function _getOrderItem()
     {
         if (null === $this->getParam('id')) {
@@ -380,21 +380,21 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the order item!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $item = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $item) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -403,17 +403,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'No order item with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_order',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $item;
     }
 }

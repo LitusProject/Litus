@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 
 /**
  * DeliveryController
- * 
+ *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class DeliveryController extends \CudiBundle\Component\Controller\ActionController
@@ -37,11 +37,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 'name' => 'ASC'
             )
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -50,26 +50,26 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
-    
+
     public function supplierAction()
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-        
+
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'supplier' => $supplier,
@@ -78,17 +78,17 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 'suppliers' => $suppliers,
             )
         );
-    }    
-    
+    }
+
     public function addAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $academicYear = $this->getAcademicYear();
-            
+
         $form = new AddForm($this->getEntityManager());
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -96,11 +96,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
-                
+
                 $item = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                 $this->getEntityManager()->persist($item);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -108,7 +108,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                         'The delivery was successfully added!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_stock_delivery',
                     array(
@@ -116,7 +116,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                         'id'     => $article->getSupplier()->getId(),
                     )
                 );
-                
+
                 return new ViewModel(
                     array(
                         'currentAcademicYear' => $academicYear,
@@ -124,17 +124,17 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 );
             }
         }
-        
+
         $deliveries = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Delivery')
             ->findAllByPeriod($period);
-        
+
         array_splice($deliveries, 25);
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -144,34 +144,34 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($delivery = $this->_getDelivery()))
             return new ViewModel();
-        
+
         $delivery->getArticle()->addStockValue(-$delivery->getNumber());
         $this->getEntityManager()->remove($delivery);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     public function typeaheadAction()
     {
         $this->initAjax();
-        
+
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $academicYear = $this->getAcademicYear();
-        
+
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
@@ -184,14 +184,14 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             $item->maximum = $period->getNbOrdered($article) - $period->getNbDelivered($article);
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getDelivery()
     {
         if (null === $this->getParam('id')) {
@@ -202,21 +202,21 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                     'No id was given to identify the delivery!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $delivery = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Delivery')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $delivery) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -225,20 +225,20 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                     'No delivery with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $delivery;
     }
-    
+
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -249,21 +249,21 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                     'No id was given to identify the supplier!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $supplier) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -272,17 +272,17 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                     'No supplier with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_delivery',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $supplier;
     }
 }

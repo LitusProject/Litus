@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -20,7 +20,7 @@ use CommonBundle\Entity\General\AcademicYear,
 
 /**
  * Specifying the different types of memberships the organization has.
- * 
+ *
  * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
  * @Table(name="users.organization_statuses")
  */
@@ -82,9 +82,9 @@ class Organization
     {
         if(!self::isValidPerson($person))
             throw new \InvalidArgumentException('Invalid person');
-            
+
         $this->person = $person;
-        
+
         $this->setStatus($status);
         $this->academicYear = $academicYear;
     }

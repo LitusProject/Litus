@@ -23,13 +23,13 @@ class QueueItem extends EntityRepository
             ->setParameter('session', $session->getId())
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0][1] + 1;
-        
+
         return 1;
     }
-    
+
     public function findOneByPersonNotSold(SessionEntity $session, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -47,13 +47,13 @@ class QueueItem extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findAllByStatus(SessionEntity $session, $status)
     {
         $query = $this->_em->createQueryBuilder();
@@ -69,10 +69,10 @@ class QueueItem extends EntityRepository
             ->orderBy('i.queueNumber', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllBySession(SessionEntity $session)
     {
         $query = $this->_em->createQueryBuilder();
@@ -90,7 +90,7 @@ class QueueItem extends EntityRepository
             ->orderBy('i.queueNumber', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

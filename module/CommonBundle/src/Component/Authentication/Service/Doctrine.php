@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
@@ -34,17 +34,17 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @var string The name of the entity that holds the sessions
      */
     private $_entityName = '';
-    
+
     /**
      * @var int The expiration time for the persistent storage
      */
     private $_expire = -1;
-    
+
     /**
      * @var string The namespace the storage handlers will use
      */
@@ -54,7 +54,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @var string The cookie suffix that is used to store the session cookie
      */
     private $_cookieSuffix = '';
-    
+
     /**
      * @var \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
      */
@@ -74,12 +74,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     )
     {
         parent::__construct($storage);
-        
+
         $this->_entityManager = $entityManager;
-        
+
         // A bit of a dirty hack to get Zend's DI to play nice
         $entityName = str_replace('"', '', $entityName);
-        
+
         $this->_namespace = $namespace;
         $this->_expire = $expire;
         $this->_cookieSuffix = $cookieSuffix;
@@ -103,10 +103,10 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     public function authenticate(Adapter $adapter, $rememberMe = true)
     {
         $result = null;
-        
+
         if ('' == $this->getIdentity()) {
             $adapterResult = $adapter->authenticate();
-            
+
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
@@ -116,7 +116,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['REMOTE_ADDR']
                 );
                 $this->_entityManager->persist($newSession);
-                
+
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
                     setcookie(
@@ -127,9 +127,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                         $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
                     );
                 }
-                
+
                 $result = $adapterResult;
-                
+
                 if (isset($this->_action))
                     $this->_action->succeededAction($result);
             } else {
@@ -174,7 +174,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 $this->clearIdentity();
             }
         }
-        
+
         $this->_entityManager->flush();
 
         return $result;
@@ -206,7 +206,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
         if (null !== $session) {
             $session->deactivate();
-            
+
             $this->_entityManager->flush();
         }
 
@@ -227,10 +227,10 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]))
                 $this->getStorage()->write($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]);
         }
-        
+
         return !$this->getStorage()->isEmpty();
     }
-    
+
     /**
      * @param \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
      *

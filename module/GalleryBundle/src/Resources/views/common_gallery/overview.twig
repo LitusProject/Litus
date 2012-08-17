@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{{ translator().translate('Gallery') }}</h1>
-    
+
     <h2>{{ translator().translate('Academic Year') }} {{ currentYear }}</h2>
     {% for album in attribute(albums, currentYear).albums %}
         <div class="album">
@@ -13,7 +13,7 @@
         </div>
     {% endfor %}
     <br class="clear" />
-    
+
     <h2>{{ translator().translate('Archive') }}</h2>
     {% for year in albums %}
         {% if year.year != currentYear %}

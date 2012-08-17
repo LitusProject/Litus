@@ -59,13 +59,6 @@ class Translation
     private $title;
 
     /**
-     * @var string The name of this tanslation
-     *
-     * @Column(type="string", unique=true)
-     */
-    private $name;
-
-    /**
      * @var string The content of this tanslation
      *
      * @Column(type="text")
@@ -75,16 +68,15 @@ class Translation
     /**
      * @param \NewsBundle\Entity\Nodes\News $news
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
      * @param string $title
+     * @param string $content
      */
-    public function __construct(News $news, Language $language, $content, $title)
+    public function __construct(News $news, Language $language, $title, $content)
     {
         $this->news = $news;
         $this->language = $language;
-        $this->content = $content;
         $this->title = $title;
-        $this->_setName($title);
+        $this->content = $content;
     }
 
     /**
@@ -119,26 +111,6 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->_setName($title);
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @param \NewsBundle\Entity\Nodes\Translation
-     */
-    private function _setName($name)
-    {
-        $this->name = $this->news->getCreationTime()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name)) . '_' . $this->getLanguage()->getAbbrev();
         return $this;
     }
 
@@ -153,7 +125,7 @@ class Translation
     /**
      * @return string
      */
-    public function getSummary($length = 50)
+    public function getSummary($length = 100)
     {
         $content = strip_tags($this->content);
         return substr($content, 0, $length) . (strlen($content) > $length ? '...' : '');

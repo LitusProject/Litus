@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Lap extends EntityRepository
 {
-    
+
     public function findPrevious($nbResults = 1)
     {
         $queryBuilder = new QueryBuilder(

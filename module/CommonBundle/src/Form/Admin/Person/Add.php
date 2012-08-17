@@ -12,11 +12,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Component\Validator\Username as UsernameValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Form,
@@ -48,9 +48,9 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
-        
+
         $field = new Text('username');
         $field->setLabel('Username')
             ->setRequired()
@@ -79,7 +79,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setDecorators(array(new FieldDecorator()))
             ->addValidator(new EmailAddressValidator());
         $this->addElement($field);
-        
+
         $field = new Text('phone_number');
         $field->setLabel('Phone Number')
             ->setAttrib('placeholder', '+CCAAANNNNNN')
@@ -98,14 +98,14 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Multiselect('roles');
         $field->setLabel('Groups')
             ->setMultiOptions($this->_createRolesArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
     }
-    
+
     /**
      * Returns an array that has all the roles, so that they are available in the
      * roles multiselect.
@@ -122,7 +122,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         foreach ($roles as $role) {
             if ($role->getSystem())
                 continue;
-            
+
             $rolesArray[$role->getName()] = $role->getName();
         }
         return $rolesArray;

@@ -2,12 +2,12 @@
 
 {% block content %}
 	{% include 'admin_sales_session/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
 		<table class="full_width manage">
-		
+
 		    <tr>
 		        <th>Manager</th>
 		        <th width="50px">Open</th>
@@ -16,7 +16,7 @@
 		        <th width="110px">Balance</th>
 				<th width="90px">Action</th>
 		    </tr>
-		    
+
 		    {% for session in paginator %}
 		        <tr>
 		            <td>{{ session.getManager().getFullName() }}</td>
@@ -32,7 +32,7 @@
 		        </tr>
 		    {% endfor %}
 		</table>
-		
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 {% endblock %}

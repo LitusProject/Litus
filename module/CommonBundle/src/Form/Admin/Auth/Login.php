@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Auth;
 
 use Zend\Form\Element\Checkbox,
@@ -45,7 +45,7 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttrib('placeholder', 'password')
             ->setDecorators(array('ViewHelper', 'Errors'));
         $this->addElement($field);
-        
+
         $field = new Checkbox('remember_me');
         $field->setLabel('Remember Me')
             ->setDecorators(

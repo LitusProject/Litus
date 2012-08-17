@@ -17,6 +17,7 @@ namespace CommonBundle\Form\Admin\Role;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Validator\Role as RoleValidator,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
     Zend\Form\Form,
@@ -49,7 +50,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('name');
         $field->setLabel('Name')
             ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()))
+            ->addValidator(new RoleValidator());
         $this->addElement($field);
 
         $field = new Multiselect('parents');

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\Subject;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -30,7 +30,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct(StudentEnrollment $enrollment = null, $options = null)
     {
         parent::__construct($options);
-         
+
         $field = new Text('students');
         $field->setLabel('Students')
             ->setAttrib('class', $field->getAttrib('class') . ' input-xlarge')
@@ -42,9 +42,9 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Submit('submit');
         $field->setLabel('Update');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit'));
-        
+
         if (isset($enrollment)) {
             $this->populate(array(
                 'students' => $enrollment->getNumber(),

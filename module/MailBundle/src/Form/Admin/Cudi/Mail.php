@@ -12,9 +12,9 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace MailBundle\Form\Admin\Cudi;
-    
+
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Zend\Form\Element\Checkbox,
@@ -30,13 +30,13 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($opts = null)
     {
         parent::__construct($opts);
-        
+
         $field = new Checkbox('test_it');
         $field->setLabel('Send Test to System Administrator')
             ->setValue(true)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Send Mail')
                 ->setAttrib('class', 'mail')

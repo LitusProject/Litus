@@ -4,7 +4,7 @@
 	{% include 'admin_prof_action/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div id="controller_action">
 	    <table class="full_width manage">
 	        <tr>
@@ -13,7 +13,7 @@
 	            <th width="150px">Date</th>
 	            <th width="100px">Actions</th>
 	        </tr>
-	        
+
 	        {% for action in paginator %}
 	            <tr class="item">
 	                <td>{{ action.getPerson().getFullName() }}</td>

@@ -5,8 +5,8 @@
         <ul>
             {% if hasAccess('admin_config', 'manage') %}
                 <li>
-                	<a 
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} 
+                	<a
+                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
                 		href="{{ url('admin_config', {"action": "manage"}) }}"
                 	>
                 		Manage

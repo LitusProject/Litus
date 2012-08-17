@@ -12,12 +12,12 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,    
+    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Textarea;
@@ -35,16 +35,16 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
     public function __construct(EntityManager $entityManager, $options = null)
     {
         parent::__construct($entityManager, $options);
-        
+
         $submit = $this->getElement('submit');
         $this->removeElement('submit');
-        
+
         $field = new Textarea('comment');
         $field->setLabel('Comment')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->addElement($submit);
     }
 }

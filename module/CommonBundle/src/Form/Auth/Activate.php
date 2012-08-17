@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Auth;
 
 use Zend\Form\Element\Password,
@@ -32,7 +32,7 @@ class Activate extends \Zend\Form\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+
         $field = new Password('credential');
         $field->setLabel('Password')
             ->setRequired();
@@ -43,7 +43,7 @@ class Activate extends \Zend\Form\Form
             ->setRequired()
             ->addValidator(new IdenticalValidator('credential'));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Activate');
         $this->addElement($field);

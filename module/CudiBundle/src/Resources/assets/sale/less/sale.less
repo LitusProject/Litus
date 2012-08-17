@@ -1,37 +1,37 @@
 #queueModal {
 	width: @queueModalWidth;
 	margin-left: -@queueModalWidth / 2;
-	
+
 	.table {
 		.number {
 			width: 50px;
 		}
-		
+
 		.name {
 			width: 330px;
 		}
-		
+
 		.status {
 			width: 120px;
 		}
-		
+
 		.actions {
 			width: 200px;
-			
+
 			.hold {
 				float: right;
 			}
 		}
-		
+
 		thead {
 			display: block;
 		}
-		
+
 		tbody {
 			max-height: 300px;
 			overflow: auto;
 			display: block;
-			
+
 			.actions {
 				padding: 3px 8px;
 			}
@@ -46,52 +46,52 @@
 				width: 130px;
 			}
 		}
-		
+
 		tbody {
 			.actions {
 				padding: 3px 8px;
-				
+
 				.removeArticle {
 					float: right;
 				}
 			}
-			
+
 			tr.inactive {
 				color: @cGray;
 			}
 		}
 	}
-	
+
 	.wrapper {
 		margin-bottom: 10px;
-		
+
 		.money {
 			font-weight: bold;
 			text-align: right;
-			
+
 			.total {
 				font-size: 55px;
 				line-height: 80px;
 			}
 		}
-		
+
 		.customer {
 			.title {
 				margin: 0 0 10px 0;
 			}
-			
+
 			.name {
 				font-size: 30px;
 				line-height: 30px;
 				font-weight: bold;
 				margin: 0 0 10px 30px;
 			}
-			
+
 			.actions {
 				margin: 0;
 			}
 		}
-		
+
 		.discounts {
 		    .options {
 		        padding-left:10px;

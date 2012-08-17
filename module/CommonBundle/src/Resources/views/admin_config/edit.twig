@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_config/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -10,9 +10,9 @@
 		<p>
 			{{ entry.getDescription() }}
 		</p>
-		
+
 		<br />
-			
+
 		{% autoescape false %}
 	    	{{ form }}
 	    {% endautoescape %}

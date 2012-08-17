@@ -25,7 +25,7 @@ class Event extends EntityRepository
             ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

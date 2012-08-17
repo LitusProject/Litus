@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
@@ -39,26 +39,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $field = new Text('company_name');
         $field->setLabel('Company Name')
             ->setRequired()
             ->addValidator(new CompanyNameValidator($entityManager))
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Textarea('history');
         $field->setLabel('History')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Textarea('description');
         $field->setLabel('Description')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Select('sector');
         $field->setLabel('Sector')
             ->setRequired()
@@ -71,16 +71,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $this->addSubForm(new AddressForm(), 'address');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'companies_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     public function populateFromCompany(Company $company)
     {
         $this->populate(
@@ -98,7 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
     }
-    
+
     private function _getSectors()
     {
         $sectorArray = array();

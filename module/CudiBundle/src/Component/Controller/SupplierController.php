@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
@@ -28,7 +28,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
 {
     /**
      * Execute the request
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
@@ -37,22 +37,22 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     {
         if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-        
+
         $result = parent::execute($e);
-                
+
         $result->supplier = $this->getSupplier();
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('supplier_auth', array('action' => 'login')));
-        
+
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
-          
+
         $e->setResult($result);
         return $result;
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
@@ -64,12 +64,12 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         return array(
             'action'         => 'index',
             'controller'     => 'index',
-            
+
             'auth_route'     => 'supplier_index',
             'redirect_route' => 'supplier_index'
         );
     }
-    
+
     /**
      * Returns the supplier for the user that is currently logged in.
      *

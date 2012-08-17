@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Bootstrap\DisplayGroup;
 
 use Zend\Loader\PrefixPathMapper;
@@ -24,7 +24,7 @@ use Zend\Loader\PrefixPathMapper;
  */
 class Actions extends \Zend\Form\DisplayGroup
 {
-    
+
     /**
      * Constructor
      *
@@ -36,7 +36,7 @@ class Actions extends \Zend\Form\DisplayGroup
     public function __construct($name, PrefixPathMapper $loader, $options = null)
     {
         parent::__construct($name, $loader, $options);
-        
+
         $this->clearDecorators();
         $this->addDecorator('FormElements')
              ->addDecorator('HtmlTag', array('class' => 'form-actions', 'tag' => 'div'));

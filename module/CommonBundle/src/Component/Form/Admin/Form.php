@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin;
 
 /**
@@ -31,7 +31,7 @@ class Form extends \Zend\Form\Form
         parent::__construct($options = null);
 
         $this->setMethod('post');
-        
+
         $this->addDecorator(
             'HtmlTag',
             array(

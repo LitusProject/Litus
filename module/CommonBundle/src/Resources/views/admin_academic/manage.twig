@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_academic/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width student_removed_success hide">
 		<div class="title">Success</div>
@@ -20,7 +20,7 @@
 	<div id="controller_action">
 		<div id="student_search" style="display: none;">
 			<div style="padding: 4px; text-align: right">
-				Search: 
+				Search:
 				<select id="searchField">
 					<option value="username">Username</option>
 					<option value="name">Name</option>
@@ -29,7 +29,7 @@
 				is
 				<input type="text" id="searchString" size="30" />
 			</div>
-			
+
 			<table class="full_width manage">
 		    	<tr>
 		        	<th>Username</th>
@@ -40,7 +40,7 @@
 				</tr>
 			</table>
 		</div>
-		
+
 		<div id="default_page">
 		    <table class="full_width manage">
 		        <thead>
@@ -52,7 +52,7 @@
 		                <th width="70px">Action</th>
 		            </tr>
 		        </thead>
-		
+
 		        <tbody>
 		            {% for academic in paginator %}
 		                <tr class="item item-{{ academic.getId() }}">
@@ -72,11 +72,11 @@
 		            {% endfor %}
 		        </tbody>
 		    </table>
-	
+
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>
-	
+
 	<div class="modal hide fade" id="removeStudent">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -134,10 +134,10 @@
 				}
 			});
 			{% endif %}
-			
+
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
 			e.preventDefault();
@@ -161,7 +161,7 @@
 			});
 			removeStudent.modal();
 		}
-		
+
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
 		    $('.student_removed_error').removeClass('hide');

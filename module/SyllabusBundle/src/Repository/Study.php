@@ -17,7 +17,7 @@ class Study extends EntityRepository
     {
         if (! is_numeric($phase))
             return null;
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
@@ -37,15 +37,15 @@ class Study extends EntityRepository
 
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findOneByTitlePhaseLanguageAndParent($title, $phase, $language, StudyEntity $parent)
     {
         if (! is_numeric($phase))
             return null;
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
@@ -66,7 +66,7 @@ class Study extends EntityRepository
 
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
 }

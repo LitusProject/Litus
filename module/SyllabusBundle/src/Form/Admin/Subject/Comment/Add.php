@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace SyllabusBundle\Form\Admin\Subject\Comment;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -31,20 +31,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-             
+
         $field = new Textarea('text');
         $field->setLabel('Comment')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Select('type');
         $field->setLabel('Type')
             ->setMultiOptions(array('internal' => 'Internal', 'external' => 'External'))
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Add')
                 ->setAttrib('class', 'comment_add')

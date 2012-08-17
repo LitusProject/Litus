@@ -17,10 +17,10 @@ class Person extends EntityRepository
         $resultSet = $this->_em
             ->createQuery('SELECT p FROM CommonBundle\Entity\Users\Person p JOIN p.roles r WHERE r.name = \'' . $role . '\'')
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByName($name)
     {
         $query = $this->_em->createQueryBuilder();
@@ -46,10 +46,10 @@ class Person extends EntityRepository
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllByUsername($username)
     {
         $query = $this->_em->createQueryBuilder();
@@ -61,10 +61,10 @@ class Person extends EntityRepository
             ->setParameter('username', '%' . strtolower($username) . '%')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findOneByUsername($username)
     {
         $query = $this->_em->createQueryBuilder();
@@ -77,17 +77,17 @@ class Person extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         $barcode = $this->_em
             ->getRepository('CommonBundle\Entity\Users\Barcode')
             ->findOneByBarcode($username);
-        
+
         if ($barcode)
             return $barcode->getPerson();
-        
+
         return null;
     }
 }

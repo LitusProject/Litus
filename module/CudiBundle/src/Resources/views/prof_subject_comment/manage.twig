@@ -15,22 +15,22 @@
     		<p>{{ translator().translate('The comment was succesfully removed.') }}</p>
     	</div>
     </div>
-    
+
 	<div class="page-header">
 	    <h2>{{ translator().translate('Comments') }}</h2>
 	</div>
-	
+
 	<div class="page-header">
 	    <h2>{{ translator().translate('Subject') }}</h2>
 	</div>
-	
+
 	<p>
 	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
 	    {{ translator().translate('Name') }}: <b>{{ subject.getName() }}</b><br />
 	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
 	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
 	</p>
-	
+
 	<table class="table table-bordered table-striped">
         <tr>
             <th width="100px">{{ translator().translate('Date') }}</th>
@@ -57,7 +57,7 @@
         <a href="#addComment" class="btn btn-success" data-toggle="modal">{{ translator().translate('Add Comment') }}</a>
     </div>
     <br class="clear" />
-    
+
     <div id="viewComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -70,7 +70,7 @@
     		<button class="btn" data-dismiss="modal">{{ translator().translate('Close') }}</button>
     	</div>
     </div>
-    
+
     <div id="addComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -86,7 +86,7 @@
     		<button class="btn" data-dismiss="modal">{{ translator().translate('Cancel') }}</button>
     	</div>
     </div>
-    
+
     <div id="removeComment" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
@@ -111,19 +111,19 @@
 			    $('#addComment form').submit();
 			});
 		});
-		
+
 		function openViewModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var viewComment = $('#viewComment');
 			viewComment.find('.text').html($this.data('text'));
 			viewComment.modal();
 		}
-		
+
 		function openRemoveModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeComment = $('#removeComment');
 			removeComment.find('.confirm').unbind('click').click(function () {
@@ -140,7 +140,7 @@
 			});
 			removeComment.modal();
 		}
-		
+
 		function errorRemove() {
 			$('.flashmessage').removeClass('in');
 			$('#comment_removed_error').addClass('in');

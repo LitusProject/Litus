@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -32,7 +32,7 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
         parent::__construct($entityManager, $options);
 
         $this->removeElement('submit');
-        
+
         foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
             $this->removeElement($element->getName());
         $this->removeDisplayGroup('subject_form');
@@ -41,13 +41,13 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
             $this->getElement('type')->setAttrib('disabled', 'disabled')
                 ->setRequired(false);
         }
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromArticle($article);
     }
 }

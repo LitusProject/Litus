@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
@@ -46,84 +46,84 @@ abstract class Article
      * @Column(type="string")
      */
     private $title;
-    
+
     /**
      * @var string The authors of the article
      *
      * @Column(type="string")
      */
     private $authors;
-    
+
     /**
      * @var string The publishers of the article
      *
      * @Column(type="string")
      */
     private $publishers;
-    
+
     /**
      * @var integer The year the article was published
      *
      * @Column(name="year_published", type="integer", length=4, nullable=true)
      */
     private $yearPublished;
-    
+
     /**
      * @var \DateTime The time the article was created
      *
      * @Column(type="datetime")
      */
     private $timestamp;
-    
+
     /**
      * @var integer The version number of this article
-     * 
+     *
      * @Column(name="version_number", type="smallint", nullable=true)
      */
     private $versionNumber;
-    
+
     /**
      * @var integer The ISBN number of this article
      *
      * @Column(type="bigint", nullable=true)
      */
     private $isbn;
-    
+
     /**
      * @var string The url with a link to extra information of this article
      *
      * @Column(type="string", nullable=true)
      */
     private $url;
-    
+
     /**
      * @var boolean The flag whether the article is old or not
      *
      * @Column(name="is_history", type="boolean")
      */
     private $isHistory;
-    
+
     /**
      * @var boolean The flag whether the article is just created by a prof
      *
      * @Column(type="boolean")
      */
     private $isProf;
-    
+
     /**
      * @var boolean The flag whether the article is downloadable
      *
      * @Column(type="boolean")
      */
     private $downloadable;
-    
+
     /**
      * @var string The article type
      *
      * @Column(type="string")
      */
     private $type;
-    
+
     /**
      * @var array The possible types of an article
      */
@@ -136,7 +136,7 @@ abstract class Article
         'student' => 'Student',
         'textbook' => 'Textbook',
     );
-    
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -164,7 +164,7 @@ abstract class Article
             ->setIsDownloadable($downloadable);
         $this->timestamp = new DateTime();
     }
-    
+
     /**
      * @return boolean
      */
@@ -172,7 +172,7 @@ abstract class Article
     {
         return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
-    
+
     /**
      * @return integer
      */
@@ -197,14 +197,14 @@ abstract class Article
     public function setTitle($title)
     {
         $title = trim($title);
-        
+
         if (strlen($title) == 0)
             throw new \InvalidArgumentException('The article title is not valid.');
 
         $this->title = $title;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -212,7 +212,7 @@ abstract class Article
     {
         return $this->authors;
     }
-    
+
     /**
      * @param string $authors
      *
@@ -223,7 +223,7 @@ abstract class Article
         $this->authors = $authors;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -231,7 +231,7 @@ abstract class Article
     {
         return $this->publishers;
     }
-    
+
     /**
      * @param string $publishers
      *
@@ -242,7 +242,7 @@ abstract class Article
         $this->publishers = $publishers;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -250,7 +250,7 @@ abstract class Article
     {
         return $this->yearPublished;
     }
-    
+
     /**
      * @param string $yearPublished
      *
@@ -263,7 +263,7 @@ abstract class Article
         $this->yearPublished = $yearPublished;
         return $this;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -271,7 +271,7 @@ abstract class Article
     {
         return $this->timestamp;
     }
-    
+
     /**
      * @return integer
      */
@@ -279,7 +279,7 @@ abstract class Article
     {
         return $this->versionNumber;
     }
-    
+
     /**
      * @param integer $versionNumber
      *
@@ -290,7 +290,7 @@ abstract class Article
         $this->versionNumber = $versionNumber;
         return $this;
     }
-    
+
     /**
      * @return integer
      */
@@ -298,7 +298,7 @@ abstract class Article
     {
         return $this->isbn;
     }
-    
+
     /**
      * @param integer $isbn
      *
@@ -310,10 +310,10 @@ abstract class Article
             $this->isbn = null;
         else
             $this->isbn = $isbn;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -321,7 +321,7 @@ abstract class Article
     {
         return $this->url;
     }
-    
+
     /**
      * @param string $url
      *
@@ -332,7 +332,7 @@ abstract class Article
         $this->url = $url;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -340,7 +340,7 @@ abstract class Article
     {
         return $this->isHistory;
     }
-    
+
     /**
      * @param boolean $isHistory
      *
@@ -351,7 +351,7 @@ abstract class Article
         $this->isHistory = $isHistory;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -359,7 +359,7 @@ abstract class Article
     {
         return $this->isProf;
     }
-    
+
     /**
      * @param boolean $isProf
      *
@@ -370,7 +370,7 @@ abstract class Article
         $this->isProf = $isProf;
         return $this;
     }
-    
+
     /**
      * @return boolean
      */
@@ -378,7 +378,7 @@ abstract class Article
     {
         return $this->downloadable;
     }
-    
+
     /**
      * @param boolean $downloadable
      *
@@ -389,7 +389,7 @@ abstract class Article
         $this->downloadable = $downloadable;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -397,7 +397,7 @@ abstract class Article
     {
         return $this->type;
     }
-    
+
     /**
      * @param string $type
      *
@@ -410,10 +410,10 @@ abstract class Article
         $this->type = $type;
         return $this;
     }
-    
+
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * 
+     *
      * @return \CudiBundle\Entity\Sales\Article
      */
     public function getSaleArticle(AcademicYear $academicYear)
@@ -422,7 +422,7 @@ abstract class Article
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByArticleAndAcademicYear($this, $academicYear);
     }
-    
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
@@ -433,17 +433,17 @@ abstract class Article
         $this->_entityManager = $entityManager;
         return $this;
     }
-    
+
     /**
      * @return \CudiBundle\Entity\Article
      */
     abstract public function duplicate();
-    
+
     /**
      * @return boolean
      */
     abstract public function isExternal();
-    
+
     /**
      * @return boolean
      */

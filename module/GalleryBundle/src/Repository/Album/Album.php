@@ -21,10 +21,10 @@ class Album extends EntityRepository
             ->orderBy('a.dateActivity', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllFromTo(DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();

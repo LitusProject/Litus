@@ -30,7 +30,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllUncompleted();
         array_splice($profActions, 10);
-        
+
         return new ViewModel(
             array(
                 'profActions' => $profActions,

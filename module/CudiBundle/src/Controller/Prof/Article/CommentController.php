@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,13 +32,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-            
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findByArticle($article);
-                
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -50,10 +50,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $formData['text'],
                     'external'
                 );
-                
+
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -61,7 +61,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                         'The comment was successfully created!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'prof_article_comment',
                     array(
@@ -70,11 +70,11 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-                
+
         return new ViewModel(
             array(
                 'article' => $article,
@@ -83,30 +83,30 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getCommentMapping()))
             return new ViewModel();
-            
+
         if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
                 'result' => (object) array("status" => "error")
             );
         }
-        
+
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -119,7 +119,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -127,14 +127,14 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -143,7 +143,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -151,13 +151,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
-    
+
     private function _getCommentMapping()
     {
         if (null === $this->getParam('id')) {
@@ -168,7 +168,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the comment!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -176,14 +176,14 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comments\Mapping')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -192,7 +192,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'No comment with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -200,10 +200,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping;
     }
 }

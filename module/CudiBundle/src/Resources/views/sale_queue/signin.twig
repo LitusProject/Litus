@@ -8,7 +8,7 @@
 			<p>There are no bookings for you.</p>
 		</div>
 	</div>
-	
+
 	<div class="flashmessage alert alert-success fade" id="add_queue_success">
 	    <a class="close" data-dismiss="alert">&times;</a>
 		<div class="title">Success</div>
@@ -16,7 +16,7 @@
 			<p>You are succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong></p>
 		</div>
 	</div>
-	
+
 	<div class="flashmessage alert alert-error fade" id="socket_error">
 	    <a class="close" data-dismiss="alert">&times;</a>
 		<div class="title">Error</div>
@@ -24,7 +24,7 @@
 			<p>The connection with the server is down.</p>
 		</div>
 	</div>
-	
+
 	{% autoescape false %}
 		{{ form }}
 	{% endautoescape %}
@@ -34,7 +34,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.flashmessage').autoHideFlashMessages({speed: 0, timeOut: 0});
-			
+
 			$('#username').keypress(function(e) {
 			    if (e.keyCode == 13) {
 			    	e.preventDefault();
@@ -45,7 +45,7 @@
 			    signIn();
 			});
 		});
-		
+
 		$.webSocket(
 			{
 				name: 'signInQueue',
@@ -83,7 +83,7 @@
 				}
 			}
 		);
-			
+
 		function signIn() {
 			$.webSocket('send', {name: 'signInQueue', text: 'action: addToQueue ' + $('#username').val()});
 		}

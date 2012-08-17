@@ -2,19 +2,19 @@
 
 {% block content %}
 	{% include 'admin_sales_financial/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_sales_financial/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		<table class="full_width">
-		
+
 		    <tr>
 		        <th>Name</th>
 				<th width="200px">Actions</th>
 		    </tr>
-		    
+
 		    {% for supplier in paginator %}
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
