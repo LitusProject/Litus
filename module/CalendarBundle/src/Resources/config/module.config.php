@@ -17,8 +17,10 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'calendar_install'  => 'CalendarBundle\Controller\Admin\InstallController',
-                'admin_calendar'    => 'CalendarBundle\Controller\Admin\CalendarController',
+                'calendar_install' => 'CalendarBundle\Controller\Admin\InstallController',
+                'admin_calendar'   => 'CalendarBundle\Controller\Admin\CalendarController',
+
+                'common_calendar'  => 'CalendarBundle\Controller\CalendarController',
             ),
 
             'doctrine_config' => array(
@@ -63,6 +65,20 @@ return array(
                                 'defaults' => array(
                                     'controller' => 'admin_calendar',
                                     'action'     => 'manage',
+                                ),
+                            ),
+                        ),
+                        'common_calendar' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/calendar[/:action[/:id]]',
+                                'constraints' => array(
+                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'id'      => '[a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'common_calendar',
+                                    'action'     => 'overview',
                                 ),
                             ),
                         ),

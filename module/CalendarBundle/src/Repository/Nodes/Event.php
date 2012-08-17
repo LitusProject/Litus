@@ -19,7 +19,10 @@ class Event extends EntityRepository
         $resultSet = $query->select('e')
             ->from('CalendarBundle\Entity\Nodes\Event', 'e')
             ->where(
-                $query->expr()->gt('e.endDate', ':now')
+                $query->expr()->orX(
+                    $query->expr()->gt('e.endDate', ':now'),
+                    $query->expr()->gt('e.startDate', ':now')
+                )
             )
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime())
