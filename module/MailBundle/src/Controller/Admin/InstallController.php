@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace MailBundle\Controller\Admin;
 
 use Exception;
@@ -30,7 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'mail.start_cudi_mail_subject',
-                    'value'       => '[VTK Cursusdienst] Cursussen {{ semester }}e semester academiejaar {{ academicYear }}',
+                    'value'       => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
                     'description' => 'The subject of the mail send to profs at the start of a new semester',
                 ),
                 array(
@@ -38,7 +38,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => 'Geachte professor,
 Geachte docent,
 
-Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: www.meerinforovercudi.be (brochure verwijzing). 
+Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
 U ontvangt deze mail omdat het belangrijk is dat we tijdig over de juiste informatie beschikken, zo kunnen we de studenten in het begin van het academiejaar zo snel mogelijk verder helpen. Ook indien wij uw cursus ongewijzigd mogen heruitgeven, wachten wij hiervoor op uw bericht.
 Het gaat om volgende vakken:
 
@@ -56,7 +56,7 @@ Indien u ook nog enkele handboeken door omstandigheden niet hebt kunnen doorgeve
 
 Indien u reeds uw cursussen en of handboeken heeft doorgegeven, of als deze mail niet voor u bestemd is, wensen wij ons te excuseren voor de overlast.
 
-Bij vragen kan u ons altijd mailen op cursusdienst@vtk.be
+Bij vragen kan u ons altijd mailen op cursusdienst@vtk.be.
 
 Met vriendelijke groeten en hartelijk dank bij voorbaat,
 
@@ -68,7 +68,7 @@ Jorn Hendrickx',
             )
         );
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -83,7 +83,7 @@ Jorn Hendrickx',
                 )
             )
         );
-        
+
         $this->installRoles(
             array(
                 'cudi' => array(

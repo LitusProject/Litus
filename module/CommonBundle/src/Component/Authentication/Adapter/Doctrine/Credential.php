@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
@@ -77,7 +77,7 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                     ),
                     'personObject' => $this->getPersonObject()
                 )
-            );    
+            );
         }
         else if (!$this->getPersonObject()->canLogin() || $this->getPersonObject()->getCode() !== null) {
             $this->setAuthenticationResult(

@@ -4,7 +4,7 @@
 	<div class="page-header">
 	    <h2>{{ translator().translate('Your Subjects') }}</h2>
 	</div>
-	
+
 	<table class="table table-bordered table-striped">
 	    <tr>
 	        <th width="80px">{{ translator().translate('Code') }}</th>
@@ -13,7 +13,7 @@
 	        <th width="80px">{{ translator().translate('Credits') }}</th>
 	        <th width="160px">{{ translator().translate('Actions') }}</th>
 	    </tr>
-	    
+
 		{% for subject in subjects %}
 		    <tr>
 		        <td>{{ subject.getSubject().getCode() }}</td>

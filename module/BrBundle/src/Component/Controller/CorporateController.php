@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -28,7 +28,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
 {
     /**
      * Execute the request
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
@@ -36,18 +36,18 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function execute(MvcEvent $e)
     {
         $result = parent::execute($e);
-                
+
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('corporate_auth', array('action' => 'login')));
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
-          
+
         $e->setResult($result);
         return $result;
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
@@ -59,7 +59,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         return array(
             'action'         => 'index',
             'controller'     => 'index',
-            
+
             'auth_route'     => 'corporate_index',
             'redirect_route' => 'corporate_index'
         );

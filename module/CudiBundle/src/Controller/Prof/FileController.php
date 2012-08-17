@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -36,21 +36,21 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-        
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')
             ->findAllByArticle($article, true);
-        
+
         $fileMappings = array();
         foreach($mappings as $mapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'remove');
-            
+
             if (!isset($actions[0]))
                 $fileMappings[] = $mapping;
         }
-        
+
         $form = new AddForm();
         $form->setAction(
             $this->url()->fromRoute(
@@ -62,7 +62,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 )
             )
         );
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -73,18 +73,18 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function downloadAction()
     {
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
-            
+
         if (!($mapping = $this->_getFileMapping()))
             return new ViewModel();
-        
+
         $file = $mapping->getFile();
-        
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
@@ -96,29 +96,29 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $handle = fopen($filePath . $file->getPath(), 'r');
         $data = fread($handle, filesize($filePath . $file->getPath()));
         fclose($handle);
-        
+
         return new ViewModel(
             array(
                 'data' => $data,
             )
         );
     }
-    
+
     public function uploadAction()
     {
         $this->initAjax();
 
         if (!($article = $this->_getArticle()))
             return new ViewModel();
-        
+
         $form = new AddForm();
         $formData = $this->getRequest()->post()->toArray();
-                    
+
         if ($form->isValid($formData)) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
-                
+
             $upload = new FileUpload();
             $originalName = $upload->getFileName(null, false);
 
@@ -126,10 +126,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             do{
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
-            
+
             $upload->addFilter('Rename', $filePath . $fileName);
             $upload->receive();
-            
+
             $file = new File(
                 $this->getEntityManager(),
                 $fileName,
@@ -139,19 +139,19 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 false
             );
             $this->getEntityManager()->persist($file);
-            
+
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Files\Mapping')
                 ->findOneByFile($file);
             $mapping->setIsProf(true);
-            
+
             $action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'add');
             $this->getEntityManager()->persist($action);
-            
+
             $this->getEntityManager()->flush();
-            
+
             return new ViewModel(
                 array(
                     'status' => 'success',
@@ -167,14 +167,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         } else {
             $errors = $form->getErrors();
             $formErrors = array();
-            
+
             foreach ($form->getElements() as $key => $element) {
                 $formErrors[$element->getId()] = array();
                 foreach ($errors[$element->getName()] as $error) {
                     $formErrors[$element->getId()][] = $element->getMessages()[$error];
                 }
             }
-            
+
             return new ViewModel(
                 array(
                     'status' => 'error',
@@ -185,7 +185,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             );
         }
     }
-    
+
     public function progressAction()
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
@@ -196,36 +196,36 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getFileMapping()))
             return new ViewModel();
-            
+
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'add');
             foreach ($actions as $action)
                 $this->getEntityManager()->remove($action);
-            
+
             $this->getEntityManager()->remove($mapping);
         } else {
             $action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'remove');
             $this->getEntityManager()->persist($action);
         }
-        
+
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
             )
         );
     }
-    
+
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -238,7 +238,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -246,14 +246,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -262,7 +262,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -270,13 +270,13 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
-    
+
     private function _getFileMapping()
     {
         if (null === $this->getParam('id')) {
@@ -287,7 +287,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the file!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -295,14 +295,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $file = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Files\Mapping')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $file) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -311,7 +311,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'No file with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_article',
                 array(
@@ -319,10 +319,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $file;
     }
 }

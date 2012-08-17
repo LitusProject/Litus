@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -37,7 +37,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 'startDate' => 'DESC'
             )
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -45,20 +45,20 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function newAction()
     {
         $previous = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
-        
+
         $new = new Period($this->getAuthentication()->getPersonObject());
         $this->getEntityManager()->persist($new);
-        
+
         if ($previous) {
             $previous->setEntityManager($this->getEntityManager());
             $previous->close();
-            
+
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($previous);
@@ -68,14 +68,14 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                         ->findValueByArticleAndPeriod($article, $previous)
                     + $previous->getNbDelivered($article)
                     - $previous->getNbSold($article);
-    
+
                 $start = new StartValue($article, $new, ($value < 0 ? 0 : $value));
                 $this->getEntityManager()->persist($start);
             }
         }
 
         $this->getEntityManager()->flush();
-        
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -83,31 +83,31 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 'The stock period was succesfully created.'
             )
         );
-        
+
         $this->redirect()->toRoute(
             'admin_stock_period',
             array(
                 'action' => 'manage'
             )
         );
-        
+
         return new ViewModel();
     }
-    
+
     public function viewAction()
     {
         if (!($period = $this->_getPeriod()))
             return new ViewModel();
-            
+
         $period->setEntityManager($this->getEntityManager());
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($period),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'period' => $period,
@@ -116,14 +116,14 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function searchAction()
     {
         if (!($period = $this->_getPeriod()))
             return new ViewModel();
-            
+
         $period->setEntityManager($this->getEntityManager());
-            
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -141,13 +141,13 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllArticlesByPeriodAndSupplier($period, $this->getParam('string'));
                 break;
         }
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        
+
         array_splice($articles, $numResults);
-        
+
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
@@ -159,14 +159,14 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $item->sold = $period->getNbSold($article);
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getPeriod()
     {
         if (null === $this->getParam('id')) {
@@ -177,21 +177,21 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                     'No ID was given to identify the period!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_period',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $period) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -200,17 +200,17 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                     'No period with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_period',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $period;
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication;
 
 /**
@@ -25,12 +25,12 @@ interface Action
 {
     /**
      * The authorization has failed.
-     * 
+     *
      * @param $result
      * @return void
      */
     public function failedAction($result);
-    
+
     /**
      * The authorization was successful.
      *

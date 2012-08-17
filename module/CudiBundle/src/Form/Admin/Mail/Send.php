@@ -12,9 +12,9 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Mail;
-    
+
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Zend\Form\Element\Hidden,
@@ -33,7 +33,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($email = null, $name = null, $opts = null)
     {
         parent::__construct($opts);
-                
+
         $field = new Hidden('email');
         $field->setValue($email)
             ->setRequired()
@@ -41,20 +41,20 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-        
+
         $field = new Hidden('name');
         $field->setValue($name)
             ->setRequired()
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-        
+
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttrib('style', 'width: 400px')
             ->setRequired();
         $this->addElement($field);
-         
+
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttrib('style', 'width: 500px')

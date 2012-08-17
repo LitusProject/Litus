@@ -12,30 +12,30 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
  namespace CommonBundle\Component\Controller\Plugin;
- 
+
  use Doctrine\ORM\EntityManager,
       Zend\Paginator\Paginator as ZendPaginator,
       Zend\Paginator\Adapter\ArrayAdapter;
- 
+
  /**
   * A controller plugin containing some utility methods for pagination.
   *
   * @autor Pieter Maene <pieter.maene@litus.cc>
   */
  class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
- {    
+ {
      /**
       * @var \Zend\Paginator\Paginator $paginator The paginator
       */
      private $_paginator = null;
-     
+
      /**
       * @var int The number of items on each page
       */
      private $_itemsPerPage = 25;
-    
+
     /**
      * Setting the number of items per page, defaults to 25.
      *
@@ -46,10 +46,10 @@
     {
         if (!is_int($itemsPerPage) || $itemsPerPage < 0)
             throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
-            
+
         $this->_itemsPerPage = $itemsPerPage;
     }
- 
+
      /**
      * Create a paginator from a given array.
      *
@@ -63,12 +63,12 @@
         $this->_paginator = new ZendPaginator(
             new ArrayAdapter($records)
         );
-        
+
         $this->_paginator->setCurrentPageNumber($currentPage);
         $this->_paginator->setItemCountPerPage(
             $this->_itemsPerPage
         );
-        
+
         return $this->_paginator;
     }
 
@@ -85,11 +85,14 @@
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
     {
         return $this->createFromArray(
-            $this->getController()->getLocator()->get('doctrine_em')->getRepository($entity)->findBy($conditions, $orderBy),
+            $this->getController()->getLocator()
+                ->get('doctrine_em')
+                ->getRepository($entity)
+                ->findBy($conditions, $orderBy),
             $currentPage
         );
     }
-    
+
     /**
      * A method to quickly create the array needed to build the pagination control.
      *
@@ -103,7 +106,7 @@
         foreach($params as $key => $param) {
             if ('' === $param)
                 unset($params[$key]);
-                
+
             if (isset($params['page']))
                 unset($params['page']);
         }

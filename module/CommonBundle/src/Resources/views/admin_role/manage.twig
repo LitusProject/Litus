@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_role/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width role_removed_success hide">
     	<div class="title">Success</div>
@@ -25,7 +25,7 @@
                     <th width="70px">Action</th>
                 </tr>
             </thead>
-    
+
             <tbody>
                 {% for role in paginator %}
                     <tr class="item">
@@ -42,10 +42,10 @@
                 {% endfor %}
             </tbody>
         </table>
-	
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<div class="modal hide fade" id="removeRole">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -72,7 +72,7 @@
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
 
@@ -93,7 +93,7 @@
 			});
 			removeRole.modal();
 		}
-		
+
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
 		    $('.role_removed_error').removeClass('hide');

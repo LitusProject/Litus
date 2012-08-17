@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -36,7 +36,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             )
         );
     }
-    
+
     public function screenAction()
     {
         return new ViewModel(
@@ -49,7 +49,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
     public function signInAction()
     {
         $form = new SignInForm();
-        
+
         return new ViewModel(
             array(
                 'form' => $form,

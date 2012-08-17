@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 
 /**
  * RetourController
- * 
+ *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class RetourController extends \CudiBundle\Component\Controller\ActionController
@@ -38,11 +38,11 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 'name' => 'ASC'
             )
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -51,26 +51,26 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function supplierAction()
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-        
+
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Retour')
                 ->findAllBySupplierAndPeriod($supplier, $period),
             $this->getParam('page')
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'supplier' => $supplier,
@@ -79,17 +79,17 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 'suppliers' => $suppliers,
             )
         );
-    }    
-    
+    }
+
     public function addAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $academicYear = $this->getAcademicYear();
 
         $form = new RetourForm($this->getEntityManager());
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
@@ -97,11 +97,11 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);
-                
+
                 $item = new Retour($article, $formData['number'], $this->getAuthentication()->getPersonObject(), $formData['comment']);
                 $this->getEntityManager()->persist($item);
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -109,7 +109,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                         'The retour was successfully added!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'admin_stock_retour',
                     array(
@@ -117,7 +117,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                         'id'     => $article->getSupplier()->getId(),
                     )
                 );
-                
+
                 return new ViewModel(
                     array(
                         'currentAcademicYear' => $academicYear,
@@ -125,17 +125,17 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 );
             }
         }
-        
+
         $retours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Retour')
             ->findAllByPeriod($period);
-        
+
         array_splice($retours, 25);
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -145,25 +145,25 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($retour = $this->_getRetour()))
             return new ViewModel();
-        
+
         $retour->getArticle()->addStockValue(-$retour->getNumber());
         $this->getEntityManager()->remove($retour);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getRetour()
     {
         if (null === $this->getParam('id')) {
@@ -174,21 +174,21 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the retour!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $retour = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Retour')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $retour) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -197,20 +197,20 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                     'No retour with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $retour;
     }
-    
+
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -221,21 +221,21 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                     'No id was given to identify the supplier!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-    
+
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $supplier) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -244,17 +244,17 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                     'No supplier with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_stock_retour',
                 array(
                     'action' => 'manage'
                 )
             );
-            
+
             return;
         }
-        
+
         return $supplier;
     }
 }

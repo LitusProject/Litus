@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 /**
@@ -22,7 +22,7 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  */
 class Checkbox extends \Zend\Form\Element\Checkbox
 {
-    
+
     /**
      * Load default decorators
      *

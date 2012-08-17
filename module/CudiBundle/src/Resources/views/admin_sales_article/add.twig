@@ -2,17 +2,17 @@
 
 {% block content %}
 	{% include 'admin_sales_article/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div id="controller_action">
 		<h1>Article</h1>
-		
+
 		<p>Title: <b>{{ article.getTitle() }}</b></p>
 		<p>Author: <b>{{ article.getAuthors() }}</b></p>
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
-		
+
 		{% autoescape false %}
 			{{ form }}
 		{% endautoescape %}

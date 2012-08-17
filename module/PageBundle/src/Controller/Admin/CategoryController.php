@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class CategoryController extends \CommonBundle\Component\Controller\ActionController
+class CategoryController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -52,116 +52,129 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $page = new Page($this->getAuthentication()->getPersonObject());
-                $this->getEntityManager()->persist($page);
+                $category = new Category();
+
+                if (null !== $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+
+                    $category->setParent($parent);
+                }
+
+                $this->getEntityManager()->persist($category);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = new Translation($page, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
-                    $this->getEntityManager()->persist($translation);
+                    if ('' != $formData['name_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $category,
+                            $language,
+                            $formData['name_' . $language->getAbbrev()]
+                        );
 
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
-
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Page added: ' . $title
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The page was successfully added!'
+                        'The category was successfully added!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page',
+                    'admin_page_category',
                     array(
                         'action' => 'manage'
                     )
                 );
 
-                return;
+                return new ViewModel();
             }
         }
 
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
 
     public function editAction()
     {
-        if (!($page = $this->_getPage()))
+        if (!($category = $this->_getCategory()))
             return;
 
-        $form = new EditForm($this->getEntityManager(), $page);
+        $form = new EditForm($this->getEntityManager(), $category);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $page->setUpdatePerson($this->getAuthentication()->getPersonObject());
+                if (null !== $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+                }
+
+                if (isset($parent))
+                    $category->setParent($parent);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = $page->getTranslation($language);
+                    $translation = $category->getTranslation($language, false);
 
-                    if ($translation) {
-                        $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
+                    if (null !== $translation) {
+                        $translation->setName($formData['name_' . $language->getAbbrev()]);
                     } else {
-                        $translation = new Translation($page, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
-                        $this->getEntityManager()->persist($translation);
-                    }
+                        if ('' != $formData['name_' . $language->getAbbrev()]) {
+                            $translation = new Translation(
+                                $category,
+                                $language,
+                                $formData['name_' . $language->getAbbrev()]
+                            );
 
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
+                            $this->getEntityManager()->persist($translation);
+                        }
+                    }
                 }
 
                 $this->getEntityManager()->flush();
-
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Page edited: ' . $title
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The page was successfully edited!'
+                        'The category was successfully edited!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_page',
+                    'admin_page_category',
                     array(
                         'action' => 'manage'
                     )
                 );
 
-                return;
+                return new ViewModel();
             }
         }
 
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
         );
     }
 
@@ -169,75 +182,66 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($page = $this->_getPage()))
+        if (!($category = $this->_getCategory()))
             return;
 
-        $this->getEntityManager()->remove($page);
+        $this->getEntityManager()->remove($category);
 
         $this->getEntityManager()->flush();
 
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Page deleted: ' . $page->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
                 )
-        );
-
-        return array(
-            'result' => array(
-                'status' => 'success'
-            ),
+            )
         );
     }
 
-    public function _getPage()
+    public function _getCategory()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the page!'
+                    'No id was given to identify the category!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_page',
+                'admin_page_category',
                 array(
                     'action' => 'manage'
                 )
             );
 
-            return;
+            return new ViewModel();
         }
 
-        $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Page')
+        $category = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
             ->findOneById($this->getParam('id'));
 
-        if (null === $page) {
+        if (null === $category) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No page with the given id was found!'
+                    'No category with the given id was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_page',
+                'admin_page_category',
                 array(
                     'action' => 'manage'
                 )
             );
 
-            return;
+            return new ViewModel();
         }
 
-        return $page;
+        return $category;
     }
 }

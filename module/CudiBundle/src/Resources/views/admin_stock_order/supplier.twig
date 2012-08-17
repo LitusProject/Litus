@@ -2,21 +2,21 @@
 
 {% block content %}
 	{% include 'admin_stock/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-    
+
 	{% include 'admin_stock_order/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		<table class="manage">
-		
+
 		    <tr>
 		        <th width="120px">Date</th>
 		        <th>Person</th>
 		        <th width="80px">Price</th>
 		        <th width="70px">Actions</th>
 		    </tr>
-		    
+
 		    {% for order in paginator %}
 		        <tr>
 		            <td>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i') }}{% else %}(new){% endif %}</td>
@@ -37,7 +37,7 @@
 
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<aside>
 	    {% if hasAccess('admin_stock_order', 'add') %}
     		<div class="sidebox">

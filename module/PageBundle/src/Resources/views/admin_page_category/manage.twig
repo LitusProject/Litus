@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_page/partials/navigation.twig' %}
+	{% include 'admin_page_category/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message page_category_removed_success hide">
@@ -18,10 +18,11 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="manage">
+	    <table class="{% if not hasAccess('admin_page', 'manage') %} full_width {% endif %} manage">
 	        <thead>
 	            <tr>
 	                <th>Name</th>
+	                <th width="300px">Parent</th>
 	                <th width="70px">Action</th>
 	            </tr>
 	        </thead>
@@ -29,15 +30,14 @@
 	        <tbody>
 	            {% for page_category in paginator %}
 	                <tr class="item">
-	                    <td>{{ page_category.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(page_category.getCreationTime(), 'dd/MM/y H:m') }}</td>
-	                    <td>{{ page_category.getUpdatePerson().getFullName() }}</td>
+	                    <td>{{ page_category.getName(language) }}</td>
+	                    <td>{{ page_category.getParent().getTitle(language) }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_page_category', 'edit') %}
 	                            <a href="{{ url('admin_page_category', {"action": "edit", "id": page_category.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ page_category.getId() }}" data-title="{{ page_category.getTitle(language) }}" class="delete">Delete</a>
+	                            <a href="#" data-id="{{ page_category.getId() }}" data-name="{{ page_category.getName(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -48,24 +48,21 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 
-	<aside>
-		<div class="sidebox">
-		    <div class="title">Categories</div>
-		    <div class="content">
-		        <p>
-		            <i>Categories are used to create a structure for the pages.</i>
-		        </p>
-		    	<p>
-		    		{% if hasAccess('admin_page_category', 'add') %}
-		    			<a href="{{ url('admin_page_category', {"action": "add"}) }}">&rarr; Add Category</a>
-		    		{% endif %}
-		    		{% if hasAccess('admin_page_category', 'manage') %}
-		    			<a href="{{ url('admin_page_category', {"action": "manage"}) }}">&rarr; Manage Categories</a>
-		    		{% endif %}
-		    	</p>
-		    </div>
-		</div>
-	</aside>
+	{% if hasAccess('admin_page', 'manage') %}
+		<aside>
+			<div class="sidebox">
+			    <div class="title">Categories</div>
+			    <div class="content">
+			        <p>
+			            <i>Please hit the link below to manage and create pages!</i>
+			        </p>
+			    	<p>
+			    		<a href="{{ url('admin_page', {"action": "manage"}) }}">&rarr; Pages</a>
+			    	</p>
+			    </div>
+			</div>
+		</aside>
+	{% endif %}
 
 	<div class="modal hide fade" id="removePageCategory">
 		<div class="modal-header">
@@ -74,7 +71,7 @@
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following page_category: <b class="title"></b>?
+				You are about to delete the following category: <b class="name"></b>?
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -98,7 +95,7 @@
 			var $this = $(this);
 			e.preventDefault();
 			var removePageCategory = $('#removePageCategory');
-			removePageCategory.find('.title').html($(this).data('title'));
+			removePageCategory.find('.name').html($(this).data('name'));
 			removePageCategory.find('.cancel').one('click', function () {
 				removePageCategory.modal('hide');
 			});

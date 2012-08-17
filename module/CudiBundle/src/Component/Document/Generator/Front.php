@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
@@ -33,7 +33,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      * @var \CudiBundle\Entity\Sales\Article
      */
     private $_article;
-    
+
     /**
      * Create a new Article Front Generator.
      *
@@ -46,7 +46,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
-                    
+
            parent::__construct(
                $entityManager,
             $filePath . '/article/front.xsl',
@@ -54,7 +54,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         );
         $this->_article = $article;
     }
-    
+
     /**
      * Generate the XML for the fop.
      *
@@ -63,7 +63,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     protected function generateXml(TmpFile $tmpFile)
     {
         $configs = $this->getConfigRepository();
-        
+
         $now = new DateTime();
         $union_short_name = $configs->getConfigValue('union_short_name');
         $union_name = $configs->getConfigValue('union_name');
@@ -75,7 +75,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configs->getConfigValue('cudi.billing_address'));
-        
+
         $subjects = array();
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
@@ -98,7 +98,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                 )
             );
         }
-                
+
         $xml = new Generator($tmpFile);
 
         $xml->append(

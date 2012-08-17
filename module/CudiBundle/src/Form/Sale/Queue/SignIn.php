@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Sale\Queue;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Reset,
@@ -37,17 +37,17 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttrib('placeholder', "Student Number")
             ->setAttrib('autocomplete', 'off');
         $this->addElement($field);
-          
+
         $field = new Button('submit');
         $field->setLabel('Sign In')
             ->addDecorator('ViewHelper')
             ->setAttrib('id', 'signin');
         $this->addElement($field);
-        
+
         $field = new Reset('cancel');
         $field->setLabel('Cancel');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit', 'cancel'));
     }
 }

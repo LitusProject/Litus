@@ -12,13 +12,13 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
                 'cudi_install'          => 'CudiBundle\Controller\Admin\InstallController',
-                
+
                 'admin_article'         => 'CudiBundle\Controller\Admin\ArticleController',
                 'admin_article_subject' => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
                 'admin_article_comment' => 'CudiBundle\Controller\Admin\Article\CommentController',
@@ -37,14 +37,14 @@ return array(
                 'admin_stock_order'     => 'CudiBundle\Controller\Admin\Stock\OrderController',
                 'admin_prof_action'     => 'CudiBundle\Controller\Admin\Prof\ActionController',
                 'admin_cudi_mail'       => 'CudiBundle\Controller\Admin\MailController',
-                
+
                 'sale_sale'             => 'CudiBundle\Controller\Sale\SaleController',
                 'sale_queue'            => 'CudiBundle\Controller\Sale\QueueController',
-                
+
                 'supplier_index'        => 'CudiBundle\Controller\Supplier\IndexController',
                 'supplier_article'      => 'CudiBundle\Controller\Supplier\ArticleController',
                 'supplier_auth'         => 'CudiBundle\Controller\Supplier\AuthController',
-                
+
                 'prof_index'            => 'CudiBundle\Controller\Prof\IndexController',
                 'prof_auth'             => 'CudiBundle\Controller\Prof\AuthController',
                 'prof_article'          => 'CudiBundle\Controller\Prof\ArticleController',
@@ -149,7 +149,7 @@ return array(
                         'cudibundle' => __DIR__ . '/../../Entity',
                     ),
                 ),
-            ), 
+            ),
             'translator' => array(
                 'parameters' => array(
                     'adapter' => 'ArrayAdapter',
@@ -181,7 +181,7 @@ return array(
                     ),
                 ),
             ),
-            
+
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(
@@ -753,7 +753,7 @@ return array(
                         ),
                     ),
                 ),
-            ),  
+            ),
         ),
     ),
 );

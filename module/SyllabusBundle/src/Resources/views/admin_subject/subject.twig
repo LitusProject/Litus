@@ -2,9 +2,9 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div class="flashmessage success_message full_width mapping_removed_success hide">
 		<div class="title">Success</div>
 		<div class="content">
@@ -17,19 +17,19 @@
 			<p>An error occurred while trying to delete the mapping.</p>
 		</div>
 	</div>
-	
+
 	{% include 'admin_study/partials/years.twig' %}
 
 	<div id="controller_action">
 	    <h1>Subject</h1>
-	    
+
 	    <p>Code: <b>{{ subject.getCode() }}</b></p>
 	    <p>Name: <b>{{ subject.getName() }}</b></p>
 	    <p>Semester: <b>{{ subject.getSemester() }}</b></p>
 	    <p>Credits: <b>{{ subject.getCredits() }}</b></p>
 	    <p>Students: <b>{{ subject.getNbEnrollment(currentAcademicYear) }}</b></p>
 	    <br />
-	    
+
 		<div>
 		    <h1>Docents</h1>
 			<table class="manage">
@@ -38,7 +38,7 @@
 		            <th>Name</th>
 		            <th width="70px">Actions</th>
 		        </tr>
-		        
+
 		        {% for mapping in profMappings %}
 		            <tr class="item item-{{ mapping.getId() }}">
 		                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
@@ -60,7 +60,7 @@
 		            <th width="50px">Year</th>
 		            <th width="60px">Type</th>
 		        </tr>
-		        
+
 		        {% for mapping in articleMappings %}
 		            <tr class="item">
 		                <td>{{ mapping.getArticle().getTitle() }}</td>
@@ -73,7 +73,7 @@
 		    </table>
 		</div>
 	</div>
-	
+
 	<aside>
 	    {% if hasAccess('admin_prof', 'add') %}
 			<div class="sidebox">
@@ -102,7 +102,7 @@
 			</div>
 		{% endif %}
 	</aside>
-	
+
 	<div class="modal hide fade" id="removeMapping">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -129,10 +129,10 @@
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeMapping = $('#removeMapping');
 			removeMapping.find('.subjectTitle').html($(this).data('subject'));
@@ -152,7 +152,7 @@
 			});
 			removeMapping.modal();
 		}
-		
+
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
     		$('.mapping_removed_error').removeClass('hide');

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Form\Admin\Config;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -37,13 +37,13 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(Config $entry, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $field = new Text('key');
         $field->setLabel('Key')
             ->setAttrib('disabled', 'disabled')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         if (strlen($entry->getValue()) > 40) {
             $field = new Textarea('value');
             $field->setLabel('Value')
@@ -63,7 +63,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setAttrib('class', 'config_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populate(
             array(
                 'key' => $entry->getKey(),

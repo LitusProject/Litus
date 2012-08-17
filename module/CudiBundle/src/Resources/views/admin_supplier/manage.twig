@@ -2,9 +2,9 @@
 
 {% block content %}
 	{% include 'admin_supplier/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-    
+
 	<div id="controller_action">
 		<div>
 		    <table class="full_width manage">
@@ -16,7 +16,7 @@
 		            	<th width="100px">Actions</th>
 		            </tr>
 		        </thead>
-		
+
 		        <tbody>
 		            {% for supplier in paginator %}
 		                <tr>
@@ -35,7 +35,7 @@
 		            {% endfor %}
 		        </tbody>
 		    </table>
-	
+
 			{% include 'admin/partials/paginationControl.twig' %}
 		</div>
 	</div>

@@ -47,22 +47,29 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="\PageBundle\Entity\Nodes\Page")
-     * @JoinColumn(name="parent", referencedColumnName="id")
+     * @ManyToOne(targetEntity="\PageBundle\Entity\Category")
+     * @JoinColumn(name="category", referencedColumnName="id")
      */
-    private $parent;
+    private $category;
 
     /**
      * @var array The translations of this page
      *
-    * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-    * @JoinTable(
-    *      name="nodes.pages_roles_map",
-    *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
-    *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
-    * )
+     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @JoinTable(
+     *      name="nodes.pages_roles_map",
+     *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     * )
      */
     private $editRoles;
+
+    /**
+     * @var string The name of this tanslation
+     *
+     * @Column(type="string")
+     */
+    private $name;
 
     /**
      * @var array The translations of this page
@@ -75,8 +82,9 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \PageBunlde\Entity\Node\Page $parent
      * @param array $editGroups
+     * @param string $name
      */
-    public function __construct(Person $person, Page $parent, array $editGroups = array())
+    public function __construct(Person $person, $name, Category $category, array $editGroups, Page $parent = null)
     {
         parent::__construct($person);
 
@@ -84,6 +92,8 @@ class Page extends \CommonBundle\Entity\Nodes\Node
 
         $this->setParent($parent);
         $this->editGroups = new ArrayCollection($editGroups);
+
+        $this->name = str_replace(' ', '-', strtolower($name));
     }
 
     /**
@@ -114,36 +124,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param \PageBundle\Entity\Nodes\Page $category The page's category
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function setParent(Page $category)
-    {
-        if ($this->canHaveAsParent($parent))
-            $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return \PageBundle\Entity\Nodes\Page
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * Checks whether or not the given page can be used as a parent.
-     *
-     * @return bool
-     */
-    public function canHaveAsParent(Page $parent)
-    {
-        return null === $parent->getParent();
-    }
-
-    /**
      * @param array $editGroups
      * @return \PageBundle\Entity\Nodes\Page
      */
@@ -159,6 +139,14 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function getEditGroups()
     {
         return $this->editGroups->toArray();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -182,17 +170,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         $translation = $this->getTranslation($language);
         if (null !== $translation)
             return $translation->getTitle();
-    }
-
-    /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @return string
-     */
-    public function getName(Language $language)
-    {
-        $translation = $this->getTranslation($language);
-        if (null !== $translation)
-            return $translation->getName();
     }
 
     /**

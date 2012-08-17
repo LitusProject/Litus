@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Prof\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -32,30 +32,30 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
     public function __construct(FileMapping $mapping, $options = null)
     {
         parent::__construct($options);
-                
+
         $this->setAttrib('id', 'uploadFile');
-     
+
         $field = new Text('description');
         $field->setLabel('Description')
             ->setAttrib('size', 70)
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Checkbox('printable');
         $field->setLabel('Printable')
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Confirm')
                 ->setAttrib('class', 'file_add')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-    
+
         $this->populateFromFile($mapping);
     }
-    
+
     public function populateFromFile(FileMapping $mapping)
     {
         $this->populate(

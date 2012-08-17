@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Article\Mapping;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -36,20 +36,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
-    
+
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
-                 
+
         $field = new Hidden('subject_id');
         $field->addValidator(new IntValidator())
             ->setAttrib('id', 'subjectId')
             ->clearDecorators()
             ->setDecorators(array('ViewHelper'));
         $this->addElement($field);
-         
+
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttrib('size', 70)
@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
-         
+
         $field = new Checkbox('mandatory');
         $field->setLabel('Mandatory')
             ->setRequired()
@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
-    
+
     public function isValid($data)
     {
         if ($data['subject_id'] == '') {
@@ -80,9 +80,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setRequired()
                 ->addValidator(new SubjectCodeValidator($this->_entityManager));
         }
-        
+
         $isValid = parent::isValid($data);
-                
+
         return $isValid;
     }
 }

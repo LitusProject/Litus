@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Validator;
 
 /**
@@ -30,7 +30,7 @@ class Uri extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::NOT_VALID => 'The uri is not valid'
     );
-        
+
     /**
      * Returns true if the uri has the right format.
      *
@@ -41,14 +41,14 @@ class Uri extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
-        
+
         $valid = \Zend\Uri\Uri::validateHost($value);
-        
+
         if ($valid)
             return true;
 
         $this->error(self::NOT_VALID);
-        
+
         return false;
     }
 }

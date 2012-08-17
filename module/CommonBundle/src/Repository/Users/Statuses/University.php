@@ -28,7 +28,7 @@ class University extends EntityRepository
             ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 }

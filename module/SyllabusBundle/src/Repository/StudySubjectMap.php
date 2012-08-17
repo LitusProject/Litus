@@ -21,7 +21,7 @@ class StudySubjectMap extends EntityRepository
         foreach($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
@@ -34,21 +34,21 @@ class StudySubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByNameAndStudyAndAcademicYear($name, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH, 
+            ->innerJoin('m.subject', 's', Join::WITH,
                 $query->expr()->like($query->expr()->lower('s.name'), ':name')
             )
             ->where(
@@ -61,21 +61,21 @@ class StudySubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findAllByCodeAndStudy($code, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH, 
+            ->innerJoin('m.subject', 's', Join::WITH,
                 $query->expr()->like($query->expr()->lower('s.code'), ':code')
             )
             ->where(
@@ -88,7 +88,7 @@ class StudySubjectMap extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
 }

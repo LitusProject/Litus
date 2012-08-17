@@ -22,7 +22,7 @@
 			<p>An error occurred while saving the comment.</p>
 		</div>
 	</div>
-	
+
 	<div id="sale">
 	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
 	        <a class="close" data-dismiss="alert">&times;</a>
@@ -31,7 +31,7 @@
 	    		<p>The scanned barcode was not valid and was ignored.</p>
 	    	</div>
 	    </div>
-	    
+
 		<div class="row wrapper">
 			<div class="span7 customer">
 				<div class="row title">Current Customer:</div>
@@ -95,10 +95,10 @@
 					<th class="actions">Action</th>
 				</tr>
 			</thead>
-			
+
 			<tbody class="articles"></tbody>
 		</table>
-		
+
 		<div id="modalChoosePayDesk" class="modal fade">
 			<div class="modal-header">
 				<h3>Choose PayDesk</h3>
@@ -115,7 +115,7 @@
 			<div class="modal-footer">
 			</div>
 		</div>
-		
+
 		<div id="modalCancelSelling" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
@@ -129,7 +129,7 @@
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
-		
+
 		<div id="modalConcludeSelling" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
@@ -173,14 +173,14 @@
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
-		
+
 		<div id="modalUnableToAdd" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
 				<h3>Error</h3>
 			</div>
 			<div class="modal-body">
-				The article can not be sold. It was not booked or assigned. 
+				The article can not be sold. It was not booked or assigned.
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal">Close</button>
@@ -202,7 +202,7 @@
 						<th class="actions">Action</th>
 					</tr>
 				</thead>
-				
+
 				<tbody id="queueList"></tbody>
 			</table>
 		</div>
@@ -223,7 +223,7 @@
 			<h3>Comments</h3>
 		</div>
 		<div class="modal-body">
-			<textarea style="width: 97%;" rows="10"></textarea> 
+			<textarea style="width: 97%;" rows="10"></textarea>
 		</div>
 		<div class="modal-footer">
 			<button class="btn btn-primary save" data-dismiss="modal">Save</button>
@@ -245,17 +245,17 @@
 		    $('.addComment').click(function () {
 		        $('#modalAddComment').modal();
 		    });
-		    
+
 			$('.showQueue').click(function () {
 				$('#queueModal').permanentModal('open', {closable: true});
 			});
-			
+
 			$('#startCollectingNext').click(function () {
 				$('#queueList .startCollecting:first').click();
 			});
-			
+
 			$('body').barcodeControl();
-			
+
 			$('#queueModal').on('shown', function () {
 			    $('body').barcodeControl('option', {
 			        onBarcode: function (value) {
@@ -269,7 +269,7 @@
 			        }
 			    });
 			});
-						
+
 			$('#queueList').showQueue({
 				url: '{{ socketUrl }}',
 				session: {{ session.getId() }},
@@ -303,7 +303,7 @@
 							}
 						}
 					});
-							
+
 					$('#modalAddComment textarea').val(data.sale.comment);
 					$('#modalAddComment .save').click(function () {
 					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}/' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function  (data) {
@@ -325,7 +325,7 @@
 				}
 			});
 		});
-		
+
 		function errorSaveComment() {
 			$('.flashmessage').removeClass('in');
 			$('#comment_saved_error').addClass('in');

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
@@ -51,7 +51,7 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
             ->select('u')
             ->where('TRIM(LOWER(u.' . $this->getIdentityColumn() . ')) = :identity')
             ->setParameter('identity', trim(strtolower($this->getIdentity())));
-        
+
         return $query;
     }
 

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Admin;
 
 /**
@@ -41,7 +41,7 @@ class SubForm extends \Zend\Form\SubForm
         }
         return $this;
     }
-    
+
     /**
      * Get name of array elements belong to
      *

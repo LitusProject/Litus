@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,28 +32,28 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
-            
+
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
-            
+
         $form = new AddForm();
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($form->isValid($formData)) {
                 if (!($article = $this->_getArticle($formData['article_id'])))
                     return;
-                     
+
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear, true);
-                
+
                 if (null === $mapping) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $mapping->setIsProf(true);
                     $this->getEntityManager()->persist($mapping);
-                    
+
                     $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'add');
                     $this->getEntityManager()->persist($action);
                 } else {
@@ -63,9 +63,9 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     foreach ($actions as $action)
                         $this->getEntityManager()->remove($action);
                 }
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -84,13 +84,13 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 );
             }
         }
-        
+
         $nbArticles = sizeof(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findAllByProf($this->getAuthentication()->getPersonObject())
         );
-            
+
         return new ViewModel(
             array(
                 'subject' => $subject,
@@ -99,41 +99,41 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
             )
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
-        
+
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
-        
+
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'add');
             foreach ($actions as $action)
                 $this->getEntityManager()->remove($action);
-            
+
             $this->getEntityManager()->remove($mapping);
         } else {
             $action = new Action($this->getAuthentication()->getPersonObject(), 'mapping', $mapping->getId(), 'remove');
             $this->getEntityManager()->persist($action);
         }
-        
+
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
             )
         );
     }
-    
+
     private function _getMapping()
     {
         if (!($academicYear = $this->getAcademicYear()))
             return;
-            
+
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -142,7 +142,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No id was given to identify the mapping!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -150,14 +150,14 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findOneById($this->getParam('id'));
-        
+
         $mappingProf = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
@@ -170,7 +170,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No mapping with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -178,18 +178,18 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping;
     }
-    
+
     private function _getSubject()
     {
         if (!($academicYear = $this->getAcademicYear()))
             return;
-            
+
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -198,7 +198,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No id was given to identify the subject!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -206,10 +206,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
@@ -226,7 +226,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No subject with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -234,13 +234,13 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping->getSubject();
     }
-    
+
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -253,7 +253,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No id was given to identify the article!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -261,14 +261,14 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
-        
+
         if (null === $article) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -277,7 +277,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'No article with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -285,10 +285,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $article;
     }
 }

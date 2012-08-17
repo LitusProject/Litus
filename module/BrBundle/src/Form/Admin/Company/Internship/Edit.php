@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Form\Admin\Company\Internship;
 
 use BrBundle\Entity\Company\Internship,
@@ -34,15 +34,15 @@ class Edit extends Add
     public function __construct(Internship $internship, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Edit')
             ->setAttrib('class', 'companies_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromInternship($internship);
     }
 }

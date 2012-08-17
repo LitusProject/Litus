@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Article\File;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -32,13 +32,13 @@ class Edit extends Add
 
         $this->removeElement('file');
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'file_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromFile($mapping);
     }
 }

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\WebSocket;
 
 use Exception;
@@ -25,13 +25,13 @@ use Exception;
 class User
 {
     private $_socket;
-    
+
     private $_handshaked = false;
-    
+
     private $_buffer;
-    
+
     private $_extraData;
-        
+
     /**
      * @param mixed $socket
      */
@@ -39,7 +39,7 @@ class User
     {
         $this->_socket = $socket;
     }
-    
+
     /**
      * @return mixed
      */
@@ -47,7 +47,7 @@ class User
     {
         return $this->_socket;
     }
-    
+
     /**
      * @return boolean
      */
@@ -55,7 +55,7 @@ class User
     {
         return $this->_handshaked;
     }
-    
+
     /**
      * Do the handshake
      *
@@ -65,7 +65,7 @@ class User
     {
         if ($this->hasHandshaked())
             return;
-        
+
         $requestHeaders = array();
 
         foreach(explode("\r\n", $data) as $line) {
@@ -76,7 +76,7 @@ class User
         if (empty($requestHeaders['Sec-WebSocket-Key'])) {
             return;
         }
-        
+
         $key = base64_encode(sha1($requestHeaders['Sec-WebSocket-Key'] . "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", true));
 
         $response = "HTTP/1.1 101 Switching Protocols\r\n"
@@ -86,9 +86,9 @@ class User
             . "\r\n";
 
         if ($this->write($response))
-            $this->_handshaked = true;    
+            $this->_handshaked = true;
     }
-    
+
     /**
      * Write data to the user
      *
@@ -98,7 +98,7 @@ class User
     {
         return socket_write($this->_socket, $data, strlen($data));
     }
-    
+
     /**
      * Create the buffer for fragmented frames
      *
@@ -108,7 +108,7 @@ class User
     {
         $this->_buffer = $frame;
     }
-    
+
     /**
      * Append data to the buffer for fragmented frames
      *
@@ -118,7 +118,7 @@ class User
     {
         $this->_buffer->appendData($frame->getData());
     }
-    
+
     /**
      * Clear the buffer of this user
      */
@@ -126,17 +126,17 @@ class User
     {
         $this->_buffer = null;
     }
-    
+
     /**
      * Return the complete message of the user
-     * 
+     *
      * @return mixed
      */
     public function getBuffer()
     {
         return $this->_buffer;
     }
-    
+
     /**
      * @param string $key
      * @param mixed $value
@@ -148,7 +148,7 @@ class User
         $this->_extraData[$key] = $value;
         return $this;
     }
-    
+
     /**
      * @param string $key
      *
@@ -158,7 +158,7 @@ class User
     {
         return isset($this->_extraData[$key]) ? $this->_extraData[$key] : null;
     }
-    
+
     /**
      * @param string $key
      *

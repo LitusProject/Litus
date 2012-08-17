@@ -4,7 +4,7 @@
 	<header id="controller_header">
 	    <div class="title"><span class="dashboard">Dashboard</span></div>
 	</header>
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
@@ -17,7 +17,7 @@
     	            <th width="150px">Date</th>
     	            <th width="140px">Actions</th>
     	        </tr>
-    	        
+
     	        {% for action in profActions %}
     	            <tr class="item">
     	                <td>{{ action.getPerson().getFullName() }}</td>
@@ -33,7 +33,7 @@
     	    </table>
 	    {% endif %}
 	</div>
-	
+
 	<aside>
 		<div class="sidebox">
 	        <div class="title">Versions</div>

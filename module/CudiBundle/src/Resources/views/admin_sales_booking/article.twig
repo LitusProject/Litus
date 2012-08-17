@@ -2,22 +2,22 @@
 
 {% block content %}
 	{% include 'admin_sales_booking/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	<div id="controller_action">
-	
+
 	    {% autoescape false %}
     	    {{ form }}
     	{% endautoescape %}
 	    <br class="clear">
 	    <br class="clear">
-	    
+
 	    {% if paginator is not null %}
 	        <h1>Article</h1>
 	        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
 	        <br class="clear">
-	        
+
     		<table class="full_width manage">
     	        <tr>
     	            <th>Person</th>
@@ -27,7 +27,7 @@
     	            <th width="80px">Status</th>
     	            <th width="70px">Actions</th>
     	        </tr>
-    	        
+
     	        {% for booking in paginator %}
     	            <tr class="item">
     	                <td>{{ booking.getPerson().getFullName() }}</td>
@@ -43,7 +43,7 @@
     	            </tr>
     	        {% endfor %}
     	    </table>
-    
+
     		{% include 'admin/partials/paginationControl.twig' %}
     	{% endif %}
 	</div>

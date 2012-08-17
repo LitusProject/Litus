@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Authentication\Adapter;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
@@ -77,20 +77,20 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
         $this->_entityManager = $entityManager;
-        
+
         // A bit of a dirty hack to get Zend's DI to play nice
         $entityName = str_replace('"', '', $entityName);
-        
+
         if ('\\' == substr($entityName, 0, 1)) {
             throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }
         $this->_entityName = $entityName;
-        
+
         $this->_identityColumn = $identityColumn;
         $this->_caseSensitive = $caseSensitive;
-        
+
         $this->setAuthenticationResult(
             array(
                 'code' => Result::FAILURE,
@@ -100,7 +100,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
             )
         );
     }
-    
+
     /**
      * @return \Doctrine\ORM\EntityManager
      */
@@ -108,7 +108,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_entityManager;
     }
-    
+
     /**
      * @return string
      */
@@ -116,7 +116,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_entityName;
     }
-    
+
     /**
      * @return string
      */
@@ -124,7 +124,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_identityColumn;
     }
-    
+
     /**
      * @return bool
      */
@@ -132,7 +132,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_caseSensitive;
     }
-    
+
     /**
      * @param string $identity
      * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
@@ -160,7 +160,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
         $this->_credential = $credential;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -168,7 +168,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_credential;
     }
-    
+
     /**
      * @param array $authenticationResult
      */
@@ -179,7 +179,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
             $authenticationResult
         );
     }
-    
+
     /**
      * @return \Litus\Entity\Users\Person
      */
@@ -187,21 +187,21 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
     {
         return $this->_personObject;
     }
-    
+
     /**
      * Authenticate the user.
      *
      * @return \CommonBundle\Component\Authentication\Result
      */
     public function authenticate()
-    {   
+    {
         $this->executeQuery(
             $this->createQuery()
         );
 
         return $this->createResult();
     }
-    
+
     /**
      * Execute the DQL query.
      *

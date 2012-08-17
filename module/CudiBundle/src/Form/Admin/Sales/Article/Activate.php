@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
@@ -33,13 +33,13 @@ class Activate extends \CudiBundle\Form\Admin\Sales\Article\Add
         parent::__construct($entityManager, $academicYear, $options);
 
         $this->removeElement('submit');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Activate')
                 ->setAttrib('class', 'article_edit')
                 ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-        
+
         $this->populateFromArticle($article);
     }
 }

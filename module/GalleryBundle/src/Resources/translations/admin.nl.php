@@ -41,7 +41,7 @@ return array(
     'Academic Year' => 'Academiejaar',
     'Archive' => 'Archief',
     'This album title already exists' => 'Deze album titel bestaat reeds',
-    
+
     'File size exceeds limit' => 'Bestand grootte overtreden',
     'Unknown error occurred' => 'Ongekende fout opgetreden',
     'No Files Selected' => 'Geen bestanden geselecteerd',

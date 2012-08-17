@@ -12,14 +12,14 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Util;
 
 use DateTime,
     DateInterval;
 
 /**
- * Utility class containing methods used to retrieve the academic year 
+ * Utility class containing methods used to retrieve the academic year
  * or promotion year for a given DateTime object.
  *
  * Note:
@@ -103,7 +103,7 @@ class AcademicYear
                 $date->format(DateTime::ISO8601)
             );
         }
-                    
+
         if (($delta === null) || !is_numeric($delta))
             $delta = 0;
 
@@ -111,9 +111,9 @@ class AcademicYear
             $christmas = new DateTime(
                 ($currentDate->format('y')) . '-12-25'
             );
-    
+
             $weekDay = $christmas->format('N');
-            
+
             // Saturday or Sunday
             if ($weekDay > 5) {
                 $christmas->modify('-' . ($weekDay - 1) . ' days');
@@ -121,25 +121,25 @@ class AcademicYear
             } else {
                 $christmas->modify('-' . ($weekDay - 1) . ' days');
             }
-    
+
             // One semester is 13 weeks long
             $christmas->sub(new DateInterval(
                 'P' . (13 * 7) . 'D'
             ));
-            
+
             $currentDate = clone $date;
             $currentDate->sub(
                 new DateInterval('P1Y')
             );
         } while($christmas > $date);
-                
+
         $christmas->sub(new DateInterval(
             'P' . $delta . 'D'
         ));
-        
+
         return $christmas;
     }
-    
+
     /**
      * Returns the end of the academic year. Only the date is returned, any time should be ignored.
      *
@@ -155,7 +155,7 @@ class AcademicYear
         );
         return self::getStartOfAcademicYear($date);
     }
-    
+
     /**
      * Returns the start of the Academic year for the given Academic year.
      *
@@ -189,7 +189,7 @@ class AcademicYear
         }
 
         $startAcademicYear = self::getStartOfAcademicYear($date);
-        
+
         if ($date < $startAcademicYear)
             return $date->format('Y');
         else

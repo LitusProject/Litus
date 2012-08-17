@@ -11,6 +11,8 @@ return array(
     'PageBundle\Entity\Category'                     => __DIR__ . '/src/Entity/Category.php',
     'PageBundle\Entity\Nodes\Page'                   => __DIR__ . '/src/Entity/Nodes/Page.php',
     'PageBundle\Entity\Nodes\Translation'            => __DIR__ . '/src/Entity/Nodes/Translation.php',
+    'PageBundle\Form\Admin\Category\Add'             => __DIR__ . '/src/Form/Admin/Category/Add.php',
+    'PageBundle\Form\Admin\Category\Edit'            => __DIR__ . '/src/Form/Admin/Category/Edit.php',
     'PageBundle\Form\Admin\Page\Add'                 => __DIR__ . '/src/Form/Admin/Page/Add.php',
     'PageBundle\Form\Admin\Page\Edit'                => __DIR__ . '/src/Form/Admin/Page/Edit.php',
     'PageBundle\Repository\Categories\Translation'   => __DIR__ . '/src/Repository/Categories/Translation.php',

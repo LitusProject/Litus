@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-  
+
 namespace NewsBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Language;
@@ -27,9 +27,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function initConfig()
     {
-        $this->_installLanguages();                
+        $this->_installLanguages();
     }
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -42,25 +42,25 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     private function _installLanguages()
     {
         $languages = array(
             'en' => 'English',
             'nl' => 'Dutch'
         );
-        
+
         foreach($languages as $abbrev => $name) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
-                
+
             if (null == $language) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
             }
         }
-        
+
         $this->getEntityManager()->flush();
     }
 }

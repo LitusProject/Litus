@@ -2,22 +2,22 @@
 
 {% block content %}
 	{% include 'admin_study/partials/navigation.twig' %}
-	
+
 	{% include 'admin/partials/flashMessenger.twig' %}
-	
+
 	{% include 'admin_study/partials/years.twig' %}
 
 	<div id="controller_action">
 	    <h1>Study</h1>
-	    
+
 	    <p>Title: <b>{{ study.getFullTitle() }}</b></p>
 	    <p>Phase: <b>{{ study.getPhase() }}</b></p>
 	    <p>Language: <b>{{ study.getLanguage() }}</b></p>
 	    <br />
-	    
+
 	    <div id="subject_search" style="display:none;">
 	    	<div style="padding:4px;text-align:right">
-	    		Search: 
+	    		Search:
 	    		<select id="searchField">
 	    			<option value="name">Name</option>
 	    			<option value="code">Code</option>
@@ -25,7 +25,7 @@
 	    		is
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
-	    	
+
 	    	<table class="full_width manage">
 	        	<tr>
 	        	    <th width="80px">Code</th>
@@ -38,7 +38,7 @@
 	        	</tr>
 	    	</table>
 	    </div>
-	    
+
 		<div id="default_page">
 			<table class="full_width manage">
 		        <tr>
@@ -50,7 +50,7 @@
 		            <th width="70px">Students</th>
 		            <th width="70px">Actions</th>
 		        </tr>
-		        
+
 		        {% for mapping in mappings %}
 		            <tr class="item">
 		                <td>{{ mapping.getSubject().getCode() }}</td>

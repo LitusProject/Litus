@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
@@ -30,12 +30,12 @@ class OrderXml
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
-    
+
     /**
      * @var \CudiBundle\Entity\Stock\Order
      */
     private $_order;
-    
+
     /**
      * Create a Order XML Generator.
      *
@@ -47,7 +47,7 @@ class OrderXml
         $this->_order = $order;
         $this->_entityManager = $entityManager;
     }
-    
+
     /**
      * Generate an archive to download.
      *
@@ -58,44 +58,44 @@ class OrderXml
         $filePath = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
-            
+
         $zip = new ZipArchive();
-        
+
         foreach($this->_order->getItems() as $item) {
             if (!$item->getArticle()->getMainArticle()->isInternal())
                 continue;
-            
+
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
             $xmlFile = new TmpFile();
             $this->generateXml($item, $xmlFile);
-            
+
             if ($item->getArticle()->getMainArticle()->isInternal()) {
                 $file = new TmpFile();
                 $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
                 $document->generate();
-                
+
                 $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
             }
-            
+
             $mappings = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Files\Mapping')
                 ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
-            
+
             $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
             foreach($mappings as $mapping)
                 $zip->addFile($filePath . $mapping->getFile()->getPath(), $mapping->getFile()->getName());
-            
+
             $zip->close();
         }
     }
-    
+
     private function generateXml(Item $item, TmpFile $tmpFile)
     {
         $configs = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config');
-        
+
         $xml = new Generator($tmpFile);
-        
+
         $attachments = array();
         $num = 1;
         if ($item->getArticle()->getMainArticle()->isInternal()) {
@@ -108,7 +108,7 @@ class OrderXml
                 null
             );
         }
-        
+
         $mappings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Files\Mapping')
             ->findAllByArticle($item->getArticle()->getMainArticle());
@@ -122,7 +122,7 @@ class OrderXml
                 null
             );
         }
-        
+
         $itemValues = array(
             new Object(
                 'ItemValue',

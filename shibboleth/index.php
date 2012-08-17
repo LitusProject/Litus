@@ -17,11 +17,11 @@
  * A little PHP script to enable Shibboleth authentication, when
  * the server's hostname is registered as the IP.
  */
- 
+
 chdir(dirname(__DIR__));
 
 // @NOTE: you can either use the git submodule or create an environment variable
-// ZF2_PATH that contains the path to your zf2 library (no trailing slash). 
+// ZF2_PATH that contains the path to your zf2 library (no trailing slash).
 require_once (getenv('ZF2_PATH') ?: 'vendor/ZendFramework/library') . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
  array('Zend\Loader\StandardAutoloader' => array())
@@ -54,7 +54,7 @@ $shibbolethSessionKey = $em->getRepository('CommonBundle\Entity\General\Config')
 if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
-        
+
     if (null !== $checkCode)
         break 1;
 
@@ -64,7 +64,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_code_expiration_time')
     );
-    
+
     $em->persist($newCode);
     $em->flush();
 }
@@ -72,7 +72,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
 $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_code_handler_url');
 $shibbolethHandler = unserialize($shibbolethHandler)[$_GET['source']];
-    
+
 if ('/' == substr($shibbolethHandler, -1))
     $shibbolethHandler = substr($shibbolethHandler, 0, -1);
 

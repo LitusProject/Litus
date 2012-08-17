@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\Mapping;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
@@ -31,13 +31,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-         
+
         $field = new Hidden('article_id');
         $field->setRequired()
             ->addValidator(new IntValidator())
             ->setAttrib('id', 'articleId');
         $this->addElement($field);
-         
+
         $field = new Text('article');
         $field->setLabel('Article')
             ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttrib('data-provide', 'typeahead')
             ->setRequired();
         $this->addElement($field);
-        
+
         $field = new Checkbox('mandatory');
         $field->setLabel('Mandatory');
         $this->addElement($field);
@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Submit('submit');
         $field->setLabel('Add');
         $this->addElement($field);
-        
+
         $this->setActionsGroup(array('submit'));
     }
 }

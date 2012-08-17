@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -32,11 +32,11 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     {
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
-            
+
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
-        
+
         return new ViewModel(
             array(
                 'subjects' => $subjects,
@@ -44,19 +44,19 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function subjectAction()
     {
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
-            
+
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
-        
+
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear, true);
-        
+
         $articleMappings = array();
         foreach($mappings as $mapping) {
             $actions = $this->getEntityManager()
@@ -66,17 +66,17 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             if (!isset($actions[0]) || $actions[0]->isRefused())
                 $articleMappings[] = $mapping;
         }
-          
+
         $profMappings = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
-        
+
         $enrollment = $subject->getEnrollment($academicYear);
         $enrollmentForm = new EnrollmentForm($enrollment);
-        
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
-            
+
             if ($enrollmentForm->isValid($formData)) {
                 if ($enrollment) {
                     $enrollment->setNumber($formData['students']);
@@ -84,9 +84,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                     $enrollment = new StudentEnrollment($subject, $academicYear, $formData['students']);
                     $this->getEntityManager()->persist($enrollment);
                 }
-                
+
                 $this->getEntityManager()->flush();
-                
+
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -94,7 +94,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                         'The student enrollment was successfully updated!'
                     )
                 );
-                
+
                 $this->redirect()->toRoute(
                     'prof_subject',
                     array(
@@ -103,11 +103,11 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
-                
+
                 return new ViewModel();
             }
         }
-        
+
         return new ViewModel(
             array(
                 'subject' => $subject,
@@ -118,12 +118,12 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             )
         );
     }
-    
+
     public function typeaheadAction()
     {
         if (!($academicYear = $this->getAcademicYear()))
             return new ViewModel();
-        
+
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
@@ -135,19 +135,19 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             $item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
             $result[] = $item;
         }
-        
+
         return new ViewModel(
             array(
                 'result' => $result,
             )
         );
     }
-    
+
     private function _getSubject()
     {
         if (!($academicYear = $this->getAcademicYear()))
             return;
-            
+
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -156,7 +156,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                     'No id was given to identify the subject!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -164,10 +164,10 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-    
+
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
@@ -184,7 +184,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                     'No subject with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'prof_subject',
                 array(
@@ -192,10 +192,10 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-            
+
             return;
         }
-        
+
         return $mapping->getSubject();
     }
 }

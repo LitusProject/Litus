@@ -33,16 +33,16 @@ class Order extends EntityRepository
             ->setParameter('supplier', $supplier->getId())
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('o.dateCreated', 'DESC');
-        
+
         if (!$period->isOpen())
-            $query->setParameter('endDate', $period->getEndDate());    
-        
+            $query->setParameter('endDate', $period->getEndDate());
+
         $resultSet = $query->getQuery()
             ->getResult();
-            
+
         return $resultSet;
     }
-    
+
     public function findOneOpenBySupplier(Supplier $supplier)
     {
         $query = $this->_em->createQueryBuilder();
@@ -58,19 +58,19 @@ class Order extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-            
+
         if (isset($resultSet[0]))
             return $resultSet[0];
 
         return null;
     }
-        
+
     public function addNumberByArticle(Article $article, $number, Person $person)
     {
         $item = $this->_em
             ->getRepository('CudiBundle\Entity\Stock\Orders\Item')
             ->findOneOpenByArticle($article);
-        
+
         if (isset($item)) {
             $item->setNumber($item->getNumber() + $number);
         } else {
@@ -79,11 +79,11 @@ class Order extends EntityRepository
                 $order = new OrderEntity($article->getSupplier(), $person);
                 $this->_em->persist($order);
             }
-            
+
             $item = new ItemEntity($article, $order, $number);
             $this->_em->persist($item);
         }
-        
+
         return $item;
     }
 }

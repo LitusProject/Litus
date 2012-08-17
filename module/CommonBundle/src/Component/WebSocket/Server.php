@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\WebSocket;
 
 use Exception;
@@ -27,17 +27,17 @@ class Server
 
     private $_address;
     private $_port;
-    
+
     private $_users;
     private $_sockets;
-    
+
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
     const OP_BIN = 0x2;
     const OP_CLOSE = 0x8;
     const OP_PING = 0x9;
     const OP_PONG = 0xa;
-    
+
     /**
      * @param string $address The url for the websocket master socket
      * @param integer $port The port to listen on
@@ -48,32 +48,32 @@ class Server
         $this->_port = $port;
         $this->_users = array();
         $this->_sockets = array();
-                
+
         $this->createSocket();
     }
-    
+
     /**
      * Create the master socket
      */
     private function createSocket()
     {
         $this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        
+
         if (!$this->master)
             throw new Exception('Socket could not be created: ' . socket_last_error());
-        
+
         $this->_sockets[] = $this->master;
-        
+
         if (!socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1))
             throw new Exception('Socket options could not be set: ' . socket_last_error());
-        
+
         if (!socket_bind($this->master, $this->_address, $this->_port))
             throw new Exception('Socket could not be binded to given address: ' . socket_last_error());
-        
+
         if (!socket_listen($this->master, 20))
-            throw new Exception('Could not listen to socket: ' . socket_last_error());        
+            throw new Exception('Could not listen to socket: ' . socket_last_error());
     }
-    
+
     /**
      * Start listening on master socket and user sockets
      */
@@ -82,7 +82,7 @@ class Server
         while(true){
             $changed = $this->_sockets;
             socket_select($changed, $write, $except, null);
-            
+
             foreach($changed as $socket){
                 if ($socket == $this->master) {
                     $this->_addUserSocket(socket_accept($this->master));
@@ -104,7 +104,7 @@ class Server
             }
         }
     }
-    
+
     /**
      * Add a user socket to listen to
      *
@@ -117,7 +117,7 @@ class Server
         $this->_users[] = new User($socket);
         $this->_sockets[] = $socket;
     }
-    
+
     /**
      * Get a user by his socket
      *
@@ -131,7 +131,7 @@ class Server
                 return $user;
         }
     }
-    
+
     /**
      * Remove a user socket
      *
@@ -144,13 +144,13 @@ class Server
                 unset($this->_users[$key]);
             $this->onClose($value, 0, '');
         }
-        
+
         foreach($this->_sockets as $key => $value) {
             if ($value == $socket)
                 unset($this->_sockets[$key]);
         }
     }
-    
+
     /**
      * Process a frame send by a user to the master socket
      *
@@ -160,7 +160,7 @@ class Server
     private function _processFrame(User $user, $data)
     {
         $f = new Frame($data);
-        
+
         if ($f->getIsFin() && $f->getOpcode() != 0) {
             if ($f->getIsControl()) {
                 $this->_handleControlFrame($user, $f);
@@ -173,13 +173,13 @@ class Server
             $user->appendBuffer($f);
         } else if ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
-            
+
             $this->handleDataFrame($user, $user->getBuffer());
-            
+
             $user->clearBuffer();
         }
     }
-    
+
     /**
      * Handle the received control frames
      *
@@ -189,27 +189,27 @@ class Server
     private function _handleControlFrame(User $user, Frame $frame)
     {
         $len = strlen($frame->getData());
-        
+
         if ($frame->getOpcode() == self::OP_CLOSE) {
             if ($len !== 0 && $len === 1)
                 return;
-            
+
             $statusCode = false;
             $reason = false;
-            
+
             if ($len >= 2) {
                 $unpacked = unpack('n', substr($frame->getData(), 0, 2));
                 $statusCode = $unpacked[1];
                 $reason = substr($frame->getData(), 3);
             }
-            
+
             $user->write(chr(0x88) . chr(0));
-            
+
             $this->_removeUserSocket($user->getSocket());
             $this->onClose($user, $statusCode, $reason);
         }
     }
-    
+
     /**
      * Handle a received data frame
      *
@@ -224,55 +224,55 @@ class Server
             $this->gotBin($user, $frame->getData());
         }
     }
-    
+
     /**
      * Send text to a user socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param string $text 
+     * @param string $text
      */
     public function sendText($user, $text)
     {
         $len = strlen($text);
-        
+
         if ($len > 0xffff)
             return;
-        
+
         $header = chr(0x81);
-        
+
         if ($len >= 125) {
             $header .= chr(126) . pack('n', $len);
         } else {
             $header .= chr($len);
         }
-        
+
         $user->write($header . $text);
     }
-    
+
     /**
      * Send text to all user socket
      *
-     * @param string $text 
+     * @param string $text
      */
     public function sendTextToAll($text)
     {
         $len = strlen($text);
-        
+
         if ($len > 0xffff)
             return;
-        
+
         $header = chr(0x81);
-        
+
         if ($len >= 125) {
             $header .= chr(126) . pack('n', $len);
         } else {
             $header .= chr($len);
         }
-        
+
         foreach($this->_users as $user)
             $user->write($header . $text);
     }
-    
+
     /**
      * @return array
      */
@@ -280,7 +280,7 @@ class Server
     {
         return $this->_users;
     }
-    
+
     /**
      * Parse received text
      *
@@ -290,7 +290,7 @@ class Server
     protected function gotText(User $user, $data)
     {
     }
-    
+
     /**
      * Parse received binary
      *
@@ -300,7 +300,7 @@ class Server
     protected function gotBin(User $user, $data)
     {
     }
-    
+
     /**
      * Do action when user closed his socket
      *
@@ -312,7 +312,7 @@ class Server
     {
         $this->_removeUserSocket($user->getSocket());
     }
-    
+
     /**
      * Do action when a new user has connected to this socket
      *

@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% include 'admin_company/partials/navigation.twig' %}
-	
+
 	<div id="controller_action">
 		{% include 'admin/partials/flashMessenger.twig' %}
 	    <div class="flashmessage success_message full_width company_removed_success hide">
@@ -17,7 +17,7 @@
 	    		<p>An error occurred while trying to delete an company.</p>
 	    	</div>
 	    </div>
-	    
+
 	    <table class="full_width manage">
 	        <thead>
 	            <tr>
@@ -26,7 +26,7 @@
 	                <th width="120px">Action</th>
 	            </tr>
 	        </thead>
-	
+
 	        <tbody>
 	            {% for company in paginator %}
 	                <tr class="item item-{{ company.getId() }}">
@@ -58,10 +58,10 @@
 	            {% endfor %}
 	        </tbody>
 	    </table>
-	
+
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
-	
+
 	<div class="modal hide fade" id="removeCompany">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -88,10 +88,10 @@
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
-			
+
 			e.preventDefault();
 			var removeCompany = $('#removeCompany');
 			removeCompany.find('.companyName').html($(this).data('name'));
@@ -110,7 +110,7 @@
 			});
 			removeCompany.modal();
 		}
-		
+
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
     		$('.company_removed_error').removeClass('hide');

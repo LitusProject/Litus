@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManager;
 class ArticleBarcode extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -34,7 +34,7 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     protected $_messageTemplates = array(
         self::NOT_VALID => 'The article barcode does not exist'
     );
-    
+
     /**
      * Create a new Article Barcode validator.
      *
@@ -44,7 +44,7 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
-        
+
         $this->_entityManager = $entityManager;
     }
 
@@ -60,16 +60,16 @@ class ArticleBarcode extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
-        
+
         if (! is_numeric($value)) {
             $this->error(self::NOT_VALID);
             return false;
         }
-        
+
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByBarcode($value);
-        
+
         if (null !== $article)
             return true;
 

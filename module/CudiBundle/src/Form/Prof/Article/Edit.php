@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\Article;
 
 use CudiBundle\Entity\Article,
@@ -29,20 +29,20 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Article $article, $opts = null)
     {
         parent::__construct($entityManager, $opts);
-         
+
         $this->removeElement('submit');
-        
+
         foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
             $this->removeElement($element->getName());
         $this->removeDisplayGroup('subject_form');
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
                 ->setAttrib('class', 'btn btn-primary');
         $this->addElement($field);
 
         $this->setActionsGroup(array('submit'));
-        
+
         $this->populateFromArticle($article);
     }
 }

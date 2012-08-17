@@ -27,10 +27,10 @@ class Action extends EntityRepository
             ->orderBy('a.timestamp', 'ASC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllCompleted()
     {
         $query = $this->_em->createQueryBuilder();
@@ -42,10 +42,10 @@ class Action extends EntityRepository
             ->orderBy('a.timestamp', 'DESC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAllRefused()
     {
         $query = $this->_em->createQueryBuilder();
@@ -57,7 +57,7 @@ class Action extends EntityRepository
             ->orderBy('a.timestamp', 'DESC')
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
 
@@ -76,7 +76,7 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByEntityAndActionAndPerson($entity, $action, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -98,7 +98,7 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByEntityAndEntityIdAndActionAndPerson($entity, $entityId, $action, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -122,7 +122,7 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByEntityAndEntityIdAndPerson($entity, $entityId, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -144,7 +144,7 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByEntityAndPreviousIdAndAction($entity, $previousId, $action)
     {
         $query = $this->_em->createQueryBuilder();
@@ -166,7 +166,7 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findAllByEntityAndEntityIdAndAction($entity, $entityId, $action)
         {
             $query = $this->_em->createQueryBuilder();
@@ -185,7 +185,7 @@ class Action extends EntityRepository
                 ->orderBy('a.timestamp', 'DESC')
                 ->getQuery()
                 ->getResult();
-    
+
             return $resultSet;
         }
 }

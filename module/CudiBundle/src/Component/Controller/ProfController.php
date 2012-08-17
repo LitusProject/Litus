@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -31,7 +31,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     /**
      * Execute the request
-     * 
+     *
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
@@ -39,7 +39,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     public function execute(MvcEvent $e)
     {
         $result = parent::execute($e);
-                
+
         $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
@@ -47,11 +47,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
-          
+
         $e->setResult($result);
         return $result;
     }
-    
+
     /**
      * Returns the current academic year.
      *
@@ -61,7 +61,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
-                
+
         $now = new DateTime();
         $profStart = new DateTime($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -74,7 +74,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $academicYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
-        
+
         if (null === $academicYear) {
             $organizationStart = str_replace(
                 '{{ year }}',
@@ -91,7 +91,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         return $academicYear;
     }
-    
+
     /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
@@ -103,12 +103,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return array(
             'action'         => 'index',
             'controller'     => 'index',
-            
+
             'auth_route'     => 'prof_index',
             'redirect_route' => 'prof_index'
         );
     }
-    
+
     /**
      * Create the full Shibboleth URL.
      *
@@ -119,10 +119,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
-        
+
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
-            
+
         return $shibbolethUrl . '?source=prof';
     }
 }

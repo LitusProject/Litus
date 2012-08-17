@@ -30,10 +30,10 @@ class Discount extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-            
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sales\Discounts\Discount', 'd')
@@ -48,10 +48,10 @@ class Discount extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-            
+
         return null;
     }
 }

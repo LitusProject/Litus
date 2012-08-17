@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
@@ -33,7 +33,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
      * @var \CudiBundle\Entity\Stock\Order
      */
     private $_order;
-    
+
     /**
      * Create a new Order PDF Generator.
      *
@@ -46,7 +46,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
-                    
+
            parent::__construct(
                $entityManager,
             $filePath . '/order/order.xsl',
@@ -54,7 +54,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         );
         $this->_order = $order;
     }
-    
+
     /**
      * Generate the XML for the fop.
      *
@@ -63,7 +63,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
     protected function generateXml(TmpFile $tmpFile)
     {
         $configs = $this->getConfigRepository();
-        
+
         $now = new DateTime();
         $union_short_name = $configs->getConfigValue('union_short_name');
         $union_name = $configs->getConfigValue('union_name');
@@ -83,7 +83,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
         $billing_address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configs->getConfigValue('cudi.billing_address'));
-        
+
         $external_items = array();
         $internal_items = array();
         foreach($this->_order->getItems() as $item) {
@@ -158,7 +158,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
                 );
             }
         }
-        
+
         $xml = new Generator($tmpFile);
 
         $xml->append(

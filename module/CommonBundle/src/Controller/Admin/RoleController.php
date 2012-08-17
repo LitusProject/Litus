@@ -35,7 +35,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromEntity(
             'CommonBundle\Entity\Acl\Role',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC'
+            )
         );
 
         return new ViewModel(

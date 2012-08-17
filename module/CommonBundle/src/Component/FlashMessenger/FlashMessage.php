@@ -36,21 +36,21 @@ class FlashMessage
         $this->_title = $title;
         $this->_message = $message;
     }
-    
+
     /**
      * @return string
      */
     public function getType() {
         return $this->_type;
     }
-    
+
     /**
      * @return string
      */
     public function getTitle() {
         return $this->_title;
     }
-    
+
     /**
      * @return string
      */

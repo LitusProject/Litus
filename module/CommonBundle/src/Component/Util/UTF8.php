@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Util;
 
 /**
  * Provides a few utility methods to handle UTF-8.
- * 
+ *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class UTF8
@@ -35,7 +35,7 @@ class UTF8
     {
         if ($utf8 === null)
             return null;
-            
+
         if (!is_string($utf8)) {
             throw new Exception\InvalidArgumentException(
                 'Expected a string as first parameter, not ' . gettype($utf8)
@@ -74,7 +74,7 @@ class UTF8
                 $i += 3;
             }
         }
-        
+
         return $result;
     }
 }

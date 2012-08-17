@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Form\Prof\Comment;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Textarea;
@@ -27,7 +27,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-             
+
         $field = new Textarea('text');
         $field->setLabel('Comment')
             ->setAttrib('class', 'input-xlarge')

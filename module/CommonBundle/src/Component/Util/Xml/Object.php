@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Util\Xml;
 
 use CommonBundle\Component\Util\UTF8;
@@ -83,7 +83,7 @@ class Object
             $this->_content .= '</' . $tag . '>' . $n;
         }
     }
-    
+
     /**
      * Converts an UTF-8 value to HTML.
      *
@@ -94,7 +94,7 @@ class Object
     {
         return UTF8::utf8toHtml($value, true);
     }
-    
+
     /**
      * @return string
      */

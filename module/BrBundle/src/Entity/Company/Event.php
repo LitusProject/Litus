@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
@@ -35,7 +35,7 @@ class Event
      * @GeneratedValue
      */
     private $id;
-    
+
     /**
      * @var string The event
      *
@@ -44,7 +44,7 @@ class Event
      * @JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
-    
+
     /**
      * @var \BrBundle\Entity\Company The company of the event
      *
@@ -52,7 +52,7 @@ class Event
      * @JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
-    
+
     /**
      * @param \CalendarBundle\Entity\Nodes\Event $event
      * @param \BrBundle\Entity\Company $company The event's company
@@ -62,7 +62,7 @@ class Event
         $this->event = $event;
         $this->company = $company;
     }
-    
+
     /**
      * @return integer
      */
@@ -70,7 +70,7 @@ class Event
     {
         return $this->id;
     }
-    
+
     /**
      * @return \BrBundle\Entity\Company
      */
@@ -78,7 +78,7 @@ class Event
     {
         return $this->event;
     }
-    
+
     /**
      * @return \BrBundle\Entity\Company
      */

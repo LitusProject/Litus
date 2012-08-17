@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,

@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Util\File\Exception;
 
 use CommonBundle\Component\Util\File\TmpFile;
@@ -20,14 +20,14 @@ use CommonBundle\Component\Util\File\TmpFile;
 /**
  * This exception is thrown when a handle to a tempory file, that is already closed,
  * is used.
- * 
+ *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class TmpFileClosedException extends \Exception
 {
     /**
      * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file that caused the exception
-     */    
+     */
     public function __construct(TmpFile $tmpFile)
     {
         parent::__construct(

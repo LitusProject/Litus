@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CommonBundle\Component\Controller\Request\Exception;
 
 /**
@@ -23,5 +23,5 @@ namespace CommonBundle\Component\Controller\Request\Exception;
  */
 class NoXmlHttpRequestException extends \RuntimeException
 {
-    
+
 }

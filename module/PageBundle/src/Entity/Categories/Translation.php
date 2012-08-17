@@ -15,7 +15,8 @@
 
 namespace PageBundle\Entity\Categories;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Language,
+    PageBundle\Entity\Category;
 
 /**
  * This entity stores the node item.

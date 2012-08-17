@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -34,11 +34,11 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             array(),
             array('openDate' => 'DESC')
         );
-        
+
         foreach($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -46,19 +46,19 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function stockAction()
     {
         if (!($period = $this->getActiveStockPeriod()))
             return new ViewModel();
-            
+
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($period),
             $this->getParam('page')
         );
-        
+
         return new ViewModel(
             array(
                 'period' => $period,
@@ -67,7 +67,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function suppliersAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -78,11 +78,11 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'name' => 'ASC'
             )
         );
-        
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -91,16 +91,16 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function deliveriesAction()
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-            
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-            
+
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\Delivery',
             $this->getParam('page'),
@@ -109,7 +109,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'timestamp' => 'DESC',
             )
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -119,16 +119,16 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     public function retoursAction()
     {
         if (!($supplier = $this->_getSupplier()))
             return new ViewModel();
-            
+
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
-            
+
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\Stock\Retour',
             $this->getParam('page'),
@@ -137,7 +137,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'timestamp' => 'DESC',
             )
         );
-        
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -147,7 +147,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -158,21 +158,21 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     'No id was given to identify the supplier!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_financial',
                 array(
                     'action' => 'suppliers'
                 )
             );
-            
+
             return;
         }
-    
+
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findOneById($this->getParam('id'));
-        
+
         if (null === $supplier) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -181,17 +181,17 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     'No supplier with the given id was found!'
                 )
             );
-            
+
             $this->redirect()->toRoute(
                 'admin_sales_financial',
                 array(
                     'action' => 'suppliers'
                 )
             );
-            
+
             return;
         }
-        
+
         return $supplier;
     }
 }
