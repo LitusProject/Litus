@@ -22,6 +22,7 @@
 	        <thead>
 	            <tr>
 	                <th>Name</th>
+	                <th width="300px">Parent</th>
 	                <th width="70px">Action</th>
 	            </tr>
 	        </thead>
@@ -30,6 +31,7 @@
 	            {% for page_category in paginator %}
 	                <tr class="item">
 	                    <td>{{ page_category.getName(language) }}</td>
+	                    <td>{{ page_category.getParent().getTitle(language) }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_page_category', 'edit') %}
 	                            <a href="{{ url('admin_page_category', {"action": "edit", "id": page_category.getId()}) }}" class="edit">Edit</a>

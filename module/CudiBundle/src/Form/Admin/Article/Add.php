@@ -95,7 +95,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('type');
         $field->setLabel('Type')
-               ->setRequired()
+            ->setRequired()
             ->setMultiOptions(Article::$POSSIBLE_TYPES)
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'article_form'
         );
         $this->getDisplayGroup('article_form')
-               ->setLegend('Article')
+            ->setLegend('Article')
             ->setAttrib('id', 'article_form')
             ->removeDecorator('DtDdWrapper');
 
@@ -140,7 +140,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('binding');
         $field->setLabel('Binding')
-               ->setRequired()
+            ->setRequired()
             ->setMultiOptions($this->_getBindings())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
@@ -157,9 +157,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('front_color');
         $field->setLabel('Front Page Color')
-              ->setRequired()
+            ->setRequired()
             ->setMultiOptions($this->_getColors())
-               ->setDecorators(array(new FieldDecorator()));
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
         $field = new Checkbox('perforated');
@@ -220,8 +220,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setLabel('Add')
-                ->setAttrib('class', 'article_add')
-                ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'article_add')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
     }
 
@@ -230,6 +230,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $bindings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
             ->findAll();
+
         $bindingOptions = array();
         foreach($bindings as $item)
             $bindingOptions[$item->getId()] = $item->getName();
@@ -242,6 +243,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $colors = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Articles\Options\Color')
             ->findAll();
+
         $colorOptions = array();
         foreach($colors as $item)
             $colorOptions[$item->getId()] = $item->getName();

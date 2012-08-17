@@ -65,17 +65,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
 
-            $title = new Text('title_' . $language->getAbbrev());
-            $title->setLabel('Title')
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
                 ->setAttrib('width', '400px')
                 ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($title);
 
-            $content = new Textarea('content_' . $language->getAbbrev());
-            $content->setLabel('Content')
+            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $field->setRequired();
+
+            $pane->addElement($field);
+
+            $field = new Textarea('content_' . $language->getAbbrev());
+            $field->setLabel('Content')
                 ->setAttrib('rows', 20)
                 ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($content);
+
+            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $field->setRequired();
+
+            $pane->addElement($field);
 
             $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
         }
@@ -94,41 +102,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
-    }
-
-    public function isValid($data)
-    {
-        $valid = parent::isValid($data);
-
-        $form = $this->getSubForm('tab_content');
-
-        $validTranslations = false;
-        foreach($this->getLanguages() as $language) {
-            $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-            $content = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('content_' . $language->getAbbrev());
-
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage')) {
-                if ('' == $title->getValue() || '' == $content->getValue()) {
-                    $content->addError('The translation in this language is required');
-                    $valid = false;
-                }
-            }
-
-            if ('' != $title->getValue() || '' != $content->getValue()) {
-                $validTranslations = true;
-                break;
-            }
-        }
-
-        if (!$validTranslations) {
-            foreach($this->getLanguages() as $language) {
-                $content = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('content_' . $language->getAbbrev());
-                $content->addError('At least one translation is required');
-            }
-
-            $valid = false;
-        }
-
-        return $valid;
     }
 }

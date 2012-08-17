@@ -53,6 +53,15 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid($formData)) {
                 $category = new Category();
+
+                if (null !== $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+
+                    $category->setParent($parent);
+                }
+
                 $this->getEntityManager()->persist($category);
 
                 $languages = $this->getEntityManager()
@@ -110,6 +119,15 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
+                if (null !== $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+                }
+
+                if (isset($parent))
+                    $category->setParent($parent);
+
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
