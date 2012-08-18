@@ -54,7 +54,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid($formData)) {
                 $category = new Category();
 
-                if (null !== $formData['parent']) {
+                if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
@@ -111,7 +111,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     public function editAction()
     {
         if (!($category = $this->_getCategory()))
-            return;
+            return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $category);
 
@@ -119,7 +119,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                if (null !== $formData['parent']) {
+                if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
@@ -183,7 +183,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $this->initAjax();
 
         if (!($category = $this->_getCategory()))
-            return;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($category);
 
@@ -198,7 +198,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function _getCategory()
+    private function _getCategory()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -216,7 +216,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         $category = $this->getEntityManager()
@@ -239,7 +239,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         return $category;

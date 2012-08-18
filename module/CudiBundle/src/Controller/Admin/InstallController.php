@@ -363,9 +363,9 @@ VTK Cudi
     private function _installBinding()
     {
         $bindings = array(
-            'stapled' => 'Stapled',
-            'none' => 'None',
             'glued' => 'Glued',
+            'none' => 'None',
+            'stapled' => 'Stapled',
         );
 
         foreach($bindings as $code => $name) {
@@ -382,7 +382,7 @@ VTK Cudi
 
     private function _installColor()
     {
-        $colors = array('Red', 'Yellow');
+        $colors = array('White');
 
         foreach($colors as $item) {
             $color = $this->getEntityManager()

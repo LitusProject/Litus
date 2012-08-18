@@ -88,7 +88,7 @@
 			removeVacancy.find('.vacancyName').html($(this).data('name'));
 			var id = $this.data('id');
 			removeVacancy.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_company_vacancy', {"action": "delete"}) }}/' + id, function  (data) {
+				$.post('{{ url('admin_company_vacancy', {"action": "delete"}) }}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.vacancy_removed_success').removeClass('hide');

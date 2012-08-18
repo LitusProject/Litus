@@ -41,14 +41,14 @@ class Code
      *
      * @Column(name="creation_time", type="datetime")
      */
-    private $creationTime = null;
+    private $creationTime;
 
     /**
      * @var \DateTime The time at which this session will end
      *
      * @Column(name="expiration_time", type="datetime")
      */
-    private $expirationTime = null;
+    private $expirationTime;
 
     /**
      * @var string The authenticated person's university identification
@@ -69,7 +69,7 @@ class Code
      * @param string $code The code
      * @param int $expirationTime
      */
-    public function __construct($universityIdentification, $code, $expirationTime = null)
+    public function __construct($universityIdentification, $code, $expirationTime = 300)
     {
         $this->id = md5(uniqid(rand(), true));
         $this->creationTime = new DateTime();

@@ -102,7 +102,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    public function _getEntry()
+    private function _getEntry()
     {
         if (null === $this->getParam('key')) {
             $this->flashMessenger()->addMessage(

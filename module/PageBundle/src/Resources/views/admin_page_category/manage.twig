@@ -29,7 +29,7 @@
 
 	        <tbody>
 	            {% for page_category in paginator %}
-	                <tr class="item">
+	                <tr class="item item-{{ page_category.getId() }}">
 	                    <td>{{ page_category.getName(language) }}</td>
 	                    <td>{{ page_category.getParent().getTitle(language) }}</td>
 	                    <td class="actions">
@@ -101,7 +101,7 @@
 			});
 			var id = $this.data('id');
 			removePageCategory.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_page_category', {"action": "delete"})}}/' + id, function  (data) {
+				$.post('{{ url('admin_page_category', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.page_category_removed_success').removeClass('hide');

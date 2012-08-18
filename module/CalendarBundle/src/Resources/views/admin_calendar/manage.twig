@@ -86,7 +86,7 @@
 			var removeEvent = $('#removeEvent');
 			removeEvent.find('.title').html($(this).data('title'));
 			removeEvent.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_calendar', {"action": "delete"})}}/' + $this.data('id'), function  (data) {
+				$.post('{{ url('admin_calendar', {"action": "delete"})}}/' + $this.data('id'), function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').removeClass('in');
     					$('.event_removed_success').addClass('in');

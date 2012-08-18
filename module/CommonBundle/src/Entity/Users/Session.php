@@ -40,14 +40,14 @@ class Session
      *
      * @Column(name="start_time", type="datetime")
      */
-    private $startTime = null;
+    private $startTime;
 
     /**
      * @var \DateTime The time at which this session will end
      *
      * @Column(name="expiration_time", type="datetime")
      */
-    private $expirationTime = null;
+    private $expirationTime;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person associated with this session
@@ -79,12 +79,12 @@ class Session
     private $active = true;
 
     /**
-     * @param int $expirationTime
+     * @param int|\DateTime $expirationTime
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $userAgent
      * @param string $ip
      */
-    public function __construct($expirationTime, Person $person, $userAgent, $ip)
+    public function __construct(Person $person, $userAgent, $ip, $expirationTime = 3600)
     {
         $this->id = md5(uniqid(rand(), true));
 
@@ -194,10 +194,10 @@ class Session
             $this->deactivate();
 
             $newSession = new Session(
-                $this->expirationTime,
                 $this->person,
                 $this->userAgent,
-                $ip
+                $ip,
+                $this->expirationTime
             );
 
             $entityManager->persist($newSession);

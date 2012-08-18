@@ -25,7 +25,7 @@
         progressId: 1,
         width: '600px',
     };
-    
+
     var methods = {
     	init : function (options) {
     	    this.each(function () {
@@ -38,7 +38,7 @@
     	    return this;
     	},
     };
-    
+
     $.fn.gollum = function (method) {
     	if (methods[method]) {
     		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -48,23 +48,23 @@
     		$.error('Method ' +  method + ' does not exist on $.gollum');
     	}
     };
-    
+
     _init = function ($that, options) {
         options = $.extend(defaults, options);
-            	    
+
 	    $that.data('gollum-editor', options)
 	        .addClass('gollum-editor-body')
 	        .wrap($('<div>', {'class': 'gollum-editor'}));
 
 	    var wrapper = $that.closest('.gollum-editor');
 	    wrapper.css('width', options.width);
-	        
+
 	    var functionbar = $('<div>', {'class': 'gollum-editor-function-bar'});
 	    wrapper.prepend(functionbar);
-	    
+
 	    var buttons = $('<div>', {'class': 'gollum-editor-function-buttons'});
 	    functionbar.append(buttons);
-	    
+
 	    $.each(options.toolbar, function(key, val){
 	        if (key == 'divider')
 	            button = $('<span>', {'class': 'function-divider'}).html('&nbsp;');
@@ -74,9 +74,9 @@
 	                .data('function', 'function-' + val[0]);
 	        buttons.append(button);
 	    });
-	    
+
 	    functionbar.after('<div class="gollum-editor-help"><ul class="gollum-editor-help-parent"><li></li></ul><ul class="gollum-editor-help-list"><li></li></ul><div class="gollum-editor-help-wrapper"><div class="gollum-editor-help-content"><p></p></div></div></div>');
-	           
+
 
 	    functionbar.find('a.function-button').each(function() {
 	        if (_getDefinitionFor($(this).data('function'))) {
@@ -87,10 +87,10 @@
 	            $(this).addClass('disabled');
 	        }
 	    });
-	    
+
 	    _defineHelp(functionbar.find('a.function-help'));
     };
-    
+
     _functionButtonClick = function (e) {
         e.preventDefault();
         var def = _getDefinitionFor($(this).data('function'));
@@ -98,7 +98,7 @@
             _executeAction($(this).closest('.gollum-editor').find('.gollum-editor-body'), def);
         }
     };
-    
+
     _executeAction = function ($that, definitionObject) {
         var txt = $that.val();
         var options = $that.data('gollum-editor');
@@ -108,12 +108,12 @@
         var repText = selText;
         var reselect = true;
         var cursor = null;
-        
+
         if (definitionObject.exec && typeof definitionObject.exec == 'function') {
             definitionObject.exec(txt, selText, $that, options.uploadURL, options.progressURL, options.uploadProgressName, options.progressId);
             return;
         }
-        
+
         var searchExp = /([^\n]+)/gi;
         if (definitionObject.search && typeof definitionObject.search == 'object') {
             searchExp = null;
@@ -124,33 +124,33 @@
             var rt = definitionObject.replace;
             repText = repText.replace(searchExp, rt);
             repText = repText.replace(/\$[\d]/g, '');
-            
+
             if (repText === '') {
                 cursor = rt.indexOf('$1');
-                
+
                 repText = rt.replace(/\$[\d]/g, '');
-                
+
                 if (cursor == -1)
                     cursor = Math.floor(rt.length / 2);
             }
         }
-        
+
         if (definitionObject.append && typeof definitionObject.append == 'string') {
             if (repText == selText)
                 reselect = false;
 
             repText += definitionObject.append;
         }
-        
+
         if (repText)
             _replaceFieldSelection($that, repText, reselect, cursor);
     };
-    
+
     _getFieldSelectionPosition = function ($field) {
         if ($field.length) {
             var start = 0, end = 0;
             var el = $field.get(0);
-            
+
             if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
                 start = el.selectionStart;
                 end = el.selectionEnd;
@@ -161,7 +161,7 @@
                 stored_range.setEndPoint('EndToEnd', range);
                 start = stored_range.text.length - range.text.length;
                 end = start + range.text.length;
-                
+
                 var s = start;
                 var lb = 0;
                 var i;
@@ -169,33 +169,33 @@
                     if (el.value.charAt(i).match(/\r/))
                         ++lb;
                 }
-                
+
                 if (lb) {
                     start = start - lb;
                     lb = 0;
                 }
-                
+
                 var e = end;
                 for (i=0 ; i < e ; i++) {
                     if (el.value.charAt(i).match(/\r/))
                         ++lb;
                 }
-                
+
                 if (lb)
                     end = end - lb;
             }
-            
+
             return {
                 start: start,
                 end: end
             };
         }
     };
-    
+
     _getFieldSelection = function ($field) {
         var selStr = '';
         var selPos;
-        
+
         if ($field.length) {
             selPos = _getFieldSelectionPosition($field);
             selStr = $field.val().substring(selPos.start, selPos.end);
@@ -203,21 +203,21 @@
         }
         return false;
     };
-    
+
     _replaceFieldSelection = function ($field, replaceText, reselect, cursorOffset) {
         var selPos = _getFieldSelectionPosition($field);
         var fullStr = $field.val();
         var selectNew = true;
         if (reselect === false)
             selectNew = false;
-        
+
         var scrollTop = null;
         if ($field[0].scrollTop)
             scrollTop = $field[0].scrollTop;
-        
+
         $field.val(fullStr.substring(0, selPos.start) + replaceText + fullStr.substring(selPos.end));
         $field[0].focus();
-        
+
         if (selectNew) {
             if ($field[0].setSelectionRange) {
                 if (cursorOffset)
@@ -237,63 +237,63 @@
                 range.select();
             }
         }
-        
+
         if (scrollTop)
             $field[0].scrollTop = scrollTop;
     };
-    
+
     _getDefinitionFor = function (attr) {
         if (LanguageDefinition[attr] && typeof LanguageDefinition[attr] == 'object')
             return LanguageDefinition[attr];
-        
+
         return null;
     };
-    
+
     _defineHelp = function($that) {
         $that.removeClass('disabled')
             .unbind('click')
             .click(_helpButtonClick);
-        
+
         _generateHelpMenu($that.closest('.gollum-editor').find('.gollum-editor-help'));
     };
-    
+
     _generateHelpMenu = function($that) {
         $that.find('.gollum-editor-help-parent').html('');
         $that.find('.gollum-editor-help-list').html('');
         $that.find('.gollum-editor-help-content').html('');
-        
+
         for (var i=0 ; i < LanguageDefinitionHelp.length ; i++) {
             if (typeof LanguageDefinitionHelp[i] != 'object')
                 break;
-        
+
             var $newLi = $('<li><a href="#" rel="' + i + '">' +
             LanguageDefinitionHelp[i].menuName + '</a></li>');
             $that.find('.gollum-editor-help-parent').append($newLi);
             if (i === 0)
                 $newLi.children('a').addClass('selected');
-            
+
             $newLi.children('a').click(_helpParentMenuClick);
         }
-        
+
         _generateHelpSubMenu($that, LanguageDefinitionHelp[0], 0);
         $($that.find('.gollum-editor-help-list li a').get(0)).click();
     };
-    
+
     _generateHelpSubMenu = function($that, subData, index) {
         $that.find('.gollum-editor-help-list').html('');
         $that.find('.gollum-editor-help-content').html('');
         for (var i=0 ; i < subData.content.length ; i++) {
             if (typeof subData.content[i] != 'object')
                 break;
-            
+
             var $subLi = $('<li><a href="#" rel="' + index + ':' + i + '">' +
             subData.content[i].menuName + '</a></li>');
-            
+
             $that.find('.gollum-editor-help-list').append($subLi);
             $subLi.children('a').click(_helpSubMenuClick);
         }
     };
-    
+
     _hideHelp = function($that) {
         if ($.browser.msie) {
             $that.css('display', 'none');
@@ -309,7 +309,7 @@
             );
         }
     };
-    
+
     _showHelp = function() {
         if ($.browser.msie) {
             $that.css('display', 'block');
@@ -325,7 +325,7 @@
             );
         }
     };
-    
+
     _helpButtonClick = function(e) {
         e.preventDefault();
         $that = $(e.target).closest('.gollum-editor').find('.gollum-editor-help');
@@ -335,36 +335,36 @@
             _showHelp($that);
         }
     };
-    
+
     _helpParentMenuClick = function(e) {
         e.preventDefault();
         $that = $(e.target).closest('.gollum-editor').find('.gollum-editor-help');
 
         if ($(this).hasClass('selected'))
             return;
-        
+
         var helpIndex = $(this).attr('rel');
         var subData = LanguageDefinitionHelp[helpIndex];
-        
+
         $that.find('.gollum-editor-help-parent li a').removeClass('selected');
         $(this).addClass('selected');
         _generateHelpSubMenu($that, subData, helpIndex);
         $($that.find('.gollum-editor-help-list li a').get(0)).click();
     };
-    
+
     _helpSubMenuClick = function(e) {
         e.preventDefault();
         $that = $(e.target).closest('.gollum-editor').find('.gollum-editor-help');
 
         if ($(this).hasClass('selected'))
             return;
-        
+
         var rawIndex = $(this).attr('rel').split(':');
         $that.find('.gollum-editor-help-list li a').removeClass('selected');
         $(this).addClass('selected');
         _showHelpFor($that, rawIndex[0], rawIndex[1]);
     };
-    
+
     _showHelpFor = function($that, index1, index2) {
       var html = LanguageDefinitionHelp[index1].content[index2].data;
       $that.find('.gollum-editor-help-content').html(html);

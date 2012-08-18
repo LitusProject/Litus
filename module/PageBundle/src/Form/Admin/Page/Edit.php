@@ -15,11 +15,10 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
-    PageBundle\Component\Validator\Name as PageNameValidator,
-    PageBundle\Entity\Nodes\Page;
+    PageBundle\Entity\Nodes\Page,
+    Zend\Form\Element\Submit;
 
 /**
  * Edit a page.
@@ -28,28 +27,37 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param mixed $opts The form's options
      */
     public function __construct(EntityManager $entityManager, Page $page, $opts = null)
     {
         parent::__construct($entityManager, $opts);
 
-        $form = $this->getSubForm('tab-content');
-
-        foreach ($this->_getLanguages() as $language) {
-            $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-            $title->clearValidators();
-            $title->addValidator(new PageNameValidator($entityManager, $page->getTranslation($language)));
-        }
-
         $this->removeElement('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save');
+        $field->setLabel('Save')
+            ->setAttrib('class', 'category_edit')
+            ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
 
-        $this->setActionsGroup(array('submit'));
+        $this->_populateFromPage($page);
+    }
 
-        $this->populateFromPage($page);
+    private function _populateFromPage(Page $page)
+    {
+        $data = array();
+        foreach($this->getLanguages() as $language) {
+            $data['title_' . $language->getAbbrev()] = $page->getTitle($language, false);
+            $data['content_' . $language->getAbbrev()] = $page->getContent($language, false);
+        }
+
+        $data['category'] = $page->getCategory()->getId();
+
+        $data['edit_roles'] = array();
+        foreach ($page->getEditRoles() as $role)
+            $data['edit_roles'][] = $role->getName();
+
+        $this->populate($data);
     }
 }

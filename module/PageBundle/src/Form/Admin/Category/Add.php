@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Select('parent');
         $field->setLabel('Parent')
-            ->setMultiOptions($this->_getPages())
+            ->setMultiOptions($this->_createPagesArray())
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
@@ -93,17 +93,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
     }
 
-    private function _getPages()
+    private function _createPagesArray()
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findAll();
 
         $pageOptions = array(
-            null => ''
+            '' => ''
         );
         foreach($pages as $page)
-            $pages[$page->getId()] = $page->getTitle();
+            $pageOptions[$page->getId()] = $page->getTitle();
 
         return $pageOptions;
     }

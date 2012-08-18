@@ -32,6 +32,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  * Add News
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {

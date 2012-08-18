@@ -15,8 +15,7 @@
 
 namespace PageBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    PageBundle\Entity\Nodes\Translation;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given page title against the database to check whether it is
@@ -24,7 +23,7 @@ use Doctrine\ORM\EntityManager,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \Zend\Validator\AbstractValidator
+class Title extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -34,15 +33,10 @@ class Name extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \PageBundle\Entity\Nodes\Translation The translation exluded from this check
-     */
-    private $_translation;
-
-    /**
      * @var array The error messages
      */
     protected $_messageTemplates = array(
-        self::NOT_VALID => 'The page title already exists'
+        self::NOT_VALID => 'This page title already exists'
     );
 
     /**
@@ -50,12 +44,11 @@ class Name extends \Zend\Validator\AbstractValidator
      * @param \PageBundle\Entity\Nodes\Translation The translation exluded from this check
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Translation $translation = null, $opts = null)
+    public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_translation = $translation;
     }
 
     /**
@@ -70,10 +63,10 @@ class Name extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $page = $this->_entityManager
-            ->getRepository('PageBundle\Entity\Nodes\Translation')
-            ->findOneByName(str_replace(' ', '_', strtolower($value)));
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findOneByName(str_replace(' ', '-', strtolower($value)));
 
-        if (null === $page || ($this->_translation && $page == $this->_translation))
+        if (null === $page)
             return true;
 
         $this->error(self::NOT_VALID);

@@ -100,7 +100,7 @@
 			removeDelivery.find('.deliveryNumber').html($(this).data('number'));
 			var id = $this.data('id');
 			removeDelivery.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_delivery', {"action": "delete"})}}/' + id, function  (data) {
+				$.post('{{ url('admin_stock_delivery', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.delivery_removed_success').removeClass('hide');

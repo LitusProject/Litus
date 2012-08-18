@@ -252,6 +252,7 @@ abstract class Person
     {
         if (null == $this->credential)
             return false;
+
         return $this->credential->validateCredential($credential);
     }
 
@@ -269,30 +270,9 @@ abstract class Person
      * @param array $roles An array containing the roles that should be added
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function addRoles(array $roles)
+    public function setRoles(array $roles)
     {
-        $this->roles->add($roles);
-        return $this;
-    }
-
-    /**
-     * Removes all the old rules and adds the given roles.
-     *
-     * @param array $roles An array containing the roles that should be added
-     * @return \CommonBundle\Entity\Users\Person
-     */
-    public function updateRoles(array $roles)
-    {
-        foreach ($this->roles as $currentRole) {
-            if (!in_array($currentRole, $roles))
-                $this->roles->removeElement($currentRole);
-        }
-
-        foreach ($roles as $newRole) {
-            if (!$this->roles->contains($newRole))
-                $this->roles->add($newRole);
-        }
-
+        $this->roles = new ArrayCollection($roles);
         return $this;
     }
 
@@ -305,7 +285,6 @@ abstract class Person
     public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
-
         return $this;
     }
 

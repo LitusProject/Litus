@@ -15,7 +15,8 @@
 
 namespace PageBundle\Entity;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Language,
+    PageBundle\Entity\Nodes\Page;
 
 /**
  * This entity stores the node item.
@@ -37,8 +38,8 @@ class Category
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="\PageBundle\Entity\Nodes\Page")
-     * @JoinColumn(name="parent", referencedColumnName="id", nullable=true)
+     * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
 
@@ -80,10 +81,10 @@ class Category
      * @param boolean $allowFallback
      * @return \PageBundle\Entity\Nodes\Translation
      */
-    public function getTranslation(Language $language, $allowFallback = true)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
             if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
@@ -101,7 +102,7 @@ class Category
      * @param boolean $allowFallback
      * @return string
      */
-    public function getName(Language $language, $allowFallback = true)
+    public function getName(Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 

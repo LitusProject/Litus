@@ -65,21 +65,23 @@ abstract class InstallController extends AdminController
     /**
      * Install the config values
      *
-     * @param array $configs
+     * @param array $config The configuration values
      */
-    protected function installConfig($configs)
+    protected function installConfig($config)
     {
-        foreach($configs as $item) {
-            try {
-                $config = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue($item['key']);
-            } catch(Exception $e) {
+        foreach($config as $item) {
+            $value = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue($item['key']);
+
+            if (null === $value) {
                 $config = new Config($item['key'], $item['value']);
                 $config->setDescription($item['description']);
+
                 $this->getEntityManager()->persist($config);
             }
         }
+
         $this->getEntityManager()->flush();
     }
 

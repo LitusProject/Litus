@@ -109,18 +109,18 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
-                $newSession = new $sessionEntity(
-                    $this->_expire,
+                $session = new $sessionEntity(
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
-                    $_SERVER['REMOTE_ADDR']
+                    $_SERVER['REMOTE_ADDR'],
+                    $this->_expire
                 );
-                $this->_entityManager->persist($newSession);
+                $this->_entityManager->persist($session);
 
-                $this->getStorage()->write($newSession->getId());
+                $this->getStorage()->write($session->getId());
                 if ($rememberMe) {
                     setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
+                        $this->_namespace . '_' . $this->_cookieSuffix, $session->getId(), time() + $this->_expire, '/'
                     );
                 } else {
                     setcookie(

@@ -47,10 +47,10 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return \NewsBundle\Entity\Nodes\Translation
      */
-    public function getTranslation(Language $language, $allowFallback = true)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
             if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
@@ -68,7 +68,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return string
      */
-    public function getTitle(Language $language, $allowFallback = true)
+    public function getTitle(Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
@@ -83,7 +83,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return string
      */
-    public function getContent(Language $language, $allowFallback = true)
+    public function getContent(Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
@@ -98,7 +98,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return string
      */
-    public function getSummary(Language $language, $allowFallback = true)
+    public function getSummary(Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 

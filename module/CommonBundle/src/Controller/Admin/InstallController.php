@@ -24,6 +24,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function initConfig()
     {
+        $this->_installLanguages();
+
         $this->installConfig(
             array(
                 array(
@@ -102,11 +104,6 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
-                ),
-                array(
-                    'key'         => 'shibboleth_code_expiration_time',
-                    'value'       => '300',
-                    'description' => 'The amount of time during which the generated Shibboleth code is valid (in seconds)',
                 ),
                 array(
                     'key'         => 'system_administrator_mail',
@@ -194,5 +191,26 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
             )
         );
+    }
+
+    private function _installLanguages()
+    {
+        $languages = array(
+            'en' => 'English',
+            'nl' => 'Nederlands'
+        );
+
+        foreach($languages as $abbrev => $name) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($abbrev);
+
+            if (null == $language) {
+                $language = new Language($abbrev, $name);
+                $this->getEntityManager()->persist($language);
+            }
+        }
+
+        $this->getEntityManager()->flush();
     }
 }
