@@ -135,24 +135,27 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initFallbackLanguage()
     {
-        $fallbackLanguage = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('fallback_language')
-            );
+        try {
+            $fallbackLanguage = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('fallback_language')
+                );
 
-        if (null === $fallbackLanguage) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::WARNING,
-                    'Warning',
-                    'The specified fallback language does not exist!'
-                )
-            );
-        } else {
-            \Zend\Registry::set('Litus_Localization_FallbackLanguage', $fallbackLanguage);
+            if (null === $fallbackLanguage) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'The specified fallback language does not exist!'
+                    )
+                );
+            } else {
+                \Zend\Registry::set('Litus_Localization_FallbackLanguage', $fallbackLanguage);
+            }
+        } catch(\Exception $e) {
         }
     }
 
