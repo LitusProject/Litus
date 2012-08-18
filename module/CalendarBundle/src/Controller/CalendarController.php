@@ -109,6 +109,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllBetween($first, $last);
 
+        $parser = new \MarkdownExtra_Parser();
+
         $calendarItems = array();
         foreach($events as $event) {
             $date = $event->getStartDate()->format('d-M');
@@ -123,6 +125,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 'id' => $event->getId(),
                 'title' => $event->getTitle($this->getLanguage()),
                 'startDate' => $startDate->toString('h:mm'),
+                'content' => $parser->transform($event->getContent($this->getLanguage())),
                 'url' => $this->url()->fromRoute(
                     'common_calendar',
                     array(

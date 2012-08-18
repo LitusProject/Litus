@@ -2,7 +2,6 @@
 return array(
     'Calendar' => 'Calendar',
     'No events were created yet.' => 'No events were created yet.',
-    'View' => 'View',
     'Previous' => 'Previous',
     'Next' => 'Next',
 );

@@ -4,8 +4,7 @@
         month: 0,
         year: 0,
         previousText: 'Previous',
-        nextText: 'Next',
-        viewText: 'View'
+        nextText: 'Next'
     };
 
     var methods = {
@@ -47,12 +46,13 @@
                 $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn2'}),
                 $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn3'}),
                 $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn4'}),
-                $('<ul>', {'class': 'pager'}).append(
+                $('<div>', {'class': 'span12 hr clearFix'}),
+                $('<ul>', {'class': 'span12 pager'}).append(
                     $('<li>', {'class': 'previous'}).append(
-                        $('<a>', {'href': '#'}).html('&larr; ' + $this.data('calendar').previousText).click(function () {$this.calendar('previous')})
+                        $('<a>', {'href': '#'}).html('&larr; ' + $this.data('calendar').previousText).click(function () {$this.calendar('previous'); return false;})
                     ),
                     $('<li>', {'class': 'next'}).append(
-                        $('<a>', {'href': '#'}).html($this.data('calendar').nextText + ' &rarr;').click(function () {$this.calendar('next')})
+                        $('<a>', {'href': '#'}).html($this.data('calendar').nextText + ' &rarr;').click(function () {$this.calendar('next'); return false;})
                     )
                 )
         );
@@ -77,9 +77,10 @@
             color: '#ccc',
             width: 4,
             lines: 10
-        });
+        }).attr('month', param);
         $.post($this.data('calendar').url + '/' + param, function (data) {
-            var column = $('#calendarColumn' + columnNum);
+            var column = $this.find('.calendarColumn[month="' + param + '"]');
+
             column.html('')
                 .append(
                     $('<h2>').html(data.month)
@@ -95,17 +96,16 @@
                 $(this[key].events).each(function () {
                     day.append(
                         $('<p>').append(
-                            $('<i>', {'class': 'icon-time'}),
-                            this.startDate, '&mdash;', this.title
-                        ),
-                        $('<blockquote>').append(
-                            $('<small>').html(
-                                $('<a>', {'href': this.url}).html($this.data('calendar').viewText)
+                            $('<i>', {'class': 'icon-time'}), ' ',
+                            $('<a>', {'href': this.url, 'rel': 'popover', 'data-original-title': this.title, 'data-content': this.content}).append(
+                                this.startDate, '&mdash;', this.title
                             )
                         )
                     );
                 });
             });
+
+            $('a[rel=popover]').popover();
         }, 'json');
     }
 
@@ -126,9 +126,12 @@
         month = month + 1 > 12 ? 1 : month + 1;
         year = month == 1 ? year + 1 : year;
 
-        $('#calendarColumn1').html($('#calendarColumn2').html());
-        $('#calendarColumn2').html($('#calendarColumn3').html());
-        $('#calendarColumn3').html($('#calendarColumn4').html());
+        $('#calendarColumn1').html($('#calendarColumn2').html())
+            .attr('month', $('#calendarColumn2').attr('month'));
+        $('#calendarColumn2').html($('#calendarColumn3').html())
+            .attr('month', $('#calendarColumn3').attr('month'));
+        $('#calendarColumn3').html($('#calendarColumn4').html())
+            .attr('month', $('#calendarColumn4').attr('month'));
 
         _loadColumn($this, 4, month + '-' + year);
     }
@@ -143,9 +146,12 @@
         $this.data('calendar').month = month;
         $this.data('calendar').year = year;
 
-        $('#calendarColumn4').html($('#calendarColumn3').html());
-        $('#calendarColumn3').html($('#calendarColumn2').html());
-        $('#calendarColumn2').html($('#calendarColumn1').html());
+        $('#calendarColumn4').html($('#calendarColumn3').html())
+            .attr('month', $('#calendarColumn3').attr('month'));
+        $('#calendarColumn3').html($('#calendarColumn2').html())
+            .attr('month', $('#calendarColumn2').attr('month'));
+        $('#calendarColumn2').html($('#calendarColumn1').html())
+            .attr('month', $('#calendarColumn1').attr('month'));
 
         _loadColumn($this, 1, month + '-' + year);
     }
