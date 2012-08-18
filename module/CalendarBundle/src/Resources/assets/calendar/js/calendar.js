@@ -75,6 +75,7 @@
     function _loadColumn($this, columnNum, param) {
         $('#calendarColumn' + columnNum).html('').spin({
             color: '#ccc',
+            length: 0,
             width: 4,
             lines: 10
         }).attr('month', param);
