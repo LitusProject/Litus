@@ -60,9 +60,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
 
     $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
         $_SERVER[$shibbolethPersonKey],
-        substr($_SERVER[$shibbolethSessionKey], 1),
-        $em->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shibboleth_code_expiration_time')
+        substr($_SERVER[$shibbolethSessionKey], 1)
     );
 
     $em->persist($newCode);

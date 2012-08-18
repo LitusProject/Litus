@@ -29,17 +29,17 @@
 	        </thead>
 
 	        <tbody>
-	            {% for news_item in paginator %}
-	                <tr class="item">
-	                    <td>{{ news_item.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(news_item.getCreationTime(), 'dd/MM/y H:m') }}</td>
-	                    <td>{{ news_item.getUpdatePerson().getFullName() }}</td>
+	            {% for news in paginator %}
+	                <tr class="item item-{{ news.getId() }}">
+	                    <td>{{ news.getTitle(language) }}</td>
+	                    <td>{{ dateLocalized(news.getCreationTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ news.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_news', 'edit') %}
-	                            <a href="{{ url('admin_news', {"action": "edit", "id": news_item.getId()}) }}" class="edit">Edit</a>
+	                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ news_item.getId() }}" data-title="{{ news_item.getTitle(language) }}" class="delete">Delete</a>
+	                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -87,7 +87,7 @@
 			});
 			var id = $this.data('id');
 			removeNews.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_news', {"action": "delete"})}}/' + id, function  (data) {
+				$.post('{{ url('admin_news', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.news_item_removed_success').removeClass('hide');

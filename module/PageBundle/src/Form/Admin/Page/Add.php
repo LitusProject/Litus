@@ -15,20 +15,24 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
-    CommonBundle\Component\Form\Bootstrap\SubForm\TabPane,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Tabs,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
-    PageBundle\Component\Validator\Name as PageNameValidator,
-    PageBundle\Entity\Nodes\Page;
+    PageBundle\Component\Validator\Title as TitleValidator,
+    PageBundle\Entity\Nodes\Page,
+    Zend\Form\Element\Multiselect,
+    Zend\Form\Element\Select,
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text,
+    Zend\Form\Element\TextArea;
 
 /**
- * Add a page.
+ * Add Page
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -37,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param mixed $opts The form's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
@@ -50,50 +54,89 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 
         $tabContent = new TabContent();
 
-        foreach($this->_getLanguages() as $language) {
+        foreach($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
 
-            $title = new Text('title_' . $language->getAbbrev());
-            $title->setLabel('Title')
-                ->setAttrib('class', $title->getAttrib('class') . ' input-xxlarge')
-                ->setRequired()
-                ->addValidator(new PageNameValidator($entityManager));
-            $pane->addElement($title);
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
+                ->setDecorators(array(new FieldDecorator()))
+                ->addValidator(new TitleValidator($entityManager));
 
-            $content = new Textarea('content_' . $language->getAbbrev());
-            $content->setLabel('Content')
-                ->setRequired()
-                ->setAttrib('rows', 20);
-            $pane->addElement($content);
+            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $field->setRequired();
+
+            $pane->addElement($field);
+
+            $field = new Textarea('content_' . $language->getAbbrev());
+            $field->setLabel('Content')
+                ->setAttrib('rows', 20)
+                ->setDecorators(array(new FieldDecorator()));
+
+            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $field->setRequired();
+
+            $pane->addElement($field);
 
             $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
         }
 
-        $this->addSubForm($tabContent, 'tab-content');
+        $this->addSubForm($tabContent, 'tab_content');
 
-        $field = new Submit('submit');
-        $field->setLabel('Add');
+        $field = new Select('category');
+        $field->setLabel('Category')
+            ->setRequired()
+            ->setMultiOptions($this->_createCategoriesArray())
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $this->setActionsGroup(array('submit'));
+        $field = new Multiselect('edit_roles');
+        $field->setLabel('Edit Roles')
+            ->setRequired()
+            ->setMultiOptions($this->_createEditRolesArray())
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
+        $field = new Submit('submit');
+        $field->setLabel('Add')
+            ->setAttrib('class', 'page_add')
+            ->setDecorators(array(new ButtonDecorator()));
+        $this->addElement($field);
     }
 
-    public function populateFromPage(Page $page)
-    {
-        $data = array();
-        foreach($this->_getLanguages() as $language) {
-            $data['content_' . $language->getAbbrev()] = $page->getContent($language);
-            $data['title_' . $language->getAbbrev()] = $page->getTitle($language);
-        }
-        $this->populate($data);
-    }
-
-    protected function _getLanguages()
+    protected function getLanguages()
     {
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
+    }
+
+    private function _createCategoriesArray()
+    {
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
+
+        foreach($categories as $category)
+            $categoryOptions[$category->getId()] = $category->getName();
+
+        return $categoryOptions;
+    }
+
+    private function _createEditRolesArray()
+    {
+        $roles = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem())
+                continue;
+
+            $rolesArray[$role->getName()] = $role->getName();
+        }
+        return $rolesArray;
     }
 }

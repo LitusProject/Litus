@@ -66,7 +66,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                         ->findOneByName($role);
                 }
 
-                $newUser = new Academic(
+                $academic = new Academic(
                     $formData['username'],
                     $roles,
                     $formData['first_name'],
@@ -77,21 +77,21 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     $formData['university_identification']
                 );
 
-                $newUser->addUniversityStatus(
+                $academic->addUniversityStatus(
                     new UniversityStatus(
-                        $newUser,
+                        $academic,
                         $formData['university_status'],
                         $this->getCurrentAcademicYear()
                     )
                 );
 
-                $newUser->activate(
+                $academic->activate(
                     $this->getEntityManager(),
                     $this->getMailTransport(),
                     !$formData['activation_code']
                 );
 
-                $this->getEntityManager()->persist($newUser);
+                $this->getEntityManager()->persist($academic);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -148,7 +148,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setSex($formData['sex'])
                     ->setPhoneNumber($formData['phone_number'])
                     ->setUniversityIdentification($formData['university_identification'])
-                    ->updateRoles($roles);
+                    ->setRoles($roles);
 
                 $user->getUniversityStatus($this->getCurrentAcademicYear())
                     ->setStatus($formData['university_status']);

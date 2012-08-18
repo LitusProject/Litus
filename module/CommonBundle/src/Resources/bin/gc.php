@@ -76,7 +76,6 @@ if (isset($opts->a) || isset($opts->se)) {
 
     $em->flush();
 
-    // Memory Considerations
     unset($session, $sessions);
 }
 
@@ -93,6 +92,5 @@ if (isset($opts->a) || isset($opts->sh)) {
 
     $em->flush();
 
-    // Memory Considerations
     unset($code, $codes);
 }

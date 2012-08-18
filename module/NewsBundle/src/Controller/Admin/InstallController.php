@@ -25,10 +25,7 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig()
-    {
-        $this->_installLanguages();
-    }
+    protected function initConfig() {}
 
     protected function initAcl()
     {
@@ -41,26 +38,5 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
-    }
-
-    private function _installLanguages()
-    {
-        $languages = array(
-            'en' => 'English',
-            'nl' => 'Dutch'
-        );
-
-        foreach($languages as $abbrev => $name) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev($abbrev);
-
-            if (null == $language) {
-                $language = new Language($abbrev, $name);
-                $this->getEntityManager()->persist($language);
-            }
-        }
-
-        $this->getEntityManager()->flush();
     }
 }

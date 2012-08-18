@@ -44,7 +44,7 @@ class Translation
     private $category;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var \CommonBundle\Entity\General\Language The language of this translation
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @JoinColumn(name="language", referencedColumnName="id")
@@ -52,7 +52,7 @@ class Translation
     private $language;
 
     /**
-     * @var string The content of this tanslation
+     * @var string The content of this translation
      *
      * @Column(type="string")
      */

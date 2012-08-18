@@ -19,8 +19,7 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    PageBundle\Entity\Category,
-    PageBundle\Entity\Nodes\Page;
+    PageBundle\Entity\Category;
 
 /**
  * This entity stores the node item.
@@ -47,7 +46,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="\PageBundle\Entity\Category")
+     * @ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @JoinColumn(name="category", referencedColumnName="id")
      */
     private $category;
@@ -65,7 +64,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $editRoles;
 
     /**
-     * @var string The name of this tanslation
+     * @var string The name of this page
      *
      * @Column(type="string")
      */
@@ -80,20 +79,20 @@ class Page extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param \PageBunlde\Entity\Node\Page $parent
-     * @param array $editGroups
+     * @param string $name
+     * @param array $editRoles
      * @param string $name
      */
-    public function __construct(Person $person, $name, Category $category, array $editGroups, Page $parent = null)
+    public function __construct(Person $person, $name, Category $category, array $editRoles)
     {
         parent::__construct($person);
 
-        $this->startTime = new DateTime('now');
+        $this->startTime = new DateTime();
 
-        $this->setParent($parent);
-        $this->editGroups = new ArrayCollection($editGroups);
+        $this->category = $category;
+        $this->name = $name;
 
-        $this->name = str_replace(' ', '-', strtolower($name));
+        $this->editRoles = new ArrayCollection($editRoles);
     }
 
     /**
@@ -116,7 +115,6 @@ class Page extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @return \DateTime
-     * @return \PageBundle\Entity\Nodes\Page
      */
     public function getEndTime()
     {
@@ -124,21 +122,39 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param array $editGroups
+     * @param \PageBundle\Entity\Category $category
      * @return \PageBundle\Entity\Nodes\Page
      */
-    public function setEditGroups(array $editGroups)
+    public function setCategory($category)
     {
-        $this->editGroups = new ArrayCollection($editGroups);
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return \PageBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param array $editRoles
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function setEditRoles(array $editRoles)
+    {
+        $this->editRoles = new ArrayCollection($editRoles);
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getEditGroups()
+    public function getEditRoles()
     {
-        return $this->editGroups->toArray();
+        return $this->editRoles->toArray();
     }
 
     /**
@@ -151,36 +167,53 @@ class Page extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
      * @return \PageBundle\Entity\Nodes\Translation
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
+
+            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $fallbackTranslation = $translation;
         }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getTitle(Language $language)
+    public function getTitle(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getTitle();
+
+        return '';
     }
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getContent(Language $language)
+    public function getContent(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getContent();
+
+        return '';
     }
 
     /**
@@ -191,6 +224,22 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function close()
     {
         if (null === $this->endTime)
-            $this->endTime = new DateTime('now');
+            $this->endTime = new DateTime();
+    }
+
+    /**
+     * Checks whether or not the given user can edit the page.
+     *
+     * @return boolean
+     */
+    public function canEdit(Person $person)
+    {
+        foreach ($person->getRoles() as $role)
+        {
+            if ($this->editRoles->contains($role))
+                return true;
+        }
+
+        return false;
     }
 }

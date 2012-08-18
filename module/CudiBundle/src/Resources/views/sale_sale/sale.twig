@@ -306,7 +306,7 @@
 
 					$('#modalAddComment textarea').val(data.sale.comment);
 					$('#modalAddComment .save').click(function () {
-					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}/' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function  (data) {
+					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}/' + data.sale.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
 					        if (data && 'success' == data.status) {
 					    		$('.flashmessage').removeClass('in');
 					    		$('#comment_saved_success').addClass('in');

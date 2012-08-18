@@ -22,6 +22,7 @@
 	        <thead>
 	            <tr>
 	                <th>Title</th>
+	                <th width="150px">Category</th>
 	                <th width="150px">Time</th>
 	                <th width="160px">Author</th>
 	                <th width="70px">Actions</th>
@@ -30,10 +31,11 @@
 
 	        <tbody>
 	            {% for page in paginator %}
-	                <tr class="item">
+	                <tr class="item item-{{ page.getId() }}">
 	                    <td>{{ page.getTitle(language) }}</td>
+	                    <td>{{ page.getCategory().getName(language) }}</td>
 	                    <td>{{ dateLocalized(page.getCreationTime(), 'dd/MM/y H:m') }}</td>
-	                    <td>{{ page.getUpdatePerson().getFullName() }}</td>
+	                    <td>{{ page.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_page', 'edit') %}
 	                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
@@ -103,7 +105,7 @@
 			});
 			var id = $this.data('id');
 			removePage.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_page', {"action": "delete"})}}/' + id, function  (data) {
+				$.post('{{ url('admin_page', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.page_removed_success').removeClass('hide');

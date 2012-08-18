@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Name')
             ->setRequired()
             ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new RoleValidator());
+            ->addValidator(new RoleValidator($this->_entityManager));
         $this->addElement($field);
 
         $field = new Multiselect('parents');

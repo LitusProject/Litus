@@ -74,7 +74,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
      * @param array $actions The role's actions
      * @return array
      */
-    public function _createActionsPopulationArray(array $actions)
+    private function _createActionsPopulationArray(array $actions)
     {
         $actionsArray = array();
         foreach ($actions as $action) {

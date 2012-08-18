@@ -28,7 +28,7 @@
 
             <tbody>
                 {% for role in paginator %}
-                    <tr class="item">
+                    <tr class="item item-{{ role.getName() }}">
                         <td>{{ role.getName() }}</td>
                         <td class="actions">
                             {% if hasAccess('admin_role', 'edit') %}
@@ -73,26 +73,29 @@
 			$('.item .delete').click(openModal);
 		});
 
-		function openModal(e) {
-			var $this = $(this);
-
-			e.preventDefault();
-			var removeRole = $('#removeRole');
-			removeRole.find('.name').html($(this).data('name'));
-			removeRole.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_role', {"action": "delete"})}}/' + $this.data('name'), function  (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.role_removed_success').removeClass('hide');
-    					$this.parent().parent().remove();
-    					removeRole.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeRole.modal();
-		}
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeRole = $('#removeRole');
+            removeRole.find('.name').html($(this).data('name'));
+            removeRole.find('.cancel').one('click', function () {
+                removeRole.modal('hide');
+            });
+            var name = $this.data('name');
+            removeRole.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_role', {"action": "delete"})}}/name/' + name, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.role_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeRole.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeRole.modal();
+        }
 
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');

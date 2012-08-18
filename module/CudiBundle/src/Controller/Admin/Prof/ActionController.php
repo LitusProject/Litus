@@ -319,7 +319,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    public function _getAction()
+    private function _getAction()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

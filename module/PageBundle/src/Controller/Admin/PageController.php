@@ -26,8 +26,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * PageController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class PageController extends \CommonBundle\Component\Controller\ActionController
+class PageController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -55,7 +56,27 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $page = new Page($this->getAuthentication()->getPersonObject());
+                $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
+
+                $category = $this->getEntityManager()
+                    ->getRepository('PageBundle\Entity\Category')
+                    ->findOneById($formData['category']);
+
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
+
+                $page = new Page(
+                    $this->getAuthentication()->getPersonObject(),
+                    str_replace(' ', '-', strtolower($formData['title_' . $fallbackLanguage->getAbbrev()])),
+                    $category,
+                    $editRoles
+                );
                 $this->getEntityManager()->persist($page);
 
                 $languages = $this->getEntityManager()
@@ -63,21 +84,19 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = new Translation($page, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
-                    $this->getEntityManager()->persist($translation);
+                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $page,
+                            $language,
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['content_' . $language->getAbbrev()]
+                        );
 
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
-
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Page added: ' . $title
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -94,19 +113,21 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                return;
+                return new ViewModel();
             }
         }
 
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form
+            )
         );
     }
 
     public function editAction()
     {
         if (!($page = $this->_getPage()))
-            return;
+            return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $page);
 
@@ -114,35 +135,47 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $page->setUpdatePerson($this->getAuthentication()->getPersonObject());
+                $page->close();
+
+                $category = $this->getEntityManager()
+                    ->getRepository('PageBundle\Entity\Category')
+                    ->findOneById($formData['category']);
+
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($editRole);
+                    }
+                }
+
+                $newPage = new Page(
+                    $this->getAuthentication()->getPersonObject(),
+                    $page->getName(),
+                    $category,
+                    $editRoles
+                );
+                $this->getEntityManager()->persist($newPage);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = $page->getTranslation($language);
+                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $newPage,
+                            $language,
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['content_' . $language->getAbbrev()]
+                        );
 
-                    if ($translation) {
-                        $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
-                    } else {
-                        $translation = new Translation($page, $language, $formData['content_' . $language->getAbbrev()], $formData['title_' . $language->getAbbrev()]);
                         $this->getEntityManager()->persist($translation);
                     }
-
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();
-
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Page edited: ' . $title
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -159,12 +192,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                return;
+                return new ViewModel();
             }
         }
 
-        return array(
-            'form' => $form,
+        return new ViewModel(
+            array(
+                'form' => $form
+            )
         );
     }
 
@@ -175,29 +210,20 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (!($page = $this->_getPage()))
             return;
 
-        $this->getEntityManager()->remove($page);
+        $page->close();
 
         $this->getEntityManager()->flush();
 
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Page deleted: ' . $page->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
                 )
-        );
-
-        return array(
-            'result' => array(
-                'status' => 'success'
-            ),
+            )
         );
     }
 
-    public function _getPage()
+    private function _getPage()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

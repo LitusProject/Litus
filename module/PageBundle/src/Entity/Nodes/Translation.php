@@ -44,7 +44,7 @@ class Translation
     private $page;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var \CommonBundle\Entity\General\Language The language of this translation
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @JoinColumn(name="language", referencedColumnName="id")
@@ -52,32 +52,31 @@ class Translation
     private $language;
 
     /**
-     * @var string The content of this tanslation
-     *
-     * @Column(type="text")
-     */
-    private $content;
-
-    /**
-     * @var string The title of this tanslation
+     * @var string The title of this translation
      *
      * @Column(type="string")
      */
     private $title;
 
     /**
+     * @var string The content of this translation
+     *
+     * @Column(type="text")
+     */
+    private $content;
+
+    /**
      * @param \PageBundle\Entity\Nodes\Page $page
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
      * @param string $title
+     * @param string $content
      */
-    public function __construct(Page $page, Language $language, $content, $title)
+    public function __construct(Page $page, Language $language, $title, $content)
     {
         $this->page = $page;
         $this->language = $language;
-        $this->content = $content;
         $this->title = $title;
-        $this->_setName($title);
+        $this->content = $content;
     }
 
     /**
@@ -112,26 +111,6 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->_setName($title);
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return \PageBundle\Entity\Nodes\Translation
-     */
-    private function _setName($name)
-    {
-        $this->name = str_replace(' ', '_', strtolower($name));
         return $this;
     }
 

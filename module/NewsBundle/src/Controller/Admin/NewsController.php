@@ -171,7 +171,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($news = $this->_getNews()))
-            return;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($news);
 
@@ -186,7 +186,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    public function _getNews()
+    private function _getNews()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

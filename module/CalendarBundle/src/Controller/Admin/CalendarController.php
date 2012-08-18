@@ -176,7 +176,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function _getEvent()
+    private function _getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

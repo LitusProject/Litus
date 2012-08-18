@@ -79,11 +79,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                     }
                 }
 
-                $newRole = new Role(
+                $role = new Role(
                     $formData['name'], false, $parents, $actions
                 );
 
-                $this->getEntityManager()->persist($newRole);
+                $this->getEntityManager()->persist($role);
 
                 $this->getEntityManager()->flush();
 

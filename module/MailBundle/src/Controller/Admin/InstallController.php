@@ -83,30 +83,5 @@ Jorn Hendrickx',
                 )
             )
         );
-
-        $this->installRoles(
-            array(
-                'cudi' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                    )
-                ),
-                'cudi_groco' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'admin_mail_prof' => array(
-                            'cudi'
-                        ),
-                        'admin_mail' => array(
-                            'groups', 'send'
-                        ),
-                    )
-                ),
-            )
-        );
     }
 }

@@ -4,16 +4,16 @@
 	{% include 'admin_academic/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
-	<div class="flashmessage success_message full_width student_removed_success hide">
+	<div class="flashmessage success_message full_width academic_removed_success hide">
 		<div class="title">Success</div>
 		<div class="content">
-			<p>The student was successfully removed!</p>
+			<p>The academic was successfully removed!</p>
 		</div>
 	</div>
-	<div class="flashmessage error_message full_width student_removed_error hide">
+	<div class="flashmessage error_message full_width academic_removed_error hide">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while trying to delete a student.</p>
+			<p>An error occurred while trying to delete the academic.</p>
 		</div>
 	</div>
 
@@ -77,7 +77,7 @@
 		</div>
 	</div>
 
-	<div class="modal hide fade" id="removeStudent">
+	<div class="modal hide fade" id="removeAcademic">
 		<div class="modal-header">
 			<span>Litus Admin</span>
 			/Delete Academic
@@ -141,31 +141,31 @@
 		function openModal(e) {
 			var $this = $(this);
 			e.preventDefault();
-			var removeStudent = $('#removeStudent');
-			removeStudent.find('.fullname').html($(this).data('fullname'));
-			removeStudent.find('.cancel').one('click', function () {
-				removeStudent.modal('hide');
+			var removeAcademic = $('#removeAcademic');
+			removeAcademic.find('.fullname').html($(this).data('fullname'));
+			removeAcademic.find('.cancel').one('click', function () {
+				removeAcademic.modal('hide');
 			});
 			var id = $this.data('id');
-			removeStudent.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + id, function  (data) {
+			removeAcademic.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
-    					$('.student_removed_success').removeClass('hide');
+    					$('.academic_removed_success').removeClass('hide');
     					$('.item-' + id).remove();
-    					removeStudent.modal('hide');
+    					removeAcademic.modal('hide');
     				} else {
     				    errorRemove();
     				}
 				}, 'json').error(errorRemove);
 			});
-			removeStudent.modal();
+			removeAcademic.modal();
 		}
 
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
-		    $('.student_removed_error').removeClass('hide');
-		    $('#removeStudent').modal('hide');
+		    $('.academic_removed_error').removeClass('hide');
+		    $('#removeAcademic').modal('hide');
 		}
 	</script>
 {% endblock %}

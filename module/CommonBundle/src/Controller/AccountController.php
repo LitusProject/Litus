@@ -79,7 +79,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         // on post: save new password, set code = null
     }
 
-    public function _getUser()
+    private function _getUser()
     {
         if (null === $this->getParam('code')) {
             $this->flashMessenger()->addMessage(
