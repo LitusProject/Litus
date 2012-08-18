@@ -41,11 +41,14 @@
 	                    <td>{{ event.getEvent().getEndDate().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 	                        <ul>
+	                        	{% if hasAccess('admin_company_event', 'editPoster') %}
+	                            	<li><a href="{{ url('admin_company_event', {"action": "editPoster", "id": event.getId()}) }}" class="calendar_edit">Poster</a></li>
+                                {% endif %}
 	                        	{% if hasAccess('admin_company_event', 'delete') %}
 	                            	<li><a href="#" class="delete" data-id="{{ event.getId() }}" data-name="{{ event.getEvent().getTitle(language) }}">Delete</a></li>
 	                            {% endif %}
                             	{% if hasAccess('admin_company_event', 'edit') %}
-                                	<li><a href="{{ url('admin_company_event', {"action": "edit", "id": event.getId()}) }}" class="edit">Edit</a></li>
+                                	<li><a href="{{ url('admin_company_event', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a></li>
                                 {% endif %}
 	                        </ul>
 	                    </td>

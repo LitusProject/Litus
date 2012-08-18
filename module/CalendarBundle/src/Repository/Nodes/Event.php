@@ -19,10 +19,33 @@ class Event extends EntityRepository
         $resultSet = $query->select('e')
             ->from('CalendarBundle\Entity\Nodes\Event', 'e')
             ->where(
-                $query->expr()->gt('e.endDate', ':now')
+                $query->expr()->orX(
+                    $query->expr()->gt('e.endDate', ':now'),
+                    $query->expr()->gt('e.startDate', ':now')
+                )
             )
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllBetween(DateTime $first, DateTime $last)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('CalendarBundle\Entity\Nodes\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('e.startDate', ':first'),
+                    $query->expr()->lt('e.startDate', ':last')
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('first', $first)
+            ->setParameter('last', $last)
             ->getQuery()
             ->getResult();
 

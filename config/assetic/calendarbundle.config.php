@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'controllers'  => array(
         'calendar_install' => array(
@@ -20,7 +20,6 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
-    
         'admin_calendar' => array(
             '@common_jquery',
             '@admin_js',
@@ -31,6 +30,21 @@ return array(
             '@gollum_css',
             '@gollum_js',
             '@admin_css',
+        ),
+        'common_calendar' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@calendar_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@calendar_js',
+            '@common_spin_js',
         ),
     ),
     'routes' => array(),

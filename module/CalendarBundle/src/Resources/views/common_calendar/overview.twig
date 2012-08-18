@@ -1,0 +1,26 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ translator().translate('Calendar') }}</h2>
+    </div>
+
+    <div class="row" id="calendar"></div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#calendar').calendar(
+                {
+                    url: '{{ url('common_calendar', {'action': 'month'}) }}',
+                    month: {{ date.format('m') }},
+                    year: {{ date.format('Y') }},
+                    previousText: '{{ translator().translate('Previous') }}',
+                    nextText: '{{ translator().translate('Next') }}',
+                    viewText: '{{ translator().translate('View') }}',
+                }
+            );
+        });
+    </script>
+{% endblock %}

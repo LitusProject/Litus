@@ -1,0 +1,27 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ translator().translate('Calendar') }}</h2>
+    </div>
+
+    <p>
+        <i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}
+        {% if event.getPoster() %}
+            <div class="row">
+                <div class="span3">
+                    <img src="{{ url('common_calendar', {'action':'poster', 'id': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}"/>
+                </div>
+                <div class="span9">
+                    <blockquote>
+                        {{ markdown(event.getContent(language)) }}
+                    </blockquote>
+                </div>
+            </div>
+        {% else %}
+            <blockquote>
+                {{ markdown(event.getContent(language)) }}
+            </blockquote>
+        {% endif %}
+    </p>
+{% endblock %}
