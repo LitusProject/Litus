@@ -15,7 +15,10 @@
 
 namespace CalendarBundle\Controller;
 
-use Zend\Http\Headers,
+use DateInterval,
+    DateTime,
+    Zend\Date\Date,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -46,6 +49,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'calendarItems' => $calendarItems,
+                'date' => new DateTime(),
             )
         );
     }
@@ -84,6 +88,59 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'data' => $data,
+            )
+        );
+    }
+
+    public function monthAction()
+    {
+        $date = $this->getParam('id');
+        $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
+
+        if (!$first) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $last = clone $first;
+        $last->add(new DateInterval('P1M'));
+
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+            ->findAllBetween($first, $last);
+
+        $calendarItems = array();
+        foreach($events as $event) {
+            $date = $event->getStartDate()->format('d-M');
+            $startDate = new Date($event->getStartDate()->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
+            if (!isset($calendarItems[$date])) {
+                $calendarItems[$date] = (object) array(
+                    'date' => $startDate->toString('d MMM'),
+                    'events' => array()
+                );
+            }
+            $calendarItems[$date]->events[] = (object) array(
+                'id' => $event->getId(),
+                'title' => $event->getTitle($this->getLanguage()),
+                'startDate' => $startDate->toString('h:mm'),
+                'url' => $this->url()->fromRoute(
+                    'common_calendar',
+                    array(
+                        'action' => 'view',
+                        'id' => $event->getId(),
+                    )
+                ),
+            );
+        }
+
+        $first = new Date($first->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'month' => ucfirst($first->toString('MMMM')),
+                    'days' => $calendarItems,
+                )
             )
         );
     }

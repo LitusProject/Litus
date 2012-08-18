@@ -6,25 +6,22 @@
         <h2>{{ translator().translate('Calendar') }}</h2>
     </div>
 
-    {% for day in calendarItems %}
-        <div class="item">
-            <span class="date calendar">{{ dateLocalized(day.date, 'd MMM') }}</span>
+    <div class="row" id="calendar"></div>
+{% endblock %}
 
-            {% for event in day.events %}
-                <p>
-                    <i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}
-                    <blockquote>
-                        {{ markdown(event.getContent(language)) }}
-                        <small><a href="{{ url('common_calendar', {'action': 'view', 'id': event.getId()}) }}">{{ translator().translate('View') }}</a></small>
-                    </blockquote>
-                </p>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="headingSpacer"></div>
-
-        <div class="alert">
-            <strong>{{ translator().translate('Warning') }}</strong> {{ translator().translate('No events were created yet.') }}
-        </div>
-    {% endfor %}
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#calendar').calendar(
+                {
+                    url: '{{ url('common_calendar', {'action': 'month'}) }}',
+                    month: {{ date.format('m') }},
+                    year: {{ date.format('Y') }},
+                    previousText: '{{ translator().translate('Previous') }}',
+                    nextText: '{{ translator().translate('Next') }}',
+                    viewText: '{{ translator().translate('View') }}',
+                }
+            );
+        });
+    </script>
 {% endblock %}

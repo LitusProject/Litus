@@ -23,10 +23,65 @@ return array(
                 'common_calendar'  => 'CalendarBundle\Controller\CalendarController',
             ),
 
+            'assetic_configuration' => array(
+                'parameters' => array(
+                    'config' => array(
+                        'modules'      => array(
+                            'calendarbundle' => array(
+                                'root_path' => __DIR__ . '/../assets',
+                                'collections' => array(
+                                    'calendar_css' => array(
+                                        'assets' => array(
+                                            'calendar/less/calendar.less'
+                                        ),
+                                        'filters' => array(
+                                            'calendar_less' => array(
+                                                'name' => 'LessFilter',
+                                                'parameters' => array(
+                                                    'nodeBin'   => '/usr/local/bin/node',
+                                                    'nodePaths' => array(
+                                                        '/usr/local/lib/node_modules',
+                                                    ),
+                                                    'compress'  => true,
+                                                ),
+                                            ),
+                                        ),
+                                        'options' => array(
+                                            'output' => 'calendar_css.css',
+                                        ),
+                                    ),
+                                    'calendar_js' => array(
+                                        'assets' => array(
+                                            'calendar/js/calendar.js',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
                         'calendarbundle' => __DIR__ . '/../../Entity',
+                    ),
+                ),
+            ),
+
+            'translator' => array(
+                'parameters' => array(
+                    'adapter' => 'ArrayAdapter',
+                    'translations' => array(
+                        'calendar_en' => array(
+                            'content' => __DIR__ . '/../translations/common.en.php',
+                            'locale'  => 'en',
+                        ),
+                        'calendar_nl' => array(
+                            'content' => __DIR__ . '/../translations/common.nl.php',
+                            'locale'  => 'nl',
+                        ),
                     ),
                 ),
             ),
