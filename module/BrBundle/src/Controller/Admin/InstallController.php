@@ -46,7 +46,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'editLogo', 'edit', 'logo', 'manage'
                     ),
                     'admin_company_event' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'editPoster', 'manage'
                     ),
                     'admin_company_intership' => array(
                         'add', 'delete', 'edit', 'manage'

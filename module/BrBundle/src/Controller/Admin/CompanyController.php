@@ -209,7 +209,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'The company\'s log has successfully been updated!'
+                        'The company\'s logo has successfully been updated!'
                     )
                 );
 

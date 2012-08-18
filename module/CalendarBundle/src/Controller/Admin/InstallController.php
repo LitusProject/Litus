@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace CalendarBundle\Controller\Admin;
 
 /**
@@ -9,22 +9,34 @@ namespace CalendarBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function _initConfig()
+    protected function initConfig()
     {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'calendar.poster_path',
+                    'value'       => 'data/calendar/posters',
+                    'description' => 'The path to the calendar poster files',
+                ),
+            )
+        );
     }
-
-    protected function _initAcl()
+    
+    protected function initAcl()
     {
-        $this->installAclStructure(
+        $this->installAcl(
             array(
                 'calendarBundle' => array(
                     'admin_calendar' => array(
-                        'add', 'delete', 'edit', 'manage'
+                        'add', 'delete', 'edit', 'editPoster', 'manage', 'poster'
+                    ),
+                    'common_calendar' => array(
+                        'overview', 'poster', 'view'
                     ),
                 )
             )
         );
-
+        
         $this->installRoles(
             array(
                 'guest' => array(

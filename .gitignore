@@ -18,5 +18,6 @@ data/cudi/files
 data/common/profile
 data/proxies
 data/br/companies
+data/calendar/posters
 
 public/_assetic

@@ -3,7 +3,8 @@
 namespace CalendarBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    DateTime;
 
 /**
  * This entity stores the node item.
@@ -35,11 +36,18 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     private $endDate;
 
     /**
+     * @var string The poster of this event
+     *
+     * @Column(type="string", nullable=true)
+     */
+    private $poster;
+
+    /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      */
-    public function __construct(Person $person, $startDate, $endDate)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
     {
         parent::__construct($person);
 
@@ -83,6 +91,25 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * @param string $poster
+     *
+     * @return \CalendarBundle\Entity\Nodes\Event
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = trim($poster, '/');
+        return $this;
     }
 
     /**

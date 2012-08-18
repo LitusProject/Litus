@@ -93,6 +93,11 @@ return array(
                                             'common/js/typeaheadRemote.js',
                                         ),
                                     ),
+                                    'common_spin_js' => array(
+                                        'assets'  => array(
+                                            'common/js/spin.min.js',
+                                        ),
+                                    ),
 
                                     'admin_css' => array(
                                         'assets' => array(
