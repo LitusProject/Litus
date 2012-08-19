@@ -260,21 +260,23 @@ header {
                 color: @headingsColor;
                 text-rendering: optimizelegibility;
 
-                &.calendar {
-                    width: 150px !important;
+                &.left {
+                    width: 100px !important;
                     text-align: right;
-                    margin-left: -170px !important;
+                    margin-left: -120px !important;
 
                     .rotate(-90deg);
                     .rotate-origin(100% 0%);
                 }
 
-                &.news {
-                    margin-top: 30px;
-                    margin-right: -45px !important;
+                &.right {
+                    width: 100px !important;
+                    margin-top: 26px;
+                    margin-right: -120px !important;
                     right: 0;
 
                     .rotate(90deg);
+                    .rotate-origin(0% 0%);
                 }
             }
         }

@@ -5,7 +5,9 @@
         <h2>{{ translator().translate('Calendar') }}</h2>
     </div>
 
-    <p>
+    <div class="item">
+        <span class="date left">{{ dateLocalized(event.getStartDate(), 'd MMM') }}</span>
+
         <i class="icon-time"></i> {{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}
         {% if event.getPoster() %}
             <div class="row">
@@ -14,7 +16,9 @@
                 </div>
                 <div class="span9">
                     <blockquote>
-                        {{ markdown(event.getContent(language)) }}
+                        {% autoescape false %}
+                            {{ markdown(event.getContent(language)) }}
+                        {% endautoescape %}
                     </blockquote>
                 </div>
             </div>
@@ -23,5 +27,5 @@
                 {{ markdown(event.getContent(language)) }}
             </blockquote>
         {% endif %}
-    </p>
+    </div>
 {% endblock %}
