@@ -23,7 +23,18 @@ namespace PageBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig()
+    {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'page.file_path',
+                    'value'       => 'data/page/files',
+                    'description' => 'The path to the page files',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {

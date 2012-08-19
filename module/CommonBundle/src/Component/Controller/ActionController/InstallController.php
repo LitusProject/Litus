@@ -70,11 +70,17 @@ abstract class InstallController extends AdminController
     protected function installConfig($config)
     {
         foreach($config as $item) {
-            $value = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue($item['key']);
+            try {
+                $value = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue($item['key']);
+                if (null === $value) {
+                    $config = new Config($item['key'], $item['value']);
+                    $config->setDescription($item['description']);
 
-            if (null === $value) {
+                    $this->getEntityManager()->persist($config);
+                }
+            } catch(\Exception $e) {
                 $config = new Config($item['key'], $item['value']);
                 $config->setDescription($item['description']);
 

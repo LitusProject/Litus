@@ -102,8 +102,13 @@ var LanguageDefinition = {
                                         progress.find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
                                     },
                                     onSubmitted: function (data) {
-                                        $field.gollum('replaceSelection', '[' + linkText.val() + '](' + data.name + ')');
-                                        modal.modal('hide');
+                                        if (data && data.name) {
+                                            $field.gollum('replaceSelection', '[' + linkText.val() + '](' + data.name + ')');
+                                            modal.modal('hide');
+                                        } else {
+                                            progress.hide();
+                                            form.show();
+                                        }
                                     },
                                     onSubmit: function () {
                                         form.hide();
@@ -174,8 +179,13 @@ var LanguageDefinition = {
                                         progress.find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
                                     },
                                     onSubmitted: function (data) {
-                                        $field.gollum('replaceSelection', '![' + linkText.val() + '](' + data.name + ')');
-                                        modal.modal('hide');
+                                        if (data && data.name) {
+                                            $field.gollum('replaceSelection', '![' + linkText.val() + '](' + data.name + ')');
+                                            modal.modal('hide');
+                                        } else {
+                                            progress.hide();
+                                            form.show();
+                                        }
                                     },
                                     onSubmit: function () {
                                         form.hide();
