@@ -16,6 +16,7 @@
 namespace PageBundle\Controller;
 
 use PageBundle\Entity\Nodes\Page,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,6 +35,36 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'page' => $page,
                 'submenu' => $this->_buildSubmenu($page)
+            )
+        );
+    }
+
+    public function fileAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.file_path') . '/' . $this->getParam('name');
+
+        if ($this->getParam('name') == '' || !file_exists($filePath)) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
+            'Content-type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

@@ -87,11 +87,12 @@ return array(
                         'common_news' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/news[/:action[/:name]][/page/:page]',
+                                'route'    => '[/:language]/news[/:action[/:name]][/page/:page]',
                                 'constraints' => array(
                                     'action'   => '[a-zA-Z0-9_-]*',
                                     'name'     => '[a-zA-Z0-9_-]*',
                                     'page'     => '[0-9]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'common_news',

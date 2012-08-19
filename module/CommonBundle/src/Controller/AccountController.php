@@ -74,9 +74,6 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 'form' => $form,
             )
         );
-        // check if code exists
-        // show field to enter new password
-        // on post: save new password, set code = null
     }
 
     private function _getUser()
