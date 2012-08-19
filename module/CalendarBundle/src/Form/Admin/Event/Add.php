@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         if ($date) {
             $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
-            $name = $date->format('d_m_Y_H_i_s') . '_' . str_replace(' ', '-', strtolower($data['title_' . $fallbackLanguage->getAbbrev()]));
+            $name = $date->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($data['title_' . $fallbackLanguage->getAbbrev()]);
 
             $event = $this->_entityManager
                 ->getRepository('CalendarBundle\Entity\Nodes\Event')

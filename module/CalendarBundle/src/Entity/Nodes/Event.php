@@ -194,7 +194,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     public function updateName()
     {
         $translation = $this->getTranslation();
-        $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . str_replace(' ', '-', strtolower($translation->getTitle()));
+        $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
         return $this;
     }
 }
