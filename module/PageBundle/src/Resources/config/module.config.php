@@ -102,9 +102,9 @@ return array(
                         'page' => array(
                             'type' => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '[/:language]/page[/:title]',
+                                'route'    => '[/:language]/page[/:name]',
                                 'constraints' => array(
-                                    'title'    => '[a-zA-Z0-9_-]*',
+                                    'name'     => '[a-zA-Z0-9_-]*',
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(

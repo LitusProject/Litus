@@ -15,7 +15,8 @@
 
 namespace PageBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\Url,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given page title against the database to check whether it is
@@ -33,22 +34,28 @@ class Title extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
+     * @var string The name exluded from this check
+     */
+    private $_exclude = '';
+
+    /**
      * @var array The error messages
      */
     protected $_messageTemplates = array(
-        self::NOT_VALID => 'This page title already exists'
+        self::NOT_VALID => 'There already exists a page with this title'
     );
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \PageBundle\Entity\Nodes\Translation The translation exluded from this check
+     * @param string The name exluded from this check
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $exclude = '', $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
+        $this->_exclude = $exclude;
     }
 
     /**
@@ -64,9 +71,9 @@ class Title extends \Zend\Validator\AbstractValidator
 
         $page = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName(str_replace(' ', '-', strtolower($value)));
+            ->findOneByName(Url::createSlug($value));
 
-        if (null === $page)
+        if (null === $page || $page->getName() == $this->_exclude)
             return true;
 
         $this->error(self::NOT_VALID);

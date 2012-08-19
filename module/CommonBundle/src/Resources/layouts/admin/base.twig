@@ -18,7 +18,7 @@
 
 			<p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
 			<p id="tag">
-                Welcome, {{ authenticatedUser }} |
+                Welcome, {% if authenticatedPerson is null %} Guest {% else %} {{ authenticatedPerson.getFirstName() }} {% endif %} |
                 <a href="{{ url('admin_auth', {"action": "logout"}) }}">Logout</a>
             </p>
 		</header>

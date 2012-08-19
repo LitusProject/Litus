@@ -73,10 +73,19 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 $page = new Page(
                     $this->getAuthentication()->getPersonObject(),
-                    str_replace(' ', '-', strtolower($formData['title_' . $fallbackLanguage->getAbbrev()])),
+                    $formData['title_' . $fallbackLanguage->getAbbrev()],
                     $category,
                     $editRoles
                 );
+
+                if ('' != $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+
+                    $page->setParent($parent);
+                }
+
                 $this->getEntityManager()->persist($page);
 
                 $languages = $this->getEntityManager()
@@ -156,6 +165,31 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     $category,
                     $editRoles
                 );
+
+                if ('' != $formData['parent']) {
+                    $parent = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findOneById($formData['parent']);
+
+                    $newPage->setParent($parent);
+                }
+
+                $orphanedPages = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Nodes\Page')
+                        ->findByParent($page->getId());
+
+                foreach ($orphanedPages as $orphanedPage) {
+                    $orphanedPage->setParent($newPage);
+                }
+
+                $orphanedCategories = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Category')
+                        ->findByParent($page->getId());
+
+                foreach ($orphanedCategories as $orphanedCategory) {
+                    $orphanedCategory->setParent($newPage);
+                }
+
                 $this->getEntityManager()->persist($newPage);
 
                 $languages = $this->getEntityManager()
@@ -254,6 +288,25 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     FlashMessage::ERROR,
                     'Error',
                     'No page with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_page',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this page!'
                 )
             );
 

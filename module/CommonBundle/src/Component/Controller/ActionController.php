@@ -22,6 +22,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\Users\Person,
     DateTime,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
@@ -63,9 +64,9 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         $this->initAuthentication();
         $this->initLocalization();
 
-        $authenticatedUser = 'Guest';
+        $authenticatedPerson = null;
         if ($this->getAuthentication()->isAuthenticated())
-            $authenticatedUser = $this->getAuthentication()->getPersonObject()->getFirstName();
+            $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         $result = parent::execute($e);
 
@@ -74,7 +75,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->authenticatedUser = $authenticatedUser;
+        $result->authenticatedPerson = $authenticatedPerson;
         $result->environment = getenv('APPLICATION_ENV');
         $result->developmentInformation = array(
             'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,

@@ -37,8 +37,6 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     {
         $result = parent::execute($e);
 
-        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
-        $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('corporate_auth', array('action' => 'login')));
         $result->unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

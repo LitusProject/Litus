@@ -23,7 +23,7 @@
 	            <tr>
 	                <th>Title</th>
 	                <th width="150px">Category</th>
-	                <th width="150px">Time</th>
+	                <th width="200px">Parent</th>
 	                <th width="160px">Author</th>
 	                <th width="70px">Actions</th>
 	            </tr>
@@ -34,10 +34,10 @@
 	                <tr class="item item-{{ page.getId() }}">
 	                    <td>{{ page.getTitle(language) }}</td>
 	                    <td>{{ page.getCategory().getName(language) }}</td>
-	                    <td>{{ dateLocalized(page.getCreationTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ page.getParent().getTitle(language) }}</td>
 	                    <td>{{ page.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_page', 'edit') %}
+	                        {% if hasAccess('admin_page', 'edit') and page.canBeEditedBy(authenticatedPerson) %}
 	                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
