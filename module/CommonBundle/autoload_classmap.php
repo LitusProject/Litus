@@ -62,6 +62,7 @@ return array(
     'CommonBundle\Component\Util\File\Exception\TmpFileClosedException'                => __DIR__ . '/src/Component/Util/File/Exception/TmpFileClosedException.php',
     'CommonBundle\Component\Util\File\TmpFile'                                         => __DIR__ . '/src/Component/Util/File/TmpFile.php',
     'CommonBundle\Component\Util\File'                                                 => __DIR__ . '/src/Component/Util/File.php',
+    'CommonBundle\Component\Util\Url'                                                  => __DIR__ . '/src/Component/Util/Url.php',
     'CommonBundle\Component\Util\UTF8'                                                 => __DIR__ . '/src/Component/Util/UTF8.php',
     'CommonBundle\Component\Util\Xml\Exception\InvalidArgumentException'               => __DIR__ . '/src/Component/Util/Xml/Exception/InvalidArgumentException.php',
     'CommonBundle\Component\Util\Xml\Generator'                                        => __DIR__ . '/src/Component/Util/Xml/Generator.php',

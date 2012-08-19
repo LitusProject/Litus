@@ -123,6 +123,8 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
                         ->findOneById($formData['parent']);
+
+                    $category->setParent($parent);
                 }
 
                 if (isset($parent))

@@ -27,7 +27,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
     protected function initAcl()
     {
-        $this->installAclStructure(
+        $this->installAcl(
             array(
                 'pageBundle' => array(
                     'admin_page' => array(
@@ -46,13 +46,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installRoles(
             array(
                 'guest' => array(
-                    'parent_roles' => array(),
+                    'system' => true,
+                    'parents' => array(),
                     'actions' => array(
                         'page' => array(
                             'view'
                         ),
                     )
-                )
+                ),
             )
         );
     }

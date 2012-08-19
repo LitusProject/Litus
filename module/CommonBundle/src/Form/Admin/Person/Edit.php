@@ -62,7 +62,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
                 'telephone' => $person->getPhonenumber(),
                 'sex' => $person->getSex(),
                 'roles' => $this->_createRolesPopulationArray($person->getRoles()),
-                'system_roles' => $this->_createSystemRolesPopulationArray($person->getRoles()),
+                'system_roles' => $this->_createSystemRolesPopulationArray($person->getRolesWithoutInheritance()),
                 'code' => $person->getCode() ? $person->getCode()->getCode() : '',
             )
         );

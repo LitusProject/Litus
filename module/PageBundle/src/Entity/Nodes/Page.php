@@ -15,7 +15,8 @@
 
 namespace PageBundle\Entity\Nodes;
 
-use CommonBundle\Entity\General\Language,
+use CommonBundle\Component\Util\Url,
+    CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -64,6 +65,14 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $editRoles;
 
     /**
+     * @var \PageBundle\Entity\Nodes\Page The page's parent
+     *
+     * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @JoinColumn(name="parent", referencedColumnName="id")
+     */
+    private $parent;
+
+    /**
      * @var string The name of this page
      *
      * @Column(type="string")
@@ -90,7 +99,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         $this->startTime = new DateTime();
 
         $this->category = $category;
-        $this->name = $name;
+        $this->name = Url::createSlug($name);
 
         $this->editRoles = new ArrayCollection($editRoles);
     }
@@ -155,6 +164,24 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function getEditRoles()
     {
         return $this->editRoles->toArray();
+    }
+
+    /**
+     * @param \PageBundle\Entity\Nodes\Page $category The page's category
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function setParent(Page $parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return \PageBundle\Entity\Nodes\Page
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
     /**
@@ -230,12 +257,12 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     /**
      * Checks whether or not the given user can edit the page.
      *
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
      * @return boolean
      */
-    public function canEdit(Person $person)
+    public function canBeEditedBy(Person $person)
     {
-        foreach ($person->getRoles() as $role)
-        {
+        foreach ($person->getRolesWithoutInheritance() as $role) {
             if ($this->editRoles->contains($role))
                 return true;
         }

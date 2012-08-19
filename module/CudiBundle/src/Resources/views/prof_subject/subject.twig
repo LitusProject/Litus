@@ -93,7 +93,7 @@
                 <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
                 <td>{{ mapping.getProf().getFullName() }}</td>
                 <td class="actions">
-                    {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedUserObject.getId() %}
+                    {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
                         <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translator().translate('Remove') }}</a>
                     {% endif %}
                 </td>

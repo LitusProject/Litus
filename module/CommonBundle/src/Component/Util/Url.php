@@ -16,29 +16,28 @@
 namespace CommonBundle\Component\Util;
 
 /**
- * Utility class containing methods used for common actions on files.
+ * Utility class containing methods used for common actions on URLs.
  *
- * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class File
+class Url
 {
     /**
-     * Returns the real filename of the given file.
+     * Creates a clean URL slug from the given string.
      *
      * @static
-     * @param string $filename The filename as it is used in the code, with '/' as directory separator
+     * @param string $string The string that will be cleaned
+     * @param string $delimiter The delimiter used to replace spaces
      * @return string
      */
-    public static function getRealFilename($filename)
+    public static function createSlug($string, $delimiter = '-')
     {
-        if ($filename === null)
-            return null;
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
 
-        // Skip the replace, saves time
-        if (DIRECTORY_SEPARATOR === '/')
-            return $filename;
-
-        return str_replace('/', DIRECTORY_SEPARATOR, $filename);
+        return $clean;
     }
 
 }

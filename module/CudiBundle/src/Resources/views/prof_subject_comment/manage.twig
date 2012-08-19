@@ -46,7 +46,7 @@
                 <td>{{ comment.getSummary(70) }}</td>
 				<td class="actions">
 					<a href="#" class="btn btn-primary view" data-text="{{ comment.getText() }}">{{ translator().translate('View') }}</a>
-					{% if comment.getPerson().getId() == authenticatedUserObject.getId() %}
+					{% if comment.getPerson().getId() == authenticatedPerson.getId() %}
 					    <a href="#" class="btn btn-danger delete" data-id="{{ comment.getId() }}">{{ translator().translate('Delete') }}</a>
 					{% endif %}
                 </td>

@@ -54,7 +54,7 @@ class Edit extends Add
         foreach($this->getLanguages() as $language)
             $data['name_' . $language->getAbbrev()] = $category->getName($language, false);
 
-        $data['parent'] = $category->getParent()->getId();
+        $data['parent'] = null !== $category->getParent() ? $category->getParent()->getId() : '';
 
         $this->populate($data);
     }

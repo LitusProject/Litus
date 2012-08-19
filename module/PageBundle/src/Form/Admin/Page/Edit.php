@@ -17,6 +17,7 @@ namespace PageBundle\Form\Admin\Page;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
+    PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Nodes\Page,
     Zend\Form\Element\Submit;
 
@@ -32,6 +33,17 @@ class Edit extends Add
     public function __construct(EntityManager $entityManager, Page $page, $opts = null)
     {
         parent::__construct($entityManager, $opts);
+
+        foreach ($this->getLanguages() as $language) {
+            $title = $this->getSubForm('tab_content')
+                ->getSubForm('tab_' . $language->getAbbrev())
+                ->getElement('title_' . $language->getAbbrev());
+
+            $title->clearValidators();
+            $title->addValidator(
+                new TitleValidator($entityManager, $page->getName())
+            );
+        }
 
         $this->removeElement('submit');
 
@@ -57,6 +69,8 @@ class Edit extends Add
         $data['edit_roles'] = array();
         foreach ($page->getEditRoles() as $role)
             $data['edit_roles'][] = $role->getName();
+
+        $data['parent'] = null !== $page->getParent() ? $page->getParent()->getName() : '';
 
         $this->populate($data);
     }

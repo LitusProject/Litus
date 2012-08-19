@@ -46,7 +46,7 @@
 				</li>
 			</ul>
 			<ul class="nav pull-right auth-nav">
-			    {% if authenticated %}
+			    {% if authenticatedPerson is not null %}
 			        <li class="dropdown" id="accountDropdown">
 			            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			                <span class="profile-wrapper">
@@ -57,8 +57,8 @@
 			            <ul class="dropdown-menu">
 			                <li>
 			                    <a href="">
-			                        <b class="fullName">{{ authenticatedUserObject.getFullName() }}</b>
-			                        <small class="metadata">{{ authenticatedUserObject.getUniversityIdentification() }}</small>
+			                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+			                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
 			                    </a>
 			                </li>
 			                <li class="divider"></li>

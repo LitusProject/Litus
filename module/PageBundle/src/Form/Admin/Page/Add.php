@@ -98,6 +98,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
+        $field = new Select('parent');
+        $field->setLabel('Parent')
+            ->setMultiOptions($this->_createPagesArray())
+            ->setDecorators(array(new FieldDecorator()));
+        $this->addElement($field);
+
         $field = new Submit('submit');
         $field->setLabel('Add')
             ->setAttrib('class', 'page_add')
@@ -118,10 +124,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
+        $categoryOptions = array();
         foreach($categories as $category)
             $categoryOptions[$category->getId()] = $category->getName();
 
         return $categoryOptions;
+    }
+
+    private function _createPagesArray()
+    {
+        $pages = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findAll();
+
+        $pageOptions = array(
+            '' => ''
+        );
+        foreach($pages as $page)
+            $pageOptions[$page->getId()] = $page->getTitle();
+
+        return $pageOptions;
     }
 
     private function _createEditRolesArray()

@@ -122,7 +122,7 @@ abstract class InstallController extends AdminController
                         ->getRepository('CommonBundle\Entity\Acl\Action')
                         ->findOneBy(array('name' => $action, 'resource' => $resource));
 
-                    if (! in_array($action, $role->getActions()))
+                    if (!in_array($action, $role->getActions()))
                         $role->allow($action);
                 }
             }
