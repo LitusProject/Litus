@@ -23,4 +23,16 @@ class Page extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findByCategory($category)
+    {
+        return $this->_em->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findBy(array('category' => $category, 'endTime' => null));
+    }
+
+    public function findByParent($parent)
+    {
+        return $this->_em->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findBy(array('parent' => $parent, 'endTime' => null));
+    }
 }

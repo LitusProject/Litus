@@ -22,30 +22,22 @@
                 <a class="title hidden-desktop" href="#">{{ translator().translate('VTK Leuven vzw') }}</a>
                 <div class="nav-collapse collapse">
         			<ul class="nav main-nav">
-        			    <li class="active">
-        					<a class="custom" href="#">{{ translator().translate('Recreation') }}</a>
-        				</li>
-        			    <li>
-        				    <a href="#">{{ translator().translate('Studies') }}</a>
-        				</li>
-        				<li>
-        				    <a href="#">{{ translator().translate('Company relations') }}</a>
-        				</li>
-        				<li>
-        				    <a href="#">{{ translator().translate('Services') }}</a>
-        				</li>
-        				<li>
-        				    <a href="#">{{ translator().translate('Media') }}</a>
-        				</li>
-        				<li>
-        				    <a href="#">{{ translator().translate('Wiki\'s') }}</a>
-        				</li>
-        				<li>
-        				    <a href="#">{{ translator().translate('About VTK') }}</a>
-        				</li>
-        				<li class="hidden-desktop">
-        				    <a href="#">{{ translator().translate('Login') }}</a>
-        				</li>
+                        {% for item in menu %}
+                            {% if 'category' == item.type %}
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                        {{ item.name }} <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for page in item.items %}
+                                            {% if hasAccess('page', 'view') %}
+                                                <li><a href="{{ url('page', {"name": page.name}) }}">{{ page.title }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
         			</ul>
         		</div>
         		<ul class="nav pull-right lang-nav visible-desktop">
@@ -55,9 +47,7 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-        			            <li>
-        			                <a href="#">{{ translator().translate(language.getName()) }}</a>
-        			            </li>
+        			            <li><a href="#">{{ language.getName() }}</a></li>
         		            {% endfor %}
         		        </ul>
         			</li>
