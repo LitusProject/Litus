@@ -52,13 +52,6 @@ class Translation
     private $title;
 
     /**
-     * @var string The name of this tanslation
-     *
-     * @Column(type="string")
-     */
-    private $name;
-
-    /**
      * @var string The title of this tanslation
      *
      * @Column(type="text")
@@ -79,7 +72,6 @@ class Translation
         $this->location = $location;
         $this->title = $title;
         $this->content = $content;
-        $this->_setName($title);
     }
 
     /**
@@ -133,26 +125,6 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->_setName($title);
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return \CalendarBundle\Entity\Nodes\Translation
-     */
-    private function _setName($name)
-    {
-        $this->name = $this->event->getStartDate()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name));
         return $this;
     }
 

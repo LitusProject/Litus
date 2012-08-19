@@ -16,7 +16,8 @@
 namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This entity stores the node item.
@@ -29,9 +30,16 @@ class News extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var array The translations of this news
      *
-     * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"remove"})
+     * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
+
+    /**
+     * @var string The name of this page
+     *
+     * @Column(type="string")
+     */
+    private $name;
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
@@ -40,6 +48,19 @@ class News extends \CommonBundle\Entity\Nodes\Node
     public function __construct(Person $person)
     {
         parent::__construct($person);
+
+        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s');
+        $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @param \NewsBundle\Entity\Nodes\Translation $translation
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $this->translations->add($translation);
+        return $this;
     }
 
     /**
@@ -98,13 +119,31 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return string
      */
-    public function getSummary(Language $language = null, $allowFallback = true)
+    public function getSummary($length = 100, Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
         if (null !== $translation)
-            return $translation->getSummary();
+            return $translation->getSummary($length);
 
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function updateName()
+    {
+        $translation = $this->getTranslation();
+        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . str_replace(' ', '-', strtolower($translation->getTitle()));
+        return $this;
     }
 }

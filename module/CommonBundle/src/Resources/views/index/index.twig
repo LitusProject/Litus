@@ -12,11 +12,11 @@
 
 		    {% for day in calendarItems %}
 		        <div class="item">
-		        	<span class="date calendar">{{ dateLocalized(day.date, 'd MMM') }}</span>
+		        	<span class="date left">{{ dateLocalized(day.date, 'd MMM') }}</span>
 
 		        	<p>
 		        	    {% for event in day.events %}
-    		        		<i class="icon-time"></i> <a href="{{ url('common_calendar', {'action': 'view', 'id': event.getId()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ markdown(event.getContent(language)) }}">{{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+    		        		<i class="icon-time"></i> <a href="{{ url('common_calendar', {'action': 'view', 'id': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{% autoescape false %}{{ markdown(event.getContent(language)) }}{% endautoescape %}">{{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
     		        	{% endfor %}
 		        	</p>
 		        </div>
@@ -35,20 +35,21 @@
 	   	</div>
 
 	   	<div class="span6">
-	   		<img class="headingIcon" src="/_site/img/glyphicons-news.png" />
+	   		<a href="{{ url('common_news') }}"><img class="headingIcon" src="/_site/img/glyphicons-news.png" /></a>
 	    	<h2>{{ translator().translate('News') }}</h2>
 
 	    	{% for item in newsItems %}
 	    		<div class="item">
-	    			<span class="date news">{{ dateLocalized(item.getUpdateTime(), 'd MMM') }}</span>
+	    			<span class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
 
 	    			<h3>{{ item.getTitle(language) }}</h3>
 
-	    			<p>
+    				<blockquote>
 	    				{% autoescape false %}
-	    					{{ markdown(item.getContent(language)) }}
+	    					{{ markdown(item.getSummary(100, language)) }}
 	    				{% endautoescape %}
-	    			</p>
+	    				<small><a href="{{ url('common_news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translator().translate('View') }}</a></small>
+    				</blockquote>
 	    		</div>
 	    	{% else %}
 	    		<div class="headingSpacer"></div>
