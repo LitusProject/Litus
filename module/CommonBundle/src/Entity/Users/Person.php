@@ -17,10 +17,10 @@ namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
-     CommonBundle\Entity\General\Address,
-     CommonBundle\Entity\General\Language,
-     CommonBundle\Entity\Users\Code,
-     CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\Users\Code,
+    CommonBundle\Entity\Users\Credential,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Zend\Mail\Message,
@@ -185,7 +185,7 @@ abstract class Person
         $this->canLogin = true;
 
         $this->roles = new ArrayCollection($roles);
-           $this->organisationStatuses = new ArrayCollection();
+        $this->organisationStatuses = new ArrayCollection();
     }
 
     /**
@@ -274,6 +274,19 @@ abstract class Person
     {
         $this->roles = new ArrayCollection($roles);
         return $this;
+    }
+
+    /**
+     * Returns a one-dimensional array containing all roles this user has, without
+     * inheritance.
+     *
+     * @return array
+     */
+    public function getRolesWithoutInheritance()
+    {
+        return $this->_unfoldRolesInheritance(
+            $this->roles->toArray()
+        );
     }
 
     /**
@@ -577,5 +590,23 @@ abstract class Person
         }
 
         return $this;
+    }
+
+    /**
+     * This method is called recursively to create a one-dimensional role unfolding the
+     * roles inheritance structure.
+     *
+     * @param array $inheritanceRoles The array with the roles that should be unfolded
+     * @param array $return The one-dimensional return array
+     * @return array
+     */
+    private function _unfoldRolesInheritance(array $inheritanceRoles, array $return = array())
+    {
+        foreach ($inheritanceRoles as $role) {
+            $return[] = $role;
+            $return = $this->_unfoldRolesInheritance($role->getParents(), $return);
+        }
+
+        return $return;
     }
 }

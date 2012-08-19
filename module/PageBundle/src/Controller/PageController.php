@@ -15,64 +15,130 @@
 
 namespace PageBundle\Controller;
 
+use PageBundle\Entity\Nodes\Page,
+    Zend\View\Model\ViewModel;
+
 /**
  * PageController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class PageController extends \CommonBundle\Component\Controller\ActionController\CommonController
+class PageController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function viewAction()
     {
-        if (is_numeric($this->getParam('id'))) {
-            if (!($page = $this->_getTranslationById()))
-                return;
-        } else {
-            if (!($page = $this->_getTranslationByName()))
-                return;
-        }
+        if (!($page = $this->_getPage()))
+            return new ViewModel();
 
-
-        return array(
-            'page' => $page,
+        return new ViewModel(
+            array(
+                'page' => $page,
+                'submenu' => $this->_buildSubmenu($page)
+            )
         );
     }
 
-    public function _getTranslationByName()
+    private function _buildSubmenu(Page $page)
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-            return;
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findByParent($page->getId());
+
+        $categories = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
+            ->findByParent($page->getId());
+
+        $submenu = array();
+        foreach ($pages as $page) {
+            $submenu[] = array(
+                'type'  => 'page',
+                'name'  => $page->getName(),
+                'title' => $page->getTitle($this->getLanguage())
+            );
         }
 
-        $translation = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Nodes\Translation')
-            ->findOneByName($this->getParam('id'));
+        $i = count($submenu);
+        foreach ($categories as $category) {
+            $submenu[$i] = array(
+                'type'  => 'category',
+                'name'  => $category->getName(),
+                'items' => array()
+            );
 
-        if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
-            $this->getResponse()->setStatusCode(404);
-            return;
+            $pages = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->findByCategory($category);
+
+            foreach ($pages as $page) {
+                $submenu[$i]['items'][] = array(
+                    'type'  => 'page',
+                    'name'  => $page->getName(),
+                    'title' => $page->getTitle($this->getLanguage())
+                );
+
+                $sort = array();
+                foreach ($submenu[$i]['items'] as $key => $value)
+                    $sort[$key] = $value['title'];
+
+                array_multisort($sort, $submenu[$i]['items']);
+            }
+
+            $i++;
         }
 
-        return $translation;
+        $sort = array();
+        foreach ($submenu as $key => $value)
+            $sort[$key] = isset($value['title'])? $value['title'] : $value['name'];
+
+        array_multisort($sort, $submenu);
+
+        return $submenu;
     }
 
-    public function _getTranslationById()
+    private function _getPage()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('name')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No name was given to identify the page!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'page',
+                array(
+                    'action' => 'view'
+                )
+            );
+
             return;
         }
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneById($this->getParam('id'));
+            ->findOneByName($this->getParam('name'));
 
         if (null === $page) {
-            $this->getResponse()->setStatusCode(404);
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No page with the given name was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'page',
+                array(
+                    'action' => 'view'
+                )
+            );
+
             return;
         }
 
-        return $page->getTranslation($this->getLanguage());
+        return $page;
     }
 }

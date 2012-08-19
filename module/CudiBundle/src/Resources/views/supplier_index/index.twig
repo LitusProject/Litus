@@ -1,8 +1,8 @@
 {% extends 'supplier/base.twig' %}
 
 {% block content %}
-    {% if authenticated %}
-	    <h2>{% autoescape false %}{{ translator().translate('Welcome <i>%name%</i> of <i>%supplier%</i>')|replace({'%name%':authenticatedUser, '%supplier%':supplier.getName()}) }}{% endautoescape %}</h2>
+    {% if authenticatedPerson is not null %}
+	    <h2>{% autoescape false %}{{ translator().translate('Welcome <i>%name%</i> of <i>%supplier%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%supplier%': supplier.getName()}) }}{% endautoescape %}</h2>
 	{% else %}
 	    <div style="text-align: center;">
 	        <img src="/img/litus.png" alt="Litus" />

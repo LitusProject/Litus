@@ -40,8 +40,6 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $result = parent::execute($e);
 
-        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
-        $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = new LoginForm($this->url()->fromRoute('prof_auth', array('action' => 'login')));
         $result->shibbolethUrl = $this->_getShibbolethUrl();
         $result->unionUrl = $this->getEntityManager()

@@ -39,6 +39,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $result = parent::execute($e);
 
+        $result->menu = $this->_buildMenu();
+
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
                 'index',
@@ -48,7 +50,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             )
         );
 
-        $result->authenticatedUserObject = $this->getAuthentication()->getPersonObject();
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = $loginForm;
         $result->shibbolethUrl = $this->_getShibbolethUrl();
@@ -73,6 +74,52 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'auth',
             'redirect_route' => 'index'
         );
+    }
+
+    private function _buildMenu()
+    {
+        $categories = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
+            ->findByParent(null);
+
+        $menu = array();
+
+        $i = 0;
+        foreach ($categories as $category) {
+            $menu[$i] = array(
+                'type'  => 'category',
+                'name'  => $category->getName(),
+                'items' => array()
+            );
+
+            $pages = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Nodes\Page')
+                ->findByCategory($category);
+
+            foreach ($pages as $page) {
+                $menu[$i]['items'][] = array(
+                    'type'  => 'page',
+                    'name'  => $page->getName(),
+                    'title' => $page->getTitle($this->getLanguage())
+                );
+
+                $sort = array();
+                foreach ($menu[$i]['items'] as $key => $value)
+                    $sort[$key] = $value['title'];
+
+                array_multisort($sort, $menu[$i]['items']);
+            }
+
+            $i++;
+        }
+
+        $sort = array();
+        foreach ($menu as $key => $value)
+            $sort[$key] = isset($value['title'])? $value['title'] : $value['name'];
+
+        array_multisort($sort, $menu);
+
+        return $menu;
     }
 
     /**

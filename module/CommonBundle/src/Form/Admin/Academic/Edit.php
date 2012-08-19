@@ -69,7 +69,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             ->setAttrib('id', 'academic_form')
             ->removeDecorator('DtDdWrapper');
 
-         $field = new Submit('submit');
+        $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'academic_edit')
             ->setDecorators(array(new ButtonDecorator()));

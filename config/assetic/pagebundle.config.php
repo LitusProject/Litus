@@ -40,6 +40,19 @@ return array(
             '@bootstrap_js_modal',
             '@admin_css',
         ),
+
+        'page' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+        ),
     ),
     'routes' => array(),
 );
