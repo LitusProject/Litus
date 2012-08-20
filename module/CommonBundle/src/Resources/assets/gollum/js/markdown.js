@@ -69,11 +69,6 @@ var LanguageDefinition = {
                                             $('<br />'),
                                             url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'URL'}),
                                             $('<br />'),
-                                            $('<br />'),
-                                            $('<b>').html('Or Upload a File'),
-                                            $('<br />'),
-                                            file = $('<input>', {'type': 'file', 'name': 'file'}),
-                                            $('<br />'),
                                             $('<br />')
                                         ),
                                         progress = $('<div>', {'class': 'progress progress-striped active'}).append(
@@ -85,12 +80,21 @@ var LanguageDefinition = {
                                         )
                                     )
                                 );
-                                url.keydown(function () {
-                                    file.attr('value', '');
-                                });
-                                file.change(function () {
-                                    url.val('');
-                                });
+                                if (uploadURL != '') {
+                                    form.append(
+                                        $('<b>').html('Or Upload a File'),
+                                        $('<br />'),
+                                        file = $('<input>', {'type': 'file', 'name': 'file'}),
+                                        $('<br />'),
+                                        $('<br />')
+                                    );
+                                    url.keydown(function () {
+                                        file.attr('value', '');
+                                    });
+                                    file.change(function () {
+                                        url.val('');
+                                    });
+                                }
                                 $(document.body).append(modal);
                                 progress.hide();
                                 form.formUploadProgress({
@@ -127,7 +131,7 @@ var LanguageDefinition = {
                                       $(this).remove();
                                     });
                                 ok.on('click', function () {
-                                    if (url.val() == '') {
+                                    if (url.val() == '' && uploadURL != '') {
                                         form.submit();
                                     } else {
                                         $field.gollum('replaceSelection', '[' + linkText.val() + '](' + url.val() + ')');
@@ -151,11 +155,6 @@ var LanguageDefinition = {
                                             $('<b>').html('Alternative Text'),
                                             $('<br />'),
                                             linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
-                                            $('<br />'),
-                                            $('<br />'),
-                                            $('<b>').html('Image'),
-                                            $('<br />'),
-                                            file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'}),
                                             $('<br />'),
                                             $('<br />')
                                         ),

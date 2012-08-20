@@ -2,10 +2,10 @@
 
 {% block content %}
     {% include 'admin_calendar/partials/navigation.twig' %}
-    
+
     <div id="controller_action">
         <h1>Event</h1>
-        
+
         <p>Title: <b>{{ event.getTitle(language) }}</b></p>
         <p>Start Date: <b>{{ event.getStartDate().format('d/m/Y H:i') }}</b></p>
         <p>End Date: <b>{{ event.getEndDate().format('d/m/Y H:i') }}</b></p>
