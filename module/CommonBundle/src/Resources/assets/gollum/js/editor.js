@@ -66,6 +66,8 @@
 	    functionbar.append(buttons);
 
 	    $.each(options.toolbar, function(key, val){
+            if (val[2] == 'download-media' && options.uploadURL == '')
+                return;
 	        if (key == 'divider')
 	            button = $('<span>', {'class': 'function-divider'}).html('&nbsp;');
 	        else

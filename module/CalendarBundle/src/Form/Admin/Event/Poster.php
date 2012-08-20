@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 namespace CalendarBundle\Form\Admin\Event;
 
 use CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
@@ -35,7 +35,7 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
     public function __construct($options = null)
     {
         parent::__construct($options);
-        
+
         $field = new File('poster');
         $field->setLabel('Poster')
             ->setDecorators(array(new FileDecorator()))
@@ -43,7 +43,7 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
             ->addValidator(new ExtensionValidator(array('jpg', 'png')))
             ->addValidator(new FileSizeValidator('2MB'));
         $this->addElement($field);
-        
+
         $field = new Submit('submit');
         $field->setLabel('Save')
             ->setAttrib('class', 'image_edit')
