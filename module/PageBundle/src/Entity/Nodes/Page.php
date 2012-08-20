@@ -262,7 +262,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
      */
     public function canBeEditedBy(Person $person)
     {
-        foreach ($person->getRolesWithoutInheritance() as $role) {
+        foreach ($person->getFlattenedRoles() as $role) {
             if ($this->editRoles->contains($role))
                 return true;
         }

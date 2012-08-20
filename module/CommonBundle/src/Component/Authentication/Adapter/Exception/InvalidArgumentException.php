@@ -24,5 +24,4 @@ namespace CommonBundle\Component\Authentication\Adapter\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-
 }

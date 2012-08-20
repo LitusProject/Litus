@@ -153,7 +153,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the subject!'
+                    'No ID was given to identify the subject!'
                 )
             );
 
@@ -181,7 +181,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No subject with the given id was found!'
+                    'No subject with the given ID was found!'
                 )
             );
 

@@ -40,6 +40,9 @@
 		                {% if hasAccess('admin_role', 'manage') %}
 		                    <li><a href="{{ url('admin_role') }}">Groups</a></li>
 		                {% endif %}
+		                {% if hasAccess('admin_key', 'manage') %}
+		                    <li><a href="{{ url('admin_key') }}">API Keys</a></li>
+		                {% endif %}
 		            </ul>
 		    	</li>
             </ul>

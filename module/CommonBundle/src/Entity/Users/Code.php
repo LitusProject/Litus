@@ -44,13 +44,11 @@ class Code
     /**
      * @var string The code
      *
-     * @Column(type="text", length=32, unique=true)
+     * @Column(type="string", length=32, unique=true)
      */
     private $code;
 
     /**
-     * Constructs a new code
-     *
      * @param string $code
      * @param int $expirationTime
      */

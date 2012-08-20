@@ -29,17 +29,17 @@
 	        </thead>
 
 	        <tbody>
-	            {% for news in paginator %}
-	                <tr class="item item-{{ news.getId() }}">
-	                    <td>{{ news.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(news.getCreationTime(), 'dd/MM/y H:m') }}</td>
-	                    <td>{{ news.getCreationPerson().getFullName() }}</td>
+	            {% for news_item in paginator %}
+	                <tr class="item item-{{ news_item.getId() }}">
+	                    <td>{{ news_item.getTitle(language) }}</td>
+	                    <td>{{ dateLocalized(news_item.getCreationTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ news_item.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_news', 'edit') %}
-	                            <a href="{{ url('admin_news', {"action": "edit", "id": news.getId()}) }}" class="edit">Edit</a>
+	                            <a href="{{ url('admin_news', {"action": "edit", "id": news_item.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ news.getId() }}" data-title="{{ news.getTitle(language) }}" class="delete">Delete</a>
+	                            <a href="#" data-id="{{ news_item.getId() }}" data-title="{{ news_item.getTitle(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>

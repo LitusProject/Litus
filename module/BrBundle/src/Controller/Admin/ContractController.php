@@ -60,7 +60,7 @@ class ContractController extends \Litus\Controller\Action
             ->find($id);
 
         if (null === $contract)
-            throw new \InvalidArgumentException('No contract found with the given id');
+            throw new \InvalidArgumentException('No contract found with the given ID');
 
         if ($contract->isDirty()) {
             if (!$invoiceOnly) {

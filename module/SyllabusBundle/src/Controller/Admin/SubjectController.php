@@ -163,7 +163,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the study!'
+                    'No ID was given to identify the study!'
                 )
             );
 
@@ -186,7 +186,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No study with the given id was found!'
+                    'No study with the given ID was found!'
                 )
             );
 
@@ -210,7 +210,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the subject!'
+                    'No ID was given to identify the subject!'
                 )
             );
 
@@ -233,7 +233,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No subject with the given id was found!'
+                    'No subject with the given ID was found!'
                 )
             );
 

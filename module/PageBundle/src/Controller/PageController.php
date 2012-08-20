@@ -23,6 +23,7 @@ use PageBundle\Entity\Nodes\Page,
  * PageController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class PageController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {

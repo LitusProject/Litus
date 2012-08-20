@@ -197,7 +197,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No period with the given id was found!'
+                    'No period with the given ID was found!'
                 )
             );
 

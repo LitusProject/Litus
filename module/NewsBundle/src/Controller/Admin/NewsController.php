@@ -196,7 +196,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the news!'
+                    'No ID was given to identify the news item!'
                 )
             );
 
@@ -219,7 +219,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No news with the given id was found!'
+                    'No news item with the given ID was found!'
                 )
             );
 

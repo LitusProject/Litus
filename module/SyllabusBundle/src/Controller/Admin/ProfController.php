@@ -139,7 +139,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the subject!'
+                    'No ID was given to identify the subject!'
                 )
             );
 
@@ -162,7 +162,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No subject with the given id was found!'
+                    'No subject with the given ID was found!'
                 )
             );
 
@@ -186,7 +186,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the mapping!'
+                    'No ID was given to identify the mapping!'
                 )
             );
 
@@ -209,7 +209,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No mapping with the given id was found!'
+                    'No mapping with the given ID was found!'
                 )
             );
 

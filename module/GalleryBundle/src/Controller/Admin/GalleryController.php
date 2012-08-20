@@ -373,7 +373,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the album!'
+                    'No ID was given to identify the album!'
                 )
             );
 
@@ -396,7 +396,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No album with the given id was found!'
+                    'No album with the given ID was found!'
                 )
             );
 
@@ -420,7 +420,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the photo!'
+                    'No ID was given to identify the photo!'
                 )
             );
 
@@ -443,7 +443,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No photo with the given id was found!'
+                    'No photo with the given ID was found!'
                 )
             );
 
