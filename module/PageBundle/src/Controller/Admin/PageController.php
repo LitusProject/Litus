@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PageBundle\Entity\Nodes\Translation,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 
 /**
@@ -131,7 +132,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
             )
         );
     }
@@ -256,6 +259,58 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'result' => array(
                     'status' => 'success'
                 )
+            )
+        );
+    }
+
+    public function uploadAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->post()->toArray();
+
+            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
+                    $_POST['type'] !== 'file') {
+                return new ViewModel();
+            }
+
+            $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('page.file_path') . '/';
+
+            $upload = new FileUpload();
+
+            $fileName = '';
+            do{
+                $fileName = sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+
+            $upload->addFilter('Rename', $filePath . $fileName);
+            $upload->receive();
+
+            $url = $this->url()->fromRoute(
+                'page_file',
+                array(
+                    'name' => $fileName,
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'name' => $url,
+                    )
+                )
+            );
+        }
+    }
+
+    public function uploadProgressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
             )
         );
     }

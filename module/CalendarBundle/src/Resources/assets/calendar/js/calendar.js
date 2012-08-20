@@ -91,7 +91,7 @@
                 for (key in this) break;
                 column.append(
                     day = $('<div>', {'class': 'item'}).html(
-                        $('<span>', {'class': 'date calendar'}).html(this[key].date)
+                        $('<span>', {'class': 'date left'}).html(this[key].date)
                     )
                 );
                 $(this[key].events).each(function () {

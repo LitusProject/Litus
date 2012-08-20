@@ -126,10 +126,11 @@ return array(
                         'common_calendar' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/calendar[/:action[/:id]]',
+                                'route'    => '[/:language]/calendar[/:action[/:id]]',
                                 'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'id'      => '[a-zA-Z0-9_-]*',
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    'name'     => '[a-zA-Z0-9_-]*',
+                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
                                     'controller' => 'common_calendar',

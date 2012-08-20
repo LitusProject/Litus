@@ -43,6 +43,13 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     private $poster;
 
     /**
+     * @var string The name of this page
+     *
+     * @Column(type="string")
+     */
+    private $name;
+
+    /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param \DateTime $startDate
      * @param \DateTime $endDate
@@ -51,6 +58,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     {
         parent::__construct($person);
 
+        $this->name = $startDate->format('d_m_Y_H_i');
         $this->startDate = $startDate;
         $this->endDate = $endDate;
     }
@@ -114,15 +122,24 @@ class Event extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
      *
      * @return \CalendarBundle\Entity\Nodes\Translation
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
+
+            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+                $fallbackTranslation = $translation;
         }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 
     /**
@@ -154,22 +171,30 @@ class Event extends \CommonBundle\Entity\Nodes\Node
      *
      * @return string
      */
-    public function getName(Language $language)
-    {
-        $translation = $this->getTranslation($language);
-        if (null !== $translation)
-            return $translation->getName();
-    }
-
-    /**
-     * @param \CommonBundle\Entity\General\Language $language
-     *
-     * @return string
-     */
     public function getContent(Language $language)
     {
         $translation = $this->getTranslation($language);
         if (null !== $translation)
             return $translation->getContent();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function updateName()
+    {
+        $translation = $this->getTranslation();
+        $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        return $this;
     }
 }
