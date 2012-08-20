@@ -479,7 +479,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No period with the given id was found!'
+                    'No period with the given ID was found!'
                 )
             );
 
@@ -503,7 +503,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the booking!'
+                    'No ID was given to identify the booking!'
                 )
             );
 
@@ -526,7 +526,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No booking with the given id was found!'
+                    'No booking with the given ID was found!'
                 )
             );
 
@@ -558,7 +558,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No person with the given id was found!'
+                    'No person with the given ID was found!'
                 )
             );
 
@@ -590,7 +590,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 

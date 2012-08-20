@@ -118,7 +118,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the subject!'
+                    'No ID was given to identify the subject!'
                 )
             );
 
@@ -146,7 +146,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No subject with the given id was found!'
+                    'No subject with the given ID was found!'
                 )
             );
 
@@ -171,7 +171,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the comment!'
+                    'No ID was given to identify the comment!'
                 )
             );
 
@@ -195,7 +195,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No comment with the given id was found!'
+                    'No comment with the given ID was found!'
                 )
             );
 

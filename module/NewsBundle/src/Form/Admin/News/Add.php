@@ -20,7 +20,6 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    DateTime,
     Doctrine\ORM\EntityManager,
     NewsBundle\Entity\Nodes\News,
     Zend\Form\Element\Select,
@@ -42,13 +41,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     private $_entityManager = null;
 
     /**
-     * @var \NewsBundle\Entity\Nodes\News
-     */
-    protected $news;
-
-    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param mixed $opts The form's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

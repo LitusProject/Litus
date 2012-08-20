@@ -416,7 +416,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 
@@ -463,7 +463,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 
