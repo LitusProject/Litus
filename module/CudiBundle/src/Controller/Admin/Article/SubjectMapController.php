@@ -123,7 +123,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the mapping!'
+                    'No ID was given to identify the mapping!'
                 )
             );
 
@@ -146,7 +146,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No mapping with the given id was found!'
+                    'No mapping with the given ID was found!'
                 )
             );
 
@@ -170,7 +170,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the article!'
+                    'No ID was given to identify the article!'
                 )
             );
 
@@ -193,7 +193,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 

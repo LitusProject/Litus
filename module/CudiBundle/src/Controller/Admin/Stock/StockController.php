@@ -316,7 +316,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the sale article!'
+                    'No ID was given to identify the sale article!'
                 )
             );
 
@@ -339,7 +339,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No sale article with the given id was found!'
+                    'No sale article with the given ID was found!'
                 )
             );
 

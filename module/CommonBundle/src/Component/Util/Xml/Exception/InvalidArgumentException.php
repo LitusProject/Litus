@@ -24,5 +24,4 @@ namespace CommonBundle\Component\Util\Xml\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-
 }

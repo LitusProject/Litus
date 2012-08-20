@@ -171,7 +171,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the retour!'
+                    'No ID was given to identify the retour!'
                 )
             );
 
@@ -194,7 +194,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No retour with the given id was found!'
+                    'No retour with the given ID was found!'
                 )
             );
 
@@ -218,7 +218,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the supplier!'
+                    'No ID was given to identify the supplier!'
                 )
             );
 
@@ -241,7 +241,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No supplier with the given id was found!'
+                    'No supplier with the given ID was found!'
                 )
             );
 

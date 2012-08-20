@@ -184,7 +184,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the company!'
+                    'No ID was given to identify the company!'
                 )
             );
 
@@ -207,7 +207,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No company with the given id was found!'
+                    'No company with the given ID was found!'
                 )
             );
 
@@ -231,7 +231,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the corporate user!'
+                    'No ID was given to identify the corporate user!'
                 )
             );
 
@@ -254,7 +254,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No corporate user with the given id was found!'
+                    'No corporate user with the given ID was found!'
                 )
             );
 

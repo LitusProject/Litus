@@ -138,7 +138,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 
@@ -185,7 +185,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No discount with the given id was found!'
+                    'No discount with the given ID was found!'
                 )
             );
 

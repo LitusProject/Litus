@@ -37,6 +37,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page'),
             array(
                 'endTime' => null
+            ),
+            array(
+                'name' => 'ASC'
             )
         );
 
@@ -264,7 +267,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the page!'
+                    'No ID was given to identify the page!'
                 )
             );
 
@@ -287,7 +290,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No page with the given id was found!'
+                    'No page with the given ID was found!'
                 )
             );
 

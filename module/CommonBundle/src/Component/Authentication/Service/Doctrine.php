@@ -143,7 +143,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             );
 
             if (null !== $session) {
-                $sessionValidation = $session->validateSession(
+                $sessionValidation = $session->validate(
                     $this->_entityManager,
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR']

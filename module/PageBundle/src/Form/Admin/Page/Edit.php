@@ -70,7 +70,7 @@ class Edit extends Add
         foreach ($page->getEditRoles() as $role)
             $data['edit_roles'][] = $role->getName();
 
-        $data['parent'] = null !== $page->getParent() ? $page->getParent()->getName() : '';
+        $data['parent'] = null !== $page->getParent() ? $page->getParent()->getId() : '';
 
         $this->populate($data);
     }
