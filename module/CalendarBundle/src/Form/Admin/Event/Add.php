@@ -146,19 +146,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $date = DateTime::createFromFormat('d/m/Y H:i', $data['start_date']);
 
         if ($date) {
-            foreach($this->getLanguages() as $language) {
-                $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-                $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
+            $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
+            $name = $date->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($data['title_' . $fallbackLanguage->getAbbrev()]);
 
-                $event = $this->_entityManager
-                    ->getRepository('CalendarBundle\Entity\Nodes\Translation')
-                    ->findOneByName($name);
+            $event = $this->_entityManager
+                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->findOneByName($name);
 
-                if (!(null == $event ||
-                    (null != $this->event && null != $event && $event->getEvent() == $this->event))) {
-                    $title->addError('This event already exists');
-                    $valid = false;
-                }
+            if (!(null == $event || (null != $this->event && null != $event && $event == $this->event))) {
+                $title->addError('This event already exists');
+                $valid = false;
             }
         }
 

@@ -32,6 +32,18 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
+        'common_news' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+        ),
     ),
     'routes' => array(),
 );

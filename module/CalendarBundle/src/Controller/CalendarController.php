@@ -130,7 +130,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     'common_calendar',
                     array(
                         'action' => 'view',
-                        'id' => $event->getId(),
+                        'id' => $event->getName(),
                     )
                 ),
             );
@@ -157,7 +157,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
-            ->findOneById($this->getParam('id'));
+            ->findOneByName($this->getParam('id'));
 
         if (null === $event) {
             $this->getResponse()->setStatusCode(404);

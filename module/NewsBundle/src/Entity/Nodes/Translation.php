@@ -127,7 +127,7 @@ class Translation
      */
     public function getSummary($length = 100)
     {
-        $content = strip_tags($this->content);
+        $content = $this->content;
         return substr($content, 0, $length) . (strlen($content) > $length ? '...' : '');
     }
 

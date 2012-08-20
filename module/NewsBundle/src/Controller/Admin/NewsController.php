@@ -16,6 +16,7 @@
 namespace NewsBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     NewsBundle\Entity\Nodes\News,
     NewsBundle\Entity\Nodes\Translation,
     NewsBundle\Form\Admin\News\Add as AddForm,
@@ -64,16 +65,17 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $news,
-                            $language,
-                            $formData['title_' . $language->getAbbrev()],
-                            str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                        $news->addTranslation(
+                            new Translation(
+                                $news,
+                                $language,
+                                $formData['title_' . $language->getAbbrev()],
+                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                            )
                         );
-
-                        $this->getEntityManager()->persist($translation);
                     }
                 }
+                $news->updateName();
 
                 $this->getEntityManager()->flush();
 
@@ -126,17 +128,18 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
                         if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                            $translation = new Translation(
-                                $news,
-                                $language,
-                                $formData['title_' . $language->getAbbrev()],
-                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                            $news->addTranslation(
+                                new Translation(
+                                    $news,
+                                    $language,
+                                    $formData['title_' . $language->getAbbrev()],
+                                    str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                                )
                             );
-
-                            $this->getEntityManager()->persist($translation);
                         }
                     }
                 }
+                $news->updateName();
 
                 $this->getEntityManager()->flush();
 

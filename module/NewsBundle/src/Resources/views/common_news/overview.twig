@@ -1,0 +1,23 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ translator().translate('News') }}</h2>
+    </div>
+
+    {% for item in paginator %}
+        <h3>{{ item.getTitle(language) }}</h3>
+
+        <div class="item">
+            <span class="date left">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
+            <blockquote>
+                {% autoescape false %}
+                    {{ markdown(item.getSummary(100, language)) }}
+                {% endautoescape %}
+                <small><a href="{{ url('common_news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translator().translate('View') }}</a></small>
+            </blockquote>
+        </div>
+    {% endfor %}
+
+    {% include 'site/partials/paginationControl.twig' %}
+{% endblock %}

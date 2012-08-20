@@ -113,6 +113,19 @@ return array(
                                 ),
                             ),
                         ),
+                        'page_file' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'options' => array(
+                                'route'    => '/page/file/:name',
+                                'constraints' => array(
+                                    'name'     => '[a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller' => 'page',
+                                    'action'     => 'file',
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),

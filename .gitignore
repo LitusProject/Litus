@@ -19,5 +19,6 @@ data/common/profile
 data/proxies
 data/br/companies
 data/calendar/posters
+data/page/files
 
 public/_assetic
