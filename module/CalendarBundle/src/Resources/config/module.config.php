@@ -20,7 +20,7 @@ return array(
                 'calendar_install' => 'CalendarBundle\Controller\Admin\InstallController',
                 'admin_calendar'   => 'CalendarBundle\Controller\Admin\CalendarController',
 
-                'common_calendar'  => 'CalendarBundle\Controller\CalendarController',
+                'calendar'  => 'CalendarBundle\Controller\CalendarController',
             ),
 
             'assetic_configuration' => array(
@@ -123,7 +123,7 @@ return array(
                                 ),
                             ),
                         ),
-                        'common_calendar' => array(
+                        'calendar' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
                                 'route'    => '[/:language]/calendar[/:action[/:id]]',
@@ -133,7 +133,7 @@ return array(
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
-                                    'controller' => 'common_calendar',
+                                    'controller' => 'calendar',
                                     'action'     => 'overview',
                                 ),
                             ),

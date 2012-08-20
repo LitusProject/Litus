@@ -32,7 +32,7 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
-        'common_news' => array(
+        'news' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',

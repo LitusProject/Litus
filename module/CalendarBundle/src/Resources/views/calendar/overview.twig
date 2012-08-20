@@ -13,7 +13,7 @@
         $(document).ready(function () {
             $('#calendar').calendar(
                 {
-                    url: '{{ url('common_calendar', {'action': 'month'}) }}',
+                    url: '{{ url('calendar', {'action': 'month'}) }}',
                     month: {{ date.format('m') }},
                     year: {{ date.format('Y') }},
                     previousText: '{{ translator().translate('Previous') }}',
