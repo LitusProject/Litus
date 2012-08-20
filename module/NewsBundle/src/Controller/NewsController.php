@@ -47,7 +47,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($news = $this->_getNews()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         return new ViewModel(
             array(
@@ -58,19 +58,15 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function _getNews()
     {
-        if (null === $this->getParam('name')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('name'))
             return;
-        }
 
         $news = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findOneByName($this->getParam('name'));
 
-        if (null === $news) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $news)
             return;
-        }
 
         return $news;
     }

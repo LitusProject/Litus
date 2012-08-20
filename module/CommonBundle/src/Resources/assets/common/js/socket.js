@@ -6,13 +6,13 @@
 		error: function(){},
 		message: function(){}
 	};
-	
+
 	var methods = {
 		init : function (options) {
 			var settings = $.extend(defaults, options);
-			
+
 			var ws = new WebSocket(options.url);
-			
+
 			$(ws)
 				.bind('open', settings.open)
 				.bind('close', function (e) {
@@ -20,18 +20,17 @@
 					settings.error(e);
 				})
 				.bind('error', function (e) {
-					setTimeout(function () {$.webSocket(settings)}, 1000);
 					settings.error(e);
 				})
 				.bind('message', function (e) {
 					if (e.type == 'message' && e.originalEvent.data)
 						settings.message(e.originalEvent, $.parseJSON(e.originalEvent.data));
 				});
-						
+
 			$(window).unload(function(){
 				$.webSocket('close', settings);
 			});
-			
+
 			$(document).data(settings.name, ws);
 			return this;
 		},
@@ -47,7 +46,7 @@
 			return this;
 		}
 	};
-	
+
 	$.extend({
 		webSocket: function ( method ) {
 			if ( methods[ method ] ) {

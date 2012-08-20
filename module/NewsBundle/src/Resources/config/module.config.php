@@ -20,7 +20,7 @@ return array(
                 'news_install' => 'NewsBundle\Controller\Admin\InstallController',
                 'admin_news'   => 'NewsBundle\Controller\Admin\NewsController',
 
-                'common_news'  => 'NewsBundle\Controller\NewsController',
+                'news'  => 'NewsBundle\Controller\NewsController',
             ),
 
             'doctrine_config' => array(
@@ -84,7 +84,7 @@ return array(
                                 ),
                             ),
                         ),
-                        'common_news' => array(
+                        'news' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
                                 'route'    => '[/:language]/news[/:action[/:name]][/page/:page]',
@@ -95,7 +95,7 @@ return array(
                                     'language' => '[a-zA-Z][a-zA-Z_-]*',
                                 ),
                                 'defaults' => array(
-                                    'controller' => 'common_news',
+                                    'controller' => 'news',
                                     'action'     => 'overview',
                                 ),
                             ),

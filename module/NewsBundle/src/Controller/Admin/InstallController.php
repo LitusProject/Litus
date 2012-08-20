@@ -35,6 +35,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_news' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'news' => array(
+                        'overview', 'view'
+                    ),
                 ),
             )
         );

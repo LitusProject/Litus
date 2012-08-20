@@ -30,7 +30,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_calendar' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'poster'
                     ),
-                    'common_calendar' => array(
+                    'calendar' => array(
                         'overview', 'poster', 'view'
                     ),
                 )

@@ -57,7 +57,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function viewAction()
     {
         if (!($event = $this->_getEvent()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         return new ViewModel(
             array(
@@ -69,7 +69,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function posterAction()
     {
         if (!($event = $this->_getEventByPoster()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -97,10 +97,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $date = $this->getParam('id');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
-        if (!$first) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
-        }
+        if (!$first)
+            return $this->notFoundAction();
 
         $last = clone $first;
         $last->add(new DateInterval('P1M'));
@@ -127,7 +125,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 'startDate' => $startDate->toString('h:mm'),
                 'content' => $parser->transform($event->getContent($this->getLanguage())),
                 'url' => $this->url()->fromRoute(
-                    'common_calendar',
+                    'calendar',
                     array(
                         'action' => 'view',
                         'id' => $event->getName(),
@@ -150,38 +148,30 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function _getEvent()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findOneByName($this->getParam('id'));
 
-        if (null === $event) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $event)
             return;
-        }
 
         return $event;
     }
 
     private function _getEventByPoster()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findOneByPoster($this->getParam('id'));
 
-        if (null === $event) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $event)
             return;
-        }
 
         return $event;
     }
