@@ -326,7 +326,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the action!'
+                    'No ID was given to identify the action!'
                 )
             );
 
@@ -349,7 +349,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No action with the given id was found!'
+                    'No action with the given ID was found!'
                 )
             );
 

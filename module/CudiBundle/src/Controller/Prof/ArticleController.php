@@ -307,7 +307,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the article!'
+                    'No ID was given to identify the article!'
                 )
             );
 
@@ -331,7 +331,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 

@@ -316,7 +316,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the session!'
+                    'No ID was given to identify the session!'
                 )
             );
 
@@ -339,7 +339,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No session with the given id was found!'
+                    'No session with the given ID was found!'
                 )
             );
 
@@ -363,7 +363,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the cash register!'
+                    'No ID was given to identify the cash register!'
                 )
             );
 
@@ -386,7 +386,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No cash register with the given id was found!'
+                    'No cash register with the given ID was found!'
                 )
             );
 

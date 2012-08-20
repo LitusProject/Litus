@@ -23,5 +23,4 @@ namespace CommonBundle\Component\Controller\Request\Exception;
  */
 class NoXmlHttpRequestException extends \RuntimeException
 {
-
 }

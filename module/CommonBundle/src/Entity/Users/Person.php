@@ -282,9 +282,9 @@ abstract class Person
      *
      * @return array
      */
-    public function getRolesWithoutInheritance()
+    public function getFlattenedRoles()
     {
-        return $this->_unfoldRolesInheritance(
+        return $this->_flattenRolesInheritance(
             $this->roles->toArray()
         );
     }
@@ -593,18 +593,18 @@ abstract class Person
     }
 
     /**
-     * This method is called recursively to create a one-dimensional role unfolding the
-     * roles inheritance structure.
+     * This method is called recursively to create a one-dimensional role flattening the
+     * roles' inheritance structure.
      *
      * @param array $inheritanceRoles The array with the roles that should be unfolded
      * @param array $return The one-dimensional return array
      * @return array
      */
-    private function _unfoldRolesInheritance(array $inheritanceRoles, array $return = array())
+    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
     {
         foreach ($inheritanceRoles as $role) {
             $return[] = $role;
-            $return = $this->_unfoldRolesInheritance($role->getParents(), $return);
+            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
         }
 
         return $return;

@@ -139,7 +139,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the mapping!'
+                    'No ID was given to identify the mapping!'
                 )
             );
 
@@ -167,7 +167,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No mapping with the given id was found!'
+                    'No mapping with the given ID was found!'
                 )
             );
 
@@ -195,7 +195,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the subject!'
+                    'No ID was given to identify the subject!'
                 )
             );
 
@@ -223,7 +223,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No subject with the given id was found!'
+                    'No subject with the given ID was found!'
                 )
             );
 
@@ -250,7 +250,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No id was given to identify the article!'
+                    'No ID was given to identify the article!'
                 )
             );
 
@@ -274,7 +274,7 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'ERROR',
-                    'No article with the given id was found!'
+                    'No article with the given ID was found!'
                 )
             );
 

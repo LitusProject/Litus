@@ -207,7 +207,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the category!'
+                    'No ID was given to identify the category!'
                 )
             );
 
@@ -230,7 +230,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No category with the given id was found!'
+                    'No category with the given ID was found!'
                 )
             );
 

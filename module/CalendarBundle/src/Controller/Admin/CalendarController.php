@@ -279,7 +279,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No id was given to identify the event!'
+                    'No ID was given to identify the event!'
                 )
             );
 
@@ -302,7 +302,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No event with the given id was found!'
+                    'No event with the given ID was found!'
                 )
             );
 

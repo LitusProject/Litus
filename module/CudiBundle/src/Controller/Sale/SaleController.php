@@ -174,7 +174,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No queue item with the given id was found!'
+                    'No queue item with the given ID was found!'
                 )
             );
 

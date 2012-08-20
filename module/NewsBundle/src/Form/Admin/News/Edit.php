@@ -37,8 +37,6 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $opts);
 
-        $this->news = $news;
-
         $form = $this->getSubForm('tab_content');
 
         foreach ($this->getLanguages() as $language) {

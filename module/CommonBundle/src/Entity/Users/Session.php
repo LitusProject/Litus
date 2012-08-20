@@ -179,7 +179,7 @@ class Session
      * @param string $ip The IP currently used to connect to the site
      * @return bool|string
      */
-    public function validateSession(EntityManager $entityManager, $userAgent, $ip)
+    public function validate(EntityManager $entityManager, $userAgent, $ip)
     {
         if ($userAgent != $this->userAgent) {
             return false;

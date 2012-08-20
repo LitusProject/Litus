@@ -22,6 +22,7 @@ use CommonBundle\Form\Auth\Login as LoginForm,
  * We extend the CommonBundle controller.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class SiteController extends \CommonBundle\Component\Controller\ActionController
 {
@@ -76,6 +77,11 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * This is the top navigation menu, displayed on every page.
+     *
+     * @return array
+     */
     private function _buildMenu()
     {
         $categories = $this->getEntityManager()
