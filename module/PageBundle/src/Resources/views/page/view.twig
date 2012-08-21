@@ -2,29 +2,31 @@
 
 {% block content %}
     {% if submenu is not empty %}
-        <div class="subnav">
-            <ul class="nav nav-pills">
-                {% for item in submenu %}
-                    {% if 'category' == item.type %}
-                        <li class="dropdown">
-                            <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
-                                {{ item.name }} <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for page in item.items %}
-                                    {% if hasAccess('page', 'view') %}
-                                        <li><a href="{{ url('page', {"name": page.name}) }}">{{ page.title }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    {% else %}
-                        {% if hasAccess('page', 'view') %}
-                            <li><a href="{{ url('page', {"name": item.name}) }}">{{ item.title }}</a></li>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <ul class="nav">
+                    {% for item in submenu %}
+                        {% if 'category' == item.type %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                    {{ item.name }} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for page in item.items %}
+                                        {% if hasAccess('page', 'view') %}
+                                            <li><a href="{{ url('page', {"name": page.name}) }}">{{ page.title }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            {% if hasAccess('page', 'view') %}
+                                <li><a href="{{ url('page', {"name": item.name}) }}">{{ item.title }}</a></li>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </ul>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     {% endif %}
 

@@ -149,14 +149,6 @@ class University
     }
 
     /**
-     * @return string
-     */
-    public function getYear()
-    {
-        return $this->academicYear->getCode(true);
-    }
-
-    /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function getAcademicYear()

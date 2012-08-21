@@ -49,8 +49,6 @@ return array(
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',
-            '@bootstrap_js_tooltip',
-            '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
         ),
     ),

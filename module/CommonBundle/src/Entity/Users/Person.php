@@ -226,11 +226,7 @@ abstract class Person
      */
     public function setCredential(Credential $credential)
     {
-        if ($credential === null)
-            throw new \InvalidArgumentException('Credential cannot be null');
-
         $this->credential = $credential;
-
         return $this;
     }
 
@@ -308,11 +304,7 @@ abstract class Person
      */
     public function setFirstName($firstName)
     {
-        if (($firstName === null) || !is_string($firstName))
-            throw new \InvalidArgumentException('Invalid first name');
-
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -331,11 +323,7 @@ abstract class Person
      */
     public function setLastName($lastName)
     {
-        if (($lastName === null) || !is_string($lastName))
-            throw new \InvalidArgumentException('Invalid last name');
-
         $this->lastName = $lastName;
-
         return $this;
     }
 
@@ -362,11 +350,7 @@ abstract class Person
      */
     public function setEmail($email = null)
     {
-        if ($email !== null && !filter_var($email, FILTER_VALIDATE_EMAIL))
-            throw new \InvalidArgumentException('Invalid e-mail');
-
         $this->email = $email;
-
         return $this;
     }
 
@@ -403,15 +387,7 @@ abstract class Person
      */
     public function setPhoneNumber($phoneNumber = null)
     {
-        if ('' == $phoneNumber)
-            return $this;
-
-        if (!preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $phoneNumber)) {
-            throw new \InvalidArgumentException('Invalid phone number' . $phoneNumber);
-        }
-
         $this->phoneNumber = $phoneNumber;
-
         return $this;
     }
 
@@ -434,7 +410,6 @@ abstract class Person
             throw new \InvalidArgumentException('Invalid sex');
 
         $this->sex = $sex;
-
         return $this;
     }
 
@@ -461,18 +436,6 @@ abstract class Person
     {
         $this->canLogin = false;
         return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isMember()
-    {
-        foreach ($this->organisationStatuses as $status) {
-            if (AcademicYear::getShortAcademicYear() == $status->getYear() && 'non_member' != $status->getStatus())
-                return true;
-        }
-        return false;
     }
 
     /**
@@ -608,5 +571,21 @@ abstract class Person
         }
 
         return $return;
+    }
+
+    /**
+     * Checks whether or not this person is a member.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
+     */
+    public function isMember(AcademicYear $academicYear)
+    {
+        foreach ($this->organisationStatuses as $status) {
+            if ($academicYear == $status->getAcademicYear() && 'non_member' != $status->getStatus())
+                return true;
+        }
+
+        return false;
     }
 }
