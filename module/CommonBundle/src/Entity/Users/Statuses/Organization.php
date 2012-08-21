@@ -147,12 +147,4 @@ class Organization
     {
         return array_key_exists($status, self::$possibleStatuses);
     }
-
-    /**
-     * @return string
-     */
-    public function getYear()
-    {
-        return $this->academicYear->getCode(true);
-    }
 }

@@ -79,7 +79,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
         $this->setUniversityIdentification($universityIdentification);
-
         $this->universityStatuses = new ArrayCollection();
     }
 
@@ -90,11 +89,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function setPersonalEmail($personalEmail)
     {
-        if (($personalEmail === null) || !filter_var($personalEmail, FILTER_VALIDATE_EMAIL))
-            throw new \InvalidArgumentException('Invalid personal e-mail');
-
         $this->personalEmail = $personalEmail;
-
         return $this;
     }
 
@@ -113,11 +108,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function setPrimaryEmail($primaryEmail)
     {
-        if (($primaryEmail === null) || !filter_var($primaryEmail, FILTER_VALIDATE_EMAIL))
-            throw new \InvalidArgumentException('Invalid primary e-mail');
-
         $this->primaryEmail = $primaryEmail;
-
         return $this;
     }
 
@@ -136,11 +127,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function setUniversityIdentification($universityIdentification)
     {
-        if (($universityIdentification === null) || !is_string($universityIdentification))
-            throw new \InvalidArgumentException('Invalid university identification');
-
         $this->universityIdentification = $universityIdentification;
-
         return $this;
     }
 
@@ -159,11 +146,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function setPhotoPath($photoPath)
     {
-        if (($photoPath === null) || !is_string($photoPath))
-            throw new \InvalidArgumentException('Invalid photo path');
-
         $this->photoPath = $photoPath;
-
         return $this;
     }
 
@@ -182,7 +165,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
     public function addUniversityStatus(UniversityStatus $universityStatus)
     {
         $this->universityStatuses->add($universityStatus);
-
         return $this;
     }
 
@@ -192,32 +174,20 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
-        if ($this->universityStatuses->count() >= 1) {
             foreach($this->universityStatuses as $status) {
                 if ($status->getAcademicYear() == $academicYear)
                     return $status;
             }
-        }
     }
 
     /**
-     * @param integer $shortYear
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @throws \RuntimeException
      */
-    public function canHaveUniversityStatus($shortYear = null)
+    public function canHaveUniversityStatus(AcademicYear $academicYear)
     {
-        $shortYear = $shortYear == null ? AcademicYear::getShortAcademicYear() : $shortYear;
-
-        if ($this->universityStatuses->count() >= 1) {
-            if ($this->universityStatuses->exists(
-                function($key, $value) use ($shortYear) {
-                    if ($value->getYear() == $shortYear)
-                        return true;
-                }
-            )) {
-                return false;
-            }
-        }
+        if ($this->universityStatuses->exists($academicYear))
+            return false;
 
         return true;
     }

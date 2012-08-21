@@ -18,36 +18,49 @@ namespace ApiBundle\Form\Admin\Key;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Nodes\News,
-    Zend\Form\Element\Submit,
+    ApiBundle\Entity\Key,
     Zend\Form\Element\Text,
-    Zend\Validator\Hostname as HostnameValidator;
+    Zend\Form\Element\Submit;
 
 /**
- * Add Key
+ * Edit Key
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends Add
 {
     /**
+     * @param \ApiBundle\Entity\Key $key The key we're going to modify
      * @param mixed $opts The form's options
      */
-    public function __construct($opts = null)
+    public function __construct(Key $key, $opts = null)
     {
         parent::__construct($opts);
 
-        $field = new Text('host');
-        $field->setLabel('Host')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new HostnameValidator());
+        $field = new Text('code');
+        $field->setLabel('Code')
+            ->setAttrib('disabled', 'disabled')
+            ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
+        $this->removeElement('submit');
+
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'key_add')
+        $field->setLabel('Save')
+            ->setAttrib('class', 'key_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+
+        $this->_populateFromKey($key);
+    }
+
+    private function _populateFromKey(Key $key)
+    {
+        $data = array(
+            'host' => $key->getHost(),
+            'code' => $key->getCode()
+        );
+
+        $this->populate($data);
     }
 }
