@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Controller\Admin;
+namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     ApiBundle\Entity\Key,
@@ -26,14 +26,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class KeyController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class UnitController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('ApiBundle\Entity\Key')
-                ->findAllActive(),
+            'ShiftBundle\Entity\Unit',
             $this->getParam('page')
         );
 

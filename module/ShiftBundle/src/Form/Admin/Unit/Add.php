@@ -13,54 +13,37 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Form\Admin\Key;
+namespace ShiftBundle\Form\Admin\Unit;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Doctrine\ORM\EntityManager,
-    ApiBundle\Entity\Key,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\Form\Element\Text;
 
 /**
- * Edit Key
+ * Add Key
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \ApiBundle\Entity\Key $key The key we're going to modify
      * @param mixed $opts The form's options
      */
-    public function __construct(Key $key, $opts = null)
+    public function __construct($opts = null)
     {
         parent::__construct($opts);
 
-        $field = new Text('code');
-        $field->setLabel('Code')
-            ->setAttrib('disabled', 'disabled')
+        $field = new Text('name');
+        $field->setLabel('Name')
+            ->setRequired()
             ->setDecorators(array(new FieldDecorator()));
         $this->addElement($field);
 
-        $this->removeElement('submit');
-
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'key_edit')
+        $field->setLabel('Add')
+            ->setAttrib('class', 'unit_add')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
-
-        $this->_populateFromKey($key);
-    }
-
-    private function _populateFromKey(Key $key)
-    {
-        $data = array(
-            'host' => $key->getHost(),
-            'code' => $key->getCode()
-        );
-
-        $this->populate($data);
     }
 }

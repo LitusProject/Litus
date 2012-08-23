@@ -5,4 +5,8 @@ RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteCond %{HTTP_HOST} ^([^/.]+)\.vtk\.be$
+RewriteRule ^(.*)$ /%1/$1 [NC,L]
+
 RewriteRule ^.*$ index.php [NC,L]

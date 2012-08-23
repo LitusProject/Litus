@@ -13,41 +13,46 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Form\Admin\Key;
+namespace ShiftBundle\Form\Admin\Unit;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Nodes\News,
-    Zend\Form\Element\Submit,
+    Shiftbundle\Entity\Key,
     Zend\Form\Element\Text,
-    Zend\Validator\Hostname as HostnameValidator;
+    Zend\Form\Element\Submit;
 
 /**
- * Add Key
+ * Edit Unit
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends Add
 {
     /**
+     * @param \ShiftBundle\Entity\Unit $unit The unit we're going to modify
      * @param mixed $opts The form's options
      */
-    public function __construct($opts = null)
+    public function __construct(Unit $unit, $opts = null)
     {
         parent::__construct($opts);
 
-        $field = new Text('host');
-        $field->setLabel('Host')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new HostnameValidator());
-        $this->addElement($field);
+        $this->removeElement('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'key_add')
+        $field->setLabel('Save')
+            ->setAttrib('class', 'unit_edit')
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
+
+        $this->_populateFromKey($key);
+    }
+
+    private function _populateFromUnit(Unit $unit)
+    {
+        $data = array(
+            'name' => $key->getName()
+        );
+
+        $this->populate($data);
     }
 }
