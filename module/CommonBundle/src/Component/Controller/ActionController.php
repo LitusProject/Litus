@@ -76,6 +76,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
         $result->authenticatedPerson = $authenticatedPerson;
+        $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
         $result->developmentInformation = array(
             'executionTime' => round(microtime(true) - $startExecutionTime, 3) * 1000,
