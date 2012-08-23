@@ -17,8 +17,6 @@ namespace ApiBundle\Form\Admin\Key;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Nodes\News,
     Zend\Form\Element\Submit,
     Zend\Form\Element\Text,
     Zend\Validator\Hostname as HostnameValidator;

@@ -18,10 +18,10 @@ namespace ApiBundle\Entity;
 use DateTime;
 
 /**
- * This entity stores a user's codes.
+ * This entity stores an API key.
  *
  * @Entity(repositoryClass="ApiBundle\Repository\Key")
- * @Table(name="api.key")
+ * @Table(name="api.keys")
  */
 class Key
 {
