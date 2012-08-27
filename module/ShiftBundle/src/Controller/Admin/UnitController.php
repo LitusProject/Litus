@@ -16,9 +16,9 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    ApiBundle\Entity\Key,
-    ApiBundle\Form\Admin\Key\Add as AddForm,
-    ApiBundle\Form\Admin\Key\Edit as EditForm,
+    ShiftBundle\Entity\Unit,
+    ShiftBundle\Form\Admin\Unit\Add as AddForm,
+    ShiftBundle\Form\Admin\Unit\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,9 +30,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromEntity(
             'ShiftBundle\Entity\Unit',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'active' => true
+            ),
+            array(
+                'name' => 'ASC'
+            )
         );
 
         return new ViewModel(
@@ -51,18 +57,11 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                do {
-                    $code = md5(uniqid(rand(), true));
-                    $found = $this->getEntityManager()
-                        ->getRepository('ApiBundle\Entity\Key')
-                        ->findOneByCode($code);
-                } while(isset($found));
-
-                $key = new Key(
-                    $formData['host'],
-                    $code
+                $unit = new Unit(
+                    $formData['name']
                 );
-                $this->getEntityManager()->persist($key);
+
+                $this->getEntityManager()->persist($unit);
 
                 $this->getEntityManager()->flush();
 
@@ -70,12 +69,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The key was successfully created!'
+                        'The unit was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -94,16 +93,16 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($key = $this->_getKey()))
+        if (!($unit = $this->_getUnit()))
             return new ViewModel();
 
-        $form = new EditForm($key);
+        $form = new EditForm($unit);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $key->setHost($formData['host']);
+                $unit->setName($formData['name']);
 
                 $this->getEntityManager()->flush();
 
@@ -116,7 +115,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'admin_unit',
                     array(
                         'action' => 'manage'
                     )
@@ -137,10 +136,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey()))
+        if (!($unit = $this->_getUnit()))
             return new ViewModel();
 
-        $key->revoke();
+        $unit->deactivate();
 
         $this->getEntityManager()->flush();
 
@@ -153,14 +152,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getKey()
+    private function _getUnit()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the key!'
+                    'No ID was given to identify the unit!'
                 )
             );
 
@@ -174,16 +173,16 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $key = $this->getEntityManager()
-            ->getRepository('ApiBundle\Entity\Key')
+        $unit = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Unit')
             ->findOneById($this->getParam('id'));
 
-        if (null === $key) {
+        if (null === $unit) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No key with the given ID was found!'
+                    'No unit with the given ID was found!'
                 )
             );
 
@@ -197,6 +196,6 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        return $key;
+        return $unit;
     }
 }

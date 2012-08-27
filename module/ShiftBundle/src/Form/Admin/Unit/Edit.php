@@ -17,7 +17,7 @@ namespace ShiftBundle\Form\Admin\Unit;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Shiftbundle\Entity\Key,
+    Shiftbundle\Entity\Unit,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 
@@ -44,13 +44,13 @@ class Edit extends Add
             ->setDecorators(array(new ButtonDecorator()));
         $this->addElement($field);
 
-        $this->_populateFromKey($key);
+        $this->_populateFromUnit($unit);
     }
 
     private function _populateFromUnit(Unit $unit)
     {
         $data = array(
-            'name' => $key->getName()
+            'name' => $unit->getName()
         );
 
         $this->populate($data);
