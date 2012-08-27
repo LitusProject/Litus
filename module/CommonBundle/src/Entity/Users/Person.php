@@ -124,7 +124,7 @@ abstract class Person
     private $sex;
 
     /**
-     * @var bool Whether or not this can login
+     * @var bool Whether or not this user can login
      *
      * @Column(name="can_login", type="boolean")
      */

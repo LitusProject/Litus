@@ -17,16 +17,14 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'api_install' => 'ApiBundle\Controller\Admin\InstallController',
-                'admin_key'   => 'ApiBundle\Controller\Admin\KeyController',
-
-                'api_auth'    => 'ApiBundle\Controller\AuthController',
+                'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
+                'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
             ),
 
             'doctrine_config' => array(
                 'parameters' => array(
                     'entityPaths' => array(
-                        'apibundle' => __DIR__ . '/../../Entity',
+                        'shiftbundle' => __DIR__ . '/../../Entity',
                     ),
                 ),
             ),
@@ -34,7 +32,7 @@ return array(
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
-                        'api_views' => __DIR__ . '/../views',
+                        'shift_views' => __DIR__ . '/../views',
                     ),
                 ),
             ),
@@ -42,41 +40,29 @@ return array(
             'Zend\Mvc\Router\RouteStack' => array(
                 'parameters' => array(
                     'routes' => array(
-                        'api_install' => array(
+                        'shift_install' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/install/api',
+                                'route'    => '/admin/install/shift',
                                 'constraints' => array(
                                 ),
                                 'defaults' => array(
-                                    'controller' => 'api_install',
+                                    'controller' => 'shift_install',
                                     'action'     => 'index',
                                 ),
                             ),
                         ),
-                        'admin_key' => array(
+                        'admin_unit' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/admin/api/key[/:action[/:id]]',
+                                'route'    => '/admin/unit[/:action[/:id]]',
                                 'constraints' => array(
                                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     'id'      => '[0-9]*',
                                 ),
                                 'defaults' => array(
-                                    'controller' => 'admin_key',
+                                    'controller' => 'admin_unit',
                                     'action'     => 'manage',
-                                ),
-                            ),
-                        ),
-                        'api_auth' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route'    => '/api/auth[/:action]',
-                                'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'api_auth',
                                 ),
                             ),
                         ),

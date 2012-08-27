@@ -16,6 +16,7 @@
 namespace PageBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
+    Doctrine\Common\Collections\ArrayCollection,
     PageBundle\Entity\Nodes\Page;
 
 /**
@@ -44,7 +45,7 @@ class Category
     private $parent;
 
     /**
-     * @var array The translations of this category
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this category
      *
      * @OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
      */
@@ -56,6 +57,11 @@ class Category
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
     }
 
     /**

@@ -1,19 +1,19 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_key/partials/navigation.twig' %}
+	{% include 'admin_unit/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width key_removed_success hide">
+    <div class="flashmessage success_message full_width unit_removed_success hide">
     	<div class="title">Success</div>
     	<div class="content">
-    		<p>The key was successfully removed!</p>
+    		<p>The unit was successfully removed!</p>
     	</div>
     </div>
-    <div class="flashmessage error_message full_width key_removed_error hide">
+    <div class="flashmessage error_message full_width unit_removed_error hide">
     	<div class="title">Error</div>
     	<div class="content">
-    		<p>An error occurred while trying to delete the key.</p>
+    		<p>An error occurred while trying to delete the unit.</p>
     	</div>
     </div>
 
@@ -21,23 +21,21 @@
 	    <table class="full_width manage">
 	        <thead>
 	            <tr>
-	                <th>Host</th>
-	                <th width="300px">Code</th>
+	                <th>Name</th>
 	                <th width="70px">Actions</th>
 	            </tr>
 	        </thead>
 
 	        <tbody>
-	            {% for key in paginator %}
-	                <tr class="item item-{{ key.getId() }}">
-	                    <td>{{ key.getHost() }}</td>
-	                    <td>{{ key.getCode() }}</td>
+	            {% for unit in paginator %}
+	                <tr class="item item-{{ unit.getId() }}">
+	                    <td>{{ unit.getName() }}</td>
 	                    <td class="actions">
-	                        {% if hasAccess('admin_key', 'edit') %}
-	                            <a href="{{ url('admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
+	                        {% if hasAccess('admin_unit', 'edit') %}
+	                            <a href="{{ url('admin_unit', {"action": "edit", "id": unit.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_key', 'delete') %}
-	                            <a href="#" data-id="{{ key.getId() }}" data-host="{{ key.getHost() }}" class="delete">Delete</a>
+	                        {% if hasAccess('admin_unit', 'delete') %}
+	                            <a href="#" data-id="{{ unit.getId() }}" data-name="{{ unit.getName() }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
@@ -48,14 +46,14 @@
 		{% include 'admin/partials/paginationControl.twig' %}
 	</div>
 
-	<div class="modal hide fade" id="removeKey">
+	<div class="modal hide fade" id="removeUnit">
 		<div class="modal-header">
 			<span>Litus Admin</span>
-			/Delete Key
+			/Delete Unit
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the key for the following host: <b class="host"></b>?
+				You are about to delete the unit with the following name: <b class="name"></b>?
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -78,31 +76,31 @@
 		function openModal(e) {
 			var $this = $(this);
 			e.preventDefault();
-			var removeKey = $('#removeKey');
-			removeKey.find('.host').html($(this).data('host'));
-			removeKey.find('.cancel').one('click', function () {
-				removeKey.modal('hide');
+			var removeUnit = $('#removeUnit');
+			removeUnit.find('.name').html($(this).data('name'));
+			removeUnit.find('.cancel').one('click', function () {
+				removeUnit.modal('hide');
 			});
 			var id = $this.data('id');
-			removeKey.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_news', {"action": "delete"})}}/' + id, function (data) {
+			removeUnit.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_unit', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
-						$('.key_removed_success').removeClass('hide');
+						$('.unit_removed_success').removeClass('hide');
 						$('.item-' + id).remove();
-						removeKey.modal('hide');
+						removeUnit.modal('hide');
 					} else {
 					    errorRemove();
 					}
 				}, 'json').error(errorRemove);
 			});
-			removeKey.modal();
+			removeUnit.modal();
 		}
 
 		function errorRemove() {
 		    $('.flashmessage').addClass('hide');
-		    $('.key_removed_error').removeClass('hide');
-		    $('#removeKey').modal('hide');
+		    $('.unit_removed_error').removeClass('hide');
+		    $('#removeUnit').modal('hide');
 		}
 	</script>
 {% endblock %}

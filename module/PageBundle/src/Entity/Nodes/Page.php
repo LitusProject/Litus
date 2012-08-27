@@ -53,7 +53,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $category;
 
     /**
-     * @var array The translations of this page
+     * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this page
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
@@ -80,7 +80,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     private $name;
 
     /**
-     * @var array The translations of this page
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this page
      *
      * @OneToMany(targetEntity="PageBundle\Entity\Nodes\Translation", mappedBy="page", cascade={"remove"})
      */
@@ -102,6 +102,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
         $this->name = Url::createSlug($name);
 
         $this->editRoles = new ArrayCollection($editRoles);
+        $this->translations = new ArrayCollection();
     }
 
     /**

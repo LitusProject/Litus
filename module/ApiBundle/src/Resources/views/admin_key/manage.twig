@@ -85,7 +85,7 @@
 			});
 			var id = $this.data('id');
 			removeKey.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_news', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_key', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.key_removed_success').removeClass('hide');
