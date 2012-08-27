@@ -64,6 +64,14 @@ class Unit
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param string $name
      * @return \ShiftBundle\Entity\Unit
      */
@@ -71,14 +79,6 @@ class Unit
     {
         $this->name = $name;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**

@@ -15,6 +15,13 @@
 
 namespace ShiftBundle\Entity;
 
+use \DateTime,
+    \CalendarBundle\Entity\Nodes\Event,
+    \CommonBundle\Entity\General\Location,
+    \CommonBundle\Entity\Users\Person,
+    \Doctrine\Common\Collections\ArrayCollection,
+    \ShiftBundle\Entity\Unit;
+
 /**
  * This entity stores a shift.
  *
@@ -50,13 +57,14 @@ class Shift
      * @var \CommonBundle\Entity\Users\Person The person that manages this shift
      *
      * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
 
     /**
      * @var integer The required number of responsibles for this shift
      *
-     * @Column(type="integer")
+     * @Column(name="nb_responsibles", type="integer")
      */
     private $nbResponsibles;
 
@@ -95,22 +103,75 @@ class Shift
      * @var \ShiftBundle\Entity\Unit The organization unit this shift belongs to
      *
      * @ManyToOne(targetEntity="ShiftBundle\Entity\Unit")
+     * @JoinColumn(name="unit", referencedColumnName="id")
      */
     private $unit;
 
     /**
-     * @var [type]
+     * @var \CalendarBundle\Entity\Nodes\Event The shift's event
      *
      * @ManyToOne(targetEntity="CalendarBundle\Entity\Nodes\Event")
+     * @JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
 
-    public function __construct(DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Event $event)
+    /**
+     * @var \CommonBundle\Entity\General\Location The shift's location
+     *
+     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
+     * @JoinColumn(name="location", referencedColumnName="id")
+     */
+    private $location;
+
+    /**
+     * @var string The shift's name
+     *
+     * @Column(type="string")
+     */
+    private $name;
+
+    /**
+     * @var string The shift's description
+     *
+     * @Column(type="text")
+     */
+    private $description;
+
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param \CommonBundle\Entity\Users\Person $manager
+     * @param integer $nbResponsibles
+     * @param integer $nbVolunteers
+     * @param \ShiftBundle\Entity\Unit $unit
+     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @param \CommonBundle\Entity\General\Location $location
+     * @param string $name
+     * @param string $description
+     */
+    public function __construct(DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, Event $event = null)
     {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+
+        $this->manager = $manager;
+
+        $this->nbResponsibles = $nbResponsibles;
+        $this->nbVolunteers = $nbVolunteers;
+
+        $this->unit = $unit;
+        $this->event = $event;
+        $this->location = $location;
+
+        $this->name = $name;
+        $this->description = $description;
+
+        $this->responsibles = new ArrayCollection();
+        $this->volunteers = new ArrayCollection();
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -118,8 +179,160 @@ class Shift
     }
 
     /**
-     * @param string $name
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param \DateTime $startDate
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setStartDate(DateTime $startDate)
+    {
+        $this->startDate = $startDate;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setEndDate(DateTime $endDate)
+    {
+        $this->endDate = $endDate;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Person $manager
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setManager(Person $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNbResponsibles()
+    {
+        return $this->nbResponsibles;
+    }
+
+    /**
+     * @param integer $nbResponsibles
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setNbResponsibles($nbResponsibles)
+    {
+        $this->nbResponsibles = $nbResponsibles;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNbVolunteers()
+    {
+        return $this->nbVolunteers;
+    }
+
+    /**
+     * @param integer $nbVolunteers
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setNbVolunteers($nbVolunteers)
+    {
+        $this->nbVolunteers = $nbVolunteers;
+        return $this;
+    }
+
+    /**
      * @return \ShiftBundle\Entity\Unit
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param \ShiftBundle\Entity\Unit $unit
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setUnit(Unit $unit)
+    {
+        $this->unit = $unit;
+        return $this;
+    }
+
+    /**
+     * @return \ShiftBundle\Entity\Unit
+     */
+    public function getEvent()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param \CalendarBundle\Entity\Nodes\Event $event
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Location $location
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setLocation(Location $location)
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string $name
+     * @return \ShiftBundle\Entity\Shift
      */
     public function setName($name)
     {
@@ -130,8 +343,18 @@ class Shift
     /**
      * @return string
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
     }
 }
