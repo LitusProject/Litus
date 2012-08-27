@@ -43,7 +43,7 @@ class Role
     private $system;
 
     /**
-     * @var \CommonBundle\Entity\Acl\Role The role's parents
+     * @var \Doctrine\Common\Collections\ArrayCollection The role's parents
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @JoinTable(
@@ -55,7 +55,7 @@ class Role
     private $parents;
 
     /**
-     * @var \CommonBundle\Entity\Acl\Role The role's actions
+     * @var \Doctrine\Common\Collections\ArrayCollection The role's actions
      *
      * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
      * @JoinTable(
