@@ -78,7 +78,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $this->populate(
             array(
                 'university_identification' => $person->getUniversityIdentification(),
-                'university_status' => $person->getUniversityStatus($academicYear)->getStatus(),
+                'university_status' => $person->getUniversityStatus($academicYear) ? $person->getUniversityStatus($academicYear)->getStatus() : null,
             )
         );
     }
