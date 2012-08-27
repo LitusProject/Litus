@@ -28,14 +28,14 @@ use CommonBundle\Entity\General\Language,
 class News extends \CommonBundle\Entity\Nodes\Node
 {
     /**
-     * @var array The translations of this news
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
      *
      * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
 
     /**
-     * @var string The name of this page
+     * @var string The name of this news item
      *
      * @Column(type="string")
      */

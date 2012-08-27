@@ -63,7 +63,7 @@ class Module implements AutoloaderProvider
     public function getProvides()
     {
         return array(
-            'name'    => 'NewsBundle',
+            'name'    => 'ApiBundle',
             'version' => '1.0.0',
         );
     }

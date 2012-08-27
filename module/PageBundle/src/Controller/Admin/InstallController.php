@@ -40,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'pageBundle' => array(
+                'pagebundle' => array(
                     'admin_page' => array(
                         'add', 'delete', 'edit', 'manage', 'upload', 'uploadProgress'
                     ),

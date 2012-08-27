@@ -33,6 +33,13 @@ class Unit
     private $id;
 
     /**
+     * @var boolean Whether or not this unit is active
+     *
+     * @Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @var string The unit's name
      *
      * @Column(type="string")
@@ -44,6 +51,7 @@ class Unit
      */
     public function __construct($name)
     {
+        $this->active = true;
         $this->name = $name;
     }
 
@@ -71,5 +79,21 @@ class Unit
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->active = false;
     }
 }

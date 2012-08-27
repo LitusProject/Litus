@@ -34,7 +34,11 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
                 ->findAllActive(),
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'host' => 'ASC'
+            )
         );
 
         return new ViewModel(

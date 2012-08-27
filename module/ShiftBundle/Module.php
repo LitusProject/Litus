@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle;
+namespace ShiftBundle;
 
 use Zend\Module\Manager,
     Zend\EventManager\Event,
@@ -63,7 +63,7 @@ class Module implements AutoloaderProvider
     public function getProvides()
     {
         return array(
-            'name'    => 'NewsBundle',
+            'name'    => 'ShiftBundle',
             'version' => '1.0.0',
         );
     }

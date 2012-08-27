@@ -24,14 +24,14 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var \DateTime The start date of this event
      *
-     * @Column(type="datetime")
+     * @Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
      * @var \DateTime The end date of this event
      *
-     * @Column(type="datetime", nullable=true)
+     * @Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
 
