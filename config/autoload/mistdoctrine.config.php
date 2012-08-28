@@ -20,29 +20,31 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
 }
 
 $databaseConfig = include __DIR__ . '/../database.config.php';
- 
+
 return array(
-    'di' => array(
-        'instance' => array(
-            'doctrine_em' => array(
-                'parameters' => array(
-                    'conn' => array(
-                        'driver'   => $databaseConfig['driver'],
-                        'host'     => $databaseConfig['host'],
-                        'port'     => $databaseConfig['port'], 
-                        'user'     => $databaseConfig['user'],
-                        'password' => $databaseConfig['password'],
-                        'dbname'   => $databaseConfig['dbname'],
-                    ),
+    'doctrine' => array(
+        'configuration' => array(
+            'orm_default' => array(
+                'generate_proxies'  => ('development' == getenv('APPLICATION_ENV')),
+                'proxyDir'         => 'data/proxies/',
+            )
+        ),
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => $databaseConfig['driver'],
+                'params' => array(
+                    'host'     => $databaseConfig['host'],
+                    'port'     => $databaseConfig['port'],
+                    'user'     => $databaseConfig['user'],
+                    'password' => $databaseConfig['password'],
+                    'dbname'   => $databaseConfig['dbname'],
                 ),
             ),
-            'doctrine_config' => array(
-                'parameters' => array(
-                    'autoGenerateProxyClasses' => ('development' == getenv('APPLICATION_ENV')),
-                    'proxyDir'                 => realpath('data/proxies'),
-                    'entityPaths'              => array(),
-                ),
-            ), 
+        ),
+        'driver' => array(
+            'my_annotation_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+            ),
         ),
     ),
 );

@@ -19,8 +19,8 @@ class Album extends EntityRepository
         $resultSet = $query->select('a')
             ->from('GalleryBundle\Entity\Album\Album', 'a')
             ->orderBy('a.dateActivity', 'ASC')
-            ->getQuery()
-            ->getResult();
+        	->getQuery()
+        	->getResult();
 
         return $resultSet;
     }
@@ -39,8 +39,8 @@ class Album extends EntityRepository
             ->orderBy('a.dateActivity', 'ASC')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->getQuery()
-            ->getResult();
+        	->getQuery()
+        	->getResult();
 
         return $resultSet;
     }

@@ -2,17 +2,16 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ translator().translate('Gallery') }}</h1>
+        <h1>{{ translate('Gallery') }}</h1>
     </div>
 
-    {% include 'admin_gallery/partials/navigation.twig' %}
+    {% include 'gallery/admin/gallery/partials/navigation.twig' %}
 
-    {% autoescape false %}
-        {{ form }}
-    {% endautoescape %}
+    {% import 'admin/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 {% endblock %}
 
-{% block content_script %}
+{% block controller_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();

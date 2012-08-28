@@ -4,59 +4,60 @@ namespace GalleryBundle\Entity\Album;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the album item.
  *
- * @Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
- * @Table(name="gallery.album")
+ * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
+ * @ORM\Table(name="gallery.album")
  */
 class Album
 {
     /**
      * @var int The ID of this album
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of creation of this album
      *
-     * @Column(name="creation_time", type="datetime")
+     * @ORM\Column(name="create_time", type="datetime")
      */
-    private $creationTime;
+    private $createTime;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this album
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="creation_person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="create_person", referencedColumnName="id")
      */
-    private $creationPerson;
+    private $createPerson;
 
     /**
      * @var \DateTime The date the photo's of this album were created
      *
-     * @Column(name="date_activity", type="datetime")
+     * @ORM\Column(name="date_activity", type="datetime")
      */
     private $dateActivity;
 
     /**
      * @var array The translations of this album
      *
-     * @OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
      */
     private $translations;
 
     /**
      * @var array The photos of this album
      *
-     * @OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
-     * @OrderBy({"id": "ASC"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
+     * @ORM\OrderBy({"id": "ASC"})
      */
     private $photos;
 
@@ -66,13 +67,13 @@ class Album
      */
     public function __construct(Person $person, DateTime $date)
     {
-        $this->creationTime = new DateTime();
-        $this->creationPerson = $person;
+        $this->createTime = new DateTime();
+        $this->createPerson = $person;
         $this->dateActivity = $date;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -82,17 +83,17 @@ class Album
     /**
      * @return \DateTime
      */
-    public function getCreationTime()
+    public function getCreateTime()
     {
-        return $this->creationTime;
+        return $this->createTime;
     }
 
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function getCreationPerson()
+    public function getCreatePerson()
     {
-        return $this->creationPerson;
+        return $this->createPerson;
     }
 
     /**

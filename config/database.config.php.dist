@@ -12,11 +12,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
-    'driver'   => 'pdo_pgsql',
+    'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
     'host'     => 'localhost',
-    'port'     => '5432', 
+    'port'     => '5432',
     'user'     => 'litus',
     'password' => 'huQeyU8te3aXusaz',
     'dbname'   => 'litus',

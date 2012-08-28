@@ -1,12 +1,12 @@
 <ul class="nav nav-tabs" id="navigation">
     {% if hasAccess('admin_gallery', 'manage') %}
         <li {% if 'manage' == getParam('action') %}class="active"{% endif %}>
-            <a href="{{ url("admin_gallery", {"action": "manage"}) }}">{{ translator().translate('Manage') }}</a>
+            <a href="{{ url("admin_gallery", {"action": "manage"}) }}">{{ translate('Manage') }}</a>
         </li>
     {% endif %}
     {% if hasAccess('admin_gallery', 'add') %}
         <li {% if 'add' == getParam('action') %}class="active"{% endif %}>
-            <a href="{{ url("admin_gallery", {"action": "add"}) }}">{{ translator().translate('Add') }}</a>
+            <a href="{{ url("admin_gallery", {"action": "add"}) }}">{{ translate('Add') }}</a>
         </li>
     {% endif %}
 </ul>

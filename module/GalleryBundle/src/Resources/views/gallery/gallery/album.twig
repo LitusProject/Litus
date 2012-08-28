@@ -1,10 +1,10 @@
 {% extends 'common/layout.twig' %}
 
 {% block content %}
-    <h1>{{ translator().translate('Gallery') }}</h1>
-
+    <h1>{{ translate('Gallery') }}</h1>
+    
     <h2>{{ album.getTitle(language) }}</h2>
-
+    
     <div id="images">
         {% for photo in album.getPhotos() %}
             {% if not photo.isCensored() %}
@@ -15,15 +15,15 @@
     <br class="clear" />
 {% endblock %}
 
-{% block content_script %}
+{% block controller_script %}
     <script type="text/javascript">
     	$(document).ready(function () {
     		$('#images').imageGallery({
-    		    closeText				: '{{ translator().translate('Close') }}',
-    		    previousText			: '{{ translator().translate('Previous') }}',
+    		    closeText				: '{{ translate('Close') }}',
+    		    previousText			: '{{ translate('Previous') }}',
     		    playText				: '',
     		    pauzeText				: '',
-    		    nextText				: '{{ translator().translate('Next') }}',
+    		    nextText				: '{{ translate('Next') }}',
     			zIndex					: 20000
     		});
     	});

@@ -17,44 +17,22 @@ if (!extension_loaded('apc'))
     return array();
 
 return array(
-    'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Zend\Cache\Storage\Adapter\Apc' => array(
-                    'instantiator' => array(
-                        'Zend\Cache\StorageFactory',
-                        'factory'
-                    ),
-                ),
-                'Zend\Cache\StorageFactory' => array(
-                    'methods' => array(
-                        'factory' => array(
-                            'config' => array(
-                                'required' => true,
-                                'type' => false,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-        'instance' => array(
-            'alias' => array(
-                'cache' => 'Zend\Cache\Storage\Adapter\Apc',
-            ),
-
-            'cache' => array(
-                'parameters' => array(
-                    'config' => array(
+    'service_manager' => array(
+        'factories' => array(
+            'cache' => function ($serviceManager) {
+                $cache = \Zend\Cache\StorageFactory::factory(
+                    array(
                         'adapter' => array(
                             'name' => 'apc',
                             'options' => array(
                                 'ttl' => 0,
+                                'namespace' => 'gv_cache',
                             ),
                         ),
-                    ),
-                ),
-            ),
+                    )
+                );
+                return $cache;
+            },
         ),
     ),
 );
