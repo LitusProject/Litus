@@ -15,36 +15,37 @@
 
 namespace CommonBundle\Entity\General;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents an academic year entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\AcademicYear")
- * @Table(name="general.academic_years")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\AcademicYear")
+ * @ORM\Table(name="general.academic_years")
  */
 class AcademicYear
 {
     /**
      * @var integer The ID of the address
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The start date of this academic year
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $start;
 
     /**
      * @var \DateTime The end date of this academic year
      *
-     * @Column(name="university_start", type="datetime")
+     * @ORM\Column(name="university_start", type="datetime")
      */
     private $universityStart;
 

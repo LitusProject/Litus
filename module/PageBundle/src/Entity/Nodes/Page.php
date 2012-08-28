@@ -20,46 +20,47 @@ use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
     PageBundle\Entity\Category;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="PageBundle\Repository\Nodes\Page")
- * @Table(name="nodes.pages")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Nodes\Page")
+ * @ORM\Table(name="nodes.pages")
  */
 class Page extends \CommonBundle\Entity\Nodes\Node
 {
     /**
      * @var \Datetime The time at which this version was created
      *
-     * @Column(name="start_time", type="datetime")
+     * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
      * @var \Datetime The time at which this version was rendered obsolete
      *
-     * @Column(name="end_time", type="datetime", nullable=true)
+     * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
 
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="PageBundle\Entity\Category")
-     * @JoinColumn(name="category", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     private $category;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this page
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
      *      name="nodes.pages_roles_map",
-     *      joinColumns={@JoinColumn(name="page", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     *      joinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )
      */
     private $editRoles;
@@ -67,22 +68,22 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
-     * @JoinColumn(name="parent", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
 
     /**
      * @var string The name of this page
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this page
      *
-     * @OneToMany(targetEntity="PageBundle\Entity\Nodes\Translation", mappedBy="page", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Nodes\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
 

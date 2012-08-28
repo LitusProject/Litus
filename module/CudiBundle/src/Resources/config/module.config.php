@@ -680,7 +680,7 @@ return array(
                         ),
                         'filters' => array(
                             'sale_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => 'Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
@@ -700,7 +700,7 @@ return array(
                         ),
                         'filters' => array(
                             'supplier_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => 'Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
@@ -735,7 +735,7 @@ return array(
                         ),
                         'filters' => array(
                             'prof_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => 'Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(

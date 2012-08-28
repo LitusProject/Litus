@@ -23,20 +23,21 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Credential,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM,
     Zend\Mail\Message,
     Zend\Mail\Transport;
 
 /**
  * This is the entity for a person.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Person")
- * @Table(
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Person")
+ * @ORM\Table(
  *      name="users.people",
- *      uniqueConstraints={@UniqueConstraint(name="username_unique", columns={"username"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="username_unique", columns={"username"})}
  * )
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
  *      "academic"="CommonBundle\Entity\Users\People\Academic",
  *      "corporate"="BrBundle\Entity\Users\People\Corporate",
  *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
@@ -47,35 +48,35 @@ abstract class Person
     /**
      * @var string The persons unique identifier
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The persons username
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $username;
 
     /**
      * @var \CommonBundle\Entity\Users\Credential The person's credential
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
-     * @JoinColumn(name="credential", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
+     * @ORM\JoinColumn(name="credential", referencedColumnName="id")
      */
     private $credential;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
      *      name="users.people_roles_map",
-     *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )
      */
     private $roles;
@@ -83,84 +84,84 @@ abstract class Person
     /**
      * @var string The persons first name
      *
-     * @Column(name="first_name", type="string", length=30)
+     * @ORM\Column(name="first_name", type="string", length=30)
      */
     private $firstName;
 
     /**
      * @var string The persons last name
      *
-     * @Column(name="last_name", type="string", length=30)
+     * @ORM\Column(name="last_name", type="string", length=30)
      */
     private $lastName;
 
     /**
      * @var string The users email address.
      *
-     * @Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=100)
      */
     private $email;
 
     /**
      * @var \CommonBundle\Entity\General\Address The address of the supplier
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
-     * @JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
     /**
      * @var string The persons telephone number
      *
-     * @Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $phoneNumber;
 
     /**
      * @var string The persons sex ('m' or 'f')
      *
-     * @Column(type="string", length=1, nullable=true)
+     * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $sex;
 
     /**
      * @var bool Whether or not this user can login
      *
-     * @Column(name="can_login", type="boolean")
+     * @ORM\Column(name="can_login", type="boolean")
      */
     private $canLogin;
 
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
      */
     private $organisationStatuses;
 
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
-     * @OrderBy({"time" = "ASC"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
+     * @ORM\OrderBy({"time" = "ASC"})
      */
     private $barcodes;
 
     /**
      * @var \CommonBundle\Entity\Users\Code A unique code to activate this account
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
-     * @JoinColumn(name="code", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
+     * @ORM\JoinColumn(name="code", referencedColumnName="id")
      */
     private $code;
 
     /**
      * @var integer The number of failed logins.
      *
-     * @Column(name="failed_logins", type="smallint")
+     * @ORM\Column(name="failed_logins", type="smallint")
      */
     private $failedLogins = 0;
 
     /**
      * @var \CommonBundle\Entity\General\Language The last used language of this person
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
-     * @JoinColumn(name="language", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
 

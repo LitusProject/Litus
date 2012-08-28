@@ -15,27 +15,29 @@
 
 namespace CommonBundle\Entity\General\Bank;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This entity represents an appliance thtat is when someone pays by card.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice")
- * @Table(name="general.bank_bank_devices")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice")
+ * @ORM\Table(name="general.bank_bank_devices")
  */
 class BankDevice
 {
     /**
      * @var int The device's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @var string The device's name
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 

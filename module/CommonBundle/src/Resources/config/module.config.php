@@ -329,7 +329,7 @@ return array(
                         ),
                         'filters' => array(
                             'admin_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => '\Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
@@ -341,7 +341,6 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'admin_css.css',
-                            'media' => 'print'
                         ),
                     ),
                     'admin_js' => array(
@@ -356,7 +355,7 @@ return array(
                         ),
                         'filters' => array(
                             'site_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => '\Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
@@ -377,7 +376,7 @@ return array(
                         ),
                         'filters' => array(
                             'bootstrap_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => '\Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
@@ -397,7 +396,7 @@ return array(
                         ),
                         'filters' => array(
                             'bootstrap_responsive_less' => array(
-                                'name' => 'LessFilter',
+                                'name' => '\Assetic\Filter\LessFilter',
                                 'parameters' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(

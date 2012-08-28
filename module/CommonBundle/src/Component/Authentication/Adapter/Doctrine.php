@@ -25,7 +25,7 @@ use CommonBundle\Component\Authentication\Result\Doctrine as Result,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-abstract class Doctrine implements \Zend\Authentication\Adapter
+abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -211,13 +211,13 @@ abstract class Doctrine implements \Zend\Authentication\Adapter
      */
     protected function executeQuery(QueryBuilder $query)
     {
-        try {
+        //try {
             $resultSet = $query->getQuery()->getResult();
-        } catch (\Exception $e) {
+        /*} catch (\Exception $e) {
             throw new Exception\QueryFailedException(
                 'The adapter failed to execute the query', 0, $e
             );
-        }
+        }*/
 
         $this->validateResultSet($resultSet);
     }

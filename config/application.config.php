@@ -20,7 +20,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcTwig',
-
+        
         'CommonBundle',
 
         'BrBundle',

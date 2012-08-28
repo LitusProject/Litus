@@ -15,36 +15,37 @@
 
 namespace CudiBundle\Entity\Comments;
 
-use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")
- * @Table(name="cudi.comments_articles_map")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comments\Mapping")
+ * @ORM\Table(name="cudi.comments_articles_map")
  */
 class Mapping
 {
     /**
      * @var integer The ID of the mapping
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Article The article of the mapping
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \CudiBundle\Entity\Comments\Comment The comment of the mapping
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Comments\Comment")
-     * @JoinColumn(name="comment", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Comments\Comment")
+     * @ORM\JoinColumn(name="comment", referencedColumnName="id")
      */
     private $comment;
 

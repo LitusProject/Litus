@@ -16,65 +16,66 @@
 namespace CommonBundle\Entity\Users;
 
 use DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * We store all sessions in the database, so that we have a tidbit more information and
  * the authentication process can be made slightly more secure.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Session")
- * @Table(name="users.sessions")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Session")
+ * @ORM\Table(name="users.sessions")
  */
 class Session
 {
     /**
      * @var string The session ID
      *
-     * @Id
-     * @Column(type="string", length=32)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=32)
      */
     private $id;
 
     /**
      * @var \DateTime The time at which this session was started
      *
-     * @Column(name="start_time", type="datetime")
+     * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
      * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="datetime")
+     * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person associated with this session
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", fetch="EAGER")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", fetch="EAGER")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The user agent used when the session was started
      *
-     * @Column(name="user_agent", type="text")
+     * @ORM\Column(name="user_agent", type="text")
      */
     private $userAgent;
 
     /**
      * @var string The IP address used when the session was started
      *
-     * @Column(type="string", length=45)
+     * @ORM\Column(type="string", length=45)
      */
     private $ip;
 
     /**
      * @var bool Whether or not the user is logged in
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $active = true;
 

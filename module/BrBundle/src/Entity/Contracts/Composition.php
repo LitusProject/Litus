@@ -16,16 +16,17 @@
 namespace BrBundle\Entity\Contracts;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Entity\Contracts\Section;
+    BrBundle\Entity\Contracts\Section,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents the composition of a contract.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
- * @Table(
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Contracts\Composition")
+ * @ORM\Table(
  *      name="br.contracts_compositions",
  *      uniqueConstraints={
- *          @UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
+ *          @ORM\UniqueConstraint(name="contract_section_unique", columns={"contract", "section"})
  *      }
  * )
  */
@@ -34,27 +35,27 @@ class Composition
     /**
      * @var \BrBundle\Entity\Contract The contract this object is a part of
      *
-     * @Id
-     * @ManyToOne(
+     * @ORM\Id
+     * @ORM\ManyToOne(
      *      targetEntity="BrBundle\Entity\Contract", inversedBy="composition", fetch="EAGER"
      * )
-     * @JoinColumn(name="contract", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="contract", referencedColumnName="id", onDelete="CASCADE")
      */
     private $contract;
 
     /**
      * @var \BrBundle\Entity\Contracts\Section The section described in this object
      *
-     * @ManyToOne(targetEntity="BrBundle\Entity\Contracts\Section", fetch="EAGER")
-     * @JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contracts\Section", fetch="EAGER")
+     * @ORM\JoinColumn(name="section", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
 
     /**
      * @var int The position number of the section in the contract
      *
-     * @Id
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\Column(type="integer")
      */
     private $position;
 

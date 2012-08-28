@@ -17,14 +17,15 @@ namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Article")
- * @Table(name="cudi.articles")
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")
+ * @ORM\Table(name="cudi.articles")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
  *      "external"="CudiBundle\Entity\Articles\External",
  *      "internal"="CudiBundle\Entity\Articles\Internal"}
  * )
@@ -34,93 +35,93 @@ abstract class Article
     /**
      * @var integer The ID of this article
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The title of this article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var string The authors of the article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $authors;
 
     /**
      * @var string The publishers of the article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $publishers;
 
     /**
      * @var integer The year the article was published
      *
-     * @Column(name="year_published", type="integer", length=4, nullable=true)
+     * @ORM\Column(name="year_published", type="integer", length=4, nullable=true)
      */
     private $yearPublished;
 
     /**
      * @var \DateTime The time the article was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var integer The version number of this article
      *
-     * @Column(name="version_number", type="smallint", nullable=true)
+     * @ORM\Column(name="version_number", type="smallint", nullable=true)
      */
     private $versionNumber;
 
     /**
      * @var integer The ISBN number of this article
      *
-     * @Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $isbn;
 
     /**
      * @var string The url with a link to extra information of this article
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $url;
 
     /**
      * @var boolean The flag whether the article is old or not
      *
-     * @Column(name="is_history", type="boolean")
+     * @ORM\Column(name="is_history", type="boolean")
      */
     private $isHistory;
 
     /**
      * @var boolean The flag whether the article is just created by a prof
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isProf;
 
     /**
      * @var boolean The flag whether the article is downloadable
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $downloadable;
 
     /**
      * @var string The article type
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $type;
 

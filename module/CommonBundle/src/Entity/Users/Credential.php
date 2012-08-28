@@ -15,41 +15,43 @@
 
 namespace CommonBundle\Entity\Users;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This entity stores a user's credentials.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Credential")
- * @Table(name="users.credentials")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Credential")
+ * @ORM\Table(name="users.credentials")
  */
 class Credential
 {
     /**
      * @var int The ID of this credential
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The algorithm used to create the hash
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $algorithm;
 
     /**
      * @var string The salt used to create the hash
      *
-     * @Column(type="string", length=32)
+     * @ORM\Column(type="string", length=32)
      */
     private $salt;
 
     /**
      * @var string The hashed credential, given by the user
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $hash;
 

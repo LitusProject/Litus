@@ -2,16 +2,16 @@
 
 {% block content %}
 	<div class="page-header">
-	    <h2>{{ translator().translate('Articles') }}</h2>
+	    <h2>{{ translate('Articles') }}</h2>
 	</div>
 	<table class="table table-bordered table-striped">
 	    <tr>
-	        <th>{{ translator().translate('Title') }}</th>
-	        <th width="120px">{{ translator().translate('Authors') }}</th>
-	        <th width="220px">{{ translator().translate('Publisher') }}</th>
-	        <th width="90px">{{ translator().translate('Publish Year') }}</th>
-	        <th width="100px">{{ translator().translate('ISBN') }}</th>
-	        <th width="90px">{{ translator().translate('Actions') }}</th>
+	        <th>{{ translate('Title') }}</th>
+	        <th width="120px">{{ translate('Authors') }}</th>
+	        <th width="220px">{{ translate('Publisher') }}</th>
+	        <th width="90px">{{ translate('Publish Year') }}</th>
+	        <th width="100px">{{ translate('ISBN') }}</th>
+	        <th width="90px">{{ translate('Actions') }}</th>
 	    </tr>
 
 		{% for article in articles %}
@@ -23,7 +23,7 @@
 		        <td>{{ article.getISBN() }}</td>
 		        <td class="actions">
 		            {% if hasAccess('prof_article', 'edit') %}
-		                <a href="{{ url("prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translator().translate('Edit') }}</a>
+		                <a href="{{ url("prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
 		            {% endif %}
 		        </td>
 		    </tr>
@@ -31,7 +31,7 @@
 	</table>
 	<div class="pull-right">
 	    {% if hasAccess("prof_article", "add") %}
-	        <a href="{{ url("prof_article", {"action": "add", "language": language.getAbbrev()}) }}" class="btn btn-success" data-toggle="modal">{{ translator().translate('Create Article') }}</a>
+	        <a href="{{ url("prof_article", {"action": "add", "language": language.getAbbrev()}) }}" class="btn btn-success" data-toggle="modal">{{ translate('Create Article') }}</a>
 	    {% endif %}
 	</div>
 	<br class="clear" />

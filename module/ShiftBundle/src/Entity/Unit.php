@@ -15,34 +15,36 @@
 
 namespace ShiftBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This entity stores a unit of the organization.
  *
- * @Entity(repositoryClass="ShiftBundle\Repository\Unit")
- * @Table(name="shifts.units")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Unit")
+ * @ORM\Table(name="shifts.units")
  */
 class Unit
 {
     /**
      * @var integer The ID of this unit
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var boolean Whether or not this unit is active
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $active;
 
     /**
      * @var string The unit's name
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 

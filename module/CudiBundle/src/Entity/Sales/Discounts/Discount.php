@@ -15,57 +15,58 @@
 
 namespace CudiBundle\Entity\Sales\Discounts;
 
-use CudiBundle\Entity\Sales\Article as Article;
+use CudiBundle\Entity\Sales\Article as Article,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
- * @Table(name="cudi.sales_discounts_discounts")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
+ * @ORM\Table(name="cudi.sales_discounts_discounts")
  */
 class Discount
 {
     /**
      * @var integer The ID of the discount
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Sales\Discounts\Template The template of the discount
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Discounts\Template")
-     * @JoinColumn(name="template", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Discounts\Template")
+     * @ORM\JoinColumn(name="template", referencedColumnName="id")
      */
     private $template;
 
     /**
      * @var integer The value of the discount
      *
-     * @Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $value;
 
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $method;
 
     /**
      * @var string The type of discount (member, acco)
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $type;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 

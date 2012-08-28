@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h2>{{ translator().translate('News') }}</h2>
+        <h2>{{ translate('News') }}</h2>
     </div>
 
     {% for item in paginator %}
@@ -14,7 +14,7 @@
                 {% autoescape false %}
                     {{ markdown(item.getSummary(100, language)) }}
                 {% endautoescape %}
-                <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translator().translate('View') }}</a></small>
+                <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('View') }}</a></small>
             </blockquote>
         </div>
     {% endfor %}

@@ -16,29 +16,30 @@
 namespace CommonBundle\Entity\General\Bank;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
-    CommonBundle\Entity\General\Bank\MoneyUnit;
+    CommonBundle\Entity\General\Bank\MoneyUnit,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * A class that is used to store the contents of a counted register
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\CashRegister")
- * @Table(name="general.bank_cash_registers")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\CashRegister")
+ * @ORM\Table(name="general.bank_cash_registers")
  */
 class CashRegister
 {
     /**
      * @var string This register's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each money unit
      *
-     * @OneToMany(
+     * @ORM\OneToMany(
      *        targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit\Amount", mappedBy="cashRegister", cascade={"remove"}
      * )
      */
@@ -47,7 +48,7 @@ class CashRegister
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The amounts of each bank device
      *
-     * @OneToMany(
+     * @ORM\OneToMany(
      *        targetEntity="CommonBundle\Entity\General\Bank\BankDevice\Amount", mappedBy="cashRegister", cascade={"remove"}
      * )
      */
