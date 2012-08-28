@@ -15,6 +15,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
+use CommonBundle\Entity\General\Language;
+
 /**
  * InstallController
  *
