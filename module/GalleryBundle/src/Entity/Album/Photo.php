@@ -2,42 +2,44 @@
 
 namespace GalleryBundle\Entity\Album;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="GalleryBundle\Repository\Album\Photo")
- * @Table(name="gallery.photo")
+ * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Photo")
+ * @ORM\Table(name="gallery.photo")
  */
 class Photo
 {
     /**
      * @var int The ID of this photo
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \GalleryBundle\Entity\Album\Album The album of this translation
      *
-     * @ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="photos")
-     * @JoinColumn(name="album", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="photos")
+     * @ORM\JoinColumn(name="album", referencedColumnName="id")
      */
     private $album;
 
     /**
      * @var string The path of this photo
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $filePath;
 
     /**
      * @var boolean Whether the photo is censored
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $censored = false;
 

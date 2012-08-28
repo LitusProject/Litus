@@ -17,7 +17,7 @@ namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
+	Doctrine\ORM\QueryBuilder,
     GalleryBundle\Entity\Album\Album;
 
 /**
@@ -25,23 +25,21 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
-     */
-    public function __construct(EntityManager $entityManager, Album $album, $opts = null)
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+	 */
+    public function __construct(EntityManager $entityManager, Album $album, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
         $this->album = $album;
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save');
-        $this->addElement($field);
-
-        $this->setActionsGroup(array('submit'));
+        $field->setValue('Save');
+        $this->add($field);
 
         $this->populateFromAlbum($album);
     }

@@ -1,9 +1,9 @@
 {% extends 'common/layout.twig' %}
 
 {% block content %}
-    <h1>{{ translator().translate('Gallery') }}</h1>
-
-    <h2>{{ translator().translate('Academic Year') }} {{ academicYear }}</h2>
+    <h1>{{ translate('Gallery') }}</h1>
+    
+    <h2>{{ translate('Academic Year') }} {{ academicYear }}</h2>
     {% for album in albums %}
         <div class="album">
             <div class="title">{{ album.getTitle(language) }}</div>

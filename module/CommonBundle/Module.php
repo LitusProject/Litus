@@ -15,40 +15,24 @@
 
 namespace CommonBundle;
 
-use Zend\Module\Manager,
-    Zend\EventManager\Event,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Helper\Doctype;
+use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
+    Zend\Mvc\ModuleRouteListener,
+    Zend\Mvc\MvcEvent;
 
-class Module implements AutoloaderProvider
+class Module
 {
-    protected $locator = null;
-    protected $moduleManager = null;
-
-    public function init(Manager $moduleManager)
+    public function onBootstrap($event)
     {
-        $this->moduleManager = $moduleManager;
+        $application  = $event->getApplication();
+        $services     = $application->getServiceManager();
+        $events       = $application->getEventManager();
+        $sharedEvents = $events->getSharedManager();
 
-        $events = StaticEventManager::getInstance();
-        $events->attach(
-            'bootstrap', 'bootstrap', array($this, 'initializeView')
-        );
-    }
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($events);
+        $injectTemplateListener = new InjectTemplateListener();
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
 
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php'
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__     => __DIR__ . '/src/' . __NAMESPACE__,
-                )
-            )
-        );
     }
 
     public function getConfig()
@@ -56,24 +40,17 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/src/Resources/config/module.config.php';
     }
 
-    public function initializeView(Event $e)
-    {
-        $app = $e->getParam('application');
-        $basePath = $app->getRequest()->getBasePath();
-        $locator = $app->getLocator();
-        $renderer = $locator->get('ZfTwig\TwigRenderer');
-        $renderer->plugin('basePath')->setBasePath($basePath);
-
-        $view = $locator->get('Zend\View\View');
-        $twigStrategy = $locator->get('ZfTwig\TwigRenderingStrategy');
-        $view->events()->attach($twigStrategy, 100);
-    }
-
-    public function getProvides()
+    public function getAutoloaderConfig()
     {
         return array(
-            'name'    => 'CommonBundle',
-            'version' => '1.0.0',
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php',
+            ),
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                ),
+            ),
         );
     }
 }

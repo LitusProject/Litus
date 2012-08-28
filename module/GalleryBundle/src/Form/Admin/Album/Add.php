@@ -20,69 +20,68 @@ use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Tabs,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
-    DateTime,
     Doctrine\ORM\EntityManager,
+    GalleryBundle\Component\Validator\Name as NameValidator,
     GalleryBundle\Entity\Album\Album,
-    Zend\Validator\Date as DateValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add an album.
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+	/**
+	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
+	 */
+	private $_entityManager = null;
 
-    /**
-     * @var \GalleryBundle\Entity\Album\Album
-     */
-    protected $album;
+	/**
+	 * @var \GalleryBundle\Entity\Album\Album
+	 */
+	protected $album;
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
-     */
-    public function __construct(EntityManager $entityManager, $opts = null)
+	/**
+	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+	 */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->_entityManager = $entityManager;
+		$this->_entityManager = $entityManager;
 
-        $tabs = new Tabs('languages');
-        $this->addElement($tabs);
+		$tabs = new Tabs('languages');
+        $tabs->setAttribute('id', 'languages');
+		$this->add($tabs);
 
-        $tabContent = new TabContent();
+        $tabContent = new TabContent('tabs-content');
 
-        foreach($this->_getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+		foreach($this->_getLanguages() as $language) {
+		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
-            $pane = new TabPane('tab_' . $language->getAbbrev());
+		    $pane = new TabPane('tab_' . $language->getAbbrev());
 
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setAttrib('class', $field->getAttrib('class') . ' input-xxlarge')
-                ->setRequired();
-            $pane->addElement($field);
+		    $field = new Text('title_' . $language->getAbbrev());
+		    $field->setLabel('Title')
+		        ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
+		        ->setRequired();
+		    $pane->add($field);
 
-            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
-        }
+		    $tabContent->add($pane);
+		}
 
-        $this->addSubForm($tabContent, 'tab-content');
+		$this->add($tabContent);
 
-        $field = new Text('date');
-        $field->setLabel('Date')
-            ->setAttrib('class', $field->getAttrib('class') . ' input-large')
-            ->setRequired()
-            ->addValidator(new DateValidator('dd/MM/yyyy'));
-        $this->addElement($field);
+		$field = new Text('date');
+		$field->setLabel('Date')
+		    ->setAttribute('class', $field->getAttribute('class') . ' input-large')
+		    ->setRequired();
+		$this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add');
-        $this->addElement($field);
-
-        $this->setActionsGroup(array('submit'));
+        $field->setValue('Add');
+        $this->add($field);
     }
 
     public function populateFromAlbum(Album $album)
@@ -93,7 +92,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
         foreach($this->_getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $album->getTitle($language);
         }
-        $this->populate($data);
+        $this->setData($data);
     }
 
     protected function _getLanguages()
@@ -103,36 +102,50 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
             ->findAll();
     }
 
-    /**
-     * Validate the form
-     *
-     * @param  array $data
-     * @return boolean
-     */
-    public function isValid($data)
+    public function getInputFilter()
     {
-        $valid = parent::isValid($data);
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
 
-        $form = $this->getSubForm('tab-content');
-        $date = DateTime::createFromFormat('d/m/Y', $data['date']);
-
-        if ($date) {
             foreach($this->_getLanguages() as $language) {
-                $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-                $name = $date->format('Ymd') . '_' . str_replace(' ', '_', strtolower($data['title_' . $language->getAbbrev()]));
-
-                $album = $this->_entityManager
-                    ->getRepository('GalleryBundle\Entity\Album\Translation')
-                    ->findOneByName($name);
-
-                if (!(null == $album ||
-                    (null != $this->album && null != $album && $album->getAlbum() == $this->album))) {
-                    $title->addError('This album title already exists');
-                    $valid = false;
-                }
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new NameValidator($this->_entityManager),
+                            ),
+                        )
+                    )
+                );
             }
-        }
 
-        return $valid;
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'date',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'date',
+                                'options' => array(
+                                    'format' => 'd/m/Y',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

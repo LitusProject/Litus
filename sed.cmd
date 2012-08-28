@@ -1,0 +1,16 @@
+s/\@Table/\@ORM\\Table/;
+s/\@Column/\@ORM\\Column/;
+s/\@Id/\@ORM\\Id/;
+s/\@GeneratedValue/\@ORM\\GeneratedValue/;
+s/\@Entity/@ORM\\Entity/;
+s/\@ManyToOne/\@ORM\\ManyToOne/;
+s/\@JoinColumn/\@ORM\\JoinColumn/;
+s/\@ManyToMany/\@ORM\\ManyToMany/;
+s/\@OneToMany/\@ORM\\OneToMany/;
+s/\@OneToOne/\@ORM\\OneToOne/;
+s/\@JoinTable/\@ORM\\JoinTable/;
+s/\@InheritanceType/\@ORM\\InheritanceType/;
+s/\@DiscriminatorColumn/\@ORM\\DiscriminatorColumn/;
+s/\@DiscriminatorMap/\@ORM\\DiscriminatorMap/;
+s/\@OrderBy/\@ORM\\OrderBy/;
+s/translator\(\)\.translate/translate/
