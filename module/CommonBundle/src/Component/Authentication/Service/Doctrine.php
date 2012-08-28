@@ -19,8 +19,8 @@ use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
     CommonBundle\Entity\Users\Session,
     Doctrine\ORM\EntityManager,
-    Zend\Authentication\Adapter,
-    Zend\Authentication\Storage as Storage;
+    Zend\Authentication\Adapter\AdapterInterface,
+    Zend\Authentication\Storage\StorageInterface as StorageInterface;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -64,13 +64,13 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $entityName The name of the entity that holds the sessions
      * @param int $expire The expiration time for the persistent storage
-     * @param \Zend\Authentication\Storage $storage The persistent storage handler
+     * @param \Zend\Authentication\Storage\StorageInterface $storage The persistent storage handler
      * @param string $namespace The namespace the storage handlers will use
      * @param string $cookieSuffix The cookie suffix that is used to store the session cookie
      * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
-        EntityManager $entityManager, $entityName, $expire, Storage $storage, $namespace, $cookieSuffix
+        EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix
     )
     {
         parent::__construct($storage);
@@ -100,7 +100,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(Adapter $adapter, $rememberMe = true)
+    public function authenticate(AdapterInterface $adapter = null, $rememberMe = true)
     {
         $result = null;
 
@@ -109,18 +109,18 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
-                $session = new $sessionEntity(
+                $newSession = new $sessionEntity(
+                    $this->_expire,
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
-                    $_SERVER['REMOTE_ADDR'],
-                    $this->_expire
+                    $_SERVER['REMOTE_ADDR']
                 );
-                $this->_entityManager->persist($session);
+                $this->_entityManager->persist($newSession);
 
-                $this->getStorage()->write($session->getId());
+                $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
                     setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix, $session->getId(), time() + $this->_expire, '/'
+                        $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
                     );
                 } else {
                     setcookie(
@@ -143,7 +143,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             );
 
             if (null !== $session) {
-                $sessionValidation = $session->validate(
+                $sessionValidation = $session->validateSession(
                     $this->_entityManager,
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR']

@@ -18,36 +18,37 @@ namespace CudiBundle\Entity\Articles;
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Articles\SubjectMap as SubjectMapping,
     CudiBundle\Entity\Comments\Mapping as CommentMapping,
-    CudiBundle\Entity\Files\Mapping as FileMapping;
+    CudiBundle\Entity\Files\Mapping as FileMapping,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\History")
- * @Table(name="cudi.articles_history")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\History")
+ * @ORM\Table(name="cudi.articles_history")
  */
 class History
 {
     /**
      * @var integer The ID of this article history
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Article The newest version of the two
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \CudiBundle\Entity\Article The oldest version of the two
      *
-     * @OneToOne(targetEntity="CudiBundle\Entity\Article", cascade={"persist"})
-     * @JoinColumn(name="precursor", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CudiBundle\Entity\Article", cascade={"persist"})
+     * @ORM\JoinColumn(name="precursor", referencedColumnName="id")
      */
     private $precursor;
 

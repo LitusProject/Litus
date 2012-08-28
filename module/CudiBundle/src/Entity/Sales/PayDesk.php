@@ -15,32 +15,34 @@
 
 namespace CudiBundle\Entity\Sales;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\PayDesk")
- * @Table(name="cudi.sales_pay_desks")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\PayDesk")
+ * @ORM\Table(name="cudi.sales_pay_desks")
  */
 class PayDesk
 {
     /**
      * @var integer The ID of the paydesk
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The name of the paydesk
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The code of the paydesk
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $code;
 

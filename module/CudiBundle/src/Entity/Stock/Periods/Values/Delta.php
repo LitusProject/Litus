@@ -18,65 +18,66 @@ namespace CudiBundle\Entity\Stock\Periods\Values;
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Stock\Period,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Delta")
- * @Table(name="cudi.stock_periods_values_deltas")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Periods\Values\Delta")
+ * @ORM\Table(name="cudi.stock_periods_values_deltas")
  */
 class Delta
 {
     /**
      * @var integer The ID of the delta
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of the delta
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who added the delta
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var integer The value of the delta
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $value;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the delta
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \CudiBundle\Entity\Stock\Period The period of the delta
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Stock\Period")
-     * @JoinColumn(name="period", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Period")
+     * @ORM\JoinColumn(name="period", referencedColumnName="id")
      */
     private $period;
 
     /**
      * @var string The comment of the delta
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $comment;
 

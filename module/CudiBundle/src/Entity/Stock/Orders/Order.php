@@ -17,57 +17,58 @@ namespace CudiBundle\Entity\Stock\Orders;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Supplier,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Order")
- * @Table(name="cudi.stock_orders", indexes={@index(name="stock_orders_time", columns={"date_created"})})
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Orders\Order")
+ * @ORM\Table(name="cudi.stock_orders", indexes={@ORM\Index(name="stock_orders_time", columns={"date_created"})})
  */
 class Order
 {
     /**
      * @var integer The ID of the order
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Supplier The supplier of the order
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
-     * @JoinColumn(name="supplier", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 
     /**
      * @var \DateTime The time the order was created
      *
-     * @Column(name="date_created", type="datetime")
+     * @ORM\Column(name="date_created", type="datetime")
      */
     private $dateCreated;
 
     /**
      * @var \DateTime The time the order was ordered
      *
-     * @Column(name="date_ordered", type="datetime", nullable=true)
+     * @ORM\Column(name="date_ordered", type="datetime", nullable=true)
      */
     private $dateOrdered;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
-     * @OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Orders\Item", mappedBy="order")
      */
     private $items;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who ordered the order
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

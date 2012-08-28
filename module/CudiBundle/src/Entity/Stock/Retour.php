@@ -17,13 +17,14 @@ namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Retour")
- * @Table(
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Retour")
+ * @ORM\Table(
  *    name="cudi.stock_retours",
- *    indexes={@index(name="stock_retours_time", columns={"timestamp"})}
+ *    indexes={@ORM\Index(name="stock_retours_time", columns={"timestamp"})}
  * )
  */
 class Retour
@@ -31,46 +32,46 @@ class Retour
     /**
      * @var integer The ID of the retour
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time the retour item was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var integer The number of the retour
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the retour
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the retour
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The comment of the retour
      *
-     * @Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 

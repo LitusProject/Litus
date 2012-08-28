@@ -16,43 +16,44 @@
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Bank\MoneyUnit;
+    CommonBundle\Entity\General\Bank\MoneyUnit,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
- * @Table(name="general.bank_money_units_amounts")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
+ * @ORM\Table(name="general.bank_money_units_amounts")
  */
 class Amount
 {
     /**
      * @var string The amount's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
-     * @JoinColumn(name="cash_register_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
+     * @ORM\JoinColumn(name="cash_register_id", referencedColumnName="id")
      */
     private $cashRegister;
 
     /**
      * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
-     * @JoinColumn(name="unit_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
+     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
      */
     private $unit;
 
     /**
      * @var int The number of units
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $amount;
 

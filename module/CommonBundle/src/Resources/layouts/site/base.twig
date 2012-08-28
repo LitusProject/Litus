@@ -4,7 +4,7 @@
 <head>
 
     {{ headMeta() }}
-	{{ headTitle(translator().translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
+	{{ headTitle(translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
 
 	{{ headLink() }}
 </head>
@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="#">{{ translator().translate('VTK Leuven vzw') }}</a>
+                <a class="title hidden-desktop" href="#">{{ translate('VTK Leuven vzw') }}</a>
                 <div class="nav-collapse collapse">
         			<ul class="nav main-nav">
                         {% for item in menu %}
@@ -42,7 +42,7 @@
         		<ul class="nav pull-right lang-nav visible-desktop">
         		    <li class="dropdown" id="langDropdown">
         			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translator().translate('Language') }} <span class="caret"></span>
+        			        {{ translate('Language') }} <span class="caret"></span>
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
@@ -54,11 +54,11 @@
         		<ul class="nav pull-right auth-nav visible-desktop">
         		    <li class="dropdown" id="loginDropdown">
         			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translator().translate('Login') }} <span class="caret"></span>
+        			        {{ translate('Login') }} <span class="caret"></span>
         		        </a>
         		        <ul class="dropdown-menu">
         		        	<li style="text-align: center;">
-			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
         		        	</li>
                             <li class="divider"></li>
         		            <li>
@@ -78,7 +78,7 @@
         	<div class="inner">
         		<div class="container">
         			<img class="siteLogo" src="/_site/img/logo.png" />
-        			<h1 class="siteName">{{ translator().translate('Vlaamse Technische Kring Leuven') }}</h1>
+        			<h1 class="siteName">{{ translate('Vlaamse Technische Kring Leuven') }}</h1>
 
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
@@ -111,10 +111,10 @@
     		<div class="container">
 		        <div class="row-fluid">
 		        	<span class="span3">
-		        		<span class="title">{{ translator().translate('Links') }}</span>
+		        		<span class="title">{{ translate('Links') }}</span>
 		        	</span>
 		        	<span class="span9">
-		        		<span class="title">{{ translator().translate('Partners') }}</span>
+		        		<span class="title">{{ translate('Partners') }}</span>
 		        	</span>
 		        </div>
 		    </div>
@@ -122,7 +122,7 @@
 
         <div class="container bottom">
         	<span class="title">
-        		&copy; 2012 {{ translator().translate('Vlaamse Technische Kring vzw') }}
+        		&copy; 2012 {{ translate('Vlaamse Technische Kring vzw') }}
         	</span>
 
         	<span class="social">

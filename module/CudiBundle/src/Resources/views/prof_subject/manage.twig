@@ -2,16 +2,16 @@
 
 {% block content %}
 	<div class="page-header">
-	    <h2>{{ translator().translate('Your Subjects') }}</h2>
+	    <h2>{{ translate('Your Subjects') }}</h2>
 	</div>
 
 	<table class="table table-bordered table-striped">
 	    <tr>
-	        <th width="80px">{{ translator().translate('Code') }}</th>
-	        <th>{{ translator().translate('Name') }}</th>
-	        <th width="80px">{{ translator().translate('Semester') }}</th>
-	        <th width="80px">{{ translator().translate('Credits') }}</th>
-	        <th width="160px">{{ translator().translate('Actions') }}</th>
+	        <th width="80px">{{ translate('Code') }}</th>
+	        <th>{{ translate('Name') }}</th>
+	        <th width="80px">{{ translate('Semester') }}</th>
+	        <th width="80px">{{ translate('Credits') }}</th>
+	        <th width="160px">{{ translate('Actions') }}</th>
 	    </tr>
 
 		{% for subject in subjects %}
@@ -22,10 +22,10 @@
 		        <td>{{ subject.getSubject().getCredits() }}</td>
 		        <td class="actions">
 		            {% if hasAccess('prof_subject_comment', 'manage') %}
-		                <a href="{{ url("prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translator().translate('Comments') }}</a>
+		                <a href="{{ url("prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
 		            {% endif %}
 		            {% if hasAccess('prof_subject', 'subject') %}
-		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translator().translate('View') }}</a>
+		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
 		            {% endif %}
 		        </td>
 		    </tr>

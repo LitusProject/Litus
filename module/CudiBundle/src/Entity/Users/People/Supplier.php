@@ -16,21 +16,22 @@
 namespace CudiBundle\Entity\Users\People;
 
 use CommonBundle\Entity\Users\Credential,
-    CudiBundle\Entity\Supplier as SupplierEntity;
+    CudiBundle\Entity\Supplier as SupplierEntity,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an supplier person.
  *
- * @Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
- * @Table(name="users.people_suppliers")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
+ * @ORM\Table(name="users.people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @var \CudiBundle\Entity\Supplier The supplier associated with this person
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
-     * @JoinColumn(name="supplier", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 

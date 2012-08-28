@@ -17,27 +17,28 @@ namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
- * @Table(name="nodes.news")
+ * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
+ * @ORM\Table(name="nodes.news")
  */
 class News extends \CommonBundle\Entity\Nodes\Node
 {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
      *
-     * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
 
     /**
      * @var string The name of this news item
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 

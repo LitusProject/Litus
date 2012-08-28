@@ -26,7 +26,7 @@ use Doctrine\ORM\EntityManager,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Acl extends \Zend\Acl\Acl
+class Acl extends \Zend\Permissions\Acl\Acl
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

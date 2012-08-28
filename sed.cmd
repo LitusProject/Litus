@@ -1,3 +1,4 @@
+s/translator().translate/translate/;
 s/\@Table/\@ORM\\Table/;
 s/\@Column/\@ORM\\Column/;
 s/\@Id/\@ORM\\Id/;
@@ -13,4 +14,4 @@ s/\@InheritanceType/\@ORM\\InheritanceType/;
 s/\@DiscriminatorColumn/\@ORM\\DiscriminatorColumn/;
 s/\@DiscriminatorMap/\@ORM\\DiscriminatorMap/;
 s/\@OrderBy/\@ORM\\OrderBy/;
-s/translator\(\)\.translate/translate/
+s/\@UniqueConstraint/\@ORM\\UniqueConstraint/

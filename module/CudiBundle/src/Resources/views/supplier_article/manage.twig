@@ -3,12 +3,12 @@
 {% block content %}
     <table class="table table-bordered table-striped">
         <tr>
-            <th>{{ translator().translate('Title') }}</th>
-            <th width="120px">{{ translator().translate('Authors') }}</th>
-            <th width="220px">{{ translator().translate('Publisher') }}</th>
-            <th width="80px">{{ translator().translate('Publish Year') }}</th>
-            <th width="100px">{{ translator().translate('Barcode') }}</th>
-            <th width="70px">{{ translator().translate('In Stock') }}</th>
+            <th>{{ translate('Title') }}</th>
+            <th width="120px">{{ translate('Authors') }}</th>
+            <th width="220px">{{ translate('Publisher') }}</th>
+            <th width="80px">{{ translate('Publish Year') }}</th>
+            <th width="100px">{{ translate('Barcode') }}</th>
+            <th width="70px">{{ translate('In Stock') }}</th>
         </tr>
 
     	{% for article in articles %}

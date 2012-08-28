@@ -16,62 +16,63 @@
 namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Articles\Options\Binding,
-    CudiBundle\Entity\Articles\Options\Color;
+    CudiBundle\Entity\Articles\Options\Color,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")
- * @Table(name="cudi.articles_internal")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")
+ * @ORM\Table(name="cudi.articles_internal")
  */
 class Internal extends \CudiBundle\Entity\Article
 {
     /**
      * @var integer The number of black and white pages
      *
-     * @Column(name="nb_black_and_white", type="smallint")
+     * @ORM\Column(name="nb_black_and_white", type="smallint")
      */
     private $nbBlackAndWhite;
 
     /**
      * @var integer The number of colored pages
      *
-     * @Column(name="nb_colored", type="smallint")
+     * @ORM\Column(name="nb_colored", type="smallint")
      */
     private $nbColored;
 
     /**
      * @var \CudiBundle\Entity\Articles\Options\Binding The binding of this article
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Binding")
-     * @JoinColumn(name="binding", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Binding")
+     * @ORM\JoinColumn(name="binding", referencedColumnName="id")
      */
     private $binding;
 
     /**
      * @var boolean Whether the aricle is an official one.
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $official;
 
     /**
      * @var boolean Flag whether the article is rectoverso or not.
      *
-     * @Column(name="recto_verso", type="boolean")
+     * @ORM\Column(name="recto_verso", type="boolean")
      */
     private $rectoVerso;
 
     /**
      * @var \CudiBundle\Entity\Articles\Options\Color The color of the front page.
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Color")
-     * @JoinColumn(name="front_page_color", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Color")
+     * @ORM\JoinColumn(name="front_page_color", referencedColumnName="id")
      */
     private $frontPageColor;
 
     /**
      * @var boolean Whether the aricle is perforated or not.
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isPerforated;
 

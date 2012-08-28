@@ -3,59 +3,59 @@
 {% block content %}
     <div class="flashmessage alert alert-error fade" id="article_removed_error">
 	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Error') }}</div>
+    	<div class="title">{{ translate('Error') }}</div>
     	<div class="content">
-    		<p>{{ translator().translate('An error occurred while removing the mapping between this subject and the article.') }}</p>
+    		<p>{{ translate('An error occurred while removing the mapping between this subject and the article.') }}</p>
     	</div>
     </div>
     <div class="flashmessage alert alert-success fade" id="article_removed_success">
 	    <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Success') }}</div>
+    	<div class="title">{{ translate('Success') }}</div>
     	<div class="content">
-    		<p>{{ translator().translate('The mapping between this subject and the article was succesfully removed.') }}</p>
+    		<p>{{ translate('The mapping between this subject and the article was succesfully removed.') }}</p>
     	</div>
     </div>
     <div class="flashmessage alert alert-error fade" id="prof_removed_error">
         <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Error') }}</div>
+    	<div class="title">{{ translate('Error') }}</div>
     	<div class="content">
-    		<p>{{ translator().translate('An error occurred while removing the mapping between this subject and the docent.') }}</p>
+    		<p>{{ translate('An error occurred while removing the mapping between this subject and the docent.') }}</p>
     	</div>
     </div>
     <div class="flashmessage alert alert-success fade" id="prof_removed_success">
         <a class="close" data-dismiss="alert">&times;</a>
-    	<div class="title">{{ translator().translate('Success') }}</div>
+    	<div class="title">{{ translate('Success') }}</div>
     	<div class="content">
-    		<p>{{ translator().translate('The mapping between this subject and the docent was succesfully removed.') }}</p>
+    		<p>{{ translate('The mapping between this subject and the docent was succesfully removed.') }}</p>
     	</div>
     </div>
 
     <div class="page-header">
-        <h2>{{ translator().translate('Subject') }}</h2>
+        <h2>{{ translate('Subject') }}</h2>
     </div>
 
 	<p>
-	    {{ translator().translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
-	    {{ translator().translate('Name') }}: <b>{{ subject.getName() }}</b><br />
-	    {{ translator().translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
-	    {{ translator().translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
-	    {{ translator().translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
+	    {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+	    {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+	    {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+	    {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
+	    {{ translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
 	</p>
 
-	<h3>{{ translator().translate('Number of students (Optional)') }}:</h3>
+	<h3>{{ translate('Number of students (Optional)') }}:</h3>
 	{% autoescape false %}
     	{{ enrollmentForm }}
     {% endautoescape %}
 
-    <h3>{{ translator().translate('Articles') }}:</h3>
+    <h3>{{ translate('Articles') }}:</h3>
     <table class="table table-bordered table-striped">
         <tr>
-            <th>{{ translator().translate('Title') }}</th>
-            <th width="120px">{{ translator().translate('Authors') }}</th>
-            <th width="220px">{{ translator().translate('Publisher') }}</th>
-            <th width="80px">{{ translator().translate('Publish Year') }}</th>
-            <th width="100px">{{ translator().translate('ISBN') }}</th>
-            <th width="90px">{{ translator().translate('Actions') }}</th>
+            <th>{{ translate('Title') }}</th>
+            <th width="120px">{{ translate('Authors') }}</th>
+            <th width="220px">{{ translate('Publisher') }}</th>
+            <th width="80px">{{ translate('Publish Year') }}</th>
+            <th width="100px">{{ translate('ISBN') }}</th>
+            <th width="90px">{{ translate('Actions') }}</th>
         </tr>
 
     	{% for mapping in articleMappings %}
@@ -67,7 +67,7 @@
     	        <td>{{ mapping.getArticle().getISBN() }}</td>
     	        <td class="actions">
     	            {% if hasAccess('prof_article_mapping', 'delete') %}
-    	                <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getTitle() }}">{{ translator().translate('Remove') }}</a>
+    	                <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getTitle() }}">{{ translate('Remove') }}</a>
     	            {% endif %}
     	        </td>
     	    </tr>
@@ -75,17 +75,17 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('prof_article', 'add') %}
-            <a href="{{ url('prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translator().translate('Add Article') }}</a>
+            <a href="{{ url('prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
 
-    <h3>{{ translator().translate('Docents') }}</h3>
+    <h3>{{ translate('Docents') }}</h3>
     <table class="table table-bordered table-striped">
         <tr>
-            <th width="90px">{{ translator().translate('Identification') }}</th>
-            <th>{{ translator().translate('Name') }}</th>
-            <th width="90px">{{ translator().translate('Actions') }}</th>
+            <th width="90px">{{ translate('Identification') }}</th>
+            <th>{{ translate('Name') }}</th>
+            <th width="90px">{{ translate('Actions') }}</th>
         </tr>
 
         {% for mapping in profMappings %}
@@ -94,7 +94,7 @@
                 <td>{{ mapping.getProf().getFullName() }}</td>
                 <td class="actions">
                     {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
-                        <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translator().translate('Remove') }}</a>
+                        <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translate('Remove') }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -102,7 +102,7 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('prof_prof', 'add') %}
-            <a href="{{ url('prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translator().translate('Add Docent') }}</a>
+            <a href="{{ url('prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -110,28 +110,28 @@
     <div id="modalRemoveArticle" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translator().translate('Remove Article') }}</h3>
+    		<h3>{{ translate('Remove Article') }}</h3>
     	</div>
     	<div class="modal-body">
-    		{{ translator().translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
+    		{{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
     	</div>
     	<div class="modal-footer">
-    		<button class="btn btn-danger confirm">{{ translator().translate('Yes') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
+    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
     	</div>
     </div>
 
     <div id="modalRemoveProf" class="modal fade">
     	<div class="modal-header">
     		<a class="close" data-dismiss="modal">&times;</a>
-    		<h3>{{ translator().translate('Remove Docent') }}</h3>
+    		<h3>{{ translate('Remove Docent') }}</h3>
     	</div>
     	<div class="modal-body">
-    		{{ translator().translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
+    		{{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
     	</div>
     	<div class="modal-footer">
-    		<button class="btn btn-danger confirm">{{ translator().translate('Yes') }}</button>
-    		<button class="btn" data-dismiss="modal">{{ translator().translate('No') }}</button>
+    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
     	</div>
     </div>
 {% endblock %}

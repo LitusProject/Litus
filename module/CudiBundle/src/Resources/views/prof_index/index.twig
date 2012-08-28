@@ -2,46 +2,46 @@
 
 {% block content %}
 	{% if authenticated %}
-	    <h2>{{ translator().translate('Your Recent Activity') }}</h2>
+	    <h2>{{ translate('Your Recent Activity') }}</h2>
 	    <div class="row">
     	    {% for action in paginator %}
     	        <div class="action span8">
     	            {% if action.getEntityName() == 'article' %}
-    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translator().translate('added an article on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('edited an article on <b>%date%</b>')|replace({'%date%': action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translate('added an article on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('edited an article on <b>%date%</b>')|replace({'%date%': action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
     	                <div class="info">
-    	                    {{ translator().translate('Article') }}: <b>{{ action.getEntity().getTitle() }}</b><br />
-    	                    {{ translator().translate('Status') }}: <b>{% if action.isCompleted() %}
-                                    <span class="label label-success">{{ translator().translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+    	                    {{ translate('Article') }}: <b>{{ action.getEntity().getTitle() }}</b><br />
+    	                    {{ translate('Status') }}: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                 {% elseif action.isRefused() %}
-                                    <span class="label label-important">{{ translator().translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
+                                    <span class="label label-important">{{ translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
                                 {% else %}
-                                    <span class="label label-warning">{{ translator().translate('Not confirmed') }}</span>
+                                    <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                 {% endif %}</b>
                         </div>
     	            {% elseif action.getEntityName() == 'mapping' %}
-    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translator().translate('added an article - subject map on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('removed an article - subject map on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translate('added an article - subject map on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('removed an article - subject map on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
                         <div class="info">
-                            {{ translator().translate('Subject') }}: <b>{{ action.getEntity().getSubject().getName() }}</b><br />
-                            {{ translator().translate('Article') }}: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
-                            {{ translator().translate('Status') }}: <b>{% if action.isCompleted() %}
-                                    <span class="label label-success">{{ translator().translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                            {{ translate('Subject') }}: <b>{{ action.getEntity().getSubject().getName() }}</b><br />
+                            {{ translate('Article') }}: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
+                            {{ translate('Status') }}: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                 {% elseif action.isRefused() %}
-                                    <span class="label label-important">{{ translator().translate('Refused') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                                    <span class="label label-important">{{ translate('Refused') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                 {% else %}
-                                    <span class="label label-warning">{{ translator().translate('Not confirmed') }}</span>
+                                    <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                 {% endif %}</b>
                         </div>
     	            {% elseif action.getEntityName() == 'file' %}
-    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translator().translate('added a file on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('removed a file on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
+    	                <div><b>{{ action.getPerson().getFullName() }}</b> {% autoescape false %}{% if action.getAction() == 'add' %}{{ translate('added a file on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% else %}{{ translator().translate('removed a file on <b>%date%</b>')|replace({'%date%':action.getTimestamp().format('d/m/Y H:i')}) }}{% endif %}{% endautoescape %}</div>
                         <div class="info">
-                            {{ translator().translate('Filename') }}: <b>{{ action.getEntity().getFile().getName() }}</b><br />
-                            {{ translator().translate('Description') }}: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
-                            {{ translator().translate('Status') }}: <b>{% if action.isCompleted() %}
-                                    <span class="label label-success">{{ translator().translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                            {{ translate('Filename') }}: <b>{{ action.getEntity().getFile().getName() }}</b><br />
+                            {{ translate('Description') }}: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
+                            {{ translate('Status') }}: <b>{% if action.isCompleted() %}
+                                    <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                 {% elseif action.isRefused() %}
-                                    <span class="label label-important">{{ translator().translate('Refused') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                                    <span class="label label-important">{{ translate('Refused') }}</span> {{ translator().translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                 {% else %}
-                                    <span class="label label-warning">{{ translator().translate('Not confirmed') }}</span>
+                                    <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                 {% endif %}</b>
                         </div>
                     {% endif %}
@@ -55,7 +55,7 @@
 	{% else %}
 	    <div style="text-align: center;">
 	        <img src="/img/litus.png" alt="Litus" />
-	        <h3>{{ translator().translate('Please login to get access to these pages.') }}</h3>
+	        <h3>{{ translate('Please login to get access to these pages.') }}</h3>
 	    </div>
 	{% endif %}
 {% endblock %}
