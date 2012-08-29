@@ -24,5 +24,12 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors;
  */
 class Password extends \CommonBundle\Component\Form\Bootstrap\Element
 {
-    public $helper = 'formPassword';
+    /**
+     * Seed attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'type' => 'password',
+    );
 }

@@ -61,7 +61,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid($formData)) {
-                $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
+                $fallbackLanguage = \Locale::getDefault();
 
                 $category = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Category')
@@ -78,7 +78,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 $page = new Page(
                     $this->getAuthentication()->getPersonObject(),
-                    $formData['title_' . $fallbackLanguage->getAbbrev()],
+                    $formData['title_' . $fallbackLanguage],
                     $category,
                     $editRoles
                 );

@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field->setLabel('Name')
                 ->setDecorators(array(new FieldDecorator()));
 
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($language->getAbbrev() == \Locale::getDefault())
                 $field->setRequired();
 
             $pane->addElement($field);

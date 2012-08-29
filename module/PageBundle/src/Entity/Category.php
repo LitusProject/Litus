@@ -94,7 +94,7 @@ class Category
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 

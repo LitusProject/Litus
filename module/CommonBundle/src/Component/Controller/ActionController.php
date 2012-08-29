@@ -24,6 +24,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
+    Locale,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
@@ -156,7 +157,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                     )
                 );
             } else {
-                //\Zend\Registry::set('Litus_Localization_FallbackLanguage', $fallbackLanguage);
+                Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch(\Exception $e) {
         }
@@ -245,10 +246,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         $language = $this->getLanguage();
 
-        $this->getServiceLocator()->get('translator')->setCache($this->getCache());
-        $this->getServiceLocator()->get('translator')->setLocale($this->getLanguage()->getAbbrev());
+        $this->getTranslator()->setCache($this->getCache());
+        $this->getTranslator()->setLocale($this->getLanguage()->getAbbrev());
 
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getServiceLocator()->get('translator'));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);
@@ -412,6 +413,17 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     public function getMailTransport()
     {
         return $this->getServiceLocator()->get('mail_transport');
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport
+     */
+    public function getTranslator()
+    {
+        return $this->getServiceLocator()->get('translator');
     }
 
     /**

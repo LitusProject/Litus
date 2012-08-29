@@ -17,7 +17,8 @@ namespace CalendarBundle\Controller;
 
 use DateInterval,
     DateTime,
-    Zend\Date\Date,
+    IntlDateFormatter,
+    Markdown_Parser,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -107,22 +108,39 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllBetween($first, $last);
 
-        $parser = new \MarkdownExtra_Parser();
+        $parser = new Markdown_Parser();
+
+        $dayFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'd MMM'
+        );
+
+        $hourFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'h:mm'
+        );
 
         $calendarItems = array();
         foreach($events as $event) {
             $date = $event->getStartDate()->format('d-M');
-            $startDate = new Date($event->getStartDate()->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'date' => $startDate->toString('d MMM'),
+                    'date' => $dayFormatter->format($event->getStartDate()),
                     'events' => array()
                 );
             }
             $calendarItems[$date]->events[] = (object) array(
                 'id' => $event->getId(),
                 'title' => $event->getTitle($this->getLanguage()),
-                'startDate' => $startDate->toString('h:mm'),
+                'startDate' => $hourFormatter->format($event->getStartDate()),
                 'content' => $parser->transform($event->getContent($this->getLanguage())),
                 'url' => $this->url()->fromRoute(
                     'calendar',
@@ -134,12 +152,20 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
         }
 
-        $first = new Date($first->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
+        $formatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'MMMM'
+        );
+        $first = $formatter->format($first);//new Date($first->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
 
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    'month' => ucfirst($first->toString('MMMM')),
+                    'month' => ucfirst($formatter->format($first)),
                     'days' => $calendarItems,
                 )
             )

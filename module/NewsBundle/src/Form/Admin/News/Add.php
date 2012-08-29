@@ -65,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setAttrib('width', '400px')
                 ->setDecorators(array(new FieldDecorator()));
 
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($language->getAbbrev() == \Locale::getDefault())
                 $field->setRequired();
 
             $pane->addElement($field);
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->setAttrib('rows', 20)
                 ->setDecorators(array(new FieldDecorator()));
 
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($language->getAbbrev() == \Locale::getDefault())
                 $field->setRequired();
 
             $pane->addElement($field);
