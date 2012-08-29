@@ -64,9 +64,10 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $user = new CorporatePerson(
                     $company,
                     $formData['username'],
@@ -121,9 +122,10 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])

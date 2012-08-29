@@ -64,9 +64,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $commonEvent = new CommonEvent(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
@@ -132,9 +133,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $event->getEvent());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $event->getEvent()
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
@@ -216,9 +218,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new PosterForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('calendar.poster_path');

@@ -94,8 +94,9 @@ class ContractController extends \Litus\Controller\Action
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $company = $this->getEntityManager()
                     ->getRepository('Litus\Entity\Users\People\Company')
                     ->findOneById($formData['company']);
@@ -150,8 +151,9 @@ class ContractController extends \Litus\Controller\Action
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $company = $this->getEntityManager()
                     ->getRepository('Litus\Entity\Users\People\Company')
                     ->findOneById($formData['company']);

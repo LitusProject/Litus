@@ -51,8 +51,9 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $newSection = new Section(
                     $formData['name'],
                     $formData['content'],
@@ -87,8 +88,9 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $section->setName($formData['name'])
                     ->setContent($formData['content'])
                     ->setPrice($formData['price'])

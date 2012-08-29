@@ -35,9 +35,10 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         $form = new AddForm($article, $this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                    $discount = new Discount($article);
 
                 if ($formData['template'] == 0) {

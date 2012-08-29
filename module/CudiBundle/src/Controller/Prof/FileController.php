@@ -112,9 +112,10 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
 
         $form = new AddForm();
-        $formData = $this->getRequest()->post()->toArray();
+        $formData = $this->getRequest()->getPost();
+        $form->setData($formData);
 
-        if ($form->isValid($formData)) {
+        if ($form->isValid()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');

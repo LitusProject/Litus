@@ -57,7 +57,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
             if ($form->isValid($formData)) {
                 $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
@@ -147,9 +148,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $page);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $page->close();
 
                 $category = $this->getEntityManager()
@@ -266,7 +268,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
 
             if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
                     $_POST['type'] !== 'file') {

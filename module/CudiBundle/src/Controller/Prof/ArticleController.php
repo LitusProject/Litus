@@ -53,9 +53,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -163,9 +164,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $form = new EditForm($this->getEntityManager(), $article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if (!$article->isProf()) {
                     $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);

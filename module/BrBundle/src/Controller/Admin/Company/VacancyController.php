@@ -57,9 +57,10 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new AddForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $vacancy = new Vacancy(
                     $formData['vacancy_name'],
                     $formData['description'],
@@ -105,9 +106,10 @@ class VacancyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new EditForm($vacancy);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $vacancy->setName($formData['vacancy_name'])
                     ->setDescription($formData['description']);
 

@@ -38,9 +38,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         $form = new AddForm();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $docent = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findOneById($formData['prof_id']);

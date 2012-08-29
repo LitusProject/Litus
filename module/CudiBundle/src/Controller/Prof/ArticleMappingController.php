@@ -39,9 +39,10 @@ class ArticleMappingController extends \CudiBundle\Component\Controller\ProfCont
         $form = new AddForm();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if (!($article = $this->_getArticle($formData['article_id'])))
                     return;
 
