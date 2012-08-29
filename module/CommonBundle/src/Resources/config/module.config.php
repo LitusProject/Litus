@@ -330,7 +330,7 @@ return array(
                         'filters' => array(
                             'admin_less' => array(
                                 'name' => '\Assetic\Filter\LessFilter',
-                                'parameters' => array(
+                                'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
                                         '/usr/local/lib/node_modules',
@@ -356,7 +356,7 @@ return array(
                         'filters' => array(
                             'site_less' => array(
                                 'name' => '\Assetic\Filter\LessFilter',
-                                'parameters' => array(
+                                'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
                                         '/usr/local/lib/node_modules',
@@ -377,7 +377,7 @@ return array(
                         'filters' => array(
                             'bootstrap_less' => array(
                                 'name' => '\Assetic\Filter\LessFilter',
-                                'parameters' => array(
+                                'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
                                         '/usr/local/lib/node_modules',
@@ -397,7 +397,7 @@ return array(
                         'filters' => array(
                             'bootstrap_responsive_less' => array(
                                 'name' => '\Assetic\Filter\LessFilter',
-                                'parameters' => array(
+                                'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
                                         '/usr/local/lib/node_modules',
