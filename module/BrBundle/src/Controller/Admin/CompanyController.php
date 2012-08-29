@@ -57,9 +57,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $company = new Company(
                     $formData['company_name'],
                     $formData['vat_number'],
@@ -112,9 +113,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new EditForm($this->getEntityManager(), $company);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
                     ->setHistory($formData['history'])
@@ -179,9 +181,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new LogoForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.logo_path');

@@ -75,9 +75,10 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         $enrollmentForm = new EnrollmentForm($enrollment);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($enrollmentForm->isValid($formData)) {
+            if ($enrollmentForm->isValid()) {
                 if ($enrollment) {
                     $enrollment->setNumber($formData['students']);
                 } else {

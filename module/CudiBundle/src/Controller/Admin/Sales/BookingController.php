@@ -106,9 +106,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()

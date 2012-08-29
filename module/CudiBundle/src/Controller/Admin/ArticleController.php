@@ -60,9 +60,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -165,9 +166,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 

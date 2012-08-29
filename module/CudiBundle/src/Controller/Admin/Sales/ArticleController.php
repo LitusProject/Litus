@@ -82,9 +82,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $supplier = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Supplier')
                     ->findOneById($formData['supplier']);
@@ -158,9 +159,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $history = new History($saleArticle);
                 $this->getEntityManager()->persist($history);
 
@@ -214,9 +216,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new ActivateForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $new = $saleArticle->duplicate();
 
                 $supplier = $this->getEntityManager()

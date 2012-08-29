@@ -53,9 +53,10 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         $form = new AddForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $supplier = new Supplier(
                     $formData['name'],
                     $formData['phone_number'],
@@ -105,9 +106,10 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         $form = new EditForm($supplier);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $supplier->setName($formData['name'])
                     ->setPhoneNumber($formData['phone_number'])
                     ->setVatNumber($formData['vat_number'])

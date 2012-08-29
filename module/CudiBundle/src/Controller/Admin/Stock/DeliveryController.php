@@ -90,9 +90,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneById($formData['article_id']);

@@ -51,9 +51,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $news = new News(
                     $this->getAuthentication()->getPersonObject()
                 );
@@ -113,9 +114,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $news);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();

@@ -54,9 +54,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $roles = array();
 
                 $formData['roles'][] = 'guest';
@@ -130,9 +131,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $roles = array();
 
                 $formData['roles'][] = 'guest';
