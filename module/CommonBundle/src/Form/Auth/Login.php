@@ -18,7 +18,9 @@ namespace CommonBundle\Form\Auth;
 use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Password,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text;
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Authentication login form.
@@ -29,37 +31,68 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @param string $action
-     * @param mixed $options The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($action = '', $opts = null)
+    public function __construct($action = '', $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->setAction($action);
+        $this->setAttribute('action', $action);
 
-        $this->setAttrib('id', 'login')
-            ->setAttrib('class', 'form-inline');
+        $this->setAttribute('id', 'login')
+            ->setAttribute('class', 'form-inline');
 
         $field = new Text('username');
         $field->setLabel('Username')
-            ->setRequired(true);
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Password('password');
         $field->setLabel('Password')
-            ->setRequired(true);
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Checkbox('remember_me');
-        $field->setLabel('Remember Me')
-            ->addDecorator('Label', array('placement' => 'APPEND'))
-            ->addDecorator('HtmlTag', array('class' => 'remember_me'))
-            ->removeDecorator('div');
-        $this->addElement($field);
+        $field->setLabel('Remember Me');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Login')
-            ->setAttrib('class', 'btn pull-right');
-        $this->addElement($field);
+        $field->setValue('Login')
+            ->setAttribute('class', 'btn pull-right');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'username',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'password',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

@@ -13,28 +13,36 @@
  * @license http://litus.cc/LICENSE
  */
 
- namespace CommonBundle\Component\Controller\Plugin;
+namespace CommonBundle\Component\Controller\Plugin;
 
- use Doctrine\ORM\EntityManager,
-      Zend\Paginator\Paginator as ZendPaginator,
-      Zend\Paginator\Adapter\ArrayAdapter;
+use Doctrine\ORM\EntityManager,
+    Zend\Mvc\Exception,
+    Zend\Paginator\Paginator as ZendPaginator,
+    Zend\Paginator\Adapter\ArrayAdapter,
+    Zend\ServiceManager\ServiceLocatorAwareInterface,
+    Zend\ServiceManager\ServiceLocatorInterface;
 
- /**
-  * A controller plugin containing some utility methods for pagination.
-  *
-  * @autor Pieter Maene <pieter.maene@litus.cc>
-  */
- class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
- {
-     /**
-      * @var \Zend\Paginator\Paginator $paginator The paginator
-      */
-     private $_paginator = null;
+/**
+ * A controller plugin containing some utility methods for pagination.
+ *
+ * @autor Pieter Maene <pieter.maene@litus.cc>
+ */
+class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
+{
+    /**
+     * @var \Zend\Paginator\Paginator $paginator The paginator
+     */
+    private $_paginator = null;
 
-     /**
-      * @var int The number of items on each page
-      */
-     private $_itemsPerPage = 25;
+    /**
+     * @var int The number of items on each page
+     */
+    private $_itemsPerPage = 25;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $locator;
 
     /**
      * Setting the number of items per page, defaults to 25.
@@ -50,7 +58,7 @@
         $this->_itemsPerPage = $itemsPerPage;
     }
 
-     /**
+    /**
      * Create a paginator from a given array.
      *
      * @param array $records The array containing the paginated records
@@ -85,10 +93,9 @@
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = null)
     {
         return $this->createFromArray(
-            $this->getController()->getLocator()
-                ->get('doctrine_em')
-                ->getRepository($entity)
-                ->findBy($conditions, $orderBy),
+            (0 == count($conditions)) ?
+                $this->getLocator()->get('doctrine.entitymanager.orm_default')->getRepository($entity)->findBy(array(), $orderBy) :
+                $this->getLocator()->get('doctrine.entitymanager.orm_default')->getRepository($entity)->findBy($conditions, $orderBy),
             $currentPage
         );
     }
@@ -111,10 +118,35 @@
                 unset($params['page']);
         }
         return array(
-               'fullWidth' => $fullWidth,
-               'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
-               'matchedRouteParams' => $params,
+            'fullWidth' => $fullWidth,
+            'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
+            'matchedRouteParams' => $params,
             'pages' => $this->_paginator->getPages(),
         );
     }
- }
+
+    /**
+     * Get the locator
+     *
+     * @return ServiceLocatorInterface
+     * @throws Exception\DomainException if unable to find locator
+     */
+    protected function getLocator()
+    {
+        if ($this->locator) {
+            return $this->locator;
+        }
+
+        $controller = $this->getController();
+
+        if (!$controller instanceof ServiceLocatorAwareInterface) {
+            throw new Exception\DomainException('Paginator plugin requires controller implements ServiceLocatorAwareInterface');
+        }
+        $locator = $controller->getServiceLocator();
+        if (!$locator instanceof ServiceLocatorInterface) {
+            throw new Exception\DomainException('Paginator plugin requires controller composes Locator');
+        }
+        $this->locator = $locator;
+        return $this->locator;
+    }
+}

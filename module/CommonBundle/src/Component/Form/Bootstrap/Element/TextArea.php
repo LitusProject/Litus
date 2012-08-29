@@ -23,8 +23,20 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Textarea extends \CommonBundle\Component\Form\Bootstrap\Element
+class Textarea extends \Zend\Form\Element\Textarea
 {
-
-    public $helper = 'formTextarea';
+    /**
+     * Create new Textarea
+     *
+     * @param  string|array|Config $spec
+     * @param  array|Traversable $options
+     * @return void
+     * @throws ElementException if no element name after initialization
+     */
+    public function __construct($spec, $options = null)
+    {
+        parent::__construct($spec, $options);
+        $this->setAttribute('class', 'input-xxlarge');
+        $this->setAttribute('rows', 10);
+    }
 }

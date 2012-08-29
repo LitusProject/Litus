@@ -112,7 +112,7 @@ return array(
                         'filters' => array(
                             'calendar_less' => array(
                                 'name' => 'Assetic\Filter\LessFilter',
-                                'parameters' => array(
+                                'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
                                     'nodePaths' => array(
                                         '/usr/local/lib/node_modules',

@@ -64,6 +64,6 @@
 
 {% block content_script %}
 	<script type="text/javascript">
-		$('a[rel=popover]').popover();
+		$('a[rel=popover]').popover({'trigger': 'hover'});
 	</script>
 {% endblock %}

@@ -24,27 +24,4 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors;
  */
 class File extends \Zend\Form\Element\File
 {
-
-    /**
-     * Load default decorators
-     *
-     * @return CommonBundle\Component\Form\Bootstrap\Element
-     */
-    public function loadDefaultDecorators()
-    {
-        if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return $this;
-        }
-
-        $decorators = $this->getDecorators();
-        if (empty($decorators)) {
-            $this->addDecorator('File')
-                 ->addDecorator(new Errors())
-                 ->addDecorator('Description', array('tag' => 'span', 'class' => 'help-block'))
-                 ->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'controls'))
-                 ->addDecorator('Label', array('class' => 'control-label'))
-                 ->addDecorator('HtmlTag', array('class' => 'control-group', 'tag' => 'div'));
-        }
-        return $this;
-    }
 }

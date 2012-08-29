@@ -15,48 +15,14 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
-use Zend\InputFilter\InputFilterAwareInterface;
-
 /**
- * Extending Zend's form component, so that our forms look the way we want
+ * Extending Zend's fieldset component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
+abstract class Fieldset extends \Zend\Form\Fieldset
 {
-    /**
-     * @var \Zend\InputFilter\InputFilter
-     */
-    protected $_inputFilter;
-
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
-    {
-        parent::__construct($name);
-
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'form-horizontal');
-    }
-
-    /**
-     * Set data to validate and/or populate elements
-     *
-     * Typically, also passes data on to the composed input filter.
-     *
-     * @param  array|\ArrayAccess|\Traversable $data
-     * @return Form|FormInterface
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setData($data)
-    {
-        parent::setData($data);
-
-        $this->setInputFilter($this->getInputFilter());
-    }
-
     /**
      * Set a hash of element names/messages to use when validation fails
      *

@@ -34,7 +34,6 @@ class Submit extends \Zend\Form\Element\Submit
     public function __construct($spec, $options = null)
     {
         parent::__construct($spec, $options);
-        $this->setAttrib('class', 'btn btn-primary');
-        $this->removeDecorator('DtDdWrapper');
+        $this->setAttribute('class', 'btn btn-primary');
     }
 }

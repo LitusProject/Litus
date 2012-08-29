@@ -106,7 +106,7 @@
                 });
             });
 
-            $('a[rel=popover]').popover();
+            $('a[rel=popover]').popover({'trigger': 'hover'});
         }, 'json');
     }
 
