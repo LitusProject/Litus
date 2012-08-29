@@ -37,7 +37,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            parse_str(
+                $this->getRequest()->getPost()->get('formData'), $formData
+            );
 
             $this->getAuthentication()->authenticate(
                 $formData['username'], $formData['password'], $formData['remember_me']
