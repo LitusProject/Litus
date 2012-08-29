@@ -32,4 +32,15 @@ class Password extends \CommonBundle\Component\Form\Bootstrap\Element
     protected $attributes = array(
         'type' => 'password',
     );
+
+    /**
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
+     */
+    public function __construct($name, $options = array())
+    {
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+    }
 }

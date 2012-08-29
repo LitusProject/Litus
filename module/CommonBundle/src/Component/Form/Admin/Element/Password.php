@@ -13,15 +13,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Submit form element
+ * Password form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Text extends \CommonBundle\Component\Form\Bootstrap\Element
+class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\Admin\Element
 {
+    /**
+     * @var boolean
+     */
+    private $_required = false;
+
     /**
      * @param  null|int|string  $name    Optional name for the element
      * @param  array            $options Optional options for the element
@@ -31,10 +36,34 @@ class Text extends \CommonBundle\Component\Form\Bootstrap\Element
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+        $this->setRequired(false);
+    }
+
+    /**
+     * Specifies whether this element is a required field.
+     *
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param boolean $flag
+     * @return void
+     */
+    public function setRequired($flag = true)
+    {
+        $this->setAttribute('required', $flag);
         $this->setLabelAttributes(
             array(
-                'class' => 'control-label',
+                'class' => $flag ? 'required' : 'optional',
             )
         );
+        $this->_required = $flag;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->_required;
     }
 }

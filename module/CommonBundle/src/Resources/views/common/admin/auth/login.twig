@@ -118,10 +118,18 @@
         <div id="form_container">
 			<a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
             <div class="divider"></div>
-        	{% autoescape false %}
-            	{{ form }}
+            {% do form.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(form) }}
+                    {% for element in form.getElements() %}
+                        {% if element.getAttribute('type') == 'checkbox' %}
+                            {{ formlabel().openTag(element) }}{{ formElement(element) }} {{ translate(element.getLabel()) }}{{ formlabel().closeTag() }}
+                        {% else %}
+                            {{ formElement(element) }}
+                        {% endif %}
+                    {% endfor %}
+                {{ form().closeTag() }}
             {% endautoescape %}
-
             <span id="icon"></span>
         </div>
 

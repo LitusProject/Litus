@@ -13,28 +13,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Submit form element
+ * Collection form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Text extends \CommonBundle\Component\Form\Bootstrap\Element
+class Collection extends \Zend\Form\Element\Collection
 {
     /**
-     * @param  null|int|string  $name    Optional name for the element
-     * @param  array            $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
+     * @return boolean
      */
-    public function __construct($name, $options = array())
+    public function isCollection()
     {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-        $this->setLabelAttributes(
-            array(
-                'class' => 'control-label',
-            )
-        );
+        return true;
     }
 }

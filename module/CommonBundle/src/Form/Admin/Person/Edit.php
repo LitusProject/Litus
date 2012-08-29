@@ -15,13 +15,12 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Multiselect,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Person
@@ -33,28 +32,27 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
+    public function __construct(EntityManager $entityManager, Person $person, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('username');
+        $this->remove('username');
 
-        $field = new Multiselect('system_roles');
+        $field = new Select('system_roles');
         $field->setLabel('System Groups')
-            ->setMultiOptions($this->_createSystemRolesArray())
-            ->setAttrib('disabled', 'disabled')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createSystemRolesArray())
+            ->setAttribute('disabled', 'disabled');
+        $this->add($field);
 
         $field = new Text('code');
         $field->setLabel('Code')
-            ->setAttrib('disabled', 'disabled')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('disabled', 'disabled');
+        $this->add($field);
 
-        $this->populate(
+        $this->setData(
             array(
                 'first_name' => $person->getFirstName(),
                 'last_name' => $person->getLastName(),
@@ -124,5 +122,16 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
             $rolesArray[$role->getName()] = $role->getName();
         }
         return $rolesArray;
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+
+            $inputFilter->remove('username');
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

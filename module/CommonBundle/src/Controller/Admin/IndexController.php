@@ -36,7 +36,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'profActions' => $profActions,
                 'versions' => array(
                     'php' => phpversion(),
-                    'zf' => \Zend\Version::VERSION,
+                    'zf' => \Zend\Version\Version::VERSION,
                     'doctrine' => \Doctrine\Common\Version::VERSION
                 ),
             )

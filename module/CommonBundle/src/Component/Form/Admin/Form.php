@@ -15,14 +15,21 @@
 
 namespace CommonBundle\Component\Form\Admin;
 
+use Zend\InputFilter\InputFilterAwareInterface;
+
 /**
  * Extending Zend's form component, so that our forms look the way we want
  * them to.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Form extends \Zend\Form\Form
+abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 {
+    /**
+     * @var \Zend\InputFilter\InputFilter
+     */
+    protected $_inputFilter;
+
     /**
      * @param mixed $options The form's options
      */
@@ -30,14 +37,61 @@ class Form extends \Zend\Form\Form
     {
         parent::__construct($options = null);
 
-        $this->setMethod('post');
+        $this->setAttribute('method', 'post')
+            ->setAttribute('class', 'form');
+    }
 
-        $this->addDecorator(
-            'HtmlTag',
-            array(
-                 'tag' => 'div',
-                 'class' => 'form'
-            )
-        );
+    /**
+     * Set data to validate and/or populate elements
+     *
+     * Typically, also passes data on to the composed input filter.
+     *
+     * @param  array|\ArrayAccess|\Traversable $data
+     * @return Form|FormInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setData($data)
+    {
+        parent::setData($data);
+
+        $this->setInputFilter($this->getInputFilter());
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|Traversable $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Recursively populate values of attached elements and fieldsets
+     *
+     * @param  array|Traversable $data
+     * @return void
+     * @throws Exception\InvalidArgumentException
+     */
+    public function populateValues($data)
+    {
+        parent::populateValues($data);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
+        return $this;
     }
 }

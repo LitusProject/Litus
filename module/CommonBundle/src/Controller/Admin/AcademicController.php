@@ -59,12 +59,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $roles = array();
-
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('guest');
+                if ($formData['roles']) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
                 }
 
                 $academic = new Academic(
@@ -136,12 +139,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $roles = array();
-
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('guest');
+                if ($formData['roles']) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
                 }
 
                 $user->setFirstName($formData['first_name'])

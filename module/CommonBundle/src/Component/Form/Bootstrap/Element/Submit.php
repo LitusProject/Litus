@@ -24,16 +24,14 @@ class Submit extends \Zend\Form\Element\Submit
 {
 
     /**
-     * Create new Submit button
-     *
-     * @param  string|array|Config $spec
-     * @param  array|Traversable $options
-     * @return void
-     * @throws ElementException if no element name after initialization
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct($spec, $options = null)
+    public function __construct($name, $options = null)
     {
-        parent::__construct($spec, $options);
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
         $this->setAttribute('class', 'btn btn-primary');
     }
 }

@@ -1,0 +1,67 @@
+{% macro renderForm(form) %}
+    {% do form.prepare() %}
+    {% autoescape false %}
+        {% set buttons = [] %}
+        {{ form().openTag(form) }}
+            {{ _self.renderFieldset(form) }}
+        {{ form().closeTag() }}
+    {% endautoescape %}
+{% endmacro %}
+
+{% macro renderFieldset(fieldset) %}
+    {% autoescape false %}
+        <div class="{{ fieldset.getAttribute('class') }}" id="{{ fieldset.getAttribute('id') }}">
+            {% set buttons = [] %}
+            {% for element in fieldset.getElements() %}
+                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                    {% set buttons = buttons|merge([element]) %}
+                {% elseif element.getAttribute('type') == 'radio' %}
+                    <div>
+                        <div class="field">
+                            <div>
+                                {{ formElement(element) }}
+                            </div>
+                        </div>
+                        <div class="errors">{{ formElementErrors(element) }}</div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <span class="label">
+                            {{ formLabel().openTag(element) }}
+                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                            {{ formLabel().closeTag() }}
+                        </span>
+                        <span class="field">
+                            {{ formElement(element) }}
+                        </span>
+                        <div class="errors">{{ formElementErrors(element) }}</div>
+                        {{ formLabel.closeTag() }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for child in fieldset.getFieldsets() %}
+                {% if child.isCollection() %}
+                    <fieldset>
+                        <legend>{{ translate(child.getLabel()) }}</legend>
+                        {{ _self.renderFieldset(child) }}
+                    </fieldset>
+                {% else %}
+                    {{ _self.renderFieldset(child) }}
+                {% endif %}
+            {% endfor %}
+            {% if buttons|length > 0 %}
+                <div class="form-actions">
+                    {% for button in buttons %}
+                        <div class="row">
+                            <span class="label"></span>
+                            <span class="field">
+                                {% do button.setValue(translate(button.getValue())) %}
+                                {{ formElement(button) }}
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endautoescape %}
+{% endmacro %}
