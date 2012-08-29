@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_config/partials/navigation.twig' %}
+	{% include 'common/admin/config/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -13,7 +13,6 @@
 
 		<br />
 
-		{% autoescape false %}
-	    	{{ form }}
-	    {% endautoescape %}
+		{% import 'admin/partials/form.twig' as forms %}
+    	{{ forms.renderForm(form) }}
 {% endblock %}

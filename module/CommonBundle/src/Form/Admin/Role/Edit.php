@@ -30,21 +30,20 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Role $role, $opts = null)
+    public function __construct(EntityManager $entityManager, Role $role, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('name');
+        $this->remove('name');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'groups_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'groups_edit');
+        $this->add($field);
 
-        $this->populate(
+        $this->setData(
             array(
                 'name' => $role->getName(),
                 'parents' => $this->_createParentsPopulationArray($role->getParents()),
@@ -82,5 +81,15 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         }
 
         return $actionsArray;
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $inputFilter->remove('name');
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

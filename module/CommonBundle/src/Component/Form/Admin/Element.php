@@ -13,25 +13,31 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form\Admin;
+
+use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
+    Zend\Form\Decorator;
 
 /**
- * Reset form element
+ * Extending Zend's form element component, so that our forms look the way we want
+ * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Reset
+interface Element
 {
+    /**
+     * Specifies whether this element is a required field.
+     *
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param boolean $flag
+     * @return void
+     */
+    public function setRequired($flag = true);
 
     /**
-     * @param  null|int|string  $name    Optional name for the element
-     * @param  array            $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
+     * @return boolean
      */
-    public function __construct($name, $options = null)
-    {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-        $this->setAttribute('class', 'btn');
-    }
+    public function isRequired();
 }

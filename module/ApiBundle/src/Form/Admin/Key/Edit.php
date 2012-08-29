@@ -30,25 +30,23 @@ class Edit extends Add
 {
     /**
      * @param \ApiBundle\Entity\Key $key The key we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Key $key, $opts = null)
+    public function __construct(Key $key, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $field = new Text('code');
         $field->setLabel('Code')
-            ->setAttrib('disabled', 'disabled')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('disabled', 'disabled');
+        $this->add($field);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'key_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'key_edit');
+        $this->add($field);
 
         $this->_populateFromKey($key);
     }
@@ -60,6 +58,6 @@ class Edit extends Add
             'code' => $key->getCode()
         );
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }
