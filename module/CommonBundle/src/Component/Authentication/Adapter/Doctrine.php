@@ -211,13 +211,13 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function executeQuery(QueryBuilder $query)
     {
-        //try {
+        try {
             $resultSet = $query->getQuery()->getResult();
-        /*} catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new Exception\QueryFailedException(
                 'The adapter failed to execute the query', 0, $e
             );
-        }*/
+        }
 
         $this->validateResultSet($resultSet);
     }

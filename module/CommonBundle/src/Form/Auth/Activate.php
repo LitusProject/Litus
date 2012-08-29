@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Password,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activate extends \Zend\Form\Form
+class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element
@@ -45,7 +45,7 @@ class Activate extends \Zend\Form\Form
         $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Activate');
+        $field->setValue('Activate');
         $this->add($field);
     }
 
