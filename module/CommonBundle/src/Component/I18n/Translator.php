@@ -1,22 +1,28 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
  *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_I18n
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Michiel Staessen <michiel.staessen@litus.cc>
+ * @author Alan Szepieniec <alan.szepieniec@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\I18n;
 
-use Locale;
-use Traversable;
-use Zend\Cache;
-use Zend\Cache\Storage\StorageInterface as CacheStorage;
-use Zend\I18n\Exception;
-use Zend\I18n\Translator\TextDomain;
-use Zend\Stdlib\ArrayUtils;
+use Locale,
+    Traversable,
+    Zend\Cache,
+    Zend\Cache\Storage\StorageInterface as CacheStorage,
+    Zend\I18n\Exception,
+    Zend\I18n\Translator\Loader\FileLoaderInterface,
+    Zend\I18n\Translator\TextDomain,
+    Zend\Stdlib\ArrayUtils;
 
 /**
  * Translator.
@@ -83,15 +89,16 @@ class Translator extends \Zend\I18n\Translator\Translator
         }
 
         // Try to load from pattern
-        if (isset($this->patterns[$textDomain])) {
-            foreach ($this->patterns[$textDomain] as $pattern) {
-                $filename = $pattern['baseDir']
-                          . '/' . sprintf($pattern['pattern'], $locale);
-                if (is_file($filename)) {
-                    $this->messages[$textDomain][$locale] = $this->getPluginManager()
-                         ->get($pattern['type'])
-                         ->load($filename, $locale);
+        if (isset($this->remote[$textDomain])) {
+            foreach ($this->remote[$textDomain] as $loaderType) {
+                $loader = $this->getPluginManager()->get($loaderType);
+
+                if (!$loader instanceof RemoteLoaderInterface) {
+                    throw new Exception\RuntimeException('Specified loader is not a remote loader');
                 }
+
+                $this->messages[$textDomain][$locale] = $loader->load($locale, $textDomain);
+                return;
             }
         }
 
@@ -100,18 +107,26 @@ class Translator extends \Zend\I18n\Translator\Translator
             if (!isset($this->files[$textDomain][$currentLocale])) {
                 continue;
             }
+
             $messages = array();
 
             foreach($this->files[$textDomain][$currentLocale] as $file) {
+                $loader = $this->getPluginManager()->get($file['type']);
+
+                if (!$loader instanceof FileLoaderInterface) {
+                    throw new Exception\RuntimeException('Specified loader is not a file loader');
+                }
+
                 $messages = array_merge(
                     $messages,
-                    $this->getPluginManager()
-                         ->get($file['type'])
-                         ->load($file['filename'], $locale)->getArrayCopy()
+                    $loader->load($locale, $file['filename'])->getArrayCopy()
                 );
             }
+
             $this->messages[$textDomain][$locale] = new TextDomain($messages);
+
             unset($this->files[$textDomain][$currentLocale]);
+            return;
         }
 
         // Cache the loaded text domain
