@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'admin/calendar/partials/navigation.twig' %}
+    {% include 'calendar/admin/calendar/partials/navigation.twig' %}
 
     <div id="controller_action">
         <h1>Event</h1>
@@ -18,8 +18,7 @@
             <i>This event currently has no poster.</i>
         {% endif %}
         <h1>Change Poster</h1>
-        {% autoescape false %}
-            {{ form }}
-        {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
