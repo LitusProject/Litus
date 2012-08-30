@@ -17,7 +17,7 @@ namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
     Zend\Mail\Message,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -29,11 +29,11 @@ class Booking
     /**
      * Send a mail for assigned bookings
      *
-     * @param \Zend\Mail\Transport $mailTransport
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
      * @param \CommonBundle\Entity\Users\Person $person
      */
-    public static function sendMail(Transport $mailTransport, $bookings, Person $person)
+    public static function sendMail(TransportInterface $mailTransport, $bookings, Person $person)
     {
         $message = $this->_em
             ->getRepository('CommonBundle\Entity\General\Config')

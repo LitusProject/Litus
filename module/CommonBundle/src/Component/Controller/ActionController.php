@@ -408,7 +408,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * We want an easy method to retrieve the Mail Transport from
      * the DI container.
      *
-     * @return \Zend\Mail\Transport
+     * @return \Zend\Mail\Transport\TransportInterface
      */
     public function getMailTransport()
     {
@@ -416,10 +416,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Mail Transport from
+     * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\Mail\Transport
+     * @return \Zend\I18n\Translator\Translator
      */
     public function getTranslator()
     {

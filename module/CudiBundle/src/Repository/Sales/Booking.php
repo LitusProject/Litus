@@ -10,7 +10,7 @@ use CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -443,7 +443,7 @@ class Booking extends EntityRepository
             return $resultSet[0];
     }
 
-    public function assignAll(Transport $mailTransport)
+    public function assignAll(TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
