@@ -362,6 +362,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
     }
 
     public function typeaheadAction()

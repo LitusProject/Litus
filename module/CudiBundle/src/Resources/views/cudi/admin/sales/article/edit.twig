@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_sales_article/partials/navigation.twig' %}
+	{% include 'cudi/admin/sales/article/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -13,9 +13,8 @@
 		<p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
 		<br />
 
-		{% autoescape false %}
-			{{ form }}
-		{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 
 	<aside>
