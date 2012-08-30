@@ -15,10 +15,11 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Nodes\Page,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -27,31 +28,26 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The form's options
+     * @param \PageBundle\Entity\Nodes\Page
      */
-    public function __construct(EntityManager $entityManager, Page $page, $opts = null)
+    private $_page;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, Page $page, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        foreach ($this->getLanguages() as $language) {
-            $title = $this->getSubForm('tab_content')
-                ->getSubForm('tab_' . $language->getAbbrev())
-                ->getElement('title_' . $language->getAbbrev());
+        $this->_page = $page;
 
-            $title->clearValidators();
-            $title->addValidator(
-                new TitleValidator($entityManager, $page->getName())
-            );
-        }
-
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'category_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'category_edit');
+        $this->add($field);
 
         $this->_populateFromPage($page);
     }
@@ -72,6 +68,34 @@ class Edit extends Add
 
         $data['parent'] = null !== $page->getParent() ? $page->getParent()->getId() : '';
 
-        $this->populate($data);
+        $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->remove('title_' . $language->getAbbrev());
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new TitleValidator($this->_entityManager, $this->_page->getName()),
+                            ),
+                        )
+                    )
+                );
+            }
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }
