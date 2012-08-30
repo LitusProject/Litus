@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_article/partials/navigation.twig' %}
+	{% include 'cudi/admin/article/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width article_removed_success hide">
@@ -121,6 +121,17 @@
 							.append(
 								actions = $('<td>', {'class': 'actions'})
 							);
+
+							{% if hasAccess('admin_sales_article', 'edit') %}
+								if (this.saleArticle > 0) {
+		                        	actions.append('<a href="{{ url('admin_sales_article', {"action": "edit"}) }}/' + this.saleArticle + '" class="article">Sale Article</a>');
+		                        }
+		                    {% endif %}
+						    {% if hasAccess('admin_sales_article', 'add') %}
+						    	if (this.saleArticle == 0) {
+		                        	actions.append('<a href="{{ url('admin_sales_article', {"action": "add"}) }}/' + this.id + '" class="article">Sale Article</a>');
+		                        }
+						    {% endif %}
 
 							{% if hasAccess('admin_article', 'edit') %}
 							    actions.append('<a href="{{ url('admin_article', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
