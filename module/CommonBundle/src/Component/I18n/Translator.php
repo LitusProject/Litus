@@ -98,7 +98,6 @@ class Translator extends \Zend\I18n\Translator\Translator
                 }
 
                 $this->messages[$textDomain][$locale] = $loader->load($locale, $textDomain);
-                return;
             }
         }
 
@@ -126,7 +125,6 @@ class Translator extends \Zend\I18n\Translator\Translator
             $this->messages[$textDomain][$locale] = new TextDomain($messages);
 
             unset($this->files[$textDomain][$currentLocale]);
-            return;
         }
 
         // Cache the loaded text domain

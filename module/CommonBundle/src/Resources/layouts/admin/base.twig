@@ -46,6 +46,9 @@
 		                {% if hasAccess('admin_key', 'manage') %}
 		                    <li><a href="{{ url('admin_key') }}">API Keys</a></li>
 		                {% endif %}
+		                {% if hasAccess('admin_cache', 'manage') %}
+		                    <li><a href="{{ url('admin_cache') }}">Cache</a></li>
+		                {% endif %}
 		            </ul>
 		    	</li>
             </ul>

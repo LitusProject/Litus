@@ -88,13 +88,26 @@ return array(
             'admin_config' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/config[/:action[/key:key]]',
+                    'route'    => '/admin/config[/:action[/key/:key]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_config',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'admin_cache' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/cache/:action',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_cache',
                         'action'     => 'manage',
                     ),
                 ),
@@ -227,6 +240,7 @@ return array(
             'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
             'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
             'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
+            'admin_cache'                      => 'CommonBundle\Controller\Admin\CacheController',
             'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
             'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
         ),
