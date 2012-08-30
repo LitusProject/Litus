@@ -17,10 +17,9 @@ namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -31,24 +30,54 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
 class Edit extends Add
 {
     /**
-     * @param mixed $opts The validator's options
+     * @var \BrBundle\Entity\Company
      */
-    public function __construct(EntityManager $entityManager, Company $company, $opts = null)
+    private $_company;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \BrBundle\Entity\Company $company
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, Company $company, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $field = $this->getElement('company_name');
-        $field->clearValidators();
-        $field->addValidator(new CompanyNameValidator($entityManager, $company));
+        $this->_company = $company;
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Edit')
-            ->setAttrib('class', 'companies_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Edit')
+            ->setAttribute('class', 'companies_edit');
+        $this->add($field);
 
         $this->populateFromCompany($company);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->remove('company_name');
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'company_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new CompanyNameValidator($this->_entityManager, $this->_company),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

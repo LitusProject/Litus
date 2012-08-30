@@ -15,21 +15,24 @@
 
 namespace CommonBundle\Form\Admin\Address;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\Address,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Text,
-    Zend\Validator\Alpha as AlphaValidator,
-    Zend\Validator\Digits as DigitsValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Address
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\SubForm
+class Add extends \CommonBundle\Component\Form\Admin\Fieldset
 {
+    /**
+     * @var string
+     */
+    private $_prefix;
+
     /**
      * @param mixed $opts The form's options
      */
@@ -38,52 +41,140 @@ class Add extends \CommonBundle\Component\Form\Admin\SubForm
         parent::__construct($opts);
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
+        $this->_prefix = $prefix;
 
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new AlphaValidator(
-                array(
-                    'allowWhiteSpace' => true
-                )
-            ));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
             ->setRequired()
-            ->setAttrib('size', 5)
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new DigitsValidator());
-        $this->addElement($field);
+            ->setAttribute('size', 5);
+        $this->add($field);
 
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
             ->setRequired()
-            ->setAttrib('size', 10)
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new DigitsValidator());
-        $this->addElement($field);
+            ->setAttribute('size', 10);
+        $this->add($field);
 
         $field = new Text($prefix . 'address_city');
         $field->setLabel('City')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new AlphaValidator());
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Select($prefix . 'address_country');
         $field->setLabel('Country')
             ->setRequired()
-            ->setMultiOptions(Address::$countries)
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_getCountries());
+        $this->add($field);
 
-        $this->populate(
+        $this->populateValues(
             array(
                 'address_country' => 'BE'
             )
         );
+    }
+
+    private function _getCountries()
+    {
+        $options = array();
+        foreach(Address::$countries as $key => $continent) {
+            $options[$key] = array(
+                'value' => $key,
+                'options' => $continent,
+            );
+        }
+        return $options;
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_street',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_number',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_postal',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_city',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_country',
+                    'required' => true,
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

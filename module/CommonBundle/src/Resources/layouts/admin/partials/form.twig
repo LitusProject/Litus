@@ -15,6 +15,12 @@
             {% for element in fieldset.getElements() %}
                 {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
                     {% set buttons = buttons|merge([element]) %}
+                {% elseif element.getAttribute('type') == 'tabs' %}
+                <ul class="tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    {% for language,tab in element.getTabs() %}
+                        <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
+                    {% endfor %}
+                </ul>
                 {% elseif element.getAttribute('type') == 'radio' %}
                     <div>
                         <div class="field">

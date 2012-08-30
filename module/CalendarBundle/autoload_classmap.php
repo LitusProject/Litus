@@ -3,6 +3,7 @@
 return array(
     'CalendarBundle\Module'                              => __DIR__ . '/Module.php',
     'CalendarBundle\Component\Validator\DateCompare'     => __DIR__ . '/src/Component/Validator/DateCompare.php',
+    'CalendarBundle\Component\Validator\Name'            => __DIR__ . '/src/Component/Validator/Name.php',
     'CalendarBundle\Controller\Admin\CalendarController' => __DIR__ . '/src/Controller/Admin/CalendarController.php',
     'CalendarBundle\Controller\Admin\InstallController'  => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'CalendarBundle\Controller\CalendarController'       => __DIR__ . '/src/Controller/CalendarController.php',

@@ -16,62 +16,54 @@
 namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Tabs
+ * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element
+class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\Admin\Element
 {
     /**
-     * Seed attributes
-     *
-     * @var array
+     * @var boolean
      */
-    protected $attributes = array(
-        'type' => 'tabs',
-        'tabs' => array(),
-        'class' => '',
-        'class' => '',
-    );
+    private $_required = false;
 
     /**
      * @param  null|int|string  $name    Optional name for the element
      * @param  array            $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct($name = null, $options = array())
+    public function __construct($name, $options = array())
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+        $this->setRequired(false);
     }
 
     /**
-     * @param array $tabs
+     * Specifies whether this element is a required field.
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param boolean $flag
+     * @return void
      */
-    public function setTabs($tabs = array())
+    public function setRequired($flag = true)
     {
-        $this->attributes['tabs'] = $tabs;
+        $this->setAttribute('required', $flag);
+        $this->setLabelAttributes(
+            array(
+                'class' => $flag ? 'required' : 'optional',
+            )
+        );
+        $this->_required = $flag;
         return $this;
     }
 
     /**
-     * @return array
+     * @return boolean
      */
-    public function getTabs()
+    public function isRequired()
     {
-        return $this->attributes['tabs'];
-    }
-
-    /**
-     * @param array $tab
-     *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
-     */
-    public function addTab($tab)
-    {
-        $this->attributes['tabs'] = array_merge($this->attributes['tabs'], $tab);
-        return $this;
+        return $this->_required;
     }
 }

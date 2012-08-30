@@ -62,7 +62,7 @@
         		        	</li>
                             <li class="divider"></li>
         		            <li>
-        		                {% do form.prepare() %}
+        		                {% do loginForm.prepare() %}
                                 {% autoescape false %}
                                     {% set buttons = [] %}
                                     {{ form().openTag(loginForm) }}
