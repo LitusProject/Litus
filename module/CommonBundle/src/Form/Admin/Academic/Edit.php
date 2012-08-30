@@ -15,7 +15,8 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
@@ -42,28 +43,20 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     {
         parent::__construct($entityManager, $person, $name);
 
+        $collection = new Collection('university');
+        $collection->setLabel('University');
+        $this->add($collection);
+
         $field = new Text('university_identification');
         $field->setLabel('Identification')
             ->setRequired();
-        $this->add($field);
+        $collection->add($field);
 
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
             ->setAttribute('options', University::$possibleStatuses);
-        $this->add($field);
-
-        /*$this->addDisplayGroup(
-            array(
-                'university_identification',
-                'university_status'
-            ),
-            'academic_form'
-        );
-        $this->getDisplayGroup('academic_form')
-               ->setLegend('University')
-            ->setAttrib('id', 'academic_form')
-            ->removeDecorator('DtDdWrapper');*/
+        $collection->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Save')
