@@ -71,7 +71,6 @@
                                     {{ form().openTag(loginForm) }}
                                         {% for element in loginForm.getElements() %}
                                             {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                                {% do element.setValue(translate(element.getValue())) %}
                                                 {{ formElement(element) }}
                                             {% elseif element.getAttribute('type') == 'checkbox' %}
                                                 <div class="remember_me">
