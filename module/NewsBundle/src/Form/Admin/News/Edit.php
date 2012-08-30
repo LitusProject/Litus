@@ -31,26 +31,18 @@ class Edit extends Add
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \NewsBundle\Entity\Nodes\News $news The news item we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, News $news, $opts = null)
+    public function __construct(EntityManager $entityManager, News $news, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $form = $this->getSubForm('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-            $title->clearValidators();
-        }
-
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'news_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'news_edit');
+        $this->add($field);
 
         $this->_populateFromNews($news);
     }
@@ -63,6 +55,6 @@ class Edit extends Add
             $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
         }
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }
