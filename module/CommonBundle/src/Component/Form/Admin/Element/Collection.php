@@ -15,6 +15,8 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use Zend\Form\Form;
+
 /**
  * Collection form element
  *
@@ -28,5 +30,39 @@ class Collection extends \Zend\Form\Element\Collection
     public function isCollection()
     {
         return true;
+    }
+
+    /**
+     * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
+     * name clashes if the same fieldset is used multiple times
+     *
+     * @param  Form $form
+     * @return mixed|void
+     */
+    public function prepareElement(Form $form)
+    {
+        foreach ($this->byName as $elementOrFieldset) {
+            // Recursively prepare elements
+            if ($elementOrFieldset instanceof ElementPrepareAwareInterface) {
+                $elementOrFieldset->prepareElement($form);
+            }
+        }
+    }
+
+    /**
+     * Populate values
+     *
+     * @param array|\Traversable $data
+     * @throws \Zend\Form\Exception\InvalidArgumentException
+     * @throws \Zend\Form\Exception\DomainException
+     * @return void
+     */
+    public function populateValues($data)
+    {
+        foreach($data as $key => $value) {
+            if (!$this->get($key))
+                unset($data[$key]);
+        }
+        parent::populateValues($data);
     }
 }

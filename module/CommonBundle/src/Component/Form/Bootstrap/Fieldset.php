@@ -15,6 +15,7 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
+use Zend\Form\Element\Collection;
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
  * them to.
@@ -55,6 +56,9 @@ abstract class Fieldset extends \Zend\Form\Fieldset
 
         $fieldsets = $this->getFieldsets();
         foreach($fieldsets as $fieldset) {
+            if ($fieldset instanceof Collection)
+                continue;
+
             $fieldset->populateValues($data);
         }
 
