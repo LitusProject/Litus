@@ -308,7 +308,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadProgressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
 
         return new ViewModel(
             array(

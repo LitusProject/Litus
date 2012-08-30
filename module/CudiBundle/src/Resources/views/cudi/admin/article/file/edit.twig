@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_article/partials/navigation.twig' %}
+	{% include 'cudi/admin/article/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -19,9 +19,8 @@
 			<input type="button" class="downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": file.getId()}) }}" value="Download&nbsp;" />
 		{% endif %}
 
-		{% autoescape false %}
-			{{ form }}
-		{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}
 

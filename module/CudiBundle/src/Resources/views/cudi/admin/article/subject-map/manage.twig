@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_article/partials/navigation.twig' %}
+	{% include 'cudi/admin/article/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width mapping_removed_success hide">
@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	{% include 'admin_article_subject/partials/years.twig' %}
+	{% include 'cudi/admin/article/subject-map/partials/years.twig' %}
 
 	<div id="controller_action">
 		<h1>Article</h1>
@@ -27,9 +27,8 @@
 		<p>Publisher: <b>{{ article.getPublishers() }}</b></p>
 		<br />
 
-		{% autoescape false %}
-			{{ form }}
-		{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 		<br style="clear:both"/>
 
 		<table class="full_width manage" id="articleSubjects">

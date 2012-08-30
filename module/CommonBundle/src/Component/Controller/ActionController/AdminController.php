@@ -82,7 +82,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($this->getLanguage()->getAbbrev());
+        $this->getTranslator()->setLocale($language->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
