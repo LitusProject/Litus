@@ -36,7 +36,7 @@ class DateCompare extends \Zend\Validator\AbstractValidator
      * Error messages
      * @var array
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_VALID      => "The end date must be after the start date",
     );
 

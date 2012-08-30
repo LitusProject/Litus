@@ -31,7 +31,7 @@ class SubjectCode extends \Zend\Validator\AbstractValidator
      *
      * @var array
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_VALID => 'The subject code does not exist'
     );
 
