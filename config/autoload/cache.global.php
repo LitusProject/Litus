@@ -26,7 +26,7 @@ return array(
                             'name' => 'apc',
                             'options' => array(
                                 'ttl' => 0,
-                                'namespace' => 'gv_cache',
+                                'namespace' => 'litus_cache',
                             ),
                         ),
                     )
