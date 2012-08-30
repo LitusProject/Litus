@@ -34,6 +34,7 @@ return array(
     'CommonBundle\Component\Form\Admin\Element\Checkbox'                               => __DIR__ . '/src/Component/Form/Admin/Element/Checkbox.php',
     'CommonBundle\Component\Form\Admin\Element\Collection'                             => __DIR__ . '/src/Component/Form/Admin/Element/Collection.php',
     'CommonBundle\Component\Form\Admin\Element\File'                                   => __DIR__ . '/src/Component/Form/Admin/Element/File.php',
+    'CommonBundle\Component\Form\Admin\Element\Hidden'                                 => __DIR__ . '/src/Component/Form/Admin/Element/Hidden.php',
     'CommonBundle\Component\Form\Admin\Element\Password'                               => __DIR__ . '/src/Component/Form/Admin/Element/Password.php',
     'CommonBundle\Component\Form\Admin\Element\Select'                                 => __DIR__ . '/src/Component/Form/Admin/Element/Select.php',
     'CommonBundle\Component\Form\Admin\Element\Tabs'                                   => __DIR__ . '/src/Component/Form/Admin/Element/Tabs.php',

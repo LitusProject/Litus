@@ -75,7 +75,7 @@ class Study
      * @param string $xmlPath
      * @param array $callback
      */
-    public function __construct(EntityManager $entityManager, Transport $mailTransport, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -366,7 +366,7 @@ class Study
                 }
             }
 
-            if ($prof->canHaveUniversityStatus($this->_academicYear->getCode(true))) {
+            if ($prof->canHaveUniversityStatus($this->_academicYear)) {
                 $prof->addUniversityStatus(
                     new UniversityStatus(
                         $prof,
