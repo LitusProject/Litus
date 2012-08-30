@@ -25,7 +25,7 @@ use CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     Zend\Mail\Message,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the entity for a person.
@@ -506,12 +506,12 @@ abstract class Person
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \Zend\Mail\Transport $mailTransport
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param boolean $onlyShibboleth Activate only login by Shibboleth
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, Transport $mailTransport, $onlyShibboleth = true)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;

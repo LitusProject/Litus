@@ -17,7 +17,7 @@ namespace CommonBundle\Component\Authentication\Action;
 
 use CommonBundle\Entity\Users\Code,
     Doctrine\ORM\EntityManager,
-    Zend\Mail\Transport,
+    Zend\Mail\Transport\TransportInterface,
     Zend\Mail\Message;
 
 /**
@@ -33,11 +33,11 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
-    public function __construct(EntityManager $entityManager, Transport $mailTransport)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;

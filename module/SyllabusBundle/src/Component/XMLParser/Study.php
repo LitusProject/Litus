@@ -30,7 +30,7 @@ use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
     Zend\Dom\Query as DomQuery,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Study
@@ -45,7 +45,7 @@ class Study
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
@@ -71,6 +71,7 @@ class Study
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param string $xmlPath
      * @param array $callback
      */
