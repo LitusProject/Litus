@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'admin_company/partials/navigation.twig' %}
+    {% include 'br/admin/company/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -14,8 +14,7 @@
         <p>Country: <b>{{ company.getAddress().getCountry() }}</b></p>
         <br />
 
-        {% autoescape false %}
-            {{ form }}
-        {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}

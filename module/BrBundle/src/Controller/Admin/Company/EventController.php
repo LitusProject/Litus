@@ -232,7 +232,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $image = new Imagick($file->getFileName());
 
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                    $fileName = $event->getEvent()->getPoster();
+                    $fileName = '/' . $event->getEvent()->getPoster();
                 } else {
                     $fileName = '';
                     do{

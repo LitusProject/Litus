@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'admin_company_event/partials/navigation.twig' %}
-    
+    {% include 'br/admin/company/event/partials/navigation.twig' %}
+
     <div id="controller_action">
         <h1>Event</h1>
-        
+
         <p>Title: <b>{{ event.getTitle(language) }}</b></p>
         <p>Start Date: <b>{{ event.getStartDate().format('d/m/Y H:i') }}</b></p>
         <p>End Date: <b>{{ event.getEndDate().format('d/m/Y H:i') }}</b></p>
@@ -18,8 +18,7 @@
             <i>This event currently has no poster.</i>
         {% endif %}
         <h1>Change Poster</h1>
-        {% autoescape false %}
-            {{ form }}
-        {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}

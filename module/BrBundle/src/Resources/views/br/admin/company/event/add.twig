@@ -1,19 +1,26 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_company/partials/navigation.twig' %}
+	{% include 'br/admin/company/event/partials/navigation.twig' %}
 
 	<div id="controller_action">
-	    {% autoescape false %}
-	    	{{ form }}
-	    {% endautoescape %}
+	    <h1>Company</h1>
+	    <p>Name: <b>{{ company.getName() }}</b></p>
+	    <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
 	    $(document).ready(function () {
-	        $('textarea#history').gollum({
+	        $('textarea').gollum({
 	            toolbar: {
 					"bold": ["bold", "Bold", "bold"],
 					"italic": ["italic", "Italic", "italic"],
@@ -27,7 +34,6 @@
                     "divider": "-",
                     "help": ["help", "Help", "help"],
                 },
-                width: '500px',
 	        });
 	    });
     </script>

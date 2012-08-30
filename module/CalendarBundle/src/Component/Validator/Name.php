@@ -13,18 +13,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Validator;
+namespace CalendarBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Company;
+use CommonBundle\Component\Util\Url,
+    CommonBundle\Entity\General\Language,
+    Doctrine\ORM\EntityManager,
+    CalendarBundle\Entity\Nodes\Event;
 
 /**
- * Matches the given company name against the database to check whether it is
+ * Matches the given event title against the database to check whether it is
  * unique or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class CompanyName extends \Zend\Validator\AbstractValidator
+class Name extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -34,28 +36,35 @@ class CompanyName extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \BrBundle\Entity\Company The company exluded from this check
+     * @var \CalendarBundle\Entity\Nodes\Event The event exluded from this check
      */
-    private $_company;
+    private $_event;
+
+    /**
+     * @var \CommonBundle\Entity\General\Language
+     */
+    private $_language;
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The company name already exists'
+        self::NOT_VALID => 'This event title already exists'
     );
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Company The company exluded from this check
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param \CalendarBundle\Entity\Nodes\Event The event exluded from this check
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Company $company = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Language $language, Event $event = null, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_company = $company;
+        $this->_language = $language;
+        $this->_event = $event;
     }
 
     /**
@@ -69,14 +78,20 @@ class CompanyName extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $company = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneByName($value);
+        $date = \DateTime::createFromFormat('d#m#Y H#i', $context['start_date']);
 
-        if (null === $company || ($this->_company && ($company == $this->_company || $company->isActive())))
-            return true;
+        if ($date) {
+            $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
-        $this->error(self::NOT_VALID);
+            $event = $this->_entityManager
+                ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                ->findOneByName($title);
+
+            if (null === $event || ($this->_event && $event->getEvent() == $this->_event))
+                return true;
+
+            $this->error(self::NOT_VALID);
+        }
 
         return false;
     }
