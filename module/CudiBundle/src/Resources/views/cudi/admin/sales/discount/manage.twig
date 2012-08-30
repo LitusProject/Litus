@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_sales_article/partials/navigation.twig' %}
+	{% include 'cudi/admin/sales/article/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 	<div class="flashmessage success_message full_width discount_removed_success hide">
@@ -25,9 +25,8 @@
 		<p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
 		<br />
 
-		{% autoescape false %}
-			{{ form }}
-		{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 		<br style="clear:both"/>
 
 		<table class="full_width manage" id="articleDiscounts">
