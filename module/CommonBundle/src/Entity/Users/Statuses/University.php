@@ -115,7 +115,7 @@ class University
      */
     public static function isValidPerson(Academic $person, AcademicYear $academicYear)
     {
-        return ($person != null) && $person->canHaveUniversityStatus($academicYear->getCode(true));
+        return ($person != null) && $person->canHaveUniversityStatus($academicYear);
     }
 
     /**

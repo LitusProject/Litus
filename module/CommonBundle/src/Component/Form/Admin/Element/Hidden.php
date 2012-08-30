@@ -16,11 +16,11 @@
 namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Checkbox form element
+ * Hidden form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox
+class Hidden extends \Zend\Form\Element\Hidden
 {
     /**
      * @param  null|int|string  $name    Optional name for the element

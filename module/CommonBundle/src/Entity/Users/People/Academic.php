@@ -175,20 +175,28 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
-            foreach($this->universityStatuses as $status) {
-                if ($status->getAcademicYear() == $academicYear)
-                    return $status;
-            }
+        foreach($this->universityStatuses as $status) {
+            if ($status->getAcademicYear() == $academicYear)
+                return $status;
+        }
     }
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @throws \RuntimeException
      */
-    public function canHaveUniversityStatus(AcademicYear $academicYear)
+    public function canHaveUniversityStatus(AcademicYearEntity $academicYear)
     {
-        if ($this->universityStatuses->exists($academicYear))
-            return false;
+        if ($this->universityStatuses->count() >= 1) {
+            if ($this->universityStatuses->exists(
+                function($key, $value) use ($academicYear) {
+                    if ($value->getAcademicYear() == $academicYear)
+                        return true;
+                }
+            )) {
+                return false;
+            }
+        }
 
         return true;
     }

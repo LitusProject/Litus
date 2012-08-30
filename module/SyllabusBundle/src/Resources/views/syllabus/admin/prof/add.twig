@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_study/partials/navigation.twig' %}
+	{% include 'syllabus/admin/study/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'admin_study/partials/years.twig' %}
+	{% include 'syllabus/admin/study/partials/years.twig' %}
 
 	<div id="controller_action">
 	    <h1>Subject</h1>
@@ -16,9 +16,8 @@
 	    <p>Credits: <b>{{ subject.getCredits() }}</b></p>
 	    <br />
 
-		{% autoescape false %}
-		    {{ form }}
-		{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}
 
