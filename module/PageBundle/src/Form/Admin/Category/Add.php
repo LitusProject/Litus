@@ -15,16 +15,16 @@
 
 namespace PageBundle\Form\Admin\Category;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     PageBundle\Entity\Category,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Category
@@ -41,18 +41,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
         $tabs = new Tabs('languages');
-        $this->addElement($tabs);
+        $this->add($tabs);
 
-        $tabContent = new TabContent();
+        $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
@@ -61,29 +61,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $field = new Text('name_' . $language->getAbbrev());
             $field->setLabel('Name')
-                ->setDecorators(array(new FieldDecorator()));
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
 
-            if ($language->getAbbrev() == \Locale::getDefault())
-                $field->setRequired();
+            $pane->add($field);
 
-            $pane->addElement($field);
-
-            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+            $tabContent->add($pane);
         }
 
-        $this->addSubForm($tabContent, 'tab_content');
+        $this->add($tabContent);
 
         $field = new Select('parent');
         $field->setLabel('Parent')
-            ->setMultiOptions($this->_createPagesArray())
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_createPagesArray());
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'category_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'category_add');
+        $this->add($field);
     }
 
     protected function getLanguages()
@@ -106,5 +101,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $pageOptions[$page->getId()] = $page->getTitle();
 
         return $pageOptions;
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'name_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

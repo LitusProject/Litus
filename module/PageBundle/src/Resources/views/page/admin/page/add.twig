@@ -6,9 +6,8 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% autoescape false %}
-            {{ form }}
-        {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
 
