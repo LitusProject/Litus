@@ -64,7 +64,6 @@
             {% if buttons|length > 0 %}
                 <div class="form-actions">
                     {% for button in buttons %}
-                        {% do button.setValue(translate(button.getValue())) %}
                         {{ formElement(button) }}
                     {% endfor %}
                 </div>
