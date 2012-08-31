@@ -70,8 +70,35 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
+                                {% do loginForm.prepare() %}
                                 {% autoescape false %}
-                                    {{ loginForm }}
+                                    {% set buttons = [] %}
+                                    {{ form().openTag(loginForm) }}
+                                        {% for element in loginForm.getElements() %}
+                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                <div class="remember_me">
+                                                    <label>
+                                                        {{ formElement(element) }}
+                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                    </label>
+                                                </div>
+                                            {% else %}
+                                                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                    <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                    <div class="controls">
+                                                        <div>{{ formElement(element) }}</div>
+                                                        {% if element.getMessages()|length > 0 %}
+                                                            <div class="help-inline">
+                                                                {{ formElementErrors(element) }}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {{ form().closeTag() }}
                                 {% endautoescape %}
                             </li>
                         </ul>

@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_supplier/partials/navigation.twig' %}
+	{% include 'cudi/admin/supplier/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -15,8 +15,7 @@
 	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
 	    <br />
 
-		{% autoescape false %}
-	    	{{ form }}
-	    {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}

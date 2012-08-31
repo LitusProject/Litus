@@ -15,13 +15,13 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Supplier
@@ -30,35 +30,33 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Text('name');
         $field->setLabel('Name')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('phone_number');
         $field->setLabel('Phone Number')
-            ->setAttrib('placeholder', '+CCAAANNNNNN')
-            ->addValidator(new PhoneNumberValidator())
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('placeholder', '+CCAAANNNNNN');
+        $this->add($field);
 
-        $this->addSubForm(new AddressForm(), 'address');
+        $this->add(new AddressForm('', 'address'));
 
         $field = new Text('vat_number');
-        $field->setLabel('VAT Number')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+        $field->setLabel('VAT Number');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'supplier_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'supplier_add');
+        $this->add($field);
     }
 
     public function populateFromSupplier(Supplier $supplier)
@@ -74,6 +72,44 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'address_country' => $supplier->getAddress()->getCountryCode(),
         );
 
-        $this->populate($data);
+        $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = $this->get('address')->getInputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'phone_number',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PhoneNumberValidator(),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

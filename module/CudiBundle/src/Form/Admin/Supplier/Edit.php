@@ -26,17 +26,20 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Edit extends \CudiBundle\Form\Admin\Supplier\Add
 {
-    public function __construct(Supplier $supplier, $options = null)
+    /**
+     * @param \CudiBundle\Entity\Supplier $supplier
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(Supplier $supplier, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-                ->setAttrib('class', 'supplier_edit')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'supplier_edit');
+        $this->add($field);
 
         $this->populateFromSupplier($supplier);
     }

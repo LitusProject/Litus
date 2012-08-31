@@ -34,11 +34,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
     private $_prefix;
 
     /**
-     * @param mixed $opts The form's options
+     * @param string $prefix
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($prefix = '', $opts = null)
+    public function __construct($prefix = '', $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
