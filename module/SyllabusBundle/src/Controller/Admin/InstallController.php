@@ -139,6 +139,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50630513.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016928.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016872.xml',
+                            'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50527959.xml',
                         )
                     ),
                     'description' => 'The url to the xml',
@@ -167,7 +168,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'delete', 'manage'
                     ),
                     'admin_update_syllabus' => array(
-                        'index'
+                        'index', 'updateNow'
                     ),
                 )
             )

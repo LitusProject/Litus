@@ -1,26 +1,24 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_sales_booking/partials/navigation.twig' %}
+	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-
-	    {% autoescape false %}
-    	    {{ form }}
-    	{% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	    <br class="clear">
 	    <br class="clear">
 
 	    {% if paginator is not null %}
-	        <h1>Person</h1>
-	        <p>Name: <b>{{ person.getFullName() }}</b></p>
+	        <h1>Article</h1>
+	        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
 	        <br class="clear">
 
     		<table class="full_width manage">
     	        <tr>
-    	            <th>Article</th>
+    	            <th>Person</th>
     	            <th width="40px">&nbsp;</th>
     	            <th width="120px">Date</th>
     	            <th width="120px">Expires On</th>
@@ -30,7 +28,7 @@
 
     	        {% for booking in paginator %}
     	            <tr class="item">
-    	                <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
+    	                <td>{{ booking.getPerson().getFullName() }}</td>
     	                <td>&times;{{ booking.getNumber() }}</td>
     	                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
     	                <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
@@ -55,20 +53,20 @@
             $('#controller_nav .assignAll').click(openAssignAllModal);
             $('#search').click(function (e) {
                 e.preventDefault();
-                if (isNaN(parseFloat($('#personId').val())) || $('#personId').val() == '')
+                if (isNaN(parseFloat($('#articleId').val())) || $('#articleId').val() == '')
                     return;
-                window.location.href = '{{ url("admin_sales_booking", {'action': 'person'}) }}/' + $('#personId').val();
+                window.location.href = '{{ url("admin_sales_booking", {'action': 'article'}) }}/' + $('#articleId').val();
             });
 
-            $('#personSearch').typeaheadRemote(
+            $('#articleSearch').typeaheadRemote(
                 {
-                    source: '{{ url("admin_academic_typeahead") }}',
+	                source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('#articleId').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('#articleId').val('');
                 }
             });
         });

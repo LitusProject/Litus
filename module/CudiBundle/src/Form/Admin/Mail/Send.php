@@ -15,13 +15,11 @@
 
 namespace CudiBundle\Form\Admin\Mail;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Zend\Form\Element\Hidden,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea,
-    Zend\Validator\EmailAddress as EmailAddressValidator;
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Send Mail
@@ -30,35 +28,97 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Send extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($email = null, $name = null, $opts = null)
+    /**
+     * @param string $email
+     * @param string $personName
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($email, $personName, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $field = new Hidden('email');
-        $field->setValue($email)
-            ->setRequired()
-            ->addValidator(new EmailAddressValidator())
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setValue($email);
+        $this->add($field);
 
         $field = new Hidden('name');
-        $field->setValue($name)
-            ->setRequired()
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setValue($name);
+        $this->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttrib('style', 'width: 400px')
+            ->setAttribute('style', 'width: 350px')
             ->setRequired();
-        $this->addElement($field);
+        $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setAttrib('style', 'width: 500px')
+            ->setAttribute('style', 'width: 400px')
             ->setRequired();
-        $this->addElement($field);
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'email',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'emailaddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'message',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

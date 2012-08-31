@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_sales_booking/partials/navigation.twig' %}
+	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-    {% include 'admin_sales_booking/partials/periods.twig' %}
+    {% include 'cudi/admin/sales/booking/partials/periods.twig' %}
     <div class="flashmessage success_message full_width mail_send_success hide">
     	<div class="title">Success</div>
     	<div class="content">
@@ -145,9 +145,9 @@
     	</div>
     	<div class="modal-body">
     		<p>
-    			{% autoescape false %}
-    			    {{ mailForm }}
-    			{% endautoescape %}
+                {% import 'admin/partials/form.twig' as forms %}
+                {{ forms.renderForm(mailForm) }}
+                <br style="clear: both;">
     		</p>
     		<div class="footer">
     			<input type="button" class="send" value="Send">
@@ -251,6 +251,8 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#controller_nav .assignAll').click(openAssignAllModal);
+
             $('aside .remove').click(openRemoveModal);
             $('aside .assign').click(openAssignModal);
             $('aside .unassign').click(openUnassignModal);

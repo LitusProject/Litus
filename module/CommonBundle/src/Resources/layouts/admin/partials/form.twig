@@ -20,6 +20,10 @@
                     <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
                 {% endfor %}
             </ul>
+            {% elseif element.getAttribute('type') == 'hidden' %}
+                <div>
+                    {{ formElement(element) }}
+                </div>
             {% elseif element.getAttribute('type') == 'radio' %}
                 <div>
                     <div class="field">
