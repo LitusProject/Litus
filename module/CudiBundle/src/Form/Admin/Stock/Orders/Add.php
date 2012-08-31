@@ -15,14 +15,12 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Hidden,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator,
-    Zend\Validator\GreaterThan as GreaterThanValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Order
@@ -31,42 +29,102 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(EntityManager $entityManager, $options = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Hidden('article_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'articleId')
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setAttribute('id', 'articleId');
+        $this->add($field);
 
         $field = new Text('article');
         $field->setLabel('Article')
-            ->setAttrib('class', 'disableEnter')
-            ->setAttrib('style', 'width: 400px;')
-            ->setAttrib('id', 'articleSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('class', 'disableEnter')
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('id', 'articleSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('number');
         $field->setLabel('Number')
-            ->setAttrib('autocomplete', 'off')
-            ->setRequired()
-            ->addValidator(new IntValidator())
-            ->addValidator(new GreaterThanValidator(0))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('id', 'delivery_number')
+            ->setRequired();
+        $this->add($field);
 
-        $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'stock_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field = new Submit('add');
+        $field->setValue('Add')
+            ->setAttribute('class', 'stock_add')
+            ->setAttribute('id', 'stock_add');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'article_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'article',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'number',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                            array(
+                                'name' => 'greaterthan',
+                                'options' => array(
+                                    'min' => 0,
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

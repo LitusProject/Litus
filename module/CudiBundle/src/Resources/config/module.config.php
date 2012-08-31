@@ -643,7 +643,7 @@ return array(
             'admin_sales_financial' => 'CudiBundle\Controller\Admin\Sales\FinancialController',
             'admin_supplier'        => 'CudiBundle\Controller\Admin\Supplier\SupplierController',
             'admin_supplier_user'   => 'CudiBundle\Controller\Admin\Supplier\UserController',
-            'admin_stock'           => 'CudiBundle\Controller\Admin\Stock\StockController',
+            'admin_stock'           => 'CudiBundle\Controller\Admin\StockController',
             'admin_stock_period'    => 'CudiBundle\Controller\Admin\Stock\PeriodController',
             'admin_stock_delivery'  => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
             'admin_stock_retour'    => 'CudiBundle\Controller\Admin\Stock\RetourController',

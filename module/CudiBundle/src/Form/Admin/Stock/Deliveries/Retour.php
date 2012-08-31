@@ -15,12 +15,11 @@
 
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    CudiBundle\Component\Validator\ArticleBarcode as ArticleBarcodeValidator,
+use CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Textarea;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Return to supplier (inverse of delivery)
@@ -32,20 +31,49 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
 {
-    public function __construct(EntityManager $entityManager, $options = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($entityManager, $name);
 
-        $submit = $this->getElement('submit');
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Textarea('comment');
         $field->setLabel('Comment')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
-        $this->addElement($submit);
+        $field = new Submit('add');
+        $field->setValue('Add')
+            ->setAttribute('class', 'stock_add')
+            ->setAttribute('id', 'stock_add');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'comment',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }
 

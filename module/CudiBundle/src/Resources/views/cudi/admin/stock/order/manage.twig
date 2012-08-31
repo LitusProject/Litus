@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_stock/partials/navigation.twig' %}
+	{% include 'cudi/admin/stock/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'admin_stock_retour/partials/suppliers.twig' %}
+	{% include 'cudi/admin/stock/order/partials/suppliers.twig' %}
 
 	<div id="controller_action">
 		<table>
@@ -19,9 +19,9 @@
 		        <tr>
 		            <td>{{ supplier.getName() }}</td>
 					<td>
-					    {% if hasAccess('admin_stock_retour', 'supplier') %}
-    						<a href="{{ url('admin_stock_retour', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
-    					{% endif %}
+					    {% if hasAccess('admin_stock_order', 'supplier') %}
+						    <a href="{{ url('admin_stock_order', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+						{% endif %}
 					</td>
 		        </tr>
 		    {% endfor %}
@@ -29,15 +29,15 @@
 	</div>
 
 	<aside>
-    	{% if hasAccess('admin_stock_retour', 'add') %}
+	    {% if hasAccess('admin_stock_order', 'add') %}
     		<div class="sidebox">
-    	        <div class="title">New Retour</div>
+    	        <div class="title">New Order</div>
     	        <div class="content">
     	            <p>
-    	        		<i>Please hit the link below to add a retour!</i>
+    	                <i>Please hit the link below to add a new order item!</i>
     	            </p>
     	            <p>
-    	                <a href="{{ url('admin_stock_retour', {"action": "add"}) }}">&rarr; Add Retour</a>
+    	                <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
     	            </p>
     	        </div>
     	    </div>
