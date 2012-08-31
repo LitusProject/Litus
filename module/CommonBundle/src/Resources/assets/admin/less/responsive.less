@@ -24,24 +24,6 @@
         width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing) + 200;
 
         #controller_action {
-            .form {
-                .row {
-                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
-
-                    .label {
-                        width: @formLabelWidth + 100;
-                    }
-
-                    .field {
-                        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing) + 100;
-                    }
-                }
-
-                .errors {
-                    margin-left: @formLabelWidth  + 4 * @defaultSpacing + 100;
-                }
-            }
-
             .pagination {
                 width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
 
@@ -85,6 +67,24 @@
 
     footer {
         width: @layoutWidth - 4 * @defaultSpacing + 200;
+    }
+
+    .form {
+        .row {
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) + 200;
+
+            .label {
+                width: @formLabelWidth + 100;
+            }
+
+            .field {
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing) + 100;
+            }
+        }
+
+        .errors {
+            margin-left: @formLabelWidth  + 4 * @defaultSpacing + 100;
+        }
     }
 }
 

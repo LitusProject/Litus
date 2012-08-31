@@ -27,17 +27,21 @@ use CommonBundle\Entity\General\Bank\CashRegister,
  */
 class Edit extends Add
 {
-    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $options = null )
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\Bank\CashRegister $cashRegister
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $name = null )
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Edit')
-            ->setAttrib('class', 'sale_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Edit')
+            ->setAttribute('class', 'sale_edit');
+        $this->add($field);
 
         $this->populateFromCashRegister($cashRegister);
     }

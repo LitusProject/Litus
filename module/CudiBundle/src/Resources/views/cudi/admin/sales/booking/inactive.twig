@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_sales_booking/partials/navigation.twig' %}
+	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'admin_sales_booking/partials/periods.twig' %}
+	{% include 'cudi/admin/sales/booking/partials/periods.twig' %}
 
 	<div id="controller_action">
 	    <div id="booking_search" style="display:none;">
@@ -20,27 +20,25 @@
 	    		<input type="text" id="searchString" size="30" />
 	    	</div>
 
-	    	<table class="full_width manage">
+	    	<table class="full_width">
 	        	<tr>
 		            <th width="140px">Person</th>
 	            	<th>Article</th>
 		            <th width="30px">&nbsp;</th>
 	            	<th width="100px">Date</th>
 	            	<th width="55px">Status</th>
-	            	<th width="70px">Actions</th>
 	    		</tr>
 	    	</table>
 	    </div>
 
 		<div id="default_page">
-			<table class="full_width manage">
+			<table class="full_width">
 		        <tr>
 		            <th width="140px">Person</th>
 		            <th>Article</th>
 		            <th width="30px">&nbsp;</th>
 		            <th width="100px">Date</th>
 		            <th width="55px">Status</th>
-		            <th width="70px">Actions</th>
 		        </tr>
 
 		        {% for booking in paginator %}
@@ -50,11 +48,6 @@
 		                <td>&times;{{ booking.getNumber() }}</td>
 		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
 		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
-		                <td class="actions">
-		                    {% if hasAccess('admin_sales_booking', 'edit') %}
-		                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
-		                    {% endif %}
-		                </td>
 		            </tr>
 		        {% endfor %}
 		    </table>
@@ -63,6 +56,7 @@
 		</div>
 	</div>
 {% endblock %}
+
 
 {% block content_script %}
 	<script type="text/javascript">
@@ -75,7 +69,7 @@
 				searchDiv: $('#booking_search'),
 				searchString: $('#searchString'),
 				searchField: $('#searchField'),
-				url: '{{ url('admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'active'}) }}',
+				url: '{{ url('admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'inactive'}) }}',
 				display: function (data) {
 					$('#booking_search table').find('tr.item').remove();
 					$(data).each(function () {
@@ -84,13 +78,8 @@
 							.append('<td>' + this.article + '</td>')
 							.append('<td>&times;' + this.number + '</td>')
 							.append('<td>' + this.bookDate + '</td>')
-							.append('<td class="status">' + this.status + '</td>')
-							.append(actions = $('<td>', {'class': 'actions'}));
-						{% if hasAccess('admin_sales_booking', 'edit') %}
-							actions.append(button = $('<a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>'));
-						{% endif %}
+							.append('<td class="status">' + this.status + '</td>');
 					});
-					$('#booking_search table').change();
 				},
 				clear: function () {
 					$('#booking_search table').find('tr.item').remove();
