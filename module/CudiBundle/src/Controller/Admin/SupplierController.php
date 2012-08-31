@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Supplier;
+namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,

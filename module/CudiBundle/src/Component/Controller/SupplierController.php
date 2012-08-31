@@ -33,12 +33,12 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
         if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
 
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $result->supplier = $this->getSupplier();
         $result->loginForm = new LoginForm(
