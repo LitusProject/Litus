@@ -123,10 +123,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('id', 'subject_form');
         $this->add($subject);
 
-        $field = new Hidden('subject_id');
-        $field->setAttribute('id', 'subjectId');
-        $subject->add($field);
-
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width:400px')
@@ -134,6 +130,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
             ->setRequired();
+        $subject->add($field);
+
+        $field = new Hidden('subject_id');
+        $field->setAttribute('id', 'subjectId');
         $subject->add($field);
 
         $field = new Checkbox('mandatory');

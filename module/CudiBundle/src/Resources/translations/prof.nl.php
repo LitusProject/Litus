@@ -154,4 +154,6 @@ return array(
     'No file with the given ID was found!' => 'Er is geen bestand gevonden met het opgegeven ID!',
     'The docent was successfully added!' => 'De docent is succesvol toegevoegd!',
     'The student enrollment was successfully updated!' => 'De student inschrijving is succesvol aangepast!',
+
+    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'Als dit een artikel is dat uitgegeven wordt door VTK, gelieve dan <i>Intern Artikel</i> aan te vinken. Als het een handboek is, gelieve dat niet aan te vinken. Bij een <i>Intern Artikel</i> heb je de mogelijkheid om bestanden te uploaden.',
 );

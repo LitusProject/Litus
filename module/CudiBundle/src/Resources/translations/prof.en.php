@@ -156,4 +156,6 @@ return array(
     'No ID was given to identify the mapping!' => 'No ID was given to identify the mapping!',
     'No mapping with the given ID was found!' => 'No mapping with the given ID was found!',
     'The student enrollment was successfully updated!' => 'The student enrollment was successfully updated!',
+
+    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.',
 );
