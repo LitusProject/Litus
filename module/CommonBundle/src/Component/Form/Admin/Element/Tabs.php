@@ -15,43 +15,44 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use \CommonBundle\Component\Form\Admin\Decorator\TabsDecorator as TabsDecorator;
-
 /**
  * Tabs
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element\Xhtml
+class Tabs extends \Zend\Form\Element
 {
-    private $tabs = array();
+    /**
+     * Seed attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'type' => 'tabs',
+        'tabs' => array(),
+        'class' => '',
+        'class' => '',
+    );
 
     /**
-     * Create new Tabs
-     *
-     * @param  string|array|Config $spec
-     * @param  array|Traversable $options
-     * @return void
-     * @throws ElementException if no element name after initialization
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct($spec, $options = null)
+    public function __construct($name = null, $options = array())
     {
-        parent::__construct($spec, $options);
-        $this->setDecorators(
-            array(
-                new TabsDecorator()
-            )
-        );
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
     }
 
     /**
      * @param array $tabs
      *
-     * @return \CommonBundle\Component\Form\Admin\Element\Tabs
+     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
      */
     public function setTabs($tabs = array())
     {
-        $this->tabs = $tabs;
+        $this->attributes['tabs'] = $tabs;
         return $this;
     }
 
@@ -60,17 +61,17 @@ class Tabs extends \Zend\Form\Element\Xhtml
      */
     public function getTabs()
     {
-        return $this->tabs;
+        return $this->attributes['tabs'];
     }
 
     /**
      * @param array $tab
      *
-     * @return \CommonBundle\Component\Form\Admin\Element\Tabs
+     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
      */
     public function addTab($tab)
     {
-        $this->tabs = array_merge($this->tabs, $tab);
+        $this->attributes['tabs'] = array_merge($this->attributes['tabs'], $tab);
         return $this;
     }
 }

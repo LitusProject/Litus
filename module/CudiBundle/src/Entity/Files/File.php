@@ -16,41 +16,42 @@
 namespace CudiBundle\Entity\Files;
 
 use CudiBundle\Entity\Articles\Internal as InternalArticle,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Files\File")
- * @Table(name="cudi.files_files")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Files\File")
+ * @ORM\Table(name="cudi.files_files")
  */
 class File
 {
     /**
      * @var integer The ID of the file
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The path to the file
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $path;
 
     /**
      * @var string The name of the file
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The description of the file
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $description;
 

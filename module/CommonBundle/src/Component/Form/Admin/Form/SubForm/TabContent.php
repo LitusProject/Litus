@@ -20,34 +20,17 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabContent extends \Zend\Form\SubForm
+class TabContent extends \CommonBundle\Component\Form\Admin\Fieldset
 {
     /**
-     * Load the default decorators
+     * Constructor
      *
-     * @return \CommonBundle\Component\Form\Admin\Form\SubForm\TabContent
+     * @param null|string|int $name Optional name for the element
      */
-    public function loadDefaultDecorators()
+    public function __construct($name = null)
     {
-        if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return $this;
-        }
+        parent::__construct($name);
 
-        $decorators = $this->getDecorators();
-        if (empty($decorators)) {
-            $this->addDecorator('FormElements')
-                ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_content'));
-        }
-        return $this;
-    }
-
-    /**
-     * Get name of array elements belong to
-     *
-     * @return string|null
-     */
-    public function getElementsBelongTo()
-    {
-        return null;
+        $this->setAttribute('class', 'tab_content');
     }
 }

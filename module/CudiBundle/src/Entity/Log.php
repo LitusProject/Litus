@@ -16,42 +16,43 @@
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Log")
- * @Table(name="cudi.log")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log")
+ * @ORM\Table(name="cudi.log")
  */
 class Log
 {
     /**
      * @var integer The ID of the log
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of the log
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the log
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The vat number of the supplier
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $text;
 

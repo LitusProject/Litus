@@ -15,57 +15,58 @@
 
 namespace CudiBundle\Entity\Files;
 
-use CudiBundle\Entity\Articles\Internal as InternalArticle;
+use CudiBundle\Entity\Articles\Internal as InternalArticle,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
- * @Table(name="cudi.files_articles_map")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Files\Mapping")
+ * @ORM\Table(name="cudi.files_articles_map")
  */
 class Mapping
 {
     /**
      * @var integer The ID of the mapping
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Articles\Internal The article of the mapping
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Internal")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Articles\Internal")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \CudiBundle\Entity\Files\File The file of the mapping
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Files\File")
-     * @JoinColumn(name="file", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Files\File")
+     * @ORM\JoinColumn(name="file", referencedColumnName="id")
      */
     private $file;
 
     /**
      * @var boolean Flag whether the file is the printable one or not
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $printable;
 
     /**
      * @var boolean The flag whether the file is just created by a prof
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isProf;
 
     /**
      * @var boolean The flag whether the file is removed
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $removed;
 

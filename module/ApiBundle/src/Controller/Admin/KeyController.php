@@ -54,9 +54,10 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         $form = new AddForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 do {
                     $code = md5(uniqid(rand(), true));
                     $found = $this->getEntityManager()
@@ -106,9 +107,10 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         $form = new EditForm($key);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $key->setHost($formData['host']);
 
                 $this->getEntityManager()->flush();

@@ -16,13 +16,14 @@
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the different types of memberships the organization has.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
- * @Table(name="users.organization_statuses")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
+ * @ORM\Table(name="users.organization_statuses")
  */
 class Organization
 {
@@ -41,34 +42,34 @@ class Organization
     /**
      * @var int The ID of this union status
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
-     * @ManyToOne(
+     * @ORM\ManyToOne(
      *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
      * )
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The actual status value
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $status;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the status
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 

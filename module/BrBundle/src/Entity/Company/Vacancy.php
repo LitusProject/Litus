@@ -15,44 +15,45 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company;
+use BrBundle\Entity\Company,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an internship.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Company\Vacancy")
- * @Table(name="br.companies_vacancies")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Vacancy")
+ * @ORM\Table(name="br.companies_vacancies")
  */
 class Vacancy
 {
     /**
      * @var string The vacancy's ID
      *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var string The vacancy's name
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
      * @var string The description of the vacancy
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @var \BrBundle\Entity\Company The company of the vacancy
      *
-     * @OneToOne(targetEntity="BrBundle\Entity\Company")
-     * @JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 

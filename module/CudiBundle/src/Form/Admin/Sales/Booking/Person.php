@@ -15,12 +15,11 @@
 
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Zend\Form\Element\Hidden,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Booking by person
@@ -34,29 +33,62 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($options);
 
         $field = new Hidden('person_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'personId')
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setAttribute('id', 'personId');
+        $this->add($field);
 
         $field = new Text('person');
         $field->setLabel('Person')
-            ->setAttrib('style', 'width: 400px;')
-            ->setAttrib('id', 'personSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('id', 'personSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Search')
-                ->setAttrib('class', 'bookings')
-                ->setAttrib('id', 'search')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Search')
+            ->setAttribute('class', 'bookings')
+            ->setAttribute('id', 'search');
+        $this->add($field);
+    }
 
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'person_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'person',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

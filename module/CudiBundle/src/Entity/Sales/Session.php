@@ -18,65 +18,66 @@ namespace CudiBundle\Entity\Sales;
 use CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\Users\Person,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
- * @Table(name="cudi.sales_sessions")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Session")
+ * @ORM\Table(name="cudi.sales_sessions")
  */
 class Session
 {
     /**
      * @var integer The ID of the sale session
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The open date of the sale session
      *
-     * @Column(name="open_date", type="datetime")
+     * @ORM\Column(name="open_date", type="datetime")
      */
     private $openDate;
 
     /**
      * @var \DateTime The close date of the sale session
      *
-     * @Column(name="close_date", type="datetime", nullable=true)
+     * @ORM\Column(name="close_date", type="datetime", nullable=true)
      */
     private $closeDate;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister open status
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
-     * @JoinColumn(name="open_register", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
+     * @ORM\JoinColumn(name="open_register", referencedColumnName="id")
      */
     private $openRegister;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister close status
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
-     * @JoinColumn(name="close_register", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
+     * @ORM\JoinColumn(name="close_register", referencedColumnName="id")
      */
     private $closeRegister;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person responsible for the sale session
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="manager", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
 
     /**
      * @var string The comment on this sale session
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $comment;
 

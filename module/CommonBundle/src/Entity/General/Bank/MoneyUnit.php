@@ -15,27 +15,29 @@
 
 namespace CommonBundle\Entity\General\Bank;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This class represnts a money unit, e.g. a €1 coin.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit")
- * @Table(name="general.bank_money_units")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit")
+ * @ORM\Table(name="general.bank_money_units")
  */
 class MoneyUnit
 {
     /**
      * @var int The unit's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @var int The unit's size
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $unit;
 

@@ -51,7 +51,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         if (!($queueItem = $this->_getQueueItem()))
             return new ViewModel();
 
-        $queueItem->setComment($this->getRequest()->post()->get('comment'));
+
+        $formData = $this->getRequest()->getPost();
+        $queueItem->setComment($formData['comment']);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -70,9 +72,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         $form = new ReturnSaleForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\Person')
                     ->findOneById($formData['person_id']);

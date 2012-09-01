@@ -39,9 +39,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         $form = new AddForm();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $comment = new Comment(
                     $this->getEntityManager(),
                     $this->getAuthentication()->getPersonObject(),

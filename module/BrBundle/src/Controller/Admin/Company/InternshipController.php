@@ -57,9 +57,10 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
         $form = new AddForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $internship = new Internship(
                     $formData['internship_name'],
                     $formData['description'],
@@ -105,9 +106,10 @@ class InternshipController extends \CommonBundle\Component\Controller\ActionCont
         $form = new EditForm($internship);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $internship->setName($formData['internship_name'])
                     ->setDescription($formData['description']);
 

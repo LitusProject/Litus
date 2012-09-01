@@ -1,0 +1,29 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/page/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
+        $(document).ready(function () {
+            $('textarea').gollum({
+                uploadURL: '{{ url('admin_page', {'action': 'upload'}) }}',
+                progressURL: '{{ url('admin_page', {'action': 'uploadProgress'}) }}',
+                uploadProgressName: '{{ uploadProgressName }}',
+                progressId: '{{ uploadProgressId }}',
+            });
+        });
+    </script>
+{% endblock %}

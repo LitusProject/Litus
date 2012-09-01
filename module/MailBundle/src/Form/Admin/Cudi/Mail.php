@@ -15,9 +15,7 @@
 
 namespace MailBundle\Form\Admin\Cudi;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Zend\Form\Element\Checkbox,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
     Zend\Form\Element\Submit;
 
 /**
@@ -27,20 +25,21 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($opts = null)
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $field = new Checkbox('test_it');
         $field->setLabel('Send Test to System Administrator')
-            ->setValue(true)
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setValue(true);
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Send Mail')
-                ->setAttrib('class', 'mail')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Send Mail')
+            ->setAttribute('class', 'mail');
+        $this->add($field);
     }
 }

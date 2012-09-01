@@ -15,36 +15,37 @@
 
 namespace CommonBundle\Entity\Users;
 
-use DateTime;
+use DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's codes.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Code")
- * @Table(name="users.codes")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Code")
+ * @ORM\Table(name="users.codes")
  */
 class Code
 {
     /**
      * @var integer The ID of this code
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The expire time of this code
      *
-     * @Column(name="expiration_time", type="datetime", nullable=true)
+     * @ORM\Column(name="expiration_time", type="datetime", nullable=true)
      */
     private $expirationTime;
 
     /**
      * @var string The code
      *
-     * @Column(type="string", length=32, unique=true)
+     * @ORM\Column(type="string", length=32, unique=true)
      */
     private $code;
 

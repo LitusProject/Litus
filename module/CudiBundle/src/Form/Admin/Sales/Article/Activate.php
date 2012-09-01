@@ -28,17 +28,22 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Activate extends \CudiBundle\Form\Admin\Sales\Article\Add
 {
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Article $article, $options = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Article $article, $name = null)
     {
-        parent::__construct($entityManager, $academicYear, $options);
+        parent::__construct($entityManager, $academicYear, $name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Activate')
-                ->setAttrib('class', 'article_edit')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Activate')
+            ->setAttribute('class', 'article_edit');
+        $this->add($field);
 
         $this->populateFromArticle($article);
     }

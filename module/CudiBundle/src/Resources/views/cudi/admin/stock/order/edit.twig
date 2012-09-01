@@ -1,0 +1,211 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width order_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The order was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width order_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete an order.</p>
+		</div>
+	</div>
+
+	{% include 'cudi/admin/stock/order/partials/suppliers.twig' %}
+
+	<div id="controller_action">
+		<h1>Order</h1>
+		<p>Supplier: <b>{{ order.getSupplier().getName() }}</b></p>
+		<p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s')}}{% else %}(new){% endif %}</b></p>
+		<br />
+
+		<table class="manage">
+
+			<tr>
+				<th>Article</th>
+				<th width="80px">Amount</th>
+				<th width="70px">Actions</th>
+			</tr>
+
+			{% for item in order.getItems() %}
+				<tr class="item item-{{ item.getId() }}">
+					<td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
+					<td>{{ item.getNumber() }}</td>
+					<td class="actions">
+						{% if not order.isPlaced() and hasAccess('admin_stock_order', 'delete') %}
+		        			<a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+	<aside>
+		{% if not order.isOrdered() %}
+		    {% if hasAccess('admin_stock_order', 'place') %}
+    			<div class="sidebox">
+    		        <div class="title">Place Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to place this order!</i>
+    		            </p>
+    		            <p>
+    		                <a href="{{ url('admin_stock_order', {"action": "place", "id": order.getId()}) }}">&rarr; Place Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
+    		{% if hasAccess('admin_stock_order', 'add') %}
+    			<div class="sidebox">
+    		        <div class="title">New Order Item</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to add a new order item!</i>
+    		            </p>
+    		            <p>
+    		                <a href="{{ url('admin_stock_order', {"action": "add"}) }}">&rarr; Add Order Item</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
+		{% else %}
+		    {% if hasAccess('admin_stock_order', 'cancel') %}
+		    	<div class="sidebox">
+		            <div class="title">Cancel Order</div>
+		            <div class="content">
+		                <p>
+		                    <i>Please hit the link below to cancel to order for the supplier!</i>
+		                </p>
+		                <p>
+		                    <a href="#" id="cancelOrder">&rarr; Cancel Order</a>
+		                </p>
+		            </div>
+		        </div>
+		    {% endif %}
+		    {% if hasAccess('admin_stock_order', 'pdf') %}
+    			<div class="sidebox">
+    		        <div class="title">Print Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to print the order for the supplier!</i>
+    		            </p>
+    		            <p>
+    		                <a href="#" id="printOrder" target="_blank">&rarr; Print Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+		    {% endif %}
+		    {% if hasAccess('admin_stock_order', 'export') %}
+    		    <div class="sidebox">
+    		        <div class="title">Export Order</div>
+    		        <div class="content">
+    		            <p>
+    		                <i>Please hit the link below to export the order to XML for the supplier!</i>
+    		            </p>
+    		            <p>
+    		                <a href="#" id="exportOrder">&rarr; Export Order</a>
+    		            </p>
+    		        </div>
+    		    </div>
+    		{% endif %}
+		{% endif %}
+	</aside>
+
+	<div class="modal hide fade" id="removeOrder">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Order
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following order item: <b class="articleTitle"></b> (x <span class="orderNumber"></span>)!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+	<div class="modal hide fade" id="cancelOrderModal">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Cancel Order
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to cancel the order for: <b>{{ order.getSupplier().getName() }}</b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="cancelOrder" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#exportOrder').downloadFile('{{ url('admin_stock_order', {"action": "export", "id": order.getId()}) }}');
+			$('#printOrder').downloadFile('{{ url('admin_stock_order', {"action": "pdf", "id": order.getId()}) }}');
+
+			$('.item .delete').click(openModalRemove);
+			$('#cancelOrder').click(openModalCancel);
+		});
+
+		function openModalCancel(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var cancelOrder = $('#cancelOrderModal');
+			cancelOrder.find('.cancelOrder').unbind('click').click(function () {
+			    window.location.href = '{{ url('admin_stock_order', {'action': 'cancel', 'id': order.getId()}) }}';
+			});
+			cancelOrder.modal();
+		}
+
+		function openModalRemove(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removeOrder = $('#removeOrder');
+			removeOrder.find('.articleTitle').html($(this).data('title'));
+			removeOrder.find('.orderNumber').html($(this).data('number'));
+			var id = $this.data('id');
+			removeOrder.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_stock_order', {"action": "delete"})}}/' + id, function (data) {
+				    if (data && 'success' == data.status) {
+						$('.flashmessage').addClass('hide');
+						$('.order_removed_success').removeClass('hide');
+						$('.item-' + id).remove();
+						removeOrder.modal('hide');
+					} else {
+					    errorRemove();
+					}
+				}, 'json').error(errorRemove);
+			});
+			removeOrder.modal();
+		}
+
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.order_removed_error').removeClass('hide');
+		    $('#removeOrder').modal('hide');
+		}
+	</script>
+{% endblock %}

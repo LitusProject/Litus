@@ -29,18 +29,17 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('roles');
+        $this->remove('roles');
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'user_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'user_add');
+        $this->add($field);
     }
 }

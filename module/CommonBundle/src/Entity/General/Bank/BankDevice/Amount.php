@@ -16,45 +16,46 @@
 namespace CommonBundle\Entity\General\Bank\BankDevice;
 
 use CommonBundle\Entity\General\Bank\BankDevice,
-    CommonBundle\Entity\General\Bank\CashRegister;
+    CommonBundle\Entity\General\Bank\CashRegister,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * For a given register, this class has the amount
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice\Amount")
- * @Table(name="general.bank_bank_devices_amounts")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice\Amount")
+ * @ORM\Table(name="general.bank_bank_devices_amounts")
  */
 class Amount
 {
     /**
      * @var string The amount's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="bankDeviceAmounts")
-     * @JoinColumn(name="cash_register_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="bankDeviceAmounts")
+     * @ORM\JoinColumn(name="cash_register_id", referencedColumnName="id")
      */
     private $cashRegister;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\BankDevice")
-     * @JoinColumn(name="device_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\BankDevice")
+     * @ORM\JoinColumn(name="device_id", referencedColumnName="id")
      */
     private $device;
 
     /**
      * @var int The amount payed, multiplied by a 100 before it is stored
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $amount;
 

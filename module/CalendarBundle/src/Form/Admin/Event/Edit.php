@@ -18,7 +18,10 @@ namespace CalendarBundle\Form\Admin\Event;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
+    CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Nodes\Event,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -27,23 +30,55 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @var \CalendarBundle\Entity\Nodes\Event
      */
-    public function __construct(EntityManager $entityManager, Event $event, $opts = null)
+    protected $_event;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
-        $this->event = $event;
+        $this->_event = $event;
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'calendar_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'calendar_edit');
+        $this->add($field);
 
         $this->populateFromEvent($event);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->remove('title_' . $language->getAbbrev());
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new EventNameValidator($this->_entityManager, $language, $this->_event),
+                            ),
+                        )
+                    )
+                );
+            }
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

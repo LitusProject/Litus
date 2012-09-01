@@ -30,19 +30,18 @@ class Edit extends Add
 {
     /**
      * @param \ShiftBundle\Entity\Unit $unit The unit we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Unit $unit, $opts = null)
+    public function __construct(Unit $unit, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'unit_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'unit_edit');
+        $this->add($field);
 
         $this->_populateFromUnit($unit);
     }
@@ -53,6 +52,6 @@ class Edit extends Add
             'name' => $unit->getName()
         );
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }

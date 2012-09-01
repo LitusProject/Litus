@@ -32,7 +32,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Session')
@@ -41,7 +41,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         if (null == $session || !$session->isOpen())
             throw new Exception('No valid session is given');
 
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -70,10 +70,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+        $this->getTranslator()->setCache($this->getCache());
+        $this->getTranslator()->setLocale($this->getLanguage()->getAbbrev());
 
-        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
-        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);

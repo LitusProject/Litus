@@ -15,11 +15,13 @@
 
 namespace CommonBundle\Entity\General;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This class represents a address entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Address")
- * @Table(name="general.addresses")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Address")
+ * @ORM\Table(name="general.addresses")
  */
 class Address
 {
@@ -295,44 +297,44 @@ class Address
     /**
      * @var integer The ID of the address
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The street
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $street;
 
     /**
      * @var string The house number
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $number;
 
     /**
      * @var string The postal
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $postal;
 
     /**
      * @var string The city
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $city;
 
     /**
      * @var string The country
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $country;
 

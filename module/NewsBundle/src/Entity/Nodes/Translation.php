@@ -16,52 +16,53 @@
 namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="NewsBundle\Repository\Nodes\Translation")
- * @Table(name="nodes.news_translations")
+ * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\Translation")
+ * @ORM\Table(name="nodes.news_translations")
  */
 class Translation
 {
     /**
      * @var int The ID of this tanslation
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \NewsBundle\Entity\Nodes\News The news of this translation
      *
-     * @ManyToOne(targetEntity="NewsBundle\Entity\Nodes\News", inversedBy="translations")
-     * @JoinColumn(name="news", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="NewsBundle\Entity\Nodes\News", inversedBy="translations")
+     * @ORM\JoinColumn(name="news", referencedColumnName="id")
      */
     private $news;
 
     /**
      * @var \CommonBundle\Entity\General\Language The language of this translation
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
-     * @JoinColumn(name="language", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
 
     /**
      * @var string The title of this translation
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var string The content of this translation
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $content;
 

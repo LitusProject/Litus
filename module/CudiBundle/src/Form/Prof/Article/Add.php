@@ -20,12 +20,13 @@ use CommonBundle\Component\Validator\Uri as UriValidator,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Zend\Form\Element\Hidden,
-    Zend\Validator\Int as IntValidator,
-    Zend\Validator\Isbn as IsbnValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Article
@@ -39,148 +40,110 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     protected $_entityManager = null;
 
-    public function __construct(EntityManager $entityManager, $opts = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
+        $article = new Collection('article');
+        $article->setLabel('Article')
+            ->setAttribute('id', 'article_form');
+        $this->add($article);
+
         $field = new Text('title');
         $field->setLabel('Title')
-            ->setAttrib('size', 70)
+            ->setAttribute('style', 'width:400px')
             ->setRequired();
-        $this->addElement($field);
+        $article->add($field);
 
         $field = new Text('author');
         $field->setLabel('Authors')
-            ->setAttrib('size', 60)
+            ->setAttribute('style', 'width:350px')
             ->setRequired();
-        $this->addElement($field);
+        $article->add($field);
 
         $field = new Text('publisher');
         $field->setLabel('Publisher')
-            ->setAttrib('size', 40)
+            ->setAttribute('style', 'width:300px')
             ->setRequired();
-        $this->addElement($field);
+        $article->add($field);
 
         $field = new Text('year_published');
-        $field->setLabel('Publish Year')
-            ->setRequired()
-            ->addValidator('int')
-            ->addValidator(new YearValidator());
-        $this->addElement($field);
+        $field->setLabel('Publish Year');
+        $article->add($field);
 
         $field = new Text('isbn');
-        $field->setLabel('ISBN')
-            ->addValidator(new IsbnValidator(array('type' => IsbnValidator::AUTO)));
-        $this->addElement($field);
+        $field->setLabel('ISBN');
+        $article->add($field);
 
         $field = new Text('url');
-        $field->setLabel('URL')
-            ->addValidator(new UriValidator());
-        $this->addElement($field);
+        $field->setLabel('URL');
+        $article->add($field);
 
         $field = new Checkbox('downloadable');
         $field->setLabel('Downloadable');
-        $this->addElement($field);
+        $article->add($field);
 
         $types = Article::$POSSIBLE_TYPES;
         unset($types['common']);
         $field = new Select('type');
         $field->setLabel('Type')
-            ->setRequired()
-            ->setMultiOptions($types);
-        $this->addElement($field);
+            ->setAttribute('options', $types);
+        $article->add($field);
 
         $field = new Checkbox('internal');
         $field->setLabel('Internal Article');
-        $this->addElement($field);
+        $article->add($field);
 
-        $this->addDisplayGroup(
-            array(
-                'title',
-                'author',
-                'publisher',
-                'year_published',
-                'isbn',
-                'url',
-                'downloadable',
-                'type',
-                'internal',
-            ),
-            'article_form'
-        );
-        $this->getDisplayGroup('article_form')
-            ->setLegend('Article')
-            ->setAttrib('id', 'article_form')
-            ->removeDecorator('DtDdWrapper');
+        $internal = new Collection('internal');
+        $internal->setLabel('Internal Article')
+            ->setAttribute('id', 'internal_form');
+        $this->add($internal);
 
         $field = new Select('binding');
         $field->setLabel('Binding')
-               ->setRequired()
-            ->setMultiOptions($this->_getBindings());
-        $this->addElement($field);
+            ->setAttribute('options', $this->_getBindings());
+        $internal->add($field);
 
         $field = new Checkbox('rectoverso');
         $field->setLabel('Recto Verso');
-        $this->addElement($field);
+        $internal->add($field);
 
         $field = new Checkbox('perforated');
         $field->setLabel('Perforated');
-        $this->addElement($field);
+        $internal->add($field);
 
-        $this->addDisplayGroup(
-                    array(
-                        'binding',
-                        'rectoverso',
-                        'perforated',
-                    ),
-                    'internal_form'
-                );
-        $this->getDisplayGroup('internal_form')
-            ->setLegend('Internal Article')
-            ->setAttrib('id', 'internal_form')
-            ->removeDecorator('DtDdWrapper');
+        $subject = new Collection('subject');
+        $subject->setLabel('Subject Mapping')
+            ->setAttribute('id', 'subject_form');
+        $this->add($subject);
 
         $field = new Hidden('subject_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'subjectId');
-        $this->addElement($field);
+        $field->setAttribute('id', 'subjectId');
+        $subject->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttrib('size', 70)
-            ->setAttrib('id', 'subjectSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
+            ->setAttribute('style', 'width:400px')
+            ->setAttribute('id', 'subjectSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
             ->setRequired();
-        $this->addElement($field);
+        $subject->add($field);
 
         $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory')
-            ->setRequired();
-        $this->addElement($field);
-
-        $this->addDisplayGroup(
-                    array(
-                        'subject_id',
-                        'subject',
-                        'mandatory',
-                    ),
-                    'subject_form'
-                );
-        $this->getDisplayGroup('subject_form')
-            ->setLegend('Subject Mapping')
-            ->setAttrib('id', 'subject_form')
-            ->removeDecorator('DtDdWrapper');
+        $field->setLabel('Mandatory');
+        $subject->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'btn btn-primary');
-        $this->addElement($field);
-
-        $this->setActionsGroup(array('submit'));
+        $field->setValue('Add')
+            ->setAttribute('class', 'btn btn-primary');
+        $this->add($field);
     }
 
     private function _getBindings()
@@ -215,34 +178,155 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $data['perforated'] = $article->isPerforated();
         }
 
-        $this->populate($data);
+        $this->setData($data);
     }
 
-    public function isValid($data)
+    public function getInputFilter()
     {
-        if (!$data['internal']) {
-            $validatorsInternal = array();
-            $requiredInternal = array();
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
 
-            foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
-                $validatorsInternal[$formElement->getName()] = $formElement->getValidators();
-                $requiredInternal[$formElement->getName()] = $formElement->isRequired();
-                $formElement->clearValidators()
-                    ->setRequired(false);
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'title',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'author',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'publisher',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'year',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                            new YearValidator(),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'isbn',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'isbn',
+                                'options' => array(
+                                    'type' => 'auto'
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'url',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new UriValidator(),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'type',
+                        'required' => true,
+                    )
+                )
+            );
+
+            if (isset($this->data['internal']) && $this->data['internal']) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'binding',
+                            'required' => true,
+                        )
+                    )
+                );
             }
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
         }
-
-        $isValid = parent::isValid($data);
-
-        if (!$data['internal']) {
-            foreach ($this->getDisplayGroup('internal_form')->getElements() as $formElement) {
-                if (array_key_exists ($formElement->getName(), $validatorsInternal))
-                     $formElement->setValidators($validatorsInternal[$formElement->getName()]);
-                if (array_key_exists ($formElement->getName(), $requiredInternal))
-                    $formElement->setRequired($requiredInternal[$formElement->getName()]);
-            }
-        }
-
-        return $isValid;
+        return $this->_inputFilter;
     }
 }

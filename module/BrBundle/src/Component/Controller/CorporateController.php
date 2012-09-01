@@ -33,9 +33,9 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $result->loginForm = new LoginForm($this->url()->fromRoute('corporate_auth', array('action' => 'login')));
         $result->unionUrl = $this->getEntityManager()

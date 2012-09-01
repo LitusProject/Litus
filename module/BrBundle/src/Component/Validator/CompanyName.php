@@ -41,7 +41,7 @@ class CompanyName extends \Zend\Validator\AbstractValidator
     /**
      * @var array The error messages
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_VALID => 'The company name already exists'
     );
 

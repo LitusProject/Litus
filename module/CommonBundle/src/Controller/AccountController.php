@@ -40,9 +40,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         $form = new ActivateForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $user->setCode(null)
                     ->setCredential(
                         new Credential(

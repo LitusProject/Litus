@@ -17,50 +17,51 @@ namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
- * @Table(name="cudi.stock_deliveries", indexes={@index(name="stock_deliveries_time", columns={"timestamp"})})
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
+ * @ORM\Table(name="cudi.stock_deliveries", indexes={@ORM\Index(name="stock_deliveries_time", columns={"timestamp"})})
  */
 class Delivery
 {
     /**
      * @var integer The ID of the delivery item
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the delivery
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \DateTime The time of the delivery
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var integer The number of the delivery
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who ordered the order
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

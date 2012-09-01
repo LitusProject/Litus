@@ -15,32 +15,34 @@
 
 namespace CudiBundle\Entity\Articles\Options;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\Options\Binding")
- * @Table(name="cudi.articles_options_bindings")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\Options\Binding")
+ * @ORM\Table(name="cudi.articles_options_bindings")
  */
 class Binding
 {
     /**
      * @var integer The ID of the binding
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The name of the binding
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The code of the binding
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $code;
 

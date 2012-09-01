@@ -54,9 +54,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $unit = new Unit(
                     $formData['name']
                 );
@@ -99,9 +100,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         $form = new EditForm($unit);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $unit->setName($formData['name']);
 
                 $this->getEntityManager()->flush();

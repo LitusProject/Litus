@@ -16,43 +16,44 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic;
+    CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\StudentEnrollment")
- * @Table(name="syllabus.student_enrollment")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\StudentEnrollment")
+ * @ORM\Table(name="syllabus.student_enrollment")
  */
 class StudentEnrollment
 {
     /**
      * @var integer The ID of the enrollment
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \SyllabusBundle\Entity\Subject The subject of the enrollment
      *
-     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
-     * @JoinColumn(referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $subject;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 
     /**
      * @var integer The number of students of the enrollment
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 

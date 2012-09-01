@@ -41,7 +41,7 @@ class Title extends \Zend\Validator\AbstractValidator
     /**
      * @var array The error messages
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_VALID => 'There already exists a page with this title'
     );
 

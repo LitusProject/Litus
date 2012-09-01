@@ -1,0 +1,18 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ translate('News') }}</h2>
+    </div>
+
+    <h3>{{ news.getTitle(language) }}</h3>
+
+    <div class="item">
+        <span class="date left">{{ dateLocalized(news.getCreationTime(), 'd MMM') }}</span>
+        <blockquote>
+            {% autoescape false %}
+                {{ markdown(news.getContent(language)) }}
+            {% endautoescape %}
+        </blockquote>
+    </div>
+{% endblock %}

@@ -18,7 +18,7 @@ namespace SyllabusBundle\Component\WebSocket\Syllabus;
 use CommonBundle\Component\WebSocket\User,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\XMLParser\Study as StudyParser,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -33,7 +33,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
@@ -44,10 +44,9 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      */
-    public function __construct(EntityManager $entityManager, Transport $mailTransport)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
         $address = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')

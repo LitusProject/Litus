@@ -1,0 +1,24 @@
+{% extends 'sale/base.twig' %}
+
+{% block content %}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $('#personSearch').typeaheadRemote(
+	            {
+	                source: '{{ url("admin_academic_typeahead")}}',
+	            }
+	        ).change(function (e) {
+	            if ($(this).data('value')) {
+	                $('#personId').val($(this).data('value').id);
+	            } else {
+	                $('#personId').val('');
+	            }
+	        });
+	    });
+	</script>
+{% endblock %}

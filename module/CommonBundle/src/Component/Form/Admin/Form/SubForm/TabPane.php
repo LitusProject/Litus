@@ -20,32 +20,18 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabPane extends \Zend\Form\SubForm
+class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
 {
     /**
      * Constructor
      *
-     * Registers form view helper as decorator
-     *
-     * @param mixed $options
-     * @return void
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options = null)
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
-        $this->clearDecorators();
-        $this->addDecorator('FormElements')
-            ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_pane', 'id' => $options));
-    }
-
-    /**
-     * Get name of array elements belong to
-     *
-     * @return string|null
-     */
-    public function getElementsBelongTo()
-    {
-        return null;
+        $this->setAttribute('class', 'tab_pane');
+        $this->setAttribute('id', $name);
     }
 }

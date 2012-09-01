@@ -22,3 +22,8 @@ data/calendar/posters
 data/page/files
 
 public/_assetic
+
+# Exclude composer files
+vendor/
+composer.lock
+composer.phar

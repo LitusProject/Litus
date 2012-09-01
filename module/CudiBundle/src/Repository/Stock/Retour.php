@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CudiBundle\Entity\Stock\Period,
+use CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join;
@@ -15,7 +15,7 @@ use CudiBundle\Entity\Stock\Period,
  */
 class Retour extends EntityRepository
 {
-    public function findAllBySupplierAndPeriod(Supplier $supplier, Period $period)
+    public function findAllBySupplierAndPeriod(Supplier $supplier, PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('r')
@@ -42,7 +42,7 @@ class Retour extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByPeriod(Period $period)
+    public function findAllByPeriod(PeriodEntity $period)
     {
         $query = $this->_em->createQueryBuilder();
         $query->select('r')
