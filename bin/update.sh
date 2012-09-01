@@ -7,12 +7,12 @@ scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${scriptDirectory}/../"
 
 # Updating the database
-if [ ! -x bin/MistDoctrine/doctrine ]; then
-    chmod +x bin/MistDoctrine/doctrine
+if [ ! -x bin/Doctrine/doctrine-module ]; then
+    chmod +x bin/Doctrine/doctrine-module
 fi
 
-bin/MistDoctrine/doctrine orm:schema-tool:update --force
-bin/MistDoctrine/doctrine orm:generate-proxies data/proxies/
+bin/Doctrine/doctrine-module orm:schema-tool:update --force
+bin/Doctrine/doctrine-module orm:generate-proxies data/proxies/
 
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/src/Resources/assets/admin/less/admin.less
