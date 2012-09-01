@@ -43,9 +43,8 @@
 	</p>
 
 	<h3>{{ translate('Number of students (Optional)') }}:</h3>
-	{% autoescape false %}
-    	{{ enrollmentForm }}
-    {% endautoescape %}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(enrollmentForm) }}
 
     <h3>{{ translate('Articles') }}:</h3>
     <table class="table table-bordered table-striped">
@@ -53,7 +52,7 @@
             <th>{{ translate('Title') }}</th>
             <th width="120px">{{ translate('Authors') }}</th>
             <th width="220px">{{ translate('Publisher') }}</th>
-            <th width="80px">{{ translate('Publish Year') }}</th>
+            <th width="90px">{{ translate('Publish Year') }}</th>
             <th width="100px">{{ translate('ISBN') }}</th>
             <th width="90px">{{ translate('Actions') }}</th>
         </tr>

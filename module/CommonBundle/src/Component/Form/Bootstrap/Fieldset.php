@@ -15,7 +15,10 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
-use Zend\Form\Element\Collection;
+use Zend\Form\Element\Collection,
+    Zend\Form\Form as ZendForm,
+    Zend\Form\ElementPrepareAwareInterface;
+
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
  * them to.
@@ -63,5 +66,22 @@ abstract class Fieldset extends \Zend\Form\Fieldset
         }
 
         return $this;
+    }
+
+    /**
+     * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
+     * name clashes if the same fieldset is used multiple times
+     *
+     * @param  Form $form
+     * @return mixed|void
+     */
+    public function prepareElement(ZendForm $form)
+    {
+        foreach ($this->byName as $elementOrFieldset) {
+            // Recursively prepare elements
+            if ($elementOrFieldset instanceof ElementPrepareAwareInterface) {
+                $elementOrFieldset->prepareElement($form);
+            }
+        }
     }
 }

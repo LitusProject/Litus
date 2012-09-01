@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Prof;
+namespace CudiBundle\Controller\Prof\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Article,
@@ -52,7 +52,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $form = new AddForm();
-        $form->setAction(
+        $form->setAttribute(
+            'action',
             $this->url()->fromRoute(
                 'prof_file',
                 array(
@@ -106,8 +107,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        $this->initAjax();
-
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
@@ -153,6 +152,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
             $this->getEntityManager()->flush();
 
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCESS',
+                    'The file was successfully uploaded!'
+                )
+            );
+
             return new ViewModel(
                 array(
                     'status' => 'success',
@@ -166,13 +173,17 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         } else {
-            $errors = $form->getErrors();
+            $errors = $form->getMessages();
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                $formErrors[$element->getId()] = array();
+                if (!isset($errors[$element->getName()]))
+                    continue;
+
+                $formErrors[$element->getAttribute('id')] = array();
+
                 foreach ($errors[$element->getName()] as $error) {
-                    $formErrors[$element->getId()][] = $element->getMessages()[$error];
+                    $formErrors[$element->getAttribute('id')][] = $error;
                 }
             }
 

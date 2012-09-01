@@ -4,9 +4,8 @@
 	<div class="page-header">
 	    <h2>{{ translate('Add Article') }}</h2>
 	</div>
-	{% autoescape false %}
-	    {{ form }}
-	{% endautoescape %}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 {% endblock %}
 
 {% block content_script %}

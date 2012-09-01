@@ -24,15 +24,18 @@ use CommonBundle\Component\Form\Bootstrap\Element\Textarea;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    public function __construct($options = null)
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Textarea('text');
         $field->setLabel('Comment')
-            ->setAttrib('class', 'input-xlarge')
-            ->setAttrib('rows', 5)
+            ->setAttribute('class', 'input-xlarge')
+            ->setAttribute('rows', 5)
             ->setRequired();
-        $this->addElement($field);
+        $this->add($field);
     }
 }

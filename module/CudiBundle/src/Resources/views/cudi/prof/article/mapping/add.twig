@@ -24,9 +24,8 @@
 	</p>
 
 	{% if nbArticles > 0 %}
-    	{% autoescape false %}
-    	    {{ form }}
-    	{% endautoescape %}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     {% endif %}
 {% endblock %}
 

@@ -55,7 +55,7 @@
 
         if (e.type && ( e.type == 'load' || e.type == "readystatechange")) {
             try {
-                var output = $.parseJSON($('#upload_' + settings.name).contents().find('body').html());
+                var output = $.parseJSON($.trim($('#upload_' + settings.name).contents().find('body').html()));
                 settings.onSubmitted(output);
             } catch (err) {
                 settings.onError();

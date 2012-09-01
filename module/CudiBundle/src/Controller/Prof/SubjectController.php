@@ -76,7 +76,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $enrollmentForm->setData($formData);
 
             if ($enrollmentForm->isValid()) {
                 if ($enrollment) {
