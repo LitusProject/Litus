@@ -71,8 +71,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        $this->initAjax();
-
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 

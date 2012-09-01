@@ -33,21 +33,21 @@ class Booking
      * @param array $bookings
      * @param \CommonBundle\Entity\Users\Person $person
      */
-    public static function sendMail(TransportInterface $mailTransport, $bookings, Person $person)
+    public static function sendMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        $message = $this->_em
+        $message = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail');
 
-        $subject = $this->_em
+        $subject = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail_subject');
 
-        $mailAddress = $this->getEntityManager()
+        $mailAddress = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail');
 
-        $mailName = $this->getEntityManager()
+        $mailName = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail_name');
 
