@@ -13,7 +13,7 @@
         <div class="{{ fieldset.getAttribute('class') }}" id="{{ fieldset.getAttribute('id') }}">
             {% set buttons = [] %}
             {% for element in fieldset.getElements() %}
-                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
                     {% set buttons = buttons|merge([element]) %}
                 {% elseif element.getAttribute('type') == 'tabs' %}
                     <ul class="nav nav-tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">

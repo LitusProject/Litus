@@ -20,8 +20,16 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Reset
+class Reset extends \Zend\Form\Element\Submit
 {
+    /**
+     * Seed attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'type' => 'reset',
+    );
 
     /**
      * @param  null|int|string  $name    Optional name for the element

@@ -257,7 +257,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $booking->setStatus('assigned');
 
-        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson());
+        BookingMail::sendMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
 
         $this->getEntityManager()->flush();
 

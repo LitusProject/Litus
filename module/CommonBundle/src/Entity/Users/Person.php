@@ -18,6 +18,7 @@ namespace CommonBundle\Entity\Users;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Code,
     CommonBundle\Entity\Users\Credential,
@@ -580,7 +581,7 @@ abstract class Person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return boolean
      */
-    public function isMember(AcademicYear $academicYear)
+    public function isMember(AcademicYearEntity $academicYear)
     {
         foreach ($this->organisationStatuses as $status) {
             if ($academicYear == $status->getAcademicYear() && 'non_member' != $status->getStatus())
