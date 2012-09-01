@@ -16,44 +16,45 @@
 namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's barcode.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Barcode")
- * @Table(name="users.barcodes")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Barcode")
+ * @ORM\Table(name="users.barcodes")
  */
 class Barcode
 {
     /**
      * @var int The ID of this credential
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person associated with this barcode
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="barcodes")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="barcodes")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The barcode
      *
-     * @Column(type="bigint")
+     * @ORM\Column(type="bigint")
      */
     private $barcode;
 
     /**
      * @var \DateTime The time of creation
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $time;
 

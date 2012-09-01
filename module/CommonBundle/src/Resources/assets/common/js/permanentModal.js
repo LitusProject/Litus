@@ -2,11 +2,12 @@
     var defaults = {
         closable: false
     };
-    
+
     var methods = {
         open: function (options) {
             options = $.extend(defaults, options);
-        
+            $this = $(this);
+
             $(this).on('shown', function () {
             	if (options.closable == true) {
             		$(this).find('.close').show();
@@ -14,26 +15,26 @@
             			$this.modal('hide');
             		});
             		$(document).on('keyup.dismiss.modal', function ( e ) {
-            		  e.which == 27 && $this.modal('hide')
+            		  e.which == 27 && $this.modal('hide');
             		})
             	} else {
-            		$(this).find('.close').hide();
+            		$this.find('.close').hide();
             		$('.modal-backdrop').unbind('click');
             		$(document).off('keyup.dismiss.modal');
             	}
             });
-            
+
             $(this).modal('show');
-            
+
             return this;
         },
         hide: function () {
 			$(this).modal('hide');
-			
+
 			return this;
         }
     };
-    
+
     $.fn.permanentModal = function (method) {
     	if (methods[method]) {
     		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));

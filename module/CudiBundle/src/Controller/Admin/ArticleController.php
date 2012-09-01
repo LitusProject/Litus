@@ -60,9 +60,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -165,9 +166,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 
@@ -258,6 +260,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
+        $academicYear = $this->getAcademicYear();
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -289,6 +293,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $result = array();
         foreach($articles as $article) {
+            $article->setEntityManager($this->getEntityManager());
+            
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getTitle();
@@ -296,6 +302,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->publisher = $article->getPublishers();
             $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
+            $item->saleArticle = $article->getSaleArticle($academicYear) ? $article->getSaleArticle($academicYear)->getId() : 0;
             $result[] = $item;
         }
 

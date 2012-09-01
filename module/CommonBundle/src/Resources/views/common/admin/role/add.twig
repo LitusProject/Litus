@@ -1,0 +1,21 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'common/admin/role/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+
+	<aside>
+	    <div class="sidebox">
+	        <div class="title">Current Access</div>
+	        <div class="content">
+
+	        </div>
+	    </div>
+	</aside>
+{% endblock %}

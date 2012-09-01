@@ -15,37 +15,79 @@
 
 namespace CommonBundle\Form\Auth;
 
-use Zend\Form\Element\Password,
-    Zend\Form\Element\Submit,
-    Zend\Validator\Identical as IdenticalValidator;
+use CommonBundle\Component\Form\Bootstrap\Element\Password,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Account activate form.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activate extends \Zend\Form\Form
+class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @param mixed $options The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options = null)
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Password('credential');
         $field->setLabel('Password')
             ->setRequired();
-        $this->addElement($field);
+        $this->add($field);
 
         $field = new Password('verify_credential');
         $field->setLabel('Repeat Password')
-            ->setRequired()
-            ->addValidator(new IdenticalValidator('credential'));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Activate');
-        $this->addElement($field);
+        $field->setValue('Activate');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'credential',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'verify_credential',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'identical',
+                                'options' => array(
+                                    'token' => 'credential',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

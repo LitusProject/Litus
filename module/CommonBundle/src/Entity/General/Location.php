@@ -15,45 +15,47 @@
 
 namespace CommonBundle\Entity\General;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This class represents a geographic location associated with an address
  *
  * We use Google's API to convert addresses; more information can be found
  * here: https://developers.google.com/maps/documentation/geocoding/.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Location")
- * @Table(name="general.locations")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Location")
+ * @ORM\Table(name="general.locations")
  */
 class Location
 {
     /**
      * @var integer The ID of the location
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The address associated with the location
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
-     * @JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
     /**
      * @var string The latitude coordinate
      *
-     * @Column(type="string", length=12)
+     * @ORM\Column(type="string", length=12)
      */
     private $latitude;
 
     /**
      * @var string The longitude coordinate
      *
-     * @Column(type="string", length=12)
+     * @ORM\Column(type="string", length=12)
      */
     private $longitude;
 

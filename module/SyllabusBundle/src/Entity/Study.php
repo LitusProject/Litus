@@ -15,47 +15,49 @@
 
 namespace SyllabusBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\Study")
- * @Table(name="syllabus.studies")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
+ * @ORM\Table(name="syllabus.studies")
  */
 class Study
 {
     /**
      * @var integer The ID of the study
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The title of the study
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var integer The phase number of the study
      *
-     * @Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private $phase;
 
     /**
      * @var string The language of the study
      *
-     * @Column(type="string", length=2)
+     * @ORM\Column(type="string", length=2)
      */
     private $language;
 
     /**
      * @var \SyllabusBundle\Entity\Study The parent study of the study
      *
-     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @JoinColumn(name="parent", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
 

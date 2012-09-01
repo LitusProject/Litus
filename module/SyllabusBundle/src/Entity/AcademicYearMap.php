@@ -15,36 +15,37 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\AcademicYearMap")
- * @Table(name="syllabus.studies_academic_years_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\AcademicYearMap")
+ * @ORM\Table(name="syllabus.studies_academic_years_map")
  */
 class AcademicYearMap
 {
     /**
      * @var integer The ID of the mapping
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \SyllabusBundle\Entity\Study The study of the mapping
      *
-     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @JoinColumn(name="study", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\JoinColumn(name="study", referencedColumnName="id")
      */
     private $study;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 

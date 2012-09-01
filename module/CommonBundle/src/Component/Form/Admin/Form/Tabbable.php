@@ -14,6 +14,7 @@
  */
 
 namespace CommonBundle\Component\Form\Admin\Form;
+
 /**
  * Extending Zend's form component, so that our forms look the way we want
  * them to.
@@ -23,12 +24,10 @@ namespace CommonBundle\Component\Form\Admin\Form;
 class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param mixed $options The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options)
+    public function __construct($name)
     {
-        parent::__construct($options = null);
-
-        $this->addDecorator(array('tabbable' => 'HtmlTag'), array('tag' => 'div', 'class' => 'tabbable'));
+        parent::__construct($name = null);
     }
 }

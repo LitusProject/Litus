@@ -15,9 +15,11 @@
 
 namespace CudiBundle\Entity\Articles;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\External")
- * @Table(name="cudi.articles_external")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\External")
+ * @ORM\Table(name="cudi.articles_external")
  */
 class External extends \CudiBundle\Entity\Article
 {

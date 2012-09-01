@@ -106,9 +106,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()
@@ -122,7 +123,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->getEntityManager()->persist($booking);
-                //$this->getEntityManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -185,7 +186,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
-        $mailForm->setAction($this->url()->fromRoute('admin_cudi_mail'));
+        $mailForm->setAttribute('action', $this->url()->fromRoute('admin_cudi_mail'));
 
         return new ViewModel(
             array(
@@ -229,11 +230,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
         if ($available <= 0) {
-            return new ViewModel(
-                array(
-                    'result' => (object) array("status" => "error"),
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'The booking could not be assigned! Not enough articles in stock.'
                 )
             );
+
+            $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+            return new ViewModel();
         }
 
         if ($available < $booking->getNumber()) {
@@ -250,7 +257,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $booking->setStatus('assigned');
 
-        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson());
+        BookingMail::sendMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
 
         $this->getEntityManager()->flush();
 

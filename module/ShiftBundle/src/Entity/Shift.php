@@ -15,67 +15,68 @@
 
 namespace ShiftBundle\Entity;
 
-use \DateTime,
-    \CalendarBundle\Entity\Nodes\Event,
-    \CommonBundle\Entity\General\Location,
-    \CommonBundle\Entity\Users\Person,
-    \Doctrine\Common\Collections\ArrayCollection,
-    \ShiftBundle\Entity\Unit;
+use DateTime,
+    CalendarBundle\Entity\Nodes\Event,
+    CommonBundle\Entity\General\Location,
+    CommonBundle\Entity\Users\Person,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    ShiftBundle\Entity\Unit;
 
 /**
  * This entity stores a shift.
  *
- * @Entity(repositoryClass="ShiftBundle\Repository\Shift")
- * @Table(name="shifts.shifts")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift")
+ * @ORM\Table(name="shifts.shifts")
  */
 class Shift
 {
     /**
      * @var integer The ID of this shift
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var boolean The moment this shift starts
      *
-     * @Column(name="start_date", type="datetime")
+     * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
      * @var string The moment this shift ends
      *
-     * @Column(name="end_date", type="datetime")
+     * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person that manages this shift
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="manager", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="manager", referencedColumnName="id")
      */
     private $manager;
 
     /**
      * @var integer The required number of responsibles for this shift
      *
-     * @Column(name="nb_responsibles", type="integer")
+     * @ORM\Column(name="nb_responsibles", type="integer")
      */
     private $nbResponsibles;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that are responsible for this shift
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinTable(
      *      name="shifts.shifts_responsibles_map",
-     *      joinColumns={@JoinColumn(name="shift", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="volunteer", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="volunteer", referencedColumnName="id")}
      * )
      */
     private $responsibles;
@@ -83,18 +84,18 @@ class Shift
     /**
      * @var integer The required number of volunteers for this shift
      *
-     * @Column(name="nb_volunteers", type="integer")
+     * @ORM\Column(name="nb_volunteers", type="integer")
      */
     private $nbVolunteers;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that volunteered for this shift
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinTable(
      *      name="shifts.shifts_volunteers_map",
-     *      joinColumns={@JoinColumn(name="shift", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="volunteer", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="volunteer", referencedColumnName="id")}
      * )
      */
     private $volunteers;
@@ -102,38 +103,38 @@ class Shift
     /**
      * @var \ShiftBundle\Entity\Unit The organization unit this shift belongs to
      *
-     * @ManyToOne(targetEntity="ShiftBundle\Entity\Unit")
-     * @JoinColumn(name="unit", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ShiftBundle\Entity\Unit")
+     * @ORM\JoinColumn(name="unit", referencedColumnName="id")
      */
     private $unit;
 
     /**
      * @var \CalendarBundle\Entity\Nodes\Event The shift's event
      *
-     * @ManyToOne(targetEntity="CalendarBundle\Entity\Nodes\Event")
-     * @JoinColumn(name="event", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Nodes\Event")
+     * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
     private $event;
 
     /**
      * @var \CommonBundle\Entity\General\Location The shift's location
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
-     * @JoinColumn(name="location", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
+     * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
     private $location;
 
     /**
      * @var string The shift's name
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The shift's description
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 

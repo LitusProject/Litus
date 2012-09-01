@@ -141,6 +141,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
+                    'admin_cache' => array(
+                        'manage', 'flush'
+                    ),
                     'index' => array(
                         'index'
                     ),

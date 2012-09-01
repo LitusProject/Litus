@@ -1,0 +1,34 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+	<div class="page-header">
+	    <h2>{{ translate('Your Subjects') }}</h2>
+	</div>
+
+	<table class="table table-bordered table-striped">
+	    <tr>
+	        <th width="80px">{{ translate('Code') }}</th>
+	        <th>{{ translate('Name') }}</th>
+	        <th width="80px">{{ translate('Semester') }}</th>
+	        <th width="80px">{{ translate('Credits') }}</th>
+	        <th width="190px">{{ translate('Actions') }}</th>
+	    </tr>
+
+		{% for subject in subjects %}
+		    <tr>
+		        <td>{{ subject.getSubject().getCode() }}</td>
+		        <td>{{ subject.getSubject().getName() }}</td>
+		        <td>{{ subject.getSubject().getSemester() }}</td>
+		        <td>{{ subject.getSubject().getCredits() }}</td>
+		        <td class="actions">
+		            {% if hasAccess('prof_subject_comment', 'manage') %}
+		                <a href="{{ url("prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
+		            {% endif %}
+		            {% if hasAccess('prof_subject', 'subject') %}
+		                <a href="{{ url("prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
+		            {% endif %}
+		        </td>
+		    </tr>
+		{% endfor %}
+	</table>
+{% endblock %}

@@ -54,16 +54,20 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $roles = array();
-
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('guest');
+                if ($formData['roles']) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
                 }
 
                 $academic = new Academic(
@@ -130,16 +134,20 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $roles = array();
-
-                $formData['roles'][] = 'guest';
-                foreach ($formData['roles'] as $role) {
-                    $roles[] = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Acl\Role')
-                        ->findOneByName($role);
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('guest');
+                if ($formData['roles']) {
+                    foreach ($formData['roles'] as $role) {
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
                 }
 
                 $user->setFirstName($formData['first_name'])

@@ -24,6 +24,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
+    Locale,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
@@ -35,7 +36,7 @@ use CommonBundle\Component\Acl\Acl,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ActionController extends \Zend\Mvc\Controller\ActionController implements AuthenticationAware, DoctrineAware
+class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
      * @var \CommonBundle\Entity\General\Language
@@ -49,11 +50,12 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
         $startExecutionTime = microtime(true);
 
-        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+        $this->getServiceLocator()
+            ->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
@@ -68,7 +70,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         if ($this->getAuthentication()->isAuthenticated())
             $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $result->language = $this->getLanguage();
         $result->languages = $this->getEntityManager()
@@ -97,8 +99,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     protected function initAjax()
     {
         if (
-            !$this->getRequest()->headers()->get('X_REQUESTED_WITH')
-                || 'XMLHttpRequest' != $this->getRequest()->headers()->get('X_REQUESTED_WITH')->getFieldValue()
+            !$this->getRequest()->getHeaders()->get('X_REQUESTED_WITH')
+            || 'XMLHttpRequest' != $this->getRequest()->getHeaders()->get('X_REQUESTED_WITH')->getFieldValue()
         ) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
@@ -114,7 +116,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     private function _initControllerPlugins()
     {
         // HasAccess Plugin
-        $this->getBroker()->getClassLoader()->registerPlugin(
+        $this->getPluginManager()->setInvokableClass(
             'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
         );
         $this->hasAccess()->setDriver(
@@ -124,7 +126,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
         );
 
         // Paginator Plugin
-        $this->getBroker()->getClassLoader()->registerPlugin(
+        $this->getPluginManager()->setInvokableClass(
             'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
         );
     }
@@ -155,7 +157,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
                     )
                 );
             } else {
-                \Zend\Registry::set('Litus_Localization_FallbackLanguage', $fallbackLanguage);
+                Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch(\Exception $e) {
         }
@@ -168,30 +170,30 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     private function _initViewHelpers()
     {
-        $renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('url')->setRouter($this->getLocator()->get('Zend\Mvc\Router\RouteStack'));
-
-        // DateLocalized View Helper
-        $renderer->getBroker()->getClassLoader()->registerPlugin(
-            'datelocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
-        );
-
-        // GetParam View Helper
-        $renderer->getBroker()->getClassLoader()->registerPlugin(
-            'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-        );
-        $renderer->plugin('getParam')->setRouteMatch(
-            $this->getEvent()->getRouteMatch()
-        );
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer->plugin('url')->setRouter($this->getServiceLocator()->get('router'));
 
         // HasAccess View Helper
-        $renderer->getBroker()->getClassLoader()->registerPlugin(
+        $renderer->getHelperPluginManager()->setInvokableClass(
             'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
         );
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccess(
                 $this->_getAcl(), $this->getAuthentication()
             )
+        );
+
+        // GetParam View Helper
+        $renderer->getHelperPluginManager()->setInvokableClass(
+            'getparam', 'CommonBundle\Component\View\Helper\GetParam'
+        );
+        $renderer->plugin('getParam')->setRouteMatch(
+            $this->getEvent()->getRouteMatch()
+        );
+
+        // Date View Helper
+        $renderer->getHelperPluginManager()->setInvokableClass(
+            'dateLocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
         );
     }
 
@@ -244,10 +246,10 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
     {
         $language = $this->getLanguage();
 
-        $this->getLocator()->get('translator')->setLocale($language->getAbbrev());
+        $this->getTranslator()->setCache($this->getCache());
+        $this->getTranslator()->setLocale($this->getLanguage()->getAbbrev());
 
-        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
-        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);
@@ -287,7 +289,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getAuthentication()
     {
-        return $this->getLocator()->get('authentication');
+        return $this->getServiceLocator()->get('authentication');
     }
 
     /**
@@ -315,8 +317,8 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getCache()
     {
-        if ($this->getLocator()->instancemanager()->hasAlias('cache'))
-            return $this->getLocator()->get('cache');
+        if ($this->getServiceLocator()->has('cache'))
+            return $this->getServiceLocator()->get('cache');
 
         return null;
     }
@@ -360,7 +362,7 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      */
     public function getEntityManager()
     {
-        return $this->getLocator()->get('doctrine_em');
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
     /**
@@ -406,11 +408,22 @@ class ActionController extends \Zend\Mvc\Controller\ActionController implements 
      * We want an easy method to retrieve the Mail Transport from
      * the DI container.
      *
-     * @return \Zend\Mail\Transport
+     * @return \Zend\Mail\Transport\TransportInterface
      */
     public function getMailTransport()
     {
-        return $this->getLocator()->get('mail_transport');
+        return $this->getServiceLocator()->get('mail_transport');
+    }
+
+    /**
+     * We want an easy method to retrieve the Translator from
+     * the DI container.
+     *
+     * @return \Zend\I18n\Translator\Translator
+     */
+    public function getTranslator()
+    {
+        return $this->getServiceLocator()->get('translator');
     }
 
     /**

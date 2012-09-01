@@ -224,7 +224,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'admin_article_file' => array(
-                        'delete', 'download', 'edit', 'manage', 'progress', 'upload'
+                        'delete', 'download', 'edit', 'front', 'manage', 'progress', 'upload'
                     ),
                     'admin_article_subject' => array(
                         'delete', 'manage'

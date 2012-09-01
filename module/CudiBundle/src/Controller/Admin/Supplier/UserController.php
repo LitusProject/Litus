@@ -63,9 +63,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $newUser = new SupplierPerson(
                     $formData['username'],
                     array(
@@ -80,9 +81,15 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     $formData['sex'],
                     $supplier
                 );
-                $newUser->activate($this->getEntityManager(), $this->getMailTransport());
+
+                $newUser->activate(
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    false
+                );
+
                 $this->getEntityManager()->persist($newUser);
-                exit;
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -121,9 +128,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])

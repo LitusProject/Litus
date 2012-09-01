@@ -19,48 +19,49 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
- * @Table(name="users.people_academic")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\People\Academic")
+ * @ORM\Table(name="users.people_academic")
  */
 class Academic extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @var string The user's personal email
      *
-     * @Column(name="personal_email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="personal_email", type="string", length=100, nullable=true)
      */
     private $personalEmail;
 
     /**
      * @var string The user's primary email
      *
-     * @Column(name="primary_email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="primary_email", type="string", length=100, nullable=true)
      */
     private $primaryEmail;
 
     /**
      * @var string The user's university identification
      *
-     * @Column(name="university_identification", type="string", length=8, nullable=true)
+     * @ORM\Column(name="university_identification", type="string", length=8, nullable=true)
      */
     private $universityIdentification;
 
     /**
      * @var string The path to the user's photo
      *
-     * @Column(name="photo_path", type="string", nullable=true)
+     * @ORM\Column(name="photo_path", type="string", nullable=true)
      */
     private $photoPath;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist", "delete"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\University", mappedBy="person", cascade={"persist", "remove"})
      */
     private $universityStatuses;
 
@@ -174,20 +175,28 @@ class Academic extends \CommonBundle\Entity\Users\Person
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
-            foreach($this->universityStatuses as $status) {
-                if ($status->getAcademicYear() == $academicYear)
-                    return $status;
-            }
+        foreach($this->universityStatuses as $status) {
+            if ($status->getAcademicYear() == $academicYear)
+                return $status;
+        }
     }
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @throws \RuntimeException
      */
-    public function canHaveUniversityStatus(AcademicYear $academicYear)
+    public function canHaveUniversityStatus(AcademicYearEntity $academicYear)
     {
-        if ($this->universityStatuses->exists($academicYear))
-            return false;
+        if ($this->universityStatuses->count() >= 1) {
+            if ($this->universityStatuses->exists(
+                function($key, $value) use ($academicYear) {
+                    if ($value->getAcademicYear() == $academicYear)
+                        return true;
+                }
+            )) {
+                return false;
+            }
+        }
 
         return true;
     }

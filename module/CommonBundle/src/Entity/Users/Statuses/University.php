@@ -16,13 +16,14 @@
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\People\Academic;
+    CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * A classification of a user based on his status at our Alma Mater.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\University")
- * @Table(name="users.university_statuses")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\University")
+ * @ORM\Table(name="users.university_statuses")
  */
 class University
 {
@@ -40,34 +41,34 @@ class University
     /**
      * @var int The ID of this university status
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\People\Academic The person this university status belongs to
      *
-     * @ManyToOne(
+     * @ORM\ManyToOne(
      *      targetEntity="CommonBundle\Entity\Users\People\Academic", inversedBy="universityStatuses"
      * )
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The actual status value
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $status;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the status
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 
@@ -114,7 +115,7 @@ class University
      */
     public static function isValidPerson(Academic $person, AcademicYear $academicYear)
     {
-        return ($person != null) && $person->canHaveUniversityStatus($academicYear->getCode(true));
+        return ($person != null) && $person->canHaveUniversityStatus($academicYear);
     }
 
     /**

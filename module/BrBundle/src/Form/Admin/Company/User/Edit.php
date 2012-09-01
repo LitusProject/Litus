@@ -31,18 +31,17 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\Users\Person $person The person we're going to modify
-     * @param mixed $opts The validator's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Person $person, $opts = null)
+    public function __construct(EntityManager $entityManager, Person $person, $name = null)
     {
-        parent::__construct($entityManager, $person, $opts);
+        parent::__construct($entityManager, $person, $name);
 
-        $this->removeElement('roles');
+        $this->remove('roles');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'user_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'user_edit');
+        $this->add($field);
     }
 }

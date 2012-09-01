@@ -29,19 +29,19 @@ use BrBundle\Entity\Company\Vacancy,
 class Edit extends Add
 {
     /**
-     * @param mixed $opts The validator's options
+     * @param \BrBundle\Entity\Company\Vacancy $vacancy
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Vacancy $vacancy, $opts = null)
+    public function __construct(Vacancy $vacancy, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Edit')
-            ->setAttrib('class', 'companies_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Edit')
+            ->setAttribute('class', 'companies_edit');
+        $this->add($field);
 
         $this->populateFromVacancy($vacancy);
     }

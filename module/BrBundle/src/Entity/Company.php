@@ -17,90 +17,91 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Users\People\Corporate,
     CommonBundle\Entity\General\Address,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a company.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Company")
- * @Table(name="br.companies")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company")
+ * @ORM\Table(name="br.companies")
  */
 class Company
 {
     /**
      * @var string The company's ID
      *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var string The company's name
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
      * @var string The company's VAT number
      *
-     * @Column(type="string", name="vat_number")
+     * @ORM\Column(type="string", name="vat_number")
      */
     private $vatNumber;
 
     /**
      * @var \CommonBundle\Entity\General\Address The address of the company
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "delete"})
-     * @JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
     /**
      * @var string The history of the company
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $history;
 
     /**
      * @var string The description of the company
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @var string The sector of the company
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $sector;
 
     /**
      * @var string The logo of the company
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $logo;
 
     /**
      * @var bool Whether or not this is an active company
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $active;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
-     * @ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Users\People\Corporate", cascade={"persist"})
+     * @ORM\JoinTable(
      *      name="br.companies_contacts_map",
-     *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id", unique=true)}
      * )
      */
     private $contacts;

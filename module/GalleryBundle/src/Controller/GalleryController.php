@@ -3,7 +3,8 @@
 namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
-    Zend\Http\Headers;
+    Zend\Http\Headers,
+    Zend\View\Model\ViewModel;
 
 /**
  * Handles system gallery controller.
@@ -32,12 +33,14 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery_path');
+            ->getConfigValue('gallery.path');
 
-        return array(
-            'albums' => $sorted,
-            'currentYear' => AcademicYear::getAcademicYear(),
-            'filePath' => $filePath,
+        return new ViewModel(
+            array(
+                'albums' => $sorted,
+                'currentYear' => AcademicYear::getAcademicYear(),
+                'filePath' => $filePath,
+            )
         );
     }
 
@@ -53,65 +56,69 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery_path');
+            ->getConfigValue('gallery.path');
 
-        return array(
-            'albums' => $albums,
-            'filePath' => $filePath,
-            'academicYear' => AcademicYear::getAcademicYear($end),
+        return new ViewModel(
+            array(
+                'albums' => $albums,
+                'filePath' => $filePath,
+                'academicYear' => AcademicYear::getAcademicYear($end),
+            )
         );
     }
 
     public function albumAction()
     {
         if (!($album = $this->_getTranslationByName()))
-            return;
+            return new ViewModel();
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery_path');
+            ->getConfigValue('gallery.path');
 
-        return array(
-            'album' => $album->getAlbum(),
-            'filePath' => $filePath,
+        return new ViewModel(
+            array(
+                'album' => $album->getAlbum(),
+                'filePath' => $filePath,
+            )
         );
     }
 
     public function _getTranslationByName()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+    	if (null === $this->getParam('id')) {
+    	    $this->getResponse()->setStatusCode(404);
+    		return;
+    	}
 
         $translation = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Translation')
             ->findOneByName($this->getParam('id'));
 
-        if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+    	if (null === $translation || $translation->getLanguage() != $this->getLanguage()) {
+    	    $this->getResponse()->setStatusCode(404);
+    		return;
+    	}
 
-        return $translation;
+    	return $translation;
     }
 
     public function _getPhoto()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+    	if (null === $this->getParam('id')) {
+    		$this->getResponse()->setStatusCode(404);
+    		return;
+    	}
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('id'));
 
-        if (null === $album) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+    	if (null === $album) {
+    		$this->getResponse()->setStatusCode(404);
+    		return;
+    	}
 
-        return $album;
+    	return $album;
     }
 }

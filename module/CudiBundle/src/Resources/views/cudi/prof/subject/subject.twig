@@ -1,0 +1,199 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-error fade" id="article_removed_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Error') }}</div>
+    	<div class="content">
+    		<p>{{ translate('An error occurred while removing the mapping between this subject and the article.') }}</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="article_removed_success">
+	    <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Success') }}</div>
+    	<div class="content">
+    		<p>{{ translate('The mapping between this subject and the article was succesfully removed.') }}</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="prof_removed_error">
+        <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Error') }}</div>
+    	<div class="content">
+    		<p>{{ translate('An error occurred while removing the mapping between this subject and the docent.') }}</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="prof_removed_success">
+        <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Success') }}</div>
+    	<div class="content">
+    		<p>{{ translate('The mapping between this subject and the docent was succesfully removed.') }}</p>
+    	</div>
+    </div>
+
+    <div class="page-header">
+        <h2>{{ translate('Subject') }}</h2>
+    </div>
+
+	<p>
+	    {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+	    {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+	    {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+	    {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
+	    {{ translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
+	</p>
+
+	<h3>{{ translate('Number of students (Optional)') }}:</h3>
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(enrollmentForm) }}
+
+    <h3>{{ translate('Articles') }}:</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>{{ translate('Title') }}</th>
+            <th width="120px">{{ translate('Authors') }}</th>
+            <th width="220px">{{ translate('Publisher') }}</th>
+            <th width="90px">{{ translate('Publish Year') }}</th>
+            <th width="100px">{{ translate('ISBN') }}</th>
+            <th width="90px">{{ translate('Actions') }}</th>
+        </tr>
+
+    	{% for mapping in articleMappings %}
+    	    <tr>
+    	        <td>{{ mapping.getArticle().getTitle() }}</td>
+    	        <td>{{ mapping.getArticle().getAuthors() }}</td>
+    	        <td>{{ mapping.getArticle().getPublishers() }}</td>
+    	        <td>{{ mapping.getArticle().getYearPublished() }}</td>
+    	        <td>{{ mapping.getArticle().getISBN() }}</td>
+    	        <td class="actions">
+    	            {% if hasAccess('prof_article_mapping', 'delete') %}
+    	                <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getTitle() }}">{{ translate('Remove') }}</a>
+    	            {% endif %}
+    	        </td>
+    	    </tr>
+    	{% endfor %}
+    </table>
+    <div class="pull-right">
+        {% if hasAccess('prof_article', 'add') %}
+            <a href="{{ url('prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Article') }}</a>
+        {% endif %}
+    </div>
+    <br class="clear" />
+
+    <h3>{{ translate('Docents') }}</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th width="90px">{{ translate('Identification') }}</th>
+            <th>{{ translate('Name') }}</th>
+            <th width="90px">{{ translate('Actions') }}</th>
+        </tr>
+
+        {% for mapping in profMappings %}
+            <tr class="item">
+                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
+                <td>{{ mapping.getProf().getFullName() }}</td>
+                <td class="actions">
+                    {% if hasAccess('prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
+                        <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translate('Remove') }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pull-right">
+        {% if hasAccess('prof_prof', 'add') %}
+            <a href="{{ url('prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
+        {% endif %}
+    </div>
+    <br class="clear" />
+
+    <div id="modalRemoveArticle" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>{{ translate('Remove Article') }}</h3>
+    	</div>
+    	<div class="modal-body">
+    		{{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    	</div>
+    </div>
+
+    <div id="modalRemoveProf" class="modal fade">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>{{ translate('Remove Docent') }}</h3>
+    	</div>
+    	<div class="modal-body">
+    		{{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+    		<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    	</div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $('.removeArticle').click(openRemoveArticleModal);
+		    $('.removeProf').click(openRemoveProfModal);
+		});
+
+		function openRemoveArticleModal(e) {
+		    var $this = $(this);
+
+		    e.preventDefault();
+		    var removeArticle = $('#modalRemoveArticle');
+		    removeArticle.find('.articleTitle').html($(this).data('article'));
+		    removeArticle.find('.confirm').unbind('click').click(function () {
+		    	$.post('{{ url('prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+		    	    if (data && 'success' == data.status) {
+		    			$('.flashmessage').removeClass('in');
+		    			$('#article_removed_success').addClass('in');
+		    			$this.parent().parent().remove();
+		    			removeArticle.modal('hide');
+		    		} else {
+		    		    errorRemoveArticle();
+		    		}
+		    	}, 'json').error(errorRemoveArticle);
+		    });
+		    removeArticle.modal();
+		}
+
+		function errorRemoveArticle() {
+		    $('.flashmessage').removeClass('in');
+		    $('#article_removed_error').addClass('in');
+		    $('#modalRemoveArticle').modal('hide');
+		}
+
+		function openRemoveProfModal(e) {
+		    var $this = $(this);
+
+		    e.preventDefault();
+		    var removeProf = $('#modalRemoveProf');
+		    removeProf.find('.profName').html($(this).data('name'));
+		    removeProf.find('.confirm').unbind('click').click(function () {
+		    	$.post('{{ url('prof_prof', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+		    	    if (data && 'success' == data.status) {
+		    			$('.flashmessage').removeClass('in');
+		    			$('#prof_removed_success').addClass('in');
+		    			$this.parent().parent().remove();
+		    			removeProf.modal('hide');
+		    		} else {
+		    		    errorRemoveProf();
+		    		}
+		    	}, 'json').error(errorRemoveProf);
+		    });
+		    removeProf.modal();
+		}
+
+		function errorRemoveProf() {
+		    $('.flashmessage').removeClass('in');
+		    $('#prof_removed_error').addClass('in');
+		    $('#modalRemoveProf').modal('hide');
+		}
+	</script>
+{% endblock %}

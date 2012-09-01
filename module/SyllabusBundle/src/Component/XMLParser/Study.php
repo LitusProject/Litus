@@ -30,7 +30,7 @@ use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
     Zend\Dom\Query as DomQuery,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Study
@@ -45,7 +45,7 @@ class Study
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
@@ -71,10 +71,11 @@ class Study
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param string $xmlPath
      * @param array $callback
      */
-    public function __construct(EntityManager $entityManager, Transport $mailTransport, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -365,7 +366,7 @@ class Study
                 }
             }
 
-            if ($prof->canHaveUniversityStatus($this->_academicYear->getCode(true))) {
+            if ($prof->canHaveUniversityStatus($this->_academicYear)) {
                 $prof->addUniversityStatus(
                     new UniversityStatus(
                         $prof,

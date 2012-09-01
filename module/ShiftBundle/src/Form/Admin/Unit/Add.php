@@ -15,10 +15,10 @@
 
 namespace ShiftBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+use CommonBundle\Component\Form\Admin\Element\Text,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Key
@@ -28,22 +28,42 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($opts = null)
+    public function __construct($name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $field = new Text('name');
         $field->setLabel('Name')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'unit_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'unit_add');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

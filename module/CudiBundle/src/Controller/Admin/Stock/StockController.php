@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin\Stock;
+namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
@@ -183,10 +183,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         $stockForm = new StockForm($article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
 
             if (isset($formData['updateStock'])) {
-                if ($stockForm->isValid($formData)) {
+                $stockForm->setData($formData);
+                if ($stockForm->isValid()) {
                     $delta = new Delta(
                         $this->getAuthentication()->getPersonObject(),
                         $article,
@@ -219,7 +220,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     return new ViewModel();
                 }
             } elseif (isset($formData['add_order'])) {
-                if ($orderForm->isValid($formData)) {
+                $orderForm->setData($formData);
+                if ($orderForm->isValid()) {
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Orders\Order')
                         ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
@@ -245,7 +247,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     return new ViewModel();
                 }
             } elseif (isset($formData['add_delivery'])) {
-                if ($deliveryForm->isValid($formData)) {
+                $deliveryForm->setData($formData);
+                if ($deliveryForm->isValid()) {
                     $delivery = new Delivery($article, $formData['number'], $this->getAuthentication()->getPersonObject());
                     $this->getEntityManager()->persist($delivery);
                     $this->getEntityManager()->flush();

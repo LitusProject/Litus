@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/sales/financial/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% include 'cudi/admin/sales/financial/partials/suppliers.twig' %}
+
+	<div id="controller_action">
+		<table class="full_width">
+
+		    <tr>
+		        <th>Name</th>
+				<th width="200px">Actions</th>
+		    </tr>
+
+		    {% for supplier in paginator %}
+		        <tr>
+		            <td>{{ supplier.getName() }}</td>
+					<td>
+					    {% if hasAccess('admin_sales_financial', 'deliveries') %}
+						    <a href="{{ url('admin_sales_financial', {"action": "deliveries", "id": supplier.getId()}) }}" class="view">Deliveries</a>
+						{% endif %}
+						{% if hasAccess('admin_sales_financial', 'retours') %}
+						    <a href="{{ url('admin_sales_financial', {"action": "retours", "id": supplier.getId()}) }}" class="view">Retours</a>
+						{% endif %}
+					</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+	</div>
+{% endblock %}

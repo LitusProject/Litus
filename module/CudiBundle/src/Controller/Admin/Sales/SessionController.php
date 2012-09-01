@@ -56,9 +56,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $cashRegister = new CashRegister();
                 $this->getEntityManager()->persist($cashRegister);
 
@@ -118,9 +119,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new CommentForm($session);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $session->setComment($formData['comment']);
 
                 $this->getEntityManager()->flush();
@@ -175,9 +177,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $cashRegister);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
@@ -234,9 +237,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $cashRegister = new CashRegister();
 
                 $devices = $this->getEntityManager()

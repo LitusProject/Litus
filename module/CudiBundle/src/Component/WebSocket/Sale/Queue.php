@@ -15,12 +15,15 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\WebSocket\User,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\WebSocket\User,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
     CudiBundle\Entity\Sales\QueueItem,
     CudiBundle\Entity\Sales\Session,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -111,7 +114,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param string $data
      */
     private function _gotAction(User $user, $data)
-    {echo $data;
+    {
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 
@@ -277,7 +280,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'person' => (object) array(
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
-                        'member' => $item->getPerson()->isMember(),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
                     ),
                     'articles' => $this->_createJsonBooking(
                         $this->_entityManager
@@ -453,7 +456,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $price = $booking->getArticle()->getSellPrice();
                 foreach($booking->getArticle()->getDiscounts() as $discount) {
                     if ($discount->getType() == $data->discount) {
-                        if ($discount->getType() == 'member' && !$booking->getPerson()->isMember())
+                        if ($discount->getType() == 'member' && !$booking->getPerson()->isMember($this->_getCurrentAcademicYear()))
                             continue;
                         $price = $discount->apply($booking->getArticle()->getSellPrice());
                     }
@@ -478,7 +481,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _undoSelling($data)
     {
-        print_r($data);
         $queueItem = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($data->id);
@@ -493,7 +495,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findByQueueItem($queueItem);
 
         foreach($saleItems as $saleItem) {
-            $booking = $this->getEntityManager()
+            $booking = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
                 ->findOneSoldByArticleAndNumber($saleItem->getArticle(), $saleItem->getNumber());
 
@@ -506,5 +508,31 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
 
         $this->_updateItemStatus($data->id, 'collected');
+    }
+
+    private function _getCurrentAcademicYear()
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $this->_entityManager->persist($academicYear);
+            $this->_entityManager->flush();
+        }
+
+        return $academicYear;
     }
 }

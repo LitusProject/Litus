@@ -1,0 +1,14 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'mail/admin/mail/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        <h1>{{ type|capitalize }}: {{ status }}</h1>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

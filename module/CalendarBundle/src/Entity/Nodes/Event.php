@@ -4,48 +4,49 @@ namespace CalendarBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="CalendarBundle\Repository\Nodes\Event")
- * @Table(name="nodes.events")
+ * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Nodes\Event")
+ * @ORM\Table(name="nodes.events")
  */
 class Event extends \CommonBundle\Entity\Nodes\Node
 {
     /**
      * @var array The translations of this event
      *
-     * @OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
      */
     private $translations;
 
     /**
      * @var \DateTime The start date of this event
      *
-     * @Column(name="start_date", type="datetime")
+     * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
      * @var \DateTime The end date of this event
      *
-     * @Column(name="end_date", type="datetime", nullable=true)
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
 
     /**
      * @var string The poster of this event
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $poster;
 
     /**
      * @var string The name of this page
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
@@ -132,7 +133,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 

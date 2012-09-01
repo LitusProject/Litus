@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Files;
 
 use CudiBundle\Entity\Article,
+    CudiBundle\Entity\Files\File as FileEntity,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,6 +14,29 @@ use CudiBundle\Entity\Article,
  */
 class Mapping extends EntityRepository
 {
+    public function findOneByArticleAndFile(Article $article, FileEntity $file)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CudiBundle\Entity\Files\Mapping', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.file', ':file'),
+                    $query->expr()->eq('m.article', ':article')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('file', $file->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findAllPrintableByArticle(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();

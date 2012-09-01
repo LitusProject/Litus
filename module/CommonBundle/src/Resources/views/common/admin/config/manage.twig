@@ -1,0 +1,39 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'common/admin/config/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		{% for bundle, values in configValues %}
+			{% if bundle %}
+				<h1>{{ bundle|capitalize }}Bundle</h1>
+			{% endif %}
+
+			<table class="full_width">
+		        <thead>
+		            <tr>
+		                <th width="200px">Key</th>
+		                <th>Value</th>
+		              	<th width="60px">Action</th>
+		            </tr>
+		        </thead>
+
+		        <tbody>
+		            {% for key, value in values %}
+		                <tr class="item">
+		                    <td>{{ key }}</td>
+		                    <td>{{ value.value }}
+		                    <td>
+		                        {% if hasAccess('admin_config', 'edit') %}
+								    <a href="{{ url('admin_config', {"action": "edit", "key": value.fullKey }) }}" class="edit">Edit</a></li>
+								{% endif %}
+		                    </td>
+		                </tr>
+		            {% endfor %}
+		        </tbody>
+		    </table>
+		{% endfor %}
+	</div>
+{% endblock %}

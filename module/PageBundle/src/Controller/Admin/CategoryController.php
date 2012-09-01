@@ -49,9 +49,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $category = new Category();
 
                 if ('' != $formData['parent']) {
@@ -116,9 +117,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $form = new EditForm($this->getEntityManager(), $category);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')

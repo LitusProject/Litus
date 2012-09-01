@@ -24,17 +24,14 @@ class Button extends \Zend\Form\Element\Button
 {
 
     /**
-     * Create new Button button
-     *
-     * @param  string|array|Config $spec
-     * @param  array|Traversable $options
-     * @return void
-     * @throws ElementException if no element name after initialization
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct($spec, $options = null)
+    public function __construct($name, $options = null)
     {
-        parent::__construct($spec, $options);
-        $this->setAttrib('class', 'btn btn-primary');
-        $this->removeDecorator('DtDdWrapper');
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+        $this->setAttribute('class', 'btn btn-primary');
     }
 }

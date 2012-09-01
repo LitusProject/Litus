@@ -226,9 +226,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $form = new ArticleForm($this->getEntityManager(), $action->getEntity());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $action->getEntity()->setTitle($formData['title'])
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
@@ -289,9 +290,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $form = new FileForm($action->getEntity());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $action->getEntity()
                     ->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);

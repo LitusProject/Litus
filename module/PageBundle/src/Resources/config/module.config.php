@@ -14,121 +14,117 @@
  */
 
 return array(
-    'di' => array(
-        'instance' => array(
-            'alias' => array(
-                'page_install'        => 'PageBundle\Controller\Admin\InstallController',
-                'admin_page'          => 'PageBundle\Controller\Admin\PageController',
-                'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
-
-                'page'                => 'PageBundle\Controller\PageController',
-            ),
-
-            'doctrine_config' => array(
-                'parameters' => array(
-                    'entityPaths' => array(
-                        'pagebundle' => __DIR__ . '/../../Entity',
+    'router' => array(
+        'routes' => array(
+            'page_install' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/install/page',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'page_install',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
-            'translator' => array(
-                'parameters' => array(
-                    'adapter' => 'ArrayAdapter',
-                    'translations' => array(
-                        'page_site_en' => array(
-                            'content' => __DIR__ . '/../translations/site.en.php',
-                            'locale'  => 'en',
-                        ),
-                        'page_site_nl' => array(
-                            'content' => __DIR__ . '/../translations/site.nl.php',
-                            'locale'  => 'nl',
-                        ),
+            'admin_page' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/site/page[/:action[/:id]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_page',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
-
-            'Zend\View\Resolver\TemplatePathStack' => array(
-                'parameters' => array(
-                    'paths' => array(
-                        'page_views' => __DIR__ . '/../views',
+            'admin_page_category' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/site/page/category[/:action[/:id]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_page_category',
+                        'action'     => 'manage',
                     ),
                 ),
             ),
-
-            'Zend\Mvc\Router\RouteStack' => array(
-                'parameters' => array(
-                    'routes' => array(
-                        'page_install' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route' => '/admin/install/page',
-                                'constraints' => array(
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'page_install',
-                                    'action'     => 'index',
-                                ),
-                            ),
-                        ),
-                        'admin_page' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route' => '/admin/site/page[/:action[/:id]]',
-                                'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'id'      => '[0-9]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'admin_page',
-                                    'action'     => 'manage',
-                                ),
-                            ),
-                        ),
-                        'admin_page_category' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route' => '/admin/site/page/category[/:action[/:id]]',
-                                'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'id'      => '[0-9]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'admin_page_category',
-                                    'action'     => 'manage',
-                                ),
-                            ),
-                        ),
-                        'page' => array(
-                            'type' => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route'    => '[/:language]/page[/:name]',
-                                'constraints' => array(
-                                    'name'     => '[a-zA-Z0-9_-]*',
-                                    'language' => '[a-zA-Z][a-zA-Z_-]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'page',
-                                    'action'     => 'view',
-                                ),
-                            ),
-                        ),
-                        'page_file' => array(
-                            'type' => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route'    => '/page/file/:name',
-                                'constraints' => array(
-                                    'name'     => '[a-zA-Z0-9_-]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'page',
-                                    'action'     => 'file',
-                                ),
-                            ),
-                        ),
+            'page' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '[/:language]/page[/:name]',
+                    'constraints' => array(
+                        'name'     => '[a-zA-Z0-9_-]*',
+                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'page',
+                        'action'     => 'view',
                     ),
                 ),
             ),
+            'page_file' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/page/file/:name',
+                    'constraints' => array(
+                        'name'     => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'page',
+                        'action'     => 'file',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'page_view' => __DIR__ . '/../views',
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'orm_default' => array(
+                'drivers' => array(
+                    'PageBundle\Entity' => 'my_annotation_driver'
+                ),
+            ),
+            'my_annotation_driver' => array(
+                'paths' => array(
+                    'pagebundle' => __DIR__ . '/../../Entity',
+                ),
+            ),
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'page_install'        => 'PageBundle\Controller\Admin\InstallController',
+            'admin_page'          => 'PageBundle\Controller\Admin\PageController',
+            'admin_page_category' => 'PageBundle\Controller\Admin\CategoryController',
+
+            'page'                => 'PageBundle\Controller\PageController',
         ),
     ),
 );

@@ -30,15 +30,26 @@ class Edit extends Add
     {
         parent::__construct($options);
 
-        $this->removeElement('file');
-        $this->removeElement('submit');
+        $this->remove('file');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-                ->setAttrib('class', 'file_edit')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'file_edit');
+        $this->add($field);
 
         $this->populateFromFile($mapping);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+
+            $inputFilter->remove('file');
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

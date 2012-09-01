@@ -15,19 +15,19 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     DateTime,
     Doctrine\ORM\EntityManager,
     CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Nodes\Event,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea,
-    Zend\Validator\Date as DateValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add an event.
@@ -39,26 +39,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
-     * @var \CalendarBundle\Entity\Nodes\Event
+     * @param null|string|int $name Optional name for the element
      */
-    protected $event;
-
-    /**
-     * @param mixed $opts The validator's options
-     */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
         $tabs = new Tabs('languages');
-        $this->addElement($tabs);
+        $this->add($tabs);
 
-        $tabContent = new TabContent();
+        $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
@@ -67,46 +62,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $field = new Text('title_' . $language->getAbbrev());
             $field->setLabel('Title')
-                ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($field);
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
 
             $field = new Text('location_' . $language->getAbbrev());
             $field->setLabel('Location')
-                ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($field);
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
 
             $field = new Textarea('content_' . $language->getAbbrev());
             $field->setLabel('Content')
-                ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-            $pane->addElement($field);
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
 
-            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+            $tabContent->add($pane);
         }
 
-        $this->addSubForm($tabContent, 'tab_content');
+        $this->add($tabContent);
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
-            ->setRequired()
-            ->addValidator(new DateValidator('dd/MM/yyyy H:m'))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->addValidator(new DateCompareValidator('start_date', 'd/m/Y H:i'))
-            ->addValidator(new DateValidator('dd/MM/yyyy H:m'))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+        $field->setLabel('End Date');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'calendar_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'calendar_add');
+        $this->add($field);
     }
 
     public function populateFromEvent(Event $event)
@@ -122,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $data['title_' . $language->getAbbrev()] = $event->getTitle($language);
             $data['content_' . $language->getAbbrev()] = $event->getContent($language);
         }
-        $this->populate($data);
+        $this->setData($data);
     }
 
     protected function getLanguages()
@@ -132,33 +118,98 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
     }
 
-    /**
-     * Validate the form
-     *
-     * @param  array $data
-     * @return boolean
-     */
-    public function isValid($data)
+    public function getInputFilter()
     {
-        $valid = parent::isValid($data);
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
 
-        $form = $this->getSubForm('tab_content');
-        $date = DateTime::createFromFormat('d/m/Y H:i', $data['start_date']);
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new EventNameValidator($this->_entityManager, $language),
+                            ),
+                        )
+                    )
+                );
 
-        if ($date) {
-            $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
-            $name = $date->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($data['title_' . $fallbackLanguage->getAbbrev()]);
+                if ($language->getAbbrev() !== \Locale::getDefault())
+                    continue;
 
-            $event = $this->_entityManager
-                ->getRepository('CalendarBundle\Entity\Nodes\Event')
-                ->findOneByName($name);
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'location_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
 
-            if (!(null == $event || (null != $this->event && null != $event && $event == $this->event))) {
-                $title->addError('This event already exists');
-                $valid = false;
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'content_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
             }
-        }
 
-        return $valid;
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'start_date',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'end_date',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

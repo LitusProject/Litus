@@ -21,6 +21,7 @@ namespace CommonBundle\Component\Authentication\Adapter\Exception;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class QueryFailedException extends \RuntimeException implements \Zend\Authentication\Exception
+class QueryFailedException extends \RuntimeException implements \Zend\Authentication\Exception\ExceptionInterface
 {
+
 }

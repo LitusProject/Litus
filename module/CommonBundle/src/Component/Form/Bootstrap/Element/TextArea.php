@@ -23,8 +23,37 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Textarea extends \CommonBundle\Component\Form\Bootstrap\Element
+class Textarea extends \Zend\Form\Element\Textarea
 {
+    /**
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
+     */
+    public function __construct($name, $options = null)
+    {
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+        $this->setAttribute('class', 'input-xxlarge');
+        $this->setAttribute('rows', 10);
+        $this->setLabelAttributes(
+            array(
+                'class' => 'control-label',
+            )
+        );
+    }
 
-    public $helper = 'formTextarea';
+    /**
+     * Specifies whether this element is a required field.
+     *
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param boolean $flag
+     * @return void
+     */
+    public function setRequired($flag = true)
+    {
+        $this->setAttribute('required', $flag);
+        return $this;
+    }
 }

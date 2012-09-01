@@ -15,12 +15,11 @@
 
 namespace SyllabusBundle\Form\Admin\Prof;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    Zend\Form\Element\Hidden,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator;
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Prof
@@ -29,31 +28,69 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Hidden('prof_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'profId');
-        $this->addElement($field);
+        $field->setAttribute('id', 'profId');
+        $this->add($field);
 
         $field = new Text('prof');
         $field->setLabel('Docent')
-            ->setAttrib('size', 70)
-            ->setAttrib('id', 'profSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('size', 70)
+            ->setAttribute('id', 'profSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'docent_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'docent_add');
+        $this->add($field);
+    }
 
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'prof_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'prof',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

@@ -14,64 +14,57 @@
  */
 
 return array(
-    'di' => array(
-        'instance' => array(
-            'alias' => array(
-                'mail_install'                 => 'MailBundle\Controller\Admin\InstallController',
-                'admin_mail'                   => 'MailBundle\Controller\Admin\MailController',
-                'admin_mail_prof'              => 'MailBundle\Controller\Admin\ProfController',
-            ),
-            'Zend\View\Resolver\TemplatePathStack' => array(
-                'parameters' => array(
-                    'paths'  => array(
-                        'mail_views' => __DIR__ . '/../views',
+    'router' => array(
+        'routes' => array(
+            'mail_install' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/install/mail',
+                    'defaults' => array(
+                        'controller' => 'mail_install',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
-            'Zend\Mvc\Router\RouteStack' => array(
-                'parameters' => array(
-                    'routes' => array(
-                        'mail_install' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route' => '/admin/install/mail',
-                                'defaults' => array(
-                                    'controller' => 'mail_install',
-                                    'action'     => 'index',
-                                ),
-                            ),
-                        ),
-                        'admin_mail' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route'    => '/admin/mail/groups[/:action[/:type/:group]]',
-                                'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'admin_mail',
-                                    'action'     => 'groups',
-                                ),
-                            ),
-                        ),
-                        'admin_mail_prof' => array(
-                            'type'    => 'Zend\Mvc\Router\Http\Segment',
-                            'options' => array(
-                                'route'    => '/admin/mail/prof[/:action]',
-                                'constraints' => array(
-                                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                ),
-                                'defaults' => array(
-                                    'controller' => 'admin_mail_prof',
-                                    'action'     => 'cudi',
-                                ),
-                            ),
-                        ),
+            'admin_mail' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/mail/groups[/:action[/:type/:group]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_mail',
+                        'action'     => 'groups',
                     ),
                 ),
             ),
+            'admin_mail_prof' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/mail/prof[/:action]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_mail_prof',
+                        'action'     => 'cudi',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'mail_view' => __DIR__ . '/../views',
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'mail_install'                 => 'MailBundle\Controller\Admin\InstallController',
+            'admin_mail'                   => 'MailBundle\Controller\Admin\MailController',
+            'admin_mail_prof'              => 'MailBundle\Controller\Admin\ProfController',
         ),
     ),
 );

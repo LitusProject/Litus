@@ -16,45 +16,46 @@
 namespace PageBundle\Entity\Categories;
 
 use CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Category;
+    PageBundle\Entity\Category,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="PageBundle\Repository\Categories\Translation")
- * @Table(name="nodes.pages_categories_translations")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Categories\Translation")
+ * @ORM\Table(name="nodes.pages_categories_translations")
  */
 class Translation
 {
     /**
      * @var int The ID of this tanslation
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \PageBundle\Entity\Category The category of this translation
      *
-     * @ManyToOne(targetEntity="PageBundle\Entity\Category", inversedBy="translations")
-     * @JoinColumn(name="category", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category", inversedBy="translations")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     private $category;
 
     /**
      * @var \CommonBundle\Entity\General\Language The language of this translation
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
-     * @JoinColumn(name="language", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
 
     /**
      * @var string The content of this translation
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 

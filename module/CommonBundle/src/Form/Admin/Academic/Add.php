@@ -15,15 +15,15 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\Users\Statuses\University,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Checkbox,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Alnum as AlnumValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Academic
@@ -34,47 +34,73 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
         $field = new Checkbox('activation_code');
-        $field->setLabel('Activation Code')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+        $field->setLabel('Activation Code');
+        $this->add($field);
+
+        $collection = new Collection('university');
+        $collection->setLabel('University');
+        $this->add($collection);
 
         $field = new Text('university_identification');
         $field->setLabel('Identification')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new AlnumValidator());
-        $this->addElement($field);
+            ->setRequired();
+        $collection->add($field);
 
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
-            ->setMultiOptions(University::$possibleStatuses)
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
-
-        $this->addDisplayGroup(
-            array(
-                'university_identification',
-                'university_status'
-            ),
-            'academic_form'
-        );
-        $this->getDisplayGroup('academic_form')
-               ->setLegend('University')
-            ->setAttrib('id', 'academic_form')
-            ->removeDecorator('DtDdWrapper');
+            ->setAttribute('options', University::$possibleStatuses);
+        $collection->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'academic_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'academic_add');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'university_identification',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'alnum'
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'university_status',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

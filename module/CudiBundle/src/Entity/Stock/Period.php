@@ -18,42 +18,43 @@ namespace CudiBundle\Entity\Stock;
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Period")
- * @Table(name="cudi.stock_periods")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period")
+ * @ORM\Table(name="cudi.stock_periods")
  */
 class Period
 {
     /**
      * @var integer The ID of the period
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created the period
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var \DateTime The start time of the period
      *
-     * @Column(name="start_date", type="datetime")
+     * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
      * @var \DateTime The end time of the period
      *
-     * @Column(name="end_date", type="datetime", nullable=true)
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
 

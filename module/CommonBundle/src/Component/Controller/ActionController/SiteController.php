@@ -32,13 +32,13 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+        $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $result->menu = $this->_buildMenu();
 

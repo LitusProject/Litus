@@ -24,13 +24,30 @@ use Doctrine\ORM\EntityManager;
  */
 class AddDirect extends Add
 {
-    public function __construct(EntityManager $entityManager, $options = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('article_id');
-        $this->removeElement('article');
-        $this->getElement('submit')
+        $this->remove('article_id');
+        $this->remove('article');
+        $this->get('add')
             ->setName('add_order');
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+
+            $inputFilter->remove('article_id');
+            $inputFilter->remove('article');
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

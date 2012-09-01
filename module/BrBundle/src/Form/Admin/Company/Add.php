@@ -17,14 +17,14 @@ namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add a company.
@@ -34,56 +34,56 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param mixed $opts The validator's options
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    protected $_entityManager = null;
+
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
+
+        $this->_entityManager = $entityManager;
 
         $field = new Text('company_name');
         $field->setLabel('Company Name')
-            ->setRequired()
-            ->addValidator(new CompanyNameValidator($entityManager))
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Textarea('history');
         $field->setLabel('History')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Textarea('description');
         $field->setLabel('Description')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Select('sector');
         $field->setLabel('Sector')
             ->setRequired()
-            ->setMultiOptions($this->_getSectors())
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_getSectors());
+        $this->add($field);
 
         $field = new Text('vat_number');
         $field->setLabel('VAT Number')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
-        $this->addSubForm(new AddressForm(), 'address');
+        $this->add(new AddressForm('', 'address'));
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'companies_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'companies_add');
+        $this->add($field);
     }
 
     public function populateFromCompany(Company $company)
     {
-        $this->populate(
+        $this->setData(
             array(
                 'company_name' => $company->getName(),
                 'history' => $company->getHistory(),
@@ -106,5 +106,78 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $sectorArray[$key] = $sector;
 
         return $sectorArray;
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = $this->get('address')->getInputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'company_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new CompanyNameValidator($this->_entityManager),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'history',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'description',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'sector',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'vat_number',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

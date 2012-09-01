@@ -37,9 +37,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -77,14 +77,14 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $language = new Language(
                 'en', 'English'
             );
+            $this->getEntityManager->persist($language);
+            $this->getEntityManager->flush();
         }
 
-        $this->getLocator()->get('translator')->setLocale(
-            $language->getAbbrev()
-        );
+        $this->getTranslator()->setCache($this->getCache());
+        $this->getTranslator()->setLocale($language->getAbbrev());
 
-        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
-        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);

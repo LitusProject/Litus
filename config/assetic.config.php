@@ -12,22 +12,21 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 $settings = array(
     'controllers'  => array(),
     'routes' => array(),
-    
 );
 
 if ($handle = opendir(__DIR__ . '/assetic')) {
     while (false !== ($entry = readdir($handle))) {
         if ($entry != '.' && $entry != '..' && $entry != 'README.md') {
             $moduleConfig = include __DIR__ . '/assetic/' . $entry;
-            
+
             $settings['controllers'] = array_merge_recursive(
                 $settings['controllers'], $moduleConfig['controllers']
             );
-            
+
             $settings['routes'] = array_merge_recursive(
                 $settings['routes'], $moduleConfig['routes']
             );

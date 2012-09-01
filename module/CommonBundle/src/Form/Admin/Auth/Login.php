@@ -15,9 +15,9 @@
 
 namespace CommonBundle\Form\Admin\Auth;
 
-use Zend\Form\Element\Checkbox,
-    Zend\Form\Element\Password,
-    Zend\Form\Element\Text;
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Password,
+    CommonBundle\Component\Form\Admin\Element\Text;
 
 /**
  * Login
@@ -33,28 +33,19 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($opts);
 
-        $this->setAttrib('id', 'login');
+        $this->setAttribute('id', 'login');
 
         $field = new Text('username');
-        $field->setAttrib('placeholder', 'username')
-            ->setAttrib('autofocus', 'autofocus')
-            ->setDecorators(array('ViewHelper', 'Errors'));
-        $this->addElement($field);
+        $field->setAttribute('placeholder', 'username')
+            ->setAttribute('autofocus', 'autofocus');
+        $this->add($field);
 
         $field = new Password('password');
-        $field->setAttrib('placeholder', 'password')
-            ->setDecorators(array('ViewHelper', 'Errors'));
-        $this->addElement($field);
+        $field->setAttribute('placeholder', 'password');
+        $this->add($field);
 
         $field = new Checkbox('remember_me');
-        $field->setLabel('Remember Me')
-            ->setDecorators(
-                array(
-                    array('ViewHelper'),
-                    array('Errors'),
-                    array('Label', array('placement' => 'APPEND'))
-                )
-            );
-        $this->addElement($field);
+        $field->setLabel('Remember Me');
+        $this->add($field);
     }
 }

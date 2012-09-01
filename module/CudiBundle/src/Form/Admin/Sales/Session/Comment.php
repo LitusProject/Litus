@@ -15,11 +15,9 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Textarea,
     CudiBundle\Entity\Sales\Session,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Textarea;
+    Zend\Form\Element\Submit;
 
 /**
  * Add Sale Session Comment
@@ -28,20 +26,24 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(Session $session, $options = null)
+    /**
+     * @param \CudiBundle\Entity\Sales\Session $session
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(Session $session, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Textarea('comment');
         $field->setLabel('Comment');
-        $this->addElement($field);
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Edit Comment')
-            ->setAttrib('class', 'sale_edit');
-        $this->addElement($field);
+        $field->setValue('Edit Comment')
+            ->setAttribute('class', 'sale_edit');
+        $this->add($field);
 
-        $this->populate(
+        $this->setData(
             array(
                 'comment' => $session->getComment(),
             )

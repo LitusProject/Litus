@@ -18,121 +18,122 @@ namespace CudiBundle\Entity\Sales;
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Supplier as Supplier,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Article")
- * @Table(name="cudi.sales_articles")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Article")
+ * @ORM\Table(name="cudi.sales_articles")
  */
 class Article
 {
     /**
      * @var integer The ID of this article
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time the article was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CudiBundle\Entity\Article The main article of this sale article
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $mainArticle;
 
     /**
      * @var integer The barcode of the article
      *
-     * @Column(type="bigint")
+     * @ORM\Column(type="bigint")
      */
     private $barcode;
 
     /**
      * @var integer The purchase price of the article
      *
-     * @Column(name="purchase_price", type="bigint")
+     * @ORM\Column(name="purchase_price", type="bigint")
      */
     private $purchasePrice;
 
     /**
      * @var integer The sell price of the article
      *
-     * @Column(name="sell_price", type="bigint")
+     * @ORM\Column(name="sell_price", type="bigint")
      */
     private $sellPrice;
 
     /**
      * @var boolean Flag whether the article is bookable
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $bookable;
 
     /**
      * @var boolean Flag whether the article is unbookable
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $unbookable;
 
     /**
      * @var \CudiBundle\Entity\Supplier The supplier of the article
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
-     * @JoinColumn(name="supplier", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 
     /**
      * @var boolean Flag whether the aritcle can expire
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $canExpire;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the article
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 
     /**
      * @var integer The version number of this article
      *
-     * @Column(name="version_number", type="smallint", nullable=true)
+     * @ORM\Column(name="version_number", type="smallint", nullable=true)
      */
     private $versionNumber;
 
     /**
      * @var integer The current number in stock
      *
-     * @Column(name="stock_value", type="bigint")
+     * @ORM\Column(name="stock_value", type="bigint")
      */
     private $stockValue;
 
     /**
      * @var boolean The flag whether the article is old or not
      *
-     * @Column(name="is_history", type="boolean")
+     * @ORM\Column(name="is_history", type="boolean")
      */
     private $isHistory;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The discounts of the article
      *
-     * @OneToMany(targetEntity="CudiBundle\Entity\Sales\Discounts\Discount", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Discounts\Discount", mappedBy="article")
      */
     private $discounts;
 

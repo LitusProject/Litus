@@ -58,9 +58,10 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $roleCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
@@ -130,9 +131,10 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $parents = array();
                 if (isset($formData['parents'])) {
                     foreach ($formData['parents'] as $parent) {
