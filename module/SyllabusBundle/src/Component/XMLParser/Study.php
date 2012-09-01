@@ -99,6 +99,7 @@ class Study
                 JOIN syllabus.subjects_profs_map AS second ON first.prof_id = second.prof_id AND first.subject_id = second.subject_id AND first.id != second.id AND first.academic_year = second.academic_year
                 ORDER BY first.prof_id
         */
+	$urls = array('http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50527959.xml');
 
         $this->_callback('progress', 1);
 
@@ -392,7 +393,7 @@ class Study
     }
 
     private function _removeMappings()
-    {
+    {return;
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
             ->findByAcademicYear($this->_academicYear);
