@@ -3,9 +3,8 @@
 {% block content %}
     <div class="row">
     	<div class="span9 columns">
-    	    {% autoescape false %}
-    	        {{ form }}
-    	    {% endautoescape %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
     	</div>
     	<div class="span3 columns">
     	    {% if hasAccess('prof_article_comment', 'manage') %}

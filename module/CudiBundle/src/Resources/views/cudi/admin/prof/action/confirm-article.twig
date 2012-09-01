@@ -1,14 +1,13 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin_prof_action/partials/navigation.twig' %}
+	{% include 'cudi/admin/prof/action/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-	    {% autoescape false %}
-	        {{ form }}
-	    {% endautoescape %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
 	</div>
 {% endblock %}
 

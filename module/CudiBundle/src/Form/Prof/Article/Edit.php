@@ -26,23 +26,36 @@ use CudiBundle\Entity\Article,
  */
 class Edit extends Add
 {
-    public function __construct(EntityManager $entityManager, Article $article, $opts = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Article $article
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('submit');
-
-        foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
-            $this->removeElement($element->getName());
-        $this->removeDisplayGroup('subject_form');
+        $this->remove('subject');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-                ->setAttrib('class', 'btn btn-primary');
-        $this->addElement($field);
-
-        $this->setActionsGroup(array('submit'));
+        $field->setValue('Save')
+            ->setAttribute('class', 'btn btn-primary');
+        $this->add($field);
 
         $this->populateFromArticle($article);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+
+            $inputFilter->remove('subject');
+            $inputFilter->remove('subject_id');
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

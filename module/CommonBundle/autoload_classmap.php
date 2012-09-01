@@ -48,6 +48,7 @@ return array(
     'CommonBundle\Component\Form\Admin\Form'                                           => __DIR__ . '/src/Component/Form/Admin/Form.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Button'                             => __DIR__ . '/src/Component/Form/Bootstrap/Element/Button.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Checkbox'                           => __DIR__ . '/src/Component/Form/Bootstrap/Element/Checkbox.php',
+    'CommonBundle\Component\Form\Bootstrap\Element\Collection'                         => __DIR__ . '/src/Component/Form/Bootstrap/Element/Collection.php',
     'CommonBundle\Component\Form\Bootstrap\Element\File'                               => __DIR__ . '/src/Component/Form/Bootstrap/Element/File.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Password'                           => __DIR__ . '/src/Component/Form/Bootstrap/Element/Password.php',
     'CommonBundle\Component\Form\Bootstrap\Element\Reset'                              => __DIR__ . '/src/Component/Form/Bootstrap/Element/Reset.php',

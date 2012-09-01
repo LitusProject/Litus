@@ -40,7 +40,7 @@
         <tr>
             <th width="200px">{{ translate('Name') }}</th>
             <th>{{ translate('Description') }}</th>
-            <th width="160px">{{ translate('Actions') }}</th>
+            <th width="200px">{{ translate('Actions') }}</th>
         </tr>
 
         {% for mapping in mappings %}
@@ -69,9 +69,8 @@
     		<h3>{{ translate('Add File') }}</h3>
     	</div>
     	<div class="modal-body">
-    		{% autoescape false %}
-    		    {{ form }}
-    		{% endautoescape %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
     	</div>
     	<div class="modal-footer">
     		<button class="btn btn-success save">{{ translate('Save') }}</button>
@@ -149,28 +148,7 @@
 				            $('#uploadFile').find('#' + element).parent().parent().addClass('error').after(list);
 				        }
 				    } else if (data.info) {
-				        $('#uploadFile').resetForm();
-				        $('#file_uploaded').addClass('in');
-
-				        var item = $('<tr>', {class: 'item'});
-				        item.append(
-				            $('<td>').html(data.info.name),
-				            $('<td>').html(data.info.description),
-				            actions = $('<td>', {class: 'actions'})
-				        );
-
-				        {% if hasAccess('prof_file', 'download') %}
-				            actions.append(downloadFile = $('<a>', {class: 'btn btn-info downloadFile'}).html('{{ translate('Download') }}'), ' ');
-				            downloadFile.downloadFile('{{ url('prof_file', {"action": "download", "language": language.getAbbrev()}) }}/' + data.info.id);
-				        {% endif %}
-				        {% if hasAccess('prof_file', 'delete') %}
-				            actions.append(deleteFile = $('<a>', {class: 'btn btn-danger delete'}).html('{{ translate('Delete') }}'));
-				            deleteFile.data(data.info)
-				                .click(openDeleteModal);
-				        {% endif %}
-
-				        $('#articleFiles').append(item);
-				        $('#progressModal').permanentModal('hide');
+                        document.location.reload();
 				    }
 			    },
 			    onSubmit: function () {

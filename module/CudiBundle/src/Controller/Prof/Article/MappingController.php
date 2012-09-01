@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Prof;
+namespace CudiBundle\Controller\Prof\Article;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Articles\SubjectMap,
@@ -22,11 +22,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * ArticleMappingController
+ * MappingController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ArticleMappingController extends \CudiBundle\Component\Controller\ProfController
+class MappingController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
