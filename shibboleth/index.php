@@ -33,19 +33,18 @@ $shibbolethSessionKey = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_session_key');
 
 if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
-    $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+    $newCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
 
-    if (null !== $checkCode)
-        break 1;
+    if (null !== $newCode) {
+        $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
+            $_SERVER[$shibbolethPersonKey],
+            substr($_SERVER[$shibbolethSessionKey], 1)
+        );
 
-    $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
-        $_SERVER[$shibbolethPersonKey],
-        substr($_SERVER[$shibbolethSessionKey], 1)
-    );
-
-    $em->persist($newCode);
-    $em->flush();
+        $em->persist($newCode);
+        $em->flush();
+    }
 }
 
 $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
