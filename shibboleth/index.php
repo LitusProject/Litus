@@ -36,7 +36,7 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $checkCode = $em->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
         ->findOneByCode(substr($_SERVER[$shibbolethSessionKey], 1));
 
-    if (null !== $checkCode) {
+    if (null === $checkCode) {
         $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1)
