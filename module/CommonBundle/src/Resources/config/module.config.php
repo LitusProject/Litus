@@ -167,7 +167,7 @@ return array(
             'authentication_credentialadapter' => function ($serviceManager) {
                 $adapter = new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
-                    '"CommonBundle\Entity\Users\Person"',
+                    'CommonBundle\Entity\Users\Person',
                     'username'
                 );
                 return $adapter;
