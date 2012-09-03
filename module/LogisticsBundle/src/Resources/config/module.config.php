@@ -34,6 +34,20 @@ return array(
             'mail_view' => __DIR__ . '/../views',
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            'orm_default' => array(
+                'drivers' => array(
+                    'LogisticsBundle\Entity' => 'my_annotation_driver'
+                ),
+            ),
+            'my_annotation_driver' => array(
+                'paths' => array(
+                    'logisticsbundle' => __DIR__ . '/../../Entity',
+                ),
+            ),
+        ),
+    ),
 	'controllers' => array(
 		'invokables' => array(
 			'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
