@@ -112,28 +112,36 @@ h1 {
             background: url(@iMenuBackground);
         }
 
-        ul li {
-            text-indent: @tIndent;
+        ul {
+            padding-bottom: 2 * @defaultSpacing - 1;
 
-            a {
-                display: block;
-                line-height: @menuItemHeight;
-                text-decoration: none;
-                color: inherit;
-            }
+            li {
+                text-indent: @tIndent;
 
-            a:hover {
-                color: @cBlack;
-            }
+                a {
+                    display: block;
+                    line-height: @menuItemHeight;
+                    text-decoration: none;
+                    color: inherit;
+                }
 
-            a:before {
-                content: @topMenuItem;
-            }
+                a:hover {
+                    color: @cBlack;
+                }
 
-            a:hover:before {
-                content: @topMenuItem;
-                color: @cAccent;
+                a:before {
+                    content: @topMenuItem;
+                }
+
+                a:hover:before {
+                    content: @topMenuItem;
+                    color: @cAccent;
+                }
             }
+        }
+
+        ul:last-child {
+            padding-bottom: 0;
         }
     }
 
