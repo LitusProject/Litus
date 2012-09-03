@@ -1,6 +1,6 @@
 <?php
 
-namespace GalleryBundle;
+namespace LogisticsBundle;
 
 use Zend\Mvc\ModuleRouteListener;
 

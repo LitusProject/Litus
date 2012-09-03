@@ -29,14 +29,14 @@ return array(
 			),
 		)
 	),
-	'view_manager' => array(
-		'template_path_stack' => array(
-			'logistics_view' => __DIR__ . '/../views',
-		),
-	),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'mail_view' => __DIR__ . '/../views',
+        ),
+    ),
 	'controllers' => array(
 		'invokables' => array(
-			'logistics_temp'                 => 'LogisticsBundle\Controller\TestController',
+			'logistics_temp'                 => 'LogisticsBundle\Controller\Admin\TestController',
 		),
 	),
 );
