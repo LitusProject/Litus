@@ -139,7 +139,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'admin_article',
                     array(
-                        'action' => 'manage',
+                        'action' => 'edit',
+                        'id' => $article->getId(),
                     )
                 );
 
