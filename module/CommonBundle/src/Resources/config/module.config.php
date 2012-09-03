@@ -175,7 +175,7 @@ return array(
             'authentication_doctrineservice' => function ($serviceManager) {
                 $service = new \CommonBundle\Component\Authentication\Service\Doctrine(
                     $serviceManager->get('doctrine.entitymanager.orm_default'),
-                    '"CommonBundle\Entity\Users\Session"',
+                    'CommonBundle\Entity\Users\Session',
                     2678400,
                     $serviceManager->get('authentication_sessionstorage'),
                     'Litus_Auth',
@@ -191,9 +191,14 @@ return array(
                 );
                 return $authentication;
             },
+            'authentication_sessionstorage' => function ($serviceManager) {
+                $storage = new \Zend\Authentication\Storage\Session(
+                    'Litus_Auth'
+                );
+                return $storage;
+            }
         ),
         'invokables' => array(
-            'authentication_sessionstorage' => 'Zend\Authentication\Storage\Session',
             'mail_transport'                => 'Zend\Mail\Transport\Sendmail',
         ),
     ),

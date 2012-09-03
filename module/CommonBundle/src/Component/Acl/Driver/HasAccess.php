@@ -16,7 +16,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
-      CommonBundle\Component\Authentication\Authentication;
+    CommonBundle\Component\Authentication\Authentication;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
