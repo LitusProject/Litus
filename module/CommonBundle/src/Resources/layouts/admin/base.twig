@@ -31,23 +31,26 @@
 		            	{% if hasAccess('admin_index', 'index') %}
 		                    <li><a href="{{ url('admin_index') }}">Dashboard</a></li>
 		                {% endif %}
+		            </ul>
+
+		            <ul>
+		            	{% if hasAccess('admin_key', 'manage') %}
+		                    <li><a href="{{ url('admin_key') }}">API Keys</a></li>
+		                {% endif %}
+		                {% if hasAccess('admin_cache', 'manage') %}
+		                    <li><a href="{{ url('admin_cache') }}">Cache</a></li>
+		                {% endif %}
 		                {% if hasAccess('admin_config', 'manage') %}
 		                    <li><a href="{{ url('admin_config') }}">Configuration</a></li>
 		                {% endif %}
+		            </ul>
+
+		            <ul>
 		                {% if hasAccess('admin_academic', 'manage') %}
 		                    <li><a href="{{ url('admin_academic') }}">Academic</a></li>
 		                {% endif %}
 		                {% if hasAccess('admin_role', 'manage') %}
 		                    <li><a href="{{ url('admin_role') }}">Groups</a></li>
-		                {% endif %}
-						{% if hasAccess('admin_unit', 'manage') %}
-		                    <li><a href="{{ url('admin_unit') }}">Units</a></li>
-		                {% endif %}
-		                {% if hasAccess('admin_key', 'manage') %}
-		                    <li><a href="{{ url('admin_key') }}">API Keys</a></li>
-		                {% endif %}
-		                {% if hasAccess('admin_cache', 'manage') %}
-		                    <li><a href="{{ url('admin_cache') }}">Cache</a></li>
 		                {% endif %}
 		            </ul>
 		    	</li>
@@ -146,8 +149,26 @@
 		                {% if hasAccess('admin_news', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
+		                			<b>Shifts</b><br />
+		                			Units &amp; Shifts
+		                		</div>
+		                		<ul
+		                			{% if 'admin_unit' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                		    {% if hasAccess('admin_unit', 'manage') %}
+					                    <li><a href="{{ url('admin_unit') }}">Units</a></li>
+					                {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+
+		                {% if hasAccess('admin_news', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
 		                			<b>Site</b><br />
-		                			News &amp; Calendar
+		                			News, Pages &amp; Calendar
 		                		</div>
 		                		<ul
 		                			{% if 'admin_news' == getParam('controller') or 'admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') %}
