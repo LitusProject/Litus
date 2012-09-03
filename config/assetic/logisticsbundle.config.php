@@ -15,7 +15,7 @@
  
 return array(
     'controllers'  => array(
-        'logistics_temp' => array(
+        'admin_driver' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
