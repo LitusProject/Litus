@@ -15,7 +15,8 @@
  */
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\Users\Person;
+use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.
@@ -29,6 +30,7 @@ class Driver
     /**
      * @var \CommonBundle\Entity\Users\Person The person this driver represents
      *
+     * @ORM\Id
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person", cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
