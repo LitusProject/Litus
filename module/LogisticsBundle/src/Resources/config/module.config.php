@@ -17,13 +17,13 @@
 return array(
 	'router' => array(
 		'routes' => array(
-			'logistics_test' => array(
+			'admin_driver' => array(
 				'type'    => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/admin/logistics/test',
+					'route' => '/admin/logistics/driver',
 					'defaults' => array(
-						'controller' => 'logistics_temp',
-						'action'     => 'index',
+						'controller' => 'admin_driver',
+						'action'     => 'manage',
 					),
 				),
 			),
@@ -36,7 +36,7 @@ return array(
     ),
 	'controllers' => array(
 		'invokables' => array(
-			'logistics_temp'                 => 'LogisticsBundle\Controller\Admin\TestController',
+			'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
 		),
 	),
 );
