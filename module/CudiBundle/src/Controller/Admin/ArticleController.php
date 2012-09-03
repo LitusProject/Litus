@@ -88,7 +88,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['official'],
                         $formData['rectoverso'],
                         $frontColor,
-                        $formData['perforated']
+                        $formData['perforated'],
+                        $formData['colored']
                     );
                 } else {
                     $article = new External(
@@ -197,7 +198,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->setIsOfficial($formData['official'])
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
-                        ->setIsPerforated($formData['perforated']);
+                        ->setIsPerforated($formData['perforated'])
+                        ->setIsColored($formData['colored']);
                 }
 
                 $this->getEntityManager()->flush();

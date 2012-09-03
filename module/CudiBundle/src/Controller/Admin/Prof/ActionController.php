@@ -160,11 +160,13 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 if ($current->isInternal()) {
                     $current->setBinding($edited->getBinding())
                         ->setIsRectoVerso($edited->isRectoVerso())
-                        ->setIsPerforated($edited->isPerforated());
+                        ->setIsPerforated($edited->isPerforated())
+                        ->setIsColored($edited->isColored());
 
                     $edited->setBinding($duplicate->getBinding())
                         ->setIsRectoVerso($duplicate->isRectoVerso())
-                        ->setIsPerforated($duplicate->isPerforated());
+                        ->setIsPerforated($duplicate->isPerforated())
+                        ->setIsColored($duplicate->isColored());
                 }
 
                 $history = new History($current, $edited);
@@ -254,7 +256,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         ->setIsOfficial($formData['official'])
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
-                        ->setIsPerforated($formData['perforated']);
+                        ->setIsPerforated($formData['perforated'])
+                        ->setIsColored($formData['colored']);
                 }
 
                 $action->getEntity()->setIsProf(false);

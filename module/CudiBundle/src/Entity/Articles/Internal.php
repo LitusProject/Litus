@@ -77,6 +77,13 @@ class Internal extends \CudiBundle\Entity\Article
     private $isPerforated;
 
     /**
+     * @var boolean Flag whether the article pages are colored
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $colored;
+
+    /**
      * @throws \InvalidArgumentException
      *
      * @param string $title The title of the article
@@ -94,9 +101,10 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $rectoverso Whether the article is recto-verso or not
      * @param \CudiBundle\Entity\Articles\Options\Color $frontPageColor The front page color of the article
      * @param boolean $isPerforated Whether the article is perforated or not
+     * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
     ) {
         parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
 
@@ -106,7 +114,8 @@ class Internal extends \CudiBundle\Entity\Article
             ->setIsOfficial($official)
             ->setIsRectoVerso($rectoverso)
             ->setFrontColor($frontPageColor)
-            ->setIsPerforated($isPerforated);
+            ->setIsPerforated($isPerforated)
+            ->setIsColored($colored);
     }
 
     /**
@@ -247,6 +256,25 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsPerforated($isPerforated)
     {
         $this->isPerforated = $isPerforated;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isColored()
+    {
+        return $this->colored;
+    }
+
+    /**
+     * @param boolean $colored
+     *
+     * @return \CudiBundle\Entity\Articles\Internal
+     */
+    public function setIsColored($colored)
+    {
+        $this->colored = $colored;
         return $this;
     }
 

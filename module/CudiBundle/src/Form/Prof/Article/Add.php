@@ -86,7 +86,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $article->add($field);
 
         $field = new Checkbox('downloadable');
-        $field->setLabel('Downloadable');
+        $field->setLabel('Downloadable (on Toledo)');
         $article->add($field);
 
         $types = Article::$POSSIBLE_TYPES;
@@ -116,6 +116,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Checkbox('perforated');
         $field->setLabel('Perforated');
+        $internal->add($field);
+
+        $field = new Checkbox('colored');
+        $field->setLabel('Colored');
         $internal->add($field);
 
         $subject = new Collection('subject');
@@ -176,6 +180,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $data['binding'] = $article->getBinding()->getId();
             $data['rectoverso'] = $article->isRectoVerso();
             $data['perforated'] = $article->isPerforated();
+            $data['colored'] = $article->isColored();
         }
 
         $this->setData($data);
