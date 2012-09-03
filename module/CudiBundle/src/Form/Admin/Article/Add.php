@@ -139,6 +139,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Perforated');
         $internal->add($field);
 
+        $field = new Checkbox('colored');
+        $field->setLabel('Colored');
+        $internal->add($field);
+
         $subject = new Collection('subject');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
@@ -214,6 +218,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $data['rectoverso'] = $article->isRectoVerso();
             $data['front_color'] = $article->getFrontColor()->getId();
             $data['perforated'] = $article->isPerforated();
+            $data['colored'] = $article->isColored();
         }
 
         $this->setData($data);

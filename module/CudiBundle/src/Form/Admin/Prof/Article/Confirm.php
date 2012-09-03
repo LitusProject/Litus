@@ -139,6 +139,10 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
         $field->setLabel('Perforated');
         $internal->add($field);
 
+        $field = new Checkbox('colored');
+        $field->setLabel('Colored');
+        $internal->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Confirm')
             ->setAttribute('class', 'article_add');
@@ -193,6 +197,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
             $data['official'] = $article->isOfficial();
             $data['rectoverso'] = $article->isRectoVerso();
             $data['perforated'] = $article->isPerforated();
+            $data['colored'] = $article->isColored();
         }
 
         $this->setData($data);

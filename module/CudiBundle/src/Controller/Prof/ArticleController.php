@@ -77,8 +77,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         true,
                         $formData['rectoverso'],
                         null,
-                        false,
-                        $formData['perforated']
+                        $formData['perforated'],
+                        $formData['colored']
                     );
                 } else {
                     $article = new External(
@@ -220,6 +220,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         }
                         if ($article->isPerforated() !== (bool) $formData['perforated']) {
                             $duplicate->setIsPerforated($formData['perforated']);
+                            $edited = true;
+                        }
+                        if ($article->isColored() !== (bool) $formData['colored']) {
+                            $duplicate->setIsColored($formData['colored']);
                             $edited = true;
                         }
                     }

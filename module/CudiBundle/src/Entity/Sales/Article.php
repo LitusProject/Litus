@@ -95,7 +95,7 @@ class Article
     private $supplier;
 
     /**
-     * @var boolean Flag whether the aritcle can expire
+     * @var boolean Flag whether the article can expire
      *
      * @ORM\Column(type="boolean")
      */
