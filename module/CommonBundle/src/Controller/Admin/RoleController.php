@@ -265,7 +265,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('acl')) {
             $this->getCache()->replaceItem(
-                'acl',
+                'CommonBundle_Component_Acl_Acl',
                 new Acl(
                     $this->getEntityManager()
                 )
