@@ -77,9 +77,6 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
         $this->_entityManager = $entityManager;
 
-        // A bit of a dirty hack to get Zend's DI to play nice
-        $entityName = str_replace('"', '', $entityName);
-
         $this->_namespace = $namespace;
         $this->_expire = $expire;
         $this->_cookieSuffix = $cookieSuffix;

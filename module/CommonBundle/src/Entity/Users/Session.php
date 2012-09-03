@@ -182,7 +182,7 @@ class Session
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)
     {
-        if ($userAgent != $this->userAgent !$this->active) {
+        if ($userAgent != $this->userAgent || !$this->active) {
             return false;
         }
 
