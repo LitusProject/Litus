@@ -16,7 +16,9 @@
 namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
-    Doctrine\ORM\Mapping as ORM;
+    CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This is the entity for a driver.
@@ -35,22 +37,33 @@ class Driver
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"all"})
+     * @ORM\JoinTable(name="logistics.driver_years",
+     *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
+     * )
+     */
+    private $years;
 
     /**
      * Creates a new driver for the given person
      * 
      * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
+     * @param array $years The years in which this person was a driver.
      */
-    public function __construct(Person $person)
+    public function __construct(Person $person, array $years)
     {
-        $this->setPerson($person);
+        $this->_setPerson($person);
+        $this->setYears($years);
     }
 
     /**
      * @param CommonBundle\Entity\Users\Person $person The person that this driver represents
      * @return LogisticsBundle\Entity\Driver
      */
-    public function setPerson(Person $person)
+    private function _setPerson(Person $person)
     {
         $this->person = $person;
         return $this;
@@ -62,6 +75,24 @@ class Driver
     public function getPerson()
     {
         return $this->person;
+    }
+    
+    /**
+     * Retrieves the years in which this person was a driver.
+     * 
+     * @return array The years in which this person was a driver.
+     */
+    public function getYears() {
+        return $this->years->toArray();
+    }
+    
+    /**
+     * @param array $years Sets the years in which this person was a driver.
+     * @return \LogisticsBundle\Entity\Driver This
+     */
+    public function setYears(array $years) {
+        $this->years = new ArrayCollection($years);
+        return $this;
     }
 
 }
