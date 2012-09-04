@@ -28,6 +28,8 @@ return array(
         'MailBundle',
         'ShiftBundle',
         'SyllabusBundle',
+    		
+    	'LogisticsBundle',
 
         'CalendarBundle',
         'NewsBundle',

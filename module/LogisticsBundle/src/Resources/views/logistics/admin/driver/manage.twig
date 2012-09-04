@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'logistics/admin/driver/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	
+		<div id="normal_page">
+		
+			<table class="full_width manage">
+				<tr>
+					<th>Name</th>
+					<th width="200px">Years</th>
+				</tr>
+				
+				{% for driver in paginator %}
+				
+					<tr class="item">
+						<td>{{ driver.getPerson().getFullName() }}</td>
+						<td>
+						{% for year in driver.getYears() %}
+							{{ year.getCode() }} 
+						{% endfor %}
+						</td>
+					</tr>
+				
+				{% endfor %}
+				
+			</table>
+		
+		</div>
+	
+    </div>
+{% endblock %}
