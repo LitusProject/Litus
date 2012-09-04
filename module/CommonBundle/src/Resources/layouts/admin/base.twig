@@ -125,6 +125,24 @@
 		            		</li>
 		                {% endif %}
 
+		                {% if hasAccess('admin_driver', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Transport</b><br />
+		                			Transportation Needs &amp; Drivers
+		                		</div>
+		                		<ul
+		                			{% if 'admin_driver' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		            			    {% if hasAccess('admin_driver', 'manage') %}
+		            			        <li><a href="{{ url('admin_driver') }}">Drivers</a></li>
+		            			    {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+
 		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'cudi') %}
 		                	<li>
 		                		<div class="subtitle">
