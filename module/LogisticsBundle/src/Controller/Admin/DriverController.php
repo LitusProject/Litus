@@ -42,6 +42,23 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $form = new Add($this->getEntityManager());
         
+        if($this->getRequest()->isPost()) {
+            /*
+             * Form is being posted, persist the new driver.
+             */
+            
+            // TODO: persist
+            
+            $this->redirect()->toRoute(
+                'admin_driver',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+        
         return new ViewModel(
              array(
                  'form' => $form,
