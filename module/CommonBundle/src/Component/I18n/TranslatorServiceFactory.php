@@ -19,20 +19,24 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Translator.
+ * Translator
  *
- * @category   Zend
- * @package    Zend_I18n
- * @subpackage Translator
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class TranslatorServiceFactory extends \Zend\I18n\Translator\TranslatorServiceFactory
 {
+    /**
+     * Create the translation service.
+     *
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator The service locator
+     * @return \CommonBundle\Component\I18n\Translator
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        // Configure the translator
-        $config = $serviceLocator->get('Configuration');
-        $trConfig = isset($config['translator']) ? $config['translator'] : array();
-        $translator = Translator::factory($trConfig);
-        return $translator;
+        $config = $serviceLocator->get('configuration');
+
+        return Translator::factory(
+            isset($config['translator']) ? $config['translator'] : array()
+        );
     }
 }

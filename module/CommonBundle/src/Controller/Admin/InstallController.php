@@ -132,6 +132,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_auth' => array(
                         'authenticate', 'login', 'logout'
                     ),
+                    'admin_cache' => array(
+                        'manage', 'flush'
+                    ),
                     'admin_config' => array(
                         'edit', 'manage'
                     ),
@@ -141,38 +144,38 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
-                    'admin_cache' => array(
-                        'manage', 'flush'
-                    ),
                     'index' => array(
                         'index'
                     ),
 
-                    'syllabus_install' => array(
+                    'api_install' => array(
                         'index'
                     ),
-                    'page_install' => array(
-                        'index'
-                    ),
-                    'news_install' => array(
-                        'index'
-                    ),
-                    'mail_install' => array(
-                        'index'
-                    ),
-                    'gallery_install' => array(
-                        'index'
-                    ),
-                    'cudi_install' => array(
-                        'index'
-                    ),
-                    'common_install' => array(
+                    'br_install' => array(
                         'index'
                     ),
                     'calendar_install' => array(
                         'index'
                     ),
-                    'br_install' => array(
+                    'common_install' => array(
+                        'index'
+                    ),
+                    'cudi_install' => array(
+                        'index'
+                    ),
+                    'gallery_install' => array(
+                        'index'
+                    ),
+                    'mail_install' => array(
+                        'index'
+                    ),
+                    'news_install' => array(
+                        'index'
+                    ),
+                    'page_install' => array(
+                        'index'
+                    ),
+                    'syllabus_install' => array(
                         'index'
                     ),
                 )
