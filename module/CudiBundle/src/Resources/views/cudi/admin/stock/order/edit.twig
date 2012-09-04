@@ -38,7 +38,7 @@
 					<td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
 					<td>{{ item.getNumber() }}</td>
 					<td class="actions">
-						{% if not order.isPlaced() and hasAccess('admin_stock_order', 'delete') %}
+						{% if not order.isOrdered() and hasAccess('admin_stock_order', 'delete') %}
 		        			<a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
 						{% endif %}
 					</td>
