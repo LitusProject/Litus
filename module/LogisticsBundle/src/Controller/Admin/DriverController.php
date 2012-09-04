@@ -16,17 +16,36 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use LogisticsBundle\Form\Admin\Driver\Add;
+
 use \Zend\View\Model\ViewModel;
 
 class DriverController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+            )
+        );
     }
-    
+
     public function addAction()
     {
-        return new ViewModel();
+        $form = new Add($this->getEntityManager());
+        
+        return new ViewModel(
+             array(
+                 'form' => $form,
+             )
+        );
     }
 }
