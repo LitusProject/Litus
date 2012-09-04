@@ -25,7 +25,10 @@ class Academic extends \CommonBundle\Repository\Users\Person
             ->getQuery()
             ->getResult();
         
-        return $resultSet;
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
     
     public function findAllByUsername($username)

@@ -61,32 +61,32 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                     /*
                      * No autocompletion used, we assume the user ID was entered
                      */
-                    $subject = $repository->findOneByUsername($formData['person_name']);
+                    $person = $repository->findOneByUsername($formData['person_name']);
                 } else {
-                    $subject = $repository->findOneById($formData['person_id']);
+                    $person = $repository->findOneById($formData['person_id']);
                 }
 
-                $driver = new Driver($person)
+                $driver = new Driver($person);
+                $this->getEntityManager()->persist($driver);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The driver was succesfully created!'
+                    )
+                );
+    
+                $this->redirect()->toRoute(
+                    'admin_driver',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+    
+                return new ViewModel();
             }
-
-            // TODO: persist
-
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCES',
-                    'The driver was succesfully created!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'admin_driver',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return new ViewModel();
         }
 
         return new ViewModel(
