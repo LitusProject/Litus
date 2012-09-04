@@ -9,14 +9,14 @@
 	
 		<div id="normal_page">
 		
-			<table>
+			<table class="full_width manage">
 				<tr>
 					<th>Name</th>
 				</tr>
 				
 				{% for driver in paginator %}
 				
-					<tr>
+					<tr class="item">
 						<td>{{ driver.getPerson().getFullName() }}</td>
 					</tr>
 				

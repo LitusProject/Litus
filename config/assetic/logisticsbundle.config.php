@@ -17,6 +17,7 @@ return array(
     'controllers'  => array(
         'admin_driver' => array(
             '@common_jquery',
+            '@common_typeahead_remote',
             '@admin_css',
             '@admin_js',
         ),

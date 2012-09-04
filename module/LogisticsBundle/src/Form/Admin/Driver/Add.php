@@ -52,12 +52,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $field = new Text('name');
+        $field = new Text('person_name');
         $field->setLabel('Name')
             ->setRequired(true)
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
+        $this->add($field);
+        
+        $field = new Hidden('person_id');
+        $field->setAttribute('id', 'personId');
         $this->add($field);
         
         $field = new Submit('submit');
@@ -79,7 +83,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name' => 'name',
+                        'name' => 'person_name',
                         'required' => true,
                         'filters' => array(
                             array('name' => 'StringTrim'),

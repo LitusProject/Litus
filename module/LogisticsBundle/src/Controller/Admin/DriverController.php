@@ -36,6 +36,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
