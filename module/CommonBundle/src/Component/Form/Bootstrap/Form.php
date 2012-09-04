@@ -37,8 +37,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         parent::__construct($name);
 
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'form-horizontal');
+        $this->setAttribute('method', 'post')
+            ->setAttribute('class', 'form-horizontal')
+            ->setAttribute('novalidate', true);
     }
 
     /**

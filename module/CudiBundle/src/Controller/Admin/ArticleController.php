@@ -139,7 +139,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'admin_article',
                     array(
-                        'action' => 'manage',
+                        'action' => 'edit',
+                        'id' => $article->getId(),
                     )
                 );
 
@@ -296,7 +297,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $result = array();
         foreach($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
-            
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getTitle();

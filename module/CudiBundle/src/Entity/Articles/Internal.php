@@ -298,7 +298,8 @@ class Internal extends \CudiBundle\Entity\Article
             $this->isOfficial(),
             $this->isRectoVerso(),
             $this->getFrontColor(),
-            $this->isPerforated()
+            $this->isPerforated(),
+            $this->isColored()
         );
     }
 

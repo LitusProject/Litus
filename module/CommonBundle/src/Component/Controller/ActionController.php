@@ -265,15 +265,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private function _getAcl()
     {
         if (null !== $this->getCache()) {
-            if(!$this->getCache()->hasItem('acl')) {
+            if(!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
                 );
 
-                $this->getCache()->setItem('acl', $acl);
+                $this->getCache()->setItem('CommonBundle_Component_Acl_Acl', $acl);
             }
 
-            return $this->getCache()->getItem('acl');
+            return $this->getCache()->getItem('CommonBundle_Component_Acl_Acl');
         }
 
         return new Acl(
