@@ -59,7 +59,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
                 if ($formData['person_id'] == '') {
                     /*
-                     * No autocompletion used, we assume the user ID was entered
+                     * No autocompletion used, we assume the username was entered
                      */
                     $person = $repository->findOneByUsername($formData['person_name']);
                 } else {
