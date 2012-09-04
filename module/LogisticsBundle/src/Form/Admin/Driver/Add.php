@@ -81,9 +81,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
-            /*
-             * TODO: proper client side validation
-             */
             if ('' == $this->data['person_id']) {
                 $inputFilter->add(
                     $factory->createInput(
