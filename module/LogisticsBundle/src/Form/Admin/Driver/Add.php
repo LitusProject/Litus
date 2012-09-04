@@ -55,6 +55,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        
+        $years = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+        
+        $yearnames = array();
+        foreach($years as $year) {
+            $yearnames[$year->getId()] = $year->getCode(); 
+        }
 
         $field = new Text('person_name');
         $field->setLabel('Name')
@@ -66,6 +75,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
+        $this->add($field);
+        
+        $field = new Select('years');
+        $field->setLabel('Years')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $yearnames);
         $this->add($field);
         
         $field = new Submit('submit');

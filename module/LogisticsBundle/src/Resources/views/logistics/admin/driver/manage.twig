@@ -12,12 +12,18 @@
 			<table class="full_width manage">
 				<tr>
 					<th>Name</th>
+					<th width="200px">Years</th>
 				</tr>
 				
 				{% for driver in paginator %}
 				
 					<tr class="item">
 						<td>{{ driver.getPerson().getFullName() }}</td>
+						<td>
+						{% for year in driver.getYears() %}
+							{{ year.getCode() }} 
+						{% endfor %}
+						</td>
 					</tr>
 				
 				{% endfor %}

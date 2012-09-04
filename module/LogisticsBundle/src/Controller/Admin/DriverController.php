@@ -53,7 +53,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             */
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
-
+            
             if ($form->isValid()) {
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
@@ -65,8 +65,16 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 } else {
                     $person = $repository->findOneById($formData['person_id']);
                 }
+                
+                $yearIds = $formData['years'];
+                $years = array();
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach($yearIds as $yearId) {
+                    $years[] = $repository->findOneById($yearId);
+                }
 
-                $driver = new Driver($person);
+                $driver = new Driver($person, $years);
                 $this->getEntityManager()->persist($driver);
                 $this->getEntityManager()->flush();
 
