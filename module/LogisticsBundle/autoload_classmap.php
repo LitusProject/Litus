@@ -4,6 +4,7 @@ return array(
     'LogisticsBundle\Module'                            => __DIR__ . '/Module.php',
     'LogisticsBundle\Form\Admin\Driver\Add'             => __DIR__ . '/src/Form/Admin/Driver/Add.php',
     'LogisticsBundle\Repository\Driver'                 => __DIR__ . '/src/Repository/Driver.php',
+    'CommonBundle\Component\Validator\Driver'           => __DIR__ . '/src/Component/Validator/Driver.php',
     'LogisticsBundle\Entity\Driver'                     => __DIR__ . '/src/Entity/Driver.php',
     'LogisticsBundle\Controller\Admin\DriverController' => __DIR__ . '/src/Controller/Admin/DriverController.php',
 );
