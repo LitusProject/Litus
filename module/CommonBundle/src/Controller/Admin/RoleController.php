@@ -263,7 +263,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     private function _updateCache()
     {
-        if (null !== $this->getCache() && $this->getCache()->hasItem('acl')) {
+        if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
             $this->getCache()->replaceItem(
                 'CommonBundle_Component_Acl_Acl',
                 new Acl(
