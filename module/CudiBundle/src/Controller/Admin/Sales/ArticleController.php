@@ -318,7 +318,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $result = array();
         foreach($articles as $article) {
             $item = (object) array();
-            $item->id = $article->getMainArticle()->getId();
+            $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
