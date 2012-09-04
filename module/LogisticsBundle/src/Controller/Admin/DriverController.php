@@ -16,6 +16,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use LogisticsBundle\Entity\Driver;
+
 use CommonBundle\Component\FlashMessenger\FlashMessage;
 
 use LogisticsBundle\Form\Admin\Driver\Add;
@@ -28,8 +30,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findAll(),
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findAll(),
             $this->getParam('page')
         );
 
@@ -49,6 +51,23 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             /*
              * Form is being posted, persist the new driver.
             */
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                if ($formData['person_id'] == '') {
+                    /*
+                     * No autocompletion used, we assume the user ID was entered
+                     */
+                    $subject = $repository->findOneByUsername($formData['person_name']);
+                } else {
+                    $subject = $repository->findOneById($formData['person_id']);
+                }
+
+                $driver = new Driver($person)
+            }
 
             // TODO: persist
 
