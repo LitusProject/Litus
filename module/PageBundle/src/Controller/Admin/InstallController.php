@@ -61,7 +61,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(),
                     'actions' => array(
                         'page' => array(
-                            'file', 'view'
+                            'view'
                         ),
                     )
                 ),

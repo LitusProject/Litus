@@ -25,29 +25,22 @@ use Locale,
     Zend\Stdlib\ArrayUtils;
 
 /**
- * Translator.
+ * Translator
  *
- * @category   Zend
- * @package    Zend_I18n
- * @subpackage Translator
+ * @author Kristof Mariën <kristof.mariën@litus.cc>
  */
 class Translator extends \Zend\I18n\Translator\Translator
 {
     /**
      * Add a translation file.
      *
-     * @param  string $type
-     * @param  string $filename
-     * @param  string $textDomain
-     * @param  string $locale
-     * @return Translator
+     * @param string $type The file's type
+     * @param string $filename The file's name
+     * @param string $textDomain The domain
+     * @param string $locale The locale
+     * @return \CommonBundle\Component\I18n\Translator
      */
-    public function addTranslationFile(
-        $type,
-        $filename,
-        $textDomain = 'default',
-        $locale = null
-    ) {
+    public function addTranslationFile($type, $filename, $textDomain = 'default', $locale = null) {
         $locale = $locale ?: '*';
 
         if (!isset($this->files[$textDomain])) {
@@ -69,8 +62,8 @@ class Translator extends \Zend\I18n\Translator\Translator
     /**
      * Load messages for a given language and domain.
      *
-     * @param  string $textDomain
-     * @param  string $locale
+     * @param string $textDomain The domain
+     * @param string $locale The locale
      * @return void
      */
     protected function loadMessages($textDomain, $locale)
@@ -101,7 +94,7 @@ class Translator extends \Zend\I18n\Translator\Translator
             }
         }
 
-        // Load concrete files, may override those loaded from patterns
+        // Load files, which may override those loaded from patterns
         foreach (array($locale, '*') as $currentLocale) {
             if (!isset($this->files[$textDomain][$currentLocale])) {
                 continue;
