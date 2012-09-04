@@ -59,7 +59,9 @@
                     {{ _self.renderFieldset(child) }}
                 </fieldset>
             {% else %}
-                {{ _self.renderFieldset(child) }}
+                <div class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
+                    {{ _self.renderFieldset(child) }}
+                </div>
             {% endif %}
         {% endfor %}
         {% if buttons|length > 0 %}
