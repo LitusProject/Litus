@@ -16,6 +16,10 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
+use CommonBundle\Component\Validator\Driver;
+
+use CommonBundle\Component\Validator\Username;
+
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
 CommonBundle\Component\Form\Admin\Element\Collection,
 CommonBundle\Component\Form\Admin\Element\Hidden,
@@ -80,17 +84,47 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             /*
              * TODO: proper client side validation
              */
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_name',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            if ('' == $this->data['person_id']) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name' => 'person_name',
+                            'required' => true,
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new Driver(
+                                    $this->_entityManager, 
+                                    array(
+                                        'byId' => false,
+                                    )
+                                )
+                            ),
+                        )
                     )
-                )
-            );
+                );
+            } else {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name' => 'person_id',
+                            'required' => true,
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new Driver(
+                                    $this->_entityManager, 
+                                    array(
+                                        'byId' => true,
+                                    )
+                                )
+                            ),
+                        )
+                    )
+                );
+            }
             
             $this->_inputFilter = $inputFilter;
         }
