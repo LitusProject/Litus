@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundleBundle\Component\Controller\Request\Exception;
+namespace ApiBundle\Component\Controller\Request\Exception;
 
 /**
  * Thrown when someone tries to access the API without using an API key.
