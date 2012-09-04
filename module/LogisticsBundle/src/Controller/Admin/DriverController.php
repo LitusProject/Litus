@@ -74,7 +74,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                     $years[] = $repository->findOneById($yearId);
                 }
 
-                $driver = new Driver($person, $years);
+                $driver = new Driver($person);
+                $driver->setYears($years);
                 $this->getEntityManager()->persist($driver);
                 $this->getEntityManager()->flush();
 

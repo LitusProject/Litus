@@ -53,22 +53,12 @@ class Driver
      * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
      * @param array $years The years in which this person was a driver.
      */
-    public function __construct(Person $person, array $years)
-    {
-        $this->_setPerson($person);
-        $this->setYears($years);
-    }
-
-    /**
-     * @param CommonBundle\Entity\Users\Person $person The person that this driver represents
-     * @return LogisticsBundle\Entity\Driver
-     */
-    private function _setPerson(Person $person)
+    public function __construct(Person $person)
     {
         $this->person = $person;
-        return $this;
+        $this->years = new ArrayCollection();
     }
-    
+
     /**
      * @return \CommonBundle\Entity\Users\Person The person associated with this driver.
      */
