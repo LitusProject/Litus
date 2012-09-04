@@ -54,6 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('name');
         $field->setLabel('Name')
+            ->setRequired(true)
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
