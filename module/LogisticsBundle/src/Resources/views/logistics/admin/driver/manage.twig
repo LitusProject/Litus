@@ -17,7 +17,7 @@
 				{% for driver in paginator %}
 				
 					<tr>
-						<td>{{ driver.getUser().getName() }}</td>
+						<td>{{ driver.getPerson().getFullName() }}</td>
 					</tr>
 				
 				{% endfor %}

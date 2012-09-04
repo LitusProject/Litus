@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class Driver extends EntityRepository
 {
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('driver')
+        ->from('LogisticsBundle\Entity\Driver', 'driver')
+        ->innerJoin('driver.person', 'p')
+        ->orderBy('p.lastName', 'ASC')
+        ->getQuery()
+        ->getResult();
+        return $resultSet;
+    }
 }
