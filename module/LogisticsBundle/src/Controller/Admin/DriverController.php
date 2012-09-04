@@ -16,13 +16,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver;
-
-use CommonBundle\Component\FlashMessenger\FlashMessage;
-
-use LogisticsBundle\Form\Admin\Driver\Add;
-
-use \Zend\View\Model\ViewModel;
+use LogisticsBundle\Entity\Driver,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
+    LogisticsBundle\Form\Admin\Driver\Add,
+    Zend\View\Model\ViewModel;
 
 class DriverController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -48,9 +45,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         $form = new Add($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            /*
-             * Form is being posted, persist the new driver.
-            */
+            // Form is being posted, persist the new driver.
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
             
@@ -58,9 +53,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
                 if ($formData['person_id'] == '') {
-                    /*
-                     * No autocompletion used, we assume the username was entered
-                     */
+
+                    // No autocompletion used, we assume the username was entered
                     $person = $repository->findOneByUsername($formData['person_name']);
                 } else {
                     $person = $repository->findOneById($formData['person_id']);
