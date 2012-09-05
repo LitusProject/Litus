@@ -2,7 +2,8 @@
 
 namespace LogisticsBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Driver
@@ -28,6 +29,15 @@ class Driver extends EntityRepository
         if (isset($resultSet[0]))
             return $resultSet[0];
         return null;
+    }
+    
+    public function findAllByYear(AcademicYear $year) {
+        $resultSet = $this->_em
+            ->createQuery('SELECT d FROM LogisticsBundle\Entity\Driver d JOIN d.years y WHERE y.id = :id')
+            ->setParameter('id', $year->getId())
+            ->getResult();
+        
+        return $resultSet;
     }
     
     public function findAll()

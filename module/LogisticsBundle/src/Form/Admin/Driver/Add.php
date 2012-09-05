@@ -16,23 +16,14 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Component\Validator\Driver;
-
-use CommonBundle\Component\Validator\Username;
-
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-CommonBundle\Component\Form\Admin\Element\Collection,
-CommonBundle\Component\Form\Admin\Element\Hidden,
-CommonBundle\Component\Form\Admin\Element\Select,
-CommonBundle\Component\Form\Admin\Element\Text,
-CommonBundle\Component\Validator\Uri as UriValidator,
-CommonBundle\Component\Validator\Year as YearValidator,
-CudiBundle\Component\Validator\SubjectCode as SubjectCodeValidator,
-CudiBundle\Entity\Article,
-Doctrine\ORM\EntityManager,
-Zend\InputFilter\InputFilter,
-Zend\InputFilter\Factory as InputFactory,
-Zend\Form\Element\Submit;
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    LogisticsBundle\Component\Validator\Driver,
+    Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * The form used to add a new Driver

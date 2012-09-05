@@ -22,8 +22,13 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * A reservation is associated with a certain resource and locks it from a given start date to a given end date.
  *
- * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation")
- * @ORM\Table(name="logistics.reservations")
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\Reservation")
+ * @ORM\Table(name="logistics.reservation")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "van"="LogisticsBundle\Entity\Reservation\VanReservation"
+ * })
  */
 class Reservation
 {
@@ -36,11 +41,19 @@ class Reservation
      * @ORM\Column(type="bigint")
      */
     private $id;
+    
+    /**
+     * @var \CommonBundle\Entity\Users\Person The creator of this reservation
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="creator", referencedColumnName="id")
+     */
+    private $creator;
 
     /**
-     * @var \LogisticsBundle\Entity\ReservableResource The resource associated with this reservation.
+     * @var \LogisticsBundle\Entity\Reservation\ReservableResource The resource associated with this reservation.
      * 
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\ReservableResource", inversedBy="reservations")
+     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Reservation\ReservableResource", inversedBy="reservations")
      * @ORM\JoinColumn(name="resource_name", referencedColumnName="name")
      */
     private $resource;
@@ -73,16 +86,21 @@ class Reservation
      */
     private $endDate;
     
-    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo = '') {
+    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator) {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->reason = $reason;
         $this->resource = $resource;
         $this->additionalInfo = $additionalInfo;
+        $this->creator = $creator;
     }
     
-    public function getResourcd() {
-        return $resource;
+    public function getResource() {
+        return $this->resource;
+    }
+    
+    public function getCreator() {
+        return $this->creator;
     }
     
     public function setReason($reason) {
@@ -91,7 +109,7 @@ class Reservation
     }
     
     public function getReason() {
-        return $reason;
+        return $this->reason;
     }
     
     public function setStartDate($startDate) {
@@ -100,7 +118,7 @@ class Reservation
     }
     
     public function getStartDate() {
-        return $startDate;
+        return $this->startDate;
     }
     
     public function setEndDate($endDate) {
@@ -109,7 +127,7 @@ class Reservation
     }
     
     public function getEndDate() {
-        return $endDate;
+        return $this->endDate;
     }
     
     public function setAdditionalInfo($additionalInfo) {

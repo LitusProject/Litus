@@ -12,4 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReservableResource extends EntityRepository
 {
+    
+    public function getOneByName($name) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
+            ->where(
+                $query->expr()->eq('r.name', ':name')
+            )
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        
+        return null;
+    }
+    
+    public function findAll() {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
+            ->getQuery()
+            ->getResult();
+        
+        return $resultSet;
+    }
+    
 }
