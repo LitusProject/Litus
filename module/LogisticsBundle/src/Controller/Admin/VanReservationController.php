@@ -61,10 +61,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 
                 $van = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                    ->findOneByName('Van');
+                    ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
                 
                 if (null === $van) {
-                    $van = new ReservableResource('Van');
+                    $van = new ReservableResource(VanReservation::VAN_RESOURCE_NAME);
                     $this->getEntityManager()->persist($van);
                 }
                 

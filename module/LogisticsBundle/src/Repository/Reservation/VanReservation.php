@@ -22,5 +22,5 @@ class VanReservation extends EntityRepository
     
         return $resultSet;
     }
-    
+
 }
