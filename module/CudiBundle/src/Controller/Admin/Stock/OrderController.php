@@ -103,7 +103,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $prefix = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
+
+        $form = new AddForm($this->getEntityManager(), $prefix);
 
         $academicYear = $this->getAcademicYear();
 
