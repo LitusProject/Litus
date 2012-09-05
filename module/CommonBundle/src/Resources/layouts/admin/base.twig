@@ -125,19 +125,22 @@
 		            		</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_driver', 'manage') %}
+		                {% if hasAccess('admin_driver', 'manage') or hasAccess('admin_vanreservation', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Transport</b><br />
 		                			Transportation Needs &amp; Drivers
 		                		</div>
 		                		<ul
-		                			{% if 'admin_driver' == getParam('controller') %}
+		                			{% if 'admin_driver' == getParam('controller') or 'admin_vanreservation' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
 		            			    {% if hasAccess('admin_driver', 'manage') %}
 		            			        <li><a href="{{ url('admin_driver') }}">Drivers</a></li>
+		            			    {% endif %}
+		            			    {% if hasAccess('admin_vanreservation', 'manage') %}
+		            			        <li><a href="{{ url('admin_vanreservation') }}">Van Reservations</a></li>
 		            			    {% endif %}
 		                		</ul>
 		                	</li>

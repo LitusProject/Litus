@@ -14,7 +14,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Validator;
+namespace LogisticsBundle\Component\Validator;
 
 use Doctrine\ORM\EntityManager;
 

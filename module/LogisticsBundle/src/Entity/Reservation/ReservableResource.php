@@ -15,12 +15,13 @@
  */
 namespace LogisticsBundle\Entity\Reservation;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This is the entity for a driver.
  *
- * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\ReservableResource")
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\ReservableResource")
  * @ORM\Table(name="logistics.resources")
  */
 class ReservableResource
@@ -35,9 +36,9 @@ class ReservableResource
     private $name;
     
     /**
-     * @var array An array of \LogisticsBundle\Entity\Reservation indicating when this resource is reserved.
+     * @var array An array of \LogisticsBundle\Entity\Reservation\Reservation indicating when this resource is reserved.
      * 
-     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Reservation", mappedBy="resource_id")
+     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Reservation\Reservation", mappedBy="resource_id")
      */
     private $reservations;
     
