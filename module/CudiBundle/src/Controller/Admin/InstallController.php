@@ -200,6 +200,11 @@ VTK Cudi
                     'value'       => 'CuDi VTK vzw',
                     'description' => 'The name of the address on the front of an article',
                 ),
+                array(
+                    'key'         => 'cudi.article_barcode_prefix',
+                    'value'       => '978',
+                    'description' => 'The start for a serving queue item barcode',
+                ),
             )
         );
 

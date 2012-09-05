@@ -87,7 +87,12 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $academicYear = $this->getAcademicYear();
 
-        $form = new AddForm($this->getEntityManager());
+
+        $prefix = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
+
+        $form = new AddForm($this->getEntityManager(), $prefix);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

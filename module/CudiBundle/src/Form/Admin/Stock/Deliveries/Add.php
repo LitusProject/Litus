@@ -31,9 +31,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param string $barcodePrefix
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {
         parent::__construct($name);
 
@@ -50,6 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('id', 'articleSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
+            ->setValue($barcodePrefix)
             ->setRequired();
         $this->add($field);
 
