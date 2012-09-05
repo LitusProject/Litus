@@ -13,7 +13,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace LogisticsBundle\Entity;
+namespace LogisticsBundle\Entity\Reservation;
 
 use Doctrine\ORM\Mapping as ORM;
 

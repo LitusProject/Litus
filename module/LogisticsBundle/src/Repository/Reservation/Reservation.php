@@ -1,6 +1,6 @@
 <?php
 
-namespace LogisticsBundle\Repository;
+namespace LogisticsBundle\Repository\Reservation;
 
 use Doctrine\ORM\EntityRepository;
 
