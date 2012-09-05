@@ -16,8 +16,6 @@
 
 namespace LogisticsBundle\Form\Admin\Reservation;
 
-
-
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
@@ -28,7 +26,9 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Zend\Form\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
     LogisticsBundle\Component\Validator\Driver,
-    CalendarBundle\Component\Validator\DateCompare as DateCompareValidator;
+    CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
+    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -37,6 +37,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -98,6 +99,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         if ($this->_inputFilter == null) {
 
+            /*
+             * TODO : validate that no reservation for this time is made yet. The check is:
+             * 
+             * No other reservation such that:
+             * other_start_date < start_date < other_end_date
+             * other_start_date < end_date < other_end_date
+             * 
+             * No other reservation such that
+             * start_date < other_start_date < end_date
+             * start_date < other_end_date < end_date
+             * 
+             * Summarized: (this is probably harder to check)
+             * For all other reservations:
+             * start_date < other_end_date => end_date < other_start_date
+             * end_date > other_start_date => start_date > other_end_date
+             * 
+             * ==========================================================
+             * 
+             * Thus:
+             * No other reservations such that
+             * start_date < other_end_date && end_date > other_start_date
+             *  
+             * assert that the following query returns empty:
+             * SELECT r FROM Reservation
+             *     WHERE r.resource == :resource
+             *     AND r.start_date < :end_date
+             *     AND r.end_date > :start_date
+             */
+            
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
@@ -137,6 +167,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 ),
                             ),
                             new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                            new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
                         ),
                     )
                 )

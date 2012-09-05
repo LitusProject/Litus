@@ -28,6 +28,8 @@ use Doctrine\ORM\Mapping as ORM;
 class VanReservation extends Reservation
 {
     
+    const VAN_RESOURCE_NAME = 'Van';
+
     /**
      * @var The reservation's unique identifier
      *

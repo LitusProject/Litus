@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class ReservableResource extends EntityRepository
 {
     
-    public function getOneByName($name) {
+    public function findOneByName($name) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
