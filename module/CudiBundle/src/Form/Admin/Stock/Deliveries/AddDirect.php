@@ -30,7 +30,7 @@ class AddDirect extends Add
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($entityManager, $name);
+        parent::__construct($entityManager, '', $name);
 
         $this->remove('article_id');
         $this->remove('article');
