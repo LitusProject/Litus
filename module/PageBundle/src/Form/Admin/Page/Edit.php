@@ -42,6 +42,13 @@ class Edit extends Add
 
         $this->_page = $page;
 
+        $this->remove('parent');
+
+        $field = new Select('parent');
+        $field->setLabel('Parent')
+            ->setAttribute('options', $this->_createPagesArray($page->getTitle()));
+        $this->add($field);
+
         $this->remove('submit');
 
         $field = new Submit('submit');
