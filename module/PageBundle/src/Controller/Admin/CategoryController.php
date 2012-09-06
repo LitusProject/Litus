@@ -34,9 +34,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $paginator = $this->paginator()->createFromEntity(
             'PageBundle\Entity\Category',
             $this->getParam('page'),
-            array(
-                'active' => true
-            ),
+            array(),
             array(
                 'name' => 'ASC'
             )
