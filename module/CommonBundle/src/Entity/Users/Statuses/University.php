@@ -32,10 +32,12 @@ class University
      * @var array All the possible status values allowed
      */
     public static $possibleStatuses = array(
-        'professor'        => 'Professor',
-        'student'          => 'Student',
-        'alumnus'          => 'Alumnus',
-        'external_student' => 'External Student',
+        'alumnus'                  => 'Alumnus',
+        'assistant_professor'      => 'Assistant Professor',
+        'administrative_assistant' => 'Administrative Assistant',
+        'external_student'         => 'External Student',
+        'professor'                => 'Professor',
+        'student'                  => 'Student',
     );
 
     /**

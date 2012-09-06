@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Select('parent');
         $field->setLabel('Parent')
-            ->setAttribute('options', $this->_createPagesArray());
+            ->setAttribute('options', $this->createPagesArray());
         $this->add($field);
 
         $field = new Submit('submit');
@@ -113,6 +113,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
+        if (empty($categories))
+            throw new \RuntimeException('There needs to be at least one category before you can add a page');
+
         $categoryOptions = array();
         foreach($categories as $category)
             $categoryOptions[$category->getId()] = $category->getName();
@@ -120,7 +123,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    private function _createPagesArray()
+    protected function createPagesArray($excludeTitle = '')
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
@@ -129,8 +132,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $pageOptions = array(
             '' => ''
         );
-        foreach($pages as $page)
-            $pageOptions[$page->getId()] = $page->getTitle();
+        foreach($pages as $page) {
+            if ($page->getTitle() != $excludeTitle)
+                $pageOptions[$page->getId()] = $page->getTitle();
+        }
 
         return $pageOptions;
     }
