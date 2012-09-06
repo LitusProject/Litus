@@ -33,7 +33,13 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $paginator = $this->paginator()->createFromEntity(
             'PageBundle\Entity\Category',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'active' => true
+            ),
+            array(
+                'name' => 'ASC'
+            )
         );
 
         return new ViewModel(
