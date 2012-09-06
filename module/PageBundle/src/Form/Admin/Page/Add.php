@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    private function _createPagesArray()
+    private function _createPagesArray($excludeTitle = '')
     {
         $pages = $this->_entityManager
             ->getRepository('PageBundle\Entity\Nodes\Page')
@@ -129,8 +129,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $pageOptions = array(
             '' => ''
         );
-        foreach($pages as $page)
-            $pageOptions[$page->getId()] = $page->getTitle();
+        foreach($pages as $page) {
+            if ($page->getTitle() != $excludeTitle)
+                $pageOptions[$page->getId()] = $page->getTitle();
+        }
 
         return $pageOptions;
     }
