@@ -31,7 +31,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($page = $this->_getPage()))
             return new ViewModel();
-
+echo $page->getId();
         return new ViewModel(
             array(
                 'page' => $page,
