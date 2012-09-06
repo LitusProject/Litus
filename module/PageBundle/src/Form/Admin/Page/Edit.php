@@ -15,7 +15,8 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Nodes\Page,
     Zend\InputFilter\InputFilter,
@@ -41,6 +42,13 @@ class Edit extends Add
         parent::__construct($entityManager, $name);
 
         $this->_page = $page;
+
+        $this->remove('parent');
+
+        $field = new Select('parent');
+        $field->setLabel('Parent')
+            ->setAttribute('options', $this->createPagesArray($page->getTitle()));
+        $this->add($field);
 
         $this->remove('submit');
 

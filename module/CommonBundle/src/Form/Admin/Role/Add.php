@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $parents[$role->getName()] = $role->getName();
         }
 
-        ksort($parents);
+        asort($parents);
 
         return $parents;
     }
@@ -103,10 +103,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $query = new QueryBuilder(
             $this->_entityManager
         );
-        $query->select('r')
-            ->from('CommonBundle\Entity\Acl\Resource', 'r')
-            ->where('r.parent IS NULL');
-        $resources = $query->getQuery()->useResultCache(true)->getResult();
+
+        $resources = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Resource')
+            ->findByParent(null);
 
         $actions = array();
         foreach ($resources as $resource) {
