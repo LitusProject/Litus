@@ -267,7 +267,7 @@ return array(
         'exception_template' => 'error/index',
 
         'display_not_found_reason' => ('development' == getenv('APPLICATION_ENV')),
-        'display_exceptions'       => true,
+        'display_exceptions'       => ('development' == getenv('APPLICATION_ENV')),
     ),
     'doctrine' => array(
         'driver' => array(
