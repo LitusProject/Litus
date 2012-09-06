@@ -15,12 +15,12 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Nodes\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
@@ -47,7 +47,7 @@ class Edit extends Add
 
         $field = new Select('parent');
         $field->setLabel('Parent')
-            ->setAttribute('options', $this->_createPagesArray($page->getTitle()));
+            ->setAttribute('options', $this->createPagesArray($page->getTitle()));
         $this->add($field);
 
         $this->remove('submit');
