@@ -238,33 +238,36 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'common_install'                   => 'CommonBundle\Controller\Admin\InstallController',
+            'common_install'  => 'CommonBundle\Controller\Admin\InstallController',
 
-            'index'                            => 'CommonBundle\Controller\IndexController',
-            'account'                          => 'CommonBundle\Controller\AccountController',
-            'admin_academic'                   => 'CommonBundle\Controller\Admin\AcademicController',
-            'admin_auth'                       => 'CommonBundle\Controller\Admin\AuthController',
-            'admin_config'                     => 'CommonBundle\Controller\Admin\ConfigController',
-            'admin_cache'                      => 'CommonBundle\Controller\Admin\CacheController',
-            'admin_index'                      => 'CommonBundle\Controller\Admin\IndexController',
-            'admin_role'                       => 'CommonBundle\Controller\Admin\RoleController',
+            'index'           => 'CommonBundle\Controller\IndexController',
+            'account'         => 'CommonBundle\Controller\AccountController',
+            'admin_academic'  => 'CommonBundle\Controller\Admin\AcademicController',
+            'admin_auth'      => 'CommonBundle\Controller\Admin\AuthController',
+            'admin_config'    => 'CommonBundle\Controller\Admin\ConfigController',
+            'admin_cache'     => 'CommonBundle\Controller\Admin\CacheController',
+            'admin_index'     => 'CommonBundle\Controller\Admin\IndexController',
+            'admin_role'      => 'CommonBundle\Controller\Admin\RoleController',
         ),
     ),
     'view_manager' => array(
-        'display_not_found_reason' => ('development' == getenv('APPLICATION_ENV')),
-        'display_exceptions'       => ('development' == getenv('APPLICATION_ENV')),
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../layouts/layout.twig',
-            'error/404'               => __DIR__ . '/../views/error/404.twig',
-            'error/index'             => __DIR__ . '/../views/error/index.twig',
+            'layout/layout' => __DIR__ . '/../layouts/layout.twig',
+            'error/404'     => __DIR__ . '/../views/error/404.twig',
+            'error/index'   => __DIR__ . '/../views/error/index.twig',
         ),
         'template_path_stack' => array(
             'commonbundle_layout' => __DIR__ . '/../layouts',
-            'commonbundle_view' => __DIR__ . '/../views',
+            'commonbundle_view'   => __DIR__ . '/../views',
         ),
+
+        'doctype'                  => 'HTML5',
+
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+
+        'display_not_found_reason' => ('development' == getenv('APPLICATION_ENV')),
+        'display_exceptions'       => true,
     ),
     'doctrine' => array(
         'driver' => array(
