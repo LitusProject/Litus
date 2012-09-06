@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityManager,
     PageBundle\Entity\Nodes\Page,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
