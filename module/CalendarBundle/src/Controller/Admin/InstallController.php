@@ -31,7 +31,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'poster'
                     ),
                     'calendar' => array(
-                        'overview', 'poster', 'view'
+                        'month', 'overview', 'poster', 'view'
                     ),
                 )
             )
@@ -43,7 +43,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parent_roles' => array(),
                     'actions' => array(
                         'calendar' => array(
-                            'overview', 'poster', 'view'
+                            'month', 'overview', 'poster', 'view'
                         ),
                     )
                 ),
