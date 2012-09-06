@@ -31,7 +31,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($page = $this->_getPage()))
             return new ViewModel();
-echo $page->getId();
+
         return new ViewModel(
             array(
                 'page' => $page,
@@ -150,7 +150,7 @@ echo $page->getId();
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneBy(array('name' => $this->getParam('name'), 'endTime' => null));
+            ->findOneByName($this->getParam('name'));
 
         if (null === $page) {
             $this->flashMessenger()->addMessage(
