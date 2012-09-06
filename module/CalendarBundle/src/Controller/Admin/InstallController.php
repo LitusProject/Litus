@@ -42,6 +42,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 'guest' => array(
                     'parent_roles' => array(),
                     'actions' => array(
+                        'calendar' => array(
+                            'overview', 'poster', 'view'
+                        ),
                     )
                 ),
             )
