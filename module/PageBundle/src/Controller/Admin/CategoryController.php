@@ -189,7 +189,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         if (!($category = $this->_getCategory()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($category);
+        $category->deactivate();
 
         $this->getEntityManager()->flush();
 
