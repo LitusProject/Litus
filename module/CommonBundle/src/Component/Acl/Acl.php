@@ -104,19 +104,20 @@ class Acl extends \Zend\Permissions\Acl\Acl
         foreach ($roles as $role) {
             $parents = array();
             foreach($role->getParents() as $parentRole) {
+                var_dump($parentRole->getName());
                 $parents[] = $parentRole->getName();
             }
 
             $this->addRole(
-                $role->getName(),
-                (0 == count($role->getParents())) ? null : $parents
+                $role->getName(), $parents
             );
 
             foreach ($role->getActions($this->_entityManager) as $action) {
                 $this->allow(
                     $role->getName(),
                     $action->getResource()->getName(),
-                    $action->getName());
+                    $action->getName()
+                );
             }
         }
     }
