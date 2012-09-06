@@ -261,10 +261,10 @@ return array(
             'commonbundle_view'   => __DIR__ . '/../views',
         ),
 
-        'doctype'                  => 'HTML5',
+        'doctype' => 'HTML5',
 
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
 
         'display_not_found_reason' => ('development' == getenv('APPLICATION_ENV')),
         'display_exceptions'       => true,
