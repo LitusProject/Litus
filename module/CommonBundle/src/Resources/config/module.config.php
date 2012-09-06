@@ -266,8 +266,8 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
 
-        'display_not_found_reason' => ('development' == getenv('APPLICATION_ENV')),
-        'display_exceptions'       => ('development' == getenv('APPLICATION_ENV')),
+        'display_not_found_reason' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
+        'display_exceptions'       => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
     ),
     'doctrine' => array(
         'driver' => array(
