@@ -30,6 +30,7 @@ return array(
         'SyllabusBundle',
     		
     	'LogisticsBundle',
+        'SecretaryBundle',
 
         'CalendarBundle',
         'NewsBundle',
