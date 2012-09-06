@@ -150,7 +150,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
-            ->findOneByName($this->getParam('name'));
+            ->findOneBy(array('name' => $this->getParam('name'), 'endTime' => null));
 
         if (null === $page) {
             $this->flashMessenger()->addMessage(
