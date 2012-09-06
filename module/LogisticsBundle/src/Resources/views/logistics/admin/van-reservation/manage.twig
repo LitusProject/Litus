@@ -1,0 +1,38 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'logistics/admin/van-reservation/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	
+		<div id="normal_page">
+		
+			<table class="full_width manage">
+				<tr>
+					<th>Reason</th>
+					<th>Driver</th>
+					<th>Creator</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+				</tr>
+				
+				{% for reservation in paginator %}
+				
+					<tr class="item">
+						<td>{{ reservation.getReason() }}</td>
+						<td>{{ reservation.getDriver().getPerson().getFullName() }}</td>
+						<td>{{ reservation.getCreator().getFullName() }}</td>
+						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
+						<td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
+					</tr>
+				
+				{% endfor %}
+				
+			</table>
+		
+		</div>
+	
+    </div>
+{% endblock %}

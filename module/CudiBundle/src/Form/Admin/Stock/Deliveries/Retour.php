@@ -33,11 +33,12 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param string $barcodePrefix
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {
-        parent::__construct($entityManager, $name);
+        parent::__construct($entityManager, $barcodePrefix, $name);
 
         $this->remove('submit');
 
