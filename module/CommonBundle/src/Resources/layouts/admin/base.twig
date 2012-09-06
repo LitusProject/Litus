@@ -185,7 +185,7 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_news', 'manage') %}
+		                {% if hasAccess('admin_news', 'manage') or hasAccess('admin_page', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Site</b><br />
