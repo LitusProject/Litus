@@ -156,6 +156,11 @@ var LanguageDefinition = {
                                             $('<br />'),
                                             linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
                                             $('<br />'),
+                                            $('<br />'),
+                                            $('<b>').html('Image'),
+                                            $('<br />'),
+                                            file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'}),
+                                            $('<br />'),
                                             $('<br />')
                                         ),
                                         progress = $('<div>', {'class': 'progress progress-striped active'}).append(
