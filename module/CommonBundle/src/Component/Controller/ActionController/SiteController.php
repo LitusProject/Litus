@@ -100,7 +100,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Nodes\Page')
-                ->findByCategory($category);
+                ->findBy(array('category' => $category, 'parent' => null));
 
             foreach ($pages as $page) {
                 $menu[$i]['items'][] = array(
