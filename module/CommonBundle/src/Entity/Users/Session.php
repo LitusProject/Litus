@@ -77,7 +77,7 @@ class Session
      *
      * @ORM\Column(type="boolean")
      */
-    private $active = true;
+    private $active;
 
     /**
      * @param int|\DateTime $expirationTime
@@ -102,6 +102,7 @@ class Session
         $this->person = $person;
         $this->userAgent = $userAgent;
         $this->ip = $ip;
+        $this->active = true;
     }
 
     /**

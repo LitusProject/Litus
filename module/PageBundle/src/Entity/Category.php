@@ -53,16 +53,24 @@ class Category
     private $translations;
 
     /**
+     * @var bool Whether or not the category is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+        $this->active = true;
+    }
+
+    /**
      * @return string
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    public function __construct()
-    {
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -117,5 +125,21 @@ class Category
             return $translation->getName();
 
         return '';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->active = false;
     }
 }
