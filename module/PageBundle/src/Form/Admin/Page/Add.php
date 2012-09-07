@@ -120,6 +120,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach($categories as $category)
             $categoryOptions[$category->getId()] = $category->getName();
 
+        asort($categoryOptions);
+
         return $categoryOptions;
     }
 
@@ -137,6 +139,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 $pageOptions[$page->getId()] = $page->getTitle();
         }
 
+        asort($pageOptions);
+
         return $pageOptions;
     }
 
@@ -150,6 +154,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach ($roles as $role) {
             $rolesArray[$role->getName()] = $role->getName();
         }
+
+        asort($rolesArray);
+
         return $rolesArray;
     }
 

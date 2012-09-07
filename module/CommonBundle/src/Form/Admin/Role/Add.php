@@ -100,10 +100,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     private function _createActionsArray()
     {
-        $query = new QueryBuilder(
-            $this->_entityManager
-        );
-
         $resources = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Resource')
             ->findByParent(null);
