@@ -4,13 +4,13 @@
     {% if submenu is not empty %}
         <div class="navbar">
             <div class="navbar-inner">
-                <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".subnav-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="#">{{ page.getTitle(language) }}</a>
-                <div class="nav-collapse collapse">
+                <a class="brand hidden-desktop" href="">{{ page.getTitle(language) }}</a>
+                <div class="subnav-collapse collapse">
                     <ul class="nav">
                         {% for item in submenu %}
                             {% if 'category' == item.type %}
