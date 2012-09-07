@@ -17,6 +17,7 @@ namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
+    CommonBundle\Component\Util\Url,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -143,8 +144,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      */
     public function updateName()
     {
-        $translation = $this->getTranslation();
-        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . Url::createSlug($this->getTranslation()->getTitle());
         return $this;
     }
 }
