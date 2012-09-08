@@ -191,11 +191,11 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
     
-        $reservation = $this->getEntityManager()
+        $driver = $this->getEntityManager()
         ->getRepository('LogisticsBundle\Entity\Driver')
         ->findOneById($this->getParam('id'));
     
-        if (null === $reservation) {
+        if (null === $driver) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -214,6 +214,6 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
     
-        return $reservation;
+        return $driver;
     }
 }
