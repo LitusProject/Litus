@@ -5,6 +5,7 @@ return array(
     'LogisticsBundle\Form\Admin\Reservation\Add'                       => __DIR__ . '/src/Form/Admin/Reservation/Add.php',
     'LogisticsBundle\Form\Admin\Reservation\Edit'                      => __DIR__ . '/src/Form/Admin/Reservation/Edit.php',
     'LogisticsBundle\Form\Admin\Driver\Add'                            => __DIR__ . '/src/Form/Admin/Driver/Add.php',
+    'LogisticsBundle\Form\Admin\Driver\Edit'                           => __DIR__ . '/src/Form/Admin/Driver/Edit.php',
     'LogisticsBundle\Repository\Reservation\VanReservation'            => __DIR__ . '/src/Repository/Reservation/VanReservation.php',
     'LogisticsBundle\Repository\Reservation\ReservableResource'        => __DIR__ . '/src/Repository/Reservation/ReservableResource.php',
     'LogisticsBundle\Repository\Reservation\Reservation'               => __DIR__ . '/src/Repository/Reservation/Reservation.php',

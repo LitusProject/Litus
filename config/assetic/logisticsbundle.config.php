@@ -20,6 +20,8 @@ return array(
             '@common_typeahead_remote',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'admin_vanreservation' => array(
             '@common_jquery',

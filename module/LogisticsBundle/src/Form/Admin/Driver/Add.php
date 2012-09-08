@@ -19,7 +19,8 @@ namespace LogisticsBundle\Form\Admin\Driver;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    LogisticsBundle\Component\Validator\Driver,
+    LogisticsBundle\Component\Validator\Driver as ValidatorDriver,
+    LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -79,6 +80,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'driver_add');
         $this->add($field);
     }
+    
+    public function populateFromDriver(Driver $driver)
+    {
+        $years = $driver->getYears();
+        
+        $yearids = array();
+        foreach($years as $year) {
+            $yearids[] = $year->getId();
+        }
+        
+        $formData = array(
+            'years' => $yearids,
+        );
+        
+        $this->setData($formData);
+    }
 
     public function getInputFilter()
     {
@@ -87,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
-            if ('' == $this->data['person_id']) {
+            if (isset($this->data['person_id']) && '' == $this->data['person_id']) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
@@ -97,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new Driver(
+                                new ValidatorDriver(
                                     $this->_entityManager, 
                                     array(
                                         'byId' => false,
@@ -117,7 +134,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new Driver(
+                                new ValidatorDriver(
                                     $this->_entityManager, 
                                     array(
                                         'byId' => true,
