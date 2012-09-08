@@ -33,7 +33,7 @@ class Driver
      * @var \CommonBundle\Entity\Users\Person The person this driver represents
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;

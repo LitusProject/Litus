@@ -16,7 +16,7 @@
 
 namespace LogisticsBundle\Form\Admin\Reservation;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -25,7 +25,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
-    LogisticsBundle\Component\Validator\Driver,
+    LogisticsBundle\Component\Validator\AcademicValidator,
     CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Component\Validator\ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation;
@@ -79,6 +79,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
         
+        $field = new Text('load');
+        $field->setLabel('Load');
+        $this->add($field);
+        
         $field = new Textarea('additional_info');
         $field->setLabel('Additional Information');
         $this->add($field);
@@ -87,6 +91,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Driver')
             ->setRequired(false)
             ->setAttribute('options', $drivernames);
+        $this->add($field);
+        
+        $field = new Text('passenger_name');
+        $field->setLabel('Passenger')
+        ->setAttribute('id', 'passengerSearch')
+        ->setAttribute('autocomplete', 'off')
+        ->setAttribute('data-provide', 'typeahead');
+        $this->add($field);
+        
+        $field = new Hidden('passenger_id');
+        $field->setAttribute('id', 'passengerId');
         $this->add($field);
         
         $field = new Submit('submit');
@@ -105,12 +120,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $driverid = $driver->getPerson()->getId();
         }
         
+        if (null === $reservation->getPassenger()) {
+            $passenger_id = '';
+            $passenger_name = '';
+        } else {
+            $passenger_id = $reservation->getPassenger()->getId();
+            $passenger_name = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
+        }
+        
         $data = array(
             'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
             'reason' => $reservation->getReason(),
+            'load' => $reservation->getLoad(),
             'additional_info' => $reservation->getAdditionalInfo(),
             'driver' => $driverid,
+            'passenger_id' => $passenger_id,
+            'passenger_name' => $passenger_name,
         );
 
         $this->setData($data);
@@ -119,80 +145,132 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'start_date',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'start_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_date',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'end_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
                             ),
-                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                            new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
                         ),
-                    )
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'reason',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'reason',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'additional_info',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'load',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-            
-            $this->_inputFilter = $inputFilter;
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'additional_info',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+        
+        if (isset($this->data['passenger_id'])) {
+            if ($this->data['passenger_id'] == '' && $this->get('passenger_name')) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name' => 'passenger_name',
+                            'required' => false,
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new AcademicValidator(
+                                    $this->_entityManager,
+                                    array(
+                                        'byId' => false,
+                                    )
+                                )
+                            ),
+                        )
+                    )
+                );
+            } else {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name' => 'passenger_id',
+                            'required' => false,
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new AcademicValidator(
+                                    $this->_entityManager,
+                                    array(
+                                        'byId' => true,
+                                    )
+                                )
+                            ),
+                        )
+                    )
+                );
+            }
         }
-
-        return $this->_inputFilter;
+        
+        return $inputFilter;
+            
     }
 }

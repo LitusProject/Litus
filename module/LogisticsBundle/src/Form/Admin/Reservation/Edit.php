@@ -61,37 +61,34 @@ class Edit extends \LogisticsBundle\Form\Admin\Reservation\Add
     
     public function getInputFilter() {
         
-        if ($this->_inputFilter == null) {
-            $inputFilter = parent::getInputFilter();
-            $factory = new InputFactory();
+        $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
+    
+        $inputFilter->remove('end_date');
         
-            $inputFilter->remove('end_date');
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_date',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'end_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
                             ),
-                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                            new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
                         ),
-                    )
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
+                    ),
                 )
-            );
-        
-            $this->_inputFilter = $inputFilter;
-        }
-        return $this->_inputFilter;
+            )
+        );
+    
+        return $inputFilter;
     }
     
 }
