@@ -100,9 +100,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'key'         => 'shibboleth_code_handler_url',
                     'value'       => serialize(
                         array(
-                            'admin' => 'https://dev.vtk.be/admin/auth/shibboleth',
-                            'prof'  => 'https://dev.vtk.be/cudi/prof/auth/shibboleth',
-                            'site'  => 'https://dev.vtk.be/auth/shibboleth',
+                            'admin'        => 'https://dev.vtk.be/admin/auth/shibboleth',
+                            'prof'         => 'https://dev.vtk.be/cudi/prof/auth/shibboleth',
+                            'site'         => 'https://dev.vtk.be/auth/shibboleth',
+                            'registration' => 'https://dev.vtk.be/secretary/registration',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',

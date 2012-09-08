@@ -7,8 +7,19 @@
 
     <div class="row page">
         <div class="span12">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
+            {% if form %}
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            {% else %}
+                <div style="text-align: center;">
+                    <p style="text-align: center;">
+                        {% autoescape false %}
+                            {{ translate('To register, please first login with your KU Leuven&mdash;Central Login') }}
+                        {% endautoescape %}
+                    </p>
+                    <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
