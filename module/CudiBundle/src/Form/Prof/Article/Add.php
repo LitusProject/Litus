@@ -57,19 +57,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('title');
         $field->setLabel('Title')
-            ->setAttribute('style', 'width:400px')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
             ->setRequired();
         $article->add($field);
 
         $field = new Text('author');
         $field->setLabel('Authors')
-            ->setAttribute('style', 'width:350px')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
             ->setRequired();
         $article->add($field);
 
         $field = new Text('publisher');
         $field->setLabel('Publisher')
-            ->setAttribute('style', 'width:300px')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $article->add($field);
 
@@ -129,7 +129,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttribute('style', 'width:400px')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setAttribute('id', 'subjectSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')

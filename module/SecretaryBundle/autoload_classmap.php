@@ -3,4 +3,8 @@
 return array(
     'SecretaryBundle\Module'                             => __DIR__ . '/Module.php',
     'SecretaryBundle\Controller\Admin\InstallController' => __DIR__ . '/src/Controller/Admin/InstallController.php',
+    'SecretaryBundle\Controller\RegistrationController'  => __DIR__ . '/src/Controller/RegistrationController.php',
+    'SecretaryBundle\Entity\Registration'                => __DIR__ . '/src/Entity/Registration.php',
+    'SecretaryBundle\Form\Registration\Add'              => __DIR__ . '/src/Form/Registration/Add.php',
+    'SecretaryBundle\Repository\Registration'            => __DIR__ . '/src/Repository/Registration.php',
 );
