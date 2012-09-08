@@ -31,16 +31,33 @@ class VanReservation extends Reservation
     const VAN_RESOURCE_NAME = 'Van';
 
     /**
-     * @var The reservation's unique identifier
+     * @var The driver of the van for this reservation.
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Driver")
      * @ORM\JoinColumn(name="driver_id", referencedColumnName="person", nullable=true)
      */
     private $driver;
     
-    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator) {
+    /**
+     * @var The passenger of the van for this reservation.
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic", cascade={"persist"})
+     * @ORM\JoinColumn(name="passenger", referencedColumnName="id", nullable=true)
+     */
+    private $passenger;
+    
+    /**
+     * @var string The load of the van for this reservation, i.e. what needs to be transported.
+     * 
+     * @ORM\Column(type="text")
+     */
+    private $load;
+    
+    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator, $load) {
         parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
         $this->driver = null;
+        $this->passenger = null;
+        $this->load = $load;
     }
     
     public function getDriver() {
@@ -49,6 +66,24 @@ class VanReservation extends Reservation
     
     public function setDriver($driver) {
         $this->driver = $driver;
+        return $this;
+    }
+    
+    public function getPasseneger() {
+        return $this->passenger;
+    }
+    
+    public function setPasseneger($passenger) {
+        $this->passenger = $passenger;
+        return $this;
+    }
+    
+    public function getLoad() {
+        return $load;
+    }
+    
+    public function setLoad($load) {
+        $this->load = $load;
         return $this;
     }
     
