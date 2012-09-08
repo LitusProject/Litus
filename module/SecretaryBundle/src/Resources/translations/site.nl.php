@@ -14,5 +14,5 @@
  */
 
 return array(
-    'Registrate' => 'Registreer',
+    'Registration' => 'Inschrijving',
 );

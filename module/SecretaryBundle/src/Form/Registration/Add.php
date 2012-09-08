@@ -117,19 +117,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($internet);
 
         $field = new Text('university_email');
-        $field->setLabel('University Email')
+        $field->setLabel('University E-mail')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $internet->add($field);
 
         $field = new Text('personal_email');
-        $field->setLabel('Personal Email')
+        $field->setLabel('Personal E-mail')
             ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $internet->add($field);
 
         $field = new Checkbox('primary_email');
-        $field->setLabel('I want to receive my email at my personal email')
+        $field->setLabel('I want to receive VTK e-mail at my personal e-mail address')
             ->setValue(true);
         $internet->add($field);
 
@@ -143,21 +143,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $organisation->add($field);
 
         $field = new Checkbox('conditions');
-        $field->setLabel('i have read and agree with the terms and conditions');
+        $field->setLabel('I have read and agree with the terms and conditions');
         $organisation->add($field);
 
         $field = new Checkbox('irreeel');
-        $field->setLabel('I want to receive my Ir. Reëel at CuDi')
+        $field->setLabel('I want to receive my Ir.Reëel at CuDi')
             ->setValue(true);
         $organisation->add($field);
 
         $field = new Checkbox('bakske');
-        $field->setLabel('I want to receive \'t Bakske by email')
+        $field->setLabel('I want to receive \'t Bakske by e-mail')
             ->setValue(false);
         $organisation->add($field);
 
         $field = new Select('tshirt');
-        $field->setLabel('Size of T-shirt')
+        $field->setLabel('T-shirt Size')
             ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
@@ -173,7 +173,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $organisation->add($field);
 
         $field = new Submit('submit');
-        $field->setValue('Add')
+        $field->setValue('Register')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }
