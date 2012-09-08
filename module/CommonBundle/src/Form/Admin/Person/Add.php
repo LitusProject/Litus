@@ -191,6 +191,15 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 )
             );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'sex',
+                        'required' => true,
+                    )
+                )
+            );
             $this->_inputFilter = $inputFilter;
         }
         return $this->_inputFilter;
