@@ -13,6 +13,23 @@ use Doctrine\ORM\EntityRepository;
 class VanReservation extends EntityRepository
 {
     
+    public function findOneById($id) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+            ->where(
+                $query->expr()->eq('r.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        
+        return null;
+    }
+    
     public function findAll() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')

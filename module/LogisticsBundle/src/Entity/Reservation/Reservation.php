@@ -95,6 +95,10 @@ class Reservation
         $this->creator = $creator;
     }
     
+    public function getId() {
+        return $this->id;
+    }
+    
     public function getResource() {
         return $this->resource;
     }
@@ -135,7 +139,7 @@ class Reservation
         return $this;
     }
     
-    public function getAdditionalInfo($additionalInfo) {
+    public function getAdditionalInfo() {
         return $this->additionalInfo;
     }
     

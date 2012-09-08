@@ -25,35 +25,6 @@ class Reservation extends EntityRepository
     
     public function findAllConflicting($startDate, $endDate, $resource) {
 
-        /*
-         * TODO : validate that no reservation for this time is made yet. The check is:
-        *
-        * No other reservation such that:
-        * other_start_date < start_date < other_end_date
-        * other_start_date < end_date < other_end_date
-        *
-        * No other reservation such that
-        * start_date < other_start_date < end_date
-        * start_date < other_end_date < end_date
-        *
-        * Summarized: (this is probably harder to check)
-        * For all other reservations:
-        * start_date < other_end_date => end_date < other_start_date
-        * end_date > other_start_date => start_date > other_end_date
-        *
-        * ==========================================================
-        *
-        * Thus:
-        * No other reservations such that
-        * start_date < other_end_date && end_date > other_start_date
-        *
-        * assert that the following query returns empty:
-        * SELECT r FROM Reservation
-        *     WHERE r.resource == :resource
-        *     AND r.start_date < :end_date
-        *     AND r.end_date > :start_date
-        */
-        
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
@@ -70,6 +41,39 @@ class Reservation extends EntityRepository
             ->getQuery()
             ->getResult();
         
+        return $resultSet;
+    }
+    
+    /**
+     * Finds all resources conflicting with the given start and end date for the given resource. Additionally, one id can be ignored to avoid conflicts with
+     * the resource itself.
+     * 
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
+     * @param int $ignoreId
+     * @return array
+     */
+    public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
+    
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
+        ->where(
+            $query->expr()->andx(
+                $query->expr()->eq('r.resource', ':resource'),
+                $query->expr()->lt('r.startDate', ':end_date'),
+                $query->expr()->gt('r.endDate', ':start_date'),
+                $query->expr()->neq('r.id', ':id')
+            )
+        )
+        ->setParameter('resource', $resource)
+        ->setParameter('start_date', $startDate)
+        ->setParameter('end_date', $endDate)
+        ->setParameter('id', $ignoreId)
+        ->getQuery()
+        ->getResult();
+    
         return $resultSet;
     }
     
