@@ -5,6 +5,19 @@
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
+	<div class="flashmessage success_message full_width driver_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The driver was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width driver_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete a driver.</p>
+		</div>
+	</div>
+
 	<div id="controller_action">
 	
 		<div id="normal_page">
@@ -13,16 +26,25 @@
 				<tr>
 					<th>Name</th>
 					<th width="200px">Years</th>
+					<th width="70px">Actions</th>
 				</tr>
 				
 				{% for driver in paginator %}
 				
-					<tr class="item">
+					<tr class="item item-{{ driver.getPerson().getId() }}">
 						<td>{{ driver.getPerson().getFullName() }}</td>
 						<td>
 						{% for year in driver.getYears() %}
 							{{ year.getCode() }} 
 						{% endfor %}
+						</td>
+						<td class="actions">
+						    {% if hasAccess('admin_driver', 'edit') %}
+		                        <a href="{{ url('admin_driver', {"action": "edit", "id": driver.getPerson().getId()}) }}" class="edit">Edit</a>
+		                    {% endif %}
+						    {% if hasAccess('admin_driver', 'delete') %}
+		                        <a href="#" class="delete" data-id="{{ driver.getPerson().getId() }}" data-name="{{ driver.getPerson().getFullName() }}">Delete</a>
+		                    {% endif %}
 						</td>
 					</tr>
 				
@@ -33,4 +55,64 @@
 		</div>
 	
     </div>
+    
+	<div class="modal hide fade" id="removeDriver">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Driver
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following driver: <b class="driverName"></b>!
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		
+		$(document).ready(function () {
+		
+			$('.item .delete').click(openModal);
+
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removeDriver = $('#removeDriver');
+			removeDriver.find('.driverName').html($(this).data('name'));
+			var id = $this.data('id');
+			removeDriver.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_driver', {"action": "delete"})}}/' + id, function (data) {
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.driver_removed_success').removeClass('hide');
+    					$('.item-' + id).remove();
+    					removeDriver.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			removeDriver.modal();
+		}
+
+		function errorRemove() {
+    		$('.flashmessage').addClass('hide');
+    		$('.driver_removed_error').removeClass('hide');
+    		$('#removeDriver').modal('hide');
+		}
+		
+	</script>
 {% endblock %}
