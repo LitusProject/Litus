@@ -19,6 +19,7 @@ namespace LogisticsBundle\Controller\Admin;
 use LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Reservation\Add,
+    LogisticsBundle\Form\Admin\Reservation\Edit,
     LogisticsBundle\Entity\Reservation\VanReservation,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     Zend\View\Model\ViewModel,
@@ -106,5 +107,121 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 'form' => $form,
             )
         );
+    }
+    
+    public function editAction()
+    {
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+    
+        $form = new Edit($this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation);
+    
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+    
+            if ($form->isValid()) {
+                
+                $repository = $this->getEntityManager()
+                   ->getRepository('LogisticsBundle\Entity\Driver');
+                
+                $driver = $repository->findOneById($formData['driver']);
+
+                $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setReason($formData['reason'])
+                    ->setAdditionalInfo($formData['additional_info'])
+                    ->setDriver($driver);
+                
+                $this->getEntityManager()->flush();
+    
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The reservation was successfully updated!'
+                    )
+                );
+    
+                $this->redirect()->toRoute(
+                    'admin_vanreservation',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+    
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+    
+    public function deleteAction()
+    {
+        $this->initAjax();
+    
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+    
+        $this->getEntityManager()->remove($reservation);
+        $this->getEntityManager()->flush();
+    
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
+    private function _getReservation()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the reservation!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'admin_vanreservation',
+                array(
+                    'action' => 'manage'
+                )
+            );
+    
+            return;
+        }
+    
+        $reservation = $this->getEntityManager()
+        ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+        ->findOneById($this->getParam('id'));
+    
+        if (null === $reservation) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No article with the given ID was found!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'admin_vanreservation',
+                array(
+                    'action' => 'manage'
+                )
+            );
+    
+            return;
+        }
+    
+        return $reservation;
     }
 }
