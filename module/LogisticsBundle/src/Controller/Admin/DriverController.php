@@ -16,6 +16,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use LogisticsBundle\Form\Admin\Driver\Edit;
+
 use LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Driver\Add,
@@ -97,5 +99,121 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 'form' => $form,
             )
         );
+    }
+    
+
+    public function editAction()
+    {
+        if (!($driver = $this->_getDriver()))
+            return new ViewModel();
+    
+        $form = new Edit($this->getEntityManager(), $driver);
+    
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+    
+            if ($form->isValid()) {
+
+                $yearIds = $formData['years'];
+                $years = array();
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach($yearIds as $yearId) {
+                    $years[] = $repository->findOneById($yearId);
+                }
+                
+                $driver->setYears($years);
+    
+                $this->getEntityManager()->flush();
+    
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The driver was successfully updated!'
+                    )
+                );
+    
+                $this->redirect()->toRoute(
+                    'admin_driver',
+                    array(
+                        'action' => 'manage'
+                    )
+                );
+    
+                return new ViewModel();
+            }
+        }
+    
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+    
+    public function deleteAction()
+    {
+        $this->initAjax();
+    
+        if (!($driver = $this->_getDriver()))
+            return new ViewModel();
+    
+        $this->getEntityManager()->remove($driver);
+        $this->getEntityManager()->flush();
+    
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+    
+    private function _getDriver()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the driver!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'admin_driver',
+                array(
+                    'action' => 'manage'
+                )
+            );
+    
+            return;
+        }
+    
+        $driver = $this->getEntityManager()
+        ->getRepository('LogisticsBundle\Entity\Driver')
+        ->findOneById($this->getParam('id'));
+    
+        if (null === $driver) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No driver with the given ID was found!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'admin_driver',
+                array(
+                    'action' => 'manage'
+                )
+            );
+    
+            return;
+        }
+    
+        return $driver;
     }
 }

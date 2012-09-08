@@ -58,6 +58,13 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
     private $_resource;
     
     /**
+     * The id of the reservation to ignore when searching for conflicts. -1 indicates none.
+     * 
+     * @var int
+     */
+    private $_reservationId;
+    
+    /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
@@ -69,12 +76,13 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
      * @param string $format
      * @return void
      */
-    public function __construct($startDate, $format, $resource, $entityManager)
+    public function __construct($startDate, $format, $resource, $entityManager, $reservationId = -1)
     {
         $this->_startDate = $startDate;
         $this->_format = $format;
         $this->_resource = $resource;
         $this->_entityManager = $entityManager;
+        $this->_reservationId = $reservationId;
 
         parent::__construct(null);
     }
@@ -112,7 +120,7 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
         $repository = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
         
-        $conflicting = $repository->findAllConflicting($startDate, $endDate, $resource);
+        $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
         
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);

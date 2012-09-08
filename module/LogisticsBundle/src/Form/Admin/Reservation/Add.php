@@ -94,40 +94,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'reservation_add');
         $this->add($field);
     }
+    
+    public function populateFromReservation(VanReservation $reservation)
+    {
+        $driver = $reservation->getDriver();
+        
+        if (null === $driver) {
+            $driverid = -1;
+        } else {
+            $driverid = $driver->getPerson()->getId();
+        }
+        
+        $data = array(
+            'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
+            'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
+            'reason' => $reservation->getReason(),
+            'additional_info' => $reservation->getAdditionalInfo(),
+            'driver' => $driverid,
+        );
+
+        $this->setData($data);
+    }
+    
 
     public function getInputFilter()
     {
         if ($this->_inputFilter == null) {
 
-            /*
-             * TODO : validate that no reservation for this time is made yet. The check is:
-             * 
-             * No other reservation such that:
-             * other_start_date < start_date < other_end_date
-             * other_start_date < end_date < other_end_date
-             * 
-             * No other reservation such that
-             * start_date < other_start_date < end_date
-             * start_date < other_end_date < end_date
-             * 
-             * Summarized: (this is probably harder to check)
-             * For all other reservations:
-             * start_date < other_end_date => end_date < other_start_date
-             * end_date > other_start_date => start_date > other_end_date
-             * 
-             * ==========================================================
-             * 
-             * Thus:
-             * No other reservations such that
-             * start_date < other_end_date && end_date > other_start_date
-             *  
-             * assert that the following query returns empty:
-             * SELECT r FROM Reservation
-             *     WHERE r.resource == :resource
-             *     AND r.start_date < :end_date
-             *     AND r.end_date > :start_date
-             */
-            
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
