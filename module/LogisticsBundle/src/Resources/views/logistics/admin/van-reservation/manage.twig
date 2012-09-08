@@ -66,9 +66,9 @@
 		                    	data-start="{{ reservation.getStartDate().format('d/m/Y H:i') }}"
 		                    	data-end="{{ reservation.getEndDate().format('d/m/Y H:i') }}"
 		                    	data-additional="{{ reservation.getAdditionalInfo() }}"
-		                    	data-driver="{{ reservation.getDriver().getFullName() }}"
 		                    	data-load="{{ reservation.getLoad() }}"
 		                    	data-passenger="{{ reservation.getPassenger().getFullName() }}"
+		                    	data-driver="{{ reservation.getDriver().getPerson().getFullName() }}"
 		                    	data-creator="{{ reservation.getCreator().getFullName() }}"
                     		>More Information</a>
 						</td>
@@ -92,7 +92,7 @@
 			<table class="full-width">
 				<tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
 				<tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
-				<tr><td><b>Driver</b></td><td><span class="driver"/></td></tr>
+				<tr><td><b>Driver</b></td><td><span class="moreinfoDriver"/></td></tr>
 				<tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
 				<tr><td><b>Start</b></td><td><span class="start"/></td></tr>
 				<tr><td><b>End</b></td><td><span class="end"/></td></tr>
@@ -178,7 +178,7 @@
 			dialog.find('.additional').html($(this).data('additional'));
 			dialog.find('.start').html($(this).data('start'));
 			dialog.find('.end').html($(this).data('end'));
-			dialog.find('.driver').html($(this).data('driver'));
+			dialog.find('.moreinfoDriver').html($(this).data('driver'));
 			dialog.find('.load').html($(this).data('load'));
 			dialog.find('.passenger').html($(this).data('passenger'));
 			dialog.find('.creator').html($(this).data('creator'));
