@@ -35,9 +35,21 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             ->findAll(),
             $this->getParam('page')
         );
+        
+        $current = $this->getAuthentication()->getPersonObject();
+        if ($current != null) {
+            $driver = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findOneById($current->getId());
+            $isDriverLoggedIn = ($driver !== null);
+        } else {
+            $isDriverLoggedIn = false;
+        }
 
         return new ViewModel(
             array(
+                'currentUser' => $current,
+                'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -198,6 +210,31 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         return new ViewModel(
             array(
                 'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+    
+    public function assignmeAction()
+    {
+        $this->initAjax();
+        
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+        
+        $person = $this->getAuthentication()->getPersonObject();
+        $driver = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findOneById($person->getId());
+        
+        $reservation->setDriver($driver);
+        $this->getEntityManager()->flush();
+        
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    "status" => "success",
+                    "driver" => $person->getFullName(),
+                ),
             )
         );
     }
