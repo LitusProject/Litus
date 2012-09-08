@@ -56,6 +56,16 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             if ($form->isValid()) {
                 
                 $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                if ($formData['passenger_id'] == '') {
+                
+                    // No autocompletion used, we assume the username was entered
+                    $passenger = $repository->findOneByUsername($formData['passenger_name']);
+                } else {
+                    $passenger = $repository->findOneById($formData['passenger_id']);
+                }
+                
+                $repository = $this->getEntityManager()
                    ->getRepository('LogisticsBundle\Entity\Driver');
                 
                 $driver = $repository->findOneById($formData['driver']);
@@ -73,12 +83,14 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['reason'],
+                    $formData['load'],
                     $van,
                     $formData['additional_info'],
                     $this->getAuthentication()->getPersonObject()
                 );
                 
                 $reservation->setDriver($driver);
+                $reservation->setPassenger($passenger);
                 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
@@ -123,6 +135,16 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             if ($form->isValid()) {
                 
                 $repository = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\People\Academic');
+                if ($formData['passenger_id'] == '') {
+                
+                    // No autocompletion used, we assume the username was entered
+                    $passenger = $repository->findOneByUsername($formData['passenger_name']);
+                } else {
+                    $passenger = $repository->findOneById($formData['passenger_id']);
+                }
+                
+                $repository = $this->getEntityManager()
                    ->getRepository('LogisticsBundle\Entity\Driver');
                 
                 $driver = $repository->findOneById($formData['driver']);
@@ -130,8 +152,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setReason($formData['reason'])
+                    ->setLoad($formData['load'])
                     ->setAdditionalInfo($formData['additional_info'])
-                    ->setDriver($driver);
+                    ->setDriver($driver)
+                    ->setPassenger($passenger);
                 
                 $this->getEntityManager()->flush();
     

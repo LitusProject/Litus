@@ -53,7 +53,7 @@ class VanReservation extends Reservation
      */
     private $load;
     
-    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator, $load) {
+    public function __construct($startDate, $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, $creator) {
         parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
         $this->driver = null;
         $this->passenger = null;
@@ -69,17 +69,17 @@ class VanReservation extends Reservation
         return $this;
     }
     
-    public function getPasseneger() {
+    public function getPassenger() {
         return $this->passenger;
     }
     
-    public function setPasseneger($passenger) {
+    public function setPassenger($passenger) {
         $this->passenger = $passenger;
         return $this;
     }
     
     public function getLoad() {
-        return $load;
+        return $this->load;
     }
     
     public function setLoad($load) {
