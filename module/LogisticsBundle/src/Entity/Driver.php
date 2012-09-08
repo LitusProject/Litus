@@ -39,7 +39,7 @@ class Driver
     private $person;
     
     /**
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(name="logistics.driver_years",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
