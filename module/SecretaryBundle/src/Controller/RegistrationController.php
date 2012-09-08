@@ -27,12 +27,44 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
 
+        if (null !== $code) {
+            if ($code->validate($this->getParam('hash'))) {
+                echo $this->getParam('identification');
+
+                $form = new AddForm($this->getEntityManager());
+
+                return new ViewModel(
+                    array(
+                        'form' => $form,
+                    )
+                );
+            }
+        }
         return new ViewModel(
             array(
-                'form' => $form,
+                'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
             )
         );
+    }
+
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    private function _getRegisterhibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=register';
     }
 }
