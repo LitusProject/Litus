@@ -56,7 +56,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'reservation_edit');
+            ->setAttribute('class', 'driver_edit');
         $this->add($field);
 
         $this->populateFromDriver($driver);

@@ -24,20 +24,9 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Driver extends \Zend\Validator\AbstractValidator
+class DriverValidator extends AcademicValidator
 {
-    const NO_SUCH_USER = 'noUser';
     const DRIVER_EXISTS = 'driverExists';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-    
-    /**
-     * @var Boolean Indicates whether the user should be searched by id or by name.
-     */
-    private $_byId = false;
 
     /**
      * @var array The error messages
@@ -55,10 +44,7 @@ class Driver extends \Zend\Validator\AbstractValidator
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        parent::__construct($opts);
-
-        $this->_entityManager = $entityManager;
-        $this->_byId = $opts['byId'];
+        parent::__construct($entityManager, $opts);
     }
 
     /**
@@ -70,21 +56,11 @@ class Driver extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $this->setValue($value);
-
-        $repository = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Users\People\Academic');
-        
-        if ($this->_byId) {
-            $person = $repository->findOneById($value);
-        } else {
-            $person = $repository->findOneByUsername($value);
-        }
-        
-        if (null === $person) {
-            $this->error(self::NO_SUCH_USER);
+        if (!parent::isValid($value, $context)) {
             return false;
         }
+        
+        $person = $this->getPerson($value);
         
         $driver = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Driver')
