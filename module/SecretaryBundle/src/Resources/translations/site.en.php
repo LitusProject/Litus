@@ -14,5 +14,36 @@
  */
 
 return array(
-    'Registrate' => 'Registrate',
+    'Registration'                                               => 'Registration',
+
+    'Personal'                                                   => 'Personal',
+    'First Name'                                                 => 'First Name',
+    'Last Name'                                                  => 'Last Name',
+    'Birthday'                                                   => 'Birthday',
+    'Sex'                                                        => 'Sex',
+    'Profile Image'                                              => 'Profile Image',
+    'Phone Number'                                               => 'Phone Number',
+    'University Identification'                                  => 'University Identification',
+
+    'Primary Address'                                            => 'Primary Address',
+    'Seconday Address'                                           => 'Secondary Address',
+    'Street'                                                     => 'Street',
+    'Number'                                                     => 'Number',
+    'Postal Code'                                                => 'Postal Code',
+    'City'                                                       => 'City',
+    'Country'                                                    => 'Country',
+
+    'Internet'                                                   => 'Internet',
+    'Universty E-mail'                                           => 'University E-mail',
+    'Personal E-mail'                                            => 'Personal E-mail',
+    'I want to receive VTK e-mail at my personal e-mail address' => 'I want to receive VTK e-mail at my personal e-mail address',
+
+    'Organisation'                                               => 'Organisation',
+    'I want to become a member of the organisation'              => 'I want to become a member of the organisation',
+    'I have read and agree with the terms and conditions'        => 'I have read and agree with the terms and conditions',
+    'I want to receive my Ir.Reëel at CuDi'                      => 'I want to receive my Ir.Reëel at CuDi',
+    'I want to receive \'t Bakske by e-mail'                     => 'I want to receive \'t Bakske by e-mail',
+    'T-shirt Size'                                               => 'T-shirt Size',
+
+    'Register'                                                   => 'Register'
 );
