@@ -19,7 +19,7 @@ namespace LogisticsBundle\Form\Admin\Driver;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    LogisticsBundle\Component\Validator\Driver as ValidatorDriver,
+    LogisticsBundle\Component\Validator\DriverValidator,
     LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new ValidatorDriver(
+                                new DriverValidator(
                                     $this->_entityManager, 
                                     array(
                                         'byId' => false,
@@ -134,7 +134,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new ValidatorDriver(
+                                new DriverValidator(
                                     $this->_entityManager, 
                                     array(
                                         'byId' => true,

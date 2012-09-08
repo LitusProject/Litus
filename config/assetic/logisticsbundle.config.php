@@ -25,6 +25,7 @@ return array(
         ),
         'admin_van_reservation' => array(
             '@common_jquery',
+            '@common_typeahead_remote',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
