@@ -31,10 +31,11 @@ return array(
             'admin_calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/content/calendar[/:action[/:id]]',
+                    'route'    => '/admin/site/calendar[/:action[/:id][/page/:page]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_calendar',

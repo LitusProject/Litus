@@ -105,7 +105,6 @@ class Role
     public function setParents(array $parents)
     {
         $this->parents = new ArrayCollection($parents);
-
         return $this;
     }
 
@@ -124,7 +123,6 @@ class Role
     public function setActions(array $actions)
     {
         $this->actions = new ArrayCollection($actions);
-
         return $this;
     }
 

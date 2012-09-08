@@ -46,9 +46,9 @@
 
     				<blockquote>
 	    				{% autoescape false %}
-	    					{{ markdown(item.getSummary(100, language)) }}
+	    					{{ markdown(item.getSummary(200, language)) }}
 	    				{% endautoescape %}
-	    				<small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('View') }}</a></small>
+	    				<small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a></small>
     				</blockquote>
 	    		</div>
 	    	{% else %}

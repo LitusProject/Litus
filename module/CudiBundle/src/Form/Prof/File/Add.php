@@ -36,13 +36,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('description');
         $field->setLabel('Description')
-            ->setAttribute('size', 70)
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $this->add($field);
 
         $field = new File('file');
         $field->setLabel('File')
-            ->setAttribute('size', 70)
             ->setRequired();
         $this->add($field);
     }

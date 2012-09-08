@@ -41,6 +41,7 @@ return array(
     'Warning' => 'Opmerking',
     'No news items were posted yet.' => 'Er zijn nog geen nieuws items geplaatst.',
     'No events were created yet.' => 'Er zijn nog geen evenementen aangemaakt.',
+    'Read More' => 'Lees Meer',
 
     'Username' => 'Gebruikersnaam',
     'Password' => 'Wachtwoord',

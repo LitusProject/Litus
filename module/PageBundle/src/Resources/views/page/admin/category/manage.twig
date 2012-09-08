@@ -36,7 +36,7 @@
 	                        {% if hasAccess('admin_page_category', 'edit') %}
 	                            <a href="{{ url('admin_page_category', {"action": "edit", "id": page_category.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
-	                        {% if hasAccess('admin_news', 'delete') %}
+	                        {% if hasAccess('admin_page_category', 'delete') %}
 	                            <a href="#" data-id="{{ page_category.getId() }}" data-name="{{ page_category.getName(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>

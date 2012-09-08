@@ -41,6 +41,7 @@ return array(
     'Warning' => 'Warning',
     'No news items were posted yet.' => 'No news items were posted yet.',
     'No events were created yet.' => 'No events were created yet.',
+    'Read More' => 'Read More',
 
     'Username' => 'Username',
     'Password' => 'Password',

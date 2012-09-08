@@ -48,7 +48,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'page' => array(
-                        'view'
+                        'file', 'view'
                     ),
                 )
             )
@@ -61,7 +61,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(),
                     'actions' => array(
                         'page' => array(
-                            'view'
+                            'file', 'view'
                         ),
                     )
                 ),

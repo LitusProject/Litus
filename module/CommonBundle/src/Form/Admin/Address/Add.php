@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
 
         $this->populateValues(
             array(
-                'address_country' => 'BE'
+                $prefix . 'address_country' => 'BE'
             )
         );
     }
@@ -84,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
         $options = array();
         foreach(Address::$countries as $key => $continent) {
             $options[$key] = array(
-                'value' => $key,
+                'label' => $key,
                 'options' => $continent,
             );
         }
