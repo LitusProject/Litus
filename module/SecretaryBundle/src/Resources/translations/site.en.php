@@ -14,23 +14,5 @@
  */
 
 return array(
-    'controllers'  => array(
-        'secretary_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
-        'secretary_registration' => array(
-            '@common_jquery',
-            '@bootstrap_css',
-            '@bootstrap_responsive_css',
-            '@site_css',
-            '@bootstrap_js_dropdown',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_carousel',
-            '@bootstrap_js_collapse',
-        ),
-    ),
-    'routes' => array(),
+    'Registrate' => 'Registrate',
 );

@@ -28,11 +28,37 @@ return array(
                     ),
                 ),
             ),
+            'secretary_registration' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/secretary/registration',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'secretary_registration',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
             'secretary_view' => __DIR__ . '/../views',
+        ),
+    ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
+                'locale'   => 'nl'
+            ),
         ),
     ),
     'doctrine' => array(
@@ -51,7 +77,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'secretary_install' => 'SecretaryBundle\Controller\Admin\InstallController',
+            'secretary_install'      => 'SecretaryBundle\Controller\Admin\InstallController',
+            'secretary_registration' => 'SecretaryBundle\Controller\RegistrationController',
         ),
     ),
 );

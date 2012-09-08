@@ -13,10 +13,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Form\Admin\Address;
+namespace CommonBundle\Form\Address;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Address,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -46,29 +46,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
 
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $this->add($field);
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired()
             ->setAttribute('size', 5);
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired()
             ->setAttribute('size', 10);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city');
         $field->setLabel('City')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setRequired();
         $this->add($field);
 
         $field = new Select($prefix . 'address_country');
         $field->setLabel('Country')
-            ->setRequired()
             ->setAttribute('options', $this->_getCountries());
         $this->add($field);
 

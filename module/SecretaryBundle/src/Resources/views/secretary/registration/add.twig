@@ -1,0 +1,31 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Registrate') }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#become_member').change(toggleMember);
+            toggleMember();
+        });
+
+        function toggleMember() {
+            if ($('#become_member').is(':checked'))
+                $('#organisation_info .control-group').show();
+            else
+                $('#organisation_info .control-group').hide();
+            $('#become_member, #conditions').closest('.control-group').show();
+        }
+    </script>
+{% endblock %}
