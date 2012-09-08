@@ -14,5 +14,36 @@
  */
 
 return array(
-    'Registration' => 'Inschrijving',
+    'Registration'                                               => 'Inschrijving',
+
+    'Personal'                                                   => 'Persoonlijk',
+    'First Name'                                                 => 'Voornaam',
+    'Last Name'                                                  => 'Achternaam',
+    'Birthday'                                                   => 'Geboortedatum',
+    'Sex'                                                        => 'Geslacht',
+    'Profile Image'                                              => 'Profiel Foto',
+    'Phone Number'                                               => 'Telefoonnummer',
+    'University Identification'                                  => 'Universiteits Identificatie',
+
+    'Primary Address'                                            => 'Primair Adres',
+    'Seconday Address'                                           => 'Secundair Adres',
+    'Street'                                                     => 'Straat',
+    'Number'                                                     => 'Nummer',
+    'Postal Code'                                                => 'Postcode',
+    'City'                                                       => 'Stad',
+    'Country'                                                    => 'Land',
+
+    'Internet'                                                   => 'Internet',
+    'Universty E-mail'                                           => 'Universiteits E-mail',
+    'Personal E-mail'                                            => 'Persoonlijke E-mail',
+    'I want to receive VTK e-mail at my personal e-mail address' => 'Ik wil VTK e-mail ontvangen op mijn persoonlijk e-mail adres',
+
+    'Organisation'                                               => 'Organisatie',
+    'I want to become a member of the organisation'              => 'Ik wil lid worden van de organisatie',
+    'I have read and agree with the terms and conditions'        => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
+    'I want to receive my Ir.Reëel at CuDi'                      => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
+    'I want to receive \'t Bakske by e-mail'                     => 'Ik wil \'t Bakske ontvangen via e-mail',
+    'T-shirt Size'                                               => 'T-shirt Maat',
+
+    'Register'                                                   => 'Schrijf In'
 );
