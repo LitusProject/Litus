@@ -31,8 +31,10 @@ return array(
             'secretary_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/secretary/registration',
+                    'route'    => '/secretary/registration[/identification/:identification[/hash/:hash]]',
                     'constraints' => array(
+                        'identification' => '[mrsu][0-9]{7}',
+                        'hash'           => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'secretary_registration',
