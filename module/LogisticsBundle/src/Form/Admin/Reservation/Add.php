@@ -94,7 +94,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
         
         $field = new Text('passenger_name');
-        $field->setLabel('Passeneger')
+        $field->setLabel('Passenger')
         ->setAttribute('id', 'passengerSearch')
         ->setAttribute('autocomplete', 'off')
         ->setAttribute('data-provide', 'typeahead');
@@ -120,6 +120,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $driverid = $driver->getPerson()->getId();
         }
         
+        if (null === $reservation->getPassenger()) {
+            $passenger_id = '';
+            $passenger_name = '';
+        } else {
+            $passenger_id = $reservation->getPassenger()->getId();
+            $passenger_name = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
+        }
+        
         $data = array(
             'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
@@ -127,8 +135,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'load' => $reservation->getLoad(),
             'additional_info' => $reservation->getAdditionalInfo(),
             'driver' => $driverid,
-            'passenger_id' => $reservation->getPassenger()->getId(),
-            'passenger_name' => $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification(),
+            'passenger_id' => $passenger_id,
+            'passenger_name' => $passenger_name,
         );
 
         $this->setData($data);
@@ -137,95 +145,94 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilter()
     {
-        if ($this->_inputFilter == null) {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'start_date',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'start_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
                             ),
                         ),
-                    )
+                    ),
                 )
-            );
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_date',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'end_date',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
                             ),
-                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                            new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
                         ),
-                    )
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
+                    ),
                 )
-            );
+            )
+        );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'reason',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'reason',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'load',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'load',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-            
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'additional_info',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+            )
+        );
+        
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'additional_info',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                 )
-            );
-            
-            if (isset($this->data['passenger_id']) && '' == $this->data['passenger_id']) {
+            )
+        );
+        
+        if (isset($this->data['passenger_id'])) {
+            if ($this->data['passenger_id'] == '' && $this->get('passenger_name')) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
                             'name' => 'passenger_name',
-                            'required' => true,
+                            'required' => false,
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -245,7 +252,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     $factory->createInput(
                         array(
                             'name' => 'passenger_id',
-                            'required' => true,
+                            'required' => false,
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
@@ -261,10 +268,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 );
             }
-            
-            $this->_inputFilter = $inputFilter;
         }
-
-        return $this->_inputFilter;
+        
+        return $inputFilter;
+            
     }
 }
