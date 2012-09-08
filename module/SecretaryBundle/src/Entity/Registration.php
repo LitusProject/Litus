@@ -45,6 +45,14 @@ class Registration
     private $academic;
 
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The academic year of this registration
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
      * @var \DateTime The time of the registration
      *
      * @ORM\Column(type="datetime")

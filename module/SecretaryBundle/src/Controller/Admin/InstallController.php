@@ -25,7 +25,9 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig()
+    {
+    }
 
     protected function initAcl()
     {
