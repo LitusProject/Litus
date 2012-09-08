@@ -17,6 +17,12 @@
 			<p>An error occurred while trying to delete a reservation.</p>
 		</div>
 	</div>
+	<div class="flashmessage error_message full_width assigning_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to assign the current user as driver.</p>
+		</div>
+	</div>
 
 	<div id="controller_action">
 	
@@ -27,8 +33,8 @@
 					<th>Reason</th>
 					<th>Driver</th>
 					<th>Creator</th>
-					<th>Start Date</th>
-					<th>End Date</th>
+					<th width="100px">Start Date</th>
+					<th width="100px">End Date</th>
 					<th width="70px">Action</th>
 				</tr>
 				
@@ -36,7 +42,13 @@
 				
 					<tr class="item item-{{ reservation.getId() }}">
 						<td>{{ reservation.getReason() }}</td>
-						<td>{{ reservation.getDriver().getPerson().getFullName() }}</td>
+						<td class="driverdata">
+						    {% if hasAccess('admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
+						    	None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
+						    {% endif %}
+						
+							{{ reservation.getDriver().getPerson().getFullName() }}
+						</td>
 						<td>{{ reservation.getCreator().getFullName() }}</td>
 						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
 						<td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
@@ -47,6 +59,16 @@
 						    {% if hasAccess('admin_van_reservation', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
 		                    {% endif %}
+		                    <a href="#" class="moreinfo" 
+		                    	data-reason="{{ reservation.getReason() }}"
+		                    	data-start="{{ reservation.getStartDate().format('d/m/Y H:i') }}"
+		                    	data-end="{{ reservation.getEndDate().format('d/m/Y H:i') }}"
+		                    	data-additional="{{ reservation.getAdditionalInfo() }}"
+		                    	data-driver="{{ reservation.getDriver().getFullName() }}"
+		                    	data-load="{{ reservation.getLoad() }}"
+		                    	data-passenger="{{ reservation.getPassenger().getFullName() }}"
+		                    	data-creator="{{ reservation.getCreator().getFullName() }}"
+                    		>More Information</a>
 						</td>
 					</tr>
 				
@@ -57,6 +79,27 @@
 		</div>
 	
     </div>
+    
+	<div class="modal hide fade" id="moreInformation">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Reservation
+		</div>
+		<div class="modal-body">
+			<h1><span class="reason"/> by <span class="creator"/></h1>
+			<table class="full-width">
+				<tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
+				<tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
+				<tr><td><b>Driver</b></td><td><span class="driver"/></td></tr>
+				<tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
+				<tr><td><b>Start</b></td><td><span class="start"/></td></tr>
+				<tr><td><b>End</b></td><td><span class="end"/></td></tr>
+			</table>
+			<div class="footer">
+				<input type="button" class="cancel" data-dismiss="modal" value="Close">
+			</div>
+		</div>
+	</div>
     
 	<div class="modal hide fade" id="removeReservation">
 		<div class="modal-header">
@@ -85,8 +128,41 @@
 		$(document).ready(function () {
 		
 			$('.item .delete').click(openModal);
+			$('.item .moreinfo').click(showInfo);
+			$('.item .assignme').click(assignMe);
 
 		});
+		
+		function assignMe(e) {
+
+			e.preventDefault();
+			
+			var id = $(this).data('id');
+			
+			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}/' + id, function (data) {
+			    if (data && 'success' == data.status) {
+					$('.flashmessage').addClass('hide');
+					$('.item-' + id + ' .driverdata').html(data.driver);
+				} else {
+				    errorAssigning();
+				}
+			}, 'json').error(errorAssigning);
+		}
+		
+		function showInfo(e) {
+			e.preventDefault();
+			
+			var dialog = $('#moreInformation');
+			dialog.find('.reason').html($(this).data('reason'));
+			dialog.find('.additional').html($(this).data('additional'));
+			dialog.find('.start').html($(this).data('start'));
+			dialog.find('.end').html($(this).data('end'));
+			dialog.find('.driver').html($(this).data('driver'));
+			dialog.find('.load').html($(this).data('load'));
+			dialog.find('.passenger').html($(this).data('passenger'));
+			dialog.find('.creator').html($(this).data('creator'));
+			dialog.modal();
+		}
 		
 		function openModal(e) {
 			var $this = $(this);
@@ -112,8 +188,15 @@
 
 		function errorRemove() {
     		$('.flashmessage').addClass('hide');
+			$('.assigning_error').addClass('hide');
     		$('.reservation_removed_error').removeClass('hide');
     		$('#removeReservation').modal('hide');
+		}
+		
+		function errorAssigning() {
+    		$('.flashmessage').addClass('hide');
+    		$('.reservation_removed_error').addClass('hide');
+			$('.assigning_error').removeClass('hide');
 		}
 		
 	</script>
