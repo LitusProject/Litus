@@ -77,8 +77,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $language = new Language(
                 'en', 'English'
             );
-            $this->getEntityManager->persist($language);
-            $this->getEntityManager->flush();
+            $this->getEntityManager()->persist($language);
+            $this->getEntityManager()->flush();
         }
 
         $this->getTranslator()->setCache($this->getCache());
