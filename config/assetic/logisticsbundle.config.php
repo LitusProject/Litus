@@ -23,7 +23,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_vanreservation' => array(
+        'admin_van_reservation' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

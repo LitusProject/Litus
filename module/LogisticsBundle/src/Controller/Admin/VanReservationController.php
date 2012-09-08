@@ -92,7 +92,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 );
     
                 $this->redirect()->toRoute(
-                    'admin_vanreservation',
+                    'admin_van_reservation',
                     array(
                         'action' => 'manage',
                     )
@@ -144,7 +144,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 );
     
                 $this->redirect()->toRoute(
-                    'admin_vanreservation',
+                    'admin_van_reservation',
                     array(
                         'action' => 'manage'
                     )
@@ -190,7 +190,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             );
     
             $this->redirect()->toRoute(
-                'admin_vanreservation',
+                'admin_van_reservation',
                 array(
                     'action' => 'manage'
                 )
@@ -213,7 +213,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             );
     
             $this->redirect()->toRoute(
-                'admin_vanreservation',
+                'admin_van_reservation',
                 array(
                     'action' => 'manage'
                 )

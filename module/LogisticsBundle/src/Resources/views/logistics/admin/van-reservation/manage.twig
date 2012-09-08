@@ -41,10 +41,10 @@
 						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
 						<td>{{ reservation.getEndDate().format('d/m/Y H:i') }}</td>
 						<td class="actions">
-						    {% if hasAccess('admin_vanreservation', 'edit') %}
-		                        <a href="{{ url('admin_vanreservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
+						    {% if hasAccess('admin_van_reservation', 'edit') %}
+		                        <a href="{{ url('admin_van_reservation', {"action": "edit", "id": reservation.getId()}) }}" class="edit">Edit</a>
 		                    {% endif %}
-						    {% if hasAccess('admin_vanreservation', 'delete') %}
+						    {% if hasAccess('admin_van_reservation', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
 		                    {% endif %}
 						</td>
@@ -96,7 +96,7 @@
 			removeReservation.find('.reservationReason').html($(this).data('reason'));
 			var id = $this.data('id');
 			removeReservation.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_vanreservation', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_van_reservation', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.reservation_removed_success').removeClass('hide');

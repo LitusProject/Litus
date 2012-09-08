@@ -34,10 +34,10 @@ return array(
 					),
 				),
 			),
-			'admin_vanreservation' => array(
+			'admin_van_reservation' => array(
 			    'type'    => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '/admin/vanreservation[/:action[/:id][/page/:page][/:field/:string]]',
+			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/:field/:string]]',
 			        'constraints' => array(
 			            'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'id'      => '[0-9]*',
@@ -46,7 +46,7 @@ return array(
 			            'page'    => '[0-9]*',
 			        ),
 			        'defaults' => array(
-			            'controller' => 'admin_vanreservation',
+			            'controller' => 'admin_van_reservation',
 			            'action'     => 'manage',
 			        ),
 			    ),
@@ -75,7 +75,7 @@ return array(
 	'controllers' => array(
 		'invokables' => array(
 			'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
-			'admin_vanreservation'         => 'LogisticsBundle\Controller\Admin\VanReservationController',
+			'admin_van_reservation'         => 'LogisticsBundle\Controller\Admin\VanReservationController',
 		),
 	),
 );
