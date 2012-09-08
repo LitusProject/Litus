@@ -31,6 +31,19 @@ class Driver extends EntityRepository
         return null;
     }
     
+    public function findOneByIdAndYear($id, AcademicYear $year)
+    {
+        $resultSet = $this->_em
+        ->createQuery('SELECT d FROM LogisticsBundle\Entity\Driver d JOIN d.years y WHERE y.id = :yearid AND d.person = :id')
+        ->setParameter('yearid', $year->getId())
+        ->setParameter('id', $id)
+        ->getResult();
+        
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+        return null;
+    }
+    
     public function findAllByYear(AcademicYear $year) {
         $resultSet = $this->_em
             ->createQuery('SELECT d FROM LogisticsBundle\Entity\Driver d JOIN d.years y WHERE y.id = :id')

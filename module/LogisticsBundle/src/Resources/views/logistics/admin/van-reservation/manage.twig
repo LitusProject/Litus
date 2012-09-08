@@ -20,7 +20,7 @@
 	<div class="flashmessage error_message full_width assigning_error hide">
 		<div class="title">Error</div>
 		<div class="content">
-			<p>An error occurred while trying to assign the current user as driver.</p>
+			<p>An error occurred while trying to (un)assign the current user as driver.</p>
 		</div>
 	</div>
 
@@ -45,9 +45,11 @@
 						<td class="driverdata">
 						    {% if hasAccess('admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
 						    	None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
-						    {% endif %}
-						
-							{{ reservation.getDriver().getPerson().getFullName() }}
+						    {% elseif hasAccess('admin_van_reservation', 'edit') and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
+								{{ reservation.getDriver().getPerson().getFullName() }} - <i><a href="#" class="unassignme" data-id="{{ reservation.getId() }}">Unassign Me</a></i>
+							{% else %}
+								{{ reservation.getDriver().getPerson().getFullName() }}
+							{% endif %}
 						</td>
 						<td>{{ reservation.getCreator().getFullName() }}</td>
 						<td>{{ reservation.getStartDate().format('d/m/Y H:i') }}</td>
@@ -130,6 +132,7 @@
 			$('.item .delete').click(openModal);
 			$('.item .moreinfo').click(showInfo);
 			$('.item .assignme').click(assignMe);
+			$('.item .unassignme').click(unassignMe);
 
 		});
 		
@@ -142,7 +145,25 @@
 			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}/' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
-					$('.item-' + id + ' .driverdata').html(data.driver);
+					$('.item-' + id + ' .driverdata').html(data.driver + ' - <i><a href="#" class="unassignme" data-id=' + id + '>Unassign Me</a></i>');
+					$('.item-' + id + ' .unassignme').click(unassignMe);
+				} else {
+				    errorAssigning();
+				}
+			}, 'json').error(errorAssigning);
+		}
+		
+		function unassignMe(e) {
+
+			e.preventDefault();
+			
+			var id = $(this).data('id');
+			
+			$.post('{{ url('admin_van_reservation', {"action": "unassignme"})}}/' + id, function (data) {
+			    if (data && 'success' == data.status) {
+					$('.flashmessage').addClass('hide');
+					$('.item-' + id + ' .driverdata').html('None: <i><a href="#" class="assignme" data-id=' + id + '>Assign Me</a></i>');
+					$('.item-' + id + ' .assignme').click(assignMe);
 				} else {
 				    errorAssigning();
 				}

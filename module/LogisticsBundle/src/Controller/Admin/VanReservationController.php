@@ -159,7 +159,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $repository = $this->getEntityManager()
                    ->getRepository('LogisticsBundle\Entity\Driver');
                 
-                $driver = $repository->findOneById($formData['driver']);
+                $driver = $repository->findOneByIdAndYear($formData['driver'], $this->getCurrentAcademicYear());
 
                 $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
@@ -234,6 +234,26 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 'result' => (object) array(
                     "status" => "success",
                     "driver" => $person->getFullName(),
+                ),
+            )
+        );
+    }
+    
+    public function unassignmeAction()
+    {
+        $this->initAjax();
+    
+        if (!($reservation = $this->_getReservation()))
+            return new ViewModel();
+    
+        $reservation->setDriver(null);
+        $this->getEntityManager()->flush();
+    
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    "status" => "success",
+                    "driver" => "",
                 ),
             )
         );
