@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits',
+                            'name' => 'alpha',
                         ),
                     ),
                 )

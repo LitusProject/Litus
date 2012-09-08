@@ -23,7 +23,7 @@ use CommonBundle\Entity\Users\People\Academic,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Registration")
- * @ORM\Table(name="users.registration")
+ * @ORM\Table(name="users.registrations")
  */
 class Registration
 {

@@ -22,7 +22,9 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Address\Add as AddressForm,
+    CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -40,11 +42,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param string $identification The university identification
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $identification, $name = null)
     {
         parent::__construct($name);
+
+        $this->setAttribute('id', 'register_form');
 
         $this->_entityManager = $entityManager;
 
@@ -97,20 +102,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('university_identification');
         $field->setLabel('University Identification')
             ->setAttribute('class', $field->getAttribute('class') . ' input-large')
-            ->setRequired();
+            ->setAttribute('disabled', true)
+            ->setValue($identification);
         $personal->add($field);
 
-        $primary_address = new Collection('primary_address');
-        $primary_address->setLabel('Primary Address');
-        $this->add($primary_address);
+        $field = new PrimaryAddressForm($entityManager, 'primary_address', 'primary_address');
+        $field->setLabel('Primary Address');
+        $this->add($field);
 
-        $primary_address->add(new AddressForm('primary_address', 'primary_address_form'));
-
-        $secondary_address = new Collection('secondary_address');
-        $secondary_address->setLabel('Secondary Address');
-        $this->add($secondary_address);
-
-        $secondary_address->add(new AddressForm('secondary_address', 'secondary_address_form'));
+        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field->setLabel('Secondary Address');
+        $this->add($field);
 
         $internet = new Collection('internet');
         $internet->setLabel('Internet');
@@ -172,7 +174,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         $organisation->add($field);
 
-        $field = new Submit('submit');
+        $field = new Submit('register');
         $field->setValue('Register')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
@@ -182,7 +184,160 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         if ($this->_inputFilter == null) {
             $inputFilter = new InputFilter();
+
+            $inputs = $this->get('secondary_address')
+                ->getInputs();
+            foreach($inputs as $input)
+                $inputFilter->add($input);
+
+            $inputs =$this->get('primary_address')
+                    ->getInputs();
+            foreach($inputs as $input)
+                $inputFilter->add($input);
+
             $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'first_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'last_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'birthday',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'sex',
+                        'required' => true,
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'profile',
+                        'required' => false,
+                        'validators' => array(
+                            array(
+                                'name' => 'fileextension',
+                                'options' => array(
+                                    'extension' => 'jpg,png',
+                                ),
+                            ),
+                            array(
+                                'name' => 'filefilessize',
+                                'options' => array(
+                                    'extension' => '2MB',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'phone_number',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PhoneNumberValidator(),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'university_email',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'personal_email',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'conditions',
+                        'required' => true,
+                        'validators' => array(
+                            array(
+                                'name' => 'notempty',
+                                'options' => array(
+                                    'type' => 16,
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
 
             $this->_inputFilter = $inputFilter;
         }
