@@ -13,13 +13,13 @@
     <nav class="navbar navbar-fixed-top main-navbar main-navbar-fixed-top">
     	<div class="navbar-inner main-navbar-inner">
     		<div class="container">
-    		    <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    		    <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".main-nav">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a class="title hidden-desktop" href="#">{{ translate('VTK Leuven vzw') }}</a>
-                <div class="nav-collapse collapse">
+                <div class="main-nav nav-collapse main-nav">
         			<ul class="nav main-nav">
                         {% for item in menu %}
                             {% if 'category' == item.type %}

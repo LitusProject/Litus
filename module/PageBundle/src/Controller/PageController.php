@@ -15,7 +15,8 @@
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Nodes\Page,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    PageBundle\Entity\Nodes\Page,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -32,10 +33,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (!($page = $this->_getPage()))
             return new ViewModel();
 
+        $submenu = $this->_buildSubmenu($page);
+        if (empty($submenu) && null !== $page->getParent())
+            $submenu = $this->_buildSubmenu($page->getParent());
+
         return new ViewModel(
             array(
                 'page' => $page,
-                'submenu' => $this->_buildSubmenu($page)
+                'submenu' => $submenu
             )
         );
     }

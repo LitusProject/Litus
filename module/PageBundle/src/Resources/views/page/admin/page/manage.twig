@@ -22,9 +22,9 @@
 	        <thead>
 	            <tr>
 	                <th>Title</th>
-	                <th width="150px">Category</th>
-	                <th width="200px">Parent</th>
-	                <th width="160px">Author</th>
+	                <th width="120px">Category</th>
+	                <th width="100px">Parent</th>
+	                <th width="120px">Author</th>
 	                <th width="70px">Actions</th>
 	            </tr>
 	        </thead>
@@ -36,14 +36,16 @@
 	                    <td>{{ page.getCategory().getName(language) }}</td>
 	                    <td>{{ page.getParent().getTitle(language) }}</td>
 	                    <td>{{ page.getCreationPerson().getFullName() }}</td>
-	                    <td class="actions">
-	                        {% if hasAccess('admin_page', 'edit') and page.canBeEditedBy(authenticatedPerson) %}
-	                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                        {% if hasAccess('admin_news', 'delete') %}
-	                            <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="delete">Delete</a>
-	                        {% endif %}
-	                    </td>
+		                <td class="actions">
+		                	{% if page.canBeEditedBy(authenticatedPerson) %}
+		                        {% if hasAccess('admin_page', 'edit') %}
+		                            <a href="{{ url('admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
+		                        {% endif %}
+		                        {% if hasAccess('admin_news', 'delete') %}
+		                            <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="delete">Delete</a>
+		                        {% endif %}
+		                	{% endif %}
+		                </td>
 	                </tr>
 	            {% endfor %}
 	        </tbody>

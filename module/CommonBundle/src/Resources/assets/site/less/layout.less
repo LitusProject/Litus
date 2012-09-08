@@ -91,10 +91,6 @@ header {
         }
     }
 
-    ul.main-nav {
-        padding-right: 20px;
-    }
-
     .btn-navbar {
         .buttonBackground(@navbarBackgroundHighlight, @navbarBackground);
     }
@@ -258,6 +254,10 @@ header {
 
             min-height: 75px;
 
+            blockquote {
+                padding-right: 5px;
+            }
+
             .date {
                 position: absolute;
 
@@ -370,4 +370,8 @@ footer {
     margin-bottom: 10px;
     border-bottom: 1px solid @grayLighter;
     .clearfix();
+}
+
+fieldset .control-group:first-child {
+    padding-top: 5px;
 }
