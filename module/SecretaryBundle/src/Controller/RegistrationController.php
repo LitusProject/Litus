@@ -31,11 +31,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code) {
-            if ($code->validate($this->getParam('hash'))) {
-                echo $this->getParam('identification');
+        if ($this->getRequest()->isPost()) {
+            if (true || $code->hash() == $this->getParam('hash')) {
+                $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
 
-                $form = new AddForm($this->getEntityManager());
+                $formData = $this->getRequest()->getPost();
+                $formData['university_identification'] = $this->getParam('identification');
+                $form->setData($formData);
+
+                if ($form->isValid()) {
+
+                }
 
                 return new ViewModel(
                     array(
@@ -43,7 +49,20 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
             }
+        } else {
+            if (null !== $code || true) {
+                if (true || $code->validate($this->getParam('hash'))) {
+                    $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
+
+                    return new ViewModel(
+                        array(
+                            'form' => $form,
+                        )
+                    );
+                }
+            }
         }
+
         return new ViewModel(
             array(
                 'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
