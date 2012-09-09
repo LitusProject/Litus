@@ -220,7 +220,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
 
-            if (null == $language) {
+            if (null === $language) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
             }
@@ -1220,7 +1220,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ->getRepository('CommonBundle\Entity\General\Address\City')
                 ->findOneByPostal($cityData['postal']);
 
-            if (null == $city) {
+            if (null === $city) {
                 $city = new City($cityData['postal'], $cityData['name']);
                 $this->getEntityManager()->persist($city);
             }

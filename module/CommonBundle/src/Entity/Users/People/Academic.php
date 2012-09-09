@@ -17,8 +17,10 @@ namespace CommonBundle\Entity\Users\People;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -38,11 +40,11 @@ class Academic extends \CommonBundle\Entity\Users\Person
     private $personalEmail;
 
     /**
-     * @var string The user's primary email
+     * @var string The user's university email
      *
-     * @ORM\Column(name="primary_email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="university_email", type="string", length=100, nullable=true)
      */
-    private $primaryEmail;
+    private $universityEmail;
 
     /**
      * @var string The user's university identification
@@ -52,11 +54,34 @@ class Academic extends \CommonBundle\Entity\Users\Person
     private $universityIdentification;
 
     /**
+     * @var \DateTime The user's birthday
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthday;
+
+    /**
      * @var string The path to the user's photo
      *
      * @ORM\Column(name="photo_path", type="string", nullable=true)
      */
     private $photoPath;
+
+    /**
+     * @var \CommonBundle\Entity\General\Address The primary address of the academic
+     *
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+     * @ORM\JoinColumn(name="primary_address", referencedColumnName="id")
+     */
+    private $primaryAddress;
+
+    /**
+     * @var \CommonBundle\Entity\General\Address The secondary address of the academic
+     *
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+     * @ORM\JoinColumn(name="secondary_address", referencedColumnName="id")
+     */
+    private $secondaryAddress;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
@@ -86,7 +111,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @param string $personalEmail
      * @return \CommonBundle\Entity\Users\People\Academic
-     * @throws \InvalidArgumentException
      */
     public function setPersonalEmail($personalEmail)
     {
@@ -103,22 +127,21 @@ class Academic extends \CommonBundle\Entity\Users\Person
     }
 
     /**
-     * @param string $primaryEmail
+     * @param string $universityEmail
      * @return \CommonBundle\Entity\Users\People\Academic
-     * @throws \InvalidArgumentException
      */
-    public function setPrimaryEmail($primaryEmail)
+    public function setUniversityEmail($universityEmail)
     {
-        $this->primaryEmail = $primaryEmail;
+        $this->universityEmail = $universityEmail;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPrimaryEmail()
+    public function getUniversityEmail()
     {
-        return $this->primaryEmail;
+        return $this->universityEmail;
     }
 
     /**
@@ -143,7 +166,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @param string $photoPath
      * @return \CommonBundle\Entity\Users\People\Academic
-     * @throws \InvalidArgumentException
      */
     public function setPhotoPath($photoPath)
     {
@@ -199,5 +221,59 @@ class Academic extends \CommonBundle\Entity\Users\Person
         }
 
         return true;
+    }
+
+    /**
+     * @param \DateTime $birthday
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function setBirthday(DateTime $birthday)
+    {
+        $this->birthday = $birthday;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Address $primaryAddress
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function setPrimaryAddress(Address $primaryAddress)
+    {
+        $this->primaryAddress = $primaryAddress;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Address
+     */
+    public function getPrimaryAddress()
+    {
+        return $this->primaryAddress;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Address $secondaryAddress
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function setSecondaryAddress(Address $secondaryAddress)
+    {
+        $this->secondaryAddress = $secondaryAddress;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Address
+     */
+    public function getSecondaryAddress()
+    {
+        return $this->secondaryAddress;
     }
 }

@@ -323,7 +323,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         return null;
     }
 
-        /**
+    /**
      * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
