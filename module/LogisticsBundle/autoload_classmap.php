@@ -19,4 +19,5 @@ return array(
     'LogisticsBundle\Entity\Driver'                                    => __DIR__ . '/src/Entity/Driver.php',
     'LogisticsBundle\Controller\Admin\DriverController'                => __DIR__ . '/src/Controller/Admin/DriverController.php',
     'LogisticsBundle\Controller\Admin\VanReservationController'        => __DIR__ . '/src/Controller/Admin/VanReservationController.php',
+    'LogisticsBundle\Controller\IndexController'                       => __DIR__ . '/src/Controller/IndexController.php',
 );

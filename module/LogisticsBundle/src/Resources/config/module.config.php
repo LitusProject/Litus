@@ -51,11 +51,27 @@ return array(
 			        ),
 			    ),
 			),
+			'logistics_index' => array(
+			    'type' => 'Zend\Mvc\Router\Http\Segment',
+			    'options' => array(
+			        'route' => '[/:language]/logistics[/:action]',
+			        'constraints' => array(
+			            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+			            'session'  => '[0-9]*',
+			            'language' => '[a-zA-Z][a-zA-Z_-]*',
+			        ),
+			        'defaults' => array(
+			            'controller' => 'logistics_index',
+			            'action'     => 'index',
+			        ),
+			    ),
+			),
 		)
 	),
     'view_manager' => array(
         'template_path_stack' => array(
-            'driver_view' => __DIR__ . '/../views',
+            'logistics_layouts' => __DIR__ . '/../layouts',
+            'logistics_view' => __DIR__ . '/../views',
         ),
     ),
     'doctrine' => array(
@@ -72,10 +88,40 @@ return array(
             ),
         ),
     ),
+    'assetic_configuration' => array(
+        'modules' => array(
+            'logisticsbundle' => array(
+                'root_path' => __DIR__ . '/../assets',
+                'collections' => array(
+                    'logistics_css' => array(
+                        'assets' => array(
+                            'logistics/less/base.less',
+                        ),
+                        'filters' => array(
+                            'logistics_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'logistics_css.css',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 	'controllers' => array(
 		'invokables' => array(
 			'admin_driver'                 => 'LogisticsBundle\Controller\Admin\DriverController',
 			'admin_van_reservation'         => 'LogisticsBundle\Controller\Admin\VanReservationController',
+			'logistics_index'                 => 'LogisticsBundle\Controller\IndexController',
 		),
 	),
 );
