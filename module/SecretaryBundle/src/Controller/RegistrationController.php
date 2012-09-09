@@ -17,8 +17,13 @@ namespace SecretaryBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
+    Imagick,
     SecretaryBundle\Form\Registration\Add as AddForm,
+    Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
 
 /**
@@ -101,8 +106,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         ->getRepository('CommonBundle\Entity\General\Address\City')
                         ->findOneById($formData['primary_address_address_city']);
                     $primaryStreet = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Address\City')
-                        ->findOneById($formData['primary_address_address_street']);
+                        ->getRepository('CommonBundle\Entity\General\Address\Street')
+                        ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
 
                     $student->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                         ->addUniversityStatus(
@@ -112,11 +117,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                                 $this->getCurrentAcademicYear()
                             )
                         )
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $student,
+                                'member',
+                                $this->getCurrentAcademicYear()
+                            )
+                        )
                         ->setPersonalEmail($formData['personal_email'])
                         ->setUniversityEmail($formData['university_email'])
                         ->setPrimaryAddress(
                             new Address(
-                                $primaryStreet,
+                                $primaryStreet->getName(),
                                 $formData['primary_address_address_number'],
                                 $primaryCity->getPostal(),
                                 $primaryCity->getName(),

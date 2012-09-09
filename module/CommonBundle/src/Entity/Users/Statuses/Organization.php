@@ -52,7 +52,7 @@ class Organization
      * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
      * @ORM\ManyToOne(
-     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
+     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="organizationStatuses"
      * )
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
@@ -81,7 +81,7 @@ class Organization
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
     {
-        if(!self::isValidPerson($person))
+        if(!self::isValidPerson($person, $academicYear))
             throw new \InvalidArgumentException('Invalid person');
 
         $this->person = $person;
@@ -113,9 +113,9 @@ class Organization
      * @param \CommonBundle\Entity\Users\Person $person The person to check
      * @return bool
      */
-    public static function isValidPerson(Person $person)
+    public static function isValidPerson(Person $person, AcademicYear $academicYear)
     {
-        return ($person != null) && $person->canHaveUnionStatus();
+        return ($person != null) && $person->canHaveOrganizationStatus($academicYear);
     }
 
     /**

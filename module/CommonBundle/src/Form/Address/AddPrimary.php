@@ -154,7 +154,10 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alpha',
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allow_white_space' => true,
+                        ),
                     ),
                 ),
             )
