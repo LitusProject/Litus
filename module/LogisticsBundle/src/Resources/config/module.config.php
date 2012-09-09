@@ -66,6 +66,20 @@ return array(
 			        ),
 			    ),
 			),
+			'logistics_reservation_fetch' => array(
+			    'type'    => 'Zend\Mvc\Router\Http\Segment',
+			    'options' => array(
+			        'route' => '/logistics/fetch[/:start][/:end]',
+			        'constraints' => array(
+			            'start'       => '[0-9]*',
+			            'end'       => '[0-9]*',
+			        ),
+			        'defaults' => array(
+			            'controller' => 'logistics_index',
+			            'action'     => 'fetch',
+			        ),
+			    ),
+			),
 		)
 	),
     'view_manager' => array(
@@ -111,6 +125,16 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'logistics_css.css',
+                        ),
+                    ),
+                    'fullcalendar_css' => array(
+                        'assets' => array(
+                            'logistics/fullcalendar/fullcalendar.css',
+                        ),
+                    ),
+                    'fullcalendar_js' => array(
+                        'assets' => array(
+                            'logistics/fullcalendar/fullcalendar.min.js',
                         ),
                     ),
                 ),

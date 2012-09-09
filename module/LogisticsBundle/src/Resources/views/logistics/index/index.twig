@@ -2,4 +2,83 @@
 
 {% block content %}
 
+    <div class="flashmessage alert alert-error fade in load_error hide">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <div class="title">Error loading reservations</div>
+        <div class="content">
+            <p>There was an error while loading the reservations.</p>
+        </div>
+    </div>
+
+	<div id="calendar"></div>
+
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			var date = new Date();
+			var d = date.getDate();
+			var m = date.getMonth();
+			var y = date.getFullYear();
+			
+			$('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				firstDay: 1,
+				editable: false,
+				allDaySlot: false,
+				slotMinutes: 30,
+
+			    eventSources: [
+			
+			        {
+			            events: function(start, end, callback) {
+			            
+	                		$('.load_error').addClass('hide');
+			            
+							// Use UNIX Timestamps
+                			start = Math.round(start.getTime() / 1000);
+                			end = Math.round(end.getTime() / 1000);
+                			
+							$.post('{{ url('logistics_reservation_fetch', {}) }}/' + start + '/' + end, function (data) {
+							    if (data && 'success' == data.status) {
+							    	reservations = data.reservations;
+
+							    	var events = [];
+							    	for (index in reservations) {
+							    		events.push({
+					                        title: reservations[index].reason,
+					                        start: reservations[index].start,
+					                        end: reservations[index].end
+					                    });
+							    	}
+							    	callback(events);
+							    	
+			    				} else {
+			    				    errorFetch();
+			    				}
+							}, 'json').error(errorFetch);
+
+			            }
+			        }
+			
+			        // any other sources...
+			
+			    ]
+			
+			});
+			
+		});
+		
+		function errorFetch() {
+    		$('.flashmessage').addClass('hide');
+    		$('.load_error').removeClass('hide');
+		}
+		
+	</script>
 {% endblock %}

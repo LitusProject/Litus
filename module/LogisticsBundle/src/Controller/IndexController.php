@@ -21,7 +21,8 @@ use LogisticsBundle\Form\Admin\Driver\Edit;
 use LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Driver\Add,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    \DateTime;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -34,20 +35,70 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
     
-    public function manageAction()
+    public function fetchAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAll(),
-            $this->getParam('page')
-        );
+//         $this->initAjax();
+        
+        $events = $this->_getEvents();
+        
+        if (null === $events) {
+            return new ViewModel();
+        }
+        
+        $result = array();
+        foreach ($events as $event) {
+            $result[] = array (
+                'reason' => $event->getReason(),
+                'start' => $event->getStartDate()->getTimeStamp(),
+                'end' => $event->getEndDate()->getTimeStamp(),
+            );
+        }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'result' => (object) array("status" => "success", "reservations" => (object) $result),
             )
         );
+        
     }
+    
+    private function _getEvents()
+    {
+        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No start or end date was given to identify the reservations!'
+                )
+            );
+    
+            // TODO probably should not redirect to the page that causes the problem
+            $this->redirect()->toRoute(
+                'logistics_index',
+                array(
+                    'action' => 'index'
+                )
+            );
+    
+            return;
+        }
+        
+        $startTime = new DateTime();
+        $startTime->setTimeStamp($this->getParam('start'));
+        $endTime = new DateTime();
+        $endTime->setTimeStamp($this->getParam('end'));
+    
+        $reservations = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->findAllByDates($startTime, $endTime);
+    
+        if (null === $reservations) {
+            // If no reservations are found, return an empty array
+            $reservations = array();
+        }
+    
+        return $reservations;
+    }
+    
 }
