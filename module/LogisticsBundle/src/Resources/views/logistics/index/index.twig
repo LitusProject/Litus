@@ -11,6 +11,7 @@
     </div>
 
 	<div id="calendar"></div>
+	<div id="debug"></div>
 	
 {% endblock %}
 
@@ -30,11 +31,12 @@
 					center: 'title',
 					right: 'month,agendaWeek,agendaDay'
 				},
-				theme: true,
-				firstDay: 1,
+				theme: false,
 				editable: false,
+				slotMinutes: 15,
+				theme: true,
 				allDaySlot: false,
-				slotMinutes: 30,
+				allDayDefault: false,
 
 			    eventSources: [
 			
@@ -53,15 +55,20 @@
 
 							    	var events = [];
 							    	for (index in reservations) {
+							    	
+							    		$('#debug').append('Event<br/>');
+							    		$('#debug').append('Title = ' + reservations[index].reason + '<br/>');
+							    		$('#debug').append('Start = ' + reservations[index].start + '<br/>');
+							    		$('#debug').append('End = ' + reservations[index].end + '<br/>');
+							    	
 							    		events.push({
 					                        title: reservations[index].reason,
 					                        start: reservations[index].start,
-					                        end: reservations[index].end
+					                        end: reservations[index].end,
 					                    });
 							    	}
-							    	callback(events);
 							    	
-
+							    	callback(events);
 							    	
 			    				} else {
 			    				    errorFetch();
@@ -87,6 +94,7 @@
 		
 		function errorFetch() {
     		$('.flashmessage').addClass('hide');
+    		$('#calendar').removeClass('loading');
     		$('.load_error').removeClass('hide');
 		}
 		
