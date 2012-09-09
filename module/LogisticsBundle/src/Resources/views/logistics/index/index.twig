@@ -11,7 +11,6 @@
     </div>
 
 	<div id="calendar"></div>
-	<div id="debug"></div>
 	
 {% endblock %}
 
@@ -55,12 +54,6 @@
 
 							    	var events = [];
 							    	for (index in reservations) {
-							    	
-							    		$('#debug').append('Event<br/>');
-							    		$('#debug').append('Title = ' + reservations[index].reason + '<br/>');
-							    		$('#debug').append('Start = ' + reservations[index].start + '<br/>');
-							    		$('#debug').append('End = ' + reservations[index].end + '<br/>');
-							    	
 							    		events.push({
 					                        title: reservations[index].reason,
 					                        start: reservations[index].start,
