@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block content_script %}
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 		
@@ -59,6 +60,8 @@
 							    	}
 							    	callback(events);
 							    	
+
+							    	
 			    				} else {
 			    				    errorFetch();
 			    				}
@@ -67,9 +70,15 @@
 			            }
 			        }
 			
-			        // any other sources...
-			
-			    ]
+			    ],
+			    
+			    loading : function(isLoading, view) {
+			    	if (isLoading) {
+	    	    		$('#calendar').addClass('loading');
+			    	} else {
+			    		$('#calendar').removeClass('loading');
+			    	}
+			    }
 			
 			});
 			
