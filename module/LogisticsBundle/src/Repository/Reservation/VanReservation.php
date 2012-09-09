@@ -30,6 +30,30 @@ class VanReservation extends EntityRepository
         return null;
     }
     
+    public function findAllByDates($start, $end) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+        ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
+        ->where(
+            $query->expr()->orx(
+                $query->expr()->andx(
+                    $query->expr()->gte('r.startDate', ':start'),
+                    $query->expr()->lte('r.startDate', ':end')
+                ),
+                $query->expr()->andx(
+                    $query->expr()->gte('r.endDate', ':start'),
+                    $query->expr()->lte('r.endDate', ':end')
+                )
+            )
+        )
+        ->setParameter('start', $start)
+        ->setParameter('end', $end)
+        ->getQuery()
+        ->getResult();
+    
+        return $resultSet;
+    }
+    
     public function findAll() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
