@@ -20,6 +20,7 @@ return array(
     'First Name'                                                 => 'First Name',
     'Last Name'                                                  => 'Last Name',
     'Birthday'                                                   => 'Birthday',
+    'dd/mm/yyyy'                                                 => 'dd/mm/yyyy',
     'Sex'                                                        => 'Sex',
     'Profile Image'                                              => 'Profile Image',
     'Phone Number'                                               => 'Phone Number',
@@ -34,7 +35,7 @@ return array(
     'Country'                                                    => 'Country',
 
     'Internet'                                                   => 'Internet',
-    'Universty E-mail'                                           => 'University E-mail',
+    'University E-mail'                                          => 'University E-mail',
     'Personal E-mail'                                            => 'Personal E-mail',
     'I want to receive VTK e-mail at my personal e-mail address' => 'I want to receive VTK e-mail at my personal e-mail address',
 
