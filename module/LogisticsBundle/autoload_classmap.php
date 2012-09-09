@@ -13,11 +13,13 @@ return array(
     'LogisticsBundle\Component\Validator\DriverValidator'              => __DIR__ . '/src/Component/Validator/DriverValidator.php',
     'LogisticsBundle\Component\Validator\AcademicValidator'            => __DIR__ . '/src/Component/Validator/AcademicValidator.php',
     'LogisticsBundle\Component\Validator\ReservationConflictValidator' => __DIR__ . '/src/Component/Validator/ReservationConflictValidator.php',
+    'LogisticsBundle\Component\Controller\LogisticsController'         => __DIR__ . '/src/Component/Controller/LogisticsController.php',
     'LogisticsBundle\Entity\Reservation\VanReservation'                => __DIR__ . '/src/Entity/Reservation/VanReservation.php',
     'LogisticsBundle\Entity\Reservation\ReservableResource'            => __DIR__ . '/src/Entity/Reservation/ReservableResource.php',
     'LogisticsBundle\Entity\Reservation\Reservation'                   => __DIR__ . '/src/Entity/Reservation/Reservation.php',
     'LogisticsBundle\Entity\Driver'                                    => __DIR__ . '/src/Entity/Driver.php',
     'LogisticsBundle\Controller\Admin\DriverController'                => __DIR__ . '/src/Controller/Admin/DriverController.php',
     'LogisticsBundle\Controller\Admin\VanReservationController'        => __DIR__ . '/src/Controller/Admin/VanReservationController.php',
+    'LogisticsBundle\Controller\AuthController'                        => __DIR__ . '/src/Controller/AuthController.php',
     'LogisticsBundle\Controller\IndexController'                       => __DIR__ . '/src/Controller/IndexController.php',
 );
