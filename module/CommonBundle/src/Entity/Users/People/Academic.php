@@ -70,7 +70,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @var \CommonBundle\Entity\General\Address The primary address of the academic
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="primary_address", referencedColumnName="id")
      */
     private $primaryAddress;
@@ -78,7 +78,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @var \CommonBundle\Entity\General\Address The secondary address of the academic
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="secondary_address", referencedColumnName="id")
      */
     private $secondaryAddress;

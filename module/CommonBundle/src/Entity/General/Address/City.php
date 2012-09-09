@@ -52,6 +52,7 @@ class City
      * @var \Doctrine\Common\Collection\ArrayCollection The streets in the city
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\General\Address\Street", mappedBy="city")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $streets;
 
