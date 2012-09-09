@@ -56,10 +56,12 @@ class City
     private $streets;
 
     /**
+     * @param integer $postal
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($postal, $name)
     {
+        $this->postal = $postal;
         $this->name = $name;
     }
 

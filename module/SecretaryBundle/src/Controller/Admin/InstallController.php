@@ -27,6 +27,15 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function initConfig()
     {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'secretary.registration_enabled',
+                    'value'       => '1',
+                    'description' => 'Flag whether the registration module is enabled or not',
+                ),
+            )
+        );
     }
 
     protected function initAcl()
@@ -34,6 +43,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'secretarybundle' => array(
+                    'secretary_registration' => array(
+                        'add',
+                    ),
                 ),
             )
         );

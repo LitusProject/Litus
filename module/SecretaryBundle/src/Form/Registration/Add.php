@@ -25,6 +25,7 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
+    Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -41,11 +42,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_entityManager = null;
 
     /**
+     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $identification, $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $name = null)
     {
         parent::__construct($name);
 
@@ -106,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue($identification);
         $personal->add($field);
 
-        $field = new PrimaryAddressForm($entityManager, 'primary_address', 'primary_address');
+        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
         $field->setLabel('Primary Address');
         $this->add($field);
 

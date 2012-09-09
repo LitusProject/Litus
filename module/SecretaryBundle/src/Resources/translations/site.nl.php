@@ -20,6 +20,7 @@ return array(
     'First Name'                                                 => 'Voornaam',
     'Last Name'                                                  => 'Achternaam',
     'Birthday'                                                   => 'Geboortedatum',
+    'dd/mm/yyyy'                                                 => 'dd/mm/jjjj',
     'Sex'                                                        => 'Geslacht',
     'Profile Image'                                              => 'Profiel Foto',
     'Phone Number'                                               => 'Telefoonnummer',
@@ -34,7 +35,7 @@ return array(
     'Country'                                                    => 'Land',
 
     'Internet'                                                   => 'Internet',
-    'Universty E-mail'                                           => 'Universiteits E-mail',
+    'University E-mail'                                          => 'Universiteits E-mail',
     'Personal E-mail'                                            => 'Persoonlijke E-mail',
     'I want to receive VTK e-mail at my personal e-mail address' => 'Ik wil VTK e-mail ontvangen op mijn persoonlijk e-mail adres',
 

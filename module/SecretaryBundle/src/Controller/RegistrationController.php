@@ -27,13 +27,20 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function addAction()
     {
+        $enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
+        if ('1' !== $enabled)
+            return $this->notFoundAction();
+
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
         if ($this->getRequest()->isPost()) {
             if (true || $code->hash() == $this->getParam('hash')) {
-                $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
@@ -52,7 +59,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         } else {
             if (null !== $code || true) {
                 if (true || $code->validate($this->getParam('hash'))) {
-                    $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
+                    $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                     return new ViewModel(
                         array(
