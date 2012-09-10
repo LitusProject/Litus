@@ -29,7 +29,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
+     * @param \CommonBundle\Entity\Users\Role $role The role we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Role $role, $name = null)

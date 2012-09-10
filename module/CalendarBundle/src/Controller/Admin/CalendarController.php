@@ -50,7 +50,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $event = new Event(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false
+                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
                 );
                 $this->getEntityManager()->persist($event);
 
@@ -59,17 +60,20 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $event->addTranslation(
-                        new Translation(
+                    if (
+                        '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                            && '' != $formData['content_' . $language->getAbbrev()]
+                    ) {
+                        $translation = new Translation(
                             $event,
                             $language,
                             $formData['location_' . $language->getAbbrev()],
                             $formData['title_' . $language->getAbbrev()],
                             $formData['content_' . $language->getAbbrev()]
-                        )
-                    );
+                        );
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
-                $event->updateName();
 
                 $this->getEntityManager()->flush();
 
@@ -126,18 +130,21 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                             ->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
-                        $event->addTranslation(
-                            new Translation(
+                        if (
+                            '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                                && '' != $formData['content_' . $language->getAbbrev()]
+                        ) {
+                            $translation = new Translation(
                                 $event,
                                 $language,
                                 $formData['location_' . $language->getAbbrev()],
                                 $formData['title_' . $language->getAbbrev()],
                                 $formData['content_' . $language->getAbbrev()]
-                            )
-                        );
+                            );
+                            $this->getEntityManager()->persist($translation);
+                        }
                     }
                 }
-                $event->updateName();
 
                 $this->getEntityManager()->flush();
 

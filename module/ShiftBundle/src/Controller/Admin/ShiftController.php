@@ -16,29 +16,25 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    ShiftBundle\Entity\Unit,
-    ShiftBundle\Form\Admin\Unit\Add as AddForm,
-    ShiftBundle\Form\Admin\Unit\Edit as EditForm,
+    ShiftBundle\Entity\Shift,
+    ShiftBundle\Form\Admin\Shift\Add as AddForm,
+    ShiftBundle\Form\Admin\Shift\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
- * UnitController
+ * KeyController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class UnitController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class ShiftController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'ShiftBundle\Entity\Unit',
-            $this->getParam('page'),
-            array(
-                'active' => true
-            ),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActive(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -51,7 +47,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

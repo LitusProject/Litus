@@ -2,7 +2,8 @@
 
 namespace ShiftBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Unit
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class Shift extends EntityRepository
 {
+    public function findAllActive()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                    $query->expr()->gt('s.startDate', ':now')
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }
