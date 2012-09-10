@@ -14,11 +14,13 @@
  */
 
 return array(
+    'Supplier' => 'Leverancier',
+
     'Home' => 'Start',
     'Articles' => 'Artikels',
     'Logout' => 'Afmelden',
     'Login' => 'Aanmelden',
-    'Litus Supplier' => 'Litus Leverancier',
+
     'Title' => 'Titel',
     'Authors' => 'Auteurs',
     'Publisher' => 'Uitgever',
