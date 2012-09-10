@@ -46,6 +46,25 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     
     public function reserveAction()
     {
-        return new ViewModel();
+        $authenticatedPerson = $this->getAuthentication()->getPersonObject();
+        
+        if (null === $authenticatedPerson) {
+            return new ViewModel();
+        }
+        
+        $commonArticles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findAllByTypeAndAcademicYear('common', $this->getCurrentAcademicYear());
+        
+        $courses = array(
+            'common' => $commonArticles,
+            'common2' => $commonArticles,
+        );
+        
+        return new ViewModel(
+            array(
+                'courses' => $courses,
+            )
+        );
     }
 }

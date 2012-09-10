@@ -378,6 +378,7 @@ class Booking extends EntityRepository
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->neq('b.status', '\'sold\''),
                     $query->expr()->neq('b.status', '\'expired\''),
+                    $query->expr()->neq('b.status', '\'canceled\''),
                     $query->expr()->gt('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
