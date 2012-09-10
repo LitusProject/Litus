@@ -20,15 +20,15 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
+    LogisticsBundle\Component\Validator\AcademicValidator,
+    LogisticsBundle\Component\Validator\ReservationConflictValidator,
+    LogisticsBundle\Entity\Reservation\VanReservation;
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
-    CommonBundle\Entity\General\AcademicYear,
-    LogisticsBundle\Component\Validator\AcademicValidator,
-    CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -37,7 +37,6 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */

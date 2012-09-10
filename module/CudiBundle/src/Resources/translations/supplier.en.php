@@ -14,11 +14,13 @@
  */
 
 return array(
+    'Supplier' => 'Supplier',
+
     'Home' => 'Home',
     'Articles' => 'Articles',
     'Logout' => 'Logout',
     'Login' => 'Login',
-    'Litus Supplier' => 'Litus Supplier',
+
     'Title' => 'Title',
     'Authors' => 'Authors',
     'Publisher' => 'Publisher',

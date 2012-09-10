@@ -14,7 +14,7 @@
  */
 
 return array(
-    'Litus Prof' => 'Litus Prof',
+    'Prof' => 'Prof',
     'Home' => 'Home',
     'Subjects' => 'Subjects',
     'Articles' => 'Articles',

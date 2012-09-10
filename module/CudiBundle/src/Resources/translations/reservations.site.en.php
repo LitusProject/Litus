@@ -22,7 +22,7 @@ return array(
     
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
-    
+
     'Article' => 'Article',
     'Authors' => 'Authors',
     'Price / piece' => 'Price / piece',
