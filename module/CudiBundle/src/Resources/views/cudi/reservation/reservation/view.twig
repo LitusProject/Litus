@@ -21,7 +21,7 @@
             			<th> {{ translate('Actions') }} </th>
         			</tr>
         			{% for booking in bookings %}
-	            		<tr>
+	            		<tr {% if 'assigned' == booking.getStatus() %} class="success" {% endif %}">
 	            			<td> {{ booking.getArticle().getMainArticle().getTitle() }} </td>
 	            			<td> {{ booking.getArticle().getMainArticle().getAuthors() }} </td>
 	            			<td> € {{ booking.getArticle().getSellPrice() }} </td>
@@ -33,9 +33,7 @@
         			{% endfor %}
             	</table>
             	
-            	<div id="debug">
-            		# Bookings = {{ sizeof(bookings) }}
-            	</div>
+            	<a href={{ url('reservation', {"action" : 'reserve', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Courses') }}</a>
             	
             {% endif %}
         </div>
