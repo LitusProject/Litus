@@ -1,12 +1,105 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-success fade" id="studies_saved_success">
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('Your studies were successfully saved!') }}</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="studies_saved_error">
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while saving your studies') }}</p>
+        </div>
+    </div>
+
     <div class="page-header">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
-    <div class="row page">
+    <div class="row page" id="studies">
         <div class="span12">
+                <h2>
+                    {{ translate('Choose a study:') }}
+                </h2>
+                {{ _self.displayStudies(studies) }}
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% macro displayStudies(studies) %}
+    {% for study in studies %}
+        <div class="accordion" id="studies{{ study.getId() }}">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies{{ study.getId() }}" href="#collapse_study{{ study.getId() }}">
+                        {{ study.getTitle() }} - {{ translate('Phase') }} {{ study.getPhase() }}
+                    </a>
+                </div>
+                <div id="collapse_study{{ study.getId() }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {% if study.getChildren()|length > 0 %}
+                            {{ _self.displayStudies(study.getChildren()) }}
+                        {% else %}
+                            <label class="checkbox">
+                                <input type="checkbox" id="study{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}">
+                                {{ translate('I\'m enrolled in this study') }}
+                            </label>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.study_enroll').change(function () {
+                updateHeadings();
+                saveChanges();
+            });
+        });
+
+        function updateHeadings() {
+            $('#studies .accordion-heading').removeClass('childSelected selected');
+            $('.study_enroll').each(function () {
+                if ($(this).is(':checked')) {
+                    $('#studies' + $(this).data('id') + ' .accordion-heading').addClass('selected');
+                    selectParent($('#studies' + $(this).data('id')));
+                }
+            });
+        }
+
+        function selectParent(child) {
+            if (child.length == 0)
+                return;
+            var parent = $(child.find('.accordion-toggle').data('parent')).closest('.accordion-group');
+            parent.find('.accordion-heading:first').addClass('childSelected');
+            selectParent(parent);
+        }
+
+        function saveChanges() {
+            var studies = [];
+            $('.study_enroll:checked').each(function () {
+                studies.push($(this).data('id'));
+            });
+            $.post('{{ url('secretary_registration', {"action": "saveStudies", 'identification': getParam('identification'), 'hash': getParam('hash')})}}', {'studies': studies},function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').removeClass('in');
+                    $('#studies_saved_success').addClass('in');
+                } else {
+                    errorSave();
+                }
+            }, 'json').error(errorSave);
+        }
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#studies_saved_error').addClass('in');
+        }
+    </script>
 {% endblock %}

@@ -43,5 +43,11 @@ return array(
     'I want to receive my Ir.Reëel at CuDi' => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail' => 'Ik wil \'t Bakske ontvangen via e-mail',
     'T-shirt Size' => 'T-shirt Maat',
-    'Register' => 'Schrijf In'
+    'Register' => 'Schrijf In',
+
+    'Choose a study:' => 'Kies een studierichting:',
+    'Phase' => 'Fase',
+    'I\'m enrolled in this study' => 'Ik ben ingeschreven voor deze studierichting.',
+    'Your studies were successfully saved!' => 'Je studierichtingen zijn succesvol opgeslagen!',
+    'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 );

@@ -16,7 +16,7 @@
 return array(
     'Registration' => 'Registration',
     'There is already a user with your university identification!' => 'There is already a user with your university identification!',
-    
+
     'Personal' => 'Personal',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
@@ -43,5 +43,11 @@ return array(
     'I want to receive my Ir.Reëel at CuDi' => 'I want to receive my Ir.Reëel at CuDi',
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
     'T-shirt Size' => 'T-shirt Size',
-    'Register' => 'Register'
+    'Register' => 'Register',
+
+    'Choose a study:' => 'Choose a study:',
+    'Phase' => 'Phase',
+    'I\'m enrolled in this study' => 'I\'m enrolled in this study',
+    'Your studies were successfully saved!' => 'Your studies were successfully saved!',
+    'An error occurred while saving your studies' => 'An error occurred while saving your studies',
 );
