@@ -15,11 +15,11 @@
  */
 
 return array(
-    'My Course Reservations' => 'My Course Reservations',
-
-    'Please log in to view your course reservations.' => 'Please log in to view your course reservations.',
-    'Please log in to reserve courses.' => 'Please log in to reserve courses.',
-
+    'My Textbook Reservations' => 'My Textbook Reservations',
+    
+    'Please log in to view your textbook reservations.' => 'Please log in to view your textbook reservations.',
+    'Please log in to reserve textbooks.' => 'Please log in to reserve textbooks.', 
+    
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
 
@@ -29,6 +29,6 @@ return array(
     'Expiration Date' => 'Expiration Date',
     'Status' => 'Status',
     'Actions' => 'Actions',
-
-    'Book Courses' => 'Book Courses',
+    
+    'Book Textbooks' => 'Book Textbooks',
 );
