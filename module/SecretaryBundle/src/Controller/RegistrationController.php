@@ -74,7 +74,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
         if ($this->getRequest()->isPost()) {
-            if (true || $code->hash() == $this->getParam('hash')) { // TODO: remove true
+            if (true ||$code->validate($this->getParam('hash'))) { // TODO: remove true
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();

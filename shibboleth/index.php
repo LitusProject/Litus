@@ -39,7 +39,8 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     if (null === $checkCode) {
         $newCode = new CommonBundle\Entity\Users\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
-            substr($_SERVER[$shibbolethSessionKey], 1)
+            substr($_SERVER[$shibbolethSessionKey], 1),
+            ($_GET['source'] == 'register') ? 1800 : 300
         );
 
         $em->persist($newCode);
