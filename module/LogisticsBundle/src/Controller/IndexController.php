@@ -29,22 +29,22 @@ use LogisticsBundle\Entity\Driver,
  */
 class IndexController extends \CommonBundle\Component\Controller\ActionController
 {
-    
+
     public function indexAction()
     {
         return new ViewModel();
     }
-    
+
     public function fetchAction()
     {
         $this->initAjax();
-        
+
         $events = $this->_getEvents();
-        
+
         if (null === $events) {
             return new ViewModel();
         }
-        
+
         $result = array();
         foreach ($events as $event) {
             $result[] = array (
@@ -59,9 +59,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'result' => (object) array("status" => "success", "reservations" => (object) $result),
             )
         );
-        
+
     }
-    
+
     private function _getEvents()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
@@ -72,7 +72,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     'No start or end date was given to identify the reservations!'
                 )
             );
-    
+
             // TODO probably should not redirect to the page that causes the problem
             $this->redirect()->toRoute(
                 'logistics_index',
@@ -80,25 +80,25 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     'action' => 'index'
                 )
             );
-    
+
             return;
         }
-        
+
         $startTime = new DateTime();
         $startTime->setTimeStamp($this->getParam('start'));
         $endTime = new DateTime();
         $endTime->setTimeStamp($this->getParam('end'));
-    
+
         $reservations = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllByDates($startTime, $endTime);
-    
+
         if (null === $reservations) {
             // If no reservations are found, return an empty array
             $reservations = array();
         }
-    
+
         return $reservations;
     }
-    
+
 }
