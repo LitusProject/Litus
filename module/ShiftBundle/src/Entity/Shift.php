@@ -150,20 +150,17 @@ class Shift
      * @param string $name
      * @param string $description
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, Event $event = null)
+    public function __construct(
+        DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
+    )
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-
         $this->manager = $manager;
-
         $this->nbResponsibles = $nbResponsibles;
         $this->nbVolunteers = $nbVolunteers;
-
         $this->unit = $unit;
-        $this->event = $event;
         $this->location = $location;
-
         $this->name = $name;
         $this->description = $description;
 
@@ -328,7 +325,7 @@ class Shift
      */
     public function getName()
     {
-        return $this->location;
+        return $this->name;
     }
 
     /**

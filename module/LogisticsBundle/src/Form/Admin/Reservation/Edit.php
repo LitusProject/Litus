@@ -17,14 +17,14 @@
 namespace LogisticsBundle\Form\Admin\Reservation;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
+    LogisticsBundle\Component\Validator\ReservationConflictValidator;
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
-    CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator;
 
 /**
  * This form allows the user to edit the reservation.

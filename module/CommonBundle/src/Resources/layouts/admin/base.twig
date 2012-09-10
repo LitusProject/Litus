@@ -182,17 +182,20 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_unit', 'manage') %}
+		                {% if hasAccess('admin_shift', 'manage') or hasAccess('admin_unit', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Shifts</b><br />
 		                			Units &amp; Shifts
 		                		</div>
 		                		<ul
-		                			{% if 'admin_unit' == getParam('controller') %}
+		                			{% if 'admin_shift' == getParam('controller') or 'admin_unit' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
+		                			{% if hasAccess('admin_shift', 'manage') %}
+					                    <li><a href="{{ url('admin_shift') }}">Shifts</a></li>
+					                {% endif %}
 		                		    {% if hasAccess('admin_unit', 'manage') %}
 					                    <li><a href="{{ url('admin_unit') }}">Units</a></li>
 					                {% endif %}

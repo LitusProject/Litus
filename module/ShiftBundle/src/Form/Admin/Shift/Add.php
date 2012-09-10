@@ -19,7 +19,9 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    DateTime,
     Doctrine\ORM\EntityManager,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -182,6 +184,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             );
 
+            $now = new DateTime();
+
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -197,6 +201,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'format' => 'd/m/Y H:i',
                                 ),
                             ),
+                            new DateCompareValidator('now', 'd/m/Y H:i'),
                         ),
                     )
                 )
@@ -217,6 +222,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'format' => 'd/m/Y H:i',
                                 ),
                             ),
+                            new DateCompareValidator('start_date', 'd/m/Y H:i'),
                         ),
                     )
                 )
