@@ -68,7 +68,7 @@ class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
             'reason' => $reservation->getReason(),
             'load' => $reservation->getLoad(),
             'additional_info' => $reservation->getAdditionalInfo(),
-            'driver' => $reservation->getDriver()->getPerson()->getId(),
+            'driver' => $reservation->getDriver() === null ? -1 : $reservation->getDriver()->getPerson()->getId(),
         );
 
         if (null !== $reservation->getPassenger()) {
