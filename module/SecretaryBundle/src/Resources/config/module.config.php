@@ -31,8 +31,9 @@ return array(
             'secretary_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/secretary/registration[/identification/:identification[/hash/:hash]]',
+                    'route'    => '/secretary/registration[/:action][/identification/:identification[/hash/:hash]]',
                     'constraints' => array(
+                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'identification' => '[mrsu][0-9]{7}',
                         'hash'           => '[a-zA-Z0-9_-]*',
                     ),
@@ -81,6 +82,35 @@ return array(
         'invokables' => array(
             'secretary_install'      => 'SecretaryBundle\Controller\Admin\InstallController',
             'secretary_registration' => 'SecretaryBundle\Controller\RegistrationController',
+        ),
+    ),
+    'assetic_configuration' => array(
+        'modules' => array(
+            'secretarybundle' => array(
+                'root_path' => __DIR__ . '/../assets',
+                'collections' => array(
+                    'secretary_css' => array(
+                        'assets' => array(
+                            'secretary/less/study.less',
+                        ),
+                        'filters' => array(
+                            'secretary_less' => array(
+                                'name' => '\Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'secretary.css',
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
 );
