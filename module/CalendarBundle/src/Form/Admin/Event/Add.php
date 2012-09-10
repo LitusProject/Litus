@@ -95,22 +95,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
     }
 
-    public function populateFromEvent(Event $event)
-    {
-        $data = array(
-            'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
-        );
-        if ($event->getEndDate())
-            $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
-
-        foreach($this->getLanguages() as $language) {
-            $data['location_' . $language->getAbbrev()] = $event->getLocation($language);
-            $data['title_' . $language->getAbbrev()] = $event->getTitle($language);
-            $data['content_' . $language->getAbbrev()] = $event->getContent($language);
-        }
-        $this->setData($data);
-    }
-
     protected function getLanguages()
     {
         return $this->_entityManager

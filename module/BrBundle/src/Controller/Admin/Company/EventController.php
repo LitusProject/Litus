@@ -71,8 +71,11 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $commonEvent = new CommonEvent(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
+                    (DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false)
+                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
                 );
+
+                $this->getEntityManager()->persist($commonEvent);
 
                 $event = new Event(
                     $commonEvent,
@@ -84,14 +87,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = new Translation(
-                        $commonEvent,
-                        $language,
-                        $formData['location_' . $language->getAbbrev()],
-                        $formData['title_' . $language->getAbbrev()],
-                        $formData['content_' . $language->getAbbrev()]
-                    );
-                    $this->getEntityManager()->persist($translation);
+                    if (
+                        '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                            && '' != $formData['content_' . $language->getAbbrev()]
+                    ) {
+                        $translation = new Translation(
+                            $commonEvent,
+                            $language,
+                            $formData['location_' . $language->getAbbrev()],
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['content_' . $language->getAbbrev()]
+                        );
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
 
                 $this->getEntityManager()->persist($event);
@@ -153,14 +161,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             ->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
-                        $translation = new Translation(
-                            $event,
-                            $language,
-                            $formData['location_' . $language->getAbbrev()],
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['content_' . $language->getAbbrev()]
-                        );
-                        $this->getEntityManager()->persist($translation);
+                        if (
+                            '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                                && '' != $formData['content_' . $language->getAbbrev()]
+                        ) {
+                            $translation = new Translation(
+                                $event,
+                                $language,
+                                $formData['location_' . $language->getAbbrev()],
+                                $formData['title_' . $language->getAbbrev()],
+                                $formData['content_' . $language->getAbbrev()]
+                            );
+                            $this->getEntityManager()->persist($translation);
+                        }
                     }
                 }
                 $this->getEntityManager()->flush();

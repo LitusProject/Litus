@@ -82,9 +82,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $parents = array();
-        foreach ($roles as $role) {
+        foreach ($roles as $role)
             $parents[$role->getName()] = $role->getName();
-        }
 
         asort($parents);
 

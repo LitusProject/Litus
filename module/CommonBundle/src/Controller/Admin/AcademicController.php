@@ -52,9 +52,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm(
-            $this->getEntityManager()
-        );
+        $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

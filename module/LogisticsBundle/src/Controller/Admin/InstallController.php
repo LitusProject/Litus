@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Controller\Admin;
+namespace LogisticsBundle\Controller\Admin;
 
 /**
  * InstallController
@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'apibundle' => array(
+                'logisticsbundle' => array(
                     'admin_key' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
