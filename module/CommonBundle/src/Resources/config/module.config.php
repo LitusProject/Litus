@@ -35,9 +35,9 @@ return array(
                 'options' => array(
                     'route'    => '/account[/:action[/code/:code]]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[a-zA-Z0-9_-]*',
-                        'code'    => '[a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-zA-Z0-9_-]*',
+                        'code'   => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'account',
@@ -60,11 +60,11 @@ return array(
                 'options' => array(
                     'route'    => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                        'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[a-zA-Z][%a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[a-zA-Z][%a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_academic',
@@ -85,43 +85,6 @@ return array(
                     ),
                 ),
             ),
-            'admin_config' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '/admin/config[/:action[/key/:key]]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'key'     => '[a-zA-Z][\.a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'admin_config',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'admin_cache' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '/admin/cache/:action',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'admin_cache',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'admin_index' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '/admin[/:action]',
-                    'defaults' => array(
-                        'controller' => 'admin_index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
             'admin_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -137,14 +100,66 @@ return array(
                     ),
                 ),
             ),
+            'admin_cache' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/cache/:action',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_cache',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'admin_config' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/config[/:action[/key/:key]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'key'    => '[a-zA-Z][\.a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_config',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'admin_index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin[/:action]',
+                    'defaults' => array(
+                        'controller' => 'admin_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_location' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/location[/:action[/:id][/page/:page]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_location',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_role' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route'    => '/admin/role[/:action[/name/:name][/page/:page]]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'name'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'page'    => '[0-9]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'name'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_role',
@@ -247,6 +262,7 @@ return array(
             'admin_config'    => 'CommonBundle\Controller\Admin\ConfigController',
             'admin_cache'     => 'CommonBundle\Controller\Admin\CacheController',
             'admin_index'     => 'CommonBundle\Controller\Admin\IndexController',
+            'admin_location'  => 'CommonBundle\Controller\Admin\LocationController',
             'admin_role'      => 'CommonBundle\Controller\Admin\RoleController',
         ),
     ),

@@ -19,7 +19,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Role as RoleValidator,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -66,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'groups_add');
+            ->setAttribute('class', 'group_add');
         $this->add($field);
     }
 
