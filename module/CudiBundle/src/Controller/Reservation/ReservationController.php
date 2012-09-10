@@ -27,6 +27,20 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $authenticatedPerson = $this->getAuthentication()->getPersonObject();
+        
+        if (null === $authenticatedPerson) {
+            return new ViewModel();
+        }
+        
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($authenticatedPerson);
+        
+        return new ViewModel(
+            array(
+                'bookings' => $bookings,
+            )
+        );
     }
 }
