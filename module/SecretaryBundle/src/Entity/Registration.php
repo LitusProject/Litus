@@ -15,7 +15,8 @@
 
 namespace SecretaryBundle\Entity;
 
-use CommonBundle\Entity\Users\People\Academic,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -28,7 +29,7 @@ use CommonBundle\Entity\Users\People\Academic,
 class Registration
 {
     /**
-     * @var int The ID of this registration
+     * @var int The ID of the registration
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,7 +38,7 @@ class Registration
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person of this registration
+     * @var \CommonBundle\Entity\Users\People\Academic The person of the registration
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -45,7 +46,7 @@ class Registration
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of this registration
+     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the registration
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -75,10 +76,12 @@ class Registration
 
     /**
      * @param \CommonBundle\Entity\Users\People\Academic $academic
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
-    public function __construct(Academic $academic)
+    public function __construct(Academic $academic, AcademicYear $academicYear)
     {
         $this->academic = $academic;
+        $this->academicYear = $academicYear;
         $this->timestamp = new DateTime();
         $this->payed = false;
     }
