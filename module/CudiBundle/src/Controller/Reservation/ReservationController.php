@@ -25,7 +25,7 @@ use Zend\View\Model\ViewModel;
  */
 class ReservationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function indexAction()
+    public function viewAction()
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
         
@@ -42,5 +42,10 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 'bookings' => $bookings,
             )
         );
+    }
+    
+    public function reserveAction()
+    {
+        return new ViewModel();
     }
 }
