@@ -612,6 +612,16 @@ return array(
             ),
             array(
                 'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/reservations.site.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/reservations.site.nl.php',
+                'locale'   => 'nl'
+            ),
+            array(
+                'type'     => 'phparray',
                 'filename' => __DIR__ . '/../translations/prof.en.php',
                 'locale'   => 'en'
             ),
