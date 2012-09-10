@@ -13,23 +13,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Entity;
+namespace SecretaryBundle\Entity\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\People\Academic,
     DateTime,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    SyllabusBundle\Entity\Study;
 
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Registration")
- * @ORM\Table(name="users.registrations")
+ * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Syllabus\StudyEnrollment")
+ * @ORM\Table(name="users.study_enrollment")
  */
-class Registration
+class StudyEnrollment
 {
     /**
-     * @var int The ID of the registration
+     * @var int The ID of the enrollment
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,7 +39,7 @@ class Registration
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\Users\People\Academic The person of the registration
+     * @var \CommonBundle\Entity\Users\People\Academic The person of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\People\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -46,7 +47,7 @@ class Registration
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the registration
+     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -54,36 +55,23 @@ class Registration
     private $academicYear;
 
     /**
-     * @var \DateTime The time of the registration
+     * @var \DateTime The study of the enrollment
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\JoinColumn(name="study", referencedColumnName="id")
      */
-    private $timestamp;
-
-    /**
-     * @var boolean Flag whether the person has payed
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $payed;
-
-    /**
-     * @var \DateTime The time of the registration payement
-     *
-     * @ORM\Column(name="payed_timestamp", type="datetime", nullable=true)
-     */
-    private $payedTimestamp;
+    private $study;
 
     /**
      * @param \CommonBundle\Entity\Users\People\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \SyllabusBundle\Entity\Study $study
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear)
+    public function __construct(Academic $academic, AcademicYear $academicYear, Study $study)
     {
         $this->academic = $academic;
         $this->academicYear = $academicYear;
-        $this->timestamp = new DateTime();
-        $this->payed = false;
+        $this->study = $study;
     }
 
     /**
@@ -103,36 +91,18 @@ class Registration
     }
 
     /**
-     * @return \DateTime
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
-    public function getTimestamp()
+    public function getAcademicYear()
     {
-        return $this->timestamp;
+        return $this->academicYear;
     }
 
     /**
-     * @return boolean
+     * @return \SyllabusBundle\Entity\Study
      */
-    public function hasPayed()
+    public function getStudy()
     {
-        return $this->payed;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getPayedTimestamp()
-    {
-        return $this->payedTimestamp;
-    }
-
-    /**
-     * @return \SecretaryBundle\Entity\Registration
-     */
-    public function setPayed()
-    {
-        $this->payed = true;
-        $this->payedTimestamp = new DateTime();
-        return $this;
+        return $this->study;
     }
 }

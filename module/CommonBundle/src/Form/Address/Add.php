@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                     array(
                         'name' => 'alnum',
                         'options' => array(
-                            'allow_white_space' => true,
+                            'allowWhiteSpace' => true,
                         ),
                     ),
                 ),

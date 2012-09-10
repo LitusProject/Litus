@@ -113,10 +113,13 @@ class Article extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Articles\SubjectMap', 's')
+            ->join('s.article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->in('s.subject', $ids),
-                    $query->expr()->eq('s.academicYear', ':academicYear')
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
                 )
             )
             ->setParameter('academicYear', $academicYear)

@@ -22,6 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
     Imagick,
+    SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Form\Registration\Add as AddForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
@@ -46,7 +48,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
 
-        if (false && null !== $student) { // TODO: remove false
+        if (null !== $student) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -166,6 +168,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $student->setPhotoPath($fileName);
                     }
 
+                    $metaData = new MetaData(
+                        $student,
+                        $this->getCurrentAcademicYear(),
+                        $formData['irreeel'],
+                        $formData['bakske'],
+                        $formData['tshirt_size']
+                    );
+                    $this->getEntityManager()->persist($metaData);
+
                     $student->activate(
                         $this->getEntityManager(),
                         $this->getMailTransport()
@@ -173,6 +184,25 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                     $this->getEntityManager()->persist($student);
                     $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'You are succesfully registered!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'secretary_registration',
+                        array(
+                            'action' => 'studies',
+                            'identification' => $this->getParam('identification'),
+                            'hash' => $this->getParam('hash'),
+                        )
+                    );
+
+                    return new ViewModel();
                 }
 
                 return new ViewModel(
@@ -198,6 +228,86 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
+            )
+        );
+    }
+
+    public function studiesAction()
+    {
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
+            if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
+                $studies = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
+
+                return new ViewModel(
+                    array(
+                        'studies' => $studies,
+                    )
+                );
+            }
+        }
+
+        $this->redirect()->toRoute(
+            'secretary_registration',
+            array(
+                'action' => 'add',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function saveStudiesAction()
+    {
+        $this->initAjax();
+
+        $data = $this->getRequest()->getPost();
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+            foreach($enrollments as $enrollment)
+                $this->getEntityManager()->remove($enrollment);
+
+            if (!empty($data['studies'])) {
+                foreach($data['studies'] as $id) {
+                    $study = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneById($id);
+                    $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
+                }
+            }
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        };
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
             )
         );
     }

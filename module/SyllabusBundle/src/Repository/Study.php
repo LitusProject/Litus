@@ -2,7 +2,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -68,5 +69,41 @@ class Study extends EntityRepository
             return $resultSet[0];
 
         return null;
+    }
+
+    public function findAllParentsByAcademicYear(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', 2)// TODO: $academicYear->getId()
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($resultSet as $result) {
+            $ids[$result->getId()] = $result->getId();
+            foreach($result->getStudy()->getParents() as $parent)
+                $ids[$parent->getId()] = $parent->getId();
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('s.id', $ids),
+                    $query->expr()->isNull('s.parent')
+                )
+            )
+            ->orderBy('s.title', 'ASC')
+            ->addOrderBy('s.phase', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }
