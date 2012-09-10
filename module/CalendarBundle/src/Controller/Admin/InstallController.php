@@ -45,7 +45,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'calendar' => array(
                             'month', 'overview', 'poster', 'view'
                         ),
-                    )
+                    ),
                 ),
             )
         );
