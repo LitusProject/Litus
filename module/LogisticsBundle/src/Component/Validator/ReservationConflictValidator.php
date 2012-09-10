@@ -31,6 +31,7 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
      * @const string
      */
     const CONFLICT_EXISTS      = 'conflictExists';
+    const INVALID_FORMAT = 'invalidFormat';
 
     /**
      * Error messages
@@ -38,6 +39,7 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
      */
     protected $messageTemplates = array(
         self::CONFLICT_EXISTS      => "A conflicting reservation already exists for this resource.",
+        self::INVALID_FORMAT       => "One of the dates is not in the correct format.",
     );
 
     /**
@@ -117,6 +119,10 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
         $startDate = DateTime::createFromFormat($this->_format, $startDate);
         $endDate = DateTime::createFromFormat($this->_format, $value);
 
+        if (!$startDate || !$endDate) {
+            return false;
+        }
+        
         $repository = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
         
