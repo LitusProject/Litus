@@ -28,13 +28,29 @@ return array(
                     ),
                 ),
             ),
+            'admin_shift' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/shift[/:action[/:id][/page/:page]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_shift',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_unit' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/unit[/:action[/:id]]',
+                    'route'    => '/admin/unit[/:action[/:id][/page/:page]]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_unit',
@@ -67,6 +83,7 @@ return array(
         'invokables' => array(
             'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
             'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
+            'admin_shift'   => 'ShiftBundle\Controller\Admin\ShiftController',
         ),
     ),
 );

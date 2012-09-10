@@ -51,7 +51,23 @@ class Edit extends Add
             ->setAttribute('class', 'calendar_edit');
         $this->add($field);
 
-        $this->populateFromEvent($event);
+        $this->_populateFromEvent($event);
+    }
+
+    private function _populateFromEvent(Event $event)
+    {
+        $data = array(
+            'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
+        );
+        if ($event->getEndDate())
+            $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
+
+        foreach($this->getLanguages() as $language) {
+            $data['location_' . $language->getAbbrev()] = $event->getLocation($language, false);
+            $data['title_' . $language->getAbbrev()] = $event->getTitle($language, false);
+            $data['content_' . $language->getAbbrev()] = $event->getContent($language, false);
+        }
+        $this->setData($data);
     }
 
     public function getInputFilter()

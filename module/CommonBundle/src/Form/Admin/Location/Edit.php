@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends \CommonBundle\Form\Admin\Location\Add
 {
     /**
-     * @param \CommonBundle\Entity\Users\Role $role The person we're going to modify
+     * @param \CommonBundle\Entity\Users\Role $location The location we're going to modify
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(Location $location, $name = null)
@@ -40,15 +40,20 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
             ->setAttribute('class', 'location_edit');
         $this->add($field);
 
-        $this->setData(
-            array(
-                'name' => $location->getName(),
-                'address_street' => $location->getAddress()->getStreet(),
-                'address_number' => $location->getAddress()->getNumber(),
-                'address_postal' => $location->getAddress()->getPostal(),
-                'address_city' => $location->getAddress()->getCity(),
-                'address_country' => $location->getAddress()->getCountryCode(),
-            )
+        $this->_populateFromLocation($location);
+    }
+
+    private function _populateFromLocation(Location $location)
+    {
+        $data = array(
+            'name' => $location->getName(),
+            'address_street' => $location->getAddress()->getStreet(),
+            'address_number' => $location->getAddress()->getNumber(),
+            'address_postal' => $location->getAddress()->getPostal(),
+            'address_city' => $location->getAddress()->getCity(),
+            'address_country' => $location->getAddress()->getCountryCode()
         );
+
+        $this->setData($data);
     }
 }

@@ -35,18 +35,18 @@ class Unit
     private $id;
 
     /**
-     * @var boolean Whether or not this unit is active
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
-
-    /**
      * @var string The unit's name
      *
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @var boolean Whether or not this unit is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
 
     /**
      * @param string $name
