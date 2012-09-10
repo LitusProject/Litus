@@ -43,5 +43,9 @@ return array(
     'I want to receive my Ir.Reëel at CuDi' => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail' => 'Ik wil \'t Bakske ontvangen via e-mail',
     'T-shirt Size' => 'T-shirt Maat',
-    'Register' => 'Schrijf In'
+    'Register' => 'Schrijf In',
+
+    'Choose a study:' => 'Kies een studierichting:',
+    'Phase' => 'Fase',
+    'I enroll myself in this study.' => 'Ik schrijf me in voor deze studierichting.',
 );

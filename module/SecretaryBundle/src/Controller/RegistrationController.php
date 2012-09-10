@@ -47,7 +47,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
 
-        if (false && null !== $student) { // TODO: remove false
+        if (null !== $student) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -195,9 +195,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->redirect()->toRoute(
                         'secretary_registration',
                         array(
-                            'action' => 'studies'
+                            'action' => 'studies',
+                            'identification' => $this->getParam('identification'),
+                            'hash' => $this->getParam('hash'),
                         )
                     );
+
+                    return new ViewModel();
                 }
 
                 return new ViewModel(
@@ -229,6 +233,31 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function studiesAction()
     {
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        if (null !== $code || true) { // TODO: remove true
+            if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
+                $studies = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
+
+                return new ViewModel(
+                    array(
+                        'studies' => $studies,
+                    )
+                );
+            }
+        }
+
+        $this->redirect()->toRoute(
+            'secretary_registration',
+            array(
+                'action' => 'add',
+            )
+        );
+
         return new ViewModel();
     }
 
