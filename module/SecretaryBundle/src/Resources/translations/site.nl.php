@@ -43,7 +43,7 @@ return array(
     'I have read and agree with the terms and conditions'        => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
     'I want to receive my Ir.Reëel at CuDi'                      => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail'                     => 'Ik wil \'t Bakske ontvangen via e-mail',
-    'T-shirt Size'                                               => 'T-shirt Maat',
+    'T-shirt Size'                                               => 'Maat T-shirt',
 
     'Register'                                                   => 'Schrijf In'
 );

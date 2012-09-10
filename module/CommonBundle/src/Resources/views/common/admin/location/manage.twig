@@ -1,0 +1,113 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'common/admin/location/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width location_removed_success hide">
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The location was successfully removed!</p>
+    	</div>
+    </div>
+    <div class="flashmessage error_message full_width location_removed_error hide">
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while trying to delete the location.</p>
+    	</div>
+    </div>
+
+	<div id="controller_action">
+	    <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="350px">Address</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for location in paginator %}
+                    <tr class="item item-{{ location.getId() }}">
+                        <td>{{ location.getName() }}</td>
+                        <td>
+                            {{ location.getAddress().getStreet() }} {{ location.getAddress().getNumber() }},
+                            {{ location.getAddress().getPostal() }} {{ location.getAddress().getCity() }},
+                            {{ location.getAddress().getCountry() }}
+                        </td>
+                        <td class="actions">
+                            {% if hasAccess('admin_location', 'edit') %}
+                                <a href="{{ url('admin_location', {"action": "edit", "id": location.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('admin_location', 'delete') %}
+                            	<a href="#" data-id="{{ location.getId() }}" data-name="{{ location.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+
+	<div class="modal hide fade" id="removeLocation">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Location
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following location: <b class="name"></b>?
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+		});
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeLocation = $('#removeLocation');
+            removeLocation.find('.name').html($(this).data('name'));
+            removeLocation.find('.cancel').one('click', function () {
+                removeLocation.modal('hide');
+            });
+            var id = $this.data('id');
+            removeLocation.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('admin_location', {"action": "delete"})}}/' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.location_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeLocation.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeLocation.modal();
+        }
+
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.location_removed_error').removeClass('hide');
+		    $('#removeLocation').modal('hide');
+		}
+	</script>
+{% endblock %}

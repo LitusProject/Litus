@@ -48,6 +48,13 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'admin_location' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'admin_role' => array(
             '@common_jquery',
             '@admin_css',
