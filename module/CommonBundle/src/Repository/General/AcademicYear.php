@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AcademicYear extends EntityRepository
 {
-    
     public function findOneById($id) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('y')
@@ -23,13 +22,13 @@ class AcademicYear extends EntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-        
+
         return null;
     }
-    
+
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();
