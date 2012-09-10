@@ -15,16 +15,16 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CalendarBundle\Component\Validator\Name as EventNameValidator,
+    CalendarBundle\Entity\Nodes\Event,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     DateTime,
     Doctrine\ORM\EntityManager,
-    CalendarBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Nodes\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;

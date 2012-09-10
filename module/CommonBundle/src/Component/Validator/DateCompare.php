@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CalendarBundle\Component\Validator;
+namespace CommonBundle\Component\Validator;
 
 use DateTime,
     Doctrine\ORM\EntityManager;
@@ -27,17 +27,22 @@ use DateTime,
 class DateCompare extends \Zend\Validator\AbstractValidator
 {
     /**
-     * Error codes
-     * @const string
+     * @var string The error codes
      */
-    const NOT_VALID      = 'notSame';
+    const NOT_VALID = 'notSame';
 
     /**
-     * Error messages
-     * @var array
+     * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID      => "The end date must be after the start date",
+        self::NOT_VALID => 'The date must be after %end_date%',
+    );
+
+    /**
+     * @var array The message variables
+     */
+    protected $messageVariables = array(
+        'end_date'  => '_endDate',
     );
 
     /**
@@ -54,16 +59,16 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  mixed $token
+     * @param mixed $token
      * @param string $format
      * @return void
      */
     public function __construct($endDate = null, $format)
     {
+        parent::__construct(is_array($endDate) ? $endDate : null);
+
         $this->_endDate = $endDate;
         $this->_format = $format;
-
-        parent::__construct(is_array($endDate) ? $endDate : null);
     }
 
     /**
@@ -82,6 +87,8 @@ class DateCompare extends \Zend\Validator\AbstractValidator
 
         if (($context !== null) && isset($context) && array_key_exists($this->_endDate, $context)) {
             $endDate = $context[$this->_endDate];
+        } elseif ('now' == $this->_endDate) {
+            $endDate = 'now';
         } else {
             $this->error(self::NOT_VALID);
             return false;

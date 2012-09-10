@@ -17,6 +17,7 @@ namespace ShiftBundle\Form\Admin\Shift;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    Doctrine\ORM\EntityManager,
     Shiftbundle\Entity\Shift,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
@@ -32,9 +33,9 @@ class Edit extends Add
      * @param \ShiftBundle\Entity\Shift $shift The shift we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Shift $shift, $name = null)
+    public function __construct(EntityManager $entityManager, Shift $shift, $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($entityManager, $name);
 
         $this->remove('submit');
 
@@ -43,7 +44,7 @@ class Edit extends Add
             ->setAttribute('class', 'shift_edit');
         $this->add($field);
 
-        $this->_populateFromUnit($unit);
+        $this->_populateFromShift($shift);
     }
 
     private function _populateFromShift(Shift $shift)

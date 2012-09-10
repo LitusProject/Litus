@@ -74,6 +74,7 @@ return array(
     'CommonBundle\Component\Util\Xml\Exception\InvalidArgumentException'               => __DIR__ . '//src/Component/Util/Xml/Exception/InvalidArgumentException.php',
     'CommonBundle\Component\Util\Xml\Generator'                                        => __DIR__ . '//src/Component/Util/Xml/Generator.php',
     'CommonBundle\Component\Util\Xml\Object'                                           => __DIR__ . '//src/Component/Util/Xml/Object.php',
+    'CommonBundle\Component\Validator\DateCompare'                                     => __DIR__ . '//src/Component/Validator/DateCompare.php',
     'CommonBundle\Component\Validator\PhoneNumber'                                     => __DIR__ . '//src/Component/Validator/PhoneNumber.php',
     'CommonBundle\Component\Validator\Price'                                           => __DIR__ . '//src/Component/Validator/Price.php',
     'CommonBundle\Component\Validator\Role'                                            => __DIR__ . '//src/Component/Validator/Role.php',

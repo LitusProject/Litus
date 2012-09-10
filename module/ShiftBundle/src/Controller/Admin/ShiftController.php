@@ -16,6 +16,7 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
@@ -54,11 +55,33 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $unit = new Unit(
-                    $formData['name']
+                $shift = new Shift(
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                        ->findOneById($formData['person_id']),
+                    $formData['nb_responsibles'],
+                    $formData['nb_volunteers'],
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Unit')
+                        ->findOneById($formData['unit']),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Location')
+                        ->findOneById($formData['location']),
+                    $formData['name'],
+                    $formData['description']
                 );
 
-                $this->getEntityManager()->persist($unit);
+                if ('' != $formData['event']) {
+                    $shift->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Nodes\Event')
+                            ->findOneById($formData['event'])
+                    );
+                }
+
+                $this->getEntityManager()->persist($shift);
 
                 $this->getEntityManager()->flush();
 
@@ -66,12 +89,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The unit was successfully created!'
+                        'The shift was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_unit',
+                    'admin_shift',
                     array(
                         'action' => 'manage'
                     )
@@ -90,17 +113,37 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($unit = $this->_getUnit()))
+        if (!($shift = $this->_getShift()))
             return new ViewModel();
 
-        $form = new EditForm($unit);
+        $form = new EditForm($this->getEntityManager(), $shift);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $unit->setName($formData['name']);
+                $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setManager(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                            ->findOneById($formData['person_id'])
+                    )
+                    ->setNbResponsibles($formData['nb_responsibles'])
+                    ->setNbVolunteers($formData['nb_volunteers'])
+                    ->setUnit(
+                        $this->getEntityManager()
+                            ->getRepository('ShiftBundle\Entity\Unit')
+                            ->findOneById($formData['unit'])
+                    )
+                    ->setLocation(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Location')
+                            ->findOneById($formData['location'])
+                    )
+                    ->setName($formData['name'])
+                    ->setDescription($formData['description']);
 
                 $this->getEntityManager()->flush();
 
@@ -108,12 +151,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The key was successfully edited!'
+                        'The shift was successfully edited!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_unit',
+                    'admin_shift',
                     array(
                         'action' => 'manage'
                     )
@@ -134,10 +177,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($unit = $this->_getUnit()))
+        if (!($shift = $this->_getShift()))
             return new ViewModel();
 
-        $unit->deactivate();
+        // @TODO: Send an e-mail to all people on the shift
+
+        $this->getEntityManager()->remove($shift);
 
         $this->getEntityManager()->flush();
 
@@ -150,19 +195,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getUnit()
+    private function _getShift()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the unit!'
+                    'No ID was given to identify the shift!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -171,21 +216,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $unit = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Unit')
+        $shift = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $unit) {
+        if (null === $shift) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No unit with the given ID was found!'
+                    'No shift with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_shift',
                 array(
                     'action' => 'manage'
                 )
@@ -194,6 +239,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $unit;
+        return $shift;
     }
 }
