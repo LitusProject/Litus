@@ -1,0 +1,17 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Book Courses') }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            {% if authenticatedPerson == null %}
+				{{ translate('Please log in to reserve courses.') }}
+			{% else %}
+            	TODO form
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -592,7 +592,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'reservation',
-                        'action'     => 'index',
+                        'action'     => 'view',
                     ),
                 ),
             ),
