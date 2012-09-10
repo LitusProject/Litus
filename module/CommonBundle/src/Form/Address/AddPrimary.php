@@ -156,7 +156,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                     array(
                         'name' => 'alnum',
                         'options' => array(
-                            'allow_white_space' => true,
+                            'allowWhiteSpace' => true,
                         ),
                     ),
                 ),
