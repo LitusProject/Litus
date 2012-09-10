@@ -60,6 +60,14 @@
 			                {% endif %}
 			            </ul>
 		            {% endif %}
+
+		            {% if hasAccess('admin_location', 'manage') %}
+			            <ul>
+			                {% if hasAccess('admin_location', 'manage') %}
+			                    <li><a href="{{ url('admin_location') }}">Locations</a></li>
+			                {% endif %}
+			            </ul>
+		            {% endif %}
 		    	</li>
             </ul>
 

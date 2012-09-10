@@ -40,7 +40,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'groups_edit');
+            ->setAttribute('class', 'group_edit');
         $this->add($field);
 
         $this->setData(
