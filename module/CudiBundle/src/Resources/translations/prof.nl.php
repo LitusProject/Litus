@@ -41,6 +41,7 @@ return array(
     'Name' => 'Naam',
     'Semester' => 'Semester',
     'Credits' => 'Studiepunten',
+    'Remove' => 'Verwijder',
 
     'Error' => 'Fout',
     'An error occurred while removing the comment.' => 'Er is een fout opgetreden tijdens het verwijderen van de commentaar.',

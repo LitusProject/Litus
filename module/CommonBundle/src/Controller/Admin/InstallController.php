@@ -249,7 +249,11 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
             }
 
             foreach($cityData['streets'] as $street) {
-                $this->getEntityManager()->persist(new Street($city, $street['register'], $street['name']));
+                $street = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Address\Street')
+                    ->findOneByCityAndName($city, $street['name']);
+                if (null === $street)
+                    $this->getEntityManager()->persist(new Street($city, $street['register'], $street['name']));
             }
         }
 
