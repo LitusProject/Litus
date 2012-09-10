@@ -55,12 +55,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+
+                $manager = ('' == $formData['manager_id'])
+                    ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
+
                 $shift = new Shift(
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                        ->findOneById($formData['person_id']),
+                    $manager,
                     $formData['nb_responsibles'],
                     $formData['nb_volunteers'],
                     $this->getEntityManager()
@@ -123,13 +127,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
+
+                $manager = ('' == $formData['manager_id'])
+                    ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
+
                 $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setManager(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-                            ->findOneById($formData['person_id'])
-                    )
+                    ->setManager($manager)
                     ->setNbResponsibles($formData['nb_responsibles'])
                     ->setNbVolunteers($formData['nb_volunteers'])
                     ->setUnit(

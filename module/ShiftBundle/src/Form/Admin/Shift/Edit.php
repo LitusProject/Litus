@@ -53,7 +53,7 @@ class Edit extends Add
             'person_id' => $shift->getManager()->getId(),
             'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
-            'manager' => $shift->getManager()->getFullName(),
+            'manager' => $shift->getManager()->getFullName() - ,
             'nb_responsibles' => $shift->getNbResponsibles(),
             'nb_volunteers' => $shift->getNbVolunteers(),
             'unit' => $shift->getUnit()->getId(),
