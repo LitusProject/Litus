@@ -15,6 +15,11 @@
  
 return array(
     'controllers'  => array(
+        'logistics_install' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'admin_driver' => array(
             '@common_jquery',
             '@common_typeahead_remote',
