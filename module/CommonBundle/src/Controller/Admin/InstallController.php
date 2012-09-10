@@ -178,6 +178,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'gallery_install' => array(
                         'index'
                     ),
+                    'logistics_install' => arary(
+                        'index'
+                    ),
                     'mail_install' => array(
                         'index'
                     ),
