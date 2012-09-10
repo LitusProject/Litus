@@ -15,7 +15,15 @@
 
 namespace SecretaryBundle\Controller;
 
-use SecretaryBundle\Form\Registration\Add as AddForm,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    DateTime,
+    Imagick,
+    SecretaryBundle\Form\Registration\Add as AddForm,
+    Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
 
 /**
@@ -27,20 +35,144 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function addAction()
     {
+        $enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.registration_enabled');
+
+        if ('1' !== $enabled)
+            return $this->notFoundAction();
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        if (false && null !== $student) { // TODO: remove false
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'There is already a user with your university identification!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'add'
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
+                )
+            );
+        }
+
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
         if ($this->getRequest()->isPost()) {
-            if (true || $code->hash() == $this->getParam('hash')) {
-                $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
+            if (true ||$code->validate($this->getParam('hash'))) { // TODO: remove true
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
                 $form->setData($formData);
 
                 if ($form->isValid()) {
+                    $roles = array(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName('guest'),
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName('student')
+                    );
 
+                    $student = new Academic(
+                        $this->getParam('identification'),
+                        $roles,
+                        $formData['first_name'],
+                        $formData['last_name'],
+                        $formData['primary_email'] ? $formData['personal_email'] : $formData['university_email'],
+                        $formData['phone_number'],
+                        $formData['sex'],
+                        $this->getParam('identification')
+                    );
+
+                    $primaryCity = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\City')
+                        ->findOneById($formData['primary_address_address_city']);
+                    $primaryStreet = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\Street')
+                        ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
+
+                    $student->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                        ->addUniversityStatus(
+                            new UniversityStatus(
+                                $student,
+                                'student',
+                                $this->getCurrentAcademicYear()
+                            )
+                        )
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $student,
+                                'member',
+                                $this->getCurrentAcademicYear()
+                            )
+                        )
+                        ->setPersonalEmail($formData['personal_email'])
+                        ->setUniversityEmail($formData['university_email'])
+                        ->setPrimaryAddress(
+                            new Address(
+                                $primaryStreet->getName(),
+                                $formData['primary_address_address_number'],
+                                $primaryCity->getPostal(),
+                                $primaryCity->getName(),
+                                'BE'
+                            )
+                        )
+                        ->setSecondaryAddress(
+                            new Address(
+                                $formData['secondary_address_address_street'],
+                                $formData['secondary_address_address_number'],
+                                $formData['secondary_address_address_postal'],
+                                $formData['secondary_address_address_city'],
+                                $formData['secondary_address_address_country']
+                            )
+                        );
+
+                    $filePath = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('common.profile_path');
+
+                    $file = new FileTransfer();
+                    if ($file->receive()) {
+                        $image = new Imagick($file->getFileName());
+                        $image->cropThumbnailImage(320, 240);
+
+                        if ($student->getPhotoPath() != '' || $student->getPhotoPath() !== null) {
+                            $fileName = $student->getPhotoPath();
+                        } else {
+                            $fileName = '';
+                            do{
+                                $fileName = '/' . sha1(uniqid());
+                            } while (file_exists($filePath . $fileName));
+                        }
+                        $image->writeImage($filePath . $fileName);
+                        $student->setPhotoPath($fileName);
+                    }
+
+                    $student->activate(
+                        $this->getEntityManager(),
+                        $this->getMailTransport()
+                    );
+
+                    $this->getEntityManager()->persist($student);
+                    $this->getEntityManager()->flush();
                 }
 
                 return new ViewModel(
@@ -50,9 +182,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if (null !== $code || true) {
-                if (true || $code->validate($this->getParam('hash'))) {
-                    $form = new AddForm($this->getEntityManager(), $this->getParam('identification'));
+            if (null !== $code || true) { // TODO: remove true
+                if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
+                    $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                     return new ViewModel(
                         array(

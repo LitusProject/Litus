@@ -31,7 +31,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($page = $this->_getPage()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $submenu = $this->_buildSubmenu($page);
         if (empty($submenu) && null !== $page->getParent())
@@ -51,10 +51,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('page.file_path') . '/' . $this->getParam('name');
 
-        if ($this->getParam('name') == '' || !file_exists($filePath)) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
-        }
+        if ($this->getParam('name') == '' || !file_exists($filePath))
+            return $this->notFoundAction();
 
         $headers = new Headers();
         $headers->addHeaders(array(
@@ -134,47 +132,15 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getPage()
     {
-        if (null === $this->getParam('name')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No name was given to identify the page!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'page',
-                array(
-                    'action' => 'view'
-                )
-            );
-
+        if (null === $this->getParam('name'))
             return;
-        }
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findOneByName($this->getParam('name'));
 
-        if (null === $page) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No page with the given name was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'page',
-                array(
-                    'action' => 'view'
-                )
-            );
-
+        if (null === $page)
             return;
-        }
 
         return $page;
     }

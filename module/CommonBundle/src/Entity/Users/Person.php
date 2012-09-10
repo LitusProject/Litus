@@ -22,6 +22,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Code,
     CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -133,9 +134,9 @@ abstract class Person
     private $canLogin;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person", cascade={"persist", "remove"})
      */
-    private $organisationStatuses;
+    private $organizationStatuses;
 
     /**
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
@@ -187,7 +188,7 @@ abstract class Person
         $this->canLogin = true;
 
         $this->roles = new ArrayCollection($roles);
-        $this->organisationStatuses = new ArrayCollection();
+        $this->organizationStatuses = new ArrayCollection();
     }
 
     /**
@@ -573,6 +574,36 @@ abstract class Person
         }
 
         return $return;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @throws \RuntimeException
+     */
+    public function canHaveOrganizationStatus(AcademicYearEntity $academicYear)
+    {
+        if ($this->organizationStatuses->count() >= 1) {
+            if ($this->organizationStatuses->exists(
+                function($key, $value) use ($academicYear) {
+                    if ($value->getAcademicYear() == $academicYear)
+                        return true;
+                }
+            )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Statuses\Organization $organizationStatus
+     * @return \CommonBundle\Entity\Users\People\Academic
+     */
+    public function addOrganizationStatus(OrganizationStatus $organizationStatus)
+    {
+        $this->organizationStatuses->add($organizationStatus);
+        return $this;
     }
 
     /**
