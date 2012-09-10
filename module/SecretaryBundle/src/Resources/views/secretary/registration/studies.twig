@@ -7,6 +7,69 @@
 
     <div class="row page">
         <div class="span12">
+                <p>
+                    {{ translate('Choose a study:') }}
+                </p>
+                {{ _self.displayStudies(studies) }}
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% macro displayStudies(studies) %}
+    {% for study in studies %}
+        <div class="accordion" id="studies{{ study.getId() }}">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies{{ study.getId() }}" href="#collapse_study{{ study.getId() }}">
+                        {{ study.getTitle() }} - {{ translate('Phase') }} {{ study.getPhase() }}
+                    </a>
+                </div>
+                <div id="collapse_study{{ study.getId() }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {% if study.getChildren()|length > 0 %}
+                            {{ _self.displayStudies(study.getChildren()) }}
+                        {% else %}
+                            <label class="checkbox">
+                                <input type="checkbox" id="study{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}">
+                                {{ translate('I enroll myself in this study.') }}
+                            </label>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.study_enroll').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#studies' + $(this).data('id') + ' .accordion-heading').addClass('selected');
+                    selectParent($('#studies' + $(this).data('id')));
+                } else {
+                    $('#studies' + $(this).data('id') + ' .accordion-heading').removeClass('selected');
+                    deselectParent($('#studies' + $(this).data('id')));
+                }
+            });
+        });
+
+        function selectParent(child) {
+            if (child.length == 0)
+                return;
+            var parent = $(child.find('.accordion-toggle').data('parent')).closest('.accordion-group');
+            parent.find('.accordion-heading:first').addClass('childSelected');
+            selectParent(parent);
+        }
+
+        function deselectParent(child) {
+            if (child.length == 0)
+                return;
+            var parent = $(child.find('.accordion-toggle').data('parent')).closest('.accordion-group');
+            parent.find('.accordion-heading:first').removeClass('childSelected selected');
+            deselectParent(parent);
+        }
+    </script>
 {% endblock %}

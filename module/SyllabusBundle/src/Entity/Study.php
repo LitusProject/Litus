@@ -56,10 +56,17 @@ class Study
     /**
      * @var \SyllabusBundle\Entity\Study The parent study of the study
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study", inversedBy="children")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @var \SyllabusBundle\Entity\Study The parent study of the study
+     *
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Study", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @param string $title
@@ -139,5 +146,13 @@ class Study
         if ($this->parent)
             return array_merge(array($this->parent), $this->parent->getParents());
         return array();
+    }
+
+    /**
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }
