@@ -15,7 +15,8 @@
 
 namespace BrBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
 
@@ -36,6 +37,9 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function onDispatch(MvcEvent $e)
     {
         $result = parent::onDispatch($e);
+
+        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getCompany') && $this->getAuthentication()->isAuthenticated())
+            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
 
         $result->loginForm = new LoginForm($this->url()->fromRoute('corporate_auth', array('action' => 'login')));
         $result->unionUrl = $this->getEntityManager()

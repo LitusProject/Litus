@@ -22,7 +22,7 @@ return array(
 
     'assigned' => 'Toegewezen',
     'booked' => 'Niet Toegewezen',
-    
+
     'Article' => 'Artikel',
     'Authors' => 'Auteurs',
     'Price / piece' => 'Prijs / stuk',
