@@ -118,6 +118,11 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => 'nl',
                     'description' => 'The abbreviation of the language that will be used of no other translation is present',
                 ),
+                array(
+                    'key'         => 'common.geocoding_api_url',
+                    'value'       => 'https://maps.googleapis.com/maps/api/geocode/',
+                    'description' => 'The URL to Google\'s geocoding API',
+                ),
             )
         );
     }

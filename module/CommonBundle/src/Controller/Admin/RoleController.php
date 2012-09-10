@@ -52,9 +52,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm(
-            $this->getEntityManager()
-        );
+        $form = new AddForm($this->getEntityManager());
 
         $roleCreated = false;
         if ($this->getRequest()->isPost()) {
@@ -126,9 +124,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         if (!($role = $this->_getRole()))
             return new ViewModel();
 
-        $form = new EditForm(
-            $this->getEntityManager(), $role
-        );
+        $form = new EditForm($this->getEntityManager(), $role);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

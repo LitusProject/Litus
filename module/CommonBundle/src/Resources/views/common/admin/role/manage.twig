@@ -88,7 +88,7 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.role_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
+                        $('.item-' + name).remove();
                         removeRole.modal('hide');
                     } else {
                         errorRemove();
