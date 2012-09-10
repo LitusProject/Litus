@@ -15,10 +15,10 @@
  */
 
 return array(
-    'My Course Reservations' => 'My Course Reservations',
+    'My Textbook Reservations' => 'My Textbook Reservations',
     
-    'Please log in to view your course reservations.' => 'Please log in to view your course reservations.',
-    'Please log in to reserve courses.' => 'Please log in to reserve courses.', 
+    'Please log in to view your textbook reservations.' => 'Please log in to view your textbook reservations.',
+    'Please log in to reserve textbooks.' => 'Please log in to reserve textbooks.', 
     
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
@@ -30,5 +30,5 @@ return array(
     'Status' => 'Status',
     'Actions' => 'Actions',
     
-    'Book Courses' => 'Book Courses',
+    'Book Textbooks' => 'Book Textbooks',
 );
