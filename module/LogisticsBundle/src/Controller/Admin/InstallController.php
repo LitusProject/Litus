@@ -27,7 +27,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
 
     protected function initConfig() {}
-    
+
     protected function initAcl()
     {
         $this->installAcl(
@@ -39,7 +39,25 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_van_reservation' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'logistics_index' => array(
+                        'fetch', 'index'
+                    ),
                 )
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'logistics_index' => array(
+                            'fetch', 'index'
+                        ),
+                    ),
+                ),
             )
         );
     }

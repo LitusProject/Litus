@@ -76,21 +76,6 @@ return array(
 			        ),
 			    ),
 			),
-			'logistics_auth' => array(
-			    'type' => 'Zend\Mvc\Router\Http\Segment',
-			    'options' => array(
-			        'route' => '[/:language]/logistics/auth[/:action]',
-			        'constraints' => array(
-			            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-			            'session'  => '[0-9]*',
-			            'language' => '[a-zA-Z][a-zA-Z_-]*',
-			        ),
-			        'defaults' => array(
-			            'controller' => 'logistics_auth',
-			            'action'     => 'login',
-			        ),
-			    ),
-			),
 			'logistics_reservation_fetch' => array(
 			    'type'    => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
