@@ -16,12 +16,12 @@
 
 return array(
     'My Course Reservations' => 'My Course Reservations',
-    
+
     'Please log in to view your course reservations.' => 'Please log in to view your course reservations.',
-    
+
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
-    
+
     'Article' => 'Article',
     'Authors' => 'Authors',
     'Price / piece' => 'Price / piece',

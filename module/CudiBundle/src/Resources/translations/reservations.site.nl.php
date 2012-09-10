@@ -16,12 +16,12 @@
 
 return array(
     'My Course Reservations' => 'Mijn Cursusreservaties',
-    
+
     'Please log in to view your course reservations.' => 'Meld je aan om je cursusreservaties te bekijken.',
 
     'assigned' => 'Toegewezen',
     'booked' => 'Niet Toegewezen',
-    
+
     'Article' => 'Artikel',
     'Authors' => 'Auteurs',
     'Price / piece' => 'Prijs / stuk',
