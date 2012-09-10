@@ -67,7 +67,7 @@
 		                <td>{{ mapping.getArticle().getAuthors() }}</td>
 		                <td>{{ mapping.getArticle().getPublishers() }}</td>
 		                <td>{{ mapping.getArticle().getYearPublished() }}</td>
-		                <td>{% if mapping.getArticle().isStock() %} Stock {% else %} Stub {% endif %}</td>
+		                <td>{% if mapping.getArticle().isInternal() %}Internal{% else %}External{% endif %}</td>
 		            </tr>
 		        {% endfor %}
 		    </table>

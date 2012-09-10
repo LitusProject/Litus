@@ -582,6 +582,20 @@ return array(
                     ),
                 ),
             ),
+            'reservation' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/cudi/reservation[/:action]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'reservation',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -594,6 +608,16 @@ return array(
             array(
                 'type'     => 'phparray',
                 'filename' => __DIR__ . '/../translations/supplier.nl.php',
+                'locale'   => 'nl'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/reservations.site.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/reservations.site.nl.php',
                 'locale'   => 'nl'
             ),
             array(
@@ -667,6 +691,8 @@ return array(
             'prof_prof'             => 'CudiBundle\Controller\Prof\ProfController',
             'prof_subject'          => 'CudiBundle\Controller\Prof\SubjectController',
             'prof_subject_comment'  => 'CudiBundle\Controller\Prof\Subject\CommentController',
+            
+            'reservation'           => 'CudiBundle\Controller\Reservation\ReservationController',
         ),
     ),
     'assetic_configuration' => array(

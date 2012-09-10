@@ -25,6 +25,7 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
+    SecretaryBundle\Entity\Organization\MetaData,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -160,19 +161,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(false);
         $organisation->add($field);
 
-        $field = new Select('tshirt');
+        $field = new Select('tshirt_size');
         $field->setLabel('T-shirt Size')
             ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
-                array(
-                    'XS' => 'XS',
-                    'S' => 'S',
-                    'M' => 'M',
-                    'L' => 'L',
-                    'XL' => 'XL',
-                    'XXL' => 'XXL',
-                )
+                MetaData::$POSSIBLE_TSHIRT_SIZES
             );
         $organisation->add($field);
 

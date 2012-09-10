@@ -14,32 +14,32 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Controller\Admin;
+namespace CudiBundle\Controller\Reservation;
 
-use Exception;
+use Zend\View\Model\ViewModel;
 
 /**
- * InstallController for the LogisticsBundle
+ * ReservationController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
+class ReservationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-
-    protected function initConfig() {}
-    
-    protected function initAcl()
+    public function indexAction()
     {
-        $this->installAcl(
+        $authenticatedPerson = $this->getAuthentication()->getPersonObject();
+        
+        if (null === $authenticatedPerson) {
+            return new ViewModel();
+        }
+        
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($authenticatedPerson);
+        
+        return new ViewModel(
             array(
-                'logisticsbundle' => array(
-                    'admin_driver' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                    'admin_van_reservation' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                )
+                'bookings' => $bookings,
             )
         );
     }

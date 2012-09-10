@@ -32,6 +32,7 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_modal',
             '@bootstrap_js_alert',
+            '@secretary_css',
         ),
     ),
     'routes' => array(),
