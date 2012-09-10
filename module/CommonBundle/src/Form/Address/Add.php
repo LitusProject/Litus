@@ -126,7 +126,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alpha',
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allow_white_space' => true,
+                        ),
                     ),
                 ),
             )

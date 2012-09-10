@@ -18,6 +18,7 @@ namespace CommonBundle\Form\Address;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     Doctrine\ORM\EntityManager,
+    Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -34,19 +35,27 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     protected $_entityManager = null;
 
     /**
+     * @var \Zend\Cache\Storage\StorageInterface The cache instance
+     */
+    protected $_cache = null;
+
+    /**
      * @var string
      */
     private $_prefix;
 
     /**
+     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $prefix = '', $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_cache = $cache;
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
@@ -77,6 +86,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
 
     private function _getCities()
     {
+        $cacheId = 'Litus_cities_streets';
+        if (null !== ($result = $this->_cache->getItem($cacheId))) {
+            return $result;
+        }
+
         $cities = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Address\City')
             ->findAll();
@@ -91,6 +105,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
             }
         }
+
+        $this->_cache->setItem($cacheId, array($optionsCity, $optionsStreet));
         return array($optionsCity, $optionsStreet);
     }
 
@@ -138,7 +154,10 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'alpha',
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allow_white_space' => true,
+                        ),
                     ),
                 ),
             )

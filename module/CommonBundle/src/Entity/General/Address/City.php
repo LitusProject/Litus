@@ -52,14 +52,17 @@ class City
      * @var \Doctrine\Common\Collection\ArrayCollection The streets in the city
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\General\Address\Street", mappedBy="city")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $streets;
 
     /**
+     * @param integer $postal
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($postal, $name)
     {
+        $this->postal = $postal;
         $this->name = $name;
     }
 

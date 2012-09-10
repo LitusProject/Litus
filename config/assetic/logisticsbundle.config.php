@@ -31,6 +31,15 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'logistics_index' => array(
+            '@common_jquery',
+            '@fullcalendar_css',
+            '@fullcalendar_js',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@logistics_css',
+        ),
     ),
     'routes' => array(),
 );

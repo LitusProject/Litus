@@ -21,7 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represents a address entry that is saved in the database
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Address\Street")
- * @ORM\Table(name="general.address_streets")
+ * @ORM\Table(
+ *     name="general.address_streets",
+ *    indexes={@ORM\Index(name="street_name", columns={"name"})}
+ * )
  */
 class Street
 {
@@ -33,6 +36,13 @@ class Street
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var integer The register number
+     *
+     * @ORM\Column(name="register_number", type="smallint")
+     */
+    private $registerNumber;
 
     /**
      * @var string The street name
@@ -51,11 +61,13 @@ class Street
 
     /**
      * @param \CommonBundle\Entity\General\Address\City $city
+     * @param integer $registerNumber
      * @param string $name
      */
-    public function __construct(City $city, $name)
+    public function __construct(City $city, $registerNumber, $name)
     {
         $this->city = $city;
+        $this->registerNumber = $registerNumber;
         $this->name = $name;
     }
 

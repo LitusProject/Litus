@@ -15,7 +15,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Address\City,
+    CommonBundle\Entity\General\Address\Street,
+    CommonBundle\Entity\General\Language;
 
 /**
  * InstallController
@@ -27,6 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     protected function initConfig()
     {
         $this->_installLanguages();
+        $this->_installCities();
 
         $this->installConfig(
             array(
@@ -181,6 +184,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'page_install' => array(
                         'index'
                     ),
+                    'secretary_install' => array(
+                        'index'
+                    ),
                     'syllabus_install' => array(
                         'index'
                     ),
@@ -219,9 +225,31 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
 
-            if (null == $language) {
+            if (null === $language) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
+            }
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    private function _installCities()
+    {
+        $cities = include('config/streets.php');
+
+        foreach($cities as $cityData) {
+            $city = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Address\City')
+                ->findOneByPostal($cityData['postal']);
+
+            if (null === $city) {
+                $city = new City($cityData['postal'], $cityData['name']);
+                $this->getEntityManager()->persist($city);
+            }
+
+            foreach($cityData['streets'] as $street) {
+                $this->getEntityManager()->persist(new Street($city, $street['register'], $street['name']));
             }
         }
 
