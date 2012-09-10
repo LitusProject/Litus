@@ -41,6 +41,7 @@ return array(
     'Name' => 'Name',
     'Semester' => 'Semester',
     'Credits' => 'Credits',
+    'Remove' => 'Remove',
 
     'Error' => 'Error',
     'An error occurred while removing the comment.' => 'An error occurred while removing the comment.',
