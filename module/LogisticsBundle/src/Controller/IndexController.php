@@ -27,7 +27,7 @@ use LogisticsBundle\Entity\Driver,
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class IndexController extends \LogisticsBundle\Component\Controller\LogisticsController
+class IndexController extends \CommonBundle\Component\Controller\ActionController
 {
     
     public function indexAction()
