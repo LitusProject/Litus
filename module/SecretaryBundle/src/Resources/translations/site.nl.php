@@ -47,5 +47,7 @@ return array(
 
     'Choose a study:' => 'Kies een studierichting:',
     'Phase' => 'Fase',
-    'I enroll myself in this study.' => 'Ik schrijf me in voor deze studierichting.',
+    'I\'m enrolled in this study' => 'Ik ben ingeschreven voor deze studierichting.',
+    'Your studies were successfully saved!' => 'Je studierichtingen zijn succesvol opgeslagen!',
+    'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 );

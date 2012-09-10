@@ -375,3 +375,19 @@ footer {
 fieldset .control-group:first-child {
     padding-top: 20px;
 }
+
+.flashmessage.fade {
+    .transition(all .15s linear);
+    height: 0;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+
+    &.in {
+        height: auto;
+        margin-bottom: 18px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}

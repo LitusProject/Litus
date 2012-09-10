@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Form\Registration\Add as AddForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
@@ -237,7 +238,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code || true) { // TODO: remove true
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
             if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
                 $studies = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
@@ -259,6 +264,52 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
 
         return new ViewModel();
+    }
+
+    public function saveStudiesAction()
+    {
+        $this->initAjax();
+
+        $data = $this->getRequest()->getPost();
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+            foreach($enrollments as $enrollment)
+                $this->getEntityManager()->remove($enrollment);
+
+            if (!empty($data['studies'])) {
+                foreach($data['studies'] as $id) {
+                    $study = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneById($id);
+                    $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
+                }
+            }
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        };
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
     }
 
     /**
