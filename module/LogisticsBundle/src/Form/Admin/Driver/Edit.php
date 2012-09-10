@@ -51,7 +51,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 
         $this->remove('person_id');
         $this->remove('person_name');
-        
+
         $this->remove('submit');
 
         $field = new Submit('submit');
@@ -61,18 +61,18 @@ class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 
         $this->populateFromDriver($driver);
     }
-    
+
     public function getInputFilter() {
         if ($this->_inputFilter == null) {
-            
+
             $inputFilter = parent::getInputFilter();
-            
+
             $inputFilter->remove('person_id');
             $inputFilter->remove('person_name');
-            
+
             $this->_inputFilter = $inputFilter;
         }
-        
+
         return $this->_inputFilter;
     }
 }

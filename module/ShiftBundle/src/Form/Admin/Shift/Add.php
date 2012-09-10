@@ -48,8 +48,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
+        $field = new Hidden('manager_id');
+        $field->setAttribute('id', 'managerId');
         $this->add($field);
 
         $field = new Text('start_date');
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('manager');
         $field->setLabel('Manager')
-            ->setAttribute('id', 'personSearch')
+            ->setAttribute('id', 'managerSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
             ->setRequired();

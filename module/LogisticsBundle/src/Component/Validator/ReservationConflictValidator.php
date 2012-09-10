@@ -27,25 +27,21 @@ use DateTime,
 class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
 {
     /**
-     * Error codes
-     * @const string
+     * @const string The error codes
      */
-    const CONFLICT_EXISTS      = 'conflictExists';
-    const INVALID_FORMAT = 'invalidFormat';
+    const CONFLICT_EXISTS = 'conflictExists';
+    const INVALID_FORMAT  = 'invalidFormat';
 
     /**
-     * Error messages
-     * @var array
+     * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::CONFLICT_EXISTS      => "A conflicting reservation already exists for this resource.",
-        self::INVALID_FORMAT       => "One of the dates is not in the correct format.",
+        self::CONFLICT_EXISTS => 'A conflicting reservation already exists for this resource',
+        self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
     );
 
     /**
-     * The start date of the interval
-     * 
-     * @var string
+     * @var string The start date of the interval
      */
     private $_startDate;
 
@@ -53,19 +49,17 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
      * @var string
      */
     private $_format;
-    
+
     /**
      * @var LogisticsBundle\Entity\Reservation\ReservableResource
      */
     private $_resource;
-    
+
     /**
-     * The id of the reservation to ignore when searching for conflicts. -1 indicates none.
-     * 
-     * @var int
+     * @var int The id of the reservation to ignore when searching for conflicts; -1 indicates none
      */
     private $_reservationId;
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -74,26 +68,26 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  mixed $token
+     * @param mixed $token
      * @param string $format
      * @return void
      */
     public function __construct($startDate, $format, $resource, $entityManager, $reservationId = -1)
     {
+        parent::__construct(null);
+
         $this->_startDate = $startDate;
         $this->_format = $format;
         $this->_resource = $resource;
         $this->_entityManager = $entityManager;
         $this->_reservationId = $reservationId;
-
-        parent::__construct(null);
     }
 
     /**
      * Returns true if and only if no other reservation exists for the resource that conflicts with the new one.
      *
-     * @param  mixed $value
-     * @param  array $context
+     * @param mixed $value
+     * @param array $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -111,28 +105,28 @@ class ReservationConflictValidator extends \Zend\Validator\AbstractValidator
             $this->error(self::NOT_VALID);
             return false;
         }
-        
+
         $repository = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource');
         $resource = $repository->findOneByName($this->_resource);
-        
+
         $startDate = DateTime::createFromFormat($this->_format, $startDate);
         $endDate = DateTime::createFromFormat($this->_format, $value);
 
         if (!$startDate || !$endDate) {
             return false;
         }
-        
+
         $repository = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
-        
+
         $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
-        
+
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);
             return false;
         }
-        
+
         return true;
     }
 }

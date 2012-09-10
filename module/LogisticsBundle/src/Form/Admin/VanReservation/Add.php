@@ -14,7 +14,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\Reservation;
+namespace LogisticsBundle\Form\Admin\VanReservation;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
@@ -25,10 +25,10 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     Doctrine\ORM\EntityManager,
     LogisticsBundle\Component\Validator\AcademicValidator,
     LogisticsBundle\Component\Validator\ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation;
+    LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
+    Zend\Form\Element\Submit;
 
 /**
  * The form used to add a new Reservation.
@@ -51,96 +51,68 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        
-        $drivers = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllByYear($currentYear);
-        
-        $drivernames = array();
-        // Add the possibility to select no driver (yet)
-        $drivernames[-1] = 'Unspecified';
-        foreach($drivers as $driver) {
-            $drivernames[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName(); 
-        }
+
+        $field = new Hidden('passenger_id');
+        $field->setAttribute('id', 'passengerId');
+        $this->add($field);
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
             ->setRequired();
         $this->add($field);
-        
+
         $field = new Text('end_date');
         $field->setLabel('End Date')
             ->setRequired();
         $this->add($field);
-        
+
         $field = new Text('reason');
         $field->setLabel('Reason')
             ->setRequired();
         $this->add($field);
-        
+
         $field = new Text('load');
         $field->setLabel('Load');
         $this->add($field);
-        
+
         $field = new Textarea('additional_info');
         $field->setLabel('Additional Information');
         $this->add($field);
-        
+
         $field = new Select('driver');
         $field->setLabel('Driver')
             ->setRequired(false)
-            ->setAttribute('options', $drivernames);
+            ->setAttribute('options', $this->_populateDriversArray($currentYear));
         $this->add($field);
-        
-        $field = new Text('passenger_name');
+
+        $field = new Text('passenger');
         $field->setLabel('Passenger')
         ->setAttribute('id', 'passengerSearch')
         ->setAttribute('autocomplete', 'off')
         ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
-        
-        $field = new Hidden('passenger_id');
-        $field->setAttribute('id', 'passengerId');
-        $this->add($field);
-        
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'reservation_add');
         $this->add($field);
     }
-    
-    public function populateFromReservation(VanReservation $reservation)
-    {
-        $driver = $reservation->getDriver();
-        
-        if (null === $driver) {
-            $driverid = -1;
-        } else {
-            $driverid = $driver->getPerson()->getId();
-        }
-        
-        if (null === $reservation->getPassenger()) {
-            $passenger_id = '';
-            $passenger_name = '';
-        } else {
-            $passenger_id = $reservation->getPassenger()->getId();
-            $passenger_name = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
-        }
-        
-        $data = array(
-            'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
-            'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
-            'reason' => $reservation->getReason(),
-            'load' => $reservation->getLoad(),
-            'additional_info' => $reservation->getAdditionalInfo(),
-            'driver' => $driverid,
-            'passenger_id' => $passenger_id,
-            'passenger_name' => $passenger_name,
-        );
 
-        $this->setData($data);
+    private function _populateDriversArray(AcademicYear $currentYear)
+    {
+        $drivers = $this->_entityManager
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findAllByYear($currentYear);
+
+        $driversArray = array(
+            '' => ''
+        );
+        foreach($drivers as $driver) {
+            $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
+        }
+
+        return $driversArray;
     }
-    
 
     public function getInputFilter()
     {
@@ -166,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-        
+
         $inputFilter->add(
             $factory->createInput(
                 array(
@@ -200,7 +172,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-        
+
         $inputFilter->add(
             $factory->createInput(
                 array(
@@ -212,7 +184,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-        
+
         $inputFilter->add(
             $factory->createInput(
                 array(
@@ -224,7 +196,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-        
+
         if (isset($this->data['passenger_id'])) {
             if ($this->data['passenger_id'] == '' && $this->get('passenger_name')) {
                 $inputFilter->add(
@@ -268,8 +240,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 );
             }
         }
-        
+
         return $inputFilter;
-            
+
     }
 }

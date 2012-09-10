@@ -14,24 +14,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\Reservation;
+namespace LogisticsBundle\Form\Admin\VanReservation;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator;
+    LogisticsBundle\Component\Validator\ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
+    Zend\Form\Element\Submit;
 
 /**
  * This form allows the user to edit the reservation.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends \LogisticsBundle\Form\Admin\Reservation\Add
+class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
 {
     /**
      * @var \LogisticsBundle\\Entity\Reservation\VanReservation
@@ -40,7 +40,8 @@ class Edit extends \LogisticsBundle\Form\Admin\Reservation\Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \LogisticsBundle\Entity\Reservation $reservation
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, VanReservation $reservation, $name = null)
@@ -56,16 +57,35 @@ class Edit extends \LogisticsBundle\Form\Admin\Reservation\Add
             ->setAttribute('class', 'reservation_edit');
         $this->add($field);
 
-        $this->populateFromReservation($reservation);
+        $this->_populateFromReservation($reservation);
     }
-    
+
+    private function _populateFromReservation(VanReservation $reservation)
+    {
+        $data = array(
+            'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
+            'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
+            'reason' => $reservation->getReason(),
+            'load' => $reservation->getLoad(),
+            'additional_info' => $reservation->getAdditionalInfo(),
+            'driver' => $reservation->getDriver()->getPerson()->getId(),
+        );
+
+        if (null !== $reservation->getPassenger()) {
+            $data['passenger_id'] = $reservation->getPassenger()->getId();
+            $data['passenger'] = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
+        }
+
+        $this->setData($data);
+    }
+
     public function getInputFilter() {
-        
+
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
-    
+
         $inputFilter->remove('end_date');
-        
+
         $inputFilter->add(
             $factory->createInput(
                 array(
@@ -87,8 +107,8 @@ class Edit extends \LogisticsBundle\Form\Admin\Reservation\Add
                 )
             )
         );
-    
+
         return $inputFilter;
     }
-    
+
 }
