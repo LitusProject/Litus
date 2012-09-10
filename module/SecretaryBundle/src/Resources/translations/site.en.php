@@ -47,5 +47,7 @@ return array(
 
     'Choose a study:' => 'Choose a study:',
     'Phase' => 'Phase',
-    'I enroll myself in this study.' => 'I enroll myself in this study.',
+    'I\'m enrolled in this study' => 'I\'m enrolled in this study',
+    'Your studies were successfully saved!' => 'Your studies were successfully saved!',
+    'An error occurred while saving your studies' => 'An error occurred while saving your studies',
 );
