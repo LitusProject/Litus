@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     DateTime,
     Imagick,
+    SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Form\Registration\Add as AddForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
@@ -166,6 +167,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $student->setPhotoPath($fileName);
                     }
 
+                    $metaData = new MetaData(
+                        $student,
+                        $this->getCurrentAcademicYear(),
+                        $formData['irreeel'],
+                        $formData['bakske'],
+                        $formData['tshirt_size']
+                    );
+                    $this->getEntityManager()->persist($metaData);
+
                     $student->activate(
                         $this->getEntityManager(),
                         $this->getMailTransport()
@@ -173,6 +183,21 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                     $this->getEntityManager()->persist($student);
                     $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'SUCCESS',
+                            'You are succesfully registered!'
+                        )
+                    );
+
+                    $this->redirect()->toRoute(
+                        'secretary_registration',
+                        array(
+                            'action' => 'studies'
+                        )
+                    );
                 }
 
                 return new ViewModel(
@@ -200,6 +225,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
             )
         );
+    }
+
+    public function studiesAction()
+    {
+        return new ViewModel();
     }
 
     /**
