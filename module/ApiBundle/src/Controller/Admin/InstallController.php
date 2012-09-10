@@ -15,8 +15,6 @@
 
 namespace ApiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
-
 /**
  * InstallController
  *

@@ -150,6 +150,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_index' => array(
                         'index'
                     ),
+                    'admin_location' => array(
+                        'add', 'edit', 'delete', 'manage'
+                    ),
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
@@ -173,6 +176,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'index'
                     ),
                     'gallery_install' => array(
+                        'index'
+                    ),
+                    'logistics_install' => array(
                         'index'
                     ),
                     'mail_install' => array(

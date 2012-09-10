@@ -21,7 +21,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Zend\Form\Element\Submit;
 
 /**
- * Add Key
+ * Add Unit
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

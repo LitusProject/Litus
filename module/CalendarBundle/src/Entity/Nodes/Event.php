@@ -124,7 +124,6 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     *
      * @return \CalendarBundle\Entity\Nodes\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -145,38 +144,47 @@ class Event extends \CommonBundle\Entity\Nodes\Node
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getLocation(Language $language)
+    public function getLocation(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getLocation();
+
+        return '';
     }
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getTitle(Language $language)
+    public function getTitle(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getTitle();
+
+        return '';
     }
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
+     * @param boolean $allowFallback
      * @return string
      */
-    public function getContent(Language $language)
+    public function getContent(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getContent();
+
+        return '';
     }
 
     /**
