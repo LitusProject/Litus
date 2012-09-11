@@ -11,7 +11,29 @@
     </div>
 
 	<div id="calendar"></div>
-	
+
+	<div id="popover_header" class="hide">
+		<b class="reason"></b>
+	</div>
+
+	<div id="popover_content" class="hide">
+		<table>
+		<tr>
+			<td><b>Load:</b></td> <td><span class="load"></span></td>
+		</tr>
+		<tr>
+			<td><b>Additional Info:</b></td><td> <span class="info"></span></td>
+		</tr>
+		<tr>
+			<td><b>Passenger:</b></td> <td><span class="passenger"></span></td>
+		</tr>
+		<tr>
+			<td><b>Driver:</b></td><td> <span class="driver"></span></td>
+		</tr>
+		</table>
+		<a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
+	</div>
+
 {% endblock %}
 
 {% block content_script %}
@@ -19,12 +41,12 @@
 	<script type="text/javascript">
 
 		$(document).ready(function() {
-		
+
 			var date = new Date();
 			var d = date.getDate();
 			var m = date.getMonth();
 			var y = date.getFullYear();
-			
+
 			$('#calendar').fullCalendar({
 				header: {
 					left: 'prev,next today',
@@ -39,7 +61,7 @@
 				firstHour: 7,
 				firstDay: 1,
 				defaultView: 'agendaWeek',
-				
+
 				timeFormat: {
 				    agenda: 'H:mm{ - H:mm}',
 				    '': 'H:mm'
@@ -47,31 +69,42 @@
 				axisFormat: 'H:mm',
 
 			    eventSources: [
-			
+
 			        {
 			            events: function(start, end, callback) {
-			            
+
 	                		$('.load_error').addClass('hide');
-			            
+
 							// Use UNIX Timestamps
                 			start = Math.round(start.getTime() / 1000);
                 			end = Math.round(end.getTime() / 1000);
-                			
+
 							$.post('{{ url('logistics_reservation_fetch', {}) }}/' + start + '/' + end, function (data) {
 							    if (data && 'success' == data.status) {
 							    	reservations = data.reservations;
 
 							    	var events = [];
 							    	for (index in reservations) {
+
+							    		var reservation = reservations[index];
+
 							    		events.push({
-					                        title: reservations[index].reason,
-					                        start: reservations[index].start,
-					                        end: reservations[index].end,
+					                        title: reservation.reason,
+					                        start: reservation.start,
+					                        end: reservation.end,
+
+					                        // Custom properties
+					                        driver: reservation.driver,
+					                        passenger: reservation.passenger,
+					                        load: reservation.load,
+					                        additional: reservation.additional,
+					                        dbid: reservation.id,
+
 					                    });
 							    	}
-							    	
+
 							    	callback(events);
-							    	
+
 			    				} else {
 			    				    errorFetch();
 			    				}
@@ -81,24 +114,38 @@
 			        }
 			
 			    ],
-			    
+
 			    loading : function(isLoading, view) {
 			    	if (isLoading) {
 	    	    		$('#calendar').addClass('loading');
 			    	} else {
 			    		$('#calendar').removeClass('loading');
 			    	}
+			    },
+
+			    eventClick : function(event, jsEvent, view) {
+
+			    	$('#popover_header .reason').text(event.title);
+
+					$("a").attr("href", "{{ url('admin_van_reservation', {'action': 'edit'}) }}/" + event.dbid)
+
+			    	$('#popover_content .load').text(event.load);
+			    	$('#popover_content .passenger').text(event.passenger);
+			    	$('#popover_content .additional').text(event.additional);
+			    	$('#popover_content .driver').text(event.driver);
+
+			    	$(this).popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html()})
 			    }
-			
+
 			});
 
 		});
-		
+
 		function errorFetch() {
     		$('.flashmessage').addClass('hide');
     		$('#calendar').removeClass('loading');
     		$('.load_error').removeClass('hide');
 		}
-		
+
 	</script>
 {% endblock %}
