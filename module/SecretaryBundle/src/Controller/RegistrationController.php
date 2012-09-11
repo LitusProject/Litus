@@ -45,11 +45,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ('1' !== $enabled)
             return $this->notFoundAction();
 
-        $student = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
-
-        if (null !== $student) {
+        if (null !== $this->_getStudent()) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -72,12 +68,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
         }
 
-        $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-            ->findLastByUniversityIdentification($this->getParam('identification'));
-
         if ($this->getRequest()->isPost()) {
-            if (true ||$code->validate($this->getParam('hash'))) { // TODO: remove true
+            if ($this->_getStudent(false)) {
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();
@@ -213,16 +205,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if (null !== $code || true) { // TODO: remove true
-                if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
-                    $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
+            if ($this->_getStudent(false) || true) {
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
-                    return new ViewModel(
-                        array(
-                            'form' => $form,
-                        )
-                    );
-                }
+                return new ViewModel(
+                    array(
+                        'form' => $form,
+                    )
+                );
             }
         }
 
@@ -235,36 +225,26 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function studiesAction()
     {
-        $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-            ->findLastByUniversityIdentification($this->getParam('identification'));
+        if (!($student = $this->_getStudent())) {
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'add',
+                )
+            );
 
-        $student = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
-
-        if ((null !== $code && $student !== null) || true) { // TODO: remove true
-            if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
-                $studies = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
-
-                return new ViewModel(
-                    array(
-                        'studies' => $studies,
-                    )
-                );
-            }
+            return new ViewModel();
         }
 
-        $this->redirect()->toRoute(
-            'secretary_registration',
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
+
+        return new ViewModel(
             array(
-                'action' => 'add',
+                'studies' => $studies,
             )
         );
-
-        return new ViewModel();
     }
 
     public function saveStudiesAction()
@@ -273,104 +253,86 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $data = $this->getRequest()->getPost();
 
-        $student = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
-
-        $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-            ->findLastByUniversityIdentification($this->getParam('identification'));
-
-        if ((null !== $code && $student !== null) || true) { // TODO: remove true
-            $enrollments = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
-
-            foreach($enrollments as $enrollment)
-                $this->getEntityManager()->remove($enrollment);
-
-            $enrollments = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
-
-            foreach($enrollments as $enrollment)
-                $this->getEntityManager()->remove($enrollment);
-
-            if (!empty($data['studies'])) {
-                foreach($data['studies'] as $id) {
-                    $study = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($id);
-                    $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
-
-                    $subjects = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                        ->findAllByStudyAndAcademicYear($study, $this->getCurrentAcademicYear());
-
-                    foreach($subjects as $subject) {
-                        if ($subject->isMandatory())
-                            $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject->getSubject()));
-                    }
-                }
-            }
-            $this->getEntityManager()->flush();
-
+        if (!($student = $this->_getStudent())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'success'),
+                    'result' => (object) array('status' => 'error'),
                 )
             );
-        };
+        }
+
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+        foreach($enrollments as $enrollment)
+            $this->getEntityManager()->remove($enrollment);
+
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+        foreach($enrollments as $enrollment)
+            $this->getEntityManager()->remove($enrollment);
+
+        if (!empty($data['studies'])) {
+            foreach($data['studies'] as $id) {
+                $study = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($id);
+                $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
+
+                $subjects = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByStudyAndAcademicYear($study, $this->getCurrentAcademicYear());
+
+                foreach($subjects as $subject) {
+                    if ($subject->isMandatory())
+                        $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject->getSubject()));
+                }
+            }
+        }
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'error'),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
 
     public function subjectsAction()
     {
-        $code = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
-            ->findLastByUniversityIdentification($this->getParam('identification'));
+        if (!($student = $this->_getStudent())) {
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'add',
+                )
+            );
 
-        $student = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
-
-        if ((null !== $code && $student !== null) || true) { // TODO: remove true
-            if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
-                $enrollments = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
-
-                $mappings = array();
-                foreach($enrollments as $enrollment) {
-                    $mappings[] = array(
-                        'enrollment' => $enrollment,
-                        'subjects' => $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                            ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
-                    );
-                }
-
-                return new ViewModel(
-                    array(
-                        'mappings' => $mappings,
-                    )
-                );
-            }
+            return new ViewModel();
         }
 
-        $this->redirect()->toRoute(
-            'secretary_registration',
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+        $mappings = array();
+        foreach($enrollments as $enrollment) {
+            $mappings[] = array(
+                'enrollment' => $enrollment,
+                'subjects' => $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+            );
+        }
+
+        return new ViewModel(
             array(
-                'action' => 'add',
+                'mappings' => $mappings,
             )
         );
-
-        return new ViewModel();
     }
 
     public function saveSubjectsAction()
@@ -379,44 +341,56 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $data = $this->getRequest()->getPost();
 
-        $student = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
+        if (!($student = $this->_getStudent())) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
 
+        foreach($enrollments as $enrollment)
+            $this->getEntityManager()->remove($enrollment);
+
+        if (!empty($data['subjects'])) {
+            foreach($data['subjects'] as $id) {
+                $subject = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Subject')
+                    ->findOneById($id);
+                $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject));
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    private function _getStudent($studentMustExist = true)
+    {
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if ((null !== $code && $student !== null) || true) { // TODO: remove true
-            $enrollments = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
 
-            foreach($enrollments as $enrollment)
-                $this->getEntityManager()->remove($enrollment);
-
-            if (!empty($data['subjects'])) {
-                foreach($data['subjects'] as $id) {
-                    $subject = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Subject')
-                        ->findOneById($id);
-                    $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject));
-                }
+        if (null !== $code && $student !== null) {
+            if ($code->validate($this->getParam('hash'))) {
+                return $student;
             }
-            $this->getEntityManager()->flush();
+        } elseif (null !== $code && !$studentMustExist) {
+            return true;
+        }
 
-            return new ViewModel(
-                array(
-                    'result' => (object) array('status' => 'success'),
-                )
-            );
-        };
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'error'),
-            )
-        );
+        return null;
     }
 
     /**
