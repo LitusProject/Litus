@@ -46,12 +46,12 @@ abstract class Node
     private $creationPerson;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\Users\Person $creationPerson
      */
-    public function __construct(Person $person)
+    public function __construct(Person $creationPerson)
     {
         $this->creationTime = new DateTime();
-        $this->creationPerson = $person;
+        $this->creationPerson = $creationPerson;
     }
 
     /**

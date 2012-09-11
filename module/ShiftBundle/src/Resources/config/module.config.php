@@ -58,6 +58,21 @@ return array(
                     ),
                 ),
             ),
+            'shift' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '[/:language]/shift[/:action[/:id]]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'name'     => '[a-zA-Z0-9_-]*',
+                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'shift',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -82,8 +97,10 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
-            'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
             'admin_shift'   => 'ShiftBundle\Controller\Admin\ShiftController',
+            'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
+
+            'shift'         => 'ShiftBundle\Controller\ShiftController',
         ),
     ),
 );

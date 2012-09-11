@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Supplier;
+namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
@@ -22,7 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 /**
  * AuthController
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class AuthController extends \CommonBundle\Component\Controller\ActionController
 {
@@ -60,7 +60,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $this->redirect()->toRoute(
-            'supplier_index',
+            'index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -82,12 +82,61 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $this->redirect()->toRoute(
-            'supplier_index',
+            'index',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
         );
 
         return new ViewModel();
+    }
+
+    public function shibbolethAction()
+    {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $code) {
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+
+                    if ($authentication->isAuthenticated()) {
+                        $this->redirect()->toRoute(
+                            'admin_index'
+                        );
+                    }
+                }
+            }
+        }
+
+        return new ViewModel();
+    }
+
+    private function _getShibbolethUrl()
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        if ('%2F' != substr($shibbolethUrl, 0, -3))
+            $shibbolethUrl .= '%2F';
+
+        return $shibbolethUrl . '?source=admin';
     }
 }

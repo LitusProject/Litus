@@ -31,11 +31,11 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     protected $_inputFilter;
 
     /**
-     * @param mixed $options The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options)
+    public function __construct($name = null)
     {
-        parent::__construct($options = null);
+        parent::__construct($name);
 
         $this->setAttribute('method', 'post')
             ->setAttribute('class', 'form')
