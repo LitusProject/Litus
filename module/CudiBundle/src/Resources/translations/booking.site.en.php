@@ -16,10 +16,10 @@
 
 return array(
     'My Textbook Bookings' => 'My Textbook Bookings',
-    
+
     'Please log in to view your textbook bookings.' => 'Please log in to view your textbook bookings.',
     'Please log in to book textbooks.' => 'Please log in to book textbooks.', 
-    
+
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
 
@@ -30,12 +30,12 @@ return array(
     'Status' => 'Status',
     'Actions' => 'Actions',
     'Mandatory' => 'Mandatory',
-    
+
     'Book Textbooks' => 'Book Textbooks',
-    
+
     'Not Bookable' => 'Not Bookable',
-    
+
     'Back' => 'Back',
-    
+
     'General' => 'General',  
 );
