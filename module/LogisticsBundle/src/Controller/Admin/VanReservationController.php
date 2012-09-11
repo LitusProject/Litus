@@ -16,14 +16,14 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+use LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+    DateTime,
+    LogisticsBundle\Entity\Driver,
     LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Entity\Reservation\ReservableResource,
-    Zend\View\Model\ViewModel,
-    DateTime;
+    LogisticsBundle\Entity\Reservation\VanReservation,
+    Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

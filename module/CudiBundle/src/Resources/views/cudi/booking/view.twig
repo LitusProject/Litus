@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ translate('My Textbook Bookings') }}</h1>
+        <h1>{{ translate('My Bookings') }}</h1>
     </div>
 
 	<div class="flashmessage error_message full_width booking_canceled_error hide">
@@ -15,7 +15,7 @@
     <div class="row page">
         <div class="span12">
             {% if authenticatedPerson == null %}
-				{{ translate('Please log in to view your textbook bookings.') }}
+				{{ translate('Please log in to view your bookings.') }}
 			{% else %}
             	<table class="table">
             		<tr>
@@ -46,7 +46,7 @@
         			{% endfor %}
             	</table>
 
-            	<a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
+            	<a href={{ url('booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
 
             {% endif %}
         </div>
@@ -85,7 +85,7 @@
 			cancelBooking.find('.articleTitle').html($(this).data('title'));
 			var id = $this.data('id');
 			cancelBooking.find('.continue').unbind('click').click(function () {
-				$.post('{{ url('cudi_booking', {"action": "cancel"})}}/' + id, function (data) {
+				$.post('{{ url('booking', {"action": "cancel"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
 				    	$('.flashmessage').addClass('hide');
     					$('.item-' + id).remove();

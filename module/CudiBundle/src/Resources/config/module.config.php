@@ -582,7 +582,7 @@ return array(
                     ),
                 ),
             ),
-            'cudi_booking' => array(
+            'booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '[/:language]/cudi/booking[/:action[/:id]]',
@@ -592,7 +592,7 @@ return array(
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'cudi_booking',
+                        'controller' => 'booking',
                         'action'     => 'view',
                     ),
                 ),
@@ -693,7 +693,7 @@ return array(
             'prof_subject'          => 'CudiBundle\Controller\Prof\SubjectController',
             'prof_subject_comment'  => 'CudiBundle\Controller\Prof\Subject\CommentController',
 
-            'cudi_booking'          => 'CudiBundle\Controller\Booking\BookingController',
+            'booking'               => 'CudiBundle\Controller\BookingController',
         ),
     ),
     'assetic_configuration' => array(
