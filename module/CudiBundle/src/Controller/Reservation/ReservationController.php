@@ -203,18 +203,15 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $form->addInputsForArticles($articles);
         
         if($this->getRequest()->isPost()) {
-            // Form is being posted, persist the new driver.
+
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
         
             if ($form->isValid()) {
                 
                 foreach ($formData as $formKey => $formValue) {
-                    
-                    echo "key = " . $formKey;
-                    echo "val = " . $formValue;
-                    
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && formValue !== '0') {
+
+                    if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && $formValue !== '0') {
                         
                         $saleArticleId = substr($formKey, 8, strlen($formKey));
                         

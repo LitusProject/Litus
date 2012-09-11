@@ -28,10 +28,21 @@ use    CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Reservation extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    
+    /**
+     * The maximum number allowed to enter in the textbook booking form.
+     */
+    const MAX_BOOKING_NUMBER = 5;
+    
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
+    
+    /**
+     * @var array Contains the input fields added for article quantities.
+     */
+    private $_inputs = array();
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -56,15 +67,47 @@ class Reservation extends \CommonBundle\Component\Form\Bootstrap\Form
             $field->setAttribute('class', 'input-very-mini')
                 ->setAttribute('placeholder', '0');
             $this->add($field);
+            
+            $this->_inputs[] = $field;
         }
     }
 
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
-        
-        
+        $factory = new InputFactory();
+
+        foreach ($this->_inputs as $input) {
+            
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => $input->getName(),
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'digits',
+                                'options' => array(
+                                ),
+                            ),
+                            array(
+                                'name' => 'between',
+                                'options' => array(
+                                    'min' => 0,
+                                    'max' => self::MAX_BOOKING_NUMBER,
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+            
+        }
         
         return $inputFilter;
     }
+        
 }
