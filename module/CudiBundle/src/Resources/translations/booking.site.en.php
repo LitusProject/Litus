@@ -15,10 +15,10 @@
  */
 
 return array(
-    'My Textbook Reservations' => 'My Textbook Reservations',
+    'My Textbook Bookings' => 'My Textbook Bookings',
     
-    'Please log in to view your textbook reservations.' => 'Please log in to view your textbook reservations.',
-    'Please log in to reserve textbooks.' => 'Please log in to reserve textbooks.', 
+    'Please log in to view your textbook bookings.' => 'Please log in to view your textbook bookings.',
+    'Please log in to book textbooks.' => 'Please log in to book textbooks.', 
     
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',

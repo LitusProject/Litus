@@ -255,7 +255,7 @@ return array(
             '@common_typeahead_remote',
             '@prof_css',
         ),
-        'reservation' => array(
+        'cudi_booking' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',
@@ -265,7 +265,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
-            '@reservation_css',
+            '@booking_css',
         ),
     ),
     'routes' => array(),

@@ -10,7 +10,7 @@
     <div class="row page">
         <div class="span12">
             {% if authenticatedPerson == null %}
-				{{ translate('Please log in to reserve textbooks.') }}
+				{{ translate('Please log in to book textbooks.') }}
 			{% else %}
 
     		{% autoescape false %}
@@ -85,7 +85,7 @@
 				
 				</table>
 				
-				<a class="btn pull-left" href="{{ url('reservation', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+				<a class="btn pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
 
             	{% if form.get('submit') %}
             		{{ formElement(form.get('submit')) }}

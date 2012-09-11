@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Reservation;
+namespace CudiBundle\Form\Booking;
 
 use    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
@@ -26,7 +26,7 @@ use    CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Niels Avonds<niels.avonds@litus.cc>
  */
-class Reservation extends \CommonBundle\Component\Form\Bootstrap\Form
+class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     
     /**

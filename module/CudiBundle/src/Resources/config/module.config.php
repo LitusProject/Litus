@@ -582,17 +582,17 @@ return array(
                     ),
                 ),
             ),
-            'reservation' => array(
+            'cudi_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/cudi/reservation[/:action[/:id]]',
+                    'route' => '[/:language]/cudi/booking[/:action[/:id]]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'language' => '[a-zA-Z][a-zA-Z_-]*',
                         'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'reservation',
+                        'controller' => 'cudi_booking',
                         'action'     => 'view',
                     ),
                 ),
@@ -613,12 +613,12 @@ return array(
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/reservations.site.en.php',
+                'filename' => __DIR__ . '/../translations/booking.site.en.php',
                 'locale'   => 'en'
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/reservations.site.nl.php',
+                'filename' => __DIR__ . '/../translations/booking.site.nl.php',
                 'locale'   => 'nl'
             ),
             array(
@@ -693,7 +693,7 @@ return array(
             'prof_subject'          => 'CudiBundle\Controller\Prof\SubjectController',
             'prof_subject_comment'  => 'CudiBundle\Controller\Prof\Subject\CommentController',
             
-            'reservation'           => 'CudiBundle\Controller\Reservation\ReservationController',
+            'cudi_booking'           => 'CudiBundle\Controller\Booking\BookingController',
         ),
     ),
     'assetic_configuration' => array(
@@ -776,12 +776,12 @@ return array(
                             'output' => 'prof_css.css',
                         ),
                     ),
-                    'reservation_css' => array(
+                    'booking_css' => array(
                         'assets' => array(
-                            'reservation/less/base.less',
+                            'booking/less/base.less',
                         ),
                         'filters' => array(
-                            'reservation_less' => array(
+                            'booking_less' => array(
                                 'name' => 'Assetic\Filter\LessFilter',
                                 'option' => array(
                                     'nodeBin'   => '/usr/local/bin/node',
@@ -793,7 +793,7 @@ return array(
                             ),
                         ),
                         'options' => array(
-                            'output' => 'reservation_css.css',
+                            'output' => 'booking_css.css',
                         ),
                     ),
                 ),
