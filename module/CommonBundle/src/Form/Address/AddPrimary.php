@@ -87,8 +87,10 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private function _getCities()
     {
         $cacheId = 'Litus_cities_streets';
-        if (null !== ($result = $this->_cache->getItem($cacheId))) {
-            return $result;
+        if (null !== $this->_cache) {
+            if (null !== ($result = $this->_cache->getItem($cacheId))) {
+                return $result;
+            }
         }
 
         $cities = $this->_entityManager
@@ -106,7 +108,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             }
         }
 
-        $this->_cache->setItem($cacheId, array($optionsCity, $optionsStreet));
+        if ($this->_cache !== null)
+            $this->_cache->setItem($cacheId, array($optionsCity, $optionsStreet));
+
         return array($optionsCity, $optionsStreet);
     }
 
