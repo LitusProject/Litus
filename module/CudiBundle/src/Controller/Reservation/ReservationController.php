@@ -164,10 +164,13 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                         ->getRepository('CudiBundle\Entity\Sales\Article')
                         ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
                 
-                $articles[] = array(
-                    'article'   => $article,
-                    'mandatory' => $subjectMap->isMandatory()
-                );
+                if ($article !== null) {
+                
+                    $articles[] = array(
+                        'article'   => $article,
+                        'mandatory' => $subjectMap->isMandatory()
+                    );
+                }
             }
             
             $result[] = array(
