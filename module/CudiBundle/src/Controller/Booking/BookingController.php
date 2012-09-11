@@ -14,21 +14,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Reservation;
-
-use CudiBundle\Entity\Sales\Booking;
+namespace CudiBundle\Controller\Booking;
 
 use CommonBundle\Entity\Users\People\Academic,
     Zend\View\Model\ViewModel,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Form\Reservation\Reservation as ReservationForm;
+    CudiBundle\Form\Booking\Booking as BookingForm,
+    CudiBundle\Entity\Sales\Booking;
 
 /**
- * ReservationController
+ * BookingController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class ReservationController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class BookingController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function viewAction()
     {
@@ -66,7 +65,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             );
             
             $this->redirect()->toRoute(
-                'reservation',
+                'cudi_booking',
                 array(
                     'action' => 'view'
                 )
@@ -97,7 +96,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             );
     
             $this->redirect()->toRoute(
-                'reservation',
+                'cudi_booking',
                 array(
                     'action' => 'view'
                 )
@@ -120,7 +119,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             );
     
             $this->redirect()->toRoute(
-                'reservation',
+                'cudi_booking',
                 array(
                     'action' => 'view'
                 )
@@ -132,9 +131,9 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         return $booking;
     }
     
-    public function reserveAction()
+    public function bookAction()
     {
-        $form = new ReservationForm($this->getEntityManager());
+        $form = new BookingForm($this->getEntityManager());
         
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
         
@@ -242,7 +241,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 );
         
                 $this->redirect()->toRoute(
-                    'reservation',
+                    'cudi_booking',
                     array(
                         'action' => 'view',
                     )
