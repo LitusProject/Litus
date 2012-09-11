@@ -24,6 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
+    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Add as AddForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
@@ -288,12 +289,28 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             foreach($enrollments as $enrollment)
                 $this->getEntityManager()->remove($enrollment);
 
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+            foreach($enrollments as $enrollment)
+                $this->getEntityManager()->remove($enrollment);
+
             if (!empty($data['studies'])) {
                 foreach($data['studies'] as $id) {
                     $study = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Study')
                         ->findOneById($id);
                     $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
+
+                    $subjects = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                        ->findAllByStudyAndAcademicYear($study, $this->getCurrentAcademicYear());
+
+                    foreach($subjects as $subject) {
+                        if ($subject->isMandatory())
+                            $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject->getSubject()));
+                    }
                 }
             }
             $this->getEntityManager()->flush();
@@ -354,6 +371,52 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
 
         return new ViewModel();
+    }
+
+    public function saveSubjectsAction()
+    {
+        $this->initAjax();
+
+        $data = $this->getRequest()->getPost();
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+            foreach($enrollments as $enrollment)
+                $this->getEntityManager()->remove($enrollment);
+
+            if (!empty($data['subjects'])) {
+                foreach($data['subjects'] as $id) {
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneById($id);
+                    $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject));
+                }
+            }
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        };
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
     }
 
     /**
