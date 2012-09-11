@@ -61,31 +61,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         
         $currentYear = $this->getCurrentAcademicYear();
         
-        $commonArticles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findAllByTypeAndAcademicYear('common', $currentYear);
-        
-        $articles = array();
-        foreach ($commonArticles as $commonArticle) {
-            $articles[] = array(
-                'article'   => $commonArticle,
-                'mandatory' => false,
-            );
-        }
-        
-        $result = array();
-        $result[] = array(
-            'subject'   => null,
-            'articles'  => $articles,
-            'isMapping' => false,
-        );
-        
-        $form->addInputsForArticles($articles);
-        
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
         
+        $result = array();
         foreach ($enrollments as $enrollment) {
             
             $subject = $enrollment->getSubject();
@@ -115,6 +95,26 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             
             $form->addInputsForArticles($articles);
         }
+        
+        $commonArticles = $this->getEntityManager()
+        ->getRepository('CudiBundle\Entity\Sales\Article')
+        ->findAllByTypeAndAcademicYear('common', $currentYear);
+        
+        $articles = array();
+        foreach ($commonArticles as $commonArticle) {
+            $articles[] = array(
+                'article'   => $commonArticle,
+                'mandatory' => false,
+            );
+        }
+        
+        $result[] = array(
+            'subject'   => null,
+            'articles'  => $articles,
+            'isMapping' => false,
+        );
+        
+        $form->addInputsForArticles($articles);
         
         if($this->getRequest()->isPost()) {
             // Form is being posted, persist the new driver.
