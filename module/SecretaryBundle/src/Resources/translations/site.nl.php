@@ -17,6 +17,11 @@ return array(
     'Registration' => 'Inschrijving',
     'There is already a user with your university identification!' => 'Er is reeds een gebruiker met je universiteits identificatie!',
 
+    'Start' => 'Start',
+    'Studies' => 'Studierichtingen',
+    'Subjects' => 'Vakken',
+    'Complete' => 'Voltooi',
+
     'Personal' => 'Persoonlijk',
     'First Name' => 'Voornaam',
     'Last Name' => 'Achternaam',
@@ -46,10 +51,14 @@ return array(
     'Register' => 'Schrijf In',
 
     'Choose a study:' => 'Kies een studierichting:',
+    'Choose Your Subjects' => 'Kies Je Vakken',
     'Phase' => 'Fase',
     'I\'m enrolled in this study' => 'Ik ben ingeschreven voor deze studierichting.',
     'Your studies were successfully saved!' => 'Je studierichtingen zijn succesvol opgeslagen!',
     'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 
     'Choose your subjects:' => 'Kies je vakken:',
+    'Complete Your Registration' => 'Voltooi Jw Inschrijving',
+    'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgelsagen!',
+    'An error occurred while saving your subjects' => 'Er is een fout opgetreden tijdens het opslagen van je vakken',
 );

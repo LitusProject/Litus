@@ -18,19 +18,27 @@
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
+    {% include 'secretary/registration/partials/navigation.twig' %}
+
     <div class="row page" id="studies">
         <div class="span12">
             <h2>
                 {{ translate('Choose your subjects:') }}
+                <div class="pull-right">
+                    <a href="{{ url('secretary_registration', {'action': 'complete', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+                </div>
             </h2>
             {% for mapping in mappings %}
                 <h3>{{ mapping.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
                 {% for subject in mapping.subjects %}
                     <label class="checkbox">
-                        <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.isMandatory() %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
+                        <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.getSubject().getId() in enrollments %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
                     </label>
                 {% endfor %}
             {% endfor %}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('secretary_registration', {'action': 'complete', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+            </div>
         </div>
     </div>
 {% endblock %}
