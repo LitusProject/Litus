@@ -16,9 +16,10 @@
 
 namespace CudiBundle\Controller\Reservation;
 
-use CommonBundle\Entity\Users\People\Academic;
-
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\Users\People\Academic,
+    Zend\View\Model\ViewModel,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Form\Reservation\Reservation as ReservationForm;
 
 /**
  * ReservationController
@@ -48,6 +49,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     
     public function reserveAction()
     {
+        $form = new ReservationForm($this->getEntityManager());
+        
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
         
         if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
@@ -75,15 +78,19 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             'isMapping' => false,
         );
         
+        $form->addInputsForArticles($articles);
+        
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
         
         foreach ($enrollments as $enrollment) {
             
+            $subject = $enrollment->getSubject();
+            
             $subjectMaps = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
-                ->findAllBySubjectAndAcademicYear($enrollment->getSubject(), $currentYear);
+                ->findAllBySubjectAndAcademicYear($subject, $currentYear);
             
             $articles = array();
             foreach ($subjectMaps as $subjectMap) {
@@ -103,11 +110,41 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 'articles'  => $articles,
                 'isMapping' => false,
             );
+            
+            $form->addInputsForArticles($articles);
+        }
+        
+        if($this->getRequest()->isPost()) {
+            // Form is being posted, persist the new driver.
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+        
+            if ($form->isValid()) {
+                
+        
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The textbooks have been booked!'
+                    )
+                );
+        
+                $this->redirect()->toRoute(
+                    'reservation',
+                    array(
+                        'action' => 'view',
+                    )
+                );
+
+                return new ViewModel();
+            }
         }
         
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
+                'form'              => $form,
             )
         );
     }
