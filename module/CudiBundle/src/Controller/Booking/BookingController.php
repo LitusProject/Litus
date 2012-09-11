@@ -67,7 +67,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_booking',
                 array(
-                    'action' => 'view'
+                    'action' => 'view',
+                    'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
             
@@ -98,7 +99,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_booking',
                 array(
-                    'action' => 'view'
+                    'action' => 'view',
+                    'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
     
@@ -121,7 +123,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_booking',
                 array(
-                    'action' => 'view'
+                    'action' => 'view',
+                    'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
     
@@ -244,6 +247,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'cudi_booking',
                     array(
                         'action' => 'view',
+                        'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
 
