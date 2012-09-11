@@ -52,7 +52,7 @@
 							<tr>
 								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
 								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
-								<td>€ {{ map['article'].getSellPrice() }}</td> <!-- TODO price format -->
+								<td>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</td>
 								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
 								<td>
 									{% if map['article'].isBookable() %}
