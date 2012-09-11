@@ -148,4 +148,12 @@ class Organization
     {
         return array_key_exists($status, self::$possibleStatuses);
     }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
 }

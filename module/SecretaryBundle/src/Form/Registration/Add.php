@@ -23,6 +23,8 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -31,7 +33,7 @@ use Doctrine\ORM\EntityManager,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
- * Add Article
+ * Add Registration
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -174,6 +176,56 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue('Register')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
+    }
+
+    public function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
+    {
+        $data = array(
+            'first_name' => $academic->getFirstName(),
+            'last_name' => $academic->getLastName(),
+            'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',
+            'sex' => $academic->getSex(),
+            'phone_number' => $academic->getPhoneNumber(),
+            'university_identification' => $academic->getUniversityIdentification(),
+            'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
+            'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
+            'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
+            'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
+            'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
+            'university_email' => $academic->getUniversityEmail(),
+            'personal_email' => $academic->getPersonalEmail(),
+            'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
+            'become_member' => $academic->isMember($academicYear),
+        );
+
+        if ($academic->getPrimaryAddress()) {
+            $city = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Address\City')
+                ->findOneByName($academic->getPrimaryAddress()->getCity());
+
+            if (null !== $city) {
+                $data['primary_address_address_city'] = $city->getId();
+
+                $street = $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Address\Street')
+                    ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
+
+                $data['primary_address_address_street' . $city->getId()] = $street ? $street->getId() : 0;
+                $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
+            }
+
+        }
+
+        if ($academic->isMember($academicYear)) {
+            $this->get('organisation')->get('become_member')->setAttribute('disabled', true);
+            if ($metaData) {
+                $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
+                $data['bakske'] = $metaData->bakskeByMail();
+                $data['tshirt_size'] = $metaData->getTshirtSize();
+            }
+        }
+
+        $this->setData($data);
     }
 
     public function getInputFilter()

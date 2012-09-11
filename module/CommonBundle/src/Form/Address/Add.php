@@ -103,9 +103,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_street',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
                 'validators' => array(
                     array(
                         'name' => 'alpha',
@@ -121,9 +118,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_number',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',
@@ -154,9 +148,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_city',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
                 'validators' => array(
                     array(
                         'name' => 'alpha',

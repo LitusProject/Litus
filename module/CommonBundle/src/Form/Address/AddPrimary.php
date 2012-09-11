@@ -153,9 +153,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             array(
                 'name'     => $this->_prefix . 'address_number',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',

@@ -614,7 +614,7 @@ abstract class Person
      */
     public function isMember(AcademicYearEntity $academicYear)
     {
-        foreach ($this->organisationStatuses as $status) {
+        foreach ($this->organizationStatuses as $status) {
             if ($academicYear == $status->getAcademicYear() && 'non_member' != $status->getStatus())
                 return true;
         }
