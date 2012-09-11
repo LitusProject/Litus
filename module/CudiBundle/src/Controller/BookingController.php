@@ -14,13 +14,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Booking;
+namespace CudiBundle\Controller;
 
 use CommonBundle\Entity\Users\People\Academic,
-    Zend\View\Model\ViewModel,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Entity\Sales\Booking,
     CudiBundle\Form\Booking\Booking as BookingForm,
-    CudiBundle\Entity\Sales\Booking;
+    CommonBundle\Component\FlashMessenger\FlashMessage,
+    Zend\View\Model\ViewModel;
 
 /**
  * BookingController
@@ -65,7 +65,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'cudi_booking',
+                'booking',
                 array(
                     'action' => 'view',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -83,55 +83,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'result' => (object) array("status" => "success"),
             )
         );
-    }
-
-    private function _getBooking()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the booking!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        $booking = $this->getEntityManager()
-        ->getRepository('CudiBundle\Entity\Sales\Booking')
-        ->findOneById($this->getParam('id'));
-
-        if (null === $booking) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No booking with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        return $booking;
     }
 
     public function bookAction()
@@ -163,8 +114,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($subjectMaps as $subjectMap) {
 
                 $article = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
-                        ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
+                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                    ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
 
                 if ($article !== null) {
 
@@ -185,8 +136,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $commonArticles = $this->getEntityManager()
-        ->getRepository('CudiBundle\Entity\Sales\Article')
-        ->findAllByTypeAndAcademicYear('common', $currentYear);
+            ->getRepository('CudiBundle\Entity\Sales\Article')
+            ->findAllByTypeAndAcademicYear('common', $currentYear);
 
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
@@ -244,7 +195,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'cudi_booking',
+                    'booking',
                     array(
                         'action' => 'view',
                         'language' => $this->getLanguage()->getAbbrev(),
@@ -262,4 +213,54 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
+
+    private function _getBooking()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the booking!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'booking',
+                array(
+                    'action' => 'view',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+    
+            return;
+        }
+    
+        $booking = $this->getEntityManager()
+        ->getRepository('CudiBundle\Entity\Sales\Booking')
+        ->findOneById($this->getParam('id'));
+    
+        if (null === $booking) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No booking with the given ID was found!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'booking',
+                array(
+                    'action' => 'view',
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+    
+            return;
+        }
+    
+        return $booking;
+    }
+
 }

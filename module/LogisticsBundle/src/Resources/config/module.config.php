@@ -47,10 +47,12 @@ return array(
 			'admin_van_reservation' => array(
 			    'type'    => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/:field/:string]]',
+			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/start/:start][/end/:end][/:field/:string]]',
 			        'constraints' => array(
 			            'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'id'      => '[0-9]*',
+			            'start'      => '[0-9]*',
+			            'end'      => '[0-9]*',
 			            'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'string'  => '[%a-zA-Z0-9_-]*',
 			            'page'    => '[0-9]*',

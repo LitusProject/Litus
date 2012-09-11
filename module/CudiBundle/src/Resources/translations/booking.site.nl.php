@@ -15,9 +15,9 @@
  */
 
 return array(
-    'My Textbook Bookings' => 'Mijn Cursusreservaties',
-    
-    'Please log in to view your textbook bookings.' => 'Meld je aan om je cursusreservaties te bekijken.',
+    'My Bookings' => 'Mijn Cursusreservaties',
+
+    'Please log in to view your bookings.' => 'Meld je aan om je cursusreservaties te bekijken.',
     'Please log in to book textbooks.' => 'Meld je aan om cursussen te reserveren.',
 
     'assigned' => 'Toegewezen',
@@ -30,12 +30,12 @@ return array(
     'Status' => 'Status',
     'Actions' => 'Acties',
     'Mandatory' => 'Verplicht',
-    
+
     'Book Textbooks' => 'Cursussen Reserveren',
-    
+
     'Not Bookable' => 'Niet Reserveerbaar',
-    
+
     'Back' => 'Terug',
-    
+
     'General' => 'Algemeen',
 );

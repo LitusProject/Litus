@@ -255,7 +255,7 @@ return array(
             '@common_typeahead_remote',
             '@prof_css',
         ),
-        'cudi_booking' => array(
+        'booking' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_responsive_css',

@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\Users\Person,
+    Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
@@ -370,6 +371,9 @@ class Booking extends EntityRepository
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
+        
+        if ($period === null)
+            throw new Exception("There is no active stock period!");
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')

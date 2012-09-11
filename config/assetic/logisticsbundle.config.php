@@ -43,6 +43,8 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
             '@logistics_css',
         ),
     ),

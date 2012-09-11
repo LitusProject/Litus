@@ -16,14 +16,14 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+use LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+    DateTime,
+    LogisticsBundle\Entity\Driver,
     LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Entity\Reservation\ReservableResource,
-    Zend\View\Model\ViewModel,
-    DateTime;
+    LogisticsBundle\Entity\Reservation\VanReservation,
+    Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -118,6 +118,19 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
                 return new ViewModel();
             }
+        } elseif (null !== $this->getParam('start') && null !== $this->getParam('end')) {
+
+            $start = new DateTime();
+            $start->setTimestamp($this->getParam('start'));
+
+            $end = new DateTime();
+            $end->setTimestamp($this->getParam('end'));
+
+            $formData = array(
+                'start_date' => $start->format('d/m/Y H:i'),
+                'end_date' => $end->format('d/m/Y H:i'),
+            );
+            $form->setData($formData);
         }
 
         return new ViewModel(

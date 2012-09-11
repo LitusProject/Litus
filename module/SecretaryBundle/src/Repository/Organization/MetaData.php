@@ -2,7 +2,9 @@
 
 namespace SecretaryBundle\Repository\Organization;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * MetaData
@@ -12,4 +14,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class MetaData extends EntityRepository
 {
+    public function findOneByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SecretaryBundle\Entity\Organization\MetaData', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academic', ':academic'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academic', $academic)
+            ->setParameter('academicYear', $academicYear)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }
