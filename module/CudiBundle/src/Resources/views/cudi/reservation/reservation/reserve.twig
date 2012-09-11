@@ -1,5 +1,7 @@
 {% extends 'site/base.twig' %}
 
+{% import 'site/partials/form.twig' as forms %}
+
 {% block content %}
     <div class="page-header">
         <h1>{{ translate('Book Textbooks') }}</h1>
@@ -10,6 +12,9 @@
             {% if authenticatedPerson == null %}
 				{{ translate('Please log in to reserve textbooks.') }}
 			{% else %}
+
+    		{% autoescape false %}
+	        {{ form().openTag(form) }}
 
 				<table class="table">	
 				
@@ -23,7 +28,7 @@
 						</tr>
 					</thead>
 					
-					<tbody>		
+					<tbody>
 			
 					{% for subjectArticle in subjectArticleMap %}
 						
@@ -51,7 +56,14 @@
 								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
 								<td>
 									{% if map['article'].isBookable() %}
-										<input id="article-{{ map['article'].getId() }}" class="input-very-mini" type="text" placeholder="0">
+										{% set name = 'article-' ~ map['article'].getId() %}
+										
+										{{ formElement(form.get(name)) }}
+								        {% if element.getMessages()|length > 0 %}
+								            <div class="help-inline">
+								                {{ formElementErrors(form.get(name)) }}
+								            </div>
+								        {% endif %}
 									{% else %}
 										<span class="label label-info">Not Bookable</span>
 									{% endif %}
@@ -65,8 +77,15 @@
 				
 				</table>
 				
-            	<a href={{ url('reservation', {"action" : 'reserve', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
+            	<!-- <a href={{ url('reservation', {"action" : 'reserve', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a> -->
+            	
+            	{% if form.get('submit') %}
+            		{{ formElement(form.get('submit')) }}
+				{% endif %}
 
+			{{ form().closeTag() }}
+
+			{% endautoescape %}
             {% endif %}
         </div>
     </div>
