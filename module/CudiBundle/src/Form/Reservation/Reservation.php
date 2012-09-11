@@ -52,9 +52,7 @@ class Reservation extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($articles as $article) {
             $saleArticle = $article['article'];
             
-            $name = 'article-' . $saleArticle->getId();
-            echo "name = " . $name;
-            $field = new Text($name);
+            $field = new Text('article-' . $saleArticle->getId());
             $field->setAttribute('class', 'input-very-mini')
                 ->setAttribute('placeholder', '0');
             $this->add($field);

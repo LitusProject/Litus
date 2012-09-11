@@ -16,6 +16,8 @@
 
 namespace CudiBundle\Controller\Reservation;
 
+use CudiBundle\Entity\Sales\Booking;
+
 use CommonBundle\Entity\Users\People\Academic,
     Zend\View\Model\ViewModel,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -121,6 +123,32 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         
             if ($form->isValid()) {
                 
+                foreach ($formData as $formKey => $formValue) {
+                    
+                    echo "key = " . $formKey;
+                    echo "val = " . $formValue;
+                    
+                    if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && formValue !== '0') {
+                        
+                        $saleArticleId = substr($formKey, 8, strlen($formKey));
+                        
+                        $saleArticle = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Article')
+                            ->findOneById($saleArticleId);
+                        
+                        $booking = new Booking(
+                            $this->getEntityManager(), 
+                            $authenticatedPerson, 
+                            $saleArticle, 
+                            'booked', 
+                            $formValue
+                        );
+                        
+                        $this->getEntityManager()->persist($booking);
+                    }
+                }
+                
+                $this->getEntityManager()->flush();
         
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -130,12 +158,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                     )
                 );
         
-                $this->redirect()->toRoute(
+                /*$this->redirect()->toRoute(
                     'reservation',
                     array(
                         'action' => 'view',
                     )
-                );
+                );*/
 
                 return new ViewModel();
             }
