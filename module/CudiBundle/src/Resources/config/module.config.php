@@ -585,10 +585,11 @@ return array(
             'reservation' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/cudi/reservation[/:action]',
+                    'route' => '[/:language]/cudi/reservation[/:action[/:id]]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'id'      => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'reservation',
