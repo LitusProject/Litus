@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * KeyController
+ * ShiftController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -62,6 +62,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
 
                 $shift = new Shift(
+                    $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $manager,

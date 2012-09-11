@@ -97,6 +97,7 @@ return array(
     'CommonBundle\Controller\Admin\InstallController'                                  => __DIR__ . '//src/Controller/Admin/InstallController.php',
     'CommonBundle\Controller\Admin\LocationController'                                 => __DIR__ . '//src/Controller/Admin/LocationController.php',
     'CommonBundle\Controller\Admin\RoleController'                                     => __DIR__ . '//src/Controller/Admin/RoleController.php',
+    'CommonBundle\Controller\AuthController'                                           => __DIR__ . '//src/Controller/AuthController.php',
     'CommonBundle\Controller\IndexController'                                          => __DIR__ . '//src/Controller/IndexController.php',
     'CommonBundle\Entity\Acl\Action'                                                   => __DIR__ . '//src/Entity/Acl/Action.php',
     'CommonBundle\Entity\Acl\Resource'                                                 => __DIR__ . '//src/Entity/Acl/Resource.php',

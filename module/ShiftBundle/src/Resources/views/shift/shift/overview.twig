@@ -1,0 +1,44 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    {% import 'site/partials/form.twig' as forms %}
+
+    <div class="page-header">
+        <h1>{{ translate('Shifts') }}</h1>
+    </div>
+
+    <div class="row-fluid">
+        <span class="span4">
+            <h2>Search</h2>
+
+            <div class="well well-small">
+                <h4>{{ translate('By Event') }}</h4>
+
+                {{ forms.renderForm(eventSearchForm) }}
+            </div>
+
+            <div class="well well-small">
+                <h4>{{ translate('By Unit') }}</h4>
+
+                {{ forms.renderForm(unitSearchForm) }}
+            </div>
+        </span>
+        <span class="span8">
+            <h2>My Shifts</h2>
+
+            <h2>Results</h2>
+            {% if searchResults is not null %}
+                {% for shift in searchResult %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        There were no shifts found that match the given query.
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">
+                    There are no shifts to be shown yet; please use the search functions on the left.
+                </div>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

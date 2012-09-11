@@ -19,7 +19,7 @@ return array(
             'calendar_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/calendar',
+                    'route' => '/admin/install/calendar',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -31,11 +31,11 @@ return array(
             'admin_calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/site/calendar[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/site/calendar[/:action[/:id][/page/:page]]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[a-zA-Z0-9_-]*',
-                        'page'    => '[0-9]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'admin_calendar',
@@ -46,11 +46,11 @@ return array(
             'calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/calendar[/:action[/:id]]',
+                    'route' => '[/:language]/calendar[/:action[/:id]]',
                     'constraints' => array(
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'name'     => '[a-zA-Z0-9_-]*',
                         'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'calendar',

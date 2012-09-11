@@ -140,7 +140,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             '' => ''
         );
         foreach ($events as $event)
-            $eventsArray[$event->getId()] = $event->getStartDate()->format('d/m/Y') . ': ' . $event->getTitle();
+            $eventsArray[$event->getId()] = $event->getTitle();
 
         return $eventsArray;
     }

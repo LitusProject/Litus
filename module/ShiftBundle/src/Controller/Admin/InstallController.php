@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Controller\Admin;
+namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Language;
 
