@@ -29,6 +29,7 @@ return array(
     'Expiration Date' => 'Expiration Date',
     'Status' => 'Status',
     'Actions' => 'Actions',
+    'Mandatory' => 'Mandatory',
     
     'Book Textbooks' => 'Book Textbooks',
 );
