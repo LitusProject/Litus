@@ -85,7 +85,7 @@
 
 				</table>
 
-				<a class="btn pull-left" href="{{ url('cudi_booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
+				<a class="btn pull-left" href="{{ url('booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
 
             	{% if form.get('submit') %}
             		{{ formElement(form.get('submit')) }}
