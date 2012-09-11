@@ -16,6 +16,8 @@
 
 namespace CudiBundle\Controller\Reservation;
 
+use CommonBundle\Entity\Users\People\Academic;
+
 use Zend\View\Model\ViewModel;
 
 /**
@@ -48,22 +50,64 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
         
-        if (null === $authenticatedPerson) {
+        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
             return new ViewModel();
         }
         
+        $currentYear = $this->getCurrentAcademicYear();
+        
         $commonArticles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findAllByTypeAndAcademicYear('common', $this->getCurrentAcademicYear());
+            ->findAllByTypeAndAcademicYear('common', $currentYear);
         
-        $courses = array(
-            'common' => $commonArticles,
-            'common2' => $commonArticles,
+        $articles = array();
+        foreach ($commonArticles as $commonArticle) {
+            $articles[] = array(
+                'article'   => $commonArticle,
+                'mandatory' => false,
+            );
+        }
+        
+        $result = array();
+        $result[] = array(
+            'subject'   => null,
+            'articles'  => $articles,
+            'isMapping' => false,
         );
+        
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
+        
+        foreach ($enrollments as $enrollment) {
+            
+            $subjectMaps = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findAllBySubjectAndAcademicYear($enrollment->getSubject(), $currentYear);
+            
+            $articles = array();
+            foreach ($subjectMaps as $subjectMap) {
+                
+                $article = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
+                
+                $articles[] = array(
+                    'article'   => $article,
+                    'mandatory' => $subjectMap->isMandatory()
+                );
+            }
+            
+            $result[] = array(
+                'subject'   => $subject,
+                'articles'  => $articles,
+                'isMapping' => false,
+            );
+        }
         
         return new ViewModel(
             array(
-                'courses' => $courses,
+                'subjectArticleMap' => $result,
             )
         );
     }

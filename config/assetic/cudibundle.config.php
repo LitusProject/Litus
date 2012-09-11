@@ -264,6 +264,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
+            '@reservation_css',
         ),
     ),
     'routes' => array(),
