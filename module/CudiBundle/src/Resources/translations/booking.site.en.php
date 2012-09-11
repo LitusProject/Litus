@@ -33,7 +33,9 @@ return array(
     
     'Book Textbooks' => 'Book Textbooks',
     
-    'Not Bookable' => 'Not Bookablebla',
+    'Not Bookable' => 'Not Bookable',
     
     'Back' => 'Back',
+    
+    'General' => 'General',  
 );
