@@ -158,12 +158,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                     )
                 );
         
-                /*$this->redirect()->toRoute(
+                $this->redirect()->toRoute(
                     'reservation',
                     array(
                         'action' => 'view',
                     )
-                );*/
+                );
 
                 return new ViewModel();
             }
