@@ -4,6 +4,13 @@
     <div class="page-header">
         <h1>{{ translate('My Textbook Reservations') }}</h1>
     </div>
+    
+	<div class="flashmessage error_message full_width booking_canceled_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to cancel the booking. Please try again later.</p>
+		</div>
+	</div>
 
     <div class="row page">
         <div class="span12">
@@ -21,14 +28,18 @@
             			<th> {{ translate('Actions') }} </th>
         			</tr>
         			{% for booking in bookings %}
-	            		<tr {% if 'assigned' == booking.getStatus() %} class="success" {% endif %}">
+	            		<tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %} succes {% endif %}">
 	            			<td> {{ booking.getArticle().getMainArticle().getTitle() }} </td>
 	            			<td> {{ booking.getArticle().getMainArticle().getAuthors() }} </td>
 	            			<td> € {{ booking.getArticle().getSellPrice() }} </td>
 	            			<td> {{ booking.getNumber() }} </td>
 	            			<td> {{ booking.getExpirationDate().format('D d/m/Y') }} </td>
 	            			<td> {{ translate(booking.getStatus()) }} </td>
-	            			<td> Cancel </td> <!-- TODO: cancel button - look at unbookable option! -->
+	            			<td>
+	            				{% if booking.getArticle().isUnbookable() %}
+	            					<a href="#" class="cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">Cancel</a>
+	            				{% endif %}
+							</td> <!-- TODO: cancel button - look at unbookable option! -->
 	        			</tr>
         			{% endfor %}
             	</table>
@@ -38,4 +49,58 @@
             {% endif %}
         </div>
     </div>
+    
+	<div class="modal hide fade" id="cancelBooking">
+		<div class="modal-header">
+			<span>Cursusdienst</span>
+		</div>
+		<div class="modal-body">
+			<p>
+				{{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
+			</p>
+			<div class="footer">
+				<input type="button" class="continue" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		
+		$(document).ready(function () {
+		
+			$('.item .cancel').click(openModal);
+
+		});
+		
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var cancelBooking = $('#cancelBooking');
+			cancelBooking.find('.articleTitle').html($(this).data('title'));
+			var id = $this.data('id');
+			cancelBooking.find('.continue').unbind('click').click(function () {
+				$.post('{{ url('reservation', {"action": "cancel"})}}/' + id, function (data) {
+				    if (data && 'success' == data.status) {
+				    	$('.flashmessage').addClass('hide');
+    					$('.item-' + id).remove();
+    					$('#cancelBooking').modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			cancelBooking.modal();
+		}
+
+		function errorRemove() {
+    		$('.flashmessage').addClass('hide');
+    		$('.booking_canceled_error').removeClass('hide');
+    		$('#cancelBooking').modal('hide');
+		}
+		
+	</script>
 {% endblock %}

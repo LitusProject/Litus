@@ -49,6 +49,89 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
     
+    public function cancelAction()
+    {
+        //$this->initAjax();
+        
+        if (!($booking = $this->_getBooking()))
+            return new ViewModel();
+        
+        if (!($booking->getArticle()->isUnbookable())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'The given booking cannot be cancelled!'
+                )
+            );
+            
+            $this->redirect()->toRoute(
+                'reservation',
+                array(
+                    'action' => 'view'
+                )
+            );
+            
+            return new ViewModel();
+        }
+        
+        $booking->setStatus('canceled');
+        $this->getEntityManager()->flush();
+        
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+    
+    private function _getBooking()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the booking!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'reservation',
+                array(
+                    'action' => 'view'
+                )
+            );
+    
+            return;
+        }
+    
+        $booking = $this->getEntityManager()
+        ->getRepository('CudiBundle\Entity\Sales\Booking')
+        ->findOneById($this->getParam('id'));
+    
+        if (null === $booking) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No booking with the given ID was found!'
+                )
+            );
+    
+            $this->redirect()->toRoute(
+                'reservation',
+                array(
+                    'action' => 'view'
+                )
+            );
+    
+            return;
+        }
+    
+        return $booking;
+    }
+    
     public function reserveAction()
     {
         $form = new ReservationForm($this->getEntityManager());
