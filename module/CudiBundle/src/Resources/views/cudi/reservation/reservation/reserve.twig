@@ -62,7 +62,7 @@
 
 										{{ formElement(element) }}
 									{% else %}
-										<span class="label label-info">Not Bookable</span>
+										<span class="label label-info">{{ translate('Not Bookable') }}</span>
 									{% endif %}
 								</td>
 							</tr>
@@ -85,7 +85,7 @@
 				
 				</table>
 				
-				<a class="btn pull-left" href="{{ url('reservation', {'action' : 'view'}) }}">Back</a>
+				<a class="btn pull-left" href="{{ url('reservation', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
 
             	{% if form.get('submit') %}
             		{{ formElement(form.get('submit')) }}
