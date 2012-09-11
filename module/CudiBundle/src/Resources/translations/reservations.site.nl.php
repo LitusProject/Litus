@@ -32,4 +32,8 @@ return array(
     'Mandatory' => 'Verplicht',
     
     'Book Textbooks' => 'Cursussen Reserveren',
+    
+    'Not Bookable' => 'Niet Reserveerbaar',
+    
+    'Back' => 'Terug',
 );
