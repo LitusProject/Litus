@@ -37,7 +37,9 @@
 	            			<td> {{ translate(booking.getStatus()) }} </td>
 	            			<td>
 	            				{% if booking.getArticle().isUnbookable() %}
-	            					<a href="#" class="cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">Cancel</a>
+	            					<a href="#" class="cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+	            						{{ translate('Cancel') }}
+            						</a>
 	            				{% endif %}
 							</td>
 	        			</tr>

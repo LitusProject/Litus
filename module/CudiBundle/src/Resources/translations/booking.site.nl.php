@@ -36,4 +36,6 @@ return array(
     'Not Bookable' => 'Niet Reserveerbaar',
     
     'Back' => 'Terug',
+    
+    'General' => 'Algemeen',
 );
