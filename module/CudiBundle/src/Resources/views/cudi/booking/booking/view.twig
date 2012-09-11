@@ -4,14 +4,14 @@
     <div class="page-header">
         <h1>{{ translate('My Textbook Bookings') }}</h1>
     </div>
-    
+
 	<div class="flashmessage error_message full_width booking_canceled_error hide">
 		<div class="title">Error</div>
 		<div class="content">
 			<p>An error occurred while trying to cancel the booking. Please try again later.</p>
 		</div>
 	</div>
-	
+
     <div class="row page">
         <div class="span12">
             {% if authenticatedPerson == null %}
@@ -45,13 +45,13 @@
 	        			</tr>
         			{% endfor %}
             	</table>
-            	
+
             	<a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
-            	
+
             {% endif %}
         </div>
     </div>
-    
+
 	<div class="modal hide fade" id="cancelBooking">
 		<div class="modal-header">
 			<span>Cursusdienst</span>
@@ -70,13 +70,13 @@
 
 {% block content_script %}
 	<script type="text/javascript">
-		
+
 		$(document).ready(function () {
-		
+
 			$('.item .cancel').click(openModal);
 
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
 
@@ -103,6 +103,6 @@
     		$('.booking_canceled_error').removeClass('hide');
     		$('#cancelBooking').modal('hide');
 		}
-		
+
 	</script>
 {% endblock %}

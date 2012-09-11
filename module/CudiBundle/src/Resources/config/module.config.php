@@ -692,8 +692,8 @@ return array(
             'prof_prof'             => 'CudiBundle\Controller\Prof\ProfController',
             'prof_subject'          => 'CudiBundle\Controller\Prof\SubjectController',
             'prof_subject_comment'  => 'CudiBundle\Controller\Prof\Subject\CommentController',
-            
-            'cudi_booking'           => 'CudiBundle\Controller\Booking\BookingController',
+
+            'cudi_booking'          => 'CudiBundle\Controller\Booking\BookingController',
         ),
     ),
     'assetic_configuration' => array(
