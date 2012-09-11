@@ -9,6 +9,67 @@
 
     <div class="row page" id="studies">
         <div class="span12">
+            <h3>{{ translate('Personal') }}</h3>
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Name') }}</dt>
+                <dd>{{ academic.getFullName() }}</dd>
+                <dt>{{ translate('Birthday') }}</dt>
+                <dd>{{ dateLocalized(academic.getBirthday(), 'd MMMM Y') }}</dd>
+                <dt>{{ translate('Sex') }}</dt>
+                <dd>{{ academic.getSex()|capitalize }}</dd>
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ academic.getPhoneNumber() }}</dd>
+                <dt>{{ translate('University Identification') }}</dt>
+                <dd>{{ academic.getUniversityIdentification() }}</dd>
+                <dt>{{ translate('University E-mail') }}</dt>
+                <dd>{{ academic.getUniversityEmail() }}</dd>
+                <dt>{{ translate('Personal E-mail') }}</dt>
+                <dd>{{ academic.getPersonalEmail() }}</dd>
+            </dl>
+
+            <h3>{{ translate('Addresses') }}</h3>
+            <div class="row">
+                <div class="span6">
+                    <address>
+                        <strong>{{ translate('Primary Address') }}</strong><br>
+                        {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}<br>
+                        {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br>
+                        {{ academic.getPrimaryAddress().getCountry() }}
+                    </address>
+                </div>
+                <div class="span6">
+                    <address>
+                        <strong>{{ translate('Secondary Address') }}</strong><br>
+                        {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}<br>
+                        {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br>
+                        {{ academic.getSecondaryAddress().getCountry() }}
+                    </address>
+                </div>
+            </div>
+
+            <h3>{{ translate('Organization') }}</h3>
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Become Member') }}</dt>
+                <dd>{% if academic.isMember(academicYear) %}&times;{% endif %}</dd>
+                <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% endif %}</dd>
+                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
+                <dd>{% if metaData.bakskeByMail() %}&times;{% endif %}</dd>
+                <dt>{{ translate('T-shirt Size') }}</dt>
+                <dd>{{ metaData.getTshirtSize() }}</dd>
+            </dl>
+
+            <h3>{{ translate('Studies') }}</h3>
+            {% for study in studies %}
+                <h4>{{ study.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
+                {% for subject in study.subjects %}
+                    <ul>
+                        {% if subject.getSubject().getId() in subjects %}
+                            <li>{{ subject.getSubject().getName() }}</li>
+                        {% endif %}
+                    </ul>
+                {% endfor %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

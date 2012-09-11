@@ -9,6 +9,7 @@ return array(
     'SecretaryBundle\Entity\Syllabus\StudyEnrollment'       => __DIR__ . '/src/Entity/Syllabus/StudyEnrollment.php',
     'SecretaryBundle\Entity\Syllabus\SubjectEnrollment'     => __DIR__ . '/src/Entity/Syllabus/SubjectEnrollment.php',
     'SecretaryBundle\Form\Registration\Add'                 => __DIR__ . '/src/Form/Registration/Add.php',
+    'SecretaryBundle\Form\Registration\Edit'                => __DIR__ . '/src/Form/Registration/Edit.php',
     'SecretaryBundle\Repository\Organization\MetaData'      => __DIR__ . '/src/Repository/Organization/MetaData.php',
     'SecretaryBundle\Repository\Registration'               => __DIR__ . '/src/Repository/Registration.php',
     'SecretaryBundle\Repository\Syllabus\StudyEnrollment'   => __DIR__ . '/src/Repository/Syllabus/StudyEnrollment.php',

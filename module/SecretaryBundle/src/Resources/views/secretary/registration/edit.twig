@@ -9,6 +9,66 @@
 
     <div class="row page" id="studies">
         <div class="span12">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
         </div>
     </div>
+
+    <div id="modalMemberWarning" class="modal fade">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Become A Member') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {{ translate('You haven\'t checked the option to become a member. Being a member has many opportunities.') }}
+            </p>
+            <p>
+                {{ translate('Are you sure you want to continue?') }}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#register').click(function (e) {
+                e.preventDefault();
+                console.log($('form#register_form'));
+                if (!$('#become_member').is(':checked')) {
+                    $('#modalMemberWarning').modal();
+                    $('#modalMemberWarning .confirm').one('click', function () {
+                        $('#register_form').submit();
+                    });
+                } else {
+                    $('#register_form').submit();
+                }
+            });
+
+            $('#primary_address_address_city').change(cityChange);
+            $('#become_member').change(toggleMember);
+            toggleMember();
+            cityChange();
+        });
+
+        function cityChange() {
+            var city = $('#primary_address_address_city option:selected').val();
+            $('.primary_address_address_street, #primary_address_address_number').closest('.control-group').hide();
+            if (city != 0)
+                $('#primary_address_address_street' + city + ', #primary_address_address_number').closest('.control-group').show();
+        }
+
+        function toggleMember() {
+            if ($('#become_member').is(':checked'))
+                $('#organisation_info .control-group').show();
+            else
+                $('#organisation_info .control-group').hide();
+            $('#become_member, #conditions').closest('.control-group').show();
+        }
+    </script>
 {% endblock %}
