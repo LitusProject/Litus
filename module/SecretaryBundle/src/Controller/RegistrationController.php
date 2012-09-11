@@ -312,6 +312,50 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function subjectsAction()
+    {
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
+
+        $student = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        if ((null !== $code && $student !== null) || true) { // TODO: remove true
+            if (true || $code->validate($this->getParam('hash'))) { // TODO: remove true
+                $enrollments = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                    ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+                $mappings = array();
+                foreach($enrollments as $enrollment) {
+                    $mappings[] = array(
+                        'enrollment' => $enrollment,
+                        'subjects' => $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                            ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+                    );
+                }
+
+                return new ViewModel(
+                    array(
+                        'mappings' => $mappings,
+                    )
+                );
+            }
+        }
+
+        $this->redirect()->toRoute(
+            'secretary_registration',
+            array(
+                'action' => 'add',
+            )
+        );
+
+        return new ViewModel();
+    }
+
     /**
      * Create the full Shibboleth URL.
      *

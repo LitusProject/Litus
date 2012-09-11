@@ -50,4 +50,6 @@ return array(
     'I\'m enrolled in this study' => 'Ik ben ingeschreven voor deze studierichting.',
     'Your studies were successfully saved!' => 'Je studierichtingen zijn succesvol opgeslagen!',
     'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
+
+    'Choose your subjects:' => 'Kies je vakken:',
 );

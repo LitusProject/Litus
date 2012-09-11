@@ -1,0 +1,36 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success fade" id="studies_saved_success">
+        <div class="title">{{ translate('Success') }}</div>
+        <div class="content">
+            <p>{{ translate('Your studies were successfully saved!') }}</p>
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="studies_saved_error">
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while saving your studies') }}</p>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ translate('Registration') }}</h1>
+    </div>
+
+    <div class="row page" id="studies">
+        <div class="span12">
+            <h2>
+                {{ translate('Choose your subjects:') }}
+            </h2>
+            {% for mapping in mappings %}
+                <h3>{{ mapping.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
+                {% for subject in mapping.subjects %}
+                    <label class="checkbox">
+                        <input type="checkbox" {% if subject.isMandatory() %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
+                    </label>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
