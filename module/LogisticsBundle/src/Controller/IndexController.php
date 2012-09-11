@@ -16,13 +16,12 @@
 
 namespace LogisticsBundle\Controller;
 
-use LogisticsBundle\Form\Admin\Driver\Edit;
-
 use LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Driver\Add,
     Zend\View\Model\ViewModel,
-    \DateTime;
+    \DateTime,
+    LogisticsBundle\Form\Admin\Driver\Edit;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -39,18 +38,42 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $events = $this->_getEvents();
+        $reservations = $this->_getReservations();
 
-        if (null === $events) {
+        if (null === $reservations) {
             return new ViewModel();
         }
 
         $result = array();
-        foreach ($events as $event) {
+        foreach ($reservations as $reservation) {
+
+            $driver = $reservation->getDriver();
+
+            if ($driver === null) {
+                $driverName = "None";
+            } else {
+                $driverName = $driver->getPerson()->getFullname();
+            }
+
+            $passenger = $reservation->getPassenger();
+
+            if ($passenger === null) {
+                $passengerName = "None";
+            } else {
+                $passengerName = $passenger->getFullname();
+            }
+
             $result[] = array (
-                'reason' => $event->getReason(),
-                'start' => $event->getStartDate()->getTimeStamp(),
-                'end' => $event->getEndDate()->getTimeStamp(),
+                'reason' => $reservation->getReason(),
+                'start' => $reservation->getStartDate()->getTimeStamp(),
+                'end' => $reservation->getEndDate()->getTimeStamp(),
+
+                'driver' => $driverName,
+                'passenger' => $passengerName,
+                'load' => $reservation->getLoad(),
+                'additional' => $reservation->getAdditionalInfo(),
+                'id' => $reservation->getId(),
+                
             );
         }
 
@@ -62,7 +85,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
     }
 
-    private function _getEvents()
+    private function _getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
             $this->flashMessenger()->addMessage(

@@ -17,7 +17,7 @@
 	        {{ form().openTag(form) }}
 
 				<table class="table">	
-				
+
 					<thead>
 						<tr>
 							<th>{{ translate('Title') }}</th>
@@ -27,28 +27,28 @@
 							<th width="80px">#</th>
 						</tr>
 					</thead>
-					
+
 					<tbody>
-			
+
 					{% for subjectArticle in subjectArticleMap %}
-						
+
 						<tr class="course-title">
 							<td colspan="5"> 
 								{% if null == subjectArticle['subject'] %}
-								
+
 									{{ translate('General') }}
-								
+
 								{% else %}
-								
+
 									{{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
-								
+
 								{% endif %}
-				
+
 						 	</td>
 					 	</tr>
-					 	
+
 						{% for map in subjectArticle['articles'] %}
-					
+
 							<tr>
 								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
 								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
@@ -56,7 +56,7 @@
 								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
 								<td>
 									{% if map['article'].isBookable() %}
-										
+
 										{% set name = 'article-' ~ map['article'].getId() %}
 										{% set element = form.get(name) %}
 
@@ -66,7 +66,7 @@
 									{% endif %}
 								</td>
 							</tr>
-							
+
 					        {% if element.getMessages()|length > 0 %}
 					        <tr>
 					        	<td colspan="5"  style="border-top-width:0px;">
@@ -76,21 +76,20 @@
 					            </td>
 				            </tr>
 					        {% endif %}
-							
+
 						{% endfor %}
-	            	
+
 					{% endfor %}
-					
+
 					</tbody>
-				
+
 				</table>
-				
-				<a class="btn pull-left" href="{{ url('cudi_booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
+
+				<a class="btn pull-left" href="{{ url('booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
 
             	{% if form.get('submit') %}
             		{{ formElement(form.get('submit')) }}
 				{% endif %}
-				
 
 			{{ form().closeTag() }}
 

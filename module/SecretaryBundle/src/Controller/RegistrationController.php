@@ -23,9 +23,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Add as AddForm,
+    SecretaryBundle\Form\Registration\Edit as EditForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
 
@@ -45,31 +47,21 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ('1' !== $enabled)
             return $this->notFoundAction();
 
-        if (null !== $this->_getStudent()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'ERROR',
-                    'There is already a user with your university identification!'
-                )
-            );
-
+        if (null !== $this->_getAcademic()) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
-                    'action' => 'add'
+                    'action' => 'edit',
+                    'identification' => $this->getParam('identification'),
+                    'hash' => $this->getParam('hash'),
                 )
             );
 
-            return new ViewModel(
-                array(
-                    'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
-                )
-            );
+            return new ViewModel();
         }
 
         if ($this->getRequest()->isPost()) {
-            if ($this->_getStudent(false)) {
+            if ($this->_getAcademic(false)) {
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();
@@ -86,7 +78,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             ->findOneByName('student')
                     );
 
-                    $student = new Academic(
+                    $academic = new Academic(
                         $this->getParam('identification'),
                         $roles,
                         $formData['first_name'],
@@ -104,18 +96,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         ->getRepository('CommonBundle\Entity\General\Address\Street')
                         ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
 
-                    $student->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                         ->addUniversityStatus(
                             new UniversityStatus(
-                                $student,
+                                $academic,
                                 'student',
-                                $this->getCurrentAcademicYear()
-                            )
-                        )
-                        ->addOrganizationStatus(
-                            new OrganizationStatus(
-                                $student,
-                                'member',
                                 $this->getCurrentAcademicYear()
                             )
                         )
@@ -140,6 +125,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             )
                         );
 
+                    if ($formData['become_member']) {
+                        $academic->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $academic,
+                                'member',
+                                $this->getCurrentAcademicYear()
+                            )
+                        );
+                    }
+
                     $filePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('common.profile_path');
@@ -149,8 +144,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $image = new Imagick($file->getFileName());
                         $image->cropThumbnailImage(320, 240);
 
-                        if ($student->getPhotoPath() != '' || $student->getPhotoPath() !== null) {
-                            $fileName = $student->getPhotoPath();
+                        if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                            $fileName = $academic->getPhotoPath();
                         } else {
                             $fileName = '';
                             do{
@@ -158,11 +153,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             } while (file_exists($filePath . $fileName));
                         }
                         $image->writeImage($filePath . $fileName);
-                        $student->setPhotoPath($fileName);
+                        $academic->setPhotoPath($fileName);
                     }
 
                     $metaData = new MetaData(
-                        $student,
+                        $academic,
                         $this->getCurrentAcademicYear(),
                         $formData['irreeel'],
                         $formData['bakske'],
@@ -170,12 +165,19 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     );
                     $this->getEntityManager()->persist($metaData);
 
-                    $student->activate(
+                    $academic->activate(
                         $this->getEntityManager(),
                         $this->getMailTransport()
                     );
 
-                    $this->getEntityManager()->persist($student);
+                    $this->getEntityManager()->persist($academic);
+
+                    $registration = new Registration(
+                        $academic,
+                        $this->getCurrentAcademicYear()
+                    );
+                    $this->getEntityManager()->persist($registration);
+
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
@@ -205,7 +207,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if ($this->_getStudent(false) || true) { // TODO: remove true
+            if ($this->_getAcademic(false)) {
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 return new ViewModel(
@@ -225,12 +227,195 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        return new ViewModel();
+        if (!($academic = $this->_getAcademic())) {
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'add',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        $form = new EditForm(
+            $academic,
+            $this->getCurrentAcademicYear(),
+            $metaData,
+            $this->getCache(),
+            $this->getEntityManager(),
+            $this->getParam('identification')
+        );
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $formData['university_identification'] = $this->getParam('identification');
+            $formData['become_member'] = $academic->isMember($this->getCurrentAcademicYear());
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $academic->setFirstName($formData['first_name'])
+                    ->setLastName($formData['last_name'])
+                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $formData['university_email'])
+                    ->setPhoneNumber($formData['phone_number'])
+                    ->setSex($formData['sex'])
+                    ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    ->setPersonalEmail($formData['personal_email'])
+                    ->setUniversityEmail($formData['university_email']);
+
+                $primaryCity = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Address\City')
+                    ->findOneById($formData['primary_address_address_city']);
+                $primaryStreet = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Address\Street')
+                    ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
+
+                if (null !== $academic->getPrimaryAddress()) {
+                    $academic->getPrimaryAddress()
+                        ->setStreet($primaryStreet->getName())
+                        ->setNumber($formData['primary_address_address_number'])
+                        ->setPostal($primaryCity->getPostal())
+                        ->setCity($primaryCity->getName())
+                        ->setCountry('BE');
+                } else {
+                    $academic->setPrimaryAddress(
+                        new Address(
+                            $primaryStreet->getName(),
+                            $formData['primary_address_address_number'],
+                            $primaryCity->getPostal(),
+                            $primaryCity->getName(),
+                            'BE'
+                        )
+                    );
+                }
+
+                if (null !== $academic->getSecondaryAddress()) {
+                    $academic->getSecondaryAddress()
+                        ->setStreet($formData['secondary_address_address_street'])
+                        ->setNumber($formData['secondary_address_address_number'])
+                        ->setPostal($formData['secondary_address_address_postal'])
+                        ->setCity($formData['secondary_address_address_city'])
+                        ->setCountry($formData['secondary_address_address_country']);
+                } else {
+                    $academic->setSecondaryAddress(
+                        new Address(
+                            $formData['secondary_address_address_street'],
+                            $formData['secondary_address_address_number'],
+                            $formData['secondary_address_address_postal'],
+                            $formData['secondary_address_address_city'],
+                            $formData['secondary_address_address_country']
+                        )
+                    );
+                }
+
+                if (!$academic->isMember($this->getCurrentAcademicYear()) && $formData['become_member']) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            'member',
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
+
+                if ($academic->canHaveUniversityStatus($this->getCurrentAcademicYear())) {
+                    $status = new UniversityStatus(
+                        $academic,
+                        'student',
+                        $this->getCurrentAcademicYear()
+                    );
+                    $academic->addUniversityStatus($status);
+                }
+
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
+
+                $file = new FileTransfer();
+                if ($file->receive()) {
+                    $image = new Imagick($file->getFileName());
+                    $image->cropThumbnailImage(320, 240);
+
+                    if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                        $fileName = $academic->getPhotoPath();
+                    } else {
+                        $fileName = '';
+                        do{
+                            $fileName = '/' . sha1(uniqid());
+                        } while (file_exists($filePath . $fileName));
+                    }
+                    $image->writeImage($filePath . $fileName);
+                    $academic->setPhotoPath($fileName);
+                }
+
+                if (null !== $metaData) {
+                    $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setBakskeByMail($formData['bakske'])
+                        ->setTshirtSize($formData['tshirt_size']);
+                } else {
+                    $metaData = new MetaData(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $formData['irreeel'],
+                        $formData['bakske'],
+                        $formData['tshirt_size']
+                    );
+                    $this->getEntityManager()->persist($metaData);
+                }
+
+                $academic->activate(
+                    $this->getEntityManager(),
+                    $this->getMailTransport()
+                );
+
+                $registration = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Registration')
+                    ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+                if (null === $registration) {
+                    $registration = new Registration(
+                        $academic,
+                        $this->getCurrentAcademicYear()
+                    );
+                    $this->getEntityManager()->persist($registration);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'Your registration was succesfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'secretary_registration',
+                    array(
+                        'action' => 'studies',
+                        'identification' => $this->getParam('identification'),
+                        'hash' => $this->getParam('hash'),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function studiesAction()
     {
-        if (!($student = $this->_getStudent())) {
+        if (!($academic = $this->_getAcademic())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -247,7 +432,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $studyIds = array();
         foreach($enrollments as $enrollment)
@@ -267,7 +452,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $data = $this->getRequest()->getPost();
 
-        if (!($student = $this->_getStudent())) {
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -277,14 +462,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
@@ -294,7 +479,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
-                $this->getEntityManager()->persist(new StudyEnrollment($student, $this->getCurrentAcademicYear(), $study));
+                $this->getEntityManager()->persist(new StudyEnrollment($academic, $this->getCurrentAcademicYear(), $study));
 
                 $subjects = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
@@ -302,7 +487,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 foreach($subjects as $subject) {
                     if ($subject->isMandatory())
-                        $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject->getSubject()));
+                        $this->getEntityManager()->persist(new SubjectEnrollment($academic, $this->getCurrentAcademicYear(), $subject->getSubject()));
                 }
             }
         }
@@ -317,7 +502,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function subjectsAction()
     {
-        if (!($student = $this->_getStudent())) {
+        if (!($academic = $this->_getAcademic())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -330,7 +515,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
         foreach($enrollments as $enrollment) {
@@ -344,7 +529,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
         foreach($enrollments as $enrollment)
@@ -364,7 +549,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $data = $this->getRequest()->getPost();
 
-        if (!($student = $this->_getStudent())) {
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -373,7 +558,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
@@ -383,7 +568,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
                     ->findOneById($id);
-                $this->getEntityManager()->persist(new SubjectEnrollment($student, $this->getCurrentAcademicYear(), $subject));
+                $this->getEntityManager()->persist(new SubjectEnrollment($academic, $this->getCurrentAcademicYear(), $subject));
             }
         }
         $this->getEntityManager()->flush();
@@ -397,27 +582,71 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function completeAction()
     {
-        return new ViewModel();
+        if (!($academic = $this->_getAcademic())) {
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'add',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        $mappings = array();
+        foreach($studies as $enrollment) {
+            $mappings[] = array(
+                'enrollment' => $enrollment,
+                'subjects' => $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+            );
+        }
+
+        $subjects = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        $subjectIds = array();
+        foreach($subjects as $enrollment)
+            $subjectIds[] = $enrollment->getSubject()->getId();
+
+        return new ViewModel(
+            array(
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'academic' => $academic,
+                'metaData' => $metaData,
+                'studies' => $mappings,
+                'subjects' => $subjectIds,
+            )
+        );
     }
 
-    private function _getStudent($studentMustExist = true)
+    private function _getAcademic($academicMustExist = true)
     {
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        $student = $this->getEntityManager()
+        $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code && $student !== null) {
+        if (null !== $code && $academic !== null) {
             if ($code->validate($this->getParam('hash'))) {
-                return $student;
+                return $academic;
             }
-        } elseif (null !== $code && !$studentMustExist) {
+        } elseif (null !== $code && !$academicMustExist) {
             return true;
         }
-        return $student; //TODO: remove
 
         return null;
     }

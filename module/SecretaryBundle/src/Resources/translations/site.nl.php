@@ -32,7 +32,7 @@ return array(
     'Phone Number' => 'Telefoonnummer',
     'University Identification' => 'Universiteits Identificatie',
     'Primary Address' => 'Primair Adres',
-    'Seconday Address' => 'Secundair Adres',
+    'Secondary Address' => 'Secundair Adres',
     'Street' => 'Straat',
     'Number' => 'Nummer',
     'Postal Code' => 'Postcode',
@@ -49,6 +49,8 @@ return array(
     'I want to receive \'t Bakske by e-mail' => 'Ik wil \'t Bakske ontvangen via e-mail',
     'T-shirt Size' => 'T-shirt Maat',
     'Register' => 'Schrijf In',
+    'Your registration was succesfully updated!' => 'Je inschrijving is succesvol opgeslagen!',
+    'You are succesfully registered!' => 'Je ben succesvol ingeschreven!',
 
     'Choose a study:' => 'Kies een studierichting:',
     'Choose Your Subjects' => 'Kies Je Vakken',
@@ -58,7 +60,10 @@ return array(
     'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 
     'Choose your subjects:' => 'Kies je vakken:',
-    'Complete Your Registration' => 'Voltooi Jw Inschrijving',
+    'Complete Your Registration' => 'Voltooi Je Inschrijving',
     'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgelsagen!',
     'An error occurred while saving your subjects' => 'Er is een fout opgetreden tijdens het opslagen van je vakken',
+
+    'Addresses' => 'Adressen',
+    'Organization' => 'Organisatie',
 );

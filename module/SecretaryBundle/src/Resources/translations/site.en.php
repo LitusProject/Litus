@@ -32,7 +32,7 @@ return array(
     'Phone Number' => 'Phone Number',
     'University Identification' => 'University Identification',
     'Primary Address' => 'Primary Address',
-    'Seconday Address' => 'Secondary Address',
+    'Secondary Address' => 'Secondary Address',
     'Street' => 'Street',
     'Number' => 'Number',
     'Postal Code' => 'Postal Code',
@@ -49,6 +49,8 @@ return array(
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
     'T-shirt Size' => 'T-shirt Size',
     'Register' => 'Register',
+    'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
+    'You are succesfully registered!' => 'You are succesfully registered!',
 
     'Choose a study:' => 'Choose a study:',
     'Choose Your Subjects' => 'Choose Your Subjects',
@@ -61,4 +63,7 @@ return array(
     'Complete Your Registration' => 'Complete Your Registration',
     'Your subjects were successfully saved!' => 'Your subjects were successfully saved!',
     'An error occurred while saving your subjects' => 'An error occurred while saving your subjects',
+
+    'Addresses' => 'Addresses',
+    'Organization' => 'Organization',
 );
