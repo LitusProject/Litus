@@ -16,12 +16,11 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Form\Admin\Driver\Edit;
-
 use LogisticsBundle\Entity\Driver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Form\Admin\Driver\Add,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    LogisticsBundle\Form\Admin\Driver\Edit;
 
 class DriverController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

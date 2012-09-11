@@ -29,6 +29,7 @@ return array(
     'Expiration Date' => 'Vervaldatum',
     'Status' => 'Status',
     'Actions' => 'Acties',
+    'Mandatory' => 'Verplicht',
     
     'Book Textbooks' => 'Cursussen Reserveren',
 );

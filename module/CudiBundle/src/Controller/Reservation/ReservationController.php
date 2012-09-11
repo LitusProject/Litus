@@ -16,7 +16,12 @@
 
 namespace CudiBundle\Controller\Reservation;
 
-use Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sales\Booking;
+
+use CommonBundle\Entity\Users\People\Academic,
+    Zend\View\Model\ViewModel,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
+    CudiBundle\Form\Reservation\Reservation as ReservationForm;
 
 /**
  * ReservationController
@@ -46,24 +51,128 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     
     public function reserveAction()
     {
+        $form = new ReservationForm($this->getEntityManager());
+        
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
         
-        if (null === $authenticatedPerson) {
+        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
             return new ViewModel();
         }
         
+        $currentYear = $this->getCurrentAcademicYear();
+        
         $commonArticles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
-            ->findAllByTypeAndAcademicYear('common', $this->getCurrentAcademicYear());
+            ->findAllByTypeAndAcademicYear('common', $currentYear);
         
-        $courses = array(
-            'common' => $commonArticles,
-            'common2' => $commonArticles,
+        $articles = array();
+        foreach ($commonArticles as $commonArticle) {
+            $articles[] = array(
+                'article'   => $commonArticle,
+                'mandatory' => false,
+            );
+        }
+        
+        $result = array();
+        $result[] = array(
+            'subject'   => null,
+            'articles'  => $articles,
+            'isMapping' => false,
         );
+        
+        $form->addInputsForArticles($articles);
+        
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
+        
+        foreach ($enrollments as $enrollment) {
+            
+            $subject = $enrollment->getSubject();
+            
+            $subjectMaps = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Articles\SubjectMap')
+                ->findAllBySubjectAndAcademicYear($subject, $currentYear);
+            
+            $articles = array();
+            foreach ($subjectMaps as $subjectMap) {
+                
+                $article = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
+                
+                $articles[] = array(
+                    'article'   => $article,
+                    'mandatory' => $subjectMap->isMandatory()
+                );
+            }
+            
+            $result[] = array(
+                'subject'   => $subject,
+                'articles'  => $articles,
+                'isMapping' => false,
+            );
+            
+            $form->addInputsForArticles($articles);
+        }
+        
+        if($this->getRequest()->isPost()) {
+            // Form is being posted, persist the new driver.
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+        
+            if ($form->isValid()) {
+                
+                foreach ($formData as $formKey => $formValue) {
+                    
+                    echo "key = " . $formKey;
+                    echo "val = " . $formValue;
+                    
+                    if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && formValue !== '0') {
+                        
+                        $saleArticleId = substr($formKey, 8, strlen($formKey));
+                        
+                        $saleArticle = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Article')
+                            ->findOneById($saleArticleId);
+                        
+                        $booking = new Booking(
+                            $this->getEntityManager(), 
+                            $authenticatedPerson, 
+                            $saleArticle, 
+                            'booked', 
+                            $formValue
+                        );
+                        
+                        $this->getEntityManager()->persist($booking);
+                    }
+                }
+                
+                $this->getEntityManager()->flush();
+        
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCES',
+                        'The textbooks have been booked!'
+                    )
+                );
+        
+                /*$this->redirect()->toRoute(
+                    'reservation',
+                    array(
+                        'action' => 'view',
+                    )
+                );*/
+
+                return new ViewModel();
+            }
+        }
         
         return new ViewModel(
             array(
-                'courses' => $courses,
+                'subjectArticleMap' => $result,
+                'form'              => $form,
             )
         );
     }

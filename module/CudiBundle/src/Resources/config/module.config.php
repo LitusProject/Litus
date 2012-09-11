@@ -775,6 +775,26 @@ return array(
                             'output' => 'prof_css.css',
                         ),
                     ),
+                    'reservation_css' => array(
+                        'assets' => array(
+                            'reservation/less/base.less',
+                        ),
+                        'filters' => array(
+                            'reservation_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'reservation_css.css',
+                        ),
+                    ),
                 ),
             ),
         ),
