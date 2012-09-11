@@ -20,11 +20,13 @@
 
     <div class="row page" id="studies">
         <div class="span12">
-                <h2>
-                    {{ translate('Choose a study:') }}
-                </h2>
-                {{ _self.displayStudies(studies) }}
-            </div>
+            <h2>
+                {{ translate('Choose a study:') }}
+                <div class="pull-right">
+                    <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose subjects') }}</a>
+                </div>
+            </h2>
+            {{ _self.displayStudies(studies) }}
         </div>
     </div>
 {% endblock %}

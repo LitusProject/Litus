@@ -50,4 +50,6 @@ return array(
     'I\'m enrolled in this study' => 'I\'m enrolled in this study',
     'Your studies were successfully saved!' => 'Your studies were successfully saved!',
     'An error occurred while saving your studies' => 'An error occurred while saving your studies',
+
+    'Choose your subjects:' => 'Choose your subjects:',
 );

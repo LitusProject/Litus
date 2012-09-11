@@ -79,7 +79,7 @@ class Study extends EntityRepository
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
-            ->setParameter('academicYear', 2)// TODO: $academicYear->getId()
+            ->setParameter('academicYear', $academicYear->getId())
             ->getQuery()
             ->getResult();
 
