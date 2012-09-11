@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Articles;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\People\Academic,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
