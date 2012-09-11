@@ -17,6 +17,11 @@ return array(
     'Registration' => 'Registration',
     'There is already a user with your university identification!' => 'There is already a user with your university identification!',
 
+    'Start' => 'Start',
+    'Studies' => 'Studies',
+    'Subjects' => 'Subjects',
+    'Complete' => 'Complete',
+
     'Personal' => 'Personal',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
@@ -46,10 +51,14 @@ return array(
     'Register' => 'Register',
 
     'Choose a study:' => 'Choose a study:',
+    'Choose Your Subjects' => 'Choose Your Subjects',
     'Phase' => 'Phase',
     'I\'m enrolled in this study' => 'I\'m enrolled in this study',
     'Your studies were successfully saved!' => 'Your studies were successfully saved!',
     'An error occurred while saving your studies' => 'An error occurred while saving your studies',
 
     'Choose your subjects:' => 'Choose your subjects:',
+    'Complete Your Registration' => 'Complete Your Registration',
+    'Your subjects were successfully saved!' => 'Your subjects were successfully saved!',
+    'An error occurred while saving your subjects' => 'An error occurred while saving your subjects',
 );

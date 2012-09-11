@@ -18,20 +18,25 @@
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
+    {% include 'secretary/registration/partials/navigation.twig' %}
+
     <div class="row page" id="studies">
         <div class="span12">
             <h2>
                 {{ translate('Choose a study:') }}
                 <div class="pull-right">
-                    <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose subjects') }}</a>
+                    <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
                 </div>
             </h2>
-            {{ _self.displayStudies(studies) }}
+            {{ _self.displayStudies(studies, enrollments) }}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+            </div>
         </div>
     </div>
 {% endblock %}
 
-{% macro displayStudies(studies) %}
+{% macro displayStudies(studies, enrollments) %}
     {% for study in studies %}
         <div class="accordion" id="studies{{ study.getId() }}">
             <div class="accordion-group">
@@ -43,10 +48,10 @@
                 <div id="collapse_study{{ study.getId() }}" class="accordion-body collapse">
                     <div class="accordion-inner">
                         {% if study.getChildren()|length > 0 %}
-                            {{ _self.displayStudies(study.getChildren()) }}
+                            {{ _self.displayStudies(study.getChildren(), enrollments) }}
                         {% else %}
                             <label class="checkbox">
-                                <input type="checkbox" id="study{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}">
+                                <input type="checkbox" id="study{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}" {% if study.getId() in enrollments %}checked="checked"{% endif %}>
                                 {{ translate('I\'m enrolled in this study') }}
                             </label>
                         {% endif %}
@@ -64,6 +69,7 @@
                 updateHeadings();
                 saveChanges();
             });
+            updateHeadings();
         });
 
         function updateHeadings() {

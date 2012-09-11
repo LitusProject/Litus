@@ -1,0 +1,23 @@
+<ul class="nav nav-tabs">
+    <li {% if getParam('action') == 'add' or getParam('action') == 'edit' %}class="active"{% endif %}>
+        <a href="{{ url('secretary_registration', {'action': 'edit', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}">
+            {{ translate('Start') }}
+        </a>
+    </li>
+    <li {% if getParam('action') == 'studies' %}class="active"{% endif %}>
+        <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'studies', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}"{% endif %}>
+            {{ translate('Studies') }}
+        </a>
+    </li>
+    <li {% if getParam('action') == 'subjects' %}class="active"{% endif %}>
+        <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}"{% endif %}>
+            {{ translate('Subjects') }}
+        </a>
+    </li>
+    <li {% if getParam('action') == 'complete' %}class="active"{% endif %}>
+        <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'complete', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}"{% endif %}>
+            {{ translate('Complete') }}
+        </a>
+    </li>
+</ul>
+

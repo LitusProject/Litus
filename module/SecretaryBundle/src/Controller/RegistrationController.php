@@ -205,7 +205,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if ($this->_getStudent(false) || true) {
+            if ($this->_getStudent(false) || true) { // TODO: remove true
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 return new ViewModel(
@@ -221,6 +221,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
             )
         );
+    }
+
+    public function editAction()
+    {
+        return new ViewModel();
     }
 
     public function studiesAction()
@@ -240,9 +245,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($this->getCurrentAcademicYear());
 
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+        $studyIds = array();
+        foreach($enrollments as $enrollment)
+            $studyIds[] = $enrollment->getStudy()->getId();
+
         return new ViewModel(
             array(
                 'studies' => $studies,
+                'enrollments' => $studyIds,
             )
         );
     }
@@ -328,9 +342,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
         }
 
+        $enrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($student, $this->getCurrentAcademicYear());
+
+        $subjectIds = array();
+        foreach($enrollments as $enrollment)
+            $subjectIds[] = $enrollment->getSubject()->getId();
+
         return new ViewModel(
             array(
                 'mappings' => $mappings,
+                'enrollments' => $subjectIds,
             )
         );
     }
@@ -372,6 +395,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function completeAction()
+    {
+        return new ViewModel();
+    }
+
     private function _getStudent($studentMustExist = true)
     {
         $code = $this->getEntityManager()
@@ -389,6 +417,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         } elseif (null !== $code && !$studentMustExist) {
             return true;
         }
+        return $student; //TODO: remove
 
         return null;
     }
