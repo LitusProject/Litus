@@ -118,6 +118,19 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
                 return new ViewModel();
             }
+        } elseif (null !== $this->getParam('start') && null !== $this->getParam('end')) {
+
+            $start = new DateTime();
+            $start->setTimestamp($this->getParam('start'));
+
+            $end = new DateTime();
+            $end->setTimestamp($this->getParam('end'));
+
+            $formData = array(
+                'start_date' => $start->format('d/m/Y H:i'),
+                'end_date' => $end->format('d/m/Y H:i'),
+            );
+            $form->setData($formData);
         }
 
         return new ViewModel(

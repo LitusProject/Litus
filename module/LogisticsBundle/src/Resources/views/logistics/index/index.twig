@@ -42,6 +42,22 @@
             <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
+    
+    <div id="add_popover_content" class="hide">
+        <div  id="add_popover_content_internal">
+            <table>
+            <tr>
+                <td width="150px"><b>Start:</b></td> <td><span class="start"></span></td>
+            </tr>
+            <tr>
+                <td><b>End:</b></td> <td><span class="end"></span></td>
+            </tr>
+            </table>
+            {% if has_access('logistics_van_reservation', 'edit') %}
+                <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -141,6 +157,10 @@
 
                     {% if has_access('logistics_van_reservation', 'edit') %}
                         $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid);
+                        $("#popover_content a").html('Edit');
+                        $("#popover_content a").removeClass("hide");
+                    {% else %}
+                        $("#popover_content a").addClass("hide");
                     {% endif %}
 
                     $('#popover_content .start').text(event.start.toLocaleString());
@@ -171,28 +191,30 @@
 
                     showPopover($('.fc-header-title'));
 
+                    $('#add_popover_content_internal .start').text(startDate.toLocaleString());
+                    $('#add_popover_content_internal .end').text(endDate.toLocaleString());
+                    
+            
+                    {% if has_access('logistics_van_reservation', 'add') %}
+                        $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}/start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000);
+                        $("#add_popover_content_internal a").html('Add');
+                        $("#add_popover_content_internal a").removeClass("hide");
+                    {% else %}
+                        $("#add_popover_content_internal a").addClass("hide");
+                    {% endif %}
                 }
 
             });
-            
+
             $('#popover_header .reason').text('New Event');
+
+            var content = $('#add_popover_content').html();
+            
+            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:content,trigger:'manual'});
 
             $('.popover .close').live('click',function(){
                 hidePopover(poppedElement);
             });
-            
-            {% if has_access('logistics_van_reservation', 'edit') %}
-                <!-- TODO a href to add + arguments -->
-            {% endif %}
-
-            $('#popover_content .start').text('test');
-            $('#popover_content .end').text('test2');
-            $('#popover_content .load').text('');
-            $('#popover_content .passenger').text('');
-            $('#popover_content .additional').text('');
-            $('#popover_content .driver').text('');
-
-            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html(),trigger:'manual'});
 
         });
         
