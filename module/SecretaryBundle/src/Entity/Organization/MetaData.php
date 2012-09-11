@@ -146,6 +146,17 @@ class MetaData
     }
 
     /**
+     * @param boolean $irreeelAtCudi
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setReceiveIrReeelAtCudi($irreeelAtCudi)
+    {
+        $this->irreeelAtCudi = $irreeelAtCudi;
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function bakskeByMail()
@@ -154,10 +165,32 @@ class MetaData
     }
 
     /**
+     * @param boolean $bakskeByMail
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setBakskeByMail($bakskeByMail)
+    {
+        $this->bakskeByMail = $bakskeByMail;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTshirtSize()
     {
         return $this->tshirtSize;
+    }
+
+    /**
+     * @param boolean $tshirtSize
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setTshirtSize($tshirtSize)
+    {
+        $this->tshirtSize = $tshirtSize;
+        return $this;
     }
 }
