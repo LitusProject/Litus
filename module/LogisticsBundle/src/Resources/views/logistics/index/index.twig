@@ -10,166 +10,221 @@
         </div>
     </div>
 
-	<div id="calendar"></div>
+    <div id="calendar"></div>
 
-	<div id="popover_header" class="hide">
-		<b class="reason"></b>
-	</div>
+    <div id="popover_header" class="hide">
+        <b class="reason"></b>
+        <div class="pull-right"><a class="close">&times</a></div>
+    </div>
 
-	<div id="popover_content" class="hide">
-		<table>
-		<tr>
-			<td width="150px"><b>Load:</b></td> <td><span class="load"></span></td>
-		</tr>
-		<tr>
-			<td><b>Additional Info:</b></td><td> <span class="info"></span></td>
-		</tr>
-		<tr>
-			<td><b>Passenger:</b></td> <td><span class="passenger"></span></td>
-		</tr>
-		<tr>
-			<td><b>Driver:</b></td><td> <span class="driver"></span></td>
-		</tr>
-		</table>
-		<a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
-	</div>
+    <div id="popover_content" class="hide">
+        <table>
+        <tr>
+            <td width="150px"><b>Start:</b></td> <td><span class="start"></span></td>
+        </tr>
+        <tr>
+            <td><b>End:</b></td> <td><span class="end"></span></td>
+        </tr>
+        <tr>
+            <td><b>Load:</b></td> <td><span class="load"></span></td>
+        </tr>
+        <tr>
+            <td><b>Additional Info:</b></td><td> <span class="info"></span></td>
+        </tr>
+        <tr>
+            <td><b>Passenger:</b></td> <td><span class="passenger"></span></td>
+        </tr>
+        <tr>
+            <td><b>Driver:</b></td><td> <span class="driver"></span></td>
+        </tr>
+        </table>
+        {% if has_access('logistics_van_reservation', 'edit') %}
+            <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
+        {% endif %}
+    </div>
 
 {% endblock %}
 
 {% block content_script %}
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		var poppedElement = null;
+        var poppedElement = null;
 
-		$(document).ready(function() {
+        $(document).ready(function() {
 
 
-			var date = new Date();
-			var d = date.getDate();
-			var m = date.getMonth();
-			var y = date.getFullYear();
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
 
-			$('#calendar').fullCalendar({
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,agendaWeek,agendaDay'
-				},
-				editable: false,
-				slotMinutes: 15,
-				theme: true,
-				allDaySlot: false,
-				allDayDefault: false,
-				firstHour: 7,
-				firstDay: 1,
-				defaultView: 'agendaWeek',
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: false,
+                slotMinutes: 15,
+                theme: true,
+                allDaySlot: false,
+                allDayDefault: false,
+                firstHour: 7,
+                firstDay: 1,
+                defaultView: 'agendaWeek',
 
-				timeFormat: {
-				    agenda: 'H:mm{ - H:mm}',
-				    '': 'H:mm'
-				},
-				axisFormat: 'H:mm',
+                timeFormat: {
+                    agenda: 'H:mm{ - H:mm}',
+                    '': 'H:mm'
+                },
+                axisFormat: 'H:mm',
+                selectable: true,
 
-			    eventSources: [
+                eventSources: [
 
-			        {
-			            events: function(start, end, callback) {
+                    {
+                        events: function(start, end, callback) {
 
-	                		$('.load_error').addClass('hide');
+                            $('.load_error').addClass('hide');
 
-							// Use UNIX Timestamps
-                			start = Math.round(start.getTime() / 1000);
-                			end = Math.round(end.getTime() / 1000);
+                            // Use UNIX Timestamps
+                            start = Math.round(start.getTime() / 1000);
+                            end = Math.round(end.getTime() / 1000);
 
-							$.post('{{ url('logistics_reservation_fetch', {}) }}/' + start + '/' + end, function (data) {
-							    if (data && 'success' == data.status) {
-							    	reservations = data.reservations;
+                            $.post('{{ url('logistics_reservation_fetch', {}) }}/' + start + '/' + end, function (data) {
+                                if (data && 'success' == data.status) {
+                                    reservations = data.reservations;
 
-							    	var events = [];
-							    	for (index in reservations) {
+                                    var events = [];
+                                    for (index in reservations) {
 
-							    		var reservation = reservations[index];
+                                        var reservation = reservations[index];
 
-							    		events.push({
-					                        title: reservation.reason,
-					                        start: reservation.start,
-					                        end: reservation.end,
+                                        events.push({
+                                            title: reservation.reason,
+                                            start: reservation.start,
+                                            end: reservation.end,
 
-					                        // Custom properties
-					                        driver: reservation.driver,
-					                        passenger: reservation.passenger,
-					                        load: reservation.load,
-					                        additional: reservation.additional,
-					                        dbid: reservation.id,
+                                            // Custom properties
+                                            driver: reservation.driver,
+                                            passenger: reservation.passenger,
+                                            load: reservation.load,
+                                            additional: reservation.additional,
+                                            dbid: reservation.id,
 
-					                    });
-							    	}
+                                        });
+                                    }
 
-							    	callback(events);
+                                    callback(events);
 
-			    				} else {
-			    				    errorFetch();
-			    				}
-							}, 'json').error(errorFetch);
+                                } else {
+                                    errorFetch();
+                                }
+                            }, 'json').error(errorFetch);
 
-			            }
-			        }
-			
-			    ],
+                        }
+                    }
+            
+                ],
 
-			    loading : function(isLoading, view) {
-			    	if (isLoading) {
-	    	    		$('#calendar').addClass('loading');
-			    	} else {
-			    		$('#calendar').removeClass('loading');
-			    	}
-			    },
-			    
-			    eventAfterRender : function(event, element, view) {
-			    	$('#popover_header .reason').text(event.title);
+                loading : function(isLoading, view) {
+                    if (isLoading) {
+                        $('#calendar').addClass('loading');
+                    } else {
+                        $('#calendar').removeClass('loading');
+                    }
+                },
+                
+                eventAfterRender : function(event, element, view) {
+                    $('#popover_header .reason').text(event.title);
 
-					$("a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid);
+                    {% if has_access('logistics_van_reservation', 'edit') %}
+                        $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid);
+                    {% endif %}
 
-			    	$('#popover_content .load').text(event.load);
-			    	$('#popover_content .passenger').text(event.passenger);
-			    	$('#popover_content .additional').text(event.additional);
-			    	$('#popover_content .driver').text(event.driver);
+                    $('#popover_content .start').text(event.start.toLocaleString());
+                    $('#popover_content .end').text(event.end.toLocaleString());
+                    $('#popover_content .load').text(event.load);
+                    $('#popover_content .passenger').text(event.passenger);
+                    $('#popover_content .additional').text(event.additional);
+                    $('#popover_content .driver').text(event.driver);
 
-			    	element.popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html()});
-			    },
+                    element.popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
+                },
 
-			    eventClick : function(event, jsEvent, view) {
+                eventClick : function(event, jsEvent, view) {
 
-					if (poppedElement != null) {
-						poppedElement.popover('hide');
-					}
-					
-					if (poppedElement != null && poppedElement.is($(this))) {
-						poppedElement = null;
-					} else {
-				    	$(this).popover('show');
-				    	poppedElement = $(this);
-			    	}
-			    },
-			    
-			    viewDisplay : function(view) {
-			    	$('.popover').remove();
-			    }
+                    showPopover($(this));
+                },
+                
+                viewDisplay : function(view) {
+                    hideAll();
+                },
+                
+                select : function( startDate, endDate, allDay, jsEvent, view ) {
 
-			});
+                    if (poppedElement != null) {
+                        poppedElement.popover('hide');
+                        poppedElement = null;
+                    }
 
-		});
-		
-		function hidePopover() {
-			$('.popover').remove();
-		}
+                    showPopover($('.fc-header-title'));
 
-		function errorFetch() {
-    		$('.flashmessage').addClass('hide');
-    		$('#calendar').removeClass('loading');
-    		$('.load_error').removeClass('hide');
-		}
+                }
 
-	</script>
+            });
+            
+            $('#popover_header .reason').text('New Event');
+
+            $('.popover .close').live('click',function(){
+                hidePopover(poppedElement);
+            });
+            
+            {% if has_access('logistics_van_reservation', 'edit') %}
+                <!-- TODO a href to add + arguments -->
+            {% endif %}
+
+            $('#popover_content .start').text('test');
+            $('#popover_content .end').text('test2');
+            $('#popover_content .load').text('');
+            $('#popover_content .passenger').text('');
+            $('#popover_content .additional').text('');
+            $('#popover_content .driver').text('');
+
+            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html(),trigger:'manual'});
+
+        });
+        
+        function hidePopover(element) {
+            element.popover('hide');
+            if (poppedElement != null && poppedElement.is(element)) {
+                poppedElement = null;
+            }
+        }
+
+        function showPopover(element) {
+            if (poppedElement != null) {
+                poppedElement.popover('hide');
+            }
+            
+            if (poppedElement != null && poppedElement.is(element)) {
+                poppedElement = null;
+            } else {
+                element.popover('show');
+                poppedElement = element;
+            }
+        }
+
+        function hideAll() {
+            $('.popover').remove();
+        }
+
+        function errorFetch() {
+            $('.flashmessage').addClass('hide');
+            $('#calendar').removeClass('loading');
+            $('.load_error').removeClass('hide');
+        }
+
+    </script>
 {% endblock %}
