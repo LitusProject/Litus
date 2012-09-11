@@ -40,7 +40,10 @@
 
 	<script type="text/javascript">
 
+		var poppedElement = null;
+
 		$(document).ready(function() {
+
 
 			var date = new Date();
 			var d = date.getDate();
@@ -122,24 +125,45 @@
 			    		$('#calendar').removeClass('loading');
 			    	}
 			    },
-
-			    eventClick : function(event, jsEvent, view) {
-
+			    
+			    eventAfterRender : function(event, element, view) {
 			    	$('#popover_header .reason').text(event.title);
 
-					$("a").attr("href", "{{ url('admin_van_reservation', {'action': 'edit'}) }}/" + event.dbid)
+					$("a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid);
 
 			    	$('#popover_content .load').text(event.load);
 			    	$('#popover_content .passenger').text(event.passenger);
 			    	$('#popover_content .additional').text(event.additional);
 			    	$('#popover_content .driver').text(event.driver);
 
-			    	$(this).popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html()})
+			    	element.popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html()});
+			    },
+
+			    eventClick : function(event, jsEvent, view) {
+
+					if (poppedElement != null) {
+						poppedElement.popover('hide');
+					}
+					
+					if (poppedElement != null && poppedElement.is($(this))) {
+						poppedElement = null;
+					} else {
+				    	$(this).popover('show');
+				    	poppedElement = $(this);
+			    	}
+			    },
+			    
+			    viewDisplay : function(view) {
+			    	$('.popover').remove();
 			    }
 
 			});
 
 		});
+		
+		function hidePopover() {
+			$('.popover').remove();
+		}
 
 		function errorFetch() {
     		$('.flashmessage').addClass('hide');
