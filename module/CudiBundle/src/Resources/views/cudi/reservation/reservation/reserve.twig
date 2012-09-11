@@ -56,8 +56,9 @@
 								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
 								<td>
 									{% if map['article'].isBookable() %}
-										{% set name = 'article-' ~ map['article'].getId() %}
 										
+										{% set name = 'article-' ~ map['article'].getId() %}
+
 										{{ formElement(form.get(name)) }}
 								        {% if element.getMessages()|length > 0 %}
 								            <div class="help-inline">
