@@ -8,3 +8,11 @@ input.input-very-mini {
 	padding-bottom: @pInputPadding;
 	padding-top: @pInputPadding;
 }
+
+/*
+ * Workaround for input[type=submit] and <button> having different height when styled with .btn class.
+ */
+input.btn {
+  vertical-align: baseline;
+  height: 30px;
+}

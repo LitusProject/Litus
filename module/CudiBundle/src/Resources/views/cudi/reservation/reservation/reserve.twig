@@ -85,9 +85,12 @@
 				
 				</table>
 				
+				<a class="btn pull-left" href="{{ url('reservation', {'action' : 'view'}) }}">Back</a>
+
             	{% if form.get('submit') %}
             		{{ formElement(form.get('submit')) }}
 				{% endif %}
+				
 
 			{{ form().closeTag() }}
 
