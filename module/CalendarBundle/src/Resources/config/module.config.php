@@ -50,7 +50,7 @@ return array(
                     'constraints' => array(
                         'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'       => '[0-9]*',
+                        'id'       => '[0-9\-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'calendar',
