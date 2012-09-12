@@ -55,11 +55,14 @@
         		    {% if authenticatedPerson is not null %}
                         <li class="dropdown" id="accountDropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{ translate('Account') }} <span class="caret"></span>
+                                <span class="profile-wrapper">
+                                    <i class="profile"></i>
+                                </span>
+                                <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="">
+                                    <a href="{{ url('account') }}">
                                         <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
                                         <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
                                     </a>
