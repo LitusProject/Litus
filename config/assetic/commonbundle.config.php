@@ -89,6 +89,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@bootstrap_js_modal',
         ),
     ),
     'routes' => array(),
