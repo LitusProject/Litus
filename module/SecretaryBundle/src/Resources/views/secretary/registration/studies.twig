@@ -38,34 +38,36 @@
 
 {% macro displayStudies(studies, enrollments) %}
     {% for study in studies %}
-        {% if study.getChildren()|length > 0 %}
-            <div class="accordion" id="studies-{{ study.getId() }}">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
-                            {{ study.getTitle() }}&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
-                        </a>
-                    </div>
+        <div class="accordion" id="studies-{{ study.getId() }}">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
+                        {{ study.getTitle() }}&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
+
+                        {% if study.getChildren()|length == 0 %}
+                            <span class="pull-right">
+                                <button class="btn btn-mini btn-info study_enroll{% if study.getId() in enrollments %} active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">Enroll</button>
+                            </span>
+                        {% endif %}
+                    </a>
+                </div>
+                {% if study.getChildren()|length > 0 %}
                     <div id="collapse_study-{{ study.getId() }}" class="accordion-body collapse">
                         <div class="accordion-inner">
                             {{ _self.displayStudies(study.getChildren(), enrollments) }}
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
-        {% else %}
-            <label class="checkbox">
-                <input type="checkbox" id="study-{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}" {% if study.getId() in enrollments %}checked="checked"{% endif %}>
-                {{ translate('I\'m enrolled in this study') }}
-            </label>
-        {% endif %}
+        </div>
     {% endfor %}
 {% endmacro %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.study_enroll').change(function () {
+            $('.study_enroll').click(function () {
+                $(this).toggleClass('active');
                 updateHeadings();
                 saveChanges();
             });
@@ -75,7 +77,7 @@
         function updateHeadings() {
             $('#studies .accordion-heading').removeClass('childSelected selected');
             $('.study_enroll').each(function () {
-                if ($(this).is(':checked')) {
+                if ($(this).hasClass('active')) {
                     $('#studies-' + $(this).data('id') + ' .accordion-heading').addClass('selected');
                     selectParent($('#studies-' + $(this).data('id')));
                 }
@@ -92,7 +94,7 @@
 
         function saveChanges() {
             var studies = [];
-            $('.study_enroll:checked').each(function () {
+            $('.study_enroll.active').each(function () {
                 studies.push($(this).data('id'));
             });
             $.post('{{ url('secretary_registration', {"action": "saveStudies", 'identification': getParam('identification'), 'hash': getParam('hash')})}}', {'studies': studies},function (data) {
