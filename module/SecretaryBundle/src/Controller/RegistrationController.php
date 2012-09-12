@@ -296,7 +296,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $formData['university_identification'] = $this->getParam('identification');
-            $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : $academic->isMember($this->getCurrentAcademicYear());
+            if ($academic->isMember($this->getCurrentAcademicYear()))
+                $formData['become_member'] = true;
+            else
+                $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
             if ($form->isValid()) {

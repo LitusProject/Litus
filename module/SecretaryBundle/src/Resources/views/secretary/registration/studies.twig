@@ -38,27 +38,27 @@
 
 {% macro displayStudies(studies, enrollments) %}
     {% for study in studies %}
-        <div class="accordion" id="studies{{ study.getId() }}">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies{{ study.getId() }}" href="#collapse_study{{ study.getId() }}">
-                        {{ study.getTitle() }}&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
-                    </a>
-                </div>
-                <div id="collapse_study{{ study.getId() }}" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        {% if study.getChildren()|length > 0 %}
+        {% if study.getChildren()|length > 0 %}
+            <div class="accordion" id="studies-{{ study.getId() }}">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
+                            {{ study.getTitle() }}&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
+                        </a>
+                    </div>
+                    <div id="collapse_study-{{ study.getId() }}" class="accordion-body collapse">
+                        <div class="accordion-inner">
                             {{ _self.displayStudies(study.getChildren(), enrollments) }}
-                        {% else %}
-                            <label class="checkbox">
-                                <input type="checkbox" id="study{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}" {% if study.getId() in enrollments %}checked="checked"{% endif %}>
-                                {{ translate('I\'m enrolled in this study') }}
-                            </label>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <label class="checkbox">
+                <input type="checkbox" id="study-{{ study.getId() }}" class="study_enroll" data-id="{{ study.getId() }}" {% if study.getId() in enrollments %}checked="checked"{% endif %}>
+                {{ translate('I\'m enrolled in this study') }}
+            </label>
+        {% endif %}
     {% endfor %}
 {% endmacro %}
 
@@ -76,8 +76,8 @@
             $('#studies .accordion-heading').removeClass('childSelected selected');
             $('.study_enroll').each(function () {
                 if ($(this).is(':checked')) {
-                    $('#studies' + $(this).data('id') + ' .accordion-heading').addClass('selected');
-                    selectParent($('#studies' + $(this).data('id')));
+                    $('#studies-' + $(this).data('id') + ' .accordion-heading').addClass('selected');
+                    selectParent($('#studies-' + $(this).data('id')));
                 }
             });
         }

@@ -156,6 +156,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
                     ),
+                    'account' => array(
+                        'activate', 'edit', 'index'
+                    ),
                     'auth' => array(
                         'login', 'logout', 'shibboleth'
                     ),
