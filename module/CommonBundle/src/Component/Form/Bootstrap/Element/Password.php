@@ -42,5 +42,10 @@ class Password extends \CommonBundle\Component\Form\Bootstrap\Element
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+        $this->setLabelAttributes(
+            array(
+                'class' => 'control-label',
+            )
+        );
     }
 }

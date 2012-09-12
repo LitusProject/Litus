@@ -5,6 +5,8 @@
         <h1>{{ translate('Account') }}</h1>
     </div>
 
+    {% include 'common/account/partials/navigation.twig' %}
+
     <div class="row page">
         <div class="span12">
             <h3>{{ translate('Personal') }}</h3>
@@ -69,7 +71,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="form-actions" style="text-align: center;">
-                <a href="{{ url('account') }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                <a href="{{ url('account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
             </div>
         </div>
     </div>
