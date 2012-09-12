@@ -49,7 +49,6 @@ return array(
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
             '@logistics_css',
-            '@moment_js',
         ),
     ),
     'routes' => array(),

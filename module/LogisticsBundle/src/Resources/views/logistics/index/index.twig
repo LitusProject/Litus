@@ -229,9 +229,7 @@
         });
 
         function formatDate(date) {
-            var dateWrapper = moment(date);
-
-            return dateWrapper.format('dddd MMMM Do YYYY H:mm');
+            return $.fullCalendar.formatDate(date, 'dddd MMMM dd yyyy H:mm')
         }
 
         function hidePopover(element) {
