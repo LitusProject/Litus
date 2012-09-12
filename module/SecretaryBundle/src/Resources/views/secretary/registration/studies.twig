@@ -46,7 +46,7 @@
 
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">
-                                <button class="btn btn-mini btn-info study_enroll{% if study.getId() in enrollments %} active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">Enroll</button>
+                                <button class="btn btn-mini btn-info study_enroll {% if study.getId() in enrollments %}active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">Enroll</button>
                             </span>
                         {% endif %}
                     </a>

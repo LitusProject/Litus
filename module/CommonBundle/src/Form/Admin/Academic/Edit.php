@@ -65,6 +65,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->setData(
             array(
+                'organization_status' => $person->getOrganizationStatus($academicYear) ? $person->getOrganizationStatus($academicYear)->getStatus() : null,
                 'university_identification' => $person->getUniversityIdentification(),
                 'university_status' => $person->getUniversityStatus($academicYear) ? $person->getUniversityStatus($academicYear)->getStatus() : null,
             )
