@@ -49,6 +49,13 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                             'You have been successfully logged in!'
                         )
                     );
+
+                    $this->redirect()->toRoute(
+                        'index',
+                        array(
+                            'language' => $this->getLanguage()->getAbbrev(),
+                        )
+                    );
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -61,14 +68,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $this->redirect()->toRoute(
-            'index',
+        return new ViewModel(
             array(
-                'language' => $this->getLanguage()->getAbbrev(),
+                'form' => $form
             )
         );
-
-        return new ViewModel();
     }
 
     public function logoutAction()
