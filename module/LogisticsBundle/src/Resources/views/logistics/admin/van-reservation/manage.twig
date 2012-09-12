@@ -25,9 +25,9 @@
 	</div>
 
 	<div id="controller_action">
-	
+
 		<div id="normal_page">
-		
+
 			<table class="full_width manage">
 				<tr>
 					<th>Reason</th>
@@ -37,9 +37,9 @@
 					<th width="100px">End Date</th>
 					<th width="70px">Action</th>
 				</tr>
-				
+
 				{% for reservation in paginator %}
-				
+
 					<tr class="item item-{{ reservation.getId() }}">
 						<td>{{ reservation.getReason() }}</td>
 						<td class="driverdata">
@@ -61,7 +61,7 @@
 						    {% if hasAccess('admin_van_reservation', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ reservation.getId() }}" data-reason="{{ reservation.getReason() }}">Delete</a>
 		                    {% endif %}
-		                    <a href="#" class="moreinfo" 
+		                    <a href="#" class="moreinfo"
 		                    	data-reason="{{ reservation.getReason() }}"
 		                    	data-start="{{ reservation.getStartDate().format('d/m/Y H:i') }}"
 		                    	data-end="{{ reservation.getEndDate().format('d/m/Y H:i') }}"
@@ -73,15 +73,15 @@
                     		>More Information</a>
 						</td>
 					</tr>
-				
+
 				{% endfor %}
-				
+
 			</table>
-		
+
 		</div>
-	
+
     </div>
-    
+
 	<div class="modal hide fade" id="moreInformation">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -102,7 +102,7 @@
 			</div>
 		</div>
 	</div>
-    
+
 	<div class="modal hide fade" id="removeReservation">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -126,22 +126,22 @@
 
 {% block content_script %}
 	<script type="text/javascript">
-		
+
 		$(document).ready(function () {
-		
+
 			$('.item .delete').click(openModal);
 			$('.item .moreinfo').click(showInfo);
 			$('.item .assignme').click(assignMe);
 			$('.item .unassignme').click(unassignMe);
 
 		});
-		
+
 		function assignMe(e) {
 
 			e.preventDefault();
-			
+
 			var id = $(this).data('id');
-			
+
 			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}/' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
@@ -152,13 +152,13 @@
 				}
 			}, 'json').error(errorAssigning);
 		}
-		
+
 		function unassignMe(e) {
 
 			e.preventDefault();
-			
+
 			var id = $(this).data('id');
-			
+
 			$.post('{{ url('admin_van_reservation', {"action": "unassignme"})}}/' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
@@ -169,10 +169,10 @@
 				}
 			}, 'json').error(errorAssigning);
 		}
-		
+
 		function showInfo(e) {
 			e.preventDefault();
-			
+
 			var dialog = $('#moreInformation');
 			dialog.find('.reason').html($(this).data('reason'));
 			dialog.find('.additional').html($(this).data('additional'));
@@ -184,7 +184,7 @@
 			dialog.find('.creator').html($(this).data('creator'));
 			dialog.modal();
 		}
-		
+
 		function openModal(e) {
 			var $this = $(this);
 
@@ -213,12 +213,12 @@
     		$('.reservation_removed_error').removeClass('hide');
     		$('#removeReservation').modal('hide');
 		}
-		
+
 		function errorAssigning() {
     		$('.flashmessage').addClass('hide');
     		$('.reservation_removed_error').addClass('hide');
 			$('.assigning_error').removeClass('hide');
 		}
-		
+
 	</script>
 {% endblock %}

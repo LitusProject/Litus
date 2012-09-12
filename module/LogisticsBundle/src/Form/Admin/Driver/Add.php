@@ -47,14 +47,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        
+
         $years = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
-        
+
         $yearnames = array();
         foreach($years as $year) {
-            $yearnames[$year->getId()] = $year->getCode(); 
+            $yearnames[$year->getId()] = $year->getCode();
         }
 
         $field = new Text('person_name');
@@ -64,36 +64,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
         $this->add($field);
-        
+
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
         $this->add($field);
-        
+
         $field = new Select('years');
         $field->setLabel('Years')
             ->setAttribute('multiple', true)
             ->setAttribute('options', $yearnames);
         $this->add($field);
-        
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'driver_add');
         $this->add($field);
     }
-    
+
     public function populateFromDriver(Driver $driver)
     {
         $years = $driver->getYears();
-        
+
         $yearids = array();
         foreach($years as $year) {
             $yearids[] = $year->getId();
         }
-        
+
         $formData = array(
             'years' => $yearids,
         );
-        
+
         $this->setData($formData);
     }
 
@@ -115,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                             'validators' => array(
                                 new DriverValidator(
-                                    $this->_entityManager, 
+                                    $this->_entityManager,
                                     array(
                                         'byId' => false,
                                     )
@@ -135,7 +135,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                             'validators' => array(
                                 new DriverValidator(
-                                    $this->_entityManager, 
+                                    $this->_entityManager,
                                     array(
                                         'byId' => true,
                                     )
@@ -145,7 +145,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 );
             }
-            
+
             $this->_inputFilter = $inputFilter;
         }
 
