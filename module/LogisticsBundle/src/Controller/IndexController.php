@@ -26,7 +26,7 @@ use LogisticsBundle\Entity\Driver,
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class IndexController extends \CommonBundle\Component\Controller\ActionController
+class IndexController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
 
     public function indexAction()
@@ -73,7 +73,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'load' => $reservation->getLoad(),
                 'additional' => $reservation->getAdditionalInfo(),
                 'id' => $reservation->getId(),
-                
+
             );
         }
 
