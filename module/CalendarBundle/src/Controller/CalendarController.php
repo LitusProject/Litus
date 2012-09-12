@@ -57,8 +57,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->_getEvent()))
-            return $this->notFoundAction();
+        if (!($event = $this->_getEvent())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         return new ViewModel(
             array(
@@ -69,8 +71,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster()))
-            return $this->notFoundAction();
+        if (!($event = $this->_getEventByPoster())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -98,8 +102,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $date = $this->getParam('id');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
-        if (!$first)
-            return $this->notFoundAction();
+        if (!$first) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $last = clone $first;
         $last->add(new DateInterval('P1M'));
