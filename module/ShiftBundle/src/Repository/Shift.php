@@ -39,7 +39,7 @@ class Shift extends EntityRepository
             ->where(
                     $query->expr()->andX(
                         $query->expr()->gt('s.startDate', ':now'),
-                        $query->expr()->gt('s.event', ':event')
+                        $query->expr()->eq('s.event', ':event')
                     )
             )
             ->orderBy('s.startDate', 'ASC')
@@ -59,7 +59,7 @@ class Shift extends EntityRepository
             ->where(
                     $query->expr()->andX(
                         $query->expr()->gt('s.startDate', ':now'),
-                        $query->expr()->gt('s.unit', ':unit')
+                        $query->expr()->eq('s.unit', ':unit')
                     )
             )
             ->orderBy('s.startDate', 'ASC')
