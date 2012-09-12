@@ -160,7 +160,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             IntlDateFormatter::GREGORIAN,
             'MMMM'
         );
-        $first = $formatter->format($first);//new Date($first->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
 
         return new ViewModel(
             array(
