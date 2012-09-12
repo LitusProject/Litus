@@ -191,11 +191,6 @@ return array(
                             'logistics/minicolor/jquery.miniColors.min.js',
                         ),
                     ),
-                    'moment_js' => array(
-                        'assets' => array(
-                            'logistics/js/moment.min.js',
-                        ),
-                    ),
                 ),
             ),
         ),
