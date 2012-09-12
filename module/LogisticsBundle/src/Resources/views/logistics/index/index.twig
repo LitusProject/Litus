@@ -38,6 +38,9 @@
             <td><b>Driver:</b></td><td> <span class="driver"></span></td>
         </tr>
         </table>
+
+        <ul class="nav nav-list"><li class="divider"></li></ul>
+
         {% if has_access('admin_van_reservation', 'edit') %}
             <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
@@ -53,6 +56,9 @@
                 <td><b>End:</b></td> <td><span class="end"></span></td>
             </tr>
             </table>
+
+            <ul class="nav nav-list"><li class="divider"></li></ul>
+
             {% if has_access('admin_van_reservation', 'edit') %}
                 <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
             {% endif %}
