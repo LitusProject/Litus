@@ -42,7 +42,7 @@
             <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
-    
+
     <div id="add_popover_content" class="hide">
         <div  id="add_popover_content_internal">
             <table>
@@ -95,7 +95,6 @@
                     '': 'H:mm'
                 },
                 axisFormat: 'H:mm',
-                selectable: true,
 
                 eventSources: [
 
@@ -141,7 +140,7 @@
 
                         }
                     }
-            
+
                 ],
 
                 loading : function(isLoading, view) {
@@ -151,7 +150,7 @@
                         $('#calendar').removeClass('loading');
                     }
                 },
-                
+
                 eventAfterRender : function(event, element, view) {
                     $('#popover_header .reason').text(event.title);
 
@@ -163,25 +162,28 @@
                         $("#popover_content a").addClass("hide");
                     {% endif %}
 
-                    $('#popover_content .start').text(event.start.toLocaleString());
-                    $('#popover_content .end').text(event.end.toLocaleString());
+                    $('#popover_content .start').text(formatDate(event.start));
+                    $('#popover_content .end').text(formatDate(event.end));
                     $('#popover_content .load').text(event.load);
                     $('#popover_content .passenger').text(event.passenger);
                     $('#popover_content .additional').text(event.additional);
                     $('#popover_content .driver').text(event.driver);
 
-                    element.popover({placement:'bottom', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
+                    element.popover({placement:'right', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
                 },
 
                 eventClick : function(event, jsEvent, view) {
 
                     showPopover($(this));
                 },
-                
+
+
                 viewDisplay : function(view) {
                     hideAll();
                 },
-                
+
+                {% if has_access('logistics_van_reservation', 'add') %}
+                selectable: true,
                 select : function( startDate, endDate, allDay, jsEvent, view ) {
 
                     if (poppedElement != null) {
@@ -191,10 +193,10 @@
 
                     showPopover($('.fc-header-title'));
 
-                    $('#add_popover_content_internal .start').text(startDate.toLocaleString());
-                    $('#add_popover_content_internal .end').text(endDate.toLocaleString());
-                    
-            
+                    $('#add_popover_content_internal .start').text(formatDate(startDate));
+                    $('#add_popover_content_internal .end').text(formatDate(endDate));
+
+
                     {% if has_access('logistics_van_reservation', 'add') %}
                         $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}/start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000);
                         $("#add_popover_content_internal a").html('Add');
@@ -202,14 +204,16 @@
                     {% else %}
                         $("#add_popover_content_internal a").addClass("hide");
                     {% endif %}
-                }
+                },
+
+                {% endif %}
 
             });
 
             $('#popover_header .reason').text('New Event');
 
             var content = $('#add_popover_content').html();
-            
+
             $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:content,trigger:'manual'});
 
             $('.popover .close').live('click',function(){
@@ -217,7 +221,13 @@
             });
 
         });
-        
+
+        function formatDate(date) {
+            var dateWrapper = moment(date);
+
+            return dateWrapper.format('dddd MMMM Do YYYY H:mm');
+        }
+
         function hidePopover(element) {
             element.popover('hide');
             if (poppedElement != null && poppedElement.is(element)) {
@@ -229,7 +239,7 @@
             if (poppedElement != null) {
                 poppedElement.popover('hide');
             }
-            
+
             if (poppedElement != null && poppedElement.is(element)) {
                 poppedElement = null;
             } else {
