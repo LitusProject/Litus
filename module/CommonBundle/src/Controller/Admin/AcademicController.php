@@ -83,13 +83,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     $formData['university_identification']
                 );
 
-                $academic->addOrganizationStatus(
-                    new OrganizationStatus(
-                        $academic,
-                        $formData['organization_status'],
-                        $this->getCurrentAcademicYear()
-                    )
-                );
+                if ('' != $formData['organization_status']) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            $formData['organization_status'],
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
 
                 $academic->addUniversityStatus(
                     new UniversityStatus(
@@ -168,8 +170,20 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setUniversityIdentification($formData['university_identification'])
                     ->setRoles($roles);
 
-                $academic->getOrganizationStatus($this->getCurrentAcademicYear())
-                    ->setStatus($formData['organization_status']);
+                if ('' != $formData['organization_status']) {
+                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $academic->getOrganizationStatus($this->getCurrentAcademicYear())
+                            ->setStatus($formData['organization_status']);
+                    } else {
+                        $academic->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $academic,
+                                $formData['organization_status'],
+                                $this->getCurrentAcademicYear()
+                            )
+                        );
+                    }
+                }
 
                 $academic->getUniversityStatus($this->getCurrentAcademicYear())
                     ->setStatus($formData['university_status']);
