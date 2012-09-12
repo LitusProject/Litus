@@ -17,6 +17,7 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\People\Academic,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     CommonBundle\Form\Admin\Academic\Add as AddForm,
     CommonBundle\Form\Admin\Academic\Edit as EditForm,
@@ -82,6 +83,16 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     $formData['university_identification']
                 );
 
+                if ('' != $formData['organization_status']) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            $formData['organization_status'],
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
+
                 $academic->addUniversityStatus(
                     new UniversityStatus(
                         $academic,
@@ -127,11 +138,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($user = $this->_getUser()))
+        if (!($academic = $this->_getAcademic()))
             return new ViewModel();
 
         $form = new EditForm(
-            $this->getEntityManager(), $this->getCurrentAcademicYear(), $user
+            $this->getEntityManager(), $this->getCurrentAcademicYear(), $academic
         );
 
         if ($this->getRequest()->isPost()) {
@@ -151,7 +162,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                $user->setFirstName($formData['first_name'])
+                $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
                     ->setSex($formData['sex'])
@@ -159,7 +170,22 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->setUniversityIdentification($formData['university_identification'])
                     ->setRoles($roles);
 
-                $user->getUniversityStatus($this->getCurrentAcademicYear())
+                if ('' != $formData['organization_status']) {
+                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $academic->getOrganizationStatus($this->getCurrentAcademicYear())
+                            ->setStatus($formData['organization_status']);
+                    } else {
+                        $academic->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $academic,
+                                $formData['organization_status'],
+                                $this->getCurrentAcademicYear()
+                            )
+                        );
+                    }
+                }
+
+                $academic->getUniversityStatus($this->getCurrentAcademicYear())
                     ->setStatus($formData['university_status']);
 
                 $this->getEntityManager()->flush();
@@ -194,17 +220,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser()))
+        if (!($academic = $this->_getAcademic()))
             return new ViewModel();
 
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Session')
-            ->findByPerson($user->getId());
+            ->findByPerson($academic->getId());
 
         foreach ($sessions as $session) {
             $session->deactivate();
         }
-        $user->disableLogin();
+        $academic->disableLogin();
 
         $this->getEntityManager()->flush();
 
@@ -219,15 +245,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $users = $this->getEntityManager()
+        $academics = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findAllByNameTypeahead($this->getParam('string'));
 
         $result = array();
-        foreach($users as $user) {
+        foreach($academics as $academic) {
             $item = (object) array();
-            $item->id = $user->getId();
-            $item->value = $user->getFullName() . ' - ' . $user->getUniversityIdentification();
+            $item->id = $academic->getId();
+            $item->value = $academic->getFullName() . ' - ' . $academic->getUniversityIdentification();
             $result[] = $item;
         }
 
@@ -244,17 +270,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         switch($this->getParam('field')) {
             case 'username':
-                $users = $this->getEntityManager()
+                $academicq = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findAllByUsername($this->getParam('string'));
                 break;
             case 'name':
-                $users = $this->getEntityManager()
+                $academics = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findAllByName($this->getParam('string'));
                 break;
             case 'university_identification':
-                $users = $this->getEntityManager()
+                $academics = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findAllByUniversityIdentification($this->getParam('string'));
                 break;
@@ -264,16 +290,16 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($users, $numResults);
+        array_splice($academics, $numResults);
 
         $result = array();
-        foreach($users as $user) {
+        foreach($academics as $academic) {
             $item = (object) array();
-            $item->id = $user->getId();
-            $item->username = $user->getUsername();
-            $item->universityIdentification = $user->getUniversityIdentification();
-            $item->fullName = $user->getFullName();
-            $item->email = $user->getEmail();
+            $item->id = $academic->getId();
+            $item->username = $academic->getUsername();
+            $item->universityIdentification = $academic->getUniversityIdentification();
+            $item->fullName = $academic->getFullName();
+            $item->email = $academic->getEmail();
 
             $result[] = $item;
         }
@@ -285,7 +311,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getUser()
+    private function _getAcademic()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -306,11 +332,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $user = $this->getEntityManager()
+        $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneById($this->getParam('id'));
 
-        if (null === $user) {
+        if (null === $academic) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -329,6 +355,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        return $user;
+        return $academic;
     }
 }

@@ -104,11 +104,15 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            //if ($role->getSystem())
-                //continue;
+            if ($role->getSystem())
+                continue;
 
             $rolesArray[$role->getName()] = $role->getName();
         }
+
+        if (empty($rolesArray))
+            throw new \RuntimeException('There needs to be at least one role before you can add a person');
+
         return $rolesArray;
     }
 

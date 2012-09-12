@@ -46,8 +46,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews()))
-            return $this->notFoundAction();
+        if (!($news = $this->_getNews())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         return new ViewModel(
             array(
