@@ -25,12 +25,12 @@
             <h2>
                 {{ translate('Choose a study:') }}
                 <div class="pull-right">
-                    <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+                    <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
                 </div>
             </h2>
             {{ _self.displayStudies(studies, enrollments) }}
             <div class="form-actions" style="text-align: center;">
-                <a href="{{ url('secretary_registration', {'action': 'subjects', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+                <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@
             $('.study_enroll.active').each(function () {
                 studies.push($(this).data('id'));
             });
-            $.post('{{ url('secretary_registration', {"action": "saveStudies", 'identification': getParam('identification'), 'hash': getParam('hash')})}}', {'studies': studies},function (data) {
+            $.post('{{ url('secretary_registration', {"action": "saveStudies"})}}', {'studies': studies},function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#studies_saved_success').addClass('in');
