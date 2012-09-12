@@ -44,7 +44,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'SUCCESS',
-                            'You are successfully logged in!'
+                            'You have been successfully logged in!'
                         )
                     );
                 } else {
@@ -52,7 +52,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'You cannot be logged in!'
+                            'You could not be logged in!'
                         )
                     );
                 }
@@ -77,7 +77,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             new FlashMessage(
                 FlashMessage::SUCCESS,
                 'SUCCESS',
-                'You are successfully logged out!'
+                'You have been successfully logged out!'
             )
         );
 

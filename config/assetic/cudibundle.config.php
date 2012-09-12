@@ -265,6 +265,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
             '@booking_css',
         ),
     ),

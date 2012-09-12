@@ -56,7 +56,7 @@
             $('.subject_enroll:checked').each(function () {
                 subjects.push($(this).data('id'));
             });
-            
+
             $.post('{{ url('secretary_registration', {"action": "saveSubjects", 'identification': getParam('identification'), 'hash': getParam('hash')})}}', {'subjects': subjects},function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');

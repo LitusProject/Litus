@@ -51,7 +51,7 @@ return array(
                         'action'   => '[a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]*',
                         'page'     => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'news',

@@ -46,55 +46,38 @@
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-        			            <li><a href="#">{{ language.getName() }}</a></li>
+        			            <li><a href="{{ url('index', {'language': language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a></li>
         		            {% endfor %}
         		        </ul>
         			</li>
         		</ul>
         		<ul class="nav pull-right auth-nav visible-desktop">
-        		    <li class="dropdown" id="loginDropdown">
-        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translate('Login') }} <span class="caret"></span>
-        		        </a>
-        		        <ul class="dropdown-menu">
-        		        	<li style="text-align: center;">
-			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-        		        	</li>
-                            <li class="divider"></li>
-        		            <li>
-        		                {% do loginForm.prepare() %}
-                                {% autoescape false %}
-                                    {% set buttons = [] %}
-                                    {{ form().openTag(loginForm) }}
-                                        {% for element in loginForm.getElements() %}
-                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                                {{ formElement(element) }}
-                                            {% elseif element.getAttribute('type') == 'checkbox' %}
-                                                <div class="remember_me">
-                                                    <label>
-                                                        {{ formElement(element) }}
-                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                                    </label>
-                                                </div>
-                                            {% else %}
-                                                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
-                                                    <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                    <div class="controls">
-                                                        <div>{{ formElement(element) }}</div>
-                                                        {% if element.getMessages()|length > 0 %}
-                                                            <div class="help-inline">
-                                                                {{ formElementErrors(element) }}
-                                                            </div>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {{ form().closeTag() }}
-                                {% endautoescape %}
-        		            </li>
-        		        </ul>
-        			</li>
+        		    {% if authenticatedPerson is not null %}
+                        <li class="dropdown" id="accountDropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="profile-wrapper">
+                                    <i class="profile"></i>
+                                </span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ url('account') }}">
+                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                        </li>
+                    {% endif %}
         		</ul>
     		</div>
     	</div>
@@ -128,7 +111,7 @@
 
         <div id="content">
             <div class="container">
-                {% include 'prof/partials/flashMessenger.twig' %}
+                {% include 'site/partials/flashMessenger.twig' %}
 
             	{% block content %} {% endblock %}
             </div>

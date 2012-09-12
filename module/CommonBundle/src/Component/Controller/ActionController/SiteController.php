@@ -44,7 +44,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
-                'index',
+                'auth',
                 array(
                     'action' => 'login'
                 )

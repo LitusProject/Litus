@@ -63,6 +63,19 @@ return array(
             '@bootstrap_js_modal',
         ),
 
+        'auth' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+        ),
         'index' => array(
             '@common_jquery',
             '@bootstrap_css',
@@ -73,7 +86,22 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
-            '@bootstrap_js_collapse'
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+        ),
+
+        'account' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_responsive_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
         ),
     ),
     'routes' => array(),

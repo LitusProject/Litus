@@ -29,7 +29,40 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        $mappings = array();
+        foreach($studies as $enrollment) {
+            $mappings[] = array(
+                'enrollment' => $enrollment,
+                'subjects' => $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+            );
+        }
+
+        $subjects = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        $subjectIds = array();
+        foreach($subjects as $enrollment)
+            $subjectIds[] = $enrollment->getSubject()->getId();
+
+        return new ViewModel(
+            array(
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'metaData' => $metaData,
+                'studies' => $mappings,
+                'subjects' => $subjectIds,
+            )
+        );
     }
 
     public function activateAction()

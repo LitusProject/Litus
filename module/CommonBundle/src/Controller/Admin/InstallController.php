@@ -139,7 +139,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
                     ),
                     'admin_auth' => array(
-                        'authenticate', 'login', 'logout'
+                        'authenticate', 'login', 'logout', 'shibboleth'
                     ),
                     'admin_cache' => array(
                         'manage', 'flush'
@@ -155,6 +155,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
+                    ),
+                    'auth' => array(
+                        'login', 'logout', 'shibboleth'
                     ),
                     'index' => array(
                         'index'
@@ -208,7 +211,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                     'actions' => array(
                         'admin_auth' => array(
-                            'authenticate', 'login', 'logout'
+                            'authenticate', 'login', 'logout', 'shibboleth'
+                        ),
+                        'auth' => array(
+                            'login', 'logout', 'shibboleth'
                         ),
                         'index' => array(
                             'index'

@@ -53,11 +53,15 @@
             {% endif %}
         {% endfor %}
         {% if buttons|length > 0 %}
-            <div class="form-actions">
+            {% if fieldset.getDisplayFormActions() %}
+                <div class="form-actions">
+            {% endif %}
                 {% for button in buttons %}
                     {{ formElement(button) }}
                 {% endfor %}
-            </div>
+            {% if fieldset.getDisplayFormActions() %}
+                </div>
+            {% endif %}
         {% endif %}
     {% endautoescape %}
 {% endmacro %}

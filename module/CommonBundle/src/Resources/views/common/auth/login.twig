@@ -1,0 +1,50 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="row-fluid">
+        <span class="span4"></span>
+        <span class="span4">
+            <h1 class="page-header">{{ translate('Login') }}</h1>
+
+            <div class="well" style="text-align: center;">
+                <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+            </div>
+
+            <div class="well">
+                <div class="login-container">
+                    {% do form.prepare() %}
+                    {% autoescape false %}
+                        {% set buttons = [] %}
+                        {{ form().openTag(form) }}
+                            {% for element in form.getElements() %}
+                                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                    {{ formElement(element) }}
+                                {% elseif element.getAttribute('type') == 'checkbox' %}
+                                    <div class="remember_me">
+                                        <label>
+                                            {{ formElement(element) }}
+                                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                        </label>
+                                    </div>
+                                {% else %}
+                                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                        <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                        <div class="controls">
+                                            <div>{{ formElement(element) }}</div>
+                                            {% if element.getMessages()|length > 0 %}
+                                                <div class="help-inline">
+                                                    {{ formElementErrors(element) }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </span>
+        <span class="span4"></span>
+    </div>
+{% endblock %}

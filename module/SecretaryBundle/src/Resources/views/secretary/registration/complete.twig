@@ -7,24 +7,24 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    <div class="row page" id="studies">
+    <div class="row page">
         <div class="span12">
             <h3>{{ translate('Personal') }}</h3>
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Name') }}</dt>
-                <dd>{{ academic.getFullName() }}</dd>
+                <dd>{{ academic.getFullName() }}&nbsp;</dd>
                 <dt>{{ translate('Birthday') }}</dt>
-                <dd>{{ dateLocalized(academic.getBirthday(), 'd MMMM Y') }}</dd>
+                <dd>{{ dateLocalized(academic.getBirthday(), 'd MMMM Y') }}&nbsp;</dd>
                 <dt>{{ translate('Sex') }}</dt>
-                <dd>{{ academic.getSex()|capitalize }}</dd>
+                <dd>{{ academic.getSex()|capitalize }}&nbsp;</dd>
                 <dt>{{ translate('Phone Number') }}</dt>
-                <dd>{{ academic.getPhoneNumber() }}</dd>
+                <dd>{{ academic.getPhoneNumber() }}&nbsp;</dd>
                 <dt>{{ translate('University Identification') }}</dt>
-                <dd>{{ academic.getUniversityIdentification() }}</dd>
+                <dd>{{ academic.getUniversityIdentification() }}&nbsp;</dd>
                 <dt>{{ translate('University E-mail') }}</dt>
-                <dd>{{ academic.getUniversityEmail() }}</dd>
+                <dd>{{ academic.getUniversityEmail() }}&nbsp;</dd>
                 <dt>{{ translate('Personal E-mail') }}</dt>
-                <dd>{{ academic.getPersonalEmail() }}</dd>
+                <dd>{{ academic.getPersonalEmail() }}&nbsp;</dd>
             </dl>
 
             <h3>{{ translate('Addresses') }}</h3>
@@ -50,11 +50,11 @@
             <h3>{{ translate('Organization') }}</h3>
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Become Member') }}</dt>
-                <dd>{% if academic.isMember(academicYear) %}&times;{% endif %}</dd>
+                <dd>{% if academic.isMember(academicYear) %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% endif %}</dd>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                <dd>{% if metaData.bakskeByMail() %}&times;{% endif %}</dd>
+                <dd>{% if metaData.bakskeByMail() %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('T-shirt Size') }}</dt>
                 <dd>{{ metaData.getTshirtSize() }}</dd>
             </dl>
@@ -70,6 +70,9 @@
                     </ul>
                 {% endfor %}
             {% endfor %}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('booking') }}" class="btn btn-primary">{{ translate('Book Textbooks') }}</a>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -3,7 +3,9 @@
 namespace ShiftBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CalendarBundle\Entity\Nodes\Event,
+    Doctrine\ORM\EntityRepository,
+    ShiftBundle\Entity\Unit as UnitEntity;
 
 /**
  * Unit
@@ -23,6 +25,46 @@ class Shift extends EntityRepository
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByEvent(Event $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.startDate', ':now'),
+                        $query->expr()->eq('s.event', ':event')
+                    )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByUnit(UnitEntity $unit)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.startDate', ':now'),
+                        $query->expr()->eq('s.unit', ':unit')
+                    )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('unit', $unit)
             ->getQuery()
             ->getResult();
 
