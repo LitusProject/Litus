@@ -122,7 +122,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'key'         => 'cudi.billing_address_name',
                     'value'       => 'VTK vzw',
-                    'description' => 'The name of the billing organisation of the cudi',
+                    'description' => 'The name of the billing organization of the cudi',
                 ),
                 array(
                     'key'         => 'cudi.reservation_expire_time',
