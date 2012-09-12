@@ -25,7 +25,7 @@
             <h2>
                 {{ translate('Choose your subjects:') }}
                 <div class="pull-right">
-                    <a href="{{ url('secretary_registration', {'action': 'complete', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+                    <a href="{{ url('secretary_registration', {'action': 'complete'}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
                 </div>
             </h2>
             {% for mapping in mappings %}
@@ -37,7 +37,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="form-actions" style="text-align: center;">
-                <a href="{{ url('secretary_registration', {'action': 'complete', 'identification': getParam('identification'), 'hash': getParam('hash')}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+                <a href="{{ url('secretary_registration', {'action': 'complete'}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@
                 subjects.push($(this).data('id'));
             });
 
-            $.post('{{ url('secretary_registration', {"action": "saveSubjects", 'identification': getParam('identification'), 'hash': getParam('hash')})}}', {'subjects': subjects},function (data) {
+            $.post('{{ url('secretary_registration', {"action": "saveSubjects"})}}', {'subjects': subjects},function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#subjects_saved_success').addClass('in');
