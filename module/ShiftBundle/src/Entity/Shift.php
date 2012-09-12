@@ -41,6 +41,14 @@ class Shift
     private $id;
 
     /**
+     * @var \CommonBundle\Entity\Users\Person The person who created this shift
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
+     */
+    private $creationPerson;
+
+    /**
      * @var boolean The moment this shift starts
      *
      * @ORM\Column(name="start_date", type="datetime")
@@ -139,6 +147,7 @@ class Shift
     private $description;
 
     /**
+     * @param \CommonBundle\Entity\Users\Person $creationPerson
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      * @param \CommonBundle\Entity\Users\Person $manager
@@ -151,9 +160,10 @@ class Shift
      * @param string $description
      */
     public function __construct(
-        DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
+        Person $creationPerson, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
     )
     {
+        $this->creationPerson = $creationPerson;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->manager = $manager;
@@ -174,6 +184,14 @@ class Shift
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function getCreationPerson()
+    {
+        return $this->creationPerson;
     }
 
     /**

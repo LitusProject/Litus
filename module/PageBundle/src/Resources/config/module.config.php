@@ -64,7 +64,7 @@ return array(
                     'route'    => '[/:language]/page[/:name]',
                     'constraints' => array(
                         'name'     => '[a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'page',

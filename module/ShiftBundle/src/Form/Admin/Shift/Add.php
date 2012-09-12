@@ -140,7 +140,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             '' => ''
         );
         foreach ($events as $event)
-            $eventsArray[$event->getId()] = $event->getStartDate()->format('d/m/Y') . ': ' . $event->getTitle();
+            $eventsArray[$event->getId()] = $event->getTitle();
 
         return $eventsArray;
     }
@@ -170,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'person_id',
+                        'name'     => 'manager_id',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
@@ -249,7 +249,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name' => 'digits'),
+                            array('name' => 'int'),
                         ),
                     )
                 )
@@ -264,7 +264,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name' => 'digits'),
+                            array('name' => 'int'),
                         ),
                     )
                 )

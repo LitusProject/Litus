@@ -43,6 +43,7 @@ return array(
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
             '@calendar_js',
             '@common_spin_js',
         ),

@@ -18,16 +18,12 @@ return array(
     'VTK Leuven vzw' => 'VTK Leuven vzw',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
-    'Recreation' => 'Recreation',
-    'Studies' => 'Studies',
-    'Company relations' => 'Company relations',
-    'Services' => 'Services',
-    'Media' => 'Media',
-    'Wiki\'s' => 'Wiki\'s',
-    'About VTK' => 'About VTK',
-    'Login' => 'Login',
-    'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
+    'Dutch' => 'Nederlands',
+    'English' => 'English',
 
+    'Login' => 'Login',
+    'Account' => 'Account',
+    'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
     'Language' => 'Language',
     'Dutch' => 'Nederlands',
     'English' => 'English',
@@ -38,7 +34,6 @@ return array(
     'Calendar' => 'Calendar',
     'Twitter' => 'Twitter',
     'News' => 'News',
-    'Warning' => 'Warning',
     'No news items were posted yet.' => 'No news items were posted yet.',
     'No events were created yet.' => 'No events were created yet.',
     'Read More' => 'Read More',
@@ -47,4 +42,8 @@ return array(
     'Password' => 'Password',
     'Remember Me' => 'Remember Me',
     'Login' => 'Login',
+
+    'You have been successfully logged in!' => 'You have been successfully logged in!',
+    'You could not be logged in!' => 'You could not be logged in!',
+    'You have been successfully logged out!' => 'You have been successfully logged out!',
 );

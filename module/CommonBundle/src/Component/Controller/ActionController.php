@@ -115,6 +115,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     private function _initControllerPlugins()
     {
+        // Url Plugin
+        $this->getPluginManager()->setInvokableClass(
+            'url', 'CommonBundle\Component\Controller\Plugin\Url'
+        );
+        $this->url()->setLanguage($this->getLanguage());
+
         // HasAccess Plugin
         $this->getPluginManager()->setInvokableClass(
             'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
@@ -171,7 +177,14 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private function _initViewHelpers()
     {
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('url')->setRouter($this->getServiceLocator()->get('router'));
+
+        // Url Plugin
+        $renderer->getHelperPluginManager()->setInvokableClass(
+            'url', 'CommonBundle\Component\View\Helper\Url'
+        );
+
+        $renderer->plugin('url')->setLanguage($this->getLanguage())
+            ->setRouter($this->getServiceLocator()->get('router'));
 
         // HasAccess View Helper
         $renderer->getHelperPluginManager()->setInvokableClass(

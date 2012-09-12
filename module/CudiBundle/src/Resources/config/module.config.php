@@ -367,7 +367,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'supplier_index',
@@ -382,7 +382,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'supplier_auth',
@@ -397,7 +397,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'supplier_article',
@@ -412,7 +412,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'page'     => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_index',
@@ -428,6 +428,7 @@ return array(
                         'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'identification' => '[mrsu][0-9]{7}',
                         'hash'           => '[a-zA-Z0-9_-]*',
+                        'language'       => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_auth',
@@ -442,7 +443,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_subject',
@@ -456,7 +457,7 @@ return array(
                     'route' => '[/:language]/cudi/prof/subject/typeahead[/:string]',
                     'constraints' => array(
                         'string'   => '[%a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_subject',
@@ -471,7 +472,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_article',
@@ -485,7 +486,7 @@ return array(
                     'route' => '[/:language]/cudi/prof/article/typeahead[/:string]',
                     'constraints' => array(
                         'string'   => '[%a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_article',
@@ -500,7 +501,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_article_mapping',
@@ -515,7 +516,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_file',
@@ -530,7 +531,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_article_comment',
@@ -545,7 +546,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_subject_comment',
@@ -560,7 +561,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_prof',
@@ -574,7 +575,7 @@ return array(
                     'route' => '[/:language]/cudi/prof/prof/typeahead[/:string]',
                     'constraints' => array(
                         'string'   => '[%a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'prof_prof',
@@ -588,8 +589,8 @@ return array(
                     'route' => '[/:language]/cudi/booking[/:action[/:id]]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
-                        'id'      => '[0-9]*',
+                        'language' => '[a-z]{2}',
+                        'id'       => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'booking',
@@ -613,12 +614,12 @@ return array(
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/booking.site.en.php',
+                'filename' => __DIR__ . '/../translations/site.en.php',
                 'locale'   => 'en'
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/booking.site.nl.php',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
                 'locale'   => 'nl'
             ),
             array(

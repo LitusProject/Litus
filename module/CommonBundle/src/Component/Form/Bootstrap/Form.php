@@ -31,15 +31,26 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     protected $_inputFilter;
 
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var boolean Whether or not to show the form-actions div
      */
-    public function __construct($name = null)
+    private $_displayFormActions;
+
+    /**
+     * @param null|string|int $name Optional name for the element
+     * @param boolean $horizontal Whether to display the form horizontically or vertically
+     * @param boolean $displayFormActions Whether or not to show the form-actions div
+     */
+    public function __construct($name = null, $horizontal = true, $displayFormActions = true)
     {
         parent::__construct($name);
 
+        $this->_displayFormActions = $displayFormActions;
+
         $this->setAttribute('method', 'post')
-            ->setAttribute('class', 'form-horizontal')
             ->setAttribute('novalidate', true);
+
+        if ($horizontal)
+            $this->setAttribute('class', 'form-horizontal');
     }
 
     /**
@@ -94,5 +105,15 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Whether or not to show the form-actions div
+     *
+     * @return boolean
+     */
+    public function getDisplayFormActions()
+    {
+        return $this->_displayFormActions;
     }
 }

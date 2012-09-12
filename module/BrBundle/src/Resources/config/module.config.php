@@ -119,7 +119,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'corporate_index',
@@ -134,7 +134,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'corporate_auth',

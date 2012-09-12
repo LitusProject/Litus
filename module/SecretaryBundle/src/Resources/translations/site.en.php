@@ -49,6 +49,8 @@ return array(
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
     'T-shirt Size' => 'T-shirt Size',
     'Register' => 'Register',
+    'You haven\'t checked the option to become a member. Being a member has many advantages.' => 'You haven\'t checked the option to become a member. Being a member has many advantages.'
+    'Are you sure you want to continue?' => 'Are you sure you want to continue?'
     'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
     'You are succesfully registered!' => 'You are succesfully registered!',
 
@@ -66,4 +68,5 @@ return array(
 
     'Addresses' => 'Addresses',
     'Organization' => 'Organization',
+    'Book Textbooks' => 'Book Textbooks',
 );

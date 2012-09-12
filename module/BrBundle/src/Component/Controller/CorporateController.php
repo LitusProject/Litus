@@ -41,10 +41,22 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         if (!method_exists($this->getAuthentication()->getPersonObject(), 'getCompany') && $this->getAuthentication()->isAuthenticated())
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
 
-        $result->loginForm = new LoginForm($this->url()->fromRoute('corporate_auth', array('action' => 'login')));
-        $result->unionUrl = $this->getEntityManager()
+        $loginForm = new LoginForm(
+            $this->url()->fromRoute(
+                'corporate_auth',
+                array(
+                    'action' => 'login'
+                )
+            )
+        );
+
+        $unionUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('union_url');
+
+
+        $result->loginForm = $loginForm;
+        $result->unionUrl = $unionUrl;
 
         $e->setResult($result);
         return $result;
