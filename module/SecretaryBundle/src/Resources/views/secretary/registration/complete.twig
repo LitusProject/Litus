@@ -50,11 +50,11 @@
             <h3>{{ translate('Organization') }}</h3>
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Become Member') }}</dt>
-                <dd>{% if academic.isMember(academicYear) %}&times;{% endif %}</dd>
+                <dd>{% if academic.isMember(academicYear) %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% endif %}</dd>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                <dd>{% if metaData.bakskeByMail() %}&times;{% endif %}</dd>
+                <dd>{% if metaData.bakskeByMail() %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('T-shirt Size') }}</dt>
                 <dd>{{ metaData.getTshirtSize() }}</dd>
             </dl>
@@ -70,6 +70,9 @@
                     </ul>
                 {% endfor %}
             {% endfor %}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('booking') }}" class="btn btn-primary">{{ translate('Book Textbooks') }}</a>
+            </div>
         </div>
     </div>
 {% endblock %}

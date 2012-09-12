@@ -66,4 +66,5 @@ return array(
 
     'Addresses' => 'Adressen',
     'Organization' => 'Organisatie',
+    'Book Textbooks' => 'Cursussen Reserveren',
 );

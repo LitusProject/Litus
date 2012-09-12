@@ -66,4 +66,5 @@ return array(
 
     'Addresses' => 'Addresses',
     'Organization' => 'Organization',
+    'Book Textbooks' => 'Book Textbooks',
 );

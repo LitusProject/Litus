@@ -18,7 +18,7 @@ return array(
     'My Bookings' => 'My Bookings',
 
     'Please log in to view your bookings.' => 'Please log in to view your bookings.',
-    'Please log in to book textbooks.' => 'Please log in to book textbooks.', 
+    'Please log in to book textbooks.' => 'Please log in to book textbooks.',
 
     'assigned' => 'Assigned',
     'booked' => 'Unassigned',
@@ -37,5 +37,5 @@ return array(
 
     'Back' => 'Back',
 
-    'General' => 'General',  
+    'General' => 'General',
 );
