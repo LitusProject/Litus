@@ -120,9 +120,10 @@
                                             title: reservation.reason,
                                             start: reservation.start,
                                             end: reservation.end,
+                                            color: reservation.driver.color,
 
                                             // Custom properties
-                                            driver: reservation.driver,
+                                            driver: reservation.driver.name,
                                             passenger: reservation.passenger,
                                             load: reservation.load,
                                             additional: reservation.additional,

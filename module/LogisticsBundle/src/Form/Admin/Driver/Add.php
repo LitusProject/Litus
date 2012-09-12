@@ -69,6 +69,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttribute('id', 'personId');
         $this->add($field);
 
+        $field = new Text('color');
+        $field->setLabel('Color')
+            ->setAttribute('value', '#888888')
+            ->setRequired(false);
+        $this->add($field);
+
         $field = new Select('years');
         $field->setLabel('Years')
             ->setAttribute('multiple', true)
@@ -91,6 +97,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $formData = array(
+            'color' => $driver->getColor(),
             'years' => $yearids,
         );
 
@@ -145,6 +152,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 );
             }
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name' => 'color',
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'regex',
+                                'options' => array(
+                                    'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
 
             $this->_inputFilter = $inputFilter;
         }

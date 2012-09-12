@@ -27,6 +27,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@minicolor_css',
+            '@minicolor_js',
         ),
         'admin_van_reservation' => array(
             '@common_jquery',

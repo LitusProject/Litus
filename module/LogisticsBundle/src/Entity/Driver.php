@@ -37,7 +37,7 @@ class Driver
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(name="logistics.driver_years",
@@ -48,14 +48,22 @@ class Driver
     private $years;
 
     /**
+     * @var string The color for used for this driver.
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $color;
+
+    /**
      * Creates a new driver for the given person
-     * 
+     *
      * @param \CommonBundle\Entity\Users\Person $person The person to mark as a driver.
      * @param array $years The years in which this person was a driver.
      */
-    public function __construct(Person $person)
+    public function __construct(Person $person, $color)
     {
         $this->person = $person;
+        $this->color = $color;
         $this->years = new ArrayCollection();
     }
 
@@ -66,22 +74,43 @@ class Driver
     {
         return $this->person;
     }
-    
+
     /**
      * Retrieves the years in which this person was a driver.
-     * 
+     *
      * @return array The years in which this person was a driver.
      */
     public function getYears() {
         return $this->years->toArray();
     }
-    
+
     /**
      * @param array $years Sets the years in which this person was a driver.
      * @return \LogisticsBundle\Entity\Driver This
      */
     public function setYears(array $years) {
         $this->years = new ArrayCollection($years);
+        return $this;
+    }
+
+    /**
+     * Retrieves the color used to display the reservations assigned to this driver in the calendar.
+     *
+     * @return string The color code for this driver.
+     */
+    public function getColor() {
+        if ($this->color)
+            return $this->color;
+        else
+            return '#888888';
+    }
+
+    /**
+     * @param string $color Sets the color used for this driver.
+     * @return \LogisticsBundle\Entity\Driver This
+     */
+    public function setColor($color) {
+        $this->color = $color;
         return $this;
     }
 
