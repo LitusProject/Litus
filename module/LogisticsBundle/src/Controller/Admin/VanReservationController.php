@@ -109,12 +109,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'admin_van_reservation',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
+                $this->_doRedirect();
 
                 return new ViewModel();
             }
@@ -183,12 +178,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     )
                 );
 
-                $this->redirect()->toRoute(
-                    'admin_van_reservation',
-                    array(
-                        'action' => 'manage'
-                    )
-                );
+                $this->_doRedirect();
 
                 return new ViewModel();
             }
@@ -274,12 +264,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 )
             );
 
-            $this->redirect()->toRoute(
-                'admin_van_reservation',
-                array(
-                    'action' => 'manage'
-                )
-            );
+            $this->_doRedirect();
 
             return;
         }
@@ -297,16 +282,28 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 )
             );
 
-            $this->redirect()->toRoute(
-                'admin_van_reservation',
-                array(
-                    'action' => 'manage'
-                )
-            );
+            $this->_doRedirect();
 
             return;
         }
 
         return $reservation;
+    }
+
+    private function _doRedirect()
+    {
+
+        $controller = $this->getParam('return');
+
+        if (null === $controller) {
+
+            $controller = 'admin_van_reservation';
+        }
+
+        $this->redirect()->toRoute(
+            $controller
+        );
+
+        return;
     }
 }
