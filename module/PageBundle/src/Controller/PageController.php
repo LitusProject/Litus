@@ -30,8 +30,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->_getPage()))
-            return $this->notFoundAction();
+        if (!($page = $this->_getPage())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $submenu = $this->_buildSubmenu($page);
         if (empty($submenu) && null !== $page->getParent())
@@ -51,8 +53,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('page.file_path') . '/' . $this->getParam('name');
 
-        if ($this->getParam('name') == '' || !file_exists($filePath))
-            return $this->notFoundAction();
+        if ($this->getParam('name') == '' || !file_exists($filePath)) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $headers = new Headers();
         $headers->addHeaders(array(
