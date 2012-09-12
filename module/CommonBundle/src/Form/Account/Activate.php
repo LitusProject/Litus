@@ -13,7 +13,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Form\Auth;
+namespace CommonBundle\Form\Account;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Password,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -40,7 +40,7 @@ class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new Password('verify_credential');
-        $field->setLabel('Repeat Password')
+        $field->setLabel('Verify Password')
             ->setRequired();
         $this->add($field);
 
