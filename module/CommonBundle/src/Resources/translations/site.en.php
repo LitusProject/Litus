@@ -18,6 +18,9 @@ return array(
     'VTK Leuven vzw' => 'VTK Leuven vzw',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
+    'Dutch' => 'Nederlands',
+    'English' => 'English',
+
     'Login' => 'Login',
     'Account' => 'Account',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',

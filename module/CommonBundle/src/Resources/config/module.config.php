@@ -23,7 +23,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/',
                     'constraints' => array(
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'index',
@@ -36,7 +36,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/account[/:action[/code/:code]]',
                     'constraints' => array(
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[a-zA-Z0-9_-]*',
                         'code'     => '[a-zA-Z0-9_-]*',
@@ -54,7 +54,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'auth',
