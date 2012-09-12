@@ -43,15 +43,13 @@
         {% for shift in shifts %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <span class="pull-left">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_shift-{{ shift.getId() }}">
-                            {{ shift.getName() }}
-                        </a>
-                    </span>
-
-                    <span class="pull-right">
-                        <button class="btn btn-mini btn-info" type="button">Enroll</button>
-                    </span>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_shift-{{ shift.getId() }}">
+                        {{ shift.getName() }}
+                    
+                        <span class="pull-right">
+                            <button class="btn btn-mini btn-info" type="button">Enroll</button>
+                        </span>
+                    </a>
                 </div>
                 <div id="#collapse_shift-{{ shift.getId() }}" class="accordion-body collapse">
                     <div class="accordion-inner">
