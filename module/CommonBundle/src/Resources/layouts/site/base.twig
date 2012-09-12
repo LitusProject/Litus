@@ -74,48 +74,8 @@
                             </ul>
                         </li>
                     {% else %}
-                        <li class="dropdown" id="loginDropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{ translate('Login') }} <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li style="text-align: center;">
-                                    <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    {% do loginForm.prepare() %}
-                                    {% autoescape false %}
-                                        {% set buttons = [] %}
-                                        {{ form().openTag(loginForm) }}
-                                            {% for element in loginForm.getElements() %}
-                                                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                                    {{ formElement(element) }}
-                                                {% elseif element.getAttribute('type') == 'checkbox' %}
-                                                    <div class="remember_me">
-                                                        <label>
-                                                            {{ formElement(element) }}
-                                                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                                        </label>
-                                                    </div>
-                                                {% else %}
-                                                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
-                                                        <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                        <div class="controls">
-                                                            <div>{{ formElement(element) }}</div>
-                                                            {% if element.getMessages()|length > 0 %}
-                                                                <div class="help-inline">
-                                                                    {{ formElementErrors(element) }}
-                                                                </div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {{ form().closeTag() }}
-                                    {% endautoescape %}
-                                </li>
-                            </ul>
+                        <li>
+                            <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
                         </li>
                     {% endif %}
         		</ul>

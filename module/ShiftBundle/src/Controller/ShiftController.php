@@ -50,13 +50,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $searchResults = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
                         ->findAllActiveByEvent($event);
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The given search query was invalid!'
+                        )
+                    );
                 }
             }
 
             if (isset($formData['unit'])) {
                 $unitSearchForm->setData($formData);
 
-                if ($unitSearchForm->isValid() && '' != $formData['event']) {
+                if ($unitSearchForm->isValid() && '' != $formData['unit']) {
                     $unit = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Unit')
                         ->findOneById($formData['unit']);
@@ -64,6 +72,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $searchResults = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
                         ->findAllActiveByUnit($unit);
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The given search query was invalid!'
+                        )
+                    );
                 }
             }
         }

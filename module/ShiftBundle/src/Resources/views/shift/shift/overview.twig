@@ -28,12 +28,7 @@
 
             <h2>Results</h2>
             {% if searchResults is not null %}
-                {% for shift in searchResult %}
-                {% else %}
-                    <div class="alert alert-warning">
-                        There were no shifts found that match the given query.
-                    </div>
-                {% endfor %}
+                {{ _self.displayShifts(searchResults, 'search') }}
             {% else %}
                 <div class="alert alert-warning">
                     There are no shifts to be shown yet; please use the search functions on the left.
@@ -42,3 +37,32 @@
         </span>
     </div>
 {% endblock %}
+
+{% macro displayShifts(shifts, accordionName) %}
+    <div class="accordion" id="shifts-{{ accordionName }}">
+        {% for shift in shifts %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <span class="pull-left">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_shift-{{ shift.getId() }}">
+                            {{ shift.getName() }}
+                        </a>
+                    </span>
+
+                    <span class="pull-right">
+                        <button class="btn btn-mini btn-info" type="button">Enroll</button>
+                    </span>
+                </div>
+                <div id="#collapse_shift-{{ shift.getId() }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                There were no shifts found that match the given query.
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
