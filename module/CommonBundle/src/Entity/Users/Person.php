@@ -577,8 +577,30 @@ abstract class Person
     }
 
     /**
+     * @param \CommonBundle\Entity\Users\Statuses\Organization $organizationStatus
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function addOrganizationStatus(OrganizationStatus $organizationStatus)
+    {
+        $this->organizationStatuses->add($organizationStatus);
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @throws \RuntimeException
+     * @return \CommonBundle\Entity\Users\Statuses\Organization
+     */
+    public function getOrganizationStatus(AcademicYearEntity $academicYear)
+    {
+        foreach($this->organizationStatuses as $status) {
+            if ($status->getAcademicYear() == $academicYear)
+                return $status;
+        }
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
      */
     public function canHaveOrganizationStatus(AcademicYearEntity $academicYear)
     {
@@ -594,16 +616,6 @@ abstract class Person
         }
 
         return true;
-    }
-
-    /**
-     * @param \CommonBundle\Entity\Users\Statuses\Organization $organizationStatus
-     * @return \CommonBundle\Entity\Users\People\Academic
-     */
-    public function addOrganizationStatus(OrganizationStatus $organizationStatus)
-    {
-        $this->organizationStatuses->add($organizationStatus);
-        return $this;
     }
 
     /**

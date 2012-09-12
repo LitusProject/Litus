@@ -19,7 +19,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\Users\Statuses\University,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
+    CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -44,6 +45,16 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         $field->setLabel('Activation Code');
         $this->add($field);
 
+        $collection = new Collection('organization');
+        $collection->setLabel('Organization');
+        $this->add($collection);
+
+        $field = new Select('organization_status');
+        $field->setLabel('Status')
+            ->setRequired()
+            ->setAttribute('options', OrganizationStatus::$possibleStatuses);
+        $collection->add($field);
+
         $collection = new Collection('university');
         $collection->setLabel('University');
         $this->add($collection);
@@ -56,7 +67,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         $field = new Select('university_status');
         $field->setLabel('Status')
             ->setRequired()
-            ->setAttribute('options', University::$possibleStatuses);
+            ->setAttribute('options', UniversityStatus::$possibleStatuses);
         $collection->add($field);
 
         $field = new Submit('submit');
