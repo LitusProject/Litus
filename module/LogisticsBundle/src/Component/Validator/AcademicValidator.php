@@ -32,12 +32,12 @@ class AcademicValidator extends \Zend\Validator\AbstractValidator
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
-    
+
     /**
      * @var Boolean Indicates whether the user should be searched by id or by name.
      */
     protected $_byId = false;
-    
+
     /**
      * @var Boolean Indicates whether an empty id or name should be accepted.
      */
@@ -53,7 +53,7 @@ class AcademicValidator extends \Zend\Validator\AbstractValidator
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The validator's options. The following additional options are available:
-     *                     'byId' can be set to indicate whether a user id or user name is validated. 
+     *                     'byId' can be set to indicate whether a user id or user name is validated.
      *                     By default this is false, indicating search by user name.
      *                     'isRequired' is false by default. True indicates that empty values are not accepted.
      */
@@ -81,26 +81,26 @@ class AcademicValidator extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $person = $this->getPerson($value);
-        
+
         if (null === $person) {
             $this->error(self::NO_SUCH_USER);
             return false;
         }
-        
+
         return true;
     }
-    
+
     protected function getPerson($value)
     {
         $repository = $this->_entityManager
         ->getRepository('CommonBundle\Entity\Users\People\Academic');
-        
+
         if ($this->_byId) {
             $person = $repository->findOneById($value);
         } else {
             $person = $repository->findOneByUsername($value);
         }
-        
+
         return $person;
     }
 }

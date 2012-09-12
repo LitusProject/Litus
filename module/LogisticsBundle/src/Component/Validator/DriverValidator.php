@@ -59,18 +59,18 @@ class DriverValidator extends AcademicValidator
         if (!parent::isValid($value, $context)) {
             return false;
         }
-        
+
         $person = $this->getPerson($value);
-        
+
         $driver = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($person->getId());
-        
+
         if (null !== $driver) {
             $this->error(self::DRIVER_EXISTS);
             return false;
         }
-        
+
         return true;
     }
 }

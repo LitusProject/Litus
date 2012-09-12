@@ -163,6 +163,16 @@ return array(
                             'logistics/fullcalendar/fullcalendar.min.js',
                         ),
                     ),
+                    'minicolor_css' => array(
+                        'assets' => array(
+                            'logistics/minicolor/jquery.miniColors.css',
+                        ),
+                    ),
+                    'minicolor_js' => array(
+                        'assets' => array(
+                            'logistics/minicolor/jquery.miniColors.min.js',
+                        ),
+                    ),
                     'moment_js' => array(
                         'assets' => array(
                             'logistics/js/moment.min.js',

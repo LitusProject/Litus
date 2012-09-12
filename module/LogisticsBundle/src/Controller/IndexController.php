@@ -51,8 +51,10 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             if ($driver === null) {
                 $driverName = "None";
+                $driverColor = "#444444";
             } else {
                 $driverName = $driver->getPerson()->getFullname();
+                $driverColor = $driver->getColor();
             }
 
             $passenger = $reservation->getPassenger();
@@ -68,7 +70,10 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'start' => $reservation->getStartDate()->getTimeStamp(),
                 'end' => $reservation->getEndDate()->getTimeStamp(),
 
-                'driver' => $driverName,
+                'driver' => array(
+                    'color' => $driverColor,
+                    'name' => $driverName,
+                ),
                 'passenger' => $passengerName,
                 'load' => $reservation->getLoad(),
                 'additional' => $reservation->getAdditionalInfo(),

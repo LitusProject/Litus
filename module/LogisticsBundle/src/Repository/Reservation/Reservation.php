@@ -12,17 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class Reservation extends EntityRepository
 {
-    
+
     public function findAll() {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
         ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
         ->getQuery()
         ->getResult();
-    
+
         return $resultSet;
     }
-    
+
     public function findAllConflicting($startDate, $endDate, $resource) {
 
         $query = $this->_em->createQueryBuilder();
@@ -40,14 +40,14 @@ class Reservation extends EntityRepository
             ->setParameter('end_date', $endDate)
             ->getQuery()
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     /**
      * Finds all resources conflicting with the given start and end date for the given resource. Additionally, one id can be ignored to avoid conflicts with
      * the resource itself.
-     * 
+     *
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
@@ -55,7 +55,7 @@ class Reservation extends EntityRepository
      * @return array
      */
     public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
-    
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
         ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
@@ -73,8 +73,8 @@ class Reservation extends EntityRepository
         ->setParameter('id', $ignoreId)
         ->getQuery()
         ->getResult();
-    
+
         return $resultSet;
     }
-    
+
 }

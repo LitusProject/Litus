@@ -69,7 +69,9 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                     $years[] = $repository->findOneById($yearId);
                 }
 
-                $driver = new Driver($person);
+                $color = $formData['color'];
+
+                $driver = new Driver($person, $color);
                 $driver->setYears($years);
                 $this->getEntityManager()->persist($driver);
                 $this->getEntityManager()->flush();
@@ -122,6 +124,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                     $years[] = $repository->findOneById($yearId);
                 }
 
+                $driver->setColor($formData['color']);
                 $driver->setYears($years);
 
                 $this->getEntityManager()->flush();
