@@ -47,13 +47,35 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ('1' !== $enabled)
             return $this->notFoundAction();
 
-        if (null !== $this->_getAcademic()) {
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\People\Academic')
+            ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        if (null !== $academic) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\Users\People\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            $this->getEntityManager()->remove($code);
+            $this->getEntityManager()->flush();
+
+            $authentication->authenticate(
+                $this->getParam('identification'), '', true
+            );
+
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
                     'action' => 'edit',
-                    'identification' => $this->getParam('identification'),
-                    'hash' => $this->getParam('hash'),
                 )
             );
 
@@ -61,7 +83,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         if ($this->getRequest()->isPost()) {
-            if ($this->_getAcademic(false)) {
+            if ($this->_isValidCode()) {
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 $formData = $this->getRequest()->getPost();
@@ -180,6 +202,26 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                     $this->getEntityManager()->flush();
 
+                    $authentication = new Authentication(
+                        new ShibbolethAdapter(
+                            $this->getEntityManager(),
+                            'CommonBundle\Entity\Users\People\Academic',
+                            'universityIdentification'
+                        ),
+                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                    );
+
+                    $code = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
+                        ->findLastByUniversityIdentification($this->getParam('identification'));
+
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -192,8 +234,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         'secretary_registration',
                         array(
                             'action' => 'studies',
-                            'identification' => $this->getParam('identification'),
-                            'hash' => $this->getParam('hash'),
                         )
                     );
 
@@ -207,7 +247,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if ($this->_getAcademic(false)) {
+            if ($this->_isValidCode()) {
                 $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'));
 
                 return new ViewModel(
@@ -254,7 +294,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $formData['university_identification'] = $this->getParam('identification');
-            $formData['become_member'] = $academic->isMember($this->getCurrentAcademicYear());
+            $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : $academic->isMember($this->getCurrentAcademicYear());
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -397,8 +437,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     'secretary_registration',
                     array(
                         'action' => 'studies',
-                        'identification' => $this->getParam('identification'),
-                        'hash' => $this->getParam('hash'),
                     )
                 );
 
@@ -630,25 +668,21 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function _getAcademic($academicMustExist = true)
+    private function _getAcademic()
+    {
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    private function _isValidCode()
     {
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
-
-        if (null !== $code && $academic !== null) {
-            if ($code->validate($this->getParam('hash'))) {
-                return $academic;
-            }
-        } elseif (null !== $code && !$academicMustExist) {
+        if (null !== $code)
             return true;
-        }
 
-        return null;
+        return false;
     }
 
     /**

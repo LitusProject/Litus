@@ -44,7 +44,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'secretarybundle' => array(
                     'secretary_registration' => array(
-                        'add', 'complete', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                 ),
             )

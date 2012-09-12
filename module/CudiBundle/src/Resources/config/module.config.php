@@ -614,12 +614,12 @@ return array(
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/booking.site.en.php',
+                'filename' => __DIR__ . '/../translations/site.en.php',
                 'locale'   => 'en'
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/booking.site.nl.php',
+                'filename' => __DIR__ . '/../translations/site.nl.php',
                 'locale'   => 'nl'
             ),
             array(
