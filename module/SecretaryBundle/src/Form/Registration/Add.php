@@ -140,28 +140,28 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(true);
         $internet->add($field);
 
-        $organisation = new Collection('organisation');
-        $organisation->setLabel('Organisation')
-            ->setAttribute('id', 'organisation_info');
-        $this->add($organisation);
+        $organization = new Collection('organization');
+        $organization->setLabel('Organization')
+            ->setAttribute('id', 'organization_info');
+        $this->add($organization);
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organisation');
-        $organisation->add($field);
+        $field->setLabel('I want to become a member of the organization');
+        $organization->add($field);
 
         $field = new Checkbox('conditions');
         $field->setLabel('I have read and agree with the terms and conditions');
-        $organisation->add($field);
+        $organization->add($field);
 
         $field = new Checkbox('irreeel');
         $field->setLabel('I want to receive my Ir.Reëel at CuDi')
             ->setValue(true);
-        $organisation->add($field);
+        $organization->add($field);
 
         $field = new Checkbox('bakske');
         $field->setLabel('I want to receive \'t Bakske by e-mail')
             ->setValue(false);
-        $organisation->add($field);
+        $organization->add($field);
 
         $field = new Select('tshirt_size');
         $field->setLabel('T-shirt Size')
@@ -170,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'options',
                 MetaData::$POSSIBLE_TSHIRT_SIZES
             );
-        $organisation->add($field);
+        $organization->add($field);
 
         $field = new Submit('register');
         $field->setValue('Register')
@@ -217,7 +217,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($academic->isMember($academicYear)) {
-            $this->get('organisation')->get('become_member')->setAttribute('disabled', true);
+            $this->get('organization')->get('become_member')->setAttribute('disabled', true);
             if ($metaData) {
                 $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
                 $data['bakske'] = $metaData->bakskeByMail();
