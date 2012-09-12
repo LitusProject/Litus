@@ -147,7 +147,6 @@ class Academic extends \CommonBundle\Entity\Users\Person
     /**
      * @param string $universityIdentification
      * @return \CommonBundle\Entity\Users\People\Academic
-     * @throws \InvalidArgumentException
      */
     public function setUniversityIdentification($universityIdentification)
     {
@@ -193,7 +192,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @throws \RuntimeException
+     * @return \CommonBundle\Entity\Users\Statuses\University
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
@@ -205,7 +204,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @throws \RuntimeException
+     * @return boolean
      */
     public function canHaveUniversityStatus(AcademicYearEntity $academicYear)
     {
