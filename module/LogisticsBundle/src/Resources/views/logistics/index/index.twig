@@ -38,7 +38,7 @@
             <td><b>Driver:</b></td><td> <span class="driver"></span></td>
         </tr>
         </table>
-        {% if has_access('logistics_van_reservation', 'edit') %}
+        {% if has_access('admin_van_reservation', 'edit') %}
             <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
@@ -53,7 +53,7 @@
                 <td><b>End:</b></td> <td><span class="end"></span></td>
             </tr>
             </table>
-            {% if has_access('logistics_van_reservation', 'edit') %}
+            {% if has_access('admin_van_reservation', 'edit') %}
                 <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
             {% endif %}
         </div>
@@ -154,7 +154,7 @@
                 eventAfterRender : function(event, element, view) {
                     $('#popover_header .reason').text(event.title);
 
-                    {% if has_access('logistics_van_reservation', 'edit') %}
+                    {% if has_access('admin_van_reservation', 'edit') %}
                         $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid);
                         $("#popover_content a").html('Edit');
                         $("#popover_content a").removeClass("hide");
@@ -177,12 +177,11 @@
                     showPopover($(this));
                 },
 
-
                 viewDisplay : function(view) {
                     hideAll();
                 },
 
-                {% if has_access('logistics_van_reservation', 'add') %}
+                {% if has_access('admin_van_reservation', 'add') %}
                 selectable: true,
                 select : function( startDate, endDate, allDay, jsEvent, view ) {
 
@@ -197,7 +196,7 @@
                     $('#add_popover_content_internal .end').text(formatDate(endDate));
 
 
-                    {% if has_access('logistics_van_reservation', 'add') %}
+                    {% if has_access('admin_van_reservation', 'add') %}
                         $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}/start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000);
                         $("#add_popover_content_internal a").html('Add');
                         $("#add_popover_content_internal a").removeClass("hide");
