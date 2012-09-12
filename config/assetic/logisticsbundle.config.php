@@ -29,6 +29,7 @@ return array(
             '@bootstrap_js_modal',
             '@minicolor_css',
             '@minicolor_js',
+            'logistics_admin_css',
         ),
         'admin_van_reservation' => array(
             '@common_jquery',
