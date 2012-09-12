@@ -65,7 +65,7 @@ return array(
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]*',
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'shift',

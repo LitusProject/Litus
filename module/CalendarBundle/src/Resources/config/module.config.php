@@ -48,7 +48,7 @@ return array(
                 'options' => array(
                     'route' => '[/:language]/calendar[/:action[/:id]]',
                     'constraints' => array(
-                        'language' => '[a-zA-Z][a-zA-Z_-]*',
+                        'language' => '[a-z]{2}',
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]*',
                     ),
