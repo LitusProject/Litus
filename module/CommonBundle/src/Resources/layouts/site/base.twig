@@ -95,7 +95,13 @@
 
                             {% for key, banner in banners %}
                                 <div class="item item-{{ key }}">
-                                    <img src="{{ bannerPath ~ banner.getImage() }}" alt="">
+                                    {% if banner.getUrl() != '' %}
+                                    <a href="{{ banner.getUrl() }}">
+                                    {% endif %}
+                                        <img src="{{ bannerPath ~ banner.getImage() }}" alt="">
+                                    {% if banner.getUrl() != '' %}
+                                    </a>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
 
