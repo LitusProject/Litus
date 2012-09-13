@@ -4,6 +4,7 @@ namespace SecretaryBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\People\Academic,
+    Doctrine\ORM\Query\Expr\Join,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -35,5 +36,62 @@ class Registration extends EntityRepository
             return $resultSet[0];
 
         return null;
+    }
+
+    public function findAllByUniversityIdentification($universityIdentification, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->innerJoin('r.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('a.universityIdentification'), ':universityIdentification'),
+                    $query->expr()->eq('r.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('universityIdentification', '%'.strtolower($universityIdentification).'%')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('r.timestamp', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByName($name, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->innerJoin('r.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
+                                $query->expr()->lower('a.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
+                                $query->expr()->lower('a.firstName')
+                            ),
+                            ':name'
+                        )
+                    ),
+                    $query->expr()->eq('r.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('r.timestamp', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }
