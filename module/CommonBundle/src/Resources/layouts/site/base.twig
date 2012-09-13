@@ -92,15 +92,13 @@
 
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
-                            <div class="active item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-02.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-03.jpg" alt="">
-                            </div>
+
+                            {% for banner in banners %}
+                                <div class="active item">
+                                    <img src="{{ bannerPath ~ banner.getImage() }}" alt="">
+                                </div>
+                            {% endfor %}
+
                         </div>
                         <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
                         <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>

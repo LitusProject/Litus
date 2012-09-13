@@ -15,6 +15,7 @@
 namespace BannerBundle\Form\Admin\Banner;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
@@ -48,6 +49,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
+        $this->setAttribute('enctype', 'multipart/form-data');
+
         $field = new Text('name');
         $field->setLabel('Name')
             ->setRequired(true);
@@ -67,9 +70,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Active');
         $this->add($field);
 
-        $field = new Text('image');
+        $field = new File('file');
         $field->setLabel('Image')
-            ->setRequired(true);
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('url');
