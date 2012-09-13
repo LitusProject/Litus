@@ -52,7 +52,7 @@ class Edit extends Add
             'content'    => $notification->getContent(),
             'start_date' => $notification->getStartDate()->format('d/m/Y H:i'),
             'end_date'   => $notification->getEndDate()->format('d/m/Y H:i'),
-            'active'     => $notification->getActive(),
+            'active'     => $notification->isActive(),
         );
 
         $this->setData($data);
