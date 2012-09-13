@@ -36,6 +36,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+
+    const BANNER_WIDTH = 940;
+    const BANNER_HEIGHT = 100;
+
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -67,10 +71,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $upload->addValidator(new SizeValidator(array('max' => '10MB')));
                 $upload->addValidator(new ImageValidator());
                 $validator = new ImageSizeValidator();
-                $validator->setMinWidth(3264)
-                    ->setMinHeight(2448)
-                    ->setMaxWidth(3264)
-                    ->setMaxHeight(2448);
+                $validator->setMinWidth($this::BANNER_WIDTH)
+                    ->setMinHeight($this::BANNER_HEIGHT)
+                    ->setMaxWidth($this::BANNER_WIDTH)
+                    ->setMaxHeight($this::BANNER_HEIGHT);
                 $upload->addValidator($validator);
 
                 if ($upload->isValid()) {
@@ -154,10 +158,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $upload->addValidator(new SizeValidator(array('max' => '10MB')));
                 $upload->addValidator(new ImageValidator());
                 $validator = new ImageSizeValidator();
-                $validator->setMinWidth(3264)
-                    ->setMinHeight(2448)
-                    ->setMaxWidth(3264)
-                    ->setMaxHeight(2448);
+                $validator->setMinWidth($this::BANNER_WIDTH)
+                    ->setMinHeight($this::BANNER_HEIGHT)
+                    ->setMaxWidth($this::BANNER_WIDTH)
+                    ->setMaxHeight($this::BANNER_HEIGHT);
                 $upload->addValidator($validator);
 
                 if (!$upload->isUploaded(array('file')) || $upload->isValid()) {
