@@ -153,16 +153,6 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     );
                 }
 
-                if (!$academic->isMember($this->getCurrentAcademicYear()) && $formData['become_member']) {
-                    $academic->addOrganizationStatus(
-                        new OrganizationStatus(
-                            $academic,
-                            'member',
-                            $this->getCurrentAcademicYear()
-                        )
-                    );
-                }
-
                 if ($academic->canHaveUniversityStatus($this->getCurrentAcademicYear())) {
                     $status = new UniversityStatus(
                         $academic,

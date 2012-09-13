@@ -94,4 +94,41 @@ class Registration extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByBarcode($barcode, AcademicYear $academicYear)
+    {
+        if (!is_numeric($barcode))
+            return array();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CommonBundle\Entity\Users\Barcode', 'b')
+            ->where(
+                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+            )
+            ->setParameter('barcode', '%'.$barcode.'%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array();
+        foreach($resultSet as $result) {
+            $ids[] = $result->getPerson()->getId();
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('r.academic', $ids),
+                    $query->expr()->eq('r.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('r.timestamp', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

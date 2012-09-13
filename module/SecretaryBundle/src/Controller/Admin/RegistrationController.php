@@ -16,8 +16,10 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\Users\Barcode,
     DateInterval,
     DateTime,
+    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -57,6 +59,54 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function barcodeAction()
+    {
+        if (!($registration = $this->_getRegistration()))
+            return new ViewModel();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $form = new BarcodeForm($registration->getAcademic(), $this->getEntityManager());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The barcode was successfully set!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_secretary_registration',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'registration' => $registration,
+                'activeAcademicYear' => $registration->getAcademicYear(),
+                'academicYears' => $academicYears,
+                'form' => $form,
+            )
+        );
+    }
+
     public function searchAction()
     {
         $academicYear = $this->_getAcademicYear();
@@ -80,6 +130,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $academicYear
                     );
                 break;
+            case 'barcode':
+                $registrations = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Registration')
+                    ->findAllByBarcode(
+                        $this->getParam('string'),
+                        $academicYear
+                    );
+                break;
         }
 
         $numResults = $this->getEntityManager()
@@ -96,6 +154,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $item->name = $registration->getAcademic()->getFullName();
             $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
             $item->payed = $registration->hasPayed();
+            $item->barcode = $registration->getAcademic()->getBarcode()->getBarcode();
             $result[] = $item;
         }
 
@@ -169,5 +228,52 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $academicYear;
+    }
+
+    private function _getRegistration()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the registration!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_secretary_registration',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $registration = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $registration) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No registration with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_secretary_registration',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $registration;
     }
 }
