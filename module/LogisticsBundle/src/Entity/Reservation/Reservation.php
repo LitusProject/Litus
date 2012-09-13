@@ -114,20 +114,36 @@ class Reservation
         return $this->reason;
     }
 
+    /**
+     * @param DateTime $startDate
+     *
+     * @return \NotificationBundle\Entity\Nodes\Notification
+     */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getStartDate() {
         return $this->startDate;
     }
 
+    /**
+     * @param DateTime $endDate
+     *
+     * @return \NotificationBundle\Entity\Nodes\Notification
+     */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getEndDate() {
         return $this->endDate;
     }

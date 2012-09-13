@@ -203,14 +203,14 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_calendar', 'manage') or hasAccess('admin_news', 'manage') or hasAccess('admin_page', 'manage') %}
+		                {% if hasAccess('admin_calendar', 'manage') or hasAccess('admin_news', 'manage') or hasAccess('admin_notification', 'manage') or hasAccess('admin_page', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Site</b><br />
 		                			News, Pages &amp; Calendar
 		                		</div>
 		                		<ul
-		                			{% if 'admin_news' == getParam('controller') or 'admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') %}
+		                			{% if 'admin_news' == getParam('controller') or 'admin_notification' == getParam('controller') or 'admin_calendar' == getParam('controller') or 'admin_page' == getParam('controller') or 'admin_page_category' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
@@ -219,6 +219,9 @@
 		                		    {% endif %}
 		                		    {% if hasAccess('admin_news', 'manage') %}
 		                		        <li><a href="{{ url('admin_news') }}">News</a></li>
+		                		    {% endif %}
+		                		    {% if hasAccess('admin_notification', 'manage') %}
+		                		        <li><a href="{{ url('admin_notification') }}">Notifications</a></li>
 		                		    {% endif %}
 		                		    {% if hasAccess('admin_page', 'manage') %}
 		                		        <li><a href="{{ url('admin_page') }}">Pages</a></li>
