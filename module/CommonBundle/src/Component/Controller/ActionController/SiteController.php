@@ -59,9 +59,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('BannerBundle\Entity\Nodes\Banner')
             ->findAllActive();
 
-        $result->bannerPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('banner.image_path');
+        $result->bannerPath = 'banner/view/image';
 
         $e->setResult($result);
 

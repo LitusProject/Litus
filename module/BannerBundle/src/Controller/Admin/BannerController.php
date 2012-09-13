@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -105,6 +106,31 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function imageAction()
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('banner.image_path') . "/" . $this->getParam('file');
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="' . $this->getParam('file') . '"',
+            'Content-type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath, 'r');
+        $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }

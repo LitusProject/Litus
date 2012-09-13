@@ -6,6 +6,7 @@ return array(
     'BannerBundle\Form\Admin\Banner\Edit'             => __DIR__ . '/src/Form/Admin/Banner/Edit.php',
     'BannerBundle\Repository\Nodes\Banner'            => __DIR__ . '/src/Repository/Nodes/Notification.php',
     'BannerBundle\Entity\Nodes\Banner'                => __DIR__ . '/src/Entity/Nodes/Banner.php',
+    'BannerBundle\Controller\BannerController'        => __DIR__ . '/src/Controller/BannerController.php',
     'BannerBundle\Controller\Admin\BannerController'  => __DIR__ . '/src/Controller/Admin/BannerController.php',
     'BannerBundle\Controller\Admin\InstallController' => __DIR__ . '/src/Controller/Admin/InstallController.php',
 );

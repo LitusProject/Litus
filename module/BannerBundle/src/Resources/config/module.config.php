@@ -42,6 +42,20 @@ return array(
                     ),
                 ),
             ),
+            'banner' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/banner[/:action[/image/:image]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'image'    => '[a-zA-Z0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'banner',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -67,6 +81,7 @@ return array(
         'invokables' => array(
             'banner_install' => 'BannerBundle\Controller\Admin\InstallController',
             'admin_banner'   => 'BannerBundle\Controller\Admin\BannerController',
+            'banner'         => 'BannerBundle\Controller\BannerController'
         ),
     ),
 );
