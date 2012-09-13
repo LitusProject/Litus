@@ -54,6 +54,15 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $result->loginForm = $loginForm;
         $result->shibbolethUrl = $this->_getShibbolethUrl();
 
+
+        $result->banners = $this->getEntityManager()
+            ->getRepository('BannerBundle\Entity\Nodes\Banner')
+            ->findAllActive();
+
+        $result->bannerPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('banner.image_path');
+
         $e->setResult($result);
 
         return $result;

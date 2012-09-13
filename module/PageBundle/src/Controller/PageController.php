@@ -38,20 +38,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if (empty($submenu) && null !== $page->getParent())
             $submenu = $this->_buildSubmenu($page->getParent());
 
-        $banners = $this->getEntityManager()
-            ->getRepository('BannerBundle\Entity\Nodes\Banner')
-            ->findAllActive();
-
-        $bannerPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('banner.image_path');
-
         return new ViewModel(
             array(
                 'page' => $page,
                 'submenu' => $submenu,
-                'banners' => $banners,
-                'bannerPath' => $bannerPath,
             )
         );
     }
