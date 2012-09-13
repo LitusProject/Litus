@@ -2,7 +2,8 @@
 
 namespace NotificationBundle\Repository\Nodes;
 
-use Doctrine\ORM\EntityRepository;
+use DateTime,
+    Doctrine\ORM\EntityRepository;
 
 /**
  * Notification
@@ -17,6 +18,28 @@ class Notification extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NotificationBundle\Entity\Nodes\Notification', 'n')
+            ->orderBy('n.creationTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActive()
+    {
+        $now = new DateTime();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('NotificationBundle\Entity\Nodes\Notification', 'n')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->lte('n.startDate', ':now'),
+                    $query->expr()->gte('n.endDate', ':now'),
+                    $query->expr()->eq('n.active', 'true')
+                )
+            )
+            ->setParameter('now', $now)
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery()
             ->getResult();

@@ -34,9 +34,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_notification' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'notification' => array(
-                        'fetch'
-                    ),
                 ),
             )
         );

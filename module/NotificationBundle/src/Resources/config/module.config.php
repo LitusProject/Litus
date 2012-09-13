@@ -42,36 +42,6 @@ return array(
                     ),
                 ),
             ),
-            'notification' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '[/:language]/notification[/:action[/:name][/page/:page]]',
-                    'constraints' => array(
-                        'action'   => '[a-zA-Z0-9_-]*',
-                        'name'     => '[a-zA-Z0-9_-]*',
-                        'page'     => '[0-9]*',
-                        'language' => '[a-z]{2}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'notification',
-                        'action'     => 'overview',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'translator' => array(
-        'translation_files' => array(
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.nl.php',
-                'locale'   => 'nl'
-            ),
         ),
     ),
     'view_manager' => array(
@@ -97,8 +67,6 @@ return array(
         'invokables' => array(
             'notification_install' => 'NotificationBundle\Controller\Admin\InstallController',
             'admin_notification'   => 'NotificationBundle\Controller\Admin\NotificationController',
-
-            'notification'  => 'NotificationBundle\Controller\NotificationController',
         ),
     ),
 );
