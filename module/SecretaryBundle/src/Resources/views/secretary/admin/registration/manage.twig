@@ -1,0 +1,86 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'secretary/admin/registration/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        <div id="registration_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="university_identification">University Identification</option>
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th width="200px">University Identification</th>
+                    <th>Name</th>
+                    <th width="120px">Date</th>
+                    <th width="120px">Payed</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th width="200px">University Identification</th>
+                        <th>Name</th>
+                        <th width="120px">Date</th>
+                        <th width="120px">Payed</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for registration in paginator %}
+                        <tr class="item">
+                            <td>{{ registration.getAcademic().getUniversityIdentification() }}</td>
+                            <td>{{ registration.getAcademic().getFullName() }}</td>
+                            <td>{{ registration.getTimestamp().format('d/m/Y H:i') }}</td>
+                            <td>{% if registration.hasPayed() %}&times;{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('admin_secretary_registration', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#registration_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                url: '{{ url('admin_secretary_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#registration_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#registration_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.universityIdentification + '</td>')
+                            .append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.date + '</td>')
+                            .append('<td>' + (this.payed ? '&times;' : '') + '</td>');
+                    });
+                    $('#registration_search table').change();
+                },
+                clear: function () {
+                    $('#registration_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

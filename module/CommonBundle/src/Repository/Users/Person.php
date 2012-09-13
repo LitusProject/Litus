@@ -42,7 +42,8 @@ class Person extends EntityRepository
                         ),
                         ':name'
                     )
-                ))
+                )
+            )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery()
             ->getResult();
