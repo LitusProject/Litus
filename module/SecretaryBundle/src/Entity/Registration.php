@@ -102,6 +102,14 @@ class Registration
     }
 
     /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getTimestamp()

@@ -187,6 +187,10 @@
 	    articles.html('');
 
 	    $(settings.data.sale.articles).each(function () {
+	    	if (this.id == 'membership') {
+	    		$this.find('.discounts #discount_member').prop('disabled', false);
+	        	$this.find('.discounts #discount_member').attr('checked', true);
+	    	}
 	    	articles.append(_createRow(this, settings.statusTranslate));
 	    });
 

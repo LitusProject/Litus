@@ -27,6 +27,21 @@ return array(
                     ),
                 ),
             ),
+            'admin_secretary_registration' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/secretary/registration[/:action[/:id]][/:academicyear][/:field/:string]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_secretary_registration',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'secretary_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -80,8 +95,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'secretary_install'      => 'SecretaryBundle\Controller\Admin\InstallController',
-            'secretary_registration' => 'SecretaryBundle\Controller\RegistrationController',
+            'secretary_install'            => 'SecretaryBundle\Controller\Admin\InstallController',
+            'admin_secretary_registration' => 'SecretaryBundle\Controller\Admin\RegistrationController',
+            'secretary_registration'       => 'SecretaryBundle\Controller\RegistrationController',
         ),
     ),
     'assetic_configuration' => array(
