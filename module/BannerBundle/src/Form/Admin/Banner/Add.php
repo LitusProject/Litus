@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new File('file');
         $field->setLabel('Image')
-            ->setRequired();
+            ->setRequired(true);
         $this->add($field);
 
         $field = new Text('url');
@@ -137,6 +137,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     array(
                         'name'     => 'name',
                         'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'url',
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
