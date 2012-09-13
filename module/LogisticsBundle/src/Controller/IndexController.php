@@ -26,7 +26,6 @@ use LogisticsBundle\Entity\Driver,
  */
 class IndexController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
-
     public function indexAction()
     {
         return new ViewModel();
@@ -44,45 +43,45 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $result = array();
         foreach ($reservations as $reservation) {
-
             $driver = $reservation->getDriver();
 
-            if ($driver === null) {
-                $driverName = "None";
-                $driverColor = "#444444";
-            } else {
-                $driverName = $driver->getPerson()->getFullname();
-                $driverColor = $driver->getColor();
+            $driverArray = array(
+                'color' => '#444444',
+                'name' => 'None'
+            );
+            if (null !== $driver) {
+                $driverArray['color'] = $driver->getColor();
+                $driverArray['name'] = $driver->getPerson()->getFullname();
             }
 
             $passenger = $reservation->getPassenger();
 
-            if ($passenger === null) {
-                $passengerName = "None";
-            } else {
+            $passengerName = 'None';
+            if (null !== $passenger)
                 $passengerName = $passenger->getFullname();
-            }
+
+            $additionalInfo = $reservation->getAdditionalInfo();
+            if ('' == $additionalInfo)
+                $additionalInfo = 'None';
 
             $result[] = array (
-                'reason' => $reservation->getReason(),
                 'start' => $reservation->getStartDate()->getTimeStamp(),
                 'end' => $reservation->getEndDate()->getTimeStamp(),
-
-                'driver' => array(
-                    'color' => $driverColor,
-                    'name' => $driverName,
-                ),
+                'reason' => $reservation->getReason(),
+                'driver' => $driverArray,
                 'passenger' => $passengerName,
                 'load' => $reservation->getLoad(),
-                'additional' => $reservation->getAdditionalInfo(),
-                'id' => $reservation->getId(),
-
+                'additionalInfo' => $additionalInfo,
+                'id' => $reservation->getId()
             );
         }
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success", "reservations" => (object) $result),
+                'result' => array(
+                    'status' => 'success',
+                    'reservations' => $result
+                )
             )
         );
 
@@ -99,7 +98,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 )
             );
 
-            // TODO probably should not redirect to the page that causes the problem
+            // @TODO probably should not redirect to the page that causes the problem
             $this->redirect()->toRoute(
                 'logistics_index',
                 array(
@@ -112,6 +111,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $startTime = new DateTime();
         $startTime->setTimeStamp($this->getParam('start'));
+
         $endTime = new DateTime();
         $endTime->setTimeStamp($this->getParam('end'));
 
@@ -119,12 +119,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllByDates($startTime, $endTime);
 
-        if (null === $reservations) {
-            // If no reservations are found, return an empty array
+        if (empty($reservations))
             $reservations = array();
-        }
 
         return $reservations;
     }
-
 }
