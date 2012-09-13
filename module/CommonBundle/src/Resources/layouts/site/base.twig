@@ -93,8 +93,8 @@
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
 
-                            {% for banner in banners %}
-                                <div class="active item">
+                            {% for key, banner in banners %}
+                                <div class="item item-{{ key }}">
                                     <img src="{{ bannerPath ~ banner.getImage() }}" alt="">
                                 </div>
                             {% endfor %}
@@ -149,6 +149,8 @@
             $('.dropdown form').on('click', function (e) {
                 e.stopPropagation();
             });
+
+            $('.item-0').addClass('active');
 
             $('.carousel').carousel();
         });
