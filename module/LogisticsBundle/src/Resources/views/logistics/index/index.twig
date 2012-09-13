@@ -69,8 +69,6 @@
         var poppedElement = null;
 
         $(document).ready(function() {
-
-
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -98,7 +96,6 @@
                 axisFormat: 'H:mm',
 
                 eventSources: [
-
                     {
                         events: function(start, end, callback) {
 
@@ -224,7 +221,7 @@
         });
 
         function formatDate(date) {
-            return $.fullCalendar.formatDate(date, 'dddd MMMM dd yyyy H:mm')
+            return $.fullCalendar.formatDate(date, 'dd/MM/yyyy H:mm')
         }
 
         function hidePopover(element) {
