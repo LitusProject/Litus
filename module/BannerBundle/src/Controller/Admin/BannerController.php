@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Entity\Nodes\Banner,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 
 /**
@@ -54,10 +55,25 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
+
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('banner.image_path');
+
+                $upload = new FileUpload();
+
+                $fileName = '';
+                do{
+                    $fileName = '/' . sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
                 $banner = new Banner(
                     $this->getAuthentication()->getPersonObject(),
                     $formData['name'],
-                    $formData['image'],
+                    $fileName,
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active'],

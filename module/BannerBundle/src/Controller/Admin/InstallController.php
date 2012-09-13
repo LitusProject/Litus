@@ -24,7 +24,17 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig() {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'banner.image_path',
+                    'value'       => 'data/banner/images',
+                    'description' => 'The path to the banner images',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {
