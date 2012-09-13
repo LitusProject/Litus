@@ -41,7 +41,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             'SecretaryBundle\Entity\Registration',
             $this->getParam('page'),
             array(
-                'payed' => false,
                 'academicYear' => $academicYear,
             ),
             array(
