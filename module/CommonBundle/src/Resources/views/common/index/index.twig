@@ -1,9 +1,12 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-	<div class="alert alert-info">
-        <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-    </div>
+
+	{% for notification in notifications %}
+		<div class="alert alert-info">
+	        {{ notification.getContent() }}
+	    </div>
+	{% endfor %}
 
 	<div class="row-fluid">
 	    <div class="span3">

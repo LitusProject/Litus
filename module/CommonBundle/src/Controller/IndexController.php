@@ -28,6 +28,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ('production' == getenv('APPLICATION_ENV'))
             $this->redirect()->toUrl('http://www.vtk.be/');
 
+        $notifications = $this->getEntityManager()
+            ->getRepository('NotificationBundle\Entity\Nodes\Notification')
+            ->findAllActive();
+
         $newsItems = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Nodes\News')
             ->findAll();
@@ -54,6 +58,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'newsItems' => $newsItems,
                 'calendarItems' => $calendarItems,
+                'notifications' => $notifications,
             )
         );
     }
