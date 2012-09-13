@@ -32,7 +32,7 @@
 	            {% for news_item in paginator %}
 	                <tr class="item item-{{ news_item.getId() }}">
 	                    <td>{{ news_item.getTitle(language) }}</td>
-	                    <td>{{ dateLocalized(news_item.getCreationTime(), 'dd/MM/y H:m') }}</td>
+	                    <td>{{ dateLocalized(news_item.getCreationTime(), 'dd/MM/y H:mm') }}</td>
 	                    <td>{{ news_item.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('admin_news', 'edit') %}
