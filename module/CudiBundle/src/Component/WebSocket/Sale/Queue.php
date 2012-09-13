@@ -18,6 +18,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
     CudiBundle\Entity\Sales\QueueItem,
@@ -223,12 +224,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings)) {
-            return json_encode(
-                (object) array(
-                    'error' => 'noBookings',
-                )
-            );
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && $registration->hasPayed()) {
+            if (empty($bookings)) {
+                return json_encode(
+                    (object) array(
+                        'error' => 'noBookings',
+                    )
+                );
+            }
         }
 
         $queueItem = $this->_entityManager
@@ -317,6 +324,28 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
             $results[] = $result;
         }
+
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed()) {
+            $results[] = (object) array(
+                'id' => 'membership',
+                'price' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.membership_price'),
+                'title' => 'Membership',
+                'barcode' => '',
+                'author' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('union_name'),
+                'number' => 1,
+                'status' => 'assigned',
+                'discounts' => array(),
+            );
+        }
+
         return $results;
     }
 
@@ -434,6 +463,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($queueItem))
             return;
 
+        if (isset($data->articles->membership) && 1 == $data->articles->membership) {
+            $queueItem->getPerson()
+                ->addOrganizationStatus(
+                    new OrganizationStatus(
+                        $queueItem->getPerson(),
+                        'member',
+                        $this->_getCurrentAcademicYear()
+                    )
+                );
+            $registration = $this->_entityManager
+                ->getRepository('SecretaryBundle\Entity\Registration')
+                ->findOneByAcademicAndAcademicYear($queueItem->getPerson(), $this->_getCurrentAcademicYear());
+            $registration->setPayed();
+            $this->_entityManager->flush();
+        }
+
         $queueItem->setPayMethod($data->payMethod);
 
         $bookings = $this->_entityManager
@@ -511,6 +556,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getCurrentAcademicYear()
     {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneById(2); // TODO: remove this
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 

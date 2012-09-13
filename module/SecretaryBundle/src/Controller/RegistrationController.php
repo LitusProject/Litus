@@ -150,16 +150,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             )
                         );
 
-                    if ($formData['become_member']) {
-                        $academic->addOrganizationStatus(
-                            new OrganizationStatus(
-                                $academic,
-                                'member',
-                                $this->getCurrentAcademicYear()
-                            )
-                        );
-                    }
-
                     $filePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('common.profile_path');
@@ -354,16 +344,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             $formData['secondary_address_address_postal'],
                             $formData['secondary_address_address_city'],
                             $formData['secondary_address_address_country']
-                        )
-                    );
-                }
-
-                if (!$academic->isMember($this->getCurrentAcademicYear()) && $formData['become_member']) {
-                    $academic->addOrganizationStatus(
-                        new OrganizationStatus(
-                            $academic,
-                            'member',
-                            $this->getCurrentAcademicYear()
                         )
                     );
                 }
