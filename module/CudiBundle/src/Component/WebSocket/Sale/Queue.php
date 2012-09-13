@@ -478,7 +478,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $registration->setPayed();
             $this->_entityManager->flush();
         }
-        echo $queueItem->getPerson()->isMember($this->_getCurrentAcademicYear()) ? 'member': 'not member';
 
         $queueItem->setPayMethod($data->payMethod);
 
