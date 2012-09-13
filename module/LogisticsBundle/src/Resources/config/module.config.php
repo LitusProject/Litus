@@ -131,26 +131,6 @@ return array(
             'logisticsbundle' => array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
-                    'logistics_admin_css' => array(
-                        'assets' => array(
-                            'logistics/less/admin/base.less',
-                        ),
-                        'filters' => array(
-                            'logistics_admin_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'logistics_admin_css.css',
-                        ),
-                    ),
                     'logistics_css' => array(
                         'assets' => array(
                             'logistics/less/base.less',
