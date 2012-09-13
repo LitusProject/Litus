@@ -23,6 +23,7 @@ data/proxies
 data/br/companies
 data/calendar/posters
 data/page/files
+data/banner/images
 
 public/_assetic
 
