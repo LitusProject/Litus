@@ -12,6 +12,7 @@
                 <select id="searchField">
                     <option value="university_identification">University Identification</option>
                     <option value="name">Name</option>
+                    <option value="barcode">Barcode</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -23,6 +24,8 @@
                     <th>Name</th>
                     <th width="120px">Date</th>
                     <th width="120px">Payed</th>
+                    <th width="120px">Barcode</th>
+                    <th width="120px">Action</th>
                 </tr>
             </table>
         </div>
@@ -35,6 +38,8 @@
                         <th>Name</th>
                         <th width="120px">Date</th>
                         <th width="120px">Payed</th>
+                        <th width="120px">Barcode</th>
+                        <th width="120px">Action</th>
                     </tr>
                 </thead>
 
@@ -45,6 +50,12 @@
                             <td>{{ registration.getAcademic().getFullName() }}</td>
                             <td>{{ registration.getTimestamp().format('d/m/Y H:i') }}</td>
                             <td>{% if registration.hasPayed() %}&times;{% endif %}</td>
+                            <td>{{ registration.getAcademic().getBarcode().getBarcode() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('admin_secretary_registration', 'barcode') %}
+                                    <a href="{{ url('admin_secretary_registration', {"action": "barcode", "id": registration.getId()}) }}" class="edit">Barcode</a>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -72,7 +83,13 @@
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.date + '</td>')
-                            .append('<td>' + (this.payed ? '&times;' : '') + '</td>');
+                            .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
+                            .append('<td>' + this.barcode + '</td>')
+                            .append(actions = $('<td>', {'class': 'actions'}));
+
+                        {% if hasAccess('admin_secretary_registration', 'barcode') %}
+                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "barcode"}) }}/' + this.id +'" class="edit">Barcode</a>');
+                        {% endif %}
                     });
                     $('#registration_search table').change();
                 },
