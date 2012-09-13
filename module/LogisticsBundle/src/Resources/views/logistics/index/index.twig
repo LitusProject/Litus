@@ -4,9 +4,8 @@
 
     <div class="flashmessage alert alert-error fade in load_error hide">
         <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">Error loading reservations</div>
         <div class="content">
-            <p>There was an error while loading the reservations.</p>
+            There was an error while loading the reservations.
         </div>
     </div>
 
@@ -14,7 +13,7 @@
 
     <div id="popover_header" class="hide">
         <b class="reason"></b>
-        <div class="pull-right"><a class="close">&times</a></div>
+        <div class="pull-right"><a class="close">&times;</a></div>
     </div>
 
     <div id="popover_content" class="hide">
@@ -23,7 +22,7 @@
             <dd><span class="start"></span></dd>
 
             <dt>End</dt>
-            <dd><span class="end"></span><dd>
+            <dd><span class="end"></span></dd>
 
             <dt>Load</dt>
             <dd><span class="load"></span></dd>
@@ -66,9 +65,7 @@
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
-
         var poppedElement = null;
 
         $(document).ready(function() {
@@ -126,7 +123,7 @@
                                             end: reservation.end,
                                             color: reservation.driver.color,
 
-                                            // Custom properties
+                                            // Custom Properties
                                             driver: reservation.driver.name,
                                             passenger: reservation.passenger,
                                             load: reservation.load,
@@ -148,7 +145,7 @@
 
                 ],
 
-                loading : function(isLoading, view) {
+                loading: function(isLoading, view) {
                     if (isLoading) {
                         $('#calendar').addClass('loading');
                     } else {
@@ -156,7 +153,7 @@
                     }
                 },
 
-                eventAfterRender : function(event, element, view) {
+                eventAfterRender: function(event, element, view) {
                     $('#popover_header .reason').text(event.title);
 
                     {% if has_access('admin_van_reservation', 'edit') %}
@@ -171,7 +168,7 @@
                     $('#popover_content .end').text(formatDate(event.end));
                     $('#popover_content .load').text(event.load);
                     $('#popover_content .passenger').text(event.passenger);
-                    $('#popover_content .additional').text(event.additional);
+                    $('#popover_content .additional').text(event.additionalInfo);
                     $('#popover_content .driver').text(event.driver);
 
                     element.popover({placement:'right', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});
@@ -218,7 +215,7 @@
 
             var content = $('#add_popover_content').html();
 
-            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:content,trigger:'manual'});
+            $('.fc-header-title').popover({placement:'bottom', title:$('#popover_header').html(), content:content, trigger:'manual'});
 
             $('.popover .close').live('click',function(){
                 hidePopover(poppedElement);
@@ -259,6 +256,5 @@
             $('#calendar').removeClass('loading');
             $('.load_error').removeClass('hide');
         }
-
     </script>
 {% endblock %}
