@@ -20,7 +20,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcTwig',
-        
+
         'CommonBundle',
 
         'BrBundle',
@@ -28,12 +28,13 @@ return array(
         'MailBundle',
         'ShiftBundle',
         'SyllabusBundle',
-    		
+
     	'LogisticsBundle',
         'SecretaryBundle',
 
         'CalendarBundle',
         'NewsBundle',
+        'NotificationBundle',
         'PageBundle',
 
         'ApiBundle',
