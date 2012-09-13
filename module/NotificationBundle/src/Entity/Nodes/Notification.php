@@ -145,7 +145,7 @@ class Notification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @return boolean
      */
-    public function getActive() {
+    public function isActive() {
         return $this->active;
     }
 }
