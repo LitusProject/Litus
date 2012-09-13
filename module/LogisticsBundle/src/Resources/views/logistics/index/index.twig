@@ -18,48 +18,46 @@
     </div>
 
     <div id="popover_content" class="hide">
-        <table>
-        <tr>
-            <td width="150px"><b>Start:</b></td> <td><span class="start"></span></td>
-        </tr>
-        <tr>
-            <td><b>End:</b></td> <td><span class="end"></span></td>
-        </tr>
-        <tr>
-            <td><b>Load:</b></td> <td><span class="load"></span></td>
-        </tr>
-        <tr>
-            <td><b>Additional Info:</b></td><td> <span class="additional"></span></td>
-        </tr>
-        <tr>
-            <td><b>Passenger:</b></td> <td><span class="passenger"></span></td>
-        </tr>
-        <tr>
-            <td><b>Driver:</b></td><td> <span class="driver"></span></td>
-        </tr>
-        </table>
+        <dl class="dl-horizontal">
+            <dt>Start</dt>
+            <dd><span class="start"></span></dd>
 
-        <ul class="nav nav-list"><li class="divider"></li></ul>
+            <dt>End</dt>
+            <dd><span class="end"></span><dd>
+
+            <dt>Load</dt>
+            <dd><span class="load"></span></dd>
+
+            <dt>Additional Info</dt>
+            <dd><span class="additional"></span></dd>
+
+            <dt>Passenger</dt>
+            <dd><span class="passenger"></span></dd>
+
+            <dt>Driver</dt>
+            <dd><span class="driver"></span></dd>
+        </dl>
 
         {% if has_access('admin_van_reservation', 'edit') %}
+            <hr />
+
             <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
         {% endif %}
     </div>
 
     <div id="add_popover_content" class="hide">
         <div  id="add_popover_content_internal">
-            <table>
-            <tr>
-                <td width="150px"><b>Start:</b></td> <td><span class="start"></span></td>
-            </tr>
-            <tr>
-                <td><b>End:</b></td> <td><span class="end"></span></td>
-            </tr>
-            </table>
+            <dl class="dl-horizontal">
+                <dt>Start</dt>
+                <dd><span class="start"></span></dd>
 
-            <ul class="nav nav-list"><li class="divider"></li></ul>
+                <dt>End</dt>
+                <dd><span class="end"></span></dd>
+            </dl>
 
             {% if has_access('admin_van_reservation', 'edit') %}
+                <hr />
+
                 <a class="btn btn-primary pull-right" href="#">{{ translate('Edit') }}</a>
             {% endif %}
         </div>
