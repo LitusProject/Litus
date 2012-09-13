@@ -32,6 +32,7 @@ return array(
     	'LogisticsBundle',
         'SecretaryBundle',
 
+        'BannerBundle',
         'CalendarBundle',
         'NewsBundle',
         'NotificationBundle',
