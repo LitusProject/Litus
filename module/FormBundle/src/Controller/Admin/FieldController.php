@@ -59,6 +59,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                 $field = new FormField(
                     $formSpecification,
                     'string', // TODO: support more types
+                    $formData['order'],
                     $formData['label'],
                     $formData['required']
                 );
@@ -110,6 +111,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
                 $field->setLabel($formData['label'])
+                    ->setOrder($formData['order'])
                     ->setRequired($formData['required']);
 
                 $this->getEntityManager()->flush();

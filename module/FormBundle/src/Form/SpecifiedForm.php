@@ -38,13 +38,18 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(FormSpecification $formSpecification, $name = null)
+    public function __construct(EntityManager $entityManager, FormSpecification $formSpecification, $name = null)
     {
         parent::__construct($name);
 
         $this->_form = $formSpecification;
 
-        foreach ($formSpecification->getFields() as $fieldSpecification) {
+        // Fetch the fields through the repository to have the correct order
+        $fields = $entityManager
+            ->getRepository('FormBundle\Entity\FormField')
+            ->findByForm($formSpecification);
+
+        foreach ($fields as $fieldSpecification) {
             if ('string' == $fieldSpecification->getType()) {
                 $field = new Text('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel())

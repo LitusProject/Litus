@@ -201,7 +201,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
      * @param FormBundle\Entity\FormField The field to add to this form.
      */
     public function addField($field) {
-        $this->fields.add($field);
+        $this->fields->add($field);
         return $this;
     }
 

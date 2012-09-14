@@ -51,6 +51,7 @@ class Edit extends Add
     {
         $data = array(
             'label'    => $field->getLabel(),
+            'order'    => $field->getOrder(),
             'required' => $field->isRequired(),
         );
 
