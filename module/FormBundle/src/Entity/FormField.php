@@ -96,7 +96,7 @@ class FormField
     /**
      * @param string $label
      *
-     * @return \FormBundle\Entity\Nodes\Notification
+     * @return \FormBundle\Entity\FormField
      */
     public function setLabel($label) {
         $this->label = $label;
@@ -111,9 +111,26 @@ class FormField
     }
 
     /**
+     * @param string $type
+     *
+     * @return \FormBundle\Entity\FormField
+     */
+    public function setType($type) {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
      * @param boolean $required
      *
-     * @return \FormBundle\Entity\Nodes\Notification
+     * @return \FormBundle\Entity\FormField
      */
     public function setRequired($required) {
         $this->required = $required;

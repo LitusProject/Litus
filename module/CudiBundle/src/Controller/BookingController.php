@@ -222,7 +222,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'No ID was given to identify the booking!'
                 )
             );
-    
+
             $this->redirect()->toRoute(
                 'booking',
                 array(
@@ -230,14 +230,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-    
+
             return;
         }
-    
+
         $booking = $this->getEntityManager()
         ->getRepository('CudiBundle\Entity\Sales\Booking')
         ->findOneById($this->getParam('id'));
-    
+
         if (null === $booking) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -246,7 +246,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'No booking with the given ID was found!'
                 )
             );
-    
+
             $this->redirect()->toRoute(
                 'booking',
                 array(
@@ -254,10 +254,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
-    
+
             return;
         }
-    
+
         return $booking;
     }
 
