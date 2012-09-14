@@ -24,4 +24,21 @@ class FormSpecification extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneById($id) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\Nodes\FormSpecification', 'n')
+            ->where(
+                $query->expr()->eq('n.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

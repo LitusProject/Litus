@@ -71,8 +71,9 @@ class FormField
     /**
      * @param string $label
      */
-    public function __construct($form, $label, $required)
+    public function __construct($form, $type, $label, $required)
     {
+        $this->type = $type;
         $this->form = $form;
         $this->label = $label;
         $this->required = $required;
@@ -89,7 +90,7 @@ class FormField
      * @return The form this field belongs to.
      */
     public function getForm() {
-        return $form;
+        return $this->form;
     }
 
     /**
