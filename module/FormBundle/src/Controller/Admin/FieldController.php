@@ -63,6 +63,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData['required']
                 );
 
+                $formSpecification->addField($field);
+
                 $this->getEntityManager()->persist($field);
 
                 $this->getEntityManager()->flush();
