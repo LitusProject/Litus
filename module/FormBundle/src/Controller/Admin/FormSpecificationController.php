@@ -69,7 +69,6 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active'],
                     $max,
-                    $formData['redoable'],
                     $formData['multiple']
                 );
 
@@ -128,7 +127,6 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setActive($formData['active'])
                     ->setMax($max)
-                    ->setRedoable($formData['redoable'])
                     ->setMultiple($formData['multiple']);
 
                 $this->getEntityManager()->flush();
