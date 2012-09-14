@@ -68,7 +68,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'shift',
-                        'action'     => 'overview',
+                        'action'     => 'index',
                     ),
                 ),
             ),

@@ -35,7 +35,6 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->_routeMatch = $routeMatch;
-
         return $this;
     }
 
