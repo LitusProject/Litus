@@ -1,0 +1,13 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ specification.getTitle() }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            {{ translate('Your registration has been recorded.') }}
+        </div>
+    </div>
+{% endblock %}

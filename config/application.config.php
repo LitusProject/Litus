@@ -38,6 +38,8 @@ return array(
         'NotificationBundle',
         'PageBundle',
 
+        'FormBundle',
+
         'ApiBundle',
     ),
     'module_listener_options' => array(
