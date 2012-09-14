@@ -172,8 +172,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                         ->setActive($formData['active'])
                         ->setUrl($formData['url']);
 
-                    if (isset($formData['file']) && $formData['file'] != '' && isset($_FILES['file'])) {
-                        $this->_removeFileFor($banner);
+                    if ($upload->isUploaded(array('file'))) {
 
                         $filePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
@@ -227,6 +226,17 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    public function progressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();
@@ -234,7 +244,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         if (!($banner = $this->_getBanner()))
             return new ViewModel();
 
-        $this->_removeFileFor($banner);
         $this->getEntityManager()->remove($banner);
 
         $this->getEntityManager()->flush();
@@ -246,11 +255,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 ),
             )
         );
-    }
-
-    private function _removeFileFor(Banner $banner)
-    {
-
     }
 
     private function _getBanner()
