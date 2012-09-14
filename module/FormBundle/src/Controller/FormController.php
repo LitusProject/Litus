@@ -56,7 +56,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-
         $form = new SpecifiedForm($formSpecification);
 
         if ($this->getRequest()->isPost()) {
