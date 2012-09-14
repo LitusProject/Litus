@@ -23,4 +23,35 @@ class FormField extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneById($id) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\FormField', 'n')
+            ->where(
+                $query->expr()->eq('n.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
+    public function findByForm($formId) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\FormField', 'n')
+            ->where(
+                $query->expr()->eq('n.form', ':id')
+            )
+            ->setParameter('id', $formId)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

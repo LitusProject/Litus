@@ -31,6 +31,17 @@ return array(
             '@gollum_js',
             '@admin_css',
         ),
+
+        'admin_form_field' => array(
+            '@common_jquery',
+            '@admin_js',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@gollum_css',
+            '@gollum_js',
+            '@admin_css',
+        ),
     ),
     'routes' => array(),
 );

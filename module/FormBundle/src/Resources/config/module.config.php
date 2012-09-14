@@ -42,6 +42,22 @@ return array(
                     ),
                 ),
             ),
+            'admin_form_field' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/form/field[/:action[/:id][/page/:page]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'formid'      => '[0-9]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_form_field',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -65,8 +81,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'form_install' => 'FormBundle\Controller\Admin\InstallController',
-            'admin_form'   => 'FormBundle\Controller\Admin\FormSpecificationController',
+            'form_install'     => 'FormBundle\Controller\Admin\InstallController',
+            'admin_form'       => 'FormBundle\Controller\Admin\FormSpecificationController',
+            'admin_form_field' => 'FormBundle\Controller\Admin\FieldController',
         ),
     ),
 );
