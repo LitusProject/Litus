@@ -42,25 +42,42 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $now > $formSpecification->getEndDate() ||
             !$formSpecification->isActive())
         {
+            $message = 'This form is currently closed.';
+        }
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'This form is currently closed.'
-                )
-            );
+        $entriesCount = count($this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\FormEntry')
+            ->findAllByForm($formSpecification));
 
+        if ($entriesCount >= $formSpecification->getMax()) {
+            $message = 'This form has reached the maximum number of submissions.';
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            $message = 'Please log in to view this form.';
+        } else {
+            $entriesCount = count($this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Nodes\FormEntry')
+                ->findAllByFormAndPerson($formSpecification, $person));
+
+            if (!$formSpecification->isMultiple() && $entriesCount > 0)
+                $message = 'You can\'t fill this form more than once.';
+        }
+
+        if ($message) {
             return new ViewModel(
                 array(
+                    'message'       => $message,
                     'specification' => $formSpecification,
                 )
             );
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
 
-        // TODO: check logged in + still allowed to fill the form
+
+
 
         $form = new SpecifiedForm($formSpecification);
 

@@ -57,7 +57,6 @@ class Edit extends Add
             'active'       => $formSpecification->isActive(),
             'max'          => $formSpecification->getMax(),
             'multiple'     => $formSpecification->isMultiple(),
-            'redoable'     => $formSpecification->isRedoable(),
         );
 
         $this->setData($data);

@@ -59,14 +59,6 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     private $max;
 
     /**
-     * @var boolean Indicates whether submitters can resubmit an updated entry overwriting the previous one. This is only
-     * taken into account if multiple is false.
-     *
-     * @ORM\Column(name="redoable", type="boolean")
-     */
-    private $redoable;
-
-    /**
      * @var boolean Indicates whether submitters can submit more than different one answer.
      *
      * @ORM\Column(name="multiple", type="boolean")
@@ -105,7 +97,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $redoable
      * @param boolean $multiple
      */
-    public function __construct($person, $title, $introduction, $submitText, $startDate, $endDate, $active, $max = 0, $redoable = false, $multiple = false)
+    public function __construct($person, $title, $introduction, $submitText, $startDate, $endDate, $active, $max = 0, $multiple = false)
     {
         parent::__construct($person);
 
@@ -113,7 +105,6 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
         $this->introduction = $introduction;
         $this->submitText = $submitText;
         $this->max = $max;
-        $this->redoable = $redoable;
         $this->multiple = $multiple;
         $this->fields = new ArrayCollection();
         $this->startDate = $startDate;
@@ -187,23 +178,6 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
      */
     public function getMax() {
         return $this->max;
-    }
-
-    /**
-     * @param boolean $redoable
-     *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
-     */
-    public function setRedoable($redoable) {
-        $this->redoable = $redoable;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRedoable() {
-        return $this->redoable;
     }
 
     /**

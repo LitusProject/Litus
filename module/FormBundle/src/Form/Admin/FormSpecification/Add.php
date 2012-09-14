@@ -86,10 +86,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Multiple entries / person allowed');
         $this->add($field);
 
-        $field = new Checkbox('redoable');
-        $field->setLabel('Entries can be overwritten');
-        $this->add($field);
-
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'form_add');

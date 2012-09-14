@@ -7,8 +7,9 @@
 
     <div class="row page">
         <div class="span12">
-            {% if authenticatedPerson == null %}
-				{{ translate('Please log in to view this form.') }}
+
+            {% if not form %}
+                {{ message }}
 			{% else %}
                 {% autoescape false %}
                     {{ markdown(specification.getIntroduction()) }}
