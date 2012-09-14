@@ -41,7 +41,7 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'form_edit');
+            ->setAttribute('class', 'field_edit');
         $this->add($field);
 
         $this->_populateFromField($formField);
