@@ -53,6 +53,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new TextArea('introduction');
+        $field->setLabel('Introduction')
+            ->setAttribute('rows', 20)
+            ->setRequired(true);
+        $this->add($field);
+
+        $field = new Text('submittext');
+        $field->setLabel('Submit Button Text')
+            ->setRequired(true);
+        $this->add($field);
+
         $field = new Text('start_date');
         $field->setLabel('Start Date')
             ->setRequired();
@@ -153,6 +164,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'title',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'submittext',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),

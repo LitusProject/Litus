@@ -14,9 +14,10 @@
 
 namespace FormBundle\Controller;
 
-use FormBundle\Entity\Nodes\FormSpecification,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
+    FormBundle\Entity\Nodes\FormSpecification,
     FormBundle\Form\SpecifiedForm,
-    FormBundle\Form\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -29,6 +30,32 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         $formSpecification = $this->_getFormSpecification();
+
+        if (!$formSpecification) {
+            return new ViewModel();
+        }
+
+        $now = new DateTime();
+        if ($now < $formSpecification->getStartDate() || 
+            $now > $formSpecification->getEndDate() || 
+            !$formSpecification->isActive())
+        {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'This form is currently closed.'
+                )
+            );
+
+            return new ViewModel(
+                array(
+                    'specification' => $formSpecification,
+                )
+            );
+        }
+
 
         $form = new SpecifiedForm($formSpecification);
 

@@ -38,6 +38,20 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     private $title;
 
     /**
+     * @var string The introduction of this form
+     *
+     * @ORM\Column(type="text")
+     */
+    private $introduction;
+
+    /**
+     * @var string The text of the submit button of this form.
+     *
+     * @ORM\Column(type="text")
+     */
+    private $submitText;
+
+    /**
      * @var int The maximum number of entries of this form.
      *
      * @ORM\Column(name="max", type="integer")
@@ -91,11 +105,13 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $redoable
      * @param boolean $multiple
      */
-    public function __construct($person, $title, $startDate, $endDate, $active, $max = 0, $redoable = false, $multiple = false)
+    public function __construct($person, $title, $introduction, $submitText, $startDate, $endDate, $active, $max = 0, $redoable = false, $multiple = false)
     {
         parent::__construct($person);
 
         $this->title = $title;
+        $this->introduction = $introduction;
+        $this->submitText = $submitText;
         $this->max = $max;
         $this->redoable = $redoable;
         $this->multiple = $multiple;
@@ -120,6 +136,40 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
      */
     public function getTitle() {
         return $this->title;
+    }
+
+    /**
+     * @param string $introduction
+     *
+     * @return \FormBundle\Entity\Nodes\FormSpecification
+     */
+    public function setIntroduction($introduction) {
+        $this->introduction = $introduction;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIntroduction() {
+        return $this->introduction;
+    }
+
+    /**
+     * @param string $submitText
+     *
+     * @return \FormBundle\Entity\Nodes\FormSpecification
+     */
+    public function setSubmitText($submitText) {
+        $this->submitText = $submitText;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubmitText() {
+        return $this->submitText;
     }
 
     /**

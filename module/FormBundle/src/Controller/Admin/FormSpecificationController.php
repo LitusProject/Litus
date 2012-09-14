@@ -63,6 +63,8 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                 $formSpecification = new FormSpecification(
                     $this->getAuthentication()->getPersonObject(),
                     $formData['title'],
+                    $formData['introduction'],
+                    $formData['submittext'],
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active'],
@@ -120,6 +122,8 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                     $max = $formData['max'];
 
                 $formSpecification->setTitle($formData['title'])
+                    ->setSubmitText($formData['submittext'])
+                    ->setIntroduction($formData['introduction'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setActive($formData['active'])
