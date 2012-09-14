@@ -67,17 +67,23 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'label',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
+            foreach ($this->_form->getFields() as $fieldSpecification) {
+                if ('string' == $fieldSpecification->getType()) {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'field-' . $fieldSpecification->getId(),
+                                'required' => $fieldSpecification->isRequired(),
+                                'filters'  => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            )
+                        )
+                    );
+                } else {
+                    // Unable to handle this type
+                }
+            }
 
             $this->_inputFilter = $inputFilter;
         }

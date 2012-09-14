@@ -32,12 +32,37 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $form = new SpecifiedForm($formSpecification);
 
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array
+                    (
+                        'action'   => 'complete',
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
         return new ViewModel(
             array(
                 'specification' => $formSpecification,
                 'form' => $form,
             )
         );
+    }
+
+    public function completeAction()
+    {
+        return new ViewModel();
     }
 
     private function _getFormSpecification()
