@@ -17,6 +17,8 @@ namespace FormBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Entity\Nodes\FormSpecification,
+    FormBundle\Entity\Nodes\FormEntry,
+    FormBundle\Entity\FormFieldEntry,
     FormBundle\Form\SpecifiedForm,
     Zend\View\Model\ViewModel;
 
@@ -36,8 +38,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $now = new DateTime();
-        if ($now < $formSpecification->getStartDate() || 
-            $now > $formSpecification->getEndDate() || 
+        if ($now < $formSpecification->getStartDate() ||
+            $now > $formSpecification->getEndDate() ||
             !$formSpecification->isActive())
         {
 
@@ -56,6 +58,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $person = $this->getAuthentication()->getPersonObject();
+
+        // TODO: check logged in + still allowed to fill the form
+
         $form = new SpecifiedForm($formSpecification);
 
         if ($this->getRequest()->isPost()) {
@@ -64,6 +70,24 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+
+                $formEntry = new FormEntry($person, $formSpecification);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
+
+                foreach ($formSpecification->getFields() as $field) {
+
+                    $value = $formData['field-' + $field->getId()];
+
+                    $fieldEntry = new FormFieldEntry($formEntry, $field, $value);
+
+                    $formEntry->addFieldEntry($fieldEntry);
+
+                    $this->getEntityManager()->persist($fieldEntry);
+                }
+
+                $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'form_view',
