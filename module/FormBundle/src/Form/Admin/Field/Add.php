@@ -56,6 +56,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(True);
         $this->add($field);
 
+        $field = new Text('order');
+        $field->setLabel('Order')
+            ->setRequired(True);
+        $this->add($field);
+
         $field = new Checkbox('required');
         $field->setLabel('Required');
         $this->add($field);
@@ -79,6 +84,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'order',
+                        'required' => false,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'digits',
+                            ),
                         ),
                     )
                 )

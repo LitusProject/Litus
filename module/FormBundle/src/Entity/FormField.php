@@ -55,6 +55,13 @@ class FormField
     private $type;
 
     /**
+     * @var int The order of this field.
+     *
+     * @ORM\Column(name="fieldOrder", type="bigint")
+     */
+    private $order;
+
+    /**
      * @var string The label of this field.
      *
      * @ORM\Column(name="label", type="string")
@@ -71,10 +78,11 @@ class FormField
     /**
      * @param string $label
      */
-    public function __construct($form, $type, $label, $required)
+    public function __construct($form, $type, $order, $label, $required)
     {
         $this->type = $type;
         $this->form = $form;
+        $this->order = $order;
         $this->label = $label;
         $this->required = $required;
     }
@@ -108,6 +116,23 @@ class FormField
      */
     public function getLabel() {
         return $this->label;
+    }
+
+    /**
+     * @param int $order
+     *
+     * @return \FormBundle\Entity\FormField
+     */
+    public function setOrder($order) {
+        $this->order = $order;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder() {
+        return $this->order;
     }
 
     /**

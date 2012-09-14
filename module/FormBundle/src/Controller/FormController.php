@@ -37,6 +37,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
+        $message = null;
+
         $now = new DateTime();
         if ($now < $formSpecification->getStartDate() ||
             $now > $formSpecification->getEndDate() ||
@@ -75,7 +77,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $form = new SpecifiedForm($formSpecification);
+        $form = new SpecifiedForm($this->getEntityManager(), $formSpecification);
 
         if ($this->getRequest()->isPost()) {
 

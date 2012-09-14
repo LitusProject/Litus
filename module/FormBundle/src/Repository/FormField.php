@@ -49,6 +49,7 @@ class FormField extends EntityRepository
                 $query->expr()->eq('n.form', ':id')
             )
             ->setParameter('id', $formId)
+            ->orderBy('n.order', 'ASC')
             ->getQuery()
             ->getResult();
 
