@@ -56,7 +56,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $field = new Submit('submit');
-        $field->setValue('Submit')
+        $field->setValue($formSpecification->getSubmitText())
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }

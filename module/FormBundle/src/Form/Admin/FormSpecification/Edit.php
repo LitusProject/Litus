@@ -49,13 +49,15 @@ class Edit extends Add
     private function _populateFromForm(FormSpecification $formSpecification)
     {
         $data = array(
-            'title'      => $formSpecification->getTitle(),
-            'start_date' => $formSpecification->getStartDate()->format('d/m/Y H:i'),
-            'end_date'   => $formSpecification->getEndDate()->format('d/m/Y H:i'),
-            'active'     => $formSpecification->isActive(),
-            'max'        => $formSpecification->getMax(),
-            'multiple'   => $formSpecification->isMultiple(),
-            'redoable'   => $formSpecification->isRedoable(),
+            'title'        => $formSpecification->getTitle(),
+            'introduction' => $formSpecification->getIntroduction(),
+            'submittext'   => $formSpecification->getSubmitText(),
+            'start_date'   => $formSpecification->getStartDate()->format('d/m/Y H:i'),
+            'end_date'     => $formSpecification->getEndDate()->format('d/m/Y H:i'),
+            'active'       => $formSpecification->isActive(),
+            'max'          => $formSpecification->getMax(),
+            'multiple'     => $formSpecification->isMultiple(),
+            'redoable'     => $formSpecification->isRedoable(),
         );
 
         $this->setData($data);
