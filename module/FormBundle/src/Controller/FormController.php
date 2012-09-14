@@ -70,6 +70,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     array
                     (
                         'action'   => 'complete',
+                        'id'       => $formSpecification->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -88,7 +89,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function completeAction()
     {
-        return new ViewModel();
+        $formSpecification = $this->_getFormSpecification();
+
+        return new ViewModel(
+            array(
+                'specification' => $formSpecification,
+            )
+        );
     }
 
     private function _getFormSpecification()
