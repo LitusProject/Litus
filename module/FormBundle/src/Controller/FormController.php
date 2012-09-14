@@ -49,7 +49,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Nodes\FormEntry')
             ->findAllByForm($formSpecification));
 
-        if ($entriesCount >= $formSpecification->getMax()) {
+        if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
             $message = 'This form has reached the maximum number of submissions.';
         }
 
