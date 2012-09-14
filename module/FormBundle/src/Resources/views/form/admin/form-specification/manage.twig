@@ -40,6 +40,9 @@
                     		{% if hasAccess('form_view', 'view') %}
 								<a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
                     		{% endif %}
+	                        {% if hasAccess('admin_form_field', 'manage') %}
+	                            <a href="{{ url('admin_form_field', {"action": "manage", "id": form.getId()}) }}">Edit Fields</a>
+	                        {% endif %}
 	                        {% if hasAccess('admin_form', 'edit') %}
 	                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
