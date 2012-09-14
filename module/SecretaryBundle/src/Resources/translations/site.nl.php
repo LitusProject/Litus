@@ -21,6 +21,7 @@ return array(
     'Subjects' => 'Vakken',
     'Complete' => 'Voltooi',
 
+    'To register, please login first with your KU Leuven account' => 'Meld je eerst aan met je KU Leuven account om je te registreren',
     'Personal' => 'Persoonlijk',
     'First Name' => 'Voornaam',
     'Last Name' => 'Achternaam',
@@ -67,5 +68,6 @@ return array(
 
     'Addresses' => 'Adressen',
     'Organization' => 'Organisatie',
+    'Membership' => 'Lidmaatschap',
     'Book Textbooks' => 'Cursussen Reserveren',
 );

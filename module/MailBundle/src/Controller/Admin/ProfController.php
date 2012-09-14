@@ -39,11 +39,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $mailSubject = str_replace(
             array(
                 '{{ semester }}',
-                '{{ academicYear }}',
+                '{{ academicYear }}'
             ),
             array(
                 (1 == $semester ? 'Eerste' : 'Tweede'),
-                $academicYear->getCode(),
+                $academicYear->getCode()
             ),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')

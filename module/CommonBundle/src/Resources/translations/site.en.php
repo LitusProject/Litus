@@ -46,13 +46,14 @@ return array(
     'You could not be logged in!' => 'You could not be logged in!',
     'You have been successfully logged out!' => 'You have been successfully logged out!',
 
-    // Account
     'Activate' => 'Activate',
     'Password' => 'Password',
     'Verify Password' => 'Verify Password',
     'Overview' => 'Overview',
     'Edit' => 'Edit',
     'Studies' => 'Studies',
+    'Choose Your Study' => 'Choose Your Study',
     'Subjects' => 'Subjects',
+    'Choose Your Subjects' => 'Choose Your Subjects',
     'Your data was succesfully updated!' => 'Your data was succesfully updated!',
 );

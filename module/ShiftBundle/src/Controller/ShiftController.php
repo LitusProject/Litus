@@ -28,7 +28,7 @@ use CommonBundle\Entity\Users\People\Academic,
  */
 class ShiftController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function overviewAction()
+    public function indexAction()
     {
         $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
         $unitSearchForm = new UnitSearchForm($this->getEntityManager());

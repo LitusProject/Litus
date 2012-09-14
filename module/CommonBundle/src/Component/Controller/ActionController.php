@@ -207,6 +207,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $renderer->getHelperPluginManager()->setInvokableClass(
             'dateLocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
         );
+
+        // StaticMap View Helper
+        $renderer->getHelperPluginManager()->setInvokableClass(
+            'staticMapUrl', 'CommonBundle\Component\View\Helper\StaticMapUrl'
+        );
+        $renderer->plugin('staticMapUrl')
+            ->setEntityManager($this->getEntityManager());
     }
 
     /**

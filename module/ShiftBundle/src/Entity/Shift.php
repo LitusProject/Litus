@@ -79,11 +79,11 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that are responsible for this shift
      *
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Responsible")
      * @ORM\JoinTable(
      *      name="shifts.shifts_responsibles_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="volunteer", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="responsible", referencedColumnName="id")}
      * )
      */
     private $responsibles;
@@ -98,7 +98,7 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that volunteered for this shift
      *
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Volunteer")
      * @ORM\JoinTable(
      *      name="shifts.shifts_volunteers_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
@@ -306,7 +306,7 @@ class Shift
      */
     public function getEvent()
     {
-        return $this->unit;
+        return $this->event;
     }
 
     /**

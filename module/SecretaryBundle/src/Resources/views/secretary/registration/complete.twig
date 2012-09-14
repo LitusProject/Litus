@@ -49,10 +49,10 @@
 
             <h3>{{ translate('Organization') }}</h3>
             <dl class="dl-horizontal wide">
-                <dt>{{ translate('Become Member') }}</dt>
-                <dd>{% if academic.isMember(academicYear) %}&times;{% else %}&nbsp;{% endif %}</dd>
+                <dt>{{ translate('Membership') }}</dt>
+                <dd>{% if academic.isMember(academicYear) %}Yes{% else %}No{% endif %}</dd>
                 <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                <dd>{% if metaData.receiveIrReeelAtCudi() %}&times;{% else %}&nbsp;{% endif %}</dd>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
                 <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
                 <dd>{% if metaData.bakskeByMail() %}&times;{% else %}&nbsp;{% endif %}</dd>
                 <dt>{{ translate('T-shirt Size') }}</dt>

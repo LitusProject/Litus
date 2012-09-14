@@ -166,6 +166,11 @@ class Location
         $this->active = false;
     }
 
+    public function getImage()
+    {
+        return 'http://maps.googleapis.com/maps/api/staticmap?center=&zoom=14&size=260x100&sensor=false';
+    }
+
     /**
      * Sets the latitude and longitude based on the results returned by
      * the specified geocoding API.
