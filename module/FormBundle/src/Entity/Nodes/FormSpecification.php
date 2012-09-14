@@ -181,6 +181,10 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
         return $this;
     }
 
+    public function getFields() {
+        return $this->fields->toArray();
+    }
+
     /**
      * @param DateTime $startDate
      *
