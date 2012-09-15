@@ -19,7 +19,7 @@ use CommonBundle\Entity\Users\Person,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity stores a unit of the organization.
+ * This entity stores a volunteer for a shift.
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Responsible")
  * @ORM\Table(name="shifts.volunteers")
