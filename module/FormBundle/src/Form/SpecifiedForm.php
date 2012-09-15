@@ -47,7 +47,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         // Fetch the fields through the repository to have the correct order
         $fields = $entityManager
             ->getRepository('FormBundle\Entity\Field')
-            ->findByForm($form);
+            ->findAllByForm($form);
 
         foreach ($fields as $fieldSpecification) {
             if ('string' == $fieldSpecification->getType()) {

@@ -150,6 +150,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($field = $this->_getField()))
             return new ViewModel();
 
+        // Delete all entered values
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findAllByField($field);
+
+        foreach ($entries as $entry)
+            $this->getEntityManager()->remove($entry);
+
         $this->getEntityManager()->remove($field);
         $this->getEntityManager()->flush();
 
