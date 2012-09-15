@@ -95,11 +95,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             ->getRepository('CommonBundle\Entity\General\Address\City')
             ->findAll();
 
-        $optionsCity = array(0 => '---');
+        $optionsCity = array(0 => '');
         $optionsStreet = array();
         foreach($cities as $city) {
             $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
-            $optionsStreet[$city->getId()] = array(0 => '---');
+            $optionsStreet[$city->getId()] = array(0 => '');
 
             foreach($city->getStreets() as $street) {
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();

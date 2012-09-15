@@ -87,12 +87,12 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th>Barcode</th>
+					<th width="110px">Barcode</th>
 					<th>Title</th>
-					<th>Status</th>
-					<th>Number</th>
-					<th>Price</th>
-					<th class="actions">Action</th>
+					<th width="110px">Status</th>
+					<th width="50px">Number</th>
+					<th width="100px">Price</th>
+					<th class="actions" width="150px">Action</th>
 				</tr>
 			</thead>
 
@@ -125,7 +125,7 @@
 				Are you sure you want to cancel this selling? All changes will be lost.
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-danger confirmCancel" data-key="122">Ok - F11</button>
+				<button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -196,10 +196,10 @@
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
-						<th class="number">Num</th>
-						<th class="name">Name</th>
-						<th class="status">Status</th>
-						<th class="actions">Action</th>
+						<th width="50px">Num</th>
+						<th width="330px">Name</th>
+						<th width="120px">Status</th>
+						<th width="210px">Action</th>
 					</tr>
 				</thead>
 
@@ -235,6 +235,7 @@
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+			return;
 		    $('#modalChoosePayDesk button').click(function () {
 		        $('#modalChoosePayDesk').permanentModal('hide');
 		        $('#queueList').showQueue('setPayDesk', $(this).data('code'));
