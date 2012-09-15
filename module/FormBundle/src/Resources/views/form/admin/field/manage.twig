@@ -26,12 +26,16 @@
 	    <table class="manage">
             <tr>
                 <th>Label</th>
+                <th width="70px">Order</th>
+                <th width="70px">Required</th>
                 <th width="70px">Action</th>
             </tr>
 
             {% for field in fields %}
                 <tr class="item item-{{ field.getId() }}">
                     <td>{{ field.getLabel() }}</td>
+                    <td>{{ field.getOrder() }}</td>
+                    <td>{% if field.isRequired() %}X{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_field', 'edit') %}
                             <a href="{{ url('admin_form_field', {"action": "edit", "id": field.getId()}) }}" class="edit">Edit</a>
