@@ -15,6 +15,7 @@
 namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface;
 
