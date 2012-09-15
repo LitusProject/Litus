@@ -174,6 +174,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $metaData = new MetaData(
                         $academic,
                         $this->getCurrentAcademicYear(),
+                        $formData['become_member'],
                         $formData['irreeel'],
                         $formData['bakske'],
                         $formData['tshirt_size']
@@ -287,7 +288,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $formData['university_identification'] = $this->getParam('identification');
-            if ($academic->isMember($this->getCurrentAcademicYear()))
+            if ($metaData && $metaData->becomeMember())
                 $formData['become_member'] = true;
             else
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
@@ -379,13 +380,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 if (null !== $metaData) {
-                    $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
+                    $metaData->setBecomeMember($metaData->becomeMember() ? true : $formData['become_member'])
+                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])
                         ->setTshirtSize($formData['tshirt_size']);
                 } else {
                     $metaData = new MetaData(
                         $academic,
                         $this->getCurrentAcademicYear(),
+                        $formData['become_member'],
                         $formData['irreeel'],
                         $formData['bakske'],
                         $formData['tshirt_size']
