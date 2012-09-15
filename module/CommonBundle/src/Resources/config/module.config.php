@@ -101,6 +101,19 @@ return array(
                     ),
                 ),
             ),
+            'admin_person_typeahead' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/person/typeahead[/:string]',
+                    'constraints' => array(
+                        'string'       => '[%a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_person',
+                        'action'     => 'typeahead',
+                    ),
+                ),
+            ),
             'admin_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -280,6 +293,7 @@ return array(
             'admin_cache'    => 'CommonBundle\Controller\Admin\CacheController',
             'admin_index'    => 'CommonBundle\Controller\Admin\IndexController',
             'admin_location' => 'CommonBundle\Controller\Admin\LocationController',
+            'admin_person'   => 'CommonBundle\Controller\Admin\PersonController',
             'admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
         ),
     ),
