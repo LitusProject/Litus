@@ -102,7 +102,7 @@
 				$.post('{{ url('admin_form_field', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
-    					$('.field_removed_succes').show();
+    					$('.field_removed_success').show();
 						$('.item-' + id).remove();
     					removeField.modal('hide');
     				} else {

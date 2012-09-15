@@ -101,7 +101,7 @@
 				$.post('{{ url('admin_form_viewer', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
-    					$('.viewer_removed_succes').show();
+    					$('.viewer_removed_success').show();
 						$('.item-' + id).remove();
     					removeViewer.modal('hide');
     				} else {
