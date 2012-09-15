@@ -15,6 +15,7 @@
 namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface;
 
@@ -61,7 +62,7 @@ class Booking
             ->addTo($person->getEmail(), $person->getFullName())
             ->addCc($mailAddress, $mailName)
             ->addBcc(
-                $this->getEntityManager()
+                $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
