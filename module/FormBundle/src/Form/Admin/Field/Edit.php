@@ -32,9 +32,9 @@ class Edit extends Add
      * @param \FormBundle\Entity\Nodes\Field $field The field we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Field $field, EntityManager $entityManager, $name = null)
+    public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
-        parent::__construct($field->getForm(), $entityManager, $name);
+        parent::__construct($fieldSpecification->getForm(), $entityManager, $name);
 
         $this->remove('submit');
 
@@ -43,7 +43,7 @@ class Edit extends Add
             ->setAttribute('class', 'field_edit');
         $this->add($field);
 
-        $this->_populateFromField($field);
+        $this->_populateFromField($fieldSpecification);
     }
 
     private function _populateFromField(Field $field)
