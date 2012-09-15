@@ -23,8 +23,8 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\FormEntry")
- * @ORM\Table(name="nodes.form_entry")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Entry")
+ * @ORM\Table(name="nodes.form_entries")
  */
 class Entry extends \CommonBundle\Entity\Nodes\Node
 {

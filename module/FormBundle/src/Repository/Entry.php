@@ -23,4 +23,19 @@ class Entry extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByField($field)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\Entry', 'n')
+            ->where(
+                $query->expr()->eq('n.field', ':field')
+            )
+            ->setParameter('field', $field)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

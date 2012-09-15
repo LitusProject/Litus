@@ -160,10 +160,26 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         if (!($form = $this->_getForm()))
             return new ViewModel();
+
+        // Delete all fields
+        $fields = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findAllByForm($form);
+
+        foreach ($fields as $field)
+            $this->_deleteField($field);
+
+        // Delete all entries
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->findAllByForm($form);
+
+        foreach ($entries as $entry)
+            $this->getEntityManager()->remove($entry);
 
         $this->getEntityManager()->remove($form);
 
@@ -176,6 +192,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ),
             )
         );
+    }
+
+    private function _deleteField($field)
+    {
+        // Delete all entered values
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findAllByField($field);
+
+        foreach ($entries as $entry)
+            $this->getEntityManager()->remove($entry);
+
+        $this->getEntityManager()->remove($field);
     }
 
     private function _getForm()

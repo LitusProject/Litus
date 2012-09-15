@@ -41,7 +41,7 @@ class Field extends EntityRepository
         return null;
     }
 
-    public function findByForm($formId) {
+    public function findAllByForm($formId) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
