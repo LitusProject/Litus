@@ -74,7 +74,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->persist($viewer);
 
-                //$this->getEntityManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
