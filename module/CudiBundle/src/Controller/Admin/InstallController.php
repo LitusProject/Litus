@@ -311,6 +311,9 @@ VTK Cudi
                     'supplier_index' => array(
                         'index'
                     ),
+                    'booking' => array(
+                        'book', 'cancel', 'view',
+                    ),
                 )
             )
         );
@@ -359,6 +362,17 @@ VTK Cudi
                             'manage', 'subject', 'typeahead'
                         ),
                     )
+                ),
+                'student' => array(
+                    'system' => true,
+                    'parents' => array(
+                        'guest',
+                    ),
+                    'actions' => array(
+                        'booking' => array(
+                            'book', 'cancel', 'view',
+                        ),
+                    ),
                 ),
             )
         );
