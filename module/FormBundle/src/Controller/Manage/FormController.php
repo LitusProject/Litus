@@ -228,9 +228,15 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        
+        $this->getEntityManager()->remove($formEntry);
 
-        // CHECK IF THIS USER CAN EDIT THIS FORM (= must have a mapping + canEdit= true)
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
     }
 
     private function _getForm()
