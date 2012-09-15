@@ -15,6 +15,8 @@
 namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Form\SpecifiedForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -71,6 +73,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     'action' => 'index'
                 )
             );
+
+            return new ViewModel();
         }
 
         // Refetch fields to make sure they are ordered
@@ -96,11 +100,136 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        // CHECK IF THIS USER CAN EDIT THIS FORM (= must have a mapping + canEdit= true)
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if (!($formEntry = $this->_getEntry()))
+            return new ViewModel();
+
+        $formSpecification = $formEntry->getForm();
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $formEntry->getForm());
+
+        if (!$viewerMap || !$viewerMap->isEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to edit the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'view',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new SpecifiedForm($this->getEntityManager(), $formSpecification);
+        $form->populateFromEntry($formEntry);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+                foreach ($formSpecification->getFields() as $field) {
+
+                    $value = $formData['field-' . $field->getId()];
+
+                    // find entry
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($formEntry, $field);
+
+                    if ($fieldEntry) {
+
+                        $fieldEntry->setValue($value);
+
+                    } else {
+                        $fieldEntry = new FieldEntry($formEntry, $field, $value);
+                        $formEntry->addFieldEntry($fieldEntry);
+                        $this->getEntityManager()->persist($fieldEntry);
+                    }
+
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The entry was successfully edited!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action' => 'view',
+                        'id'     => $formSpecification->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'formSpecification' => $formSpecification,
+            )
+        );
     }
 
     public function deleteAction()
     {
+        $this->initAjax();
+
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if (!($formEntry = $this->_getEntry()))
+            return new ViewModel();
+
+        $formSpecification = $formEntry->getForm();
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $formEntry->getForm());
+
+        if (!$viewerMap || !$viewerMap->isEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to edit the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'view',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        
+
         // CHECK IF THIS USER CAN EDIT THIS FORM (= must have a mapping + canEdit= true)
     }
 
@@ -149,6 +278,53 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         return $formSpecification;
+    }
+
+    private function _getEntry()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the entry!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\Entry')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $entry) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No entry with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        return $entry;
     }
 
 }
