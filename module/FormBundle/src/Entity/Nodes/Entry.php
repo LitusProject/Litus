@@ -38,7 +38,7 @@ class Entry extends \CommonBundle\Entity\Nodes\Node
     private $form;
 
     /**
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry")
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry", cascade={"all"})
      */
     private $fieldEntries;
 
