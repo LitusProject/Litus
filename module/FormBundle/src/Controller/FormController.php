@@ -93,7 +93,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 foreach ($formSpecification->getFields() as $field) {
 
-                    $value = $formData['field-' + $field->getId()];
+                    $value = $formData['field-' . $field->getId()];
 
                     $fieldEntry = new FieldEntry($formEntry, $field, $value);
 

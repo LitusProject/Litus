@@ -59,7 +59,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $this->redirect()->toRoute(
-            'form_manage_index',
+            'form_manage',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -81,7 +81,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $this->redirect()->toRoute(
-            'form_manage_index',
+            'form_manage',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )

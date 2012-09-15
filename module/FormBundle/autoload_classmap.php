@@ -25,6 +25,6 @@ return array(
     'FormBundle\Controller\Admin\InstallController'  => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'FormBundle\Controller\Admin\FieldController'    => __DIR__ . '/src/Controller/Admin/FieldController.php',
     'FormBundle\Controller\FormController'           => __DIR__ . '/src/Controller/FormController.php',
+    'FormBundle\Controller\Manage\FormController'    => __DIR__ . '/src/Controller/Manage/FormController.php',
     'FormBundle\Controller\Manage\AuthController'    => __DIR__ . '/src/Controller/Manage/AuthController.php',
-    'FormBundle\Controller\Manage\IndexController'   => __DIR__ . '/src/Controller/Manage/IndexController.php',
 );

@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('edit');
-        $field->setLabel('Can Edit');
+        $field->setLabel('Can Edit/Delete entries');
         $this->add($field);
 
         $field = new Submit('submit');

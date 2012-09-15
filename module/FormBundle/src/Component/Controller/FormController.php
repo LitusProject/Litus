@@ -58,8 +58,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             'action'         => 'index',
             'controller'     => 'index',
 
-            'auth_route'     => 'form_manage_index',
-            'redirect_route' => 'form_manage_index'
+            'auth_route'     => 'form_manage',
+            'redirect_route' => 'form_manage'
         );
     }
 }

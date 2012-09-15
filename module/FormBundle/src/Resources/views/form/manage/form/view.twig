@@ -1,0 +1,69 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+    {% if authenticatedPerson is not null %}
+	    <h2>{{ form.getTitle() }}</h2>
+
+	    <table class="table">
+
+	    	<thead>
+	    		<tr>
+	    			<th width="130px">Submitter</th>
+	    			<th width="130px">Submitted</th>
+
+	    			{% for field in fields %}
+	    				<th>{{ field.getLabel() }}</th>
+    				{% endfor %}
+
+    				{% if canedit %}
+    					<th width="100px">Actions</th>
+    				{% endif %}
+
+	    		</tr>
+			</thead>
+
+    		<tbody>
+		    {% for entry in entries %}
+		    	<tr class="item item-{{ entry.getId() }}">
+    				<td>{{ entry.getCreationPerson().getFullName() }}</td>
+    				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y H:mm') }}</td>
+
+	    			{% for field in fields %}
+	    				<td class="column-{{ field.getId() }}"></td>
+    				{% endfor %}
+
+    				{% if canedit %}
+    					<td>
+							<!--<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">Edit</a>-->
+							<a href="#" class="btn btn-mini">Edit</a>
+							<a href="#" class="btn btn-mini">Delete</a>
+    					</td>
+    				{% endif %}
+
+	    		</tr>
+		    {% endfor %}
+			</tbody>
+		</table>
+
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			// Very cumbersome solution to make sure the field entries are filled in the right column
+			{% for entry in entries %}
+				{% for fieldentry in entry.getFieldEntries() %}
+					$('.item-{{ entry.getId() }} .column-{{ fieldentry.getField().getId() }}').text("{{ fieldentry.getValue() }}");
+				{% endfor %}
+			{% endfor %}
+
+		});
+	</script>
+{% endblock %}

@@ -56,7 +56,7 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
         ),
-        'form_manage_index' => array(
+        'form_manage' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
