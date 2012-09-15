@@ -16,9 +16,9 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Nodes\FormSpecification,
-    FormBundle\Entity\Nodes\FormEntry,
-    FormBundle\Entity\FormFieldEntry,
+    FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Nodes\Entry as FormEntry,
+    FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Form\SpecifiedForm,
     Zend\View\Model\ViewModel;
 
@@ -31,7 +31,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        $formSpecification = $this->_getFormSpecification();
+        $formSpecification = $this->_getForm();
 
         if (!$formSpecification) {
             return new ViewModel();
@@ -48,7 +48,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\FormEntry')
+            ->getRepository('FormBundle\Entity\Nodes\Entry')
             ->findAllByForm($formSpecification));
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
@@ -61,7 +61,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $message = 'Please log in to view this form.';
         } else {
             $entriesCount = count($this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Nodes\FormEntry')
+                ->getRepository('FormBundle\Entity\Nodes\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person));
 
             if (!$formSpecification->isMultiple() && $entriesCount > 0)
@@ -95,7 +95,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                     $value = $formData['field-' + $field->getId()];
 
-                    $fieldEntry = new FormFieldEntry($formEntry, $field, $value);
+                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
 
                     $formEntry->addFieldEntry($fieldEntry);
 
@@ -128,7 +128,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function completeAction()
     {
-        $formSpecification = $this->_getFormSpecification();
+        $formSpecification = $this->_getForm();
 
         return new ViewModel(
             array(
@@ -137,7 +137,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getFormSpecification()
+    private function _getForm()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -158,11 +158,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $booking = $this->getEntityManager()
-        ->getRepository('FormBundle\Entity\Nodes\FormSpecification')
+        $form = $this->getEntityManager()
+        ->getRepository('FormBundle\Entity\Nodes\Form')
         ->findOneById($this->getParam('id'));
 
-        if (null === $booking) {
+        if (null === $form) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -181,7 +181,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        return $booking;
+        return $form;
     }
 
 }

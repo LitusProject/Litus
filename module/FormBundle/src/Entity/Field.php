@@ -24,10 +24,10 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\FormField")
- * @ORM\Table(name="form.field")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field")
+ * @ORM\Table(name="forms.fields")
  */
-class FormField
+class Field
 {
 
     /**
@@ -40,9 +40,9 @@ class FormField
     private $id;
 
     /**
-     * @var FormBundle\Entity\Nodes\FormSpecification The form this field is part of.
+     * @var FormBundle\Entity\Nodes\Form The form this field is part of.
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\FormSpecification", inversedBy="fields")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form", inversedBy="fields")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $form;
@@ -104,7 +104,7 @@ class FormField
     /**
      * @param string $label
      *
-     * @return \FormBundle\Entity\FormField
+     * @return \FormBundle\Entity\Field
      */
     public function setLabel($label) {
         $this->label = $label;
@@ -121,7 +121,7 @@ class FormField
     /**
      * @param int $order
      *
-     * @return \FormBundle\Entity\FormField
+     * @return \FormBundle\Entity\Field
      */
     public function setOrder($order) {
         $this->order = $order;
@@ -138,7 +138,7 @@ class FormField
     /**
      * @param string $type
      *
-     * @return \FormBundle\Entity\FormField
+     * @return \FormBundle\Entity\Field
      */
     public function setType($type) {
         $this->type = $type;
@@ -155,7 +155,7 @@ class FormField
     /**
      * @param boolean $required
      *
-     * @return \FormBundle\Entity\FormField
+     * @return \FormBundle\Entity\Field
      */
     public function setRequired($required) {
         $this->required = $required;

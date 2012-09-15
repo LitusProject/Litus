@@ -12,15 +12,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Form\Admin\FormSpecification;
+namespace FormBundle\Form\Admin\Form;
 
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Nodes\FormSpecification,
+    FormBundle\Entity\Nodes\Form,
     Zend\Form\Element\Submit;
 
 /**
- * Edit FormSpecification
+ * Edit Form
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
@@ -29,10 +29,10 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Nodes\FormSpecification $formSpecification The notification we're going to modify
+     * @param \FormBundle\Entity\Nodes\Form $form The notification we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, FormSpecification $formSpecification, $name = null)
+    public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
         parent::__construct($entityManager, $name);
 
@@ -43,20 +43,20 @@ class Edit extends Add
             ->setAttribute('class', 'form_edit');
         $this->add($field);
 
-        $this->_populateFromForm($formSpecification);
+        $this->_populateFromForm($form);
     }
 
-    private function _populateFromForm(FormSpecification $formSpecification)
+    private function _populateFromForm(Form $form)
     {
         $data = array(
-            'title'        => $formSpecification->getTitle(),
-            'introduction' => $formSpecification->getIntroduction(),
-            'submittext'   => $formSpecification->getSubmitText(),
-            'start_date'   => $formSpecification->getStartDate()->format('d/m/Y H:i'),
-            'end_date'     => $formSpecification->getEndDate()->format('d/m/Y H:i'),
-            'active'       => $formSpecification->isActive(),
-            'max'          => $formSpecification->getMax(),
-            'multiple'     => $formSpecification->isMultiple(),
+            'title'        => $form->getTitle(),
+            'introduction' => $form->getIntroduction(),
+            'submittext'   => $form->getSubmitText(),
+            'start_date'   => $form->getStartDate()->format('d/m/Y H:i'),
+            'end_date'     => $form->getEndDate()->format('d/m/Y H:i'),
+            'active'       => $form->isActive(),
+            'max'          => $form->getMax(),
+            'multiple'     => $form->isMultiple(),
         );
 
         $this->setData($data);

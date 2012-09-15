@@ -16,24 +16,24 @@ namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Entity\Nodes\FormSpecification,
-    FormBundle\Form\Admin\FormSpecification\Add as AddForm,
-    FormBundle\Form\Admin\FormSpecification\Edit as EditForm,
+    FormBundle\Entity\Nodes\Form,
+    FormBundle\Form\Admin\Form\Add as AddForm,
+    FormBundle\Form\Admin\Form\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
- * FormSpecificationController
+ * FormController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FormSpecificationController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class FormController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'FormBundle\Entity\Nodes\FormSpecification',
+            'FormBundle\Entity\Nodes\Form',
             $this->getParam('page')
         );
 
@@ -60,7 +60,7 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                 else
                     $max = $formData['max'];
 
-                $formSpecification = new FormSpecification(
+                $form = new Form(
                     $this->getAuthentication()->getPersonObject(),
                     $formData['title'],
                     $formData['introduction'],
@@ -72,7 +72,7 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                     $formData['multiple']
                 );
 
-                $this->getEntityManager()->persist($formSpecification);
+                $this->getEntityManager()->persist($form);
 
                 $this->getEntityManager()->flush();
 
@@ -104,10 +104,10 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
 
     public function editAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($form = $this->_getForm()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $formSpecification);
+        $form = new EditForm($this->getEntityManager(), $form);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -120,7 +120,7 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
                 else
                     $max = $formData['max'];
 
-                $formSpecification->setTitle($formData['title'])
+                $form->setTitle($formData['title'])
                     ->setSubmitText($formData['submittext'])
                     ->setIntroduction($formData['introduction'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
@@ -161,10 +161,10 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->_getForm()))
+        if (!($form = $this->_getForm()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($formSpecification);
+        $this->getEntityManager()->remove($form);
 
         $this->getEntityManager()->flush();
 
@@ -198,11 +198,11 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
             return;
         }
 
-        $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\FormSpecification')
+        $form = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Nodes\Form')
             ->findOneById($this->getParam('id'));
 
-        if (null === $formSpecification) {
+        if (null === $form) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -221,6 +221,6 @@ class FormSpecificationController extends \CommonBundle\Component\Controller\Act
             return;
         }
 
-        return $formSpecification;
+        return $form;
     }
 }
