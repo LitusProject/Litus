@@ -14,6 +14,7 @@ return array(
     'FormBundle\Repository\Entry'                    => __DIR__ . '/src/Repository/Entry.php',
     'FormBundle\Repository\Field'                    => __DIR__ . '/src/Repository/Field.php',
     'FormBundle\Component\Validator\PersonValidator' => __DIR__ . '/src/Component/Validator/PersonValidator.php',
+    'FormBundle\Component\Controller\FormController' => __DIR__ . '/src/Component/Controller/FormController.php',
     'FormBundle\Entity\ViewerMap'                    => __DIR__ . '/src/Entity/ViewerMap.php',
     'FormBundle\Entity\Nodes\Entry'                  => __DIR__ . '/src/Entity/Nodes/Entry.php',
     'FormBundle\Entity\Nodes\Form'                   => __DIR__ . '/src/Entity/Nodes/Form.php',
@@ -24,4 +25,6 @@ return array(
     'FormBundle\Controller\Admin\InstallController'  => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'FormBundle\Controller\Admin\FieldController'    => __DIR__ . '/src/Controller/Admin/FieldController.php',
     'FormBundle\Controller\FormController'           => __DIR__ . '/src/Controller/FormController.php',
+    'FormBundle\Controller\Manage\AuthController'    => __DIR__ . '/src/Controller/Manage/AuthController.php',
+    'FormBundle\Controller\Manage\IndexController'   => __DIR__ . '/src/Controller/Manage/IndexController.php',
 );

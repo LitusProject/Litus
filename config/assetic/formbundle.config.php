@@ -56,6 +56,13 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
         ),
+        'form_manage_index' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@form_manage_css',
+        ),
     ),
     'routes' => array(),
 );

@@ -86,10 +86,41 @@ return array(
                     ),
                 ),
             ),
+            'form_manage_index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '[/:language]/form/manage[/:action[/:id]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'form_manage_index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'form_manage_auth' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/form/manage/auth[/:action]',
+                    'constraints' => array(
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'session'  => '[0-9]*',
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'form_manage_auth',
+                        'action'     => 'login',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
+            'form_layout' => __DIR__ . '/../layouts',
             'form_view' => __DIR__ . '/../views',
         ),
     ),
@@ -109,11 +140,42 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'form_install'     => 'FormBundle\Controller\Admin\InstallController',
-            'admin_form'       => 'FormBundle\Controller\Admin\FormController',
-            'admin_form_field' => 'FormBundle\Controller\Admin\FieldController',
+            'form_install'      => 'FormBundle\Controller\Admin\InstallController',
+            'admin_form'        => 'FormBundle\Controller\Admin\FormController',
+            'admin_form_field'  => 'FormBundle\Controller\Admin\FieldController',
             'admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
-            'form_view'        => 'FormBundle\Controller\FormController',
+            'form_view'         => 'FormBundle\Controller\FormController',
+            'form_manage_index' => 'FormBundle\Controller\Manage\IndexController',
+            'form_manage_auth'  => 'FormBundle\Controller\Manage\AuthController',
+        ),
+    ),
+    'assetic_configuration' => array(
+        'modules' => array(
+            'formbundle' => array(
+                'root_path' => __DIR__ . '/../assets',
+                'collections' => array(
+                    'form_manage_css' => array(
+                        'assets' => array(
+                            'manage/less/base.less',
+                        ),
+                        'filters' => array(
+                            'form_manage_less' => array(
+                                'name' => 'Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'form_manage_css.css',
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
 );
