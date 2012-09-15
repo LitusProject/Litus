@@ -49,7 +49,7 @@
                             <td>{{ registration.getAcademic().getUniversityIdentification() }}</td>
                             <td>{{ registration.getAcademic().getFullName() }}</td>
                             <td>{{ registration.getTimestamp().format('d/m/Y H:i') }}</td>
-                            <td>{% if registration.hasPayed() %}&times;{% endif %}</td>
+                            <td>{% if registration.hasPayed() %}Yes{% endif %}</td>
                             <td>{{ registration.getAcademic().getBarcode().getBarcode() }}</td>
                             <td class="actions">
                                 {% if hasAccess('admin_secretary_registration', 'barcode') %}
