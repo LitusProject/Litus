@@ -16,9 +16,9 @@
         <div class="container">
             <a href="{{ unionUrl }}" class="brand"><img src="/_form/img/logo.png" /></a>
             <ul class="nav">
-                {% if hasAccess('form_manage_index', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'form_manage_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("form_manage_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                {% if hasAccess('form_manage', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'form_manage' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("form_manage", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -30,7 +30,7 @@
                     <ul class="dropdown-menu">
                         {% for language in languages %}
                             <li>
-                                <a href="{{ url("form_manage_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                <a href="{{ url("form_manage", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
                             </li>
                         {% endfor %}
                     </ul>

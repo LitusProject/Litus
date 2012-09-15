@@ -86,7 +86,7 @@ return array(
                     ),
                 ),
             ),
-            'form_manage_index' => array(
+            'form_manage' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route'    => '[/:language]/form/manage[/:action[/:id]]',
@@ -96,7 +96,7 @@ return array(
                         'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
-                        'controller' => 'form_manage_index',
+                        'controller' => 'form_manage',
                         'action'     => 'index',
                     ),
                 ),
@@ -145,7 +145,7 @@ return array(
             'admin_form_field'  => 'FormBundle\Controller\Admin\FieldController',
             'admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
             'form_view'         => 'FormBundle\Controller\FormController',
-            'form_manage_index' => 'FormBundle\Controller\Manage\IndexController',
+            'form_manage'       => 'FormBundle\Controller\Manage\FormController',
             'form_manage_auth'  => 'FormBundle\Controller\Manage\AuthController',
         ),
     ),
