@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class Academic extends \CommonBundle\Repository\Users\Person
 {
-    
+
     public function findOneById($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -24,13 +24,13 @@ class Academic extends \CommonBundle\Repository\Users\Person
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
 
         return null;
     }
-    
+
     public function findAllByUsername($username)
     {
         $query = $this->_em->createQueryBuilder();

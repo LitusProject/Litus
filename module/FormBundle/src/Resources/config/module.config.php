@@ -57,6 +57,21 @@ return array(
                     ),
                 ),
             ),
+            'admin_form_viewer' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/form/viewer[/:action[/:id][/page/:page]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_form_viewer',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'form_view' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -97,6 +112,7 @@ return array(
             'form_install'     => 'FormBundle\Controller\Admin\InstallController',
             'admin_form'       => 'FormBundle\Controller\Admin\FormController',
             'admin_form_field' => 'FormBundle\Controller\Admin\FieldController',
+            'admin_form_viewer' => 'FormBundle\Controller\Admin\ViewerController',
             'form_view'        => 'FormBundle\Controller\FormController',
         ),
     ),

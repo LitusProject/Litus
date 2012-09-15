@@ -104,10 +104,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($form = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $form);
+        $form = new EditForm($this->getEntityManager(), $formSpecification);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -120,7 +120,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 else
                     $max = $formData['max'];
 
-                $form->setTitle($formData['title'])
+                $formSpecification->setTitle($formData['title'])
                     ->setSubmitText($formData['submittext'])
                     ->setIntroduction($formData['introduction'])
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
@@ -153,6 +153,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'formSpecification' => $formSpecification,
             )
         );
     }

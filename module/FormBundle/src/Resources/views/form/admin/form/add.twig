@@ -14,12 +14,7 @@
 {% block content_script %}
 	<script type="text/javascript">
         $(document).ready(function () {
-            $('textarea').gollum({
-                uploadURL: '{{ url('admin_page', {'action': 'upload'}) }}',
-                progressURL: '{{ url('admin_page', {'action': 'uploadProgress'}) }}',
-                uploadProgressName: '{{ uploadProgressName }}',
-                progressId: '{{ uploadProgressId }}',
-            });
+            $('textarea').gollum();
         });
     </script>
 {% endblock %}
