@@ -160,7 +160,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($form = $this->_getForm()))
             return new ViewModel();
@@ -180,6 +180,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($entries as $entry)
             $this->getEntityManager()->remove($entry);
+
+        // Delete all viewers
+        $viewers = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findAllByForm($form);
+
+        foreach ($viewers as $viewer)
+            $this->getEntityManager()->remove($viewer);
 
         $this->getEntityManager()->remove($form);
 
