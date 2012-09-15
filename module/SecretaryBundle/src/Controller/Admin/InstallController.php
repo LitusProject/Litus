@@ -62,6 +62,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'guest',
                     ),
                     'actions' => array(
+                        'secretary_registration' => array(
+                            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        ),
                     ),
                 ),
             )

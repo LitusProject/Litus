@@ -39,6 +39,8 @@ return array(
         'PageBundle',
         //'GalleryBundle',
 
+        'FormBundle',
+
         'ApiBundle',
     ),
     'module_listener_options' => array(

@@ -64,13 +64,17 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             if ('' == $additionalInfo)
                 $additionalInfo = 'None';
 
+            $load = $reservation->getLoad();
+            if ('' == $load)
+                $load = 'None';
+
             $result[] = array (
                 'start' => $reservation->getStartDate()->getTimeStamp(),
                 'end' => $reservation->getEndDate()->getTimeStamp(),
                 'reason' => $reservation->getReason(),
                 'driver' => $driverArray,
                 'passenger' => $passengerName,
-                'load' => $reservation->getLoad(),
+                'load' => $load,
                 'additionalInfo' => $additionalInfo,
                 'id' => $reservation->getId()
             );

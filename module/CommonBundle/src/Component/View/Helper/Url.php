@@ -30,7 +30,6 @@ class Url extends \Zend\View\Helper\Url
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     *
      * @return \CommonBundle\Component\Controller\Plugin\Url
      */
     public function setLanguage(Language $language)

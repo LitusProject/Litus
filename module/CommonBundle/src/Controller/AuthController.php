@@ -25,7 +25,7 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController
+class AuthController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function loginAction()
     {
@@ -142,6 +142,6 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
 
-        return $shibbolethUrl . '?source=admin';
+        return $shibbolethUrl . '?source=site';
     }
 }
