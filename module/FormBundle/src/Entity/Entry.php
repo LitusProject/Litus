@@ -24,26 +24,26 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\FormFieldEntry")
- * @ORM\Table(name="form.fieldentry")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Entry")
+ * @ORM\Table(name="forms.fieldentries")
  */
-class FormFieldEntry
+class Entry
 {
 
     /**
-     * @var FormBundle\Entity\Nodes\FormEntry The form entry's id.
+     * @var FormBundle\Entity\Nodes\Entry The form entry's id.
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Nodes\FormEntry", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Nodes\Entry", cascade={"persist"})
      * @ORM\JoinColumn(name="form_entry_id", referencedColumnName="id")
      */
     private $formEntry;
 
     /**
-     * @var FormBundle\Entity\FormField The field this entry is for.
+     * @var FormBundle\Entity\Field The field this entry is for.
      *
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\FormField", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Field", cascade={"persist"})
      * @ORM\JoinColumn(name="form_field_id", referencedColumnName="id")
      */
     private $field;

@@ -15,7 +15,7 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\FormField,
+    FormBundle\Entity\Field,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -29,11 +29,11 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getFormSpecification()))
+        if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
         $fields = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\FormField')
+            ->getRepository('FormBundle\Entity\Field')
             ->findByForm($formSpecification);
 
         return new ViewModel(
@@ -46,7 +46,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getFormSpecification()))
+        if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
         $form = new AddForm($formSpecification, $this->getEntityManager());
@@ -56,7 +56,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $field = new FormField(
+                $field = new Field(
                     $formSpecification,
                     'string', // TODO: support more types
                     $formData['order'],
@@ -100,7 +100,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->_getFormField()))
+        if (!($field = $this->_getField()))
             return new ViewModel();
 
         $form = new EditForm($field, $this->getEntityManager());
@@ -147,7 +147,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->_getFormField()))
+        if (!($field = $this->_getField()))
             return new ViewModel();
 
         $this->getEntityManager()->remove($field);
@@ -160,7 +160,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getFormSpecification()
+    private function _getForm()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -182,7 +182,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Nodes\FormSpecification')
+            ->getRepository('FormBundle\Entity\Nodes\Form')
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
@@ -207,7 +207,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return $formSpecification;
     }
 
-    private function _getFormField()
+    private function _getField()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
@@ -229,7 +229,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $field = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\FormField')
+            ->getRepository('FormBundle\Entity\Field')
             ->findOneById($this->getParam('id'));
 
         if (null === $field) {

@@ -15,7 +15,7 @@
 namespace FormBundle\Form;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    FormBundle\Entity\Nodes\FormSpecification,
+    FormBundle\Entity\Nodes\Form,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -34,20 +34,20 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_form;
 
     /**
-     * @param \CudiBundle\Entity\Sales\FormSpecification $formSpecification
+     * @param \CudiBundle\Entity\Sales\Form $form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, FormSpecification $formSpecification, $name = null)
+    public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
         parent::__construct($name);
 
-        $this->_form = $formSpecification;
+        $this->_form = $form;
 
         // Fetch the fields through the repository to have the correct order
         $fields = $entityManager
-            ->getRepository('FormBundle\Entity\FormField')
-            ->findByForm($formSpecification);
+            ->getRepository('FormBundle\Entity\Field')
+            ->findByForm($form);
 
         foreach ($fields as $fieldSpecification) {
             if ('string' == $fieldSpecification->getType()) {
@@ -61,7 +61,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $field = new Submit('submit');
-        $field->setValue($formSpecification->getSubmitText())
+        $field->setValue($form->getSubmitText())
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }

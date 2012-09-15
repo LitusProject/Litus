@@ -23,28 +23,28 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\FormEntry")
- * @ORM\Table(name="nodes.formentry")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Entry")
+ * @ORM\Table(name="nodes.formentries")
  */
-class FormEntry extends \CommonBundle\Entity\Nodes\Node
+class Entry extends \CommonBundle\Entity\Nodes\Node
 {
 
     /**
-     * @var FormBundle\Entity\Nodes\FormSpecification The form this entry is part of.
+     * @var FormBundle\Entity\Nodes\Form The form this entry is part of.
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\FormSpecification")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Nodes\Form")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $form;
 
     /**
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\FormFieldEntry", mappedBy="formEntry")
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry")
      */
     private $fieldEntries;
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param \FormBundle\Entity\Nodes\FormSpecification $form
+     * @param \FormBundle\Entity\Nodes\Form $form
      */
     public function __construct($person, $form)
     {
@@ -62,7 +62,7 @@ class FormEntry extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param FormBundle\Entity\FormFieldEntry The entry to add to this form.
+     * @param FormBundle\Entity\Entry The entry to add to this form.
      */
     public function addFieldEntry($fieldEntry) {
         $this->fieldEntries->add($fieldEntry);

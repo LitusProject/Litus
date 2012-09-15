@@ -95,7 +95,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'form_install'     => 'FormBundle\Controller\Admin\InstallController',
-            'admin_form'       => 'FormBundle\Controller\Admin\FormSpecificationController',
+            'admin_form'       => 'FormBundle\Controller\Admin\FormController',
             'admin_form_field' => 'FormBundle\Controller\Admin\FieldController',
             'form_view'        => 'FormBundle\Controller\FormController',
         ),

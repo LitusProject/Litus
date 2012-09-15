@@ -24,10 +24,10 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\FormSpecification")
- * @ORM\Table(name="nodes.form")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Nodes\Form")
+ * @ORM\Table(name="nodes.forms")
  */
-class FormSpecification extends \CommonBundle\Entity\Nodes\Node
+class Form extends \CommonBundle\Entity\Nodes\Node
 {
 
     /**
@@ -66,7 +66,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     private $multiple;
 
     /**
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\FormField", mappedBy="form")
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
      */
     private $fields;
 
@@ -115,7 +115,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $title
      *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setTitle($title) {
         $this->title = $title;
@@ -132,7 +132,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $introduction
      *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setIntroduction($introduction) {
         $this->introduction = $introduction;
@@ -149,7 +149,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param string $submitText
      *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setSubmitText($submitText) {
         $this->submitText = $submitText;
@@ -166,7 +166,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param int $max
      *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setMax($max) {
         $this->max = $max;
@@ -183,7 +183,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $multiple
      *
-     * @return \FormBundle\Entity\Nodes\FormSpecification
+     * @return \FormBundle\Entity\Nodes\Form
      */
     public function setMultiple($multiple) {
         $this->multiple = $multiple;
@@ -198,7 +198,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
-     * @param FormBundle\Entity\FormField The field to add to this form.
+     * @param FormBundle\Entity\Field The field to add to this form.
      */
     public function addField($field) {
         $this->fields->add($field);
@@ -212,7 +212,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \BannerBundle\Entity\Nodes\FormSpecification
+     * @return \BannerBundle\Entity\Nodes\Form
      */
     public function setStartDate($startDate) {
         $this->startDate = $startDate;
@@ -229,7 +229,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param DateTime $endDate
      *
-     * @return \BannerBundle\Entity\Nodes\FormSpecification
+     * @return \BannerBundle\Entity\Nodes\Form
      */
     public function setEndDate($endDate) {
         $this->endDate = $endDate;
@@ -246,7 +246,7 @@ class FormSpecification extends \CommonBundle\Entity\Nodes\Node
     /**
      * @param boolean $active
      *
-     * @return \BannerBundle\Entity\Nodes\FormSpecification
+     * @return \BannerBundle\Entity\Nodes\Form
      */
     public function setActive($active) {
         $this->active = $active;
