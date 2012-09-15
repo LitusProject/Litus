@@ -48,7 +48,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function cancelAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
