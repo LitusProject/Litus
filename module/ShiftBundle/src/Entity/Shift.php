@@ -16,14 +16,22 @@ namespace ShiftBundle\Entity;
 
 use DateTime,
     CalendarBundle\Entity\Nodes\Event,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
     CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
+    ShiftBundle\Entity\Shifts\Responsible,
+    ShiftBundle\Entity\Shifts\Volunteer,
     ShiftBundle\Entity\Unit;
 
 /**
  * This entity stores a shift.
+ *
+ * Flight Mode
+ * This file was edited by Pieter Maene while in flight from Vienna to Brussels
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift")
  * @ORM\Table(name="shifts.shifts")
@@ -79,12 +87,13 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that are responsible for this shift
      *
-     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Responsible")
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Responsible", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *      name="shifts.shifts_responsibles_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="responsible", referencedColumnName="id")}
      * )
+     * @ORM\OrderBy({"signupTime" = "ASC"})
      */
     private $responsibles;
 
@@ -98,12 +107,13 @@ class Shift
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The people that volunteered for this shift
      *
-     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Volunteer")
+     * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shifts\Volunteer", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *      name="shifts.shifts_volunteers_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="volunteer", referencedColumnName="id")}
      * )
+     * @ORM\OrderBy({"signupTime" = "ASC"})
      */
     private $volunteers;
 
@@ -266,6 +276,73 @@ class Shift
     }
 
     /**
+     * @return array
+     */
+    public function getResponsibles()
+    {
+        $this->responsibles->toArray();
+    }
+
+    /**
+     * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function addResponsible(Responsible $responsible)
+    {
+        if (!$this->canHaveAsResponsible($responsible->getPerson))
+            throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
+
+        $this->responsibles->add($responsible);
+        return $this;
+    }
+
+    /**
+     * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function removeResponsible(Responsible $responsible)
+    {
+        $this->responsibles->remove($responsible);
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function countResponsibles()
+    {
+        return $this->responsibles->count();
+    }
+
+    /**
+     * Checks whether or not the given person qualifies as a responsible for this
+     * shift.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @return boolean
+     */
+    public function canHaveAsResponsible(EntityManager $entityManager, AcademicYear $academicYear, Person $person)
+    {
+        if (!$person->isPraesidium($academicYear))
+            return false;
+
+        $shifts = $entityManager->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($person);
+
+        foreach ($shifts as $shift) {
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
+                return false;
+        }
+
+        if ($this->countResponsibles() >= $this->getNbResponsibles())
+            return false;
+
+        return true;
+    }
+
+    /**
      * @return integer
      */
     public function getNbVolunteers()
@@ -281,6 +358,75 @@ class Shift
     {
         $this->nbVolunteers = $nbVolunteers;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVolunteers()
+    {
+        $this->volunteers->toArray();
+    }
+
+    /**
+     * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function addVolunteer(Volunteer $volunteer)
+    {
+        if (!$this->canHaveAsVolunteer($volunteer->getPerson))
+            throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
+
+        $this->volunteers->add($volunteer);
+        return $this;
+    }
+
+    /**
+     * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function removeVolunteer(Volunteer $volunteer)
+    {
+        $this->volunteers->remove($volunteer);
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function countVolunteers()
+    {
+        return $this->volunteers->count();
+    }
+
+    /**
+     * Checks whether or not the given person qualifies as a volunteer for this
+     * shift.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @return boolean
+     */
+    public function canHaveAsVolunteer(EntityManager $entityManager, AcademicYear $academicYear, Person $person)
+    {
+        $shifts = $entityManager->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($person);
+
+        foreach ($shifts as $shift) {
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
+                return false;
+        }
+
+        foreach ($this->volunteers as $volunteer) {
+            if ($volunteer->isPraesidium($academicYear))
+                return true;
+        }
+
+        if ($this->countVolunteers() >= $this->getNbVolunteers())
+            return false;
+
+        return true;
     }
 
     /**

@@ -28,7 +28,7 @@
 
             <h2>Results</h2>
             {% if searchResults is not null %}
-                {{ _self.displayShifts(searchResults, 'search') }}
+                {{ _self.displayShifts(entityManager, academicYear, authenticatedPerson, searchResults, 'search') }}
             {% else %}
                 <div class="alert alert-warning">
                     There are no shifts to be shown yet; please use the search functions on the left.
@@ -38,7 +38,7 @@
     </div>
 {% endblock %}
 
-{% macro displayShifts(shifts, accordionName) %}
+{% macro displayShifts(entityManager, academicYear, authenticatedPerson, shifts, accordionName) %}
     <div class="accordion" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             <div class="accordion-group">
@@ -47,7 +47,16 @@
                         {{ shift.getName() }}
 
                         <span class="pull-right">
-                            <button class="btn btn-mini btn-info" type="button">Enroll</button>
+                            {% if shift.canHaveAsResponsible(entityManager, academicYear, authenticatedPerson) %}
+                                <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }}" type="button">
+                                    {{ translate('Responsible') }} ({{ shift.countResponsibles() }}/{{ shift.getNbResponsibles() }})
+                                </button>
+                            {% endif %}
+                            {% if shift.canHaveAsVolunteer(entityManager, academicYear, authenticatedPerson) %}
+                                <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }}" type="button">
+                                    {{ translate('Volunteer') }} ({{ shift.countVolunteers() }}/{{ shift.getNbVolunteers() }})
+                                </button>
+                            {% endif %}
                         </span>
                     </a>
                 </div>
@@ -91,20 +100,18 @@
                             <span class="span4">
                                 <dl>
                                     <dt>{{ translate('Responsibles') }}</dt>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
+
+                                    {% for responsbile in shift.getResponsibles() %}
+                                        <dd class="text-warning">{{ responsible.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
                                 </dl>
 
                                 <dl>
                                     <dt>{{ translate('Volunteers') }}</dt>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
+
+                                    {% for volunteer in shift.getVolunteers() %}
+                                        <dd class="text-warning">{{ volunteer.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
                                 </dl>
                             </span>
                         </div>
@@ -117,4 +124,20 @@
             </div>
         {% endfor %}
     </div>
+{% endmacro %}
+
+{% macro buttonStyle(shift, type) %}
+    {% if 'volunteers' == type %}
+        {% set ratio = shift.countVolunteers() / shift.getNbVolunteers() %}
+    {% elseif 'responsibles' == type %}
+        {% set ratio = shift.countResponsibles() / shift.getNbResponsibles() %}
+    {% endif %}
+
+    {% if ratio < 0.5 %}
+        btn-success
+    {% elseif ratio < 0.75 %}
+        btn-warning
+    {% elseif ratio == 1 %}
+        btn-danger
+    {% endif %}
 {% endmacro %}

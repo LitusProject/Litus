@@ -82,9 +82,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         return new ViewModel(
             array(
-                'result' => array(
+                'result' => (object) array(
                     'status' => 'success',
-                    'reservations' => $result
+                    'reservations' => (object) $result
                 )
             )
         );
