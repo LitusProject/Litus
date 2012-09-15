@@ -15,7 +15,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
- * Handles system admin for gallery.
+ * GalleryController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
