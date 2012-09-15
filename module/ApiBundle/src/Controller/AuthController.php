@@ -53,18 +53,18 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     private function _getPerson()
     {
-        if ('' != $this->getRequest()->post()->get('session', '')) {
+        if ('' != $this->getRequest()->getPost()->get('session', '')) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Session')
-                ->findOneById($this->getRequest()->post()->get('session'));
+                ->findOneById($this->getRequest()->getPost()->get('session'));
 
             return $session->getPerson();
         }
 
-        if ('' != $this->getRequest()->post()->get('username', '')) {
+        if ('' != $this->getRequest()->getPost()->get('username', '')) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Person')
-                ->getOneByUsername($this->getRequest()->post()->get('username'));
+                ->getOneByUsername($this->getRequest()->getPost()->get('username'));
         }
 
         return null;
