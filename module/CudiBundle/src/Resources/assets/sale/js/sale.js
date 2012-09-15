@@ -112,7 +112,7 @@
 	    			$('<span>', {class: 'currentNumber'}).html('0'),
 	    			'/' + data.number
 	    		),
-	    		$('<td class="price">').append('&euro; ' + (0).toFixed(2)),
+	    		$('<td class="price">').append('&euro;' + (0).toFixed(2)),
 	    		actions = $('<td>', {class: 'actions'})
 	    	);
 
