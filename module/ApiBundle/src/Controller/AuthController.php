@@ -37,7 +37,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $result = array(
             'username' => $person->getUsername(),
             'full_name' => $person->getFullName(),
-            'email' => $person->getPrimaryEmail()
+            'email' => $person->getEmail()
         );
 
         if ($person instanceof Academic) {
@@ -64,7 +64,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         if ('' != $this->getRequest()->getPost('username', '')) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Person')
-                ->getOneByUsername($this->getRequest()->getPost('username'));
+                ->findOneByUsername($this->getRequest()->getPost('username'));
         }
 
         return null;
