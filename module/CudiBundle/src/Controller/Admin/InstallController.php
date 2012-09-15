@@ -364,10 +364,6 @@ VTK Cudi
                     )
                 ),
                 'student' => array(
-                    'system' => true,
-                    'parents' => array(
-                        'guest',
-                    ),
                     'actions' => array(
                         'booking' => array(
                             'book', 'cancel', 'view',

@@ -161,7 +161,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'edit', 'delete', 'manage'
                     ),
                     'account' => array(
-                        'activate', 'edit', 'index'
+                        'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'auth' => array(
                         'login', 'logout', 'shibboleth'
@@ -225,6 +225,16 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         ),
                         'index' => array(
                             'index'
+                        ),
+                        'account' => array(
+                            'activate'
+                        ),
+                    ),
+                ),
+                'student' => array(
+                    'actions' => array(
+                        'account' => array(
+                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                         ),
                     ),
                 ),
