@@ -15,11 +15,12 @@
 namespace ShiftBundle\Entity\Shifts;
 
 use CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\Users\Status\Organization as OrganizationStatus,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity stores a unit of the organization.
+ * This entity stores a responsible for a shift.
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Responsible")
  * @ORM\Table(name="shifts.responsibles")
@@ -57,7 +58,7 @@ class Responsible
     {
         $this->signupTime = new DateTime();
 
-        if ($person->getOrganizationStatus($acadmicYear) != OraganizationStatus::$possibleStatuses['praesidium'])
+        if ($person->getOrganizationStatus($acadmicYear) != OrganizationStatus::$possibleStatuses['praesidium'])
             throw new \InvalidArgumentException('This person cannot be responsible for a shift');
 
         $this->person = $person;

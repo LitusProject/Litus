@@ -573,10 +573,22 @@ abstract class Person
      */
     public function isMember(AcademicYearEntity $academicYear)
     {
-        foreach ($this->organizationStatuses as $status) {
-            if ($academicYear == $status->getAcademicYear() && 'non_member' != $status->getStatus())
-                return true;
-        }
+        if ($person->getOrganizationStatus($academicYear) == 'non_member')
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Checks whether or not this person is a praesidium member.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
+     */
+    public function isPraesidium(AcademicYearEntity $academicYear)
+    {
+        if ($this->getOrganizationStatus($academicYear)->getStatus() == 'praesidium')
+            return true;
 
         return false;
     }
