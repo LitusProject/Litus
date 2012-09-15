@@ -243,7 +243,7 @@ VTK Cudi
                         'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
                     'admin_sales_booking' => array(
-                        'add', 'article', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
+                        'add', 'article', 'assign', 'assignAll', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
                     ),
                     'admin_sales_discount' => array(
                         'delete', 'manage'
@@ -311,6 +311,9 @@ VTK Cudi
                     'supplier_index' => array(
                         'index'
                     ),
+                    'booking' => array(
+                        'book', 'cancel', 'view',
+                    ),
                 )
             )
         );
@@ -359,6 +362,13 @@ VTK Cudi
                             'manage', 'subject', 'typeahead'
                         ),
                     )
+                ),
+                'student' => array(
+                    'actions' => array(
+                        'booking' => array(
+                            'book', 'cancel', 'view',
+                        ),
+                    ),
                 ),
             )
         );

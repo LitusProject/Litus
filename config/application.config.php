@@ -37,6 +37,9 @@ return array(
         'NewsBundle',
         'NotificationBundle',
         'PageBundle',
+        //'GalleryBundle',
+
+        'FormBundle',
 
         'ApiBundle',
     ),

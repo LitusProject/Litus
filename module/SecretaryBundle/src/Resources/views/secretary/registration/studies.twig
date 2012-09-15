@@ -40,7 +40,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
-                        {{ study.getTitle() }}&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
+                        <span class="title">{{ study.getTitle() }}</span>&mdash;{{ translate('Phase') }} {{ study.getPhase() }}
 
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">
@@ -49,13 +49,14 @@
                         {% endif %}
                     </a>
                 </div>
-                {% if study.getChildren()|length > 0 %}
-                    <div id="collapse_study-{{ study.getId() }}" class="accordion-body collapse">
-                        <div class="accordion-inner">
+                <div id="collapse_study-{{ study.getId() }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <p>{{ study.getTitle() }}</p>
+                        {% if study.getChildren()|length > 0 %}
                             {{ _self.displayStudies(study.getChildren(), enrollments) }}
-                        </div>
+                        {% endif %}
                     </div>
-                {% endif %}
+                </div>
             </div>
         </div>
     {% endfor %}

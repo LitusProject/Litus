@@ -85,7 +85,7 @@ class Study extends EntityRepository
 
         $ids = array(0);
         foreach($resultSet as $result) {
-            $ids[$result->getId()] = $result->getId();
+            $ids[$result->getStudy()->getId()] = $result->getStudy()->getId();
             foreach($result->getStudy()->getParents() as $parent)
                 $ids[$parent->getId()] = $parent->getId();
         }

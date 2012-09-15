@@ -53,6 +53,13 @@ class MetaData
     private $academicYear;
 
     /**
+     * @var boolean Whether the academic wants to become a member or not
+     *
+     * @ORM\Column(name="become_member", type="boolean")
+     */
+    private $becomeMember;
+
+    /**
      * @var boolean Whether the academic wants to receive it's Ir.Reëel at Cudi or not
      *
      * @ORM\Column(name="irreeel_at_cudi", type="boolean")
@@ -88,17 +95,19 @@ class MetaData
     /**
      * @param \CommonBundle\Entity\Users\People\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param boolean $becomeMember
      * @param boolean $irreeelAtCudi
      * @param boolean $bakskeByMail
      * @param string $tshirtSize
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
+    public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
     {
         if (!self::isValidTshirtSize($tshirtSize))
             throw new \InvalidArgumentException('The T-shirt size is not valid');
 
         $this->academic = $academic;
         $this->academicYear = $academicYear;
+        $this->becomeMember = $becomeMember;
         $this->irreeelAtCudi = $irreeelAtCudi;
         $this->bakskeByMail = $bakskeByMail;
         $this->tshirtSize = $tshirtSize;
@@ -134,6 +143,25 @@ class MetaData
     public function getAcademicYear()
     {
         return $this->academicYear;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function becomeMember()
+    {
+        return $this->becomeMember;
+    }
+
+    /**
+     * @param boolean $becomeMember
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
+     */
+    public function setBecomeMember($becomeMember)
+    {
+        $this->becomeMember = $becomeMember;
+        return $this;
     }
 
     /**
