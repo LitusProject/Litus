@@ -16,6 +16,7 @@ namespace FormBundle\Form;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
     FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Nodes\Entry,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -64,6 +65,15 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue($form->getSubmitText())
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
+    }
+
+    public function populateFromEntry(Entry $entry) {
+        $formData = array();
+        foreach ($entry->getFieldEntries() as $fieldEntry) {
+            $formData['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
+        }
+
+        $this->setData($formData);
     }
 
     public function getInputFilter()

@@ -38,4 +38,26 @@ class Entry extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneByFormEntryAndField($formEntry, $field)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\Entry', 'n')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('n.field', ':field'),
+                    $query->expr()->eq('n.formEntry', ':form')
+                )
+            )
+            ->setParameter('field', $field)
+            ->setParameter('form', $formEntry)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }
