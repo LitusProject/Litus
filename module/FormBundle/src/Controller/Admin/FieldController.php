@@ -34,7 +34,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
-            ->findByForm($formSpecification);
+            ->findAllByForm($formSpecification);
 
         return new ViewModel(
             array(
