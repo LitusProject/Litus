@@ -7,7 +7,7 @@ use CommonBundle\Component\Util\AcademicYear,
     Zend\View\Model\ViewModel;
 
 /**
- * Handles system gallery controller.
+ * GalleryController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
