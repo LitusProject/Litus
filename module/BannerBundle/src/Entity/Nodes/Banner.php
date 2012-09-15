@@ -31,7 +31,7 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
 {
 
     /**
-     * @var The reservation's unique identifier
+     * @var The banner's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -47,14 +47,14 @@ class Banner extends \CommonBundle\Entity\Nodes\Node
     private $name;
 
     /**
-     * @var DateTime The start date and time of this reservation.
+     * @var DateTime The start date and time of this banner.
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var DateTime The end date and time of this reservation.
+     * @var DateTime The end date and time of this banner.
      *
      * @ORM\Column(name="end_date", type="datetime")
      */

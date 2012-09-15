@@ -46,13 +46,14 @@ return array(
     'You could not be logged in!' => 'Je kon niet aangemeld worden!',
     'You have been successfully logged out!' => 'Je bent succesvol afgemeld!',
 
-    // Account
     'Activate' => 'Activeren',
     'Password' => 'Wachtwoord',
     'Verify Password' => 'Bevestig Wachtwoord',
     'Overview' => 'Overzicht',
     'Edit' => 'Bewerk',
     'Studies' => 'Studierichtingen',
+    'Choose Your Study' => 'Kies Je Studierichting',
     'Subjects' => 'Vakken',
+    'Choose Your Subjects' => 'Kies Je Vakken',
     'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
 );

@@ -124,7 +124,7 @@
                                             driver: reservation.driver.name,
                                             passenger: reservation.passenger,
                                             load: reservation.load,
-                                            additional: reservation.additional,
+                                            additional: reservation.additionalInfo,
                                             dbid: reservation.id,
 
                                         });
@@ -165,7 +165,7 @@
                     $('#popover_content .end').text(formatDate(event.end));
                     $('#popover_content .load').text(event.load);
                     $('#popover_content .passenger').text(event.passenger);
-                    $('#popover_content .additional').text(event.additionalInfo);
+                    $('#popover_content .additional').text(event.additional);
                     $('#popover_content .driver').text(event.driver);
 
                     element.popover({placement:'right', title:$('#popover_header').html(), content:$('#popover_content').html(), trigger:'manual'});

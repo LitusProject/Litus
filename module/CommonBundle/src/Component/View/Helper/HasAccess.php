@@ -36,7 +36,6 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
     public function setDriver(HasAccessDriver $driver)
     {
         $this->_driver = $driver;
-
         return $this;
     }
 
