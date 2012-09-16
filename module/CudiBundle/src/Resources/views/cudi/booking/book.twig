@@ -16,7 +16,7 @@
     		{% autoescape false %}
 	        {{ form().openTag(form) }}
 
-				<table class="table">	
+				<table class="table bookings">
 
 					<thead>
 						<tr>
@@ -31,17 +31,14 @@
 					<tbody>
 
 					{% for subjectArticle in subjectArticleMap %}
+						<tr class="spacer"><td colspan="5"></td></tr>
 
 						<tr class="course-title">
 							<td colspan="5">
 								{% if null == subjectArticle['subject'] %}
-
 									{{ translate('General') }}
-
 								{% else %}
-
 									{{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
-
 								{% endif %}
 
 						 	</td>
