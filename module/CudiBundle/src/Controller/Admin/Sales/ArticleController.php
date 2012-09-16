@@ -127,8 +127,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
 
-        $precalculatedSellPrice = $article->isInternal() ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = $article->isInternal() ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
+        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -188,6 +188,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new ActivateForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
 
+        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
+
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -234,6 +237,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'form' => $form,
                 'article' => $saleArticle->getMainArticle(),
+                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
     }

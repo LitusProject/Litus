@@ -37,19 +37,10 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class RegistrationController extends \SecretaryBundle\Component\Controller\RegistrationController
 {
     public function addAction()
     {
-        $enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
-
-        if ('1' !== $enabled) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
-        }
-
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
