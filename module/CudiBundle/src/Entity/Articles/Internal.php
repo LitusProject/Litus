@@ -94,6 +94,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param string|null $url The url of the article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
+     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
      * @param integer $nbBlackAndWhite The number of blach and white pages of the article
      * @param integer $nbColored The number of colored pages of the article
      * @param \CudiBundle\Entity\Articles\Options\Binding $binding The binding of the article
@@ -104,7 +105,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
     ) {
         parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
 
@@ -292,6 +293,7 @@ class Internal extends \CudiBundle\Entity\Article
             $this->getURL(),
             $this->getType(),
             $this->isDownloadable(),
+            $this->isSameAsPreviousYear(),
             $this->getNbBlackAndWhite(),
             $this->getNbColored(),
             $this->getBinding(),
