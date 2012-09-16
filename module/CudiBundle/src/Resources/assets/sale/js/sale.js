@@ -78,7 +78,7 @@
 	    if (settings == undefined)
 	    	return;
 
-	    settings.modal.permanentModal('open');
+	    settings.modal.permanentModal('open', {closable: false});
 	    $this.removeData('saleSettings');
 	}
 
