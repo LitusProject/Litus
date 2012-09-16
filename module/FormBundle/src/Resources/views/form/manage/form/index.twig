@@ -1,0 +1,40 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+    {% if authenticatedPerson is not null %}
+	    <h2>{{ translate('Your Forms') }}</h2>
+
+	    <table class="table">
+
+	    	<thead>
+	    		<tr>
+	    			<th>Title</th>
+	    			<th width="150px">Start Date</th>
+	    			<th width="150px">End Date</th>
+	    			<th width="150px">Active</th>
+	    			<th width="150px">Actions</th>
+	    		</tr>
+			</thead>
+
+    		<tbody>
+		    {% for form in forms %}
+		    	<tr class="item item-{{ form.getId() }}">
+    				<td>{{ form.getTitle() }}</td>
+                    <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y H:mm') }}</td>
+                    <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y H:mm') }}</td>
+					<td>{% if form.isActive() %}X{% endif %}</td>
+					<td>
+						<a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-mini">View</a>
+					</td>
+	    		</tr>
+		    {% endfor %}
+			</tbody>
+		</table>
+
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}

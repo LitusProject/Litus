@@ -15,8 +15,8 @@ use CommonBundle\Entity\Users\Person,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "banner"="BannerBundle\Entity\Nodes\Banner",
- *      "form"="FormBundle\Entity\Nodes\FormSpecification",
- *      "formentry"="FormBundle\Entity\Nodes\FormEntry",
+ *      "form"="FormBundle\Entity\Nodes\Form",
+ *      "formentry"="FormBundle\Entity\Nodes\Entry",
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Nodes\News",
  *      "notification"="NotificationBundle\Entity\Nodes\Notification",

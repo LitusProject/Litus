@@ -3,6 +3,22 @@
 {% block content %}
     {% import 'site/partials/form.twig' as forms %}
 
+    <div class="flashmessage alert alert-success fade" id="responsible_success">
+        <div class="content">
+            {{ translate('You were signed up as a responsible for the selected shift!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="responsible_success">
+        <div class="content">
+            {{ translate('You were signed up as a volunteer for the selected shift!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="error">
+        <div class="content">
+            {{ translate('An error occurred while signing you up for the shift!') }}
+        </div>
+    </div>
+
     <div class="page-header">
         <h1>{{ translate('Shifts') }}</h1>
     </div>
@@ -24,34 +40,123 @@
             </div>
         </span>
         <span class="span8">
-            <h2>My Shifts</h2>
+            <h2>{{ translate('My Shifts') }}</h2>
+                {{ _self.displayShifts(entityManager, academicYear, authenticatedPerson, myShifts, 'myShifts') }}
 
-            <h2>Results</h2>
+            <h2>{{ translate('Results') }}</h2>
             {% if searchResults is not null %}
-                {{ _self.displayShifts(searchResults, 'search') }}
+                {{ _self.displayShifts(entityManager, academicYear, authenticatedPerson, searchResults, 'search') }}
             {% else %}
                 <div class="alert alert-warning">
-                    There are no shifts to be shown yet; please use the search functions on the left.
+                    {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
                 </div>
             {% endif %}
         </span>
     </div>
 {% endblock %}
 
-{% macro displayShifts(shifts, accordionName) %}
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.responsible').click(function () {
+                var button = $(this);
+                button.addClass('active disabled');
+
+                var count = parseInt($(this).data('count'));
+
+                $.post(
+                    '{{ url('shift', {"action": "responsible"}) }}',
+                    {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                    function (data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').removeClass('in');
+                            $('#responsible_success').addClass('in');
+
+                            updateButton(button, parseInt(data.ratio), count);
+                        } else {
+                            errorSave();
+                        }
+                    },
+                    'json'
+                ).error(errorSave);
+            });
+
+            $('.volunteer').click(function () {
+                var button = $(this);
+                button.addClass('active disabled');
+
+                var count = parseInt($(this).data('count'));
+
+                $.post(
+                    '{{ url('shift', {"action": "volunteer"}) }}',
+                    {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                    function (data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').removeClass('in');
+                            $('#responsible_volunteer').addClass('in');
+
+                            updateButton(button, parseInt(data.ratio), count);
+                        } else {
+                            errorSave();
+                        }
+                    },
+                    'json'
+                ).error(errorSave);
+            });
+        });
+
+        function updateButton(button, ratio, count) {
+            button.removeClass('btn-success btn-warning btn-danger');
+
+            if (ratio < 0.5) {
+                button.addClass('btn-success');
+            } else if (ratio < 0.75) {
+                button.addClass('btn-warning');
+            } else if (ratio == 1) {
+                button.addClass('btn-danger');
+            }
+
+            button.find('.count').text(++count);
+        }
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#error').addClass('in');
+        }
+    </script>
+{% endblock %}
+
+{% macro displayShifts(entityManager, academicYear, authenticatedPerson, shifts, accordionName) %}
     <div class="accordion" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_shift-{{ shift.getId() }}">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}">
                         {{ shift.getName() }}
 
                         <span class="pull-right">
-                            <button class="btn btn-mini btn-info" type="button">Enroll</button>
+                            {% if 'search' == accordionName %}
+                                {% if shift.canHaveAsResponsible(entityManager, academicYear, authenticatedPerson) %}
+                                    <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
+                                        {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
+                                    </button>
+                                {% endif %}
+                                {% if shift.canHaveAsVolunteer(entityManager, academicYear, authenticatedPerson) %}
+                                    <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
+                                        {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
+                                    </button>
+                                {% endif %}
+                            {% else %}
+                                {% if shift.canSignout(entityManager, authenticatedPerson) %}
+                                    <button class="btn btn-mini signout" data-id="{{ shift.getId() }}" type="button">
+                                        {{ translate('Signout') }}
+                                    </button>
+                                {% endif %}
+                            {% endif %}
                         </span>
                     </a>
                 </div>
-                <div id="collapse_shift-{{ shift.getId() }}" class="accordion-body collapse">
+                <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="row-fluid">
                             <span class="span8">
@@ -91,20 +196,18 @@
                             <span class="span4">
                                 <dl>
                                     <dt>{{ translate('Responsibles') }}</dt>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
+
+                                    {% for responsible in shift.getResponsibles() %}
+                                        <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
                                 </dl>
 
                                 <dl>
                                     <dt>{{ translate('Volunteers') }}</dt>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
-                                    <dd class="text-warning">Pieter Maene</dd>
+
+                                    {% for volunteer in shift.getVolunteers() %}
+                                        <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
                                 </dl>
                             </span>
                         </div>
@@ -113,8 +216,28 @@
             </div>
         {% else %}
             <div class="alert alert-warning">
-                No shifts were found that match the given query.
+                {% if 'search' == accordionName %}
+                    {{ translate('No shifts were found that match the given query.') }}
+                {% else %}
+                    {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
+                {% endif %}
             </div>
         {% endfor %}
     </div>
+{% endmacro %}
+
+{% macro buttonStyle(shift, type) %}
+    {% if 'responsibles' == type %}
+        {% set ratio = shift.countResponsibles() / shift.getNbResponsibles() %}
+    {% else %}
+        {% set ratio = shift.countVolunteers() / shift.getNbVolunteers() %}
+    {% endif %}
+
+    {% if ratio < 0.5 %}
+        btn-success
+    {% elseif ratio < 0.75 %}
+        btn-warning
+    {% elseif ratio == 1 %}
+        btn-danger
+    {% endif %}
 {% endmacro %}

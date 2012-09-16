@@ -78,7 +78,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -118,16 +118,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 if ($article !== null) {
 
                     $articles[] = array(
-                        'article'   => $article,
+                        'article' => $article,
                         'mandatory' => $subjectMap->isMandatory()
                     );
                 }
             }
 
             $result[] = array(
-                'subject'   => $subject,
-                'articles'  => $articles,
-                'isMapping' => false,
+                'subject' => $subject,
+                'articles' => $articles,
+                'isMapping' => false
             );
 
             $form->addInputsForArticles($articles);
@@ -140,15 +140,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
             $articles[] = array(
-                'article'   => $commonArticle,
+                'article' => $commonArticle,
                 'mandatory' => false,
             );
         }
 
         $result[] = array(
-            'subject'   => null,
-            'articles'  => $articles,
-            'isMapping' => false,
+            'subject' => null,
+            'articles' => $articles,
+            'isMapping' => false
         );
 
         $form->addInputsForArticles($articles);
@@ -196,7 +196,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'booking',
                     array(
                         'action' => 'view',
-                        'language' => $this->getLanguage()->getAbbrev(),
+                        'language' => $this->getLanguage()->getAbbrev()
                     )
                 );
 
@@ -207,7 +207,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
-                'form'              => $form,
+                'form' => $form
             )
         );
     }
@@ -235,8 +235,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $booking = $this->getEntityManager()
-        ->getRepository('CudiBundle\Entity\Sales\Booking')
-        ->findOneById($this->getParam('id'));
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findOneById($this->getParam('id'));
 
         if (null === $booking) {
             $this->flashMessenger()->addMessage(
