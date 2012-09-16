@@ -25,7 +25,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="BannerBundle\Repository\Nodes\Banner")
- * @ORM\Table(name="nodes.banner")
+ * @ORM\Table(name="nodes.banners")
  */
 class Banner extends \CommonBundle\Entity\Nodes\Node
 {

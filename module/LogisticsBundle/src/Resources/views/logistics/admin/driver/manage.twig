@@ -19,23 +19,23 @@
 	</div>
 
 	<div id="controller_action">
-	
+
 		<div id="normal_page">
-		
+
 			<table class="full_width manage">
 				<tr>
 					<th>Name</th>
 					<th width="200px">Years</th>
 					<th width="70px">Actions</th>
 				</tr>
-				
+
 				{% for driver in paginator %}
-				
+
 					<tr class="item item-{{ driver.getPerson().getId() }}">
 						<td>{{ driver.getPerson().getFullName() }}</td>
 						<td>
 						{% for year in driver.getYears() %}
-							{{ year.getCode() }} 
+							{{ year.getCode() }}
 						{% endfor %}
 						</td>
 						<td class="actions">
@@ -47,15 +47,15 @@
 		                    {% endif %}
 						</td>
 					</tr>
-				
+
 				{% endfor %}
-				
+
 			</table>
-		
+
 		</div>
-	
+
     </div>
-    
+
 	<div class="modal hide fade" id="removeDriver">
 		<div class="modal-header">
 			<span>Litus Admin</span>
@@ -79,13 +79,13 @@
 
 {% block content_script %}
 	<script type="text/javascript">
-		
+
 		$(document).ready(function () {
-		
+
 			$('.item .delete').click(openModal);
 
 		});
-		
+
 		function openModal(e) {
 			var $this = $(this);
 
@@ -113,6 +113,6 @@
     		$('.driver_removed_error').removeClass('hide');
     		$('#removeDriver').modal('hide');
 		}
-		
+
 	</script>
 {% endblock %}
