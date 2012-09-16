@@ -25,7 +25,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Nodes\Notification")
- * @ORM\Table(name="nodes.notification")
+ * @ORM\Table(name="nodes.notifications")
  */
 class Notification extends \CommonBundle\Entity\Nodes\Node
 {

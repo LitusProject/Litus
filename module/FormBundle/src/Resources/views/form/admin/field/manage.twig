@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form-specification/partials/navigation.twig' %}
+	{% include 'form/admin/form/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width field_removed_success hide">
@@ -25,19 +25,23 @@
 
 	    <table class="manage">
             <tr>
-                <th width="150px">Label</th>
+                <th>Label</th>
+                <th width="70px">Order</th>
+                <th width="70px">Required</th>
                 <th width="70px">Action</th>
             </tr>
 
             {% for field in fields %}
                 <tr class="item item-{{ field.getId() }}">
                     <td>{{ field.getLabel() }}</td>
+                    <td>{{ field.getOrder() }}</td>
+                    <td>{% if field.isRequired() %}X{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_field', 'edit') %}
                             <a href="{{ url('admin_form_field', {"action": "edit", "id": field.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('admin_form_field', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel() }}" data-form="{{ field.getForm().getName() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel() }}" data-form="{{ field.getForm().getTitle() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -70,7 +74,7 @@
 		</div>
 		<div class="modal-body">
 			<p>
-				You are about to delete the following field: <b class="fullName"></b> of <b class="formSpecification"></b>!
+				You are about to delete the following field: <b class="label"></b> of <b class="formSpecification"></b> This will also delete all previously entered values for this field!
 				Please note that this operation cannot be undone!
 			</p>
 			<p>
@@ -95,14 +99,14 @@
 
 			e.preventDefault();
 			var removeField = $('#removeField');
-			removeField.find('.fullName').html($(this).data('name'));
+			removeField.find('.label').html($(this).data('label'));
 			removeField.find('.formSpecification').html($(this).data('form'));
 			var id = $this.data('id');
 			removeField.find('.delete').unbind('click').click(function () {
 				$.post('{{ url('admin_form_field', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
-    					$('.field_removed_succes').show();
+    					$('.field_removed_success').show();
 						$('.item-' + id).remove();
     					removeField.modal('hide');
     				} else {
