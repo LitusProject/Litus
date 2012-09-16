@@ -46,14 +46,14 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => $result
+                'result' => (object) $result
             )
         );
     }
 
     private function _getPerson()
     {
-        if ('' != $this->getRequest()->getPost('session', '')) {
+        if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Session')
                 ->findOneById($this->getRequest()->getPost('session'));
@@ -61,7 +61,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $session->getPerson();
         }
 
-        if ('' != $this->getRequest()->getPost('username', '')) {
+        if (null !== $this->getRequest()->getPost('username')) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Person')
                 ->findOneByUsername($this->getRequest()->getPost('username'));
