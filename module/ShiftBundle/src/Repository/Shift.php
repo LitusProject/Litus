@@ -78,17 +78,13 @@ class Shift extends EntityRepository
     public function findAllActiveByPerson(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
+        $responsibleResultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r')
-            ->innerJoin('s.volunteers', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('s.startDate', ':now'),
-                    $query->expr()->orX(
-                        $query->expr()->eq('r.person', ':person'),
-                        $query->expr()->eq('v.person', ':person')
-                    )
+                    $query->expr()->eq('r.person', ':person')
                 )
             )
             ->orderBy('s.startDate', 'ASC')
@@ -97,6 +93,24 @@ class Shift extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        return $resultSet;
+        $query = $this->_em->createQueryBuilder();
+        $volunteerResultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.startDate', ':now'),
+                    $query->expr()->eq('v.person', ':person')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+
+        return array_merge(
+            $responsibleResultSet, $volunteerResultSet
+        );
     }
 }
