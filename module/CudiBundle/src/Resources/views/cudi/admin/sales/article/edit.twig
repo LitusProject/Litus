@@ -101,18 +101,30 @@
 
 	        $('.sellProfVersion').click(openSellProfModal);
 
-	        {% if article.getMainArticle().isInternal() %}
-	        var field = $('<span>').css({
-	            paddingLeft: '10px',
+            {% if article.getMainArticle().isInternal() %}
+            var field = $('<span>').css({
+                paddingLeft: '10px',
 	            color: '#999',
-	            cursor: 'pointer',
-	        });
-	        $('#sell_price').parent().append(field);
-	        field.html('(calculated: &euro; {{ precalculatedPrice|number_format(2) }})')
-	            .click(function () {
-	                $('#sell_price').val(({{ precalculatedPrice|number_format(2) }}).toFixed(2));
-	            });
-	        {% endif %}
+                cursor: 'pointer',
+            });
+            $('#sell_price').parent().append(field);
+	        field.html('(Calculated: &euro; {{ precalculatedSellPrice|number_format(2) }})')
+                .click(function () {
+                    $('#sell_price').val(({{ precalculatedSellPrice|number_format(2) }}).toFixed(2));
+                });
+
+
+            var field = $('<span>').css({
+                paddingLeft: '10px',
+                color: '#999',
+                cursor: 'pointer',
+            });
+            $('#purchase_price').parent().append(field);
+            field.html('(Calculated: &euro; {{ precalculatedPurchasePrice|number_format(2) }})')
+                .click(function () {
+                    $('#purchase_price').val(({{ precalculatedPurchasePrice|number_format(2) }}).toFixed(2));
+                });
+            {% endif %}
 	    });
 	    function openSellProfModal(e) {
 			var $this = $(this);
