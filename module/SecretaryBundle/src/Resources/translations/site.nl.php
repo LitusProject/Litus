@@ -64,7 +64,7 @@ return array(
     'Choose your subjects:' => 'Kies je vakken:',
     'Complete Your Registration' => 'Voltooi Je Inschrijving',
     'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgelsagen!',
-    'An error occurred while saving your subjects' => 'Er is een fout opgetreden tijdens het opslagen van je vakken',
+    'An error occurred while saving your subjects!' => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',
 
     'Addresses' => 'Adressen',
     'Organization' => 'Organisatie',

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository,
  */
 class Driver extends EntityRepository
 {
-    
+
     public function findOneById($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -30,7 +30,7 @@ class Driver extends EntityRepository
             return $resultSet[0];
         return null;
     }
-    
+
     public function findOneByIdAndYear($id, AcademicYear $year)
     {
         $resultSet = $this->_em
@@ -38,21 +38,21 @@ class Driver extends EntityRepository
         ->setParameter('yearid', $year->getId())
         ->setParameter('id', $id)
         ->getResult();
-        
+
         if (isset($resultSet[0]))
             return $resultSet[0];
         return null;
     }
-    
+
     public function findAllByYear(AcademicYear $year) {
         $resultSet = $this->_em
             ->createQuery('SELECT d FROM LogisticsBundle\Entity\Driver d JOIN d.years y WHERE y.id = :id')
             ->setParameter('id', $year->getId())
             ->getResult();
-        
+
         return $resultSet;
     }
-    
+
     public function findAll()
     {
         $query = $this->_em->createQueryBuilder();

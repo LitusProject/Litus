@@ -14,15 +14,18 @@
 
 namespace ShiftBundle\Controller;
 
-use CommonBundle\Entity\Users\People\Academic,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    ShiftBundle\Entity\Shifts\Responsible,
+    ShiftBundle\Entity\Shifts\Volunteer,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
-    CudiBundle\Entity\Sales\Booking,
     Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
+ *
+ * Flight Mode
+ * This file was edited by Pieter Maene while in flight from Vienna to Brussels
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -32,6 +35,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
         $unitSearchForm = new UnitSearchForm($this->getEntityManager());
+
+        $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
 
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
@@ -86,99 +93,128 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'eventSearchForm' => $eventSearchForm,
                 'unitSearchForm' => $unitSearchForm,
-                'searchResults' => $searchResults
+                'myShifts' => $myShifts,
+                'searchResults' => $searchResults,
+                'entityManager' => $this->getEntityManager(),
+                'academicYear' => $this->getCurrentAcademicYear()
             )
         );
     }
 
-    public function cancelAction()
+    public function responsibleAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
-        if (!($booking = $this->_getBooking()))
-            return new ViewModel();
-
-        if (!($booking->getArticle()->isUnbookable())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given booking cannot be cancelled!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_booking',
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+            return new ViewModel(
                 array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
+                    'result' => (object) array('status' => 'error')
                 )
             );
-
-            return new ViewModel();
         }
 
-        $booking->setStatus('canceled');
+        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        $shift->addResponsible(
+            $this->getEntityManager(),
+            $this->getCurrentAcademicYear(),
+            new Responsible(
+                $person,
+                $this->getCurrentAcademicYear()
+            )
+        );
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countResponsibles() / $shift->getNbResponsibles()
+                )
             )
         );
     }
 
-    public function signupAction()
+    public function volunteerAction()
     {
-        
+        $this->initAjax();
+
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        if ($shift->countVolunteers() >= $shift->getNbVolunteers()) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson()->getOrganizationStatus($this->getCurrentAcademicYear()) == OrganizationStatus::$possibleStatuses['praesidium']) {
+                    $shift->removeVolunteer($volunteer);
+
+                    // @TODO: Send mail
+
+                    $this->getEntityManager()->remove($volunteer);
+                }
+            }
+        }
+
+        $shift->addVolunteer(
+            $this->getEntityManager(),
+            $this->getCurrentAcademicYear(),
+            new Volunteer(
+                $person
+            )
+        );
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                )
+            )
+        );
     }
 
-    private function _getBooking()
+    private function _getShift()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the booking!'
-                )
-            );
+        if (null === $this->getRequest()->getPost('id'))
+            return null;
 
-            $this->redirect()->toRoute(
-                'cudi_booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
+        $shift = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findOneById($this->getRequest()->getPost('id'));
 
-            return;
-        }
+        return $shift;
+    }
 
-        $booking = $this->getEntityManager()
-        ->getRepository('CudiBundle\Entity\Sales\Booking')
-        ->findOneById($this->getParam('id'));
+    private function _getPerson()
+    {
+        if (null === $this->getRequest()->getPost('person'))
+            return null;
 
-        if (null === $booking) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No booking with the given ID was found!'
-                )
-            );
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Users\Person')
+            ->findOneById($this->getRequest()->getPost('person'));
 
-            $this->redirect()->toRoute(
-                'cudi_booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        return $booking;
+        return $person;
     }
 }
