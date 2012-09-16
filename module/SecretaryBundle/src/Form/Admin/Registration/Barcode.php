@@ -54,7 +54,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
-            ->setValue($person->getBarcode()->getBarcode())
+            ->setValue($person->getBarcode() ? $person->getBarcode()->getBarcode() : '')
             ->setRequired();
         $this->add($field);
 
