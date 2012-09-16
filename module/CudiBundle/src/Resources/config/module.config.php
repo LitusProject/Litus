@@ -131,6 +131,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_sales_barcode' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/barcode[/:action[/:id]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_sales_barcode',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_sales_booking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -662,6 +676,7 @@ return array(
             'admin_article_comment' => 'CudiBundle\Controller\Admin\Article\CommentController',
             'admin_article_file'    => 'CudiBundle\Controller\Admin\Article\FileController',
             'admin_sales_article'   => 'CudiBundle\Controller\Admin\Sales\ArticleController',
+            'admin_sales_barcode'   => 'CudiBundle\Controller\Admin\Sales\BarcodeController',
             'admin_sales_discount'  => 'CudiBundle\Controller\Admin\Sales\DiscountController',
             'admin_sales_booking'   => 'CudiBundle\Controller\Admin\Sales\BookingController',
             'admin_sales_session'   => 'CudiBundle\Controller\Admin\Sales\SessionController',
