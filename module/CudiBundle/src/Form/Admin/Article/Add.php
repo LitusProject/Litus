@@ -89,6 +89,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Downloadable');
         $article->add($field);
 
+        $field = new Checkbox('same_as_previous_year');
+        $field->setLabel('Same As Previous Year');
+        $article->add($field);
+
         $field = new Select('type');
         $field->setLabel('Type')
             ->setRequired()
@@ -205,6 +209,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'isbn' => $article->getISBN(),
             'url' => $article->getURL(),
             'downloadable' => $article->isDownloadable(),
+            'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
             'internal' => $article->isInternal()
         );

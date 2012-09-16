@@ -118,6 +118,13 @@ abstract class Article
     private $downloadable;
 
     /**
+     * @var boolean The flag whether the article is the same as previous year
+     *
+     * @ORM\Column(name="same_as_previous_year", type="boolean")
+     */
+    private $sameAsPreviousYear;
+
+    /**
      * @var string The article type
      *
      * @ORM\Column(type="string")
@@ -148,8 +155,9 @@ abstract class Article
      * @param string|null $url The url of the article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
+     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
      */
-    public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable)
+    public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable, $sameAsPreviousYear)
     {
         $this->setTitle($title)
             ->setAuthors($authors)
@@ -161,7 +169,8 @@ abstract class Article
             ->setIsHistory(false)
             ->setIsProf(false)
             ->setType($type)
-            ->setIsDownloadable($downloadable);
+            ->setIsDownloadable($downloadable)
+            ->setIsSameAsPreviousYear($sameAsPreviousYear);
         $this->timestamp = new DateTime();
     }
 
@@ -387,6 +396,25 @@ abstract class Article
     public function setIsDownloadable($downloadable)
     {
         $this->downloadable = $downloadable;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSameAsPreviousYear()
+    {
+        return $this->sameAsPreviousYear;
+    }
+
+    /**
+     * @param boolean $sameAsPreviousYear
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsSameAsPreviousYear($sameAsPreviousYear)
+    {
+        $this->sameAsPreviousYear = $sameAsPreviousYear;
         return $this;
     }
 
