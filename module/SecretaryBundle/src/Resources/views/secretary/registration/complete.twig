@@ -32,7 +32,10 @@
                 <div class="span6">
                     <address>
                         <strong>{{ translate('Primary Address') }}</strong><br>
-                        {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}<br>
+                        {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}
+                            {% if academic.getPrimaryAddress().getMailbox() %}
+                                {{ translate('Mailbox') }} {{ academic.getPrimaryAddress().getMailbox() }}
+                            {% endif %}<br>
                         {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br>
                         {{ academic.getPrimaryAddress().getCountry() }}
                     </address>
@@ -40,7 +43,10 @@
                 <div class="span6">
                     <address>
                         <strong>{{ translate('Secondary Address') }}</strong><br>
-                        {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}<br>
+                        {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}
+                            {% if academic.getSecondaryAddress().getMailbox() %}
+                                {{ translate('Mailbox') }} {{ academic.getSecondaryAddress().getMailbox() }}
+                            {% endif %}<br>
                         {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br>
                         {{ academic.getSecondaryAddress().getCountry() }}
                     </address>

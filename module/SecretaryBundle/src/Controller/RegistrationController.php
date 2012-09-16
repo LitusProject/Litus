@@ -126,6 +126,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             new Address(
                                 $primaryStreet->getName(),
                                 $formData['primary_address_address_number'],
+                                $formData['primary_address_address_mailbox'],
                                 $primaryCity->getPostal(),
                                 $primaryCity->getName(),
                                 'BE'
@@ -135,6 +136,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             new Address(
                                 $formData['secondary_address_address_street'],
                                 $formData['secondary_address_address_number'],
+                                $formData['secondary_address_address_mailbox'],
                                 $formData['secondary_address_address_postal'],
                                 $formData['secondary_address_address_city'],
                                 $formData['secondary_address_address_country']
@@ -306,6 +308,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->getPrimaryAddress()
                         ->setStreet($primaryStreet->getName())
                         ->setNumber($formData['primary_address_address_number'])
+                        ->setNumber($formData['primary_address_address_mailbox'])
                         ->setPostal($primaryCity->getPostal())
                         ->setCity($primaryCity->getName())
                         ->setCountry('BE');
@@ -314,6 +317,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         new Address(
                             $primaryStreet->getName(),
                             $formData['primary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
                             $primaryCity->getPostal(),
                             $primaryCity->getName(),
                             'BE'
@@ -325,6 +329,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->getSecondaryAddress()
                         ->setStreet($formData['secondary_address_address_street'])
                         ->setNumber($formData['secondary_address_address_number'])
+                        ->setNumber($formData['secondary_address_address_mailbox'])
                         ->setPostal($formData['secondary_address_address_postal'])
                         ->setCity($formData['secondary_address_address_city'])
                         ->setCountry($formData['secondary_address_address_country']);
@@ -333,6 +338,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         new Address(
                             $formData['secondary_address_address_street'],
                             $formData['secondary_address_address_number'],
+                            $formData['secondary_address_address_mailbox'],
                             $formData['secondary_address_address_postal'],
                             $formData['secondary_address_address_city'],
                             $formData['secondary_address_address_country']

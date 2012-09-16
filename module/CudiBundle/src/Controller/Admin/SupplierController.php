@@ -62,6 +62,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     new Address(
                         $formData['address_street'],
                         $formData['address_number'],
+                        $formData['address_mailbox'],
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
@@ -115,6 +116,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     ->getAddress()
                         ->setStreet($formData['address_street'])
                         ->setNumber($formData['address_number'])
+                        ->setMailbox($formData['address_mailbox'])
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);

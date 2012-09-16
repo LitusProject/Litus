@@ -58,9 +58,9 @@
 
         function cityChange() {
             var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number').closest('.control-group').hide();
+            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').hide();
             if (city != 0)
-                $('#primary_address_address_street' + city + ', #primary_address_address_number').closest('.control-group').show();
+                $('#primary_address_address_street' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').show();
         }
 
         function toggleMember() {
