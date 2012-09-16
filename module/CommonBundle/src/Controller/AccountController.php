@@ -119,6 +119,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $academic->getPrimaryAddress()
                         ->setStreet($primaryStreet->getName())
                         ->setNumber($formData['primary_address_address_number'])
+                        ->setMailbox($formData['primary_address_address_mailbox'])
                         ->setPostal($primaryCity->getPostal())
                         ->setCity($primaryCity->getName())
                         ->setCountry('BE');
@@ -127,6 +128,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         new Address(
                             $primaryStreet->getName(),
                             $formData['primary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
                             $primaryCity->getPostal(),
                             $primaryCity->getName(),
                             'BE'
@@ -138,6 +140,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $academic->getSecondaryAddress()
                         ->setStreet($formData['secondary_address_address_street'])
                         ->setNumber($formData['secondary_address_address_number'])
+                        ->setMailbox($formData['secondary_address_address_mailbox'])
                         ->setPostal($formData['secondary_address_address_postal'])
                         ->setCity($formData['secondary_address_address_city'])
                         ->setCountry($formData['secondary_address_address_country']);
@@ -146,6 +149,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                         new Address(
                             $formData['secondary_address_address_street'],
                             $formData['secondary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
                             $formData['secondary_address_address_postal'],
                             $formData['secondary_address_address_city'],
                             $formData['secondary_address_address_country']

@@ -35,6 +35,7 @@ return array(
     'Secondary Address' => 'Secundair Adres',
     'Street' => 'Straat',
     'Number' => 'Nummer',
+    'Mailbox' => 'Bus',
     'Postal Code' => 'Postcode',
     'City' => 'Stad',
     'Country' => 'Land',

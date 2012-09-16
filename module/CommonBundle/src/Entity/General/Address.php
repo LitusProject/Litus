@@ -317,6 +317,13 @@ class Address
     private $number;
 
     /**
+     * @var string The mailbox
+     *
+     * @ORM\Column(name="mailbox", type="string", nullable=true)
+     */
+    private $mailbox;
+
+    /**
      * @var string The postal
      *
      * @ORM\Column(type="string")
@@ -340,14 +347,16 @@ class Address
     /**
      * @param string $street
      * @param string $number
+     * @param string $mailbox
      * @param string $postal
      * @param string $city
      * @param string $country
      */
-    public function __construct($street, $number, $postal, $city, $country)
+    public function __construct($street, $number, $mailbox, $postal, $city, $country)
     {
         $this->setStreet($street)
             ->setNumber($number)
+            ->setMailbox($mailbox)
             ->setPostal($postal)
             ->setCity($city)
             ->setCountry($country);
@@ -396,6 +405,25 @@ class Address
     public function setNumber($number)
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailbox()
+    {
+        return $this->mailbox;
+    }
+
+    /**
+     * @param string $mailbox
+     *
+     * @return \CommonBundle\Entity\General\Address
+     */
+    public function setMailbox($mailbox)
+    {
+        $this->mailbox = $mailbox;
         return $this;
     }
 

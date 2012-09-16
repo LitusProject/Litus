@@ -188,6 +188,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'university_identification' => $academic->getUniversityIdentification(),
             'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
             'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
+            'secondary_address_address_mailbox' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getMailbox() : '',
             'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
             'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
             'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
@@ -211,6 +212,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 $data['primary_address_address_street' . $city->getId()] = $street ? $street->getId() : 0;
                 $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
+                $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
             }
 
         }

@@ -64,6 +64,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                     new Address(
                         $formData['address_street'],
                         $formData['address_number'],
+                        $formData['address_mailbox'],
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
@@ -122,6 +123,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                         new Address(
                             $formData['address_street'],
                             $formData['address_number'],
+                            $formData['address_mailbox'],
                             $formData['address_postal'],
                             $formData['address_city'],
                             $formData['address_country']
