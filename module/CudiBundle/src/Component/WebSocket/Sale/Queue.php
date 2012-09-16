@@ -309,21 +309,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function _createJsonBooking($items, Person $person)
     {
         $results = array();
-        foreach($items as $item) {
-            $result = (object) array(
-                'id' => $item->getId(),
-                'price' => $item->getArticle()->getSellPrice(),
-                'title' => $item->getArticle()->getMainArticle()->getTitle(),
-                'barcode' => $item->getArticle()->getBarcode(),
-                'author' => $item->getArticle()->getMainArticle()->getAuthors(),
-                'number' => $item->getNumber(),
-                'status' => $item->getStatus(),
-                'discounts' => array(),
-            );
-            foreach($item->getArticle()->getDiscounts() as $discount)
-                $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
-            $results[] = $result;
-        }
 
         $registration = $this->_entityManager
             ->getRepository('SecretaryBundle\Entity\Registration')
@@ -344,6 +329,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'status' => 'assigned',
                 'discounts' => array(),
             );
+        }
+
+        foreach($items as $item) {
+            $result = (object) array(
+                'id' => $item->getId(),
+                'price' => $item->getArticle()->getSellPrice(),
+                'title' => $item->getArticle()->getMainArticle()->getTitle(),
+                'barcode' => $item->getArticle()->getBarcode(),
+                'author' => $item->getArticle()->getMainArticle()->getAuthors(),
+                'number' => $item->getNumber(),
+                'status' => $item->getStatus(),
+                'discounts' => array(),
+            );
+            foreach($item->getArticle()->getDiscounts() as $discount)
+                $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
+            $results[] = $result;
         }
 
         return $results;

@@ -199,7 +199,7 @@
 						<th width="50px">Num</th>
 						<th width="330px">Name</th>
 						<th width="120px">Status</th>
-						<th width="210px">Action</th>
+						<th width="200px">Action</th>
 					</tr>
 				</thead>
 
@@ -238,9 +238,9 @@
 		    $('#modalChoosePayDesk button').click(function () {
 		        $('#modalChoosePayDesk').permanentModal('hide');
 		        $('#queueList').showQueue('setPayDesk', $(this).data('code'));
-		        $('#queueModal').permanentModal('open');
+		        $('#queueModal').permanentModal('open', {closable: false});
 		    });
-		    $('#modalChoosePayDesk').permanentModal('open');
+		    $('#modalChoosePayDesk').permanentModal('open', {closable: false});
 
 		    $('.addComment').click(function () {
 		        $('#modalAddComment').modal();
