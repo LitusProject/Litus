@@ -16,6 +16,7 @@ namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Articles\Options\Binding,
     CudiBundle\Entity\Articles\Options\Color,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -316,5 +317,81 @@ class Internal extends \CudiBundle\Entity\Article
     public function isInternal()
     {
         return true;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculateSellPrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.sell_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculatePurchasePrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.purchase_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total / 1000;
     }
 }

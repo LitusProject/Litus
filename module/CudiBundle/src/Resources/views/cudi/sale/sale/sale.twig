@@ -235,7 +235,6 @@
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			return;
 		    $('#modalChoosePayDesk button').click(function () {
 		        $('#modalChoosePayDesk').permanentModal('hide');
 		        $('#queueList').showQueue('setPayDesk', $(this).data('code'));

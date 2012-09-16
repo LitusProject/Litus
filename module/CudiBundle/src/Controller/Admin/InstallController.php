@@ -180,19 +180,34 @@ VTK Cudi
                     'description' => 'The start date of the academic year for a prof',
                 ),
                 array(
-                    'key'         => 'cudi.price_page_black_and_white',
-                    'value'       => '10',
-                    'description' => 'The price of a black and white page',
+                    'key'         => 'cudi.purchase_prices',
+                    'value'       => serialize(
+                        array(
+                            'binding_glued'     => 81620,
+                            'binding_stapled'   => 6360,
+                            'binding_none'      => 19080,
+                            'recto_bw'          => 2862,
+                            'recto_verso_bw'    => 2862,
+                            'recto_color'       => 6360,
+                            'recto_verso_color' => 10600,
+                        )
+                    ),
+                    'description' => 'The purchase prices of an internal article ( * 100 000 )',
                 ),
                 array(
-                    'key'         => 'cudi.price_page_color',
-                    'value'       => '15',
-                    'description' => 'The price of a colored page',
-                ),
-                array(
-                    'key'         => 'cudi.price_perforated',
-                    'value'       => '50',
-                    'description' => 'The price of a perforated article',
+                    'key'         => 'cudi.sell_prices',
+                    'value'       => serialize(
+                        array(
+                            'binding_glued'     => 83,
+                            'binding_stapled'   => 7,
+                            'binding_none'      => 20,
+                            'recto_bw'          => 2,
+                            'recto_verso_bw'    => 2,
+                            'recto_color'       => 7,
+                            'recto_verso_color' => 7,
+                        )
+                    ),
+                    'description' => 'The purchase prices of an internal article ( * 100 )',
                 ),
                 array(
                     'key'         => 'cudi.front_address_name',
