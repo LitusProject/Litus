@@ -228,7 +228,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Registration')
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
-        if ($registration && $registration->hasPayed()) {
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+        if ($registration && $registration->hasPayed() && $metaData->becomeMember()) {
             if (empty($bookings)) {
                 return json_encode(
                     (object) array(
@@ -314,7 +318,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Registration')
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
-        if ($registration && !$registration->hasPayed()) {
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
             $results[] = (object) array(
                 'id' => 'membership',
                 'price' => $this->_entityManager

@@ -38,6 +38,16 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '1000',
                     'description' => 'The price for membership',
                 ),
+                array(
+                    'key'         => 'secretary.terms_and_conditions_nl',
+                    'value'       => 'Blablabal',
+                    'description' => 'The organization terms and conditions',
+                ),
+                array(
+                    'key'         => 'secretary.terms_and_conditions_en',
+                    'value'       => 'Blablabal',
+                    'description' => 'The organization terms and conditions',
+                ),
             )
         );
     }
