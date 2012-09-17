@@ -44,6 +44,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_entityManager = null;
 
     /**
+     * @var boolean Are the conditions already checked or not
+     */
+    protected $_conditionsAlreadyChecked = false;
+
+    /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
@@ -218,12 +223,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
-            $this->get('organization')->get('become_member')->setAttribute('disabled', true);
-            if ($metaData) {
-                $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
-                $data['bakske'] = $metaData->bakskeByMail();
-                $data['tshirt_size'] = $metaData->getTshirtSize();
-            }
+            $this->get('organization')->get('become_member')
+                ->setAttribute('disabled', true);
+            $this->get('organization')->get('conditions')
+                ->setAttribute('disabled', true);
+            $this->_conditionsAlreadyChecked = true;
+
+            $data['conditions'] = true;
+            $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
+            $data['bakske'] = $metaData->bakskeByMail();
+            $data['tshirt_size'] = $metaData->getTshirtSize();
         }
 
         $this->setData($data);
@@ -371,22 +380,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'conditions',
-                        'required' => true,
-                        'validators' => array(
-                            array(
-                                'name' => 'notempty',
-                                'options' => array(
-                                    'type' => 16,
+            if (!$this->_conditionsAlreadyChecked) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'conditions',
+                            'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name' => 'notempty',
+                                    'options' => array(
+                                        'type' => 16,
+                                    ),
                                 ),
                             ),
-                        ),
+                        )
                     )
-                )
-            );
+                );
+            }
 
             $this->_inputFilter = $inputFilter;
         }

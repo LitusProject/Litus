@@ -96,14 +96,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     protected function onClose(User $user, $statusCode, $reason)
     {
         foreach($this->_lockedItems as $key => $value) {
-            if ($user == $value)
+            if ($user == $value) {
+                unset($this->_lockedItems[$key]);
+                parent::onClose($user, $statusCode, $reason);
+                $this->sendQueueToAll();
                 break;
-        }
-
-        if (isset($key)) {
-            unset($this->_lockedItems[$key]);
-            parent::onClose($user, $statusCode, $reason);
-            $this->sendQueueToAll();
+            }
         }
     }
 
@@ -230,7 +228,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $metaData = $this->_entityManager
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-            ->findOneByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
         if ($registration && $registration->hasPayed() && $metaData->becomeMember()) {
             if (empty($bookings)) {
@@ -320,7 +318,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $metaData = $this->_entityManager
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-            ->findOneByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
         if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
             $results[] = (object) array(
@@ -330,6 +328,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     ->getConfigValue('secretary.membership_price'),
                 'title' => 'Membership',
                 'barcode' => '',
+                'barcodes' => array(),
                 'author' => $this->_entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('union_name'),
@@ -340,11 +339,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         foreach($items as $item) {
+            $barcodes = array($item->getArticle()->getBarcode());
+            foreach($item->getArticle()->getAdditionalBarcodes() as $barcode)
+                $barcodes[] = $barcode->getBarcode();
+
             $result = (object) array(
                 'id' => $item->getId(),
                 'price' => $item->getArticle()->getSellPrice(),
                 'title' => $item->getArticle()->getMainArticle()->getTitle(),
                 'barcode' => $item->getArticle()->getBarcode(),
+                'barcodes' => $barcodes,
                 'author' => $item->getArticle()->getMainArticle()->getAuthors(),
                 'number' => $item->getNumber(),
                 'status' => $item->getStatus(),
@@ -418,6 +422,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->status = $item->getStatus();
             $result->locked = isset($this->_lockedItems[$item->getId()]);
+
             if ($item->getPayDesk())
                 $result->payDesk = $item->getPayDesk()->getName();
             $results[] = $result;

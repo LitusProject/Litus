@@ -15,12 +15,15 @@
 namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\Users\Credential,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     DateTime,
     Imagick,
+    SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Edit as EditForm,
