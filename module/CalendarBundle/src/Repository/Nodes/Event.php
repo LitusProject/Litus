@@ -13,7 +13,7 @@ use DateTime,
  */
 class Event extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActive($nbResults = 15)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -26,6 +26,7 @@ class Event extends EntityRepository
             )
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->setMaxResults($nbResults)
             ->getQuery()
             ->getResult();
 

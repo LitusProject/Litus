@@ -78,8 +78,13 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
-            ->setRequired()
-            ->setAttribute('size', 5);
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text($prefix . 'address_mailbox');
+        $field->setLabel('Mailbox')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-small')
+            ->setRequired();
         $this->add($field);
     }
 
@@ -158,6 +163,21 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             array(
                 'name'     => $this->_prefix . 'address_number',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_mailbox',
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'alnum',

@@ -6,7 +6,7 @@
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
     <div id="controller_action">
-        <div id="registration_search" style="display:none;">
+        <div id="registration_search">
             <div style="padding:4px;text-align:right">
                 Search:
                 <select id="searchField">
@@ -29,50 +29,15 @@
                 </tr>
             </table>
         </div>
-
-        <div id="default_page">
-            <table class="full_width manage">
-                <thead>
-                    <tr>
-                        <th width="200px">University Identification</th>
-                        <th>Name</th>
-                        <th width="120px">Date</th>
-                        <th width="120px">Payed</th>
-                        <th width="120px">Barcode</th>
-                        <th width="120px">Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for registration in paginator %}
-                        <tr class="item">
-                            <td>{{ registration.getAcademic().getUniversityIdentification() }}</td>
-                            <td>{{ registration.getAcademic().getFullName() }}</td>
-                            <td>{{ registration.getTimestamp().format('d/m/Y H:i') }}</td>
-                            <td>{% if registration.hasPayed() %}Yes{% endif %}</td>
-                            <td>{{ registration.getAcademic().getBarcode().getBarcode() }}</td>
-                            <td class="actions">
-                                {% if hasAccess('admin_secretary_registration', 'barcode') %}
-                                    <a href="{{ url('admin_secretary_registration', {"action": "barcode", "id": registration.getId()}) }}" class="edit">Barcode</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            {% include 'admin/partials/paginationControl.twig' %}
-        </div>
     </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#searchString').focus();
             {% if hasAccess('admin_secretary_registration', 'search') %}
             $.searchDatabase({
-                defaultPage: $('#default_page'),
-                searchDiv: $('#registration_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
                 url: '{{ url('admin_secretary_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',

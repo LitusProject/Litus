@@ -12,22 +12,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Form\Admin\Registration;
+namespace CudiBundle\Form\Admin\Sales\Barcodes;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
+    CudiBundle\Component\Validator\UniqueArticleBarcode as UniqueArticleBarcodeValidator,
+    CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
-    SecretaryBundle\Component\Validator\Barcode as BarcodeValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Academic Barcode form
+ * Add Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Barcode extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -35,33 +36,41 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\Users\Person
+     * @var \CommonBundle\Entity\General\AcademicYear
      */
-    protected $_person = null;
+    protected $_academicYear;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person The person
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Person $person, EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->_person = $person;
+        $this->_academicYear = $academicYear;
 
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
-            ->setValue($person->getBarcode() ? $person->getBarcode()->getBarcode() : '')
             ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'secretary');
+            ->setAttribute('class', 'article_add');
         $this->add($field);
+    }
+
+    public function populateFromArticle(Barcode $barcode)
+    {
+        $this->setData(
+            array(
+                'barcode' => $barcode->getBarcode(),
+            )
+        );
     }
 
     public function getInputFilter()
@@ -86,7 +95,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                                     'useChecksum' => false,
                                 ),
                             ),
-                            new BarcodeValidator($this->_entityManager, $this->_person),
+                            new UniqueArticleBarcodeValidator($this->_entityManager, $this->_academicYear),
                         ),
                     )
                 )

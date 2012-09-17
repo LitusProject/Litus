@@ -15,59 +15,43 @@
 namespace CudiBundle\Controller\Admin\Sales;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sales\Discounts\Discount,
-    CudiBundle\Form\Admin\Sales\Discounts\Add as AddForm,
+    CudiBundle\Entity\Sales\Articles\Barcode,
+    CudiBundle\Form\Admin\Sales\Barcodes\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
- * DiscountController
+ * BarcodeController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DiscountController extends \CudiBundle\Component\Controller\ActionController
+class BarcodeController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
         if (!($article = $this->_getSaleArticle()))
             return new ViewModel();
 
-        $form = new AddForm($article, $this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $discount = new Discount($article);
+                $article->addAdditionalBarcode(new Barcode($article, $formData['barcode']));
 
-                if ($formData['template'] == 0) {
-                    $discount->setDiscount(
-                        $formData['value'],
-                        $formData['method'],
-                        $formData['type']
-                    );
-                } else {
-                    $template = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
-                        ->findOneById($formData['template']);
-
-                    $discount->setTemplate($template);
-                }
-
-                $this->getEntityManager()->persist($discount);
-
-                $this->getEntityManager()->flush();
+                //$this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The discount was successfully created!'
+                        'The barcode was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_sales_discount',
+                    'admin_sales_barcode',
                     array(
                         'action' => 'manage',
                         'id' => $article->getId(),
@@ -78,14 +62,14 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             }
         }
 
-        $discounts = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+        $barcodes = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
             ->findByArticle($article);
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'discounts' => $discounts,
+                'barcodes' => $barcodes,
                 'form' => $form,
             )
         );
@@ -95,10 +79,10 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->_getDiscount()))
+        if (!($barcode = $this->_getBarcode()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($discount);
+        $this->getEntityManager()->remove($barcode);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -155,14 +139,14 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         return $article;
     }
 
-    private function _getDiscount()
+    private function _getBarcode()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the discount!'
+                    'No ID was given to identify the barcode!'
                 )
             );
 
@@ -176,16 +160,16 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        $discount = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
+        $barcode = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
             ->findOneById($this->getParam('id'));
 
-        if (null === $discount) {
+        if (null === $barcode) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No discount with the given ID was found!'
+                    'No barcode with the given ID was found!'
                 )
             );
 
@@ -199,6 +183,6 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        return $discount;
+        return $barcode;
     }
 }

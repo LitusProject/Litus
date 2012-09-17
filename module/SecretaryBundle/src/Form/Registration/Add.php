@@ -44,6 +44,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_entityManager = null;
 
     /**
+     * @var boolean Are the conditions already checked or not
+     */
+    protected $_conditionsAlreadyChecked = false;
+
+    /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
@@ -188,13 +193,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'university_identification' => $academic->getUniversityIdentification(),
             'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
             'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
+            'secondary_address_address_mailbox' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getMailbox() : '',
             'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
             'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
             'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
             'university_email' => $academic->getUniversityEmail(),
             'personal_email' => $academic->getPersonalEmail(),
             'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
-            'become_member' => $metaData->becomeMember(),
+            'become_member' => $metaData ? $metaData->becomeMember() : false,
         );
 
         if ($academic->getPrimaryAddress()) {
@@ -211,17 +217,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 $data['primary_address_address_street' . $city->getId()] = $street ? $street->getId() : 0;
                 $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
+                $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
             }
 
         }
 
-        if ($metaData->becomeMember()) {
-            $this->get('organization')->get('become_member')->setAttribute('disabled', true);
-            if ($metaData) {
-                $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
-                $data['bakske'] = $metaData->bakskeByMail();
-                $data['tshirt_size'] = $metaData->getTshirtSize();
-            }
+        if ($metaData && $metaData->becomeMember()) {
+            $this->get('organization')->get('become_member')
+                ->setAttribute('disabled', true);
+            $this->get('organization')->get('conditions')
+                ->setAttribute('disabled', true);
+            $this->_conditionsAlreadyChecked = true;
+
+            $data['conditions'] = true;
+            $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
+            $data['bakske'] = $metaData->bakskeByMail();
+            $data['tshirt_size'] = $metaData->getTshirtSize();
         }
 
         $this->setData($data);
@@ -369,22 +380,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'conditions',
-                        'required' => true,
-                        'validators' => array(
-                            array(
-                                'name' => 'notempty',
-                                'options' => array(
-                                    'type' => 16,
+            if (!$this->_conditionsAlreadyChecked) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'conditions',
+                            'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name' => 'notempty',
+                                    'options' => array(
+                                        'type' => 16,
+                                    ),
                                 ),
                             ),
-                        ),
+                        )
                     )
-                )
-            );
+                );
+            }
 
             $this->_inputFilter = $inputFilter;
         }

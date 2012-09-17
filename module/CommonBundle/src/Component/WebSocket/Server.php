@@ -139,9 +139,10 @@ class Server
     private function _removeUserSocket($socket)
     {
         foreach($this->_users as $key => $value) {
-            if ($value->getSocket() == $socket)
+            if ($value->getSocket() == $socket) {
                 unset($this->_users[$key]);
-            $this->onClose($value, 0, '');
+                $this->onClose($value, 0, '');
+            }
         }
 
         foreach($this->_sockets as $key => $value) {
