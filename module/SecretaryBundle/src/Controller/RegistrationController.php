@@ -45,6 +45,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
 
+        try {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
+        } catch(\Exception $e) {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
+        }
+
         if (null !== $academic) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
@@ -230,6 +240,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 return new ViewModel(
                     array(
                         'form' => $form,
+                        'terms_and_conditions' => $terms_and_conditions,
                     )
                 );
             }
@@ -240,6 +251,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 return new ViewModel(
                     array(
                         'form' => $form,
+                        'terms_and_conditions' => $terms_and_conditions,
                     )
                 );
             }
@@ -268,6 +280,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        try {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
+        } catch(\Exception $e) {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
+        }
 
         $form = new EditForm(
             $academic,
@@ -433,6 +455,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return new ViewModel(
             array(
                 'form' => $form,
+                'terms_and_conditions' => $terms_and_conditions,
             )
         );
     }

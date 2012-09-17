@@ -80,6 +80,16 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        try {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
+        } catch(\Exception $e) {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
+        }
+
         $form = new EditForm(
             $academic,
             $this->getCurrentAcademicYear(),
@@ -241,6 +251,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
+                'terms_and_conditions' => $terms_and_conditions,
             )
         );
     }

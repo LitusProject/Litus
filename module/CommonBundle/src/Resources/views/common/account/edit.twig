@@ -32,11 +32,34 @@
             <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
         </div>
     </div>
+
+    <div id="modalTermsAndCoditions" class="modal fade">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>{{ translate('Terms And Conditions') }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                {{ markdown(terms_and_conditions) }}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#conditions').parent().append(
+                link = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
+            );
+            link.click(function (e) {
+                e.preventDefault();
+                $('#modalTermsAndCoditions').modal();
+            });
+
             $('#register').click(function (e) {
                 e.preventDefault();
                 console.log($('form#register_form'));

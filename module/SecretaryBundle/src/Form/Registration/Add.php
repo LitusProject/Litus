@@ -195,7 +195,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'university_email' => $academic->getUniversityEmail(),
             'personal_email' => $academic->getPersonalEmail(),
             'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
-            'become_member' => $metaData->becomeMember(),
+            'become_member' => $metaData ? $metaData->becomeMember() : false,
         );
 
         if ($academic->getPrimaryAddress()) {
@@ -217,7 +217,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         }
 
-        if ($metaData->becomeMember()) {
+        if ($metaData && $metaData->becomeMember()) {
             $this->get('organization')->get('become_member')->setAttribute('disabled', true);
             if ($metaData) {
                 $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
