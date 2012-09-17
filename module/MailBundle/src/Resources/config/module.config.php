@@ -52,6 +52,19 @@ return array(
                     ),
                 ),
             ),
+            'admin_mail_study' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/mail/study[/:action]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_mail_study',
+                        'action'     => 'send',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -64,6 +77,7 @@ return array(
             'mail_install'                 => 'MailBundle\Controller\Admin\InstallController',
             'admin_mail'                   => 'MailBundle\Controller\Admin\MailController',
             'admin_mail_prof'              => 'MailBundle\Controller\Admin\ProfController',
+            'admin_mail_study'              => 'MailBundle\Controller\Admin\StudyController',
         ),
     ),
 );

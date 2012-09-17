@@ -14,6 +14,37 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Study extends EntityRepository
 {
+
+    public function findAll()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findOneById($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->eq('s.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
     {
         if (! is_numeric($phase))

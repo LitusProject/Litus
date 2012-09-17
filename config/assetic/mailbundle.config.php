@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'controllers'  => array(
         'mail_install' => array(
@@ -26,6 +26,11 @@ return array(
             '@admin_js',
         ),
         'admin_mail_prof' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'admin_mail_study' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
