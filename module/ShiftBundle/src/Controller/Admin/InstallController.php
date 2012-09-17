@@ -24,7 +24,23 @@ use CommonBundle\Entity\General\Language;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
+    protected function initConfig()
+    {
+        $this->installConfig(
+            array(
+                array(
+                    'key'         => 'shiftbundle.signout_treshold',
+                    'value'       => 'P1D',
+                    'description' => 'The date interval after which a person cannot sign out from a shift',
+                ),
+                array(
+                    'key'         => 'shiftbundle.responsible_signout_treshold',
+                    'value'       => 'P12H',
+                    'description' => 'The date interval after which a responsible cannot be signed out from a shift',
+                ),
+            )
+        );
+    }
 
     protected function initAcl()
     {

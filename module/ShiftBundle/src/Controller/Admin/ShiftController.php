@@ -127,15 +127,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
+                if ($shift->canEditDates()) {
+                    $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                }
+
+
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
 
                 $manager = ('' == $formData['manager_id'])
                     ? $repository->findOneByUsername($formData['manager']) : $repository->findOneById($formData['manager_id']);
 
-                $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setManager($manager)
+                $shift->setManager($manager)
                     ->setNbResponsibles($formData['nb_responsibles'])
                     ->setNbVolunteers($formData['nb_volunteers'])
                     ->setUnit(
@@ -187,8 +191,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         // @TODO: Send an e-mail to all people on the shift
-
-        $this->getEntityManager()->remove($shift);
+        $this->getEntityManager()->remove(
+            $shift->prepareRemove()
+        );
 
         $this->getEntityManager()->flush();
 

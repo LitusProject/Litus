@@ -14,7 +14,8 @@
 
 namespace ShiftBundle\Entity;
 
-use DateTime,
+use DateInterval,
+    DateTime,
     CalendarBundle\Entity\Nodes\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
@@ -303,7 +304,7 @@ class Shift
      */
     public function removeResponsible(Responsible $responsible)
     {
-        $this->responsibles->remove($responsible);
+        $this->responsibles->removeElement($responsible);
         return $this;
     }
 
@@ -393,7 +394,7 @@ class Shift
      */
     public function removeVolunteer(Volunteer $volunteer)
     {
-        $this->volunteers->remove($volunteer);
+        $this->volunteers->removeElement($volunteer);
         return $this;
     }
 
@@ -428,11 +429,17 @@ class Shift
         }
 
         foreach ($this->volunteers as $volunteer) {
-            $responsibleSignoutTreshold = $em->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shiftbundle.responsible_signout_treshold');
+            $now = new DateTime();
 
-            if ($volunteer->isPraesidium($academicYear))
-                return true;
+            $responsibleSignoutTreshold = new DateInterval(
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shiftbundle.responsible_signout_treshold')
+            );
+
+            if ($volunteer->isPraesidium($academicYear)) {
+                if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
+                    return true;
+            }
         }
 
         if ($this->countVolunteers() >= $this->getNbVolunteers())
@@ -531,6 +538,11 @@ class Shift
         return $this;
     }
 
+    public function canEditDates()
+    {
+        return (0 == $this->countResponsibles()) && (0 == $this->countVolunteers());
+    }
+
     /**
      * Check whether or not the given person can sign out from this shift.
      *
@@ -540,6 +552,57 @@ class Shift
      */
     public function canSignout(EntityManager $entityManager, Person $person)
     {
+        $now = new DateTime();
+
+        $signoutTreshold = new DateInterval(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shiftbundle.signout_treshold')
+        );
+
+        if ($this->getStartDate()->sub($signoutTreshold) < $now)
+            return false;
+
         return true;
+    }
+
+    /**
+     * Preparing the removal of this shift. Basically a small hack because the
+     * cascade options aren't doing what they're supposed to do.
+     *
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function prepareRemove()
+    {
+        $this->responsibles = new ArrayCollection();
+        $this->volunteers = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * Removes the given person from this shift.
+     *
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be removed
+     * @return \ShiftBundle\Entity\Shifts\Responsible|\ShiftBundle\Entity\Shifts\Volunteer
+     */
+    public function removePerson(Person $person)
+    {
+        foreach ($this->volunteers as $volunteer) {
+            if ($volunteer->getPerson() === $person) {
+                $this->removeVolunteer($volunteer);
+
+                return $volunteer;
+            }
+        }
+
+        foreach ($this->responsibles as $responsible) {
+            if ($responsible->getPerson() === $person) {
+                $this->removeResponsible($responsible);
+
+                return $responsible;
+            }
+        }
+
+        return null;
     }
 }
