@@ -32,6 +32,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson) {
+            $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
 
@@ -50,8 +51,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking()))
+        if (!($booking = $this->_getBooking())) {
+            $this->getResponse()->setStatusCode(404);
             return new ViewModel();
+        }
 
         if (!($booking->getArticle()->isUnbookable())) {
             $this->flashMessenger()->addMessage(
@@ -66,7 +69,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'booking',
                 array(
                     'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
 
@@ -90,6 +92,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
+            $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
 
@@ -101,7 +104,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach ($enrollments as $enrollment) {
-
             $subject = $enrollment->getSubject();
 
             $subjectMaps = $this->getEntityManager()
@@ -110,13 +112,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             $articles = array();
             foreach ($subjectMaps as $subjectMap) {
-
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sales\Article')
                     ->findOneByArticleAndAcademicYear($subjectMap->getArticle(), $currentYear);
 
                 if ($article !== null) {
-
                     $articles[] = array(
                         'article' => $article,
                         'mandatory' => $subjectMap->isMandatory()
@@ -137,11 +137,23 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllByTypeAndAcademicYear('common', $currentYear);
 
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($authenticatedPerson);
+
+        $booked = array();
+        foreach($bookings as $booking) {
+            if (!isset($booked[$booking->getArticle()->getId()]))
+                $booked[$booking->getArticle()->getId()] = 0;
+            $booked[$booking->getArticle()->getId()] += $booking->getNumber();
+        }
+
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
             $articles[] = array(
                 'article' => $commonArticle,
                 'mandatory' => false,
+                'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
             );
         }
 
@@ -154,16 +166,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $form->addInputsForArticles($articles);
 
         if($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 foreach ($formData as $formKey => $formValue) {
-
                     if (substr($formKey, 0, 8) === 'article-' && $formValue !== '' && $formValue !== '0') {
-
                         $saleArticleId = substr($formKey, 8, strlen($formKey));
 
                         $saleArticle = $this->getEntityManager()
@@ -196,7 +204,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'booking',
                     array(
                         'action' => 'view',
-                        'language' => $this->getLanguage()->getAbbrev()
                     )
                 );
 
@@ -214,51 +221,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getBooking()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the booking!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findOneById($this->getParam('id'));
 
-        if (null === $booking) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No booking with the given ID was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'booking',
-                array(
-                    'action' => 'view',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
+        if (null === $booking)
             return;
-        }
 
         return $booking;
     }
-
 }

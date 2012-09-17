@@ -35,6 +35,7 @@ return array(
     'Secondary Address' => 'Secundair Adres',
     'Street' => 'Straat',
     'Number' => 'Nummer',
+    'Mailbox' => 'Bus',
     'Postal Code' => 'Postcode',
     'City' => 'Stad',
     'Country' => 'Land',
@@ -53,6 +54,9 @@ return array(
     'Are you sure you want to continue?' => 'Ben je zeker dat je wil verdergaan?',
     'Your registration was succesfully updated!' => 'Je inschrijving is succesvol opgeslagen!',
     'You are succesfully registered!' => 'Je ben succesvol ingeschreven!',
+    'Terms And Conditions' => 'Voorwaarden',
+    'Close' => 'Sluit',
+    'Read Them' => 'Lees Ze',
 
     'Choose a study:' => 'Kies een studierichting:',
     'Choose Your Subjects' => 'Kies Je Vakken',
@@ -64,7 +68,7 @@ return array(
     'Choose your subjects:' => 'Kies je vakken:',
     'Complete Your Registration' => 'Voltooi Je Inschrijving',
     'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgelsagen!',
-    'An error occurred while saving your subjects' => 'Er is een fout opgetreden tijdens het opslagen van je vakken',
+    'An error occurred while saving your subjects!' => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',
 
     'Addresses' => 'Adressen',
     'Organization' => 'Organisatie',

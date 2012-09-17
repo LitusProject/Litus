@@ -110,6 +110,7 @@ return array(
 
     'URL' => 'URL',
     'Downloadable (on Toledo)' => 'Downloadable (on Toledo)',
+    'Same As Previous Year' => 'Same As Previous Year',
     'Type' => 'Type',
     'Internal Article' => 'Internal Article',
     'Binding' => 'Binding',

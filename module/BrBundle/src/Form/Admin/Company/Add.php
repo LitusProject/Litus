@@ -91,6 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'vat_number' => $company->getVatNumber(),
                 'address_street' => $company->getAddress()->getStreet(),
                 'address_number' => $company->getAddress()->getNumber(),
+                'address_mailbox' => $company->getAddress()->getMailbox(),
                 'address_postal' => $company->getAddress()->getPostal(),
                 'address_city' => $company->getAddress()->getCity(),
                 'address_country' => $company->getAddress()->getCountryCode(),

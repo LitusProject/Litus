@@ -84,7 +84,16 @@ class UniqueArticleBarcode extends \Zend\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);
 
-           if (null === $article || in_array($article->getId(), $this->_ignoreIds))
+        if (!(null === $article || in_array($article->getId(), $this->_ignoreIds))) {
+            $this->error(self::NOT_VALID);
+            return false;
+        }
+
+        $barcode = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
+            ->findOneByBarcodeAndAcademicYear($value, $this->_academicYear);
+
+        if (null === $barcode)
             return true;
 
         $this->error(self::NOT_VALID);

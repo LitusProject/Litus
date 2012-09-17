@@ -68,6 +68,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'admin_sales_barcode' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'admin_sales_booking' => array(
             '@common_jquery',
             '@admin_css',

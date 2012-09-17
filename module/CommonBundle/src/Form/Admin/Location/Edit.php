@@ -48,6 +48,7 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
             'name' => $location->getName(),
             'address_street' => $location->getAddress()->getStreet(),
             'address_number' => $location->getAddress()->getNumber(),
+            'address_mailbox' => $location->getAddress()->getMailbox(),
             'address_postal' => $location->getAddress()->getPostal(),
             'address_city' => $location->getAddress()->getCity(),
             'address_country' => $location->getAddress()->getCountryCode()

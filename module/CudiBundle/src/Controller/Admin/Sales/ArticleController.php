@@ -63,22 +63,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-        if ($article->isInternal()) {
-            $priceBW = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_page_black_and_white') / 100;
-            $priceColor = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_page_color') / 100;
-            $pricePerforated = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_perforated') / 100;
-            $precalculatedPrice = $article->getNbBlackAndWhite() * $priceBW
-                + $article->getNbColored() * $priceColor
-                + ($article->isPerforated() ? $pricePerforated : 0 );
-        } else {
-            $precalculatedPrice = 0;
-        }
+        $precalculatedSellPrice = $article->isInternal() ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = $article->isInternal() ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -128,7 +114,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'form' => $form,
                 'article' => $article,
-                'precalculatedPrice' => $precalculatedPrice,
+                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
     }
@@ -140,22 +127,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
 
-        if ($saleArticle->getMainArticle()->isInternal()) {
-            $priceBW = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_page_black_and_white') / 100;
-            $priceColor = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_page_color') / 100;
-            $pricePerforated = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.price_perforated') / 100;
-            $precalculatedPrice = $saleArticle->getMainArticle()->getNbBlackAndWhite() * $priceBW
-                + $saleArticle->getMainArticle()->getNbColored() * $priceColor
-                + ($saleArticle->getMainArticle()->isPerforated() ? $pricePerforated : 0);
-        } else {
-            $precalculatedPrice = 0;
-        }
+        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -202,7 +175,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'form' => $form,
                 'article' => $saleArticle,
-                'precalculatedPrice' => $precalculatedPrice,
+                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
     }
@@ -213,6 +187,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         $form = new ActivateForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $saleArticle);
+
+        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -260,6 +237,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'form' => $form,
                 'article' => $saleArticle->getMainArticle(),
+                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
     }

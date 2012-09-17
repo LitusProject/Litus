@@ -14,12 +14,12 @@
 
 namespace ShiftBundle\Entity;
 
-use DateTime,
+use DateInterval,
+    DateTime,
     CalendarBundle\Entity\Nodes\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
     CommonBundle\Entity\Users\Person,
-    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -280,16 +280,18 @@ class Shift
      */
     public function getResponsibles()
     {
-        $this->responsibles->toArray();
+        return $this->responsibles->toArray();
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
-    public function addResponsible(Responsible $responsible)
+    public function addResponsible(EntityManager $entityManager, AcademicYear $academicYear, Responsible $responsible)
     {
-        if (!$this->canHaveAsResponsible($responsible->getPerson))
+        if (!$this->canHaveAsResponsible($entityManager, $academicYear, $responsible->getPerson()))
             throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
 
         $this->responsibles->add($responsible);
@@ -302,7 +304,7 @@ class Shift
      */
     public function removeResponsible(Responsible $responsible)
     {
-        $this->responsibles->remove($responsible);
+        $this->responsibles->removeElement($responsible);
         return $this;
     }
 
@@ -332,6 +334,9 @@ class Shift
             ->findAllActiveByPerson($person);
 
         foreach ($shifts as $shift) {
+            if ($shift === $this)
+                return false;
+
             if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
                 return false;
         }
@@ -365,16 +370,18 @@ class Shift
      */
     public function getVolunteers()
     {
-        $this->volunteers->toArray();
+        return $this->volunteers->toArray();
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
-    public function addVolunteer(Volunteer $volunteer)
+    public function addVolunteer(EntityManager $entityManager, AcademicYear $academicYear, Volunteer $volunteer)
     {
-        if (!$this->canHaveAsVolunteer($volunteer->getPerson))
+        if (!$this->canHaveAsVolunteer($entityManager, $academicYear, $volunteer->getPerson()))
             throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
 
         $this->volunteers->add($volunteer);
@@ -387,7 +394,7 @@ class Shift
      */
     public function removeVolunteer(Volunteer $volunteer)
     {
-        $this->volunteers->remove($volunteer);
+        $this->volunteers->removeElement($volunteer);
         return $this;
     }
 
@@ -414,13 +421,25 @@ class Shift
             ->findAllActiveByPerson($person);
 
         foreach ($shifts as $shift) {
+            if ($shift === $this)
+                return false;
+
             if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
                 return false;
         }
 
         foreach ($this->volunteers as $volunteer) {
-            if ($volunteer->isPraesidium($academicYear))
-                return true;
+            $now = new DateTime();
+
+            $responsibleSignoutTreshold = new DateInterval(
+                $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shiftbundle.responsible_signout_treshold')
+            );
+
+            if ($volunteer->isPraesidium($academicYear)) {
+                if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
+                    return true;
+            }
         }
 
         if ($this->countVolunteers() >= $this->getNbVolunteers())
@@ -517,5 +536,73 @@ class Shift
     {
         $this->description = $description;
         return $this;
+    }
+
+    public function canEditDates()
+    {
+        return (0 == $this->countResponsibles()) && (0 == $this->countVolunteers());
+    }
+
+    /**
+     * Check whether or not the given person can sign out from this shift.
+     *
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
+     * @return boolean
+     */
+    public function canSignout(EntityManager $entityManager, Person $person)
+    {
+        $now = new DateTime();
+
+        $signoutTreshold = new DateInterval(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shiftbundle.signout_treshold')
+        );
+
+        if ($this->getStartDate()->sub($signoutTreshold) < $now)
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Preparing the removal of this shift. Basically a small hack because the
+     * cascade options aren't doing what they're supposed to do.
+     *
+     * @return \ShiftBundle\Entity\Shift
+     */
+    public function prepareRemove()
+    {
+        $this->responsibles = new ArrayCollection();
+        $this->volunteers = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * Removes the given person from this shift.
+     *
+     * @param \CommonBundle\Entity\Users\Person $person The person that should be removed
+     * @return \ShiftBundle\Entity\Shifts\Responsible|\ShiftBundle\Entity\Shifts\Volunteer
+     */
+    public function removePerson(Person $person)
+    {
+        foreach ($this->volunteers as $volunteer) {
+            if ($volunteer->getPerson() === $person) {
+                $this->removeVolunteer($volunteer);
+
+                return $volunteer;
+            }
+        }
+
+        foreach ($this->responsibles as $responsible) {
+            if ($responsible->getPerson() === $person) {
+                $this->removeResponsible($responsible);
+
+                return $responsible;
+            }
+        }
+
+        return null;
     }
 }

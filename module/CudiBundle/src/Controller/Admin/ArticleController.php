@@ -81,6 +81,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
+                        $formData['same_as_previous_year'],
                         $formData['nb_black_and_white'],
                         $formData['nb_colored'],
                         $binding,
@@ -99,8 +100,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['isbn'] != ''? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
-                        $formData['downloadable']
-                       );
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
                 }
 
                 $this->getEntityManager()->persist($article);
@@ -181,6 +183,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
+                    ->setIsSameAsPreviousYear($formData['same_as_previous_year'])
                     ->setType(isset($formData['type']) ? $formData['type'] : 'common');
 
                 if ($article->isInternal()) {

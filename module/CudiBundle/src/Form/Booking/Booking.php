@@ -27,17 +27,17 @@ use    CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    
+
     /**
      * The maximum number allowed to enter in the textbook booking form.
      */
     const MAX_BOOKING_NUMBER = 5;
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
-    
+
     /**
      * @var array Contains the input fields added for article quantities.
      */
@@ -52,7 +52,7 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $field = new Submit('submit');
-        $field->setValue('Book Textbooks')
+        $field->setValue('Book')
             ->setAttribute('class', 'btn btn-primary pull-right');
         $this->add($field);
     }
@@ -61,12 +61,12 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         foreach ($articles as $article) {
             $saleArticle = $article['article'];
-            
+
             $field = new Text('article-' . $saleArticle->getId());
             $field->setAttribute('class', 'input-very-mini')
                 ->setAttribute('placeholder', '0');
             $this->add($field);
-            
+
             $this->_inputs[] = $field;
         }
     }
@@ -77,7 +77,6 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
         $factory = new InputFactory();
 
         foreach ($this->_inputs as $input) {
-            
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -103,10 +102,8 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                     )
                 )
             );
-            
         }
-        
+
         return $inputFilter;
     }
-        
 }

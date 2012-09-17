@@ -36,7 +36,10 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
-        $this->remove('submit');
+        if (!$shift->canEditDates()) {
+            $this->remove('start_date');
+            $this->remove('end_date');
+        }
 
         $field = new Submit('submit');
         $field->setValue('Save')
@@ -49,14 +52,14 @@ class Edit extends Add
     private function _populateFromShift(Shift $shift)
     {
         $data = array(
-            'person_id' => $shift->getManager()->getId(),
+            'manager_id' => $shift->getManager()->getId(),
             'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
             'manager' => $shift->getManager()->getFullName() . ' - ' . $shift->getManager()->getUniversityIdentification() ,
             'nb_responsibles' => $shift->getNbResponsibles(),
             'nb_volunteers' => $shift->getNbVolunteers(),
             'unit' => $shift->getUnit()->getId(),
-            'event' => $shift->getEvent()->getId(),
+            'event' => null === $shift->getEvent() ? '' : $shift->getEvent()->getId(),
             'location' => $shift->getLocation()->getId(),
             'name' => $shift->getName(),
             'description' => $shift->getDescription()

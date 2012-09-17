@@ -21,7 +21,10 @@
         <h1>Company</h1>
 
         <p>Name: <b>{{ company.getName() }}</b></p>
-        <p>Street: <b>{{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}</b></p>
+        <p>Street: <b>{{ company.getAddress().getStreet() }} {{ company.getAddress().getNumber() }}
+            {% if company.getAddress().getMailbox() %}
+                {{ translate('Mailbox') }} {{ company.getAddress().getMailbox() }}
+            {% endif %}</b></p>
         <p>City: <b>{{ company.getAddress().getPostal() }} {{ company.getAddress().getCity() }}</b></p>
         <p>Country: <b>{{ company.getAddress().getCountry() }}</b></p>
         <br />
