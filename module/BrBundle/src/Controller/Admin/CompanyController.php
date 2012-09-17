@@ -66,6 +66,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     new Address(
                         $formData['address_street'],
                         $formData['address_number'],
+                        $formData['address_mailbox'],
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
@@ -124,6 +125,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     ->getAddress()
                         ->setStreet($formData['address_street'])
                         ->setNumber($formData['address_number'])
+                        ->setMailbox($formData['address_mailbox'])
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);

@@ -70,6 +70,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
+                        $formData['same_as_previous_year'],
                         0,
                         0,
                         $binding,
@@ -88,8 +89,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['isbn'] != ''? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
-                        $formData['downloadable']
-                       );
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
                 }
 
                 $article->setIsProf(true);
@@ -199,6 +201,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     }
                     if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
                         $duplicate->setIsDownloadable($formData['downloadable']);
+                        $edited = true;
+                    }
+                    if ($article->isSameAsPreviousYear() !== (bool) $formData['same_as_previous_year']) {
+                        $duplicate->setIsSameAsPreviousYear($formData['same_as_previous_year']);
                         $edited = true;
                     }
                     if ($article->getType() != $formData['type']) {

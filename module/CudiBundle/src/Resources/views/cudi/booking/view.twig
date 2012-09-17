@@ -33,7 +33,7 @@
 	            			<td> {{ booking.getArticle().getMainArticle().getAuthors() }} </td>
 	            			<td>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</td>
 	            			<td> {{ booking.getNumber() }} </td>
-	            			<td> {{ booking.getExpirationDate().format('D d/m/Y') }} </td>
+	            			<td> {{ dateLocalized(booking.getExpirationDate(), 'E dd/MM/Y') }} </td>
 	            			<td> {{ translate(booking.getStatus()) }} </td>
 	            			<td>
 	            				{% if booking.getArticle().isUnbookable() %}

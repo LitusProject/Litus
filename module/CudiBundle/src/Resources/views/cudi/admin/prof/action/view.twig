@@ -62,6 +62,11 @@
 	                    <td>{% if action.getPreviousEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
 	                    <td>{% if action.getEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
 	                </tr>
+                    <tr>
+                        <td>Same As Previous Year</td>
+                        <td>{% if action.getPreviousEntity().isSameAsPreviousYear() %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if action.getEntity().isSameAsPreviousYear() %}Yes{% else %}No{% endif %}</td>
+                    </tr>
 	                <tr>
 	                    <td>Type</td>
 	                    <td>{{ action.getPreviousEntity().getType()|capitalize }}</td>

@@ -54,6 +54,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
             ->setAttribute('size', 5);
         $this->add($field);
 
+        $field = new Text($prefix . 'address_mailbox');
+        $field->setLabel('Mailbox')
+            ->setRequired()
+            ->setAttribute('size', 5);
+        $this->add($field);
+
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
             ->setRequired()
@@ -129,6 +135,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
                         ),
                     ),
                 )
+            )
+        );
+
+        $inputs[] = $factory->createInput(
+            array(
+                'name'     => $this->_prefix . 'address_mailbox',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
+                    ),
+                ),
             )
         );
 

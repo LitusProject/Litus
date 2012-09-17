@@ -38,7 +38,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $form->setData($formData);
 
             if ($form->isValid()) {
-                   $discount = new Discount($article);
+                $discount = new Discount($article);
 
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
@@ -176,11 +176,11 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        $article = $this->getEntityManager()
+        $discount = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findOneById($this->getParam('id'));
 
-        if (null === $article) {
+        if (null === $discount) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -199,6 +199,6 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        return $article;
+        return $discount;
     }
 }

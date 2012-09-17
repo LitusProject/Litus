@@ -28,8 +28,10 @@ return array(
     'Status' => 'Status',
     'Actions' => 'Acties',
     'Mandatory' => 'Verplicht',
+    'Booked' => 'Gereserveerd',
 
     'Book Textbooks' => 'Cursussen Reserveren',
+    'Book' => 'Reserveer',
 
     'Not Bookable' => 'Niet Reserveerbaar',
 

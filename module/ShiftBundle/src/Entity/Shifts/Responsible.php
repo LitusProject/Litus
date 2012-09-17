@@ -14,8 +14,8 @@
 
 namespace ShiftBundle\Entity\Shifts;
 
-use CommonBundle\Entity\Users\Person,
-    CommonBundle\Entity\Users\Status\Organization as OrganizationStatus,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -52,14 +52,15 @@ class Responsible
     private $person;
 
     /**
-     * @param string $name
+     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
-    public function __construct(Person $person, AcademicYear $acadmicYear)
+    public function __construct(Person $person, AcademicYear $academicYear)
     {
         $this->signupTime = new DateTime();
 
-        if ($person->getOrganizationStatus($acadmicYear) != OrganizationStatus::$possibleStatuses['praesidium'])
-            throw new \InvalidArgumentException('This person cannot be responsible for a shift');
+        if (!$person->isPraesidium($academicYear))
+            throw new \InvalidArgumentException('The given person cannot be a responsible');
 
         $this->person = $person;
     }

@@ -96,14 +96,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     protected function onClose(User $user, $statusCode, $reason)
     {
         foreach($this->_lockedItems as $key => $value) {
-            if ($user == $value)
+            if ($user == $value) {
+                unset($this->_lockedItems[$key]);
+                parent::onClose($user, $statusCode, $reason);
+                $this->sendQueueToAll();
                 break;
-        }
-
-        if (isset($key)) {
-            unset($this->_lockedItems[$key]);
-            parent::onClose($user, $statusCode, $reason);
-            $this->sendQueueToAll();
+            }
         }
     }
 
@@ -228,7 +226,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Registration')
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
-        if ($registration && $registration->hasPayed()) {
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && $registration->hasPayed() && $metaData->becomeMember()) {
             if (empty($bookings)) {
                 return json_encode(
                     (object) array(
@@ -309,12 +311,44 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function _createJsonBooking($items, Person $person)
     {
         $results = array();
+
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+            $results[] = (object) array(
+                'id' => 'membership',
+                'price' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.membership_price'),
+                'title' => 'Membership',
+                'barcode' => '',
+                'barcodes' => array(),
+                'author' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('union_name'),
+                'number' => 1,
+                'status' => 'assigned',
+                'discounts' => array(),
+            );
+        }
+
         foreach($items as $item) {
+            $barcodes = array($item->getArticle()->getBarcode());
+            foreach($item->getArticle()->getAdditionalBarcodes() as $barcode)
+                $barcodes[] = $barcode->getBarcode();
+
             $result = (object) array(
                 'id' => $item->getId(),
                 'price' => $item->getArticle()->getSellPrice(),
                 'title' => $item->getArticle()->getMainArticle()->getTitle(),
                 'barcode' => $item->getArticle()->getBarcode(),
+                'barcodes' => $barcodes,
                 'author' => $item->getArticle()->getMainArticle()->getAuthors(),
                 'number' => $item->getNumber(),
                 'status' => $item->getStatus(),
@@ -323,27 +357,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             foreach($item->getArticle()->getDiscounts() as $discount)
                 $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
             $results[] = $result;
-        }
-
-        $registration = $this->_entityManager
-            ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
-
-        if ($registration && !$registration->hasPayed()) {
-            $results[] = (object) array(
-                'id' => 'membership',
-                'price' => $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.membership_price'),
-                'title' => 'Membership',
-                'barcode' => '',
-                'author' => $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('union_name'),
-                'number' => 1,
-                'status' => 'assigned',
-                'discounts' => array(),
-            );
         }
 
         return $results;
@@ -409,6 +422,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->status = $item->getStatus();
             $result->locked = isset($this->_lockedItems[$item->getId()]);
+
             if ($item->getPayDesk())
                 $result->payDesk = $item->getPayDesk()->getName();
             $results[] = $result;

@@ -110,6 +110,7 @@ return array(
 
     'URL' => 'URL',
     'Downloadable (on Toledo)' => 'Downloadbaar (op Toledo)',
+    'Same As Previous Year' => 'Zelfde Als Vorig Jaar',
     'Type' => 'Type',
     'Internal Article' => 'Intern Artikel',
     'Binding' => 'Inbinding',

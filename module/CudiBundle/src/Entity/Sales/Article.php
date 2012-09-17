@@ -16,6 +16,7 @@ namespace CudiBundle\Entity\Sales;
 
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as MainArticle,
+    CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
@@ -135,6 +136,13 @@ class Article
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Discounts\Discount", mappedBy="article")
      */
     private $discounts;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The additional barcodes of the article
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sales\Articles\Barcode", mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $additionalBarcodes;
 
     /**
      * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
@@ -410,7 +418,7 @@ class Article
     /**
      * @param boolean $isHistory
      *
-     * @return \CudiBundle\Entity\Article
+     * @return \CudiBundle\Entity\Sales\Article
      */
     public function setIsHistory($isHistory)
     {
@@ -427,11 +435,30 @@ class Article
     }
 
     /**
+     * @param \CudiBundle\Entity\Sales\Articles\Barcode $barcode
+     *
+     * @return \CudiBundle\Entity\Sales\Article
+     */
+    public function addAdditionalBarcode(Barcode $barcode)
+    {
+        $this->additionalBarcodes->add($barcode);
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getAdditionalBarcodes()
+    {
+        return $this->additionalBarcodes;
+    }
+
+    /**
      * @return \CudiBundle\Entity\Sales\Article
      */
     public function duplicate()
     {
-        return new Article(
+        $article = new Article(
             $this->getMainArticle(),
             $this->getBarcode(),
             $this->getPurchasePrice()/100,
@@ -442,5 +469,9 @@ class Article
             $this->canExpire(),
             $this->getAcademicYear()
         );
+        foreach($this->additionalBarcodes as $barcode)
+            $article->addAdditionalBarocode(new Barcode($article, $barcode->getBarcode()));
+
+        return $article;
     }
 }

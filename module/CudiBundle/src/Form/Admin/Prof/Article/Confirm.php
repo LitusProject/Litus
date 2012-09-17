@@ -89,6 +89,10 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
         $field->setLabel('Downloadable');
         $articleCollection->add($field);
 
+        $field = new Checkbox('same_as_previous_year');
+        $field->setLabel('Same As Previous Year');
+        $article->add($field);
+
         $field = new Select('type');
         $field->setLabel('Type')
             ->setRequired()
@@ -184,6 +188,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
             'isbn' => $article->getISBN(),
             'url' => $article->getURL(),
             'downloadable' => $article->isDownloadable(),
+            'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
             'internal' => $article->isInternal()
         );

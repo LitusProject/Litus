@@ -16,6 +16,7 @@ namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Articles\Options\Binding,
     CudiBundle\Entity\Articles\Options\Color,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -93,6 +94,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param string|null $url The url of the article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
+     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
      * @param integer $nbBlackAndWhite The number of blach and white pages of the article
      * @param integer $nbColored The number of colored pages of the article
      * @param \CudiBundle\Entity\Articles\Options\Binding $binding The binding of the article
@@ -103,9 +105,9 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
     ) {
-        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
+        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
 
         $this->setNbBlackAndWhite($nbBlackAndWhite)
             ->setNbColored($nbColored)
@@ -291,6 +293,7 @@ class Internal extends \CudiBundle\Entity\Article
             $this->getURL(),
             $this->getType(),
             $this->isDownloadable(),
+            $this->isSameAsPreviousYear(),
             $this->getNbBlackAndWhite(),
             $this->getNbColored(),
             $this->getBinding(),
@@ -316,5 +319,81 @@ class Internal extends \CudiBundle\Entity\Article
     public function isInternal()
     {
         return true;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculateSellPrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.sell_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculatePurchasePrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.purchase_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total / 1000;
     }
 }

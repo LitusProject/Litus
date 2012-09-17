@@ -36,6 +36,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
         $unitSearchForm = new UnitSearchForm($this->getEntityManager());
 
+        $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -85,10 +89,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        foreach ($myShifts as $shift) {
+            if (in_array($shift, $searchResults))
+                unset($searchResults[array_keys($searchResults, $shift)[0]]);
+        }
+
         return new ViewModel(
             array(
                 'eventSearchForm' => $eventSearchForm,
                 'unitSearchForm' => $unitSearchForm,
+                'myShifts' => $myShifts,
                 'searchResults' => $searchResults,
                 'entityManager' => $this->getEntityManager(),
                 'academicYear' => $this->getCurrentAcademicYear()
@@ -100,10 +110,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()) || !($shift = $this->_getPerson())) {
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error'),
+                    'result' => (object) array('status' => 'error')
                 )
             );
         }
@@ -111,20 +121,28 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift->canHaveAsResponsible($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error'),
+                    'result' => (object) array('status' => 'error')
                 )
             );
         }
 
         $shift->addResponsible(
-            new Responsible($person)
+            $this->getEntityManager(),
+            $this->getCurrentAcademicYear(),
+            new Responsible(
+                $person,
+                $this->getCurrentAcademicYear()
+            )
         );
 
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countResponsibles() / $shift->getNbResponsibles()
+                )
             )
         );
     }
@@ -133,10 +151,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()) || !($shift = $this->_getPerson())) {
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error'),
+                    'result' => (object) array('status' => 'error')
                 )
             );
         }
@@ -144,7 +162,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error'),
+                    'result' => (object) array('status' => 'error')
                 )
             );
         }
@@ -162,38 +180,90 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $shift->addVolunteer(
-            new Volunteer($person)
+            $this->getEntityManager(),
+            $this->getCurrentAcademicYear(),
+            new Volunteer(
+                $person
+            )
         );
 
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                )
+            )
+        );
+    }
+
+    public function signoutAction()
+    {
+        $this->initAjax();
+
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        if (!($shift->canSignout($this->getEntityManager(), $person))) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        /**
+         * @TODO Check whether it's 24 hours before the shift starts
+         */
+        $remove = $shift->removePerson($person);
+
+        if (null !== $remove)
+            $this->getEntityManager()->remove($remove);
+
+
+        /**
+         * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
+         */
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                )
             )
         );
     }
 
     private function _getShift()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getRequest()->getPost('id'))
             return null;
 
         $shift = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findOneById($this->getParam('id'));
+            ->findOneById($this->getRequest()->getPost('id'));
 
         return $shift;
     }
 
     private function _getPerson()
     {
-        if (null === $this->getParam('person'))
+        if (null === $this->getRequest()->getPost('person'))
             return null;
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\Person')
-            ->findOneById($this->getParam('person'));
+            ->findOneById($this->getRequest()->getPost('person'));
 
         return $person;
     }

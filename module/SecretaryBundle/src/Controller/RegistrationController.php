@@ -37,22 +37,23 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class RegistrationController extends \SecretaryBundle\Component\Controller\RegistrationController
 {
     public function addAction()
     {
-        $enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
-
-        if ('1' !== $enabled) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
-        }
-
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Users\People\Academic')
             ->findOneByUniversityIdentification($this->getParam('identification'));
+
+        try {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
+        } catch(\Exception $e) {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
+        }
 
         if (null !== $academic) {
             $authentication = new Authentication(
@@ -135,6 +136,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             new Address(
                                 $primaryStreet->getName(),
                                 $formData['primary_address_address_number'],
+                                $formData['primary_address_address_mailbox'],
                                 $primaryCity->getPostal(),
                                 $primaryCity->getName(),
                                 'BE'
@@ -144,6 +146,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                             new Address(
                                 $formData['secondary_address_address_street'],
                                 $formData['secondary_address_address_number'],
+                                $formData['secondary_address_address_mailbox'],
                                 $formData['secondary_address_address_postal'],
                                 $formData['secondary_address_address_city'],
                                 $formData['secondary_address_address_country']
@@ -237,6 +240,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 return new ViewModel(
                     array(
                         'form' => $form,
+                        'terms_and_conditions' => $terms_and_conditions,
                     )
                 );
             }
@@ -247,6 +251,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 return new ViewModel(
                     array(
                         'form' => $form,
+                        'terms_and_conditions' => $terms_and_conditions,
                     )
                 );
             }
@@ -275,6 +280,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
+        try {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
+        } catch(\Exception $e) {
+            $terms_and_conditions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
+        }
 
         $form = new EditForm(
             $academic,
@@ -315,6 +330,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $academic->getPrimaryAddress()
                         ->setStreet($primaryStreet->getName())
                         ->setNumber($formData['primary_address_address_number'])
+                        ->setNumber($formData['primary_address_address_mailbox'])
                         ->setPostal($primaryCity->getPostal())
                         ->setCity($primaryCity->getName())
                         ->setCountry('BE');
@@ -323,6 +339,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         new Address(
                             $primaryStreet->getName(),
                             $formData['primary_address_address_number'],
+                            $formData['primary_address_address_mailbox'],
                             $primaryCity->getPostal(),
                             $primaryCity->getName(),
                             'BE'
@@ -334,6 +351,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $academic->getSecondaryAddress()
                         ->setStreet($formData['secondary_address_address_street'])
                         ->setNumber($formData['secondary_address_address_number'])
+                        ->setNumber($formData['secondary_address_address_mailbox'])
                         ->setPostal($formData['secondary_address_address_postal'])
                         ->setCity($formData['secondary_address_address_city'])
                         ->setCountry($formData['secondary_address_address_country']);
@@ -342,6 +360,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         new Address(
                             $formData['secondary_address_address_street'],
                             $formData['secondary_address_address_number'],
+                            $formData['secondary_address_address_mailbox'],
                             $formData['secondary_address_address_postal'],
                             $formData['secondary_address_address_city'],
                             $formData['secondary_address_address_country']
@@ -436,6 +455,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'form' => $form,
+                'terms_and_conditions' => $terms_and_conditions,
             )
         );
     }

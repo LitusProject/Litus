@@ -371,7 +371,7 @@ class Booking extends EntityRepository
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
-        
+
         if ($period === null)
             throw new Exception("There is no active stock period!");
 
@@ -398,7 +398,7 @@ class Booking extends EntityRepository
 
         return $resultSet;
     }
-    
+
     public function findOneById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -411,10 +411,10 @@ class Booking extends EntityRepository
         ->setMaxResults(1)
         ->getQuery()
         ->getResult();
-    
+
         if (isset($resultSet[0]))
             return $resultSet[0];
-    
+
         return null;
     }
 
@@ -441,8 +441,6 @@ class Booking extends EntityRepository
 
         return null;
     }
-
-
 
     public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
     {
