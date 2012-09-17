@@ -89,6 +89,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        foreach ($myShifts as $shift) {
+            if (in_array($shift, $searchResults))
+                unset($searchResults[array_keys($searchResults, $shift)[0]]);
+        }
+
         return new ViewModel(
             array(
                 'eventSearchForm' => $eventSearchForm,
@@ -181,6 +186,51 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $person
             )
         );
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'ratio' => $shift->countVolunteers() / $shift->getNbVolunteers()
+                )
+            )
+        );
+    }
+
+    public function signoutAction()
+    {
+        $this->initAjax();
+
+        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        if (!($shift->canSignout($this->getEntityManager(), $person))) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error')
+                )
+            );
+        }
+
+        /**
+         * @TODO Check whether it's 24 hours before the shift starts
+         */
+        $remove = $shift->removePerson($person);
+
+        if (null !== $remove)
+            $this->getEntityManager()->remove($remove);
+
+
+        /**
+         * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
+         */
 
         $this->getEntityManager()->flush();
 

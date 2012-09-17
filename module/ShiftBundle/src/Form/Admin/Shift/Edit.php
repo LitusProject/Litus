@@ -36,6 +36,11 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
+        if (!$shift->canEditDates()) {
+            $this->remove('start_date');
+            $this->remove('end_date');
+        }
+
         $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'shift_edit');

@@ -41,8 +41,6 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
-        $this->remove('submit');
-
         $this->_event = $event;
 
         $field = new Submit('submit');
