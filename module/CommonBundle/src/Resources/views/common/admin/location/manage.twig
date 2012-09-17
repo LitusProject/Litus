@@ -33,7 +33,10 @@
                     <tr class="item item-{{ location.getId() }}">
                         <td>{{ location.getName() }}</td>
                         <td>
-                            {{ location.getAddress().getStreet() }} {{ location.getAddress().getNumber() }},
+                            {{ location.getAddress().getStreet() }} {{ location.getAddress().getNumber() }}
+                                {% if location.getAddress().getMailbox() %}
+                                    {{ translate('Mailbox') }} {{ location.getAddress().getMailbox() }}
+                                {% endif %},
                             {{ location.getAddress().getPostal() }} {{ location.getAddress().getCity() }},
                             {{ location.getAddress().getCountry() }}
                         </td>

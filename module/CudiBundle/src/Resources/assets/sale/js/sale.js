@@ -78,7 +78,7 @@
 	    if (settings == undefined)
 	    	return;
 
-	    settings.modal.permanentModal('open');
+	    settings.modal.permanentModal('open', {closable: false});
 	    $this.removeData('saleSettings');
 	}
 
@@ -132,10 +132,12 @@
 
 	function _gotBarcode ($this, value) {
 	    $this.find('.articles tr').each(function () {
-	        if ($(this).data('info').barcode == value && $(this).data('info').currentNumber < $(this).data('info').number) {
-	            $(this).find('.addArticle').click();
-	            return false;
-	        }
+	    	for (var i = 0 ; i < $(this).data('info').barcodes.length ; i++) {
+	    		if ($(this).data('info').barcodes[i] == value && $(this).data('info').currentNumber < $(this).data('info').number) {
+	    			$(this).find('.addArticle').click();
+	            	return false;
+	    		}
+	    	}
 	        $this.find('#barcodeFailure').addClass('in');
 	    });
 	}

@@ -88,6 +88,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Downloadable (on Toledo)');
         $article->add($field);
 
+        $field = new Checkbox('same_as_previous_year');
+        $field->setLabel('Same As Previous Year');
+        $article->add($field);
+
         $types = Article::$POSSIBLE_TYPES;
         unset($types['common']);
         $field = new Select('type');
@@ -171,6 +175,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'isbn' => $article->getISBN(),
             'url' => $article->getURL(),
             'downloadable' => $article->isDownloadable(),
+            'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
             'internal' => $article->isInternal()
         );

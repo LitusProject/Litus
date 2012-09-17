@@ -28,8 +28,10 @@ return array(
     'Status' => 'Status',
     'Actions' => 'Actions',
     'Mandatory' => 'Mandatory',
+    'Booked' => 'Booked',
 
     'Book Textbooks' => 'Book Textbooks',
+    'Book' => 'Book',
 
     'Not Bookable' => 'Not Bookable',
 

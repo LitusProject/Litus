@@ -35,6 +35,7 @@ return array(
     'Secondary Address' => 'Secondary Address',
     'Street' => 'Street',
     'Number' => 'Number',
+    'Mailbox' => 'Mailbox',
     'Postal Code' => 'Postal Code',
     'City' => 'City',
     'Country' => 'Country',
@@ -53,6 +54,9 @@ return array(
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
     'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
     'You are succesfully registered!' => 'You are succesfully registered!',
+    'Terms And Conditions' => 'Terms And Conditions',
+    'Close' => 'Close',
+    'Read Them' => 'Read Them',
 
     'Choose a study:' => 'Choose a study:',
     'Choose Your Subjects' => 'Choose Your Subjects',
