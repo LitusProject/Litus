@@ -107,7 +107,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function __construct(
         $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
     ) {
-        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
+        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
 
         $this->setNbBlackAndWhite($nbBlackAndWhite)
             ->setNbColored($nbColored)
