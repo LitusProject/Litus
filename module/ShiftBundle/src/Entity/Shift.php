@@ -436,8 +436,10 @@ class Shift
                     ->getConfigValue('shiftbundle.responsible_signout_treshold')
             );
 
+            $getStartDate = clone $this->getStartDate();
+
             if ($volunteer->isPraesidium($academicYear)) {
-                if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
+                if ($getStart->sub($responsibleSignoutTreshold) < $now)
                     return true;
             }
         }
@@ -559,8 +561,10 @@ class Shift
                 ->getConfigValue('shiftbundle.signout_treshold')
         );
 
-        if ($this->getStartDate()->sub($signoutTreshold) < $now)
-            return false;
+        $getStartDate = clone $this->getStartDate();
+
+        if ($getStartDate->sub($signoutTreshold) < $now)
+             return false;
 
         return true;
     }
