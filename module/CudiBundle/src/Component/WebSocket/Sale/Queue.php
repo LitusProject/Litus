@@ -44,6 +44,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $_lockedItems;
 
     /**
+     * @var array
+     */
+    private $_collectedItems;
+
+    /**
      * @param Doctrine\ORM\EntityManager $entityManager
      * @param string $address The url for the websocket master socket
      * @param integer $port The port to listen on
@@ -60,6 +65,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         parent::__construct($address, $port);
         $this->_entityManager = $entityManager;
         $this->_lockedItems = array();
+        $this->_collectedItems = array();
     }
 
     /**
@@ -127,11 +133,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'startCollecting':
                 $this->_updateItemStatus($params, 'collecting');
+                $this->sendText($user, $this->_getCollectInfo($user, $params));
+                break;
+            case 'saveCollecting':
+                $this->_saveCollecting(json_decode($params));
                 break;
             case 'cancelCollecting':
+                if (isset($this->_lockedItems[$params]))
+                    unset($this->_lockedItems[$params]);
                 $this->_updateItemStatus($params, 'signed_in');
                 break;
             case 'stopCollecting':
+                if (isset($this->_lockedItems[$params]))
+                    unset($this->_lockedItems[$params]);
                 $this->_updateItemStatus($params, 'collected');
                 break;
             case 'setHold':
@@ -186,6 +200,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $this->sendText($user, $this->_getJsonShortQueue($session));
                 break;
         }
+    }
+
+    /**
+     * Save collected items
+     *
+     * @param object $data
+     */
+    private function _saveCollecting($data)
+    {
+        $this->_collectedItems[$data->id] = $data->articles;
     }
 
     /**
@@ -294,7 +318,54 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                         $this->_entityManager
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
                             ->findAllOpenByPerson($item->getPerson()),
-                        $item->getPerson()
+                        $item
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * Get all the info in json for the collecting
+     *
+     * @param \CommonBundle\Component\WebSockets\Sale\User $user
+     * @param int $itemId
+     *
+     * @return string
+     */
+    private function _getCollectInfo(User $user, $itemId)
+    {
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
+        if (!is_numeric($itemId) || $enableCollectScanning !== '1')
+            return;
+
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($itemId);
+
+        if (!isset($item))
+            return;
+
+        $this->_lockedItems[$item->getId()] = $user;
+
+        return json_encode(
+            (object) array(
+                'collecting' => (object) array(
+                    'id' => $item->getId(),
+                    'comment' => $item->getComment(),
+                    'person' => (object) array(
+                        'id' => $item->getPerson()->getId(),
+                        'name' => $item->getPerson()->getFullName(),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                    ),
+                    'articles' => $this->_createJsonBooking(
+                        $this->_entityManager
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findAllOpenByPerson($item->getPerson()),
+                        $item
                     )
                 )
             )
@@ -308,8 +379,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      *
      * @return array
      */
-    private function _createJsonBooking($items, Person $person)
+    private function _createJsonBooking($items, QueueItem $queueItem)
     {
+        $person = $queueItem->getPerson();
         $results = array();
 
         $registration = $this->_entityManager
@@ -343,6 +415,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             foreach($item->getArticle()->getAdditionalBarcodes() as $barcode)
                 $barcodes[] = $barcode->getBarcode();
 
+            $collected = 0;
+            if (isset($this->_collectedItems[$queueItem->getId()])) {
+                foreach($this->_collectedItems[$queueItem->getId()] as $id => $booking) {
+                    if ($id == $item->getId())
+                        $collected = $booking;
+                }
+            }
+
             $result = (object) array(
                 'id' => $item->getId(),
                 'price' => $item->getArticle()->getSellPrice(),
@@ -352,6 +432,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'author' => $item->getArticle()->getMainArticle()->getAuthors(),
                 'number' => $item->getNumber(),
                 'status' => $item->getStatus(),
+                'collected' => $collected,
                 'discounts' => array(),
             );
             foreach($item->getArticle()->getDiscounts() as $discount)

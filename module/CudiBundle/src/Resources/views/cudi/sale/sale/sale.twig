@@ -23,7 +23,7 @@
 		</div>
 	</div>
 
-	<div id="sale">
+	<div id="sale" style="display: none;">
 	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
 	        <a class="close" data-dismiss="alert">&times;</a>
 	    	<div class="title">Error</div>
@@ -99,23 +99,6 @@
 			<tbody class="articles"></tbody>
 		</table>
 
-		<div id="modalChoosePayDesk" class="modal fade">
-			<div class="modal-header">
-				<h3>Choose PayDesk</h3>
-			</div>
-			<div class="modal-body">
-			    {% for payDesk in payDesks %}
-    				<div class="span2">
-    				    <h3>Paydesk {{ payDesk.getName() }}</h3>
-    				    <br>
-    				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
-    				</div>
-    			{% endfor %}
-			</div>
-			<div class="modal-footer">
-			</div>
-		</div>
-
 		<div id="modalCancelSelling" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
@@ -173,16 +156,65 @@
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
+	</div>
+	<div id="collecting" style="display: none;">
+	    <div class="flashmessage alert alert-error fade" id="barcodeFailure">
+	        <a class="close" data-dismiss="alert">&times;</a>
+	    	<div class="title">Error</div>
+	    	<div class="content">
+	    		<p>The scanned barcode was not valid and was ignored.</p>
+	    	</div>
+	    </div>
 
-		<div id="modalUnableToAdd" class="modal fade">
+		<div class="row wrapper">
+			<div class="span7 customer">
+				<div class="row title">Current Customer:</div>
+				<div class="row name">&nbsp;</div>
+				<div class="row actions">
+					<button class="btn btn-info addComment">
+					    <i class="icon-comment icon-white"></i>
+					    Comment
+					</button>
+					<button class="btn btn-primary showQueue" data-key="119" data-dismiss="key">
+					    <i class="icon-eye-open icon-white"></i>
+					    Queue - F8
+					</button>
+					<button class="btn btn-success concludeCollecting" data-key="120" data-dismiss="key">
+					    <i class="icon-shopping-cart icon-white"></i>
+					    Conclude - F9
+					</button>
+					<button class="btn btn-danger cancelCollecting" data-key="121" data-dismiss="key">
+					    <i class="icon-remove icon-white"></i>
+					    Cancel - F10
+					</button>
+				</div>
+			</div>
+		</div>
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th width="110px">Barcode</th>
+					<th>Title</th>
+					<th width="110px">Status</th>
+					<th width="50px">Number</th>
+					<th width="100px">Price</th>
+					<th class="actions" width="150px">Action</th>
+				</tr>
+			</thead>
+
+			<tbody class="articles"></tbody>
+		</table>
+
+		<div id="modalCancelCollecting" class="modal fade">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">&times;</a>
-				<h3>Error</h3>
+				<h3>Cancel Collecting</h3>
 			</div>
 			<div class="modal-body">
-				The article can not be sold. It was not booked or assigned.
+				Are you sure you want to cancel this collecting? All changes will be lost.
 			</div>
 			<div class="modal-footer">
+				<button class="btn btn-danger confirmCancel" data-key="122">OK - F11</button>
 				<button class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -230,6 +262,22 @@
 			<button class="btn" data-dismiss="modal">Close</button>
 		</div>
 	</div>
+	<div id="modalChoosePayDesk" class="modal fade">
+		<div class="modal-header">
+			<h3>Choose PayDesk</h3>
+		</div>
+		<div class="modal-body">
+		    {% for payDesk in payDesks %}
+				<div class="span2">
+				    <h3>Paydesk {{ payDesk.getName() }}</h3>
+				    <br>
+				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="modal-footer">
+		</div>
+	</div>
 {% endblock %}
 
 {% block content_script %}
@@ -275,6 +323,7 @@
 				session: {{ session.getId() }},
 				errorDialog: $('#loading_queue_error'),
 				barcodePrefix: {{ barcodePrefix }},
+				collectScanning: {% if enableCollectScanning == 1 %}true{% else %}false{% endif %},
 				statusTranslate: function (status) {
 					switch (status) {
 						case 'signed_in':
@@ -289,8 +338,38 @@
 							return 'Hold';
 					}
 				},
+				openCollecting: function (socketName, data) {
+					$('#sale').hide();
+				    $('#collecting').show().collecting({
+						socketName: socketName,
+						data: data,
+						modal: $('#queueModal'),
+						statusTranslate: function (status) {
+							switch (status) {
+								case 'booked':
+									return 'Not Assigned';
+								case 'assigned':
+									return 'Assigned';
+							}
+						}
+					});
+
+					$('#modalAddComment textarea').val(data.collecting.comment);
+					$('#modalAddComment .save').click(function () {
+					    $.post('{{ url('sale_sale', {"action": "saveComment", "session": session.getId()})}}/' + data.collecting.id, {'comment': $('#modalAddComment textarea').val()}, function (data) {
+					        if (data && 'success' == data.status) {
+					    		$('.flashmessage').removeClass('in');
+					    		$('#comment_saved_success').addClass('in');
+					    		$('#modalAddComment').modal('hide');
+					    	} else {
+					    	    errorSaveComment();
+					    	}
+					    }, 'json').error(errorSaveComment);
+					});
+				},
 				openSale: function (socketName, data) {
-				    $('#sale').sale({
+					$('#collecting').hide();
+				    $('#sale').show().sale({
 						socketName: socketName,
 						data: data,
 						modal: $('#queueModal'),
