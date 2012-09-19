@@ -1,0 +1,184 @@
+#container-iG {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .background-iG {
+        background: #000000;
+        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+    }
+    .controls-iG {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+    }
+    .loading-iG {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+    }
+    .loading-iG .throbber-iG {
+        background: url('images/throbber.png') no-repeat;
+        height: 480px;
+        width: 40px;
+        position: absolute;
+        top: 0px;
+    }
+    .button-iG {
+        background: #3F3F3F;
+        background-image: linear-gradient(top, #333333 5%, #3F3F3F 50%);
+        background-image: -o-linear-gradient(top, #333333 5%, #3F3F3F 50%);
+        background-image: -moz-linear-gradient(top, #333333 5%, #3F3F3F 50%);
+        background-image: -webkit-linear-gradient(top, #333333 5%, #3F3F3F 50%);
+        background-image: -ms-linear-gradient(top, #333333 5%, #3F3F3F 50%);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #333333), color-stop(0.5, #3F3F3F));
+        float: left;
+        font-size: 12px;
+        padding: 4px 7px;
+        text-shadow: #080808 1px 1px 0px;
+        line-height: 18px;
+        height: 18px;
+        cursor: pointer;
+        color: #CFCFCF;
+    }
+    .button-iG:hover {
+        background: #333333;
+        background-image: linear-gradient(top, #3F3F3F 5%, #333333 50%);
+        background-image: -o-linear-gradient(top, #3F3F3F 5%, #333333 50%);
+        background-image: -moz-linear-gradient(top, #3F3F3F 5%, #333333 50%);
+        background-image: -webkit-linear-gradient(top, #3F3F3F 5%, #333333 50%);
+        background-image: -ms-linear-gradient(top, #3F3F3F 5%, #333333 50%);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3F3F3F), color-stop(0.5, #333333));
+        color: #FFFFFF;
+    }
+    .button-disabled-iG {
+        background: #3F3F3F;
+        color: #999;
+        cursor: default;
+    }
+    .button-disabled-iG:hover {
+        background: #3F3F3F;
+        color: #999;
+        cursor: default;
+    }
+    .button-iG .image {
+        background: url('images/controls.png') no-repeat;
+        width: 15px;
+        height: 13px;
+        display: inline-block;
+    }
+    .viewControls-iG {
+        margin: 0 auto;
+    }
+    .previousControl-iG {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+    .previousControl-iG .image {
+        background-position: 0px 4px;
+    }
+    .previousControl-iG:hover .image {
+        background-position: 0px -12px;
+    }
+    .playControl-iG {
+    }
+    .playControl-iG .image {
+        background-position: -15px 3px;
+    }
+    .playControl-iG:hover .image {
+        background-position: -15px -13px;
+    }
+    .pauzeControl-iG {
+    }
+    .pauzeControl-iG .image {
+        background-position: -45px 3px;
+    }
+    .pauzeControl-iG:hover .image {
+        background-position: -45px -13px;
+    }
+    .nextControl-iG {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    .nextControl-iG .image {
+        background-position: -30px 4px;
+    }
+    .nextControl-iG:hover .image {
+        background-position: -30px -12px;
+    }
+    .closeControl-iG {
+        float: right;
+        border-radius: 6px;
+    }
+    .thumbBar-iG {
+        position: absolute;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+    }
+    .scroll-iG {
+        width: 37px;
+        border-radius: 6px;
+        position: absolute;
+        padding: 0;
+    }
+    .scroll-iG .image {
+        background: url('images/thumbScroll.png') no-repeat;
+        width: 100%;
+        height: 100%;
+    }
+    .scrollLeft-iG {
+        left: 0;
+    }
+    .scrollLeft-iG .image {
+        background-position: -23px 20px;
+    }
+    .scrollLeft-iG:hover .image {
+        background-position: -23px -44px;
+    }
+    .scrollRight-iG {
+        right: 0;
+    }
+    .scrollRight-iG .image {
+        background-position: 6px 20px;
+    }
+    .scrollRight-iG:hover .image {
+        background-position: 6px -44px;
+    }
+    .thumbs-iG {
+        position: absolute;
+        left: 37px;
+        right: 37px;
+        bottom: 0;
+        overflow: hidden;
+    }
+    .thumbs-iG ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        cursor: pointer;
+        position: absolute;
+    }
+    .thumbs-iG ul li {
+        float: left;
+        margin-left: 3px;
+    }
+    .thumbs-iG ul li:last-child {
+        float: left;
+        margin-right: 3px;
+    }
+    .image-iG {
+        position: fixed;
+    }
+    .playBar-iG {
+        position: fixed;
+    }
+}

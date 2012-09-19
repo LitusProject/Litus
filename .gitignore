@@ -26,6 +26,7 @@ data/page/files
 data/banner/images
 
 public/_assetic
+public/_gallery/albums
 
 # Exclude composer files
 vendor/

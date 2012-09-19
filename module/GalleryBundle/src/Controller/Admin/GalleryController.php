@@ -19,7 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class GalleryController extends \CommonBundle\Component\Controller\ActionController
+class GalleryController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -55,21 +55,13 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
-                    $this->getEntityManager()->persist($translation);
-
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
+                    if ('' != $formData['title_' . $language->getAbbrev()]) {
+                        $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
-
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Gallery album added: ' . $title
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -132,13 +124,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                \CommonBundle\Component\Log\Log::createLog(
-                    $this->getEntityManager(),
-                    'action',
-                    $this->getAuthentication()->getPersonObject(),
-                    'Gallery album edited: ' . $title
-                );
-
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
@@ -175,17 +160,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $this->getEntityManager()->remove($album);
 
         $this->getEntityManager()->flush();
-
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Gallery album deleted: ' . $album->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
-                )
-        );
 
     	return new ViewModel(
     	    array(
@@ -312,17 +286,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
 
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Photo censored in album: ' . $photo->getAlbum()->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
-                ) . ' with id ' . $photo->getId()
-        );
-
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,
@@ -343,17 +306,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
-
-        \CommonBundle\Component\Log\Log::createLog(
-            $this->getEntityManager(),
-            'action',
-            $this->getAuthentication()->getPersonObject(),
-            'Photo uncensored in album: ' . $photo->getAlbum()->getTitle(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findOneByAbbrev('en')
-                ) . ' with id ' . $photo->getId()
-        );
 
         $this->flashMessenger()->addMessage(
             new FlashMessage(

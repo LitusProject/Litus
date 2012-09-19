@@ -37,7 +37,8 @@ class Edit extends Add
         $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setValue('Save');
+        $field->setValue('Save')
+            ->setAttribute('class', 'gallery_edit');
         $this->add($field);
 
         $this->populateFromAlbum($album);
