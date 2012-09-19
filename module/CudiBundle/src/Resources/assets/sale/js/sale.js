@@ -50,9 +50,8 @@
 	    	var row = $(this).parent().parent();
 	    	var info = row.data('info');
 
-	    	info.currentNumber < info.number ?
-	    		_setArticleNumber($this, row, info.currentNumber + 1) :
-	    		$this.find('#modalUnableToAdd').modal();
+	    	if (info.currentNumber < info.number)
+	    		_setArticleNumber($this, row, info.currentNumber + 1);
 	    });
 
 	    articles.find('.removeArticle').click(function () {
@@ -103,7 +102,7 @@
 
 	function _createRow (data, translate) {
 	    data.currentNumber = 0;
-	    var row = $('<tr>')
+	    var row = $('<tr>', {'id': 'article-' + data.id})
 	    	.append(
 	    		$('<td>').append(data.barcode),
 	    		$('<td>').append(data.title),
@@ -198,6 +197,11 @@
 
 	    _updatePrices($this);
 	    _addActions($this);
+
+	    $(settings.data.sale.articles).each(function () {
+            for (var i = 0 ; i < this.collected ; i++)
+                $('#article-' + this.id + ' .addArticle').click();
+	    });
 	}
 
 	function _setArticleNumber ($this, article, number) {

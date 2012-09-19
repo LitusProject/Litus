@@ -32,6 +32,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $enableCollectScanning = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
         $payDesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findAll();
@@ -41,6 +45,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'socketUrl' => $this->getSocketUrl(),
                 'barcodePrefix' => $barcodePrefix,
                 'payDesks' => $payDesks,
+                'enableCollectScanning' => $enableCollectScanning,
             )
         );
     }

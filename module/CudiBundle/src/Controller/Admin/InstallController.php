@@ -219,6 +219,11 @@ VTK Cudi
                     'value'       => '978',
                     'description' => 'The start for a serving queue item barcode',
                 ),
+                array(
+                    'key'         => 'cudi.enable_collect_scanning',
+                    'value'       => '1',
+                    'description' => 'Enable scanning of collected items before selling',
+                ),
             )
         );
 
