@@ -10,7 +10,7 @@ return array(
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'install_gallery',
+                        'controller' => 'gallery_install',
                         'action'     => 'index',
                     ),
                 ),
@@ -18,7 +18,7 @@ return array(
             'admin_gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/content/gallery[/:action[/:id]][/page/:page]',
+                    'route'    => '/admin/site/gallery[/:action[/:id]][/page/:page]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -47,20 +47,6 @@ return array(
             ),
         ),
     ),
-    'translator' => array(
-        'translation_files' => array(
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/admin.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/admin.nl.php',
-                'locale'   => 'nl'
-            ),
-        ),
-    ),
     'view_manager' => array(
         'template_path_stack' => array(
             'gallery_view' => __DIR__ . '/../views',
@@ -68,7 +54,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'install_gallery'  => 'GalleryBundle\Controller\Admin\InstallController',
+            'gallery_install'  => 'GalleryBundle\Controller\Admin\InstallController',
             'admin_gallery'    => 'GalleryBundle\Controller\Admin\GalleryController',
 
             'common_gallery'   => 'GalleryBundle\Controller\GalleryController',
@@ -94,9 +80,24 @@ return array(
                 'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
                     'gallery_css' => array(
-                        'assets'  => array(
-                            'common/css/gallery.css',
-                            'common/css/imageGallery.min.css',
+                        'assets' => array(
+                            'common/less/gallery.less',
+                            'common/less/imageGallery.min.css',
+                        ),
+                        'filters' => array(
+                            'gallery_less' => array(
+                                'name' => '\Assetic\Filter\LessFilter',
+                                'option' => array(
+                                    'nodeBin'   => '/usr/local/bin/node',
+                                    'nodePaths' => array(
+                                        '/usr/local/lib/node_modules',
+                                    ),
+                                    'compress'  => true,
+                                ),
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'gallery_css.css',
                         ),
                     ),
                     'gallery_js' => array(

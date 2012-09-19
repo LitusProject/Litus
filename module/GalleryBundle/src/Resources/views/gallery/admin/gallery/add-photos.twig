@@ -1,35 +1,35 @@
-{% extends 'admin/layout.twig' %}
+{% extends 'admin/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Gallery') }}</h1>
-    </div>
-
     {% include 'gallery/admin/gallery/partials/navigation.twig' %}
 
-    <h2>{{ album.getTitle(language) }}</h2>
-    <input type="file" id="uploader" class="uk-input" data-uploadUrl="{{ url("admin_gallery", {"action": "upload", "id": album.getId()}) }}" name="file" multiple>
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>{{ album.getTitle(language) }}</h1>
+        <input type="file" id="uploader" class="uk-input" data-uploadUrl="{{ url("admin_gallery", {"action": "upload", "id": album.getId()}) }}" name="file" multiple>
+    </div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#uploader').uploadKit({
                 uploadUrl: '{{ url("admin_gallery", {"action": "upload", "id": album.getId()}) }}',
                 isMultiple: true,
-                swfUrl: '/_gallery/plupload/plupload.flash.swf',
+                swfUrl: '',
                 silverlightUrl: '',
-                errorFileSize: '{{ translate('File size exceeds limit') }}',
-                errorUnknown: '{{ translate('Unknown error occurred') }}',
-                infoMultiple: '<h1>{{ translate('No Files Selected') }}</h1><h2>{{ translate('Browse for files to upload or drag and drop them here') }}</h2>',
-                infoNotMultiple: '<h1>{{ translate('No File Selected') }}</h1><h2>{{ translate('Browse for file to upload or drag and drop them here') }}</h2>',
+                errorFileSize: 'File size exceeds limit',
+                errorUnknown: 'Unknown error occurred',
+                infoMultiple: '<h1>No Files Selected</h1><h2>Browse for files to upload or drag and drop them here</h2>',
+                infoNotMultiple: '<h1>No File Selected</h1><h2>Browse for file to upload or drag and drop them here</h2>',
                 runtimes: 'html5,flash',
-                fileColumnTitle: '{{ translate('File Name') }}',
-                sizeColumnTitle: '{{ translate('Size') }}',
-                progressColumnTitle: '{{ translate('Progress') }}',
-                browseLabel: '{{ translate('Browse...') }}',
-                uploadLabel: '{{ translate('Upload') }}',
-                removeLabel: '{{ translate('Remove') }}',
+                fileColumnTitle: 'File Name',
+                sizeColumnTitle: 'Size',
+                progressColumnTitle: 'Progress',
+                browseLabel: 'Browse...',
+                uploadLabel: 'Upload',
+                removeLabel: 'Remove',
                 filters : [{title : "Image files", extensions : "jpeg,jpg,gif,png"}],
                 maxFileSize: '4mb',
             });

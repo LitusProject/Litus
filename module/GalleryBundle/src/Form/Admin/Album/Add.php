@@ -14,21 +14,21 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\Form\Bootstrap\SubForm\TabContent,
-    CommonBundle\Component\Form\Bootstrap\SubForm\TabPane,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Tabs,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Component\Validator\Name as NameValidator,
     GalleryBundle\Entity\Album\Album,
     Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add an album.
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
 	/**
 	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 	/**
 	 * @var \GalleryBundle\Entity\Album\Album
 	 */
-	protected $album;
+	protected $album = null;
 
 	/**
 	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -51,10 +51,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 		$this->_entityManager = $entityManager;
 
 		$tabs = new Tabs('languages');
-        $tabs->setAttribute('id', 'languages');
 		$this->add($tabs);
 
-        $tabContent = new TabContent('tabs-content');
+        $tabContent = new TabContent('tab_content');
 
 		foreach($this->_getLanguages() as $language) {
 		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
@@ -64,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 		    $field = new Text('title_' . $language->getAbbrev());
 		    $field->setLabel('Title')
 		        ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
-		        ->setRequired();
+		        ->setRequired($language->getAbbrev() == \Locale::getDefault());
 		    $pane->add($field);
 
 		    $tabContent->add($pane);
@@ -79,7 +78,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
 		$this->add($field);
 
         $field = new Submit('submit');
-        $field->setValue('Add');
+        $field->setValue('Add')
+            ->setAttribute('class', 'gallery_add');
         $this->add($field);
     }
 
@@ -112,12 +112,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form\Tabbable
                     $factory->createInput(
                         array(
                             'name'     => 'title_' . $language->getAbbrev(),
-                            'required' => true,
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new NameValidator($this->_entityManager),
+                                new NameValidator($this->_entityManager, $this->album),
                             ),
                         )
                     )

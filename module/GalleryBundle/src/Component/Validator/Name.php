@@ -75,10 +75,10 @@ class Name extends \Zend\Validator\AbstractValidator
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
             $album = $this->_entityManager
-                ->getRepository('GalleryBundle\Entity\Album\Translation')
+                ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->_album && $album->getAlbum() == $this->_album))
+            if (null === $album || ($this->_album && $album == $this->_album))
                 return true;
 
             $this->error(self::NOT_VALID);

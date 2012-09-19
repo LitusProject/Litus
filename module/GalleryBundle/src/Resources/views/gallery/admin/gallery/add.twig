@@ -1,17 +1,17 @@
-{% extends 'admin/layout.twig' %}
+{% extends 'admin/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Gallery') }}</h1>
-    </div>
-
     {% include 'gallery/admin/gallery/partials/navigation.twig' %}
 
-    {% import 'admin/partials/form.twig' as forms %}
-    {{ forms.renderForm(form) }}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
 {% endblock %}
 
-{% block controller_script %}
+{% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();

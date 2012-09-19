@@ -47,13 +47,6 @@ class Translation
     private $title;
 
     /**
-     * @var string The name of this tanslation
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    /**
      * @param \GalleryBundle\Entity\Album\Album $album
      * @param \CommonBundle\Entity\General\Language $language
      * @param string $content
@@ -64,7 +57,6 @@ class Translation
         $this->album = $album;
         $this->language = $language;
         $this->title = $title;
-        $this->_setName($title);
     }
 
     /**
@@ -99,26 +91,6 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->_setName($title);
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @param \PageBundle\Entity\Nodes\Page
-     */
-    private function _setName($name)
-    {
-        $this->name = $this->album->getDate()->format('Ymd') . '_' . Url::createSlug($name);
         return $this;
     }
 }

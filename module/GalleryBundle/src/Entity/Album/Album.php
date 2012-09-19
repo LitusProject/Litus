@@ -54,6 +54,13 @@ class Album
     private $translations;
 
     /**
+     * @var string The name of this album
+     *
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
      * @var array The photos of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
@@ -70,6 +77,7 @@ class Album
         $this->createTime = new DateTime();
         $this->createPerson = $person;
         $this->dateActivity = $date;
+        $this->name = $date->format('d_m_Y_H_i');
     }
 
     /**
@@ -120,12 +128,20 @@ class Album
      *
      * @return \GalleryBundle\Entity\Album\Translation
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
         }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 
     /**
@@ -133,11 +149,14 @@ class Album
      *
      * @return string
      */
-    public function getTitle(Language $language)
+    public function getTitle(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getTitle();
+
+        return '';
     }
 
     /**
@@ -147,9 +166,7 @@ class Album
      */
     public function getName(Language $language)
     {
-        $translation = $this->getTranslation($language);
-        if (null !== $translation)
-            return $translation->getName();
+        return $this->_name;
     }
 
     /**
@@ -169,5 +186,17 @@ class Album
             $num = rand(0, sizeof($this->photos) - 1);
         } while($this->photos[$num]->isCensored());
         return $this->photos[$num];
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function updateName()
+    {
+        $translation = $this->getTranslation();
+        $this->name = $this->getDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        return $this;
     }
 }

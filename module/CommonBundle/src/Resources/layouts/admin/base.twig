@@ -226,6 +226,9 @@
 		                		    {% if hasAccess('admin_form', 'manage') %}
 		                		        <li><a href="{{ url('admin_form') }}">Forms</a></li>
 		                		    {% endif %}
+		                		    {% if hasAccess('admin_gallery', 'manage') %}
+		                		        <li><a href="{{ url('admin_gallery') }}">Gallery</a></li>
+		                		    {% endif %}
 		                		    {% if hasAccess('admin_news', 'manage') %}
 		                		        <li><a href="{{ url('admin_news') }}">News</a></li>
 		                		    {% endif %}

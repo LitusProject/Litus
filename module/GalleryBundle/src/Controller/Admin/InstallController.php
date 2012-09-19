@@ -9,9 +9,9 @@ namespace GalleryBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-	protected function _initConfig()
+	protected function initConfig()
 	{
-		$this->_installConfig(
+		$this->installConfig(
 	        array(
 				array(
 					'key'         => 'gallery.path',
@@ -22,9 +22,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 		);
 	}
 
-	protected function _initAcl()
+	protected function initAcl()
 	{
-	    $this->installAclStructure(
+	    $this->installAcl(
 	        array(
 	            'galleryBundle' => array(
 	                'admin_gallery' => array(
