@@ -31,7 +31,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $currentYear = $this->getCurrentAcademicYear();
 
-        // TODO: mail kristof: studies: findAllParents ??? getFullName ???
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($currentYear);
@@ -49,9 +48,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 $studyIds = $formData['studies'];
 
                 foreach ($studyIds as $studyId) {
+
+                    $study = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneById($studyId);
+
                     $enrollments[] = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                        ->findAllByStudyAndAcademicYear($studyId, $currentYear);
+                        ->findAllByStudyAndAcademicYear($study, $currentYear);
                 }
 
                 $mailAddress = $this->getEntityManager()
@@ -67,7 +71,6 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
-                // TODO Which email? Person or academic? Ik vermoed dat dit ergens een optie is?
                 foreach($enrollments as $enrollment)
                     $mail->addTo($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
 
