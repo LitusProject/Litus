@@ -229,6 +229,16 @@ VTK Cudi
                     'value'       => '1',
                     'description' => 'Enable automatic assignment of bookings',
                 ),
+                array(
+                    'key'         => 'cudi.print_socket_address',
+                    'value'       => '127.0.0.1',
+                    'description' => 'The ip address of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.print_socket_port',
+                    'value'       => '4444',
+                    'description' => 'The port of the print socket',
+                ),
             )
         );
 
