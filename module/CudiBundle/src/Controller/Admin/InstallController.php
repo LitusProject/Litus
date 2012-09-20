@@ -224,6 +224,11 @@ VTK Cudi
                     'value'       => '1',
                     'description' => 'Enable scanning of collected items before selling',
                 ),
+                array(
+                    'key'         => 'cudi.enable_automatic_assignment',
+                    'value'       => '1',
+                    'description' => 'Enable automatic assignment of bookings',
+                ),
             )
         );
 

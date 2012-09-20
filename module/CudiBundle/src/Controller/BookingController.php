@@ -187,6 +187,36 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         $this->getEntityManager()->persist($booking);
+
+                        $enableAssignment = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment');
+
+                        if ($enableAssignment == '1') {
+                            $currentPeriod = $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Stock\Period')
+                                ->findOneActive();
+                            $currentPeriod->setEntityManager($this->getEntityManager());
+
+                            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                            if ($available > 0) {
+                                if ($available >= $booking->getNumber()) {
+                                    $booking->setStatus('assigned');
+                                } else {
+                                    $new = new Booking(
+                                        $this->getEntityManager(),
+                                        $booking->getPerson(),
+                                        $booking->getArticle(),
+                                        'booked',
+                                        $booking->getNumber() - $available
+                                    );
+
+                                    $this->getEntityManager()->persist($new);
+                                    $booking->setNumber($available)
+                                        ->setStatus('assigned');
+                                }
+                            }
+                        }
                     }
                 }
 
