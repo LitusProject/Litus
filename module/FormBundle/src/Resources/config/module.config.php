@@ -150,6 +150,20 @@ return array(
             'form_manage_auth'  => 'FormBundle\Controller\Manage\AuthController',
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/manage.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/manage.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'assetic_configuration' => array(
         'modules' => array(
             'formbundle' => array(
