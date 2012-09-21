@@ -132,7 +132,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $formSpecification);
+        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
         $form->populateFromEntry($formEntry);
 
         if ($this->getRequest()->isPost()) {

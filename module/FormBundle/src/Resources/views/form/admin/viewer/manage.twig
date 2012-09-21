@@ -20,7 +20,7 @@
 	<div id="controller_action">
 	    <h1>Form</h1>
 
-	    <p>Title: <b>{{ formSpecification.getTitle() }}</b></p>
+	    <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
 	    <br/>
 
 	    <table class="manage">
@@ -36,7 +36,7 @@
                     <td>{% if viewer.isEdit() %} X {% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_viewer', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle(language) }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
