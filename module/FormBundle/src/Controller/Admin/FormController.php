@@ -17,6 +17,7 @@ namespace FormBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Nodes\Translation,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -62,9 +63,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $form = new Form(
                     $this->getAuthentication()->getPersonObject(),
-                    $formData['title'],
-                    $formData['introduction'],
-                    $formData['submittext'],
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $formData['active'],
@@ -73,6 +71,24 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->getEntityManager()->persist($form);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $form,
+                            $language,
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['introduction_' . $language->getAbbrev()],
+                            $formData['submittext_' . $language->getAbbrev()]
+                        );
+
+                        $this->getEntityManager()->persist($translation);
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -120,14 +136,44 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 else
                     $max = $formData['max'];
 
-                $formSpecification->setTitle($formData['title'])
-                    ->setSubmitText($formData['submittext'])
-                    ->setIntroduction($formData['introduction'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
+                $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
                     ->setActive($formData['active'])
                     ->setMax($max)
                     ->setMultiple($formData['multiple']);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
+                        $translation = $formSpecification->getTranslation($language, false);
+
+                        if ($translation === null) {
+                            $translation = new Translation(
+                                $formSpecification,
+                                $language,
+                                $formData['title_' . $language->getAbbrev()],
+                                $formData['introduction_' . $language->getAbbrev()],
+                                $formData['submittext_' . $language->getAbbrev()]
+                            );
+                        } else {
+                            $translation->setTitle($formData['title_' . $language->getAbbrev()])
+                                ->setIntroduction($formData['introduction_' . $language->getAbbrev()])
+                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()]);
+                        }
+
+                        $this->getEntityManager()->persist($translation);
+                    } else {
+                        // Delete translation if it already exists
+                        $translation = $formSpecification->getTranslation($language, false);
+
+                        if ($translation !== null) {
+                            $this->getEntityManager()->remove($translation);
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 

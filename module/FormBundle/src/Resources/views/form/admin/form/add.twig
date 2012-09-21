@@ -5,14 +5,19 @@
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
 	<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
         $(document).ready(function () {
             $('textarea').gollum();
         });

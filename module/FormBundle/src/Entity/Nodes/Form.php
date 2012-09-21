@@ -31,25 +31,13 @@ class Form extends \CommonBundle\Entity\Nodes\Node
 {
 
     /**
-     * @var string The title of this form.
+     * @var int The ID of this tanslation
      *
-     * @ORM\Column(name="title", type="string")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
-    private $title;
-
-    /**
-     * @var string The introduction of this form
-     *
-     * @ORM\Column(type="text")
-     */
-    private $introduction;
-
-    /**
-     * @var string The text of the submit button of this form.
-     *
-     * @ORM\Column(type="text")
-     */
-    private $submitText;
+    private $id;
 
     /**
      * @var int The maximum number of entries of this form.
@@ -92,75 +80,28 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     private $active;
 
     /**
+     * @var array The translations of this form
+     *
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Nodes\Translation", mappedBy="form", cascade={"remove"})
+     */
+    private $translations;
+
+    /**
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $title
      * @param boolean $redoable
      * @param boolean $multiple
      */
-    public function __construct($person, $title, $introduction, $submitText, $startDate, $endDate, $active, $max = 0, $multiple = false)
+    public function __construct($person, $startDate, $endDate, $active, $max = 0, $multiple = false)
     {
         parent::__construct($person);
 
-        $this->title = $title;
-        $this->introduction = $introduction;
-        $this->submitText = $submitText;
         $this->max = $max;
         $this->multiple = $multiple;
         $this->fields = new ArrayCollection();
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return \FormBundle\Entity\Nodes\Form
-     */
-    public function setTitle($title) {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle() {
-        return $this->title;
-    }
-
-    /**
-     * @param string $introduction
-     *
-     * @return \FormBundle\Entity\Nodes\Form
-     */
-    public function setIntroduction($introduction) {
-        $this->introduction = $introduction;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIntroduction() {
-        return $this->introduction;
-    }
-
-    /**
-     * @param string $submitText
-     *
-     * @return \FormBundle\Entity\Nodes\Form
-     */
-    public function setSubmitText($submitText) {
-        $this->submitText = $submitText;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubmitText() {
-        return $this->submitText;
     }
 
     /**
@@ -259,4 +200,73 @@ class Form extends \CommonBundle\Entity\Nodes\Node
     public function isActive() {
         return $this->active;
     }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getTitle(Language $language = null, $allowFallback = true)
+    {
+
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getTitle();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getIntroduction(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getIntroduction();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getSubmitText(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getSubmitText();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \PageBundle\Entity\Nodes\Translation
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+
+        foreach($this->translations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
+    }
+
 }

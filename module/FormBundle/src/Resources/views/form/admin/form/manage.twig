@@ -33,7 +33,7 @@
 	        <tbody>
 	            {% for form in paginator %}
 	                <tr class="item item-{{ form.getId() }}">
-	                    <td>{{ form.getTitle() }}</td>
+	                    <td>{{ form.getTitle(language) }}</td>
 	                    <td>{{ dateLocalized(form.getStartDate(), 'dd/MM/y H:mm') }}</td>
 	                    <td>{{ dateLocalized(form.getEndDate(), 'dd/MM/y H:mm') }}</td>
 	                    <td>{% if form.isActive() %}X{% endif %}</td>
@@ -46,7 +46,7 @@
 	                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                        {% if hasAccess('admin_form', 'delete') %}
-	                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle() }}" class="delete">Delete</a>
+	                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
 	                        {% endif %}
 	                    </td>
 	                </tr>
