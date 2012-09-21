@@ -26,7 +26,7 @@
 			$('body').focus();
 			_clear($(this));
 
-			$(document).unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
+			$('body').unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
 			    if (e.target == undefined || $(e.target).is('input'))
 			        return;
 
