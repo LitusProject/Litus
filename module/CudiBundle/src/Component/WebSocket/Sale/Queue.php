@@ -754,7 +754,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
-            $person->getQueueNumber(),
+            $item->getPerson()->getQueueNumber(),
             $totalPrice / 100,
             $articles,
             $prices
