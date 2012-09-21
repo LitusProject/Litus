@@ -47,8 +47,10 @@ class Printer {
 
     private static function _print(EntityManager $entityManger, $printer, $type, $data)
     {
-        $printers = $entityManger->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.printers');
+        $printers = unserialize(
+            $entityManger->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.printers')
+        );
 
         if (!isset($printers[$printer]))
             return;

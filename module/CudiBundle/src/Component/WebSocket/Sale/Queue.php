@@ -627,7 +627,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
                 $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() - $currentNumber);
 
-                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ' (' . $currentNumber . 'x)';
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($currentNumber > 1 ?' (' . $currentNumber . 'x)' : '');
                 $prices[] = $price * $currentNumber / 100;
                 $totalPrice += $price * $currentNumber;
             }
@@ -741,7 +741,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             foreach($bookings as $booking) {
                 if ($booking->getStatus() != 'assigned')
                     continue;
-                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ' (' . $booking->getNumber() . 'x)';
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($booking->getNumber() > 1 ?' (' . $booking->getNumber() . 'x)' : '');
                 $prices[] = $booking->getArticle()->getSellPrice() * $booking->getNumber() / 100;
                 $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
             }
