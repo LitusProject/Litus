@@ -252,6 +252,20 @@ VTK Cudi
                     ),
                     'description' => 'The port of the print socket',
                 ),
+                array(
+                    'key'         => 'cudi.tshirt_article',
+                    'value'       => serialize(
+                        array(
+                            'XS'  => 189,
+                            'S'   => 190,
+                            'M'   => 191,
+                            'L'   => 192,
+                            'XL'  => 193,
+                            'XXL' => 194,
+                        )
+                    ),
+                    'description' => 'The T-shirt articles',
+                ),
             )
         );
 

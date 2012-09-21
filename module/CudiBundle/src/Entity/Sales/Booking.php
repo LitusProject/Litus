@@ -116,10 +116,11 @@ class Booking
      * @param \CudiBundle\Entity\Sales\Article $article The booked article
      * @param string $status The status of the booking
      * @param integer $number The number of articles booked
+     * @param boolean $force Force the booking
      */
-    public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1)
+    public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1, $force = false)
     {
-        if (!$article->isBookable())
+        if (!$article->isBookable() && !$force)
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
 
         $this->person = $person;
