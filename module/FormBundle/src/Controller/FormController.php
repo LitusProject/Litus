@@ -69,6 +69,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if ($message) {
+
             return new ViewModel(
                 array(
                     'message'       => $message,
