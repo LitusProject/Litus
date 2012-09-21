@@ -53,9 +53,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('SyllabusBundle\Entity\Study')
                         ->findOneById($studyId);
 
-                    $enrollments[] = $this->getEntityManager()
+                    $enrollments = array_merge($enrollments, $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                        ->findAllByStudyAndAcademicYear($study, $currentYear);
+                        ->findAllByStudyAndAcademicYear($study, $currentYear));
                 }
 
                 $mailAddress = $this->getEntityManager()
