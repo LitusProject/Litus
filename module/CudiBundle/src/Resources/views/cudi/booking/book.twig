@@ -63,7 +63,7 @@
 								<td style="text-align: center">{{ map['booked'] }}</td>
 							</tr>
 
-					        {% if element.getMessages()|length > 0 %}
+					        {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
 					        <tr>
 					        	<td colspan="6"  style="border-top-width:0px;">
 						            <div class="help-inline pull-right">

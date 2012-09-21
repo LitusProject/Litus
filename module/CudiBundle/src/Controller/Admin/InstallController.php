@@ -224,6 +224,48 @@ VTK Cudi
                     'value'       => '1',
                     'description' => 'Enable scanning of collected items before selling',
                 ),
+                array(
+                    'key'         => 'cudi.enable_automatic_assignment',
+                    'value'       => '1',
+                    'description' => 'Enable automatic assignment of bookings',
+                ),
+                array(
+                    'key'         => 'cudi.print_socket_address',
+                    'value'       => '127.0.0.1',
+                    'description' => 'The ip address of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.print_socket_port',
+                    'value'       => '4444',
+                    'description' => 'The port of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.printers',
+                    'value'       => serialize(
+                        array(
+                            'signin'    => 'SignInPrinter',
+                            'collect'   => 'CollectPrinter',
+                            'paydesk_1' => 'PayDesk_1Printer',
+                            'paydesk_2' => 'PayDesk_2Printer',
+                            'paydesk_3' => 'PayDesk_3Printer',
+                        )
+                    ),
+                    'description' => 'The port of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.tshirt_article',
+                    'value'       => serialize(
+                        array(
+                            'XS'  => 189,
+                            'S'   => 190,
+                            'M'   => 191,
+                            'L'   => 192,
+                            'XL'  => 193,
+                            'XXL' => 194,
+                        )
+                    ),
+                    'description' => 'The T-shirt articles',
+                ),
             )
         );
 

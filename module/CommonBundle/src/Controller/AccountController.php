@@ -20,6 +20,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
+    CudiBundle\Entity\Sales\Booking,
     DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -200,7 +201,24 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $academic->setPhotoPath($fileName);
                 }
 
+                $tshirts = unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.tshirt_article')
+                );
+
                 if (null !== $metaData) {
+                    $booking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findOneAssignedByArticleAndPerson(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic
+                        );
+
+                    $this->getEntityManager()->remove($booking);
+
                     $metaData->setBecomeMember($metaData->becomeMember() ? true : $formData['become_member'])
                         ->setReceiveIrReeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])
@@ -216,6 +234,19 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     );
                     $this->getEntityManager()->persist($metaData);
                 }
+
+                $booking = new Booking(
+                    $this->getEntityManager(),
+                    $academic,
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->findOneById($tshirts[$formData['tshirt_size']]),
+                    'assigned',
+                    1,
+                    true
+                );
+
+                $this->getEntityManager()->persist($booking);
 
                 $academic->activate(
                     $this->getEntityManager(),

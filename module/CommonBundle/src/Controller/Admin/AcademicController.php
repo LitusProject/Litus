@@ -184,8 +184,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
 
-                $academic->getUniversityStatus($this->getCurrentAcademicYear())
-                    ->setStatus($formData['university_status']);
+                if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                    $status->setStatus($formData['university_status']);
+                } else {
+                    $academic->addUniversityStatus(
+                        new UniversityStatus(
+                            $academic,
+                            $formData['university_status'],
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -269,7 +278,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         switch($this->getParam('field')) {
             case 'username':
-                $academicq = $this->getEntityManager()
+                $academics = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic')
                     ->findAllByUsername($this->getParam('string'));
                 break;
