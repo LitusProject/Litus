@@ -47,6 +47,13 @@ class Printer {
 
     private static function _print(EntityManager $entityManger, $printer, $type, $data)
     {
+        $printers = $entityManger->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printers');
+
+        if (!isset($printers[$printer]))
+            return;
+
+        $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,
@@ -56,5 +63,6 @@ class Printer {
                 ->getConfigValue('cudi.print_socket_port')
         );
         socket_write($socket, $data);
+        socket_close($socket);
     }
 }
