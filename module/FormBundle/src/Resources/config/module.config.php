@@ -75,10 +75,11 @@ return array(
             'form_view' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/form[/:action[/:id]]',
+                    'route'    => '[/:language]/form[/:action[/:id]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'form_view',
