@@ -741,9 +741,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             foreach($bookings as $booking) {
                 if ($booking->getStatus() != 'assigned')
                     continue;
-                $articles[] = $item->getArticle()->getMainArticle()->getTitle() . ' (' . $item->getNumber() . 'x)';
-                $prices[] = $item->getArticle()->getSellPrice() * $item->getNumber() / 100;
-                $totalPrice += $item->getArticle()->getSellPrice() * $item->getNumber();
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ' (' . $booking->getNumber() . 'x)';
+                $prices[] = $booking->getArticle()->getSellPrice() * $booking->getNumber() / 100;
+                $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
             }
         }
 
