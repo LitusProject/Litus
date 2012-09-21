@@ -18,6 +18,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Nodes\Translation,
+    FormBundle\Entity\ViewerMap,
     FormBundle\Form\Admin\Form\Add as AddForm,
     FormBundle\Form\Admin\Form\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -89,6 +90,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $this->getEntityManager()->persist($translation);
                     }
                 }
+
+                $map = new ViewerMap($form, $this->getAuthentication()->getPersonObject(), true);
+
+                $this->getEntityManager()->persist($map);
 
                 $this->getEntityManager()->flush();
 
