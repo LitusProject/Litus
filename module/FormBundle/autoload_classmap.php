@@ -18,6 +18,7 @@ return array(
     'FormBundle\Entity\ViewerMap'                    => __DIR__ . '/src/Entity/ViewerMap.php',
     'FormBundle\Entity\Nodes\Entry'                  => __DIR__ . '/src/Entity/Nodes/Entry.php',
     'FormBundle\Entity\Nodes\Form'                   => __DIR__ . '/src/Entity/Nodes/Form.php',
+    'FormBundle\Entity\Nodes\Translation'            => __DIR__ . '/src/Entity/Nodes/Translation.php',
     'FormBundle\Entity\Entry'                        => __DIR__ . '/src/Entity/Entry.php',
     'FormBundle\Entity\Field'                        => __DIR__ . '/src/Entity/Field.php',
     'FormBundle\Controller\Admin\ViewerController'   => __DIR__ . '/src/Controller/Admin/ViewerController.php',

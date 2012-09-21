@@ -15,6 +15,9 @@
 namespace FormBundle\Form\Admin\Form;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
@@ -31,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -48,21 +51,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setRequired(true);
-        $this->add($field);
+        $tabs = new Tabs('languages');
+        $this->add($tabs);
 
-        $field = new TextArea('introduction');
-        $field->setLabel('Introduction')
-            ->setAttribute('rows', 20)
-            ->setRequired(true);
-        $this->add($field);
+        $tabContent = new TabContent('tab_content');
 
-        $field = new Text('submittext');
-        $field->setLabel('Submit Button Text')
-            ->setRequired(true);
-        $this->add($field);
+        foreach($this->getLanguages() as $language) {
+
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $field = new TextArea('introduction_' . $language->getAbbrev());
+            $field->setLabel('Introduction')
+                ->setAttribute('rows', 20)
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $field = new Text('submittext_' . $language->getAbbrev());
+            $field->setLabel('Submit Button Text')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $tabContent->add($pane);
+        }
+
+        $this->add($tabContent);
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
@@ -90,6 +109,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'form_add');
         $this->add($field);
+    }
+
+    protected function getLanguages()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
     }
 
     public function getInputFilter()
@@ -156,29 +182,43 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'submittext',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'introduction_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'submittext_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
 
             $this->_inputFilter = $inputFilter;
         }
