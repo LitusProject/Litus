@@ -36,7 +36,7 @@
 				} else if (e.which == 13) {
 				    e.preventDefault();
 					_complete($this);
-				} else {
+				} else if (e.which != 16) {
 					_clear($this);
 				}
 			});
