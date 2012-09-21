@@ -20,7 +20,7 @@
 	<div id="controller_action">
 	    <h1>Form</h1>
 
-	    <p>Title: <b>{{ formSpecification.getTitle() }}</b></p>
+	    <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
 	    <br/>
 
 	    <table class="manage">
@@ -33,7 +33,7 @@
 
             {% for field in fields %}
                 <tr class="item item-{{ field.getId() }}">
-                    <td>{{ field.getLabel() }}</td>
+                    <td>{{ field.getLabel(language) }}</td>
                     <td>{{ field.getOrder() }}</td>
                     <td>{% if field.isRequired() %}X{% endif %}</td>
                     <td class="actions">
@@ -41,7 +41,7 @@
                             <a href="{{ url('admin_form_field', {"action": "edit", "id": field.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('admin_form_field', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel() }}" data-form="{{ field.getForm().getTitle() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

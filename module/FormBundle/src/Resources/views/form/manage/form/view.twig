@@ -28,7 +28,7 @@
 	    			<th width="130px">Submitted</th>
 
 	    			{% for field in fields %}
-	    				<th>{{ field.getLabel() }}</th>
+	    				<th>{{ field.getLabel(language) }}</th>
     				{% endfor %}
 
     				{% if canedit %}

@@ -8,10 +8,20 @@
 	<div id="controller_action">
 	    <h1>Form</h1>
 
-	    <p>Name: <b>{{ formSpecification.getTitle() }}</b></p>
+	    <p>Name: <b>{{ formSpecification.getTitle(language) }}</b></p>
 	    <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
+    </script>
 {% endblock %}

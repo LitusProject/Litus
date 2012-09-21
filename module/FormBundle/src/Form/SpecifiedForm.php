@@ -54,7 +54,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($fields as $fieldSpecification) {
             if ('string' == $fieldSpecification->getType()) {
                 $field = new Text('field-' . $fieldSpecification->getId());
-                $field->setLabel($fieldSpecification->getLabel())
+                $field->setLabel($fieldSpecification->getLabel($language))
                     ->setRequired($fieldSpecification->isRequired());
                 $this->add($field);
             } else {

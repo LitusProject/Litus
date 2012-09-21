@@ -15,6 +15,9 @@
 namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
     FormBundle\Entity\Nodes\Form,
     Doctrine\ORM\EntityManager,
@@ -51,10 +54,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
         $this->_form = $form;
 
-        $field = new Text('label');
-        $field->setLabel('Label')
-            ->setRequired(True);
-        $this->add($field);
+        $tabs = new Tabs('languages');
+        $this->add($tabs);
+
+        $tabContent = new TabContent('tab_content');
+
+        foreach($this->getLanguages() as $language) {
+
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+
+            $pane = new TabPane('tab_' . $language->getAbbrev());
+
+            $field = new Text('label_' . $language->getAbbrev());
+            $field->setLabel('Label')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
+
+            $tabContent->add($pane);
+        }
+
+        $this->add($tabContent);
 
         $field = new Text('order');
         $field->setLabel('Order')
@@ -71,23 +90,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    protected function getLanguages()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+    }
+
     public function getInputFilter()
     {
         if ($this->_inputFilter == null) {
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'label',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+            foreach($this->getLanguages() as $language) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'label_' . $language->getAbbrev(),
+                            'required' => $language->getAbbrev() == \Locale::getDefault(),
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
                     )
-                )
-            );
+                );
+            }
 
             $inputFilter->add(
                 $factory->createInput(
