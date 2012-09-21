@@ -18,7 +18,7 @@
     </div>
 
     {% if authenticatedPerson is not null %}
-	    <h2>{{ form.getTitle() }}</h2>
+	    <h2>{{ form.getTitle(language) }}</h2>
 
 	    <table class="table">
 
@@ -51,7 +51,7 @@
     				{% if canedit %}
     					<td>
 							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">Edit</a>
-							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} data-form={{ form.getTitle() }} >Delete</a>
+							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} data-form={{ form.getTitle(language) }} >Delete</a>
     					</td>
     				{% endif %}
 
