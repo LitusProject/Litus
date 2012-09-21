@@ -276,7 +276,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->flush();
         }
 
-        $this->_printQueueTicket($queueItem);
+        $this->_printQueueTicket($queueItem, 'signin');
 
         return json_encode(
             (object) array(
@@ -352,7 +352,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($item))
             return;
 
-        $this->_printQueueTicket($item);
+        $this->_printQueueTicket($item, 'collect');
 
         $this->_lockedItems[$item->getId()] = $user;
 
@@ -635,6 +635,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         Printer::salePrint(
             $this->_entityManager,
+            'paydesk_' . $queueItem->getPayDesk(),
             $queueItem->getPerson()->getUniversityIdentification(),
             (int) $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -709,7 +710,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $academicYear;
     }
 
-    private function _printQueueTicket(QueueItem $item)
+    private function _printQueueTicket(QueueItem $item, $printer)
     {
         $bookings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Booking')
@@ -736,16 +737,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $totalPrice += $price;
         }
 
-        foreach($bookings as $booking) {
-            if ($booking->getStatus() != 'assigned')
-                continue;
-            $articles[] = $item->getArticle()->getMainArticle()->getTitle() . ' (' . $item->getNumber() . 'x)';
-            $prices[] = $item->getArticle()->getSellPrice() * $item->getNumber() / 100;
-            $totalPrice += $item->getArticle()->getSellPrice() * $item->getNumber();
+        if (sizeof($bookings > 0)) {
+            foreach($bookings as $booking) {
+                if ($booking->getStatus() != 'assigned')
+                    continue;
+                $articles[] = $item->getArticle()->getMainArticle()->getTitle() . ' (' . $item->getNumber() . 'x)';
+                $prices[] = $item->getArticle()->getSellPrice() * $item->getNumber() / 100;
+                $totalPrice += $item->getArticle()->getSellPrice() * $item->getNumber();
+            }
         }
 
         Printer::queuePrint(
             $this->_entityManager,
+            $printer,
             $item->getPerson()->getUniversityIdentification(),
             (int) $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
