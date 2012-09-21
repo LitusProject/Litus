@@ -21,6 +21,7 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
+    CudiBundle\Entity\Sales\Booking,
     DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -182,7 +183,27 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $formData['bakske'],
                         $formData['tshirt_size']
                     );
+
                     $this->getEntityManager()->persist($metaData);
+
+                    $tshirts = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.tshirt_article')
+                    );
+
+                    $booking = new Booking(
+                        $this->getEntityManager(),
+                        $academic,
+                        $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Article')
+                            ->findOneById($tshirts[$formData['tshirt_size']]),
+                        'assigned',
+                        1,
+                        true
+                    );
+
+                    $this->getEntityManager()->persist($booking);
 
                     $academic->activate(
                         $this->getEntityManager(),
@@ -398,7 +419,24 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->setPhotoPath($fileName);
                 }
 
+                $tshirts = unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.tshirt_article')
+                );
+
                 if (null !== $metaData) {
+                    $booking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Booking')
+                        ->findOneAssignedByArticleAndPerson(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic
+                        );
+
+                    $this->getEntityManager()->remove($booking);
+                    
                     $metaData->setBecomeMember($metaData->becomeMember() ? true : $formData['become_member'])
                         ->setReceiveIrReeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])
@@ -414,6 +452,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                     $this->getEntityManager()->persist($metaData);
                 }
+
+                $booking = new Booking(
+                    $this->getEntityManager(),
+                    $academic,
+                    $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sales\Article')
+                        ->findOneById($tshirts[$formData['tshirt_size']]),
+                    'assigned',
+                    1,
+                    true
+                );
 
                 $academic->activate(
                     $this->getEntityManager(),

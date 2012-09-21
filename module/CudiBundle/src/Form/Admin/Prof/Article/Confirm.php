@@ -91,7 +91,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 
         $field = new Checkbox('same_as_previous_year');
         $field->setLabel('Same As Previous Year');
-        $article->add($field);
+        $articleCollection->add($field);
 
         $field = new Select('type');
         $field->setLabel('Type')

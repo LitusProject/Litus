@@ -67,7 +67,8 @@
 
     function _gotBarcode ($this, value) {
         var options = $this.data('showQueueSettings');
-
+        value = value - options.barcodePrefix;
+        
         $this.find('tr').each(function () {
             if ($(this).data('info').id == value) {
                 switch ($(this).data('info').status) {

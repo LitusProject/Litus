@@ -63,6 +63,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getConfigValue('cudi.queue_socket_port');
 
         parent::__construct($address, $port);
+
         $this->_entityManager = $entityManager;
         $this->_lockedItems = array();
         $this->_collectedItems = array();
@@ -275,6 +276,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->flush();
         }
 
+        $this->_printQueueTicket($queueItem, 'signin');
+
         return json_encode(
             (object) array(
                 'queueNumber' => $queueItem->getQueueNumber(),
@@ -348,6 +351,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         if (!isset($item))
             return;
+
+        $this->_printQueueTicket($item, 'collect');
 
         $this->_lockedItems[$item->getId()] = $user;
 
@@ -558,6 +563,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($queueItem))
             return;
 
+        $articles = array();
+        $prices = array();
+        $totalPrice = 0;
+
         if (isset($data->articles->membership) && 1 == $data->articles->membership) {
             $queueItem->getPerson()
                 ->addOrganizationStatus(
@@ -572,6 +581,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->findOneByAcademicAndAcademicYear($queueItem->getPerson(), $this->_getCurrentAcademicYear());
             $registration->setPayed();
             $this->_entityManager->flush();
+
+            $price =$this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_price');
+            $articles[] = 'Membership';
+            $prices[] = $price;
+            $totalPrice += $price;
         }
 
         $queueItem->setPayMethod($data->payMethod);
@@ -610,8 +626,24 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $this->_entityManager->persist($saleItem);
 
                 $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() - $currentNumber);
+
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($currentNumber > 1 ?' (' . $currentNumber . 'x)' : '');
+                $prices[] = $price * $currentNumber / 100;
+                $totalPrice += $price * $currentNumber;
             }
         }
+
+        Printer::salePrint(
+            $this->_entityManager,
+            'paydesk_' . $queueItem->getPayDesk(),
+            $queueItem->getPerson()->getUniversityIdentification(),
+            (int) $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            $totalPrice / 100,
+            $articles,
+            $prices
+        );
 
         $this->_entityManager->flush();
 
@@ -676,5 +708,56 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         return $academicYear;
+    }
+
+    private function _printQueueTicket(QueueItem $item, $printer)
+    {
+        $bookings = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($item->getPerson());
+
+        $articles = array();
+        $prices = array();
+        $totalPrice = 0;
+
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($item->getPerson(), $this->_getCurrentAcademicYear());
+
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($item->getPerson(), $this->_getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+            $price =$this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_price');
+            $articles[] = 'Membership';
+            $prices[] = $price;
+            $totalPrice += $price;
+        }
+
+        if (sizeof($bookings > 0)) {
+            foreach($bookings as $booking) {
+                if ($booking->getStatus() != 'assigned')
+                    continue;
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($booking->getNumber() > 1 ?' (' . $booking->getNumber() . 'x)' : '');
+                $prices[] = $booking->getArticle()->getSellPrice() * $booking->getNumber() / 100;
+                $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+            }
+        }
+
+        Printer::queuePrint(
+            $this->_entityManager,
+            $printer,
+            $item->getPerson()->getUniversityIdentification(),
+            (int) $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
+            $item->getQueueNumber(),
+            $totalPrice / 100,
+            $articles,
+            $prices
+        );
     }
 }
