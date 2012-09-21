@@ -24,15 +24,15 @@
 
 	    	<thead>
 	    		<tr>
-	    			<th width="130px">Submitter</th>
-	    			<th width="130px">Submitted</th>
+	    			<th width="130px">{{ translate("Submitter") }}</th>
+	    			<th width="130px">{{ translate("Submitted") }}</th>
 
 	    			{% for field in fields %}
 	    				<th>{{ field.getLabel(language) }}</th>
     				{% endfor %}
 
     				{% if canedit %}
-    					<th width="100px">Actions</th>
+    					<th width="175px">{{ translate("Actions") }}</th>
     				{% endif %}
 
 	    		</tr>
@@ -50,8 +50,8 @@
 
     				{% if canedit %}
     					<td>
-							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">Edit</a>
-							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} data-form={{ form.getTitle(language) }} >Delete</a>
+							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
+							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} >{{ translate("Delete") }}</a>
     					</td>
     				{% endif %}
 
@@ -74,11 +74,11 @@
     	</div>
 		<div class="modal-body">
 			<p>
-				You are about to <b class="user-name"></b>'s entry of the following form: <b class="form-name"></b>.
-				Please note that this operation cannot be undone!
+				{{ translate("You are about to delete the following user's entry") }}: <b class="user-name"></b>.
+				{{ translate("Please note that this operation cannot be undone!") }}
 			</p>
 			<p>
-				Are you sure you want to continue?
+				{{ translate("Are you sure you want to continue?") }}
 			</p>
 		</div>
 		<div class="modal-footer">
@@ -109,8 +109,7 @@
 
 			e.preventDefault();
 			var removeEntry = $('#removeEntry');
-			removeEntry.find('.name').html($(this).data('name'));
-			removeEntry.find('.form-name').html($(this).data('form'));
+			removeEntry.find('.user-name').text($(this).data('name'));
 			removeEntry.find('.confirm').unbind('click').click(function () {
 				$.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
 				    if (data && 'success' == data.status) {
