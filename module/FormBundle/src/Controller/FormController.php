@@ -77,7 +77,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $formSpecification);
+        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
 
         if ($this->getRequest()->isPost()) {
 

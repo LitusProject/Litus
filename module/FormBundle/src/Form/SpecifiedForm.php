@@ -15,6 +15,7 @@
 namespace FormBundle\Form;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Entity\General\Language,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Nodes\Entry,
     Doctrine\ORM\EntityManager,
@@ -39,7 +40,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Form $form, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
     {
         parent::__construct($name);
 
@@ -62,7 +63,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $field = new Submit('submit');
-        $field->setValue($form->getSubmitText())
+        $field->setValue($form->getSubmitText($language))
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }
