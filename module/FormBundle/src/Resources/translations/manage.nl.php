@@ -32,4 +32,5 @@ return array(
     'This form is currently closed.' => 'Dit formulier is momenteel gesloten.',
     'This form has reached the maximum number of submissions.' => 'Dit formulier heeft het maximum aantal inschrijvingen bereikt.',
     'You can\'t fill this form more than once.' => 'Je kan dit formulier slechts één keer invullen.',
+    'Your entry has been recorded.' => 'Je registratie is opgeslagen.',
 );
