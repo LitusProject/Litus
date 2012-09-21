@@ -29,4 +29,7 @@ return array(
     'Delete Entry' => 'Delete Entry',
     'You are about to delete the following user\'s entry' => 'You are about to delete the following user\'s entry',
 
+    'This form is currently closed.' => 'This form is currently closed.',
+    'This form has reached the maximum number of submissions.' => 'This form has reached the maximum number of submissions.',
+    'You can\'t fill this form more than once.' => 'You can\'t fill this form more than once.',
 );

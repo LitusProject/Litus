@@ -9,7 +9,7 @@
         <div class="span12">
 
             {% if not form %}
-                {{ message }}
+                {{ translate(message) }}
 			{% else %}
                 {% autoescape false %}
                     {{ markdown(specification.getIntroduction(language)) }}
