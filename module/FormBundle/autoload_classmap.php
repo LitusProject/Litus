@@ -21,6 +21,7 @@ return array(
     'FormBundle\Entity\Nodes\Translation'            => __DIR__ . '/src/Entity/Nodes/Translation.php',
     'FormBundle\Entity\Entry'                        => __DIR__ . '/src/Entity/Entry.php',
     'FormBundle\Entity\Field'                        => __DIR__ . '/src/Entity/Field.php',
+    'FormBundle\Entity\Translation'                  => __DIR__ . '/src/Entity/Translation.php',
     'FormBundle\Controller\Admin\ViewerController'   => __DIR__ . '/src/Controller/Admin/ViewerController.php',
     'FormBundle\Controller\Admin\FormController'     => __DIR__ . '/src/Controller/Admin/FormController.php',
     'FormBundle\Controller\Admin\InstallController'  => __DIR__ . '/src/Controller/Admin/InstallController.php',

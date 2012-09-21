@@ -16,6 +16,7 @@ namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Field,
+    FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -60,13 +61,28 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     $formSpecification,
                     'string', // TODO: support more types
                     $formData['order'],
-                    $formData['label'],
                     $formData['required']
                 );
 
                 $formSpecification->addField($field);
 
                 $this->getEntityManager()->persist($field);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if ('' != $formData['label_' . $language->getAbbrev()]) {
+                        $translation = new Translation(
+                            $field,
+                            $language,
+                            $formData['label_' . $language->getAbbrev()]
+                        );
+
+                        $this->getEntityManager()->persist($translation);
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -110,9 +126,37 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $field->setLabel($formData['label'])
-                    ->setOrder($formData['order'])
+                $field->setOrder($formData['order'])
                     ->setRequired($formData['required']);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if ('' != $formData['label_' . $language->getAbbrev()]) {
+                        $translation = $field->getTranslation($language, false);
+
+                        if ($translation === null) {
+                            $translation = new Translation(
+                                $field,
+                                $language,
+                                $formData['label_' . $language->getAbbrev()]
+                            );
+                        } else {
+                            $translation->setLabel($formData['label_' . $language->getAbbrev()]);
+                        }
+
+                        $this->getEntityManager()->persist($translation);
+                    } else {
+                        // Delete translation if it already exists
+                        $translation = $field->getTranslation($language, false);
+
+                        if ($translation !== null) {
+                            $this->getEntityManager()->remove($translation);
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 

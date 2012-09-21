@@ -61,13 +61,6 @@ class Field
     private $order;
 
     /**
-     * @var string The label of this field.
-     *
-     * @ORM\Column(name="label", type="string")
-     */
-    private $label;
-
-    /**
      * @var boolean Indicates whether this is a required field.
      *
      * @ORM\Column(name="required", type="boolean")
@@ -75,15 +68,22 @@ class Field
     private $required;
 
     /**
+     * @var array The translations of this field
+     *
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Translation", mappedBy="field", cascade={"remove"})
+     */
+    private $translations;
+
+    /**
      * @param string $label
      */
-    public function __construct($form, $type, $order, $label, $required)
+    public function __construct($form, $type, $order, $required)
     {
         $this->type = $type;
         $this->form = $form;
         $this->order = $order;
-        $this->label = $label;
         $this->required = $required;
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -98,23 +98,6 @@ class Field
      */
     public function getForm() {
         return $this->form;
-    }
-
-    /**
-     * @param string $label
-     *
-     * @return \FormBundle\Entity\Field
-     */
-    public function setLabel($label) {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLabel() {
-        return $this->label;
     }
 
     /**
@@ -166,6 +149,43 @@ class Field
      */
     public function isRequired() {
         return $this->required;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getLabel(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getLabel();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \PageBundle\Entity\Nodes\Translation
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+
+        foreach($this->translations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 
 }

@@ -99,6 +99,7 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         $this->max = $max;
         $this->multiple = $multiple;
         $this->fields = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;

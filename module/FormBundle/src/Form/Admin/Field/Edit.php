@@ -49,10 +49,13 @@ class Edit extends Add
     private function _populateFromField(Field $field)
     {
         $data = array(
-            'label'    => $field->getLabel(),
             'order'    => $field->getOrder(),
             'required' => $field->isRequired(),
         );
+
+        foreach($this->getLanguages() as $language) {
+            $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
+        }
 
         $this->setData($data);
     }
