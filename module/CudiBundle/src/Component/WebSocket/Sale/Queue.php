@@ -637,7 +637,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager,
             'paydesk_' . $queueItem->getPayDesk(),
             $queueItem->getPerson()->getUniversityIdentification(),
-            (int) $this->getEntityManager()
+            (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
             $totalPrice / 100,
@@ -751,7 +751,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager,
             $printer,
             $item->getPerson()->getUniversityIdentification(),
-            (int) $this->getEntityManager()
+            (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
             $person->getQueueNumber(),
