@@ -26,7 +26,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     public function indexAction()
     {
         if ('production' == getenv('APPLICATION_ENV'))
-            $this->redirect()->toUrl('http://www.vtk.be/');
+            $this->redirect()->toUrl('http://old.vtk.be/');
 
         $notifications = $this->getEntityManager()
             ->getRepository('NotificationBundle\Entity\Nodes\Notification')
