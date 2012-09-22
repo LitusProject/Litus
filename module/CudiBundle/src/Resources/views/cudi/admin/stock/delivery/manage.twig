@@ -1,0 +1,46 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% include 'cudi/admin/stock/delivery/partials/suppliers.twig' %}
+
+	<div id="controller_action">
+		<table>
+
+		    <tr>
+		        <th>Name</th>
+				<th width="200px">Actions</th>
+		    </tr>
+
+		    {% for supplier in paginator %}
+		        <tr>
+		            <td>{{ supplier.getName() }}</td>
+					<td>
+					    {% if hasAccess('admin_stock_delivery', 'supplier') %}
+    						<a href="{{ url('admin_stock_delivery', {"action": "supplier", "id": supplier.getId()}) }}" class="view">View</a>
+    					{% endif %}
+					</td>
+		        </tr>
+		    {% endfor %}
+		</table>
+	</div>
+
+	<aside>
+    	{% if hasAccess('admin_stock_delivery', 'add') %}
+    		<div class="sidebox">
+    	        <div class="title">New Delivery</div>
+    	        <div class="content">
+    	            <p>
+    	        		<i>Please hit the link below to add a delivery!</i>
+    	            </p>
+    	            <p>
+    	                <a href="{{ url('admin_stock_delivery', {"action": "add"}) }}">&rarr; Add Delivery</a>
+    	            </p>
+    	        </div>
+    	    </div>
+    	{% endif %}
+	</aside>
+{% endblock %}

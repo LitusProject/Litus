@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,13 +15,14 @@
 namespace BrBundle\Entity\Users\Statuses;
 
 use BrBundle\Entity\Users\People\Corporate as CorporatePerson,
-    CommonBundle\Component\Util\AcademicYear;
+    CommonBundle\Component\Util\AcademicYear,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * A classification of a user based on his status at our Alma Mater.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Users\Statuses\Corporate")
- * @Table(name="users.corporate_statuses")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Users\Statuses\Corporate")
+ * @ORM\Table(name="users.corporate_statuses")
  */
 class Corporate
 {
@@ -37,33 +37,33 @@ class Corporate
     /**
      * @var int The ID of this corporate status
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \BrBundle\Entity\Users\People\Corporate The person this company status belongs to
      *
-     * @ManyToOne(
+     * @ORM\ManyToOne(
      *      targetEntity="BrBundle\Entity\Users\People\Corporate", inversedBy="corporateStatuses"
      * )
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The actual status value
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $status;
 
     /**
      * @var string The academic year this status was assigned; the format is yyzz (i.e. 0910, 1112)
      *
-     * @Column(type="string", length=4)
+     * @ORM\Column(type="string", length=4)
      */
     private $year;
 

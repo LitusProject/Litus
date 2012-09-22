@@ -4,59 +4,67 @@ namespace GalleryBundle\Entity\Album;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the album item.
  *
- * @Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
- * @Table(name="gallery.album")
+ * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
+ * @ORM\Table(name="gallery.album")
  */
 class Album
 {
     /**
      * @var int The ID of this album
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of creation of this album
      *
-     * @Column(name="creation_time", type="datetime")
+     * @ORM\Column(name="create_time", type="datetime")
      */
-    private $creationTime;
+    private $createTime;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this album
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="creation_person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="create_person", referencedColumnName="id")
      */
-    private $creationPerson;
+    private $createPerson;
 
     /**
      * @var \DateTime The date the photo's of this album were created
      *
-     * @Column(name="date_activity", type="datetime")
+     * @ORM\Column(name="date_activity", type="datetime")
      */
     private $dateActivity;
 
     /**
      * @var array The translations of this album
      *
-     * @OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
      */
     private $translations;
 
     /**
+     * @var string The name of this album
+     *
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
      * @var array The photos of this album
      *
-     * @OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
-     * @OrderBy({"id": "ASC"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
+     * @ORM\OrderBy({"id": "ASC"})
      */
     private $photos;
 
@@ -66,13 +74,14 @@ class Album
      */
     public function __construct(Person $person, DateTime $date)
     {
-        $this->creationTime = new DateTime();
-        $this->creationPerson = $person;
+        $this->createTime = new DateTime();
+        $this->createPerson = $person;
         $this->dateActivity = $date;
+        $this->name = $date->format('d_m_Y_H_i');
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -82,17 +91,17 @@ class Album
     /**
      * @return \DateTime
      */
-    public function getCreationTime()
+    public function getCreateTime()
     {
-        return $this->creationTime;
+        return $this->createTime;
     }
 
     /**
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function getCreationPerson()
+    public function getCreatePerson()
     {
-        return $this->creationPerson;
+        return $this->createPerson;
     }
 
     /**
@@ -119,12 +128,20 @@ class Album
      *
      * @return \GalleryBundle\Entity\Album\Translation
      */
-    public function getTranslation(Language $language)
+    public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach($this->translations as $translation) {
-            if ($translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
         }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
     }
 
     /**
@@ -132,11 +149,14 @@ class Album
      *
      * @return string
      */
-    public function getTitle(Language $language)
+    public function getTitle(Language $language = null, $allowFallback = true)
     {
-        $translation = $this->getTranslation($language);
+        $translation = $this->getTranslation($language, $allowFallback);
+
         if (null !== $translation)
             return $translation->getTitle();
+
+        return '';
     }
 
     /**
@@ -146,9 +166,7 @@ class Album
      */
     public function getName(Language $language)
     {
-        $translation = $this->getTranslation($language);
-        if (null !== $translation)
-            return $translation->getName();
+        return $this->_name;
     }
 
     /**
@@ -168,5 +186,17 @@ class Album
             $num = rand(0, sizeof($this->photos) - 1);
         } while($this->photos[$num]->isCensored());
         return $this->photos[$num];
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \NewsBundle\Entity\Nodes\News
+     */
+    public function updateName()
+    {
+        $translation = $this->getTranslation();
+        $this->name = $this->getDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        return $this;
     }
 }

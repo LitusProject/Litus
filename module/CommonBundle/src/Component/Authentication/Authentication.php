@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,7 +15,7 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action\Doctrine,
-    Zend\Authentication\Adapter,
+    Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\AuthenticationService;
 
 /**
@@ -48,7 +47,7 @@ class Authentication
      * @param \Zend\Authentication\Adapter $adapter The authentication adapter that should be used
      * @param \Zend\Authentication\AuthenticationService $service The service that should be used
      */
-    public function __construct(Adapter $adapter, AuthenticationService $service)
+    public function __construct(AdapterInterface $adapter, AuthenticationService $service)
     {
         $this->_adapter = $adapter;
         $this->_service = $service;

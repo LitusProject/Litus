@@ -1,0 +1,85 @@
+{% macro renderForm(form) %}
+    {% do form.prepare() %}
+    {% autoescape false %}
+        {% set buttons = [] %}
+        {{ form().openTag(form) }}
+            {{ _self.renderFieldset(form) }}
+        {{ form().closeTag() }}
+    {% endautoescape %}
+{% endmacro %}
+
+{% macro renderFieldset(fieldset) %}
+    {% autoescape false %}
+        {% set buttons = [] %}
+        {% for element in fieldset.getElements() %}
+            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
+                {% set buttons = buttons|merge([element]) %}
+            {% elseif element.getAttribute('type') == 'tabs' %}
+                <ul class="nav nav-tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    {% for language,tab in element.getTabs() %}
+                        <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% elseif element.getAttribute('type') == 'checkbox' %}
+                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                    <div class="controls">
+                        {{ formLabel().openTag(element) }}
+                            {{ formElement(element) }}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {{ formLabel().closeTag() }}
+                        {% if element.getMessages()|length > 0 %}
+                            <div class="help-inline">
+                                {{ formElementErrors(element) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% elseif element.getAttribute('type') == 'hidden' %}
+                {{ formElement(element) }}
+            {% else %}
+				{{ _self.renderOther(element) }}
+            {% endif %}
+        {% endfor %}
+        {% for child in fieldset.getFieldsets() %}
+            {% if child.isCollection() %}
+                <fieldset class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
+                    <legend>{{ translate(child.getLabel()) }}</legend>
+                    {{ _self.renderFieldset(child) }}
+                </fieldset>
+            {% else %}
+                <div class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
+                    {{ _self.renderFieldset(child) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if buttons|length > 0 %}
+            {% if fieldset.getDisplayFormActions() %}
+                <div class="form-actions">
+            {% endif %}
+                {% for button in buttons %}
+                    {{ formElement(button) }}
+                {% endfor %}
+            {% if fieldset.getDisplayFormActions() %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endautoescape %}
+{% endmacro %}
+
+{% macro renderOther(element) %}
+	{% autoescape false %}
+		<div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+		    {{ formLabel().openTag(element) }}
+		        {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
+		    {{ formLabel().closeTag() }}
+		    <div class="controls">
+		        <div>{{ formElement(element) }}</div>
+		        {% if element.getMessages()|length > 0 %}
+		            <div class="help-inline">
+		                {{ formElementErrors(element) }}
+		            </div>
+		        {% endif %}
+		    </div>
+		</div>
+	{% endautoescape %}
+{% endmacro %}

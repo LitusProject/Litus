@@ -3,19 +3,20 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Acl;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Entity\Acl\Resource,
+    CommonBundle\Entity\Acl\Role,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder,
     Zend\Cache\Storage\Adapter as CacheAdapter;
 
@@ -26,7 +27,7 @@ use Doctrine\ORM\EntityManager,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Acl extends \Zend\Acl\Acl
+class Acl extends \Zend\Permissions\Acl\Acl
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -58,27 +59,25 @@ class Acl extends \Zend\Acl\Acl
             ->from('CommonBundle\Entity\Acl\Resource', 'r')
             ->where('r.parent IS NULL');
 
-        $this->_addResources(
-            $query->getQuery()->getResult()
-        );
+        foreach ($query->getQuery()->getResult() as $resource)
+            $this->_addResource($resource);
     }
 
     /**
-     * Adding all resources retrieved from the database as well as their children.
+     * Adding a resource retrieved from the database as well as its children.
      *
-     * @param array $resources The resources that should be added
+     * @param \CommonBundle\Entity\Acl\Resource $resource The resource that should be added
      * @return void
      */
-    private function _addResources(array $resources)
+    private function _addResource(Resource $resource)
     {
-        foreach ($resources as $resource) {
-            $this->addResource(
-                $resource->getName(),
-                (null === $resource->getParent()) ? null : $resource->getParent()->getName()
-            );
+        $this->addResource(
+            $resource->getName(),
+            (null === $resource->getParent()) ? null : $resource->getParent()->getName()
+        );
 
-            $this->_addResources($resource->getChildren($this->_entityManager));
-        }
+        foreach ($resource->getChildren($this->_entityManager) as $childResource)
+            $this->_addResource($childResource);
     }
 
     /**
@@ -88,36 +87,39 @@ class Acl extends \Zend\Acl\Acl
      */
     protected function loadRoles()
     {
-        $this->_addRoles(
-            $this->_entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll()
-        );
+        foreach ($this->_entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role)
+            $this->_addRole($role);
     }
 
     /**
-     * Adding all roles retrieved from the database.
+     * Add a role retrieved from the database.
      *
-     * @param array $roles The roles that should be added
+     * @param \CommonBundle\Entity\Acl\Role $role The role that should be added
      * @return void
      */
-    private function _addRoles(array $roles)
+    private function _addRole(Role $role)
     {
-        foreach ($roles as $role) {
-            $parents = array();
-            foreach($role->getParents() as $parentRole) {
-                $parents[] = $parentRole->getName();
-            }
+        if ($this->hasRole($role->getName()))
+            return;
 
-            $this->addRole(
+        $parents = array();
+        foreach($role->getParents() as $parentRole) {
+            if (!$this->hasRole($parentRole->getName()))
+                $this->_addRole($parentRole);
+
+            $parents[] = $parentRole->getName();
+        }
+
+        $this->addRole(
+            $role->getName(), $parents
+        );
+
+        foreach ($role->getActions($this->_entityManager) as $action) {
+            $this->allow(
                 $role->getName(),
-                (0 == count($role->getParents())) ? null : $parents
+                $action->getResource()->getName(),
+                $action->getName()
             );
-
-            foreach ($role->getActions($this->_entityManager) as $action) {
-                $this->allow(
-                    $role->getName(),
-                    $action->getResource()->getName(),
-                    $action->getName());
-            }
         }
     }
 }

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,39 +16,53 @@ namespace PageBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
     PageBundle\Entity\Nodes\Page;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="PageBundle\Repository\Category")
- * @Table(name="nodes.pages_categories")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Category")
+ * @ORM\Table(name="nodes.pages_categories")
  */
 class Category
 {
     /**
      * @var int The ID of this category
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \PageBundle\Entity\Nodes\Page The page's parent
      *
-     * @ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
-     * @JoinColumn(name="parent", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Nodes\Page")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this category
      *
-     * @OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Categories\Translation", mappedBy="category", cascade={"remove"})
      */
     private $translations;
+
+    /**
+     * @var bool Whether or not the category is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+        $this->active = true;
+    }
 
     /**
      * @return string
@@ -57,11 +70,6 @@ class Category
     public function getId()
     {
         return $this->id;
-    }
-
-    public function __construct()
-    {
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -93,7 +101,7 @@ class Category
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 
@@ -116,5 +124,21 @@ class Category
             return $translation->getName();
 
         return '';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->active = false;
     }
 }

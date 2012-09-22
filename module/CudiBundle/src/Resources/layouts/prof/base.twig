@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     {{ headMeta() }}
-	{{ headTitle(translator().translate('Litus Prof'), 'PREPEND') }}
+	{{ headTitle(translate('Prof'), 'PREPEND') }}
 
 	{{ headLink() }}
 </head>
@@ -17,29 +17,29 @@
 			<ul class="nav">
 				{% if hasAccess('prof_index', 'index') %}
 					<li {% if 'index' == getParam('action') and 'prof_index' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translator().translate('Home') }}</a>
+					    <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('prof_subject', 'manage') %}
 					<li {% if 'prof_subject' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_subject", {"language": language.getAbbrev()}) }}">{{ translator().translate('Subjects') }}</a>
+					    <a href="{{ url("prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
 					</li>
 				{% endif %}
 				{% if hasAccess('prof_article', 'manage') %}
 					<li {% if 'prof_article' == getParam('controller') %} class="active" {% endif %}>
-					    <a href="{{ url("prof_article", {"language": language.getAbbrev()}) }}">{{ translator().translate('Articles') }}</a>
+					    <a href="{{ url("prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
 					</li>
 				{% endif %}
 			</ul>
 			<ul class="nav pull-right lang-nav visible-desktop">
 			    <li class="dropdown" id="langDropdown">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				        {{ translator().translate('Language') }} <span class="caret"></span>
+				        {{ translate('Language') }} <span class="caret"></span>
 			        </a>
 			        <ul class="dropdown-menu">
 			            {% for language in languages %}
 				            <li>
-				                <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translator().translate(language.getName()) }}</a>
+				                <a href="{{ url("prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
 				            </li>
 			            {% endfor %}
 			        </ul>
@@ -63,25 +63,19 @@
 			                </li>
 			                <li class="divider"></li>
 			                <li>
-			                    <a href="{{ url("prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translator().translate('Logout') }}</a>
+			                    <a href="{{ url("prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
 			                </li>
 			            </ul>
 			        </li>
 			    {% else %}
 				    <li class="dropdown" id="loginDropdown">
 				        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				            {{ translator().translate('Login') }} <span class="caret"></span>
+				            {{ translate('Login') }} <span class="caret"></span>
 			            </a>
 			            <ul class="dropdown-menu">
 			                <li style="text-align: center;">
-			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
 			                </li>
-			                <!--<li class="divider"></li>
-			                <li>
-			                    {% autoescape false %}
-			                        {{ loginForm }}
-			                    {% endautoescape %}
-			                </li>-->
 			            </ul>
 				    </li>
 				{% endif %}
@@ -93,7 +87,7 @@
 <header>
 	<div class="inner">
 		<div class="container">
-			<h1>{{ translator().translate('Litus Prof') }}</h1>
+			<h1>{{ translate('Prof') }}</h1>
 		</div>
 	</div>
 </header>

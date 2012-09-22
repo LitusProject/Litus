@@ -1,0 +1,48 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+    {% if nbArticles == 0 %}
+        <div class="flashmessage alert alert-error" id="comment_removed_error">
+            <a class="close" data-dismiss="alert">&times;</a>
+        	<div class="title">{{ translate('Error') }}</div>
+        	<div class="content">
+        		<p>{% autoescape false %}{{ translate('There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.') }}{% endautoescape %}</p>
+        	</div>
+        </div>
+    {% endif %}
+
+	<div class="page-header">
+	    <h2>{{ translate('Add Article') }}</h2>
+	</div>
+
+	<h3>{{ translate('Subject') }}</h3>
+	<p>
+	    {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+	    {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+	    {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+	    {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b>
+	</p>
+
+	{% if nbArticles > 0 %}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $('#articleSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("prof_article_typeahead", {"language": language.getAbbrev()})}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#articleId').val($(this).data('value').id);
+			    } else {
+			        $('#articleId').val('');
+			    }
+			});
+		});
+	</script>
+{% endblock %}

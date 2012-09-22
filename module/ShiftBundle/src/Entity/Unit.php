@@ -3,48 +3,49 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace ShiftBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This entity stores a unit of the organization.
  *
- * @Entity(repositoryClass="ShiftBundle\Repository\Unit")
- * @Table(name="shifts.units")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Unit")
+ * @ORM\Table(name="shifts.units")
  */
 class Unit
 {
     /**
      * @var integer The ID of this unit
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var boolean Whether or not this unit is active
-     *
-     * @Column(type="boolean")
-     */
-    private $active;
-
-    /**
      * @var string The unit's name
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @var boolean Whether or not this unit is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
 
     /**
      * @param string $name

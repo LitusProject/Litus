@@ -1,0 +1,102 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% include 'cudi/admin/sales/booking/partials/periods.twig' %}
+
+	<div id="controller_action">
+	    <div id="booking_search" style="display:none;">
+	    	<div style="padding:4px;text-align:right">
+	    		Search:
+	    		<select id="searchField">
+	    			<option value="article">Article</option>
+	    			<option value="person">Person</option>
+	    			<option value="status">Status</option>
+	    		</select>
+	    		is
+	    		<input type="text" id="searchString" size="30" />
+	    	</div>
+
+	    	<table class="full_width manage">
+	        	<tr>
+		            <th width="140px">Person</th>
+	            	<th>Article</th>
+		            <th width="30px">&nbsp;</th>
+	            	<th width="100px">Date</th>
+	            	<th width="55px">Status</th>
+	            	<th width="70px">Actions</th>
+	    		</tr>
+	    	</table>
+	    </div>
+
+		<div id="default_page">
+			<table class="full_width manage">
+		        <tr>
+		            <th width="140px">Person</th>
+		            <th>Article</th>
+		            <th width="30px">&nbsp;</th>
+		            <th width="100px">Date</th>
+		            <th width="55px">Status</th>
+		            <th width="70px">Actions</th>
+		        </tr>
+
+		        {% for booking in paginator %}
+		            <tr class="item">
+		                <td>{{ booking.getPerson().getFullName() }}</td>
+		                <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
+		                <td>&times;{{ booking.getNumber() }}</td>
+		                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
+		                <td class="status">{{ booking.getStatus()|capitalize }}</td>
+		                <td class="actions">
+		                    {% if hasAccess('admin_sales_booking', 'edit') %}
+		                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
+		                    {% endif %}
+		                </td>
+		            </tr>
+		        {% endfor %}
+		    </table>
+
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    $('#controller_nav .assignAll').click(openAssignAllModal);
+
+		    {% if hasAccess('admin_sales_booking', 'search') %}
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#booking_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'active'}) }}',
+				display: function (data) {
+					$('#booking_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#booking_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.person + '</td>')
+							.append('<td>' + this.article + '</td>')
+							.append('<td>&times;' + this.number + '</td>')
+							.append('<td>' + this.bookDate + '</td>')
+							.append('<td class="status">' + this.status + '</td>')
+							.append(actions = $('<td>', {'class': 'actions'}));
+						{% if hasAccess('admin_sales_booking', 'edit') %}
+							actions.append(button = $('<a href="{{ url('admin_sales_booking', {'action': 'edit'}) }}/' + this.id + '/period/{{ activePeriod.getId() }}" class="edit">Edit</a>'));
+						{% endif %}
+					});
+					$('#booking_search table').change();
+				},
+				clear: function () {
+					$('#booking_search table').find('tr.item').remove();
+				}
+			});
+			{% endif %}
+		});
+	</script>
+{% endblock %}

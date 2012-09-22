@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,43 +15,44 @@
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Bank\MoneyUnit;
+    CommonBundle\Entity\General\Bank\MoneyUnit,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
- * @Table(name="general.bank_money_units_amounts")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
+ * @ORM\Table(name="general.bank_money_units_amounts")
  */
 class Amount
 {
     /**
      * @var string The amount's ID
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
-     * @JoinColumn(name="cash_register_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
+     * @ORM\JoinColumn(name="cash_register_id", referencedColumnName="id")
      */
     private $cashRegister;
 
     /**
      * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
-     * @JoinColumn(name="unit_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
+     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
      */
     private $unit;
 
     /**
      * @var int The number of units
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $amount;
 

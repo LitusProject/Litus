@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,25 +17,28 @@ namespace CommonBundle\Entity\Users;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Code,
     CommonBundle\Entity\Users\Credential,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM,
     Zend\Mail\Message,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the entity for a person.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Person")
- * @Table(
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Person")
+ * @ORM\Table(
  *      name="users.people",
- *      uniqueConstraints={@UniqueConstraint(name="username_unique", columns={"username"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="username_unique", columns={"username"})}
  * )
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
  *      "academic"="CommonBundle\Entity\Users\People\Academic",
  *      "corporate"="BrBundle\Entity\Users\People\Corporate",
  *      "supplier"="CudiBundle\Entity\Users\People\Supplier"
@@ -47,35 +49,35 @@ abstract class Person
     /**
      * @var string The persons unique identifier
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The persons username
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $username;
 
     /**
      * @var \CommonBundle\Entity\Users\Credential The person's credential
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
-     * @JoinColumn(name="credential", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Credential", cascade={"all"}, fetch="EAGER")
+     * @ORM\JoinColumn(name="credential", referencedColumnName="id")
      */
     private $credential;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection;
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
      *      name="users.people_roles_map",
-     *      joinColumns={@JoinColumn(name="person", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="role", referencedColumnName="name")}
+     *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )
      */
     private $roles;
@@ -83,84 +85,84 @@ abstract class Person
     /**
      * @var string The persons first name
      *
-     * @Column(name="first_name", type="string", length=30)
+     * @ORM\Column(name="first_name", type="string", length=30)
      */
     private $firstName;
 
     /**
      * @var string The persons last name
      *
-     * @Column(name="last_name", type="string", length=30)
+     * @ORM\Column(name="last_name", type="string", length=30)
      */
     private $lastName;
 
     /**
      * @var string The users email address.
      *
-     * @Column(type="string", nullable=true, length=100)
+     * @ORM\Column(type="string", nullable=true, length=100)
      */
     private $email;
 
     /**
      * @var \CommonBundle\Entity\General\Address The address of the supplier
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
-     * @JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
     /**
      * @var string The persons telephone number
      *
-     * @Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $phoneNumber;
 
     /**
      * @var string The persons sex ('m' or 'f')
      *
-     * @Column(type="string", length=1, nullable=true)
+     * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $sex;
 
     /**
      * @var bool Whether or not this user can login
      *
-     * @Column(name="can_login", type="boolean")
+     * @ORM\Column(name="can_login", type="boolean")
      */
     private $canLogin;
 
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Statuses\Organization", mappedBy="person", cascade={"persist", "remove"})
      */
-    private $organisationStatuses;
+    private $organizationStatuses;
 
     /**
-     * @OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
-     * @OrderBy({"time" = "ASC"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\Users\Barcode", mappedBy="person")
+     * @ORM\OrderBy({"time" = "ASC"})
      */
     private $barcodes;
 
     /**
      * @var \CommonBundle\Entity\Users\Code A unique code to activate this account
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
-     * @JoinColumn(name="code", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Code")
+     * @ORM\JoinColumn(name="code", referencedColumnName="id")
      */
     private $code;
 
     /**
      * @var integer The number of failed logins.
      *
-     * @Column(name="failed_logins", type="smallint")
+     * @ORM\Column(name="failed_logins", type="smallint")
      */
     private $failedLogins = 0;
 
     /**
      * @var \CommonBundle\Entity\General\Language The last used language of this person
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
-     * @JoinColumn(name="language", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
 
@@ -185,7 +187,7 @@ abstract class Person
         $this->canLogin = true;
 
         $this->roles = new ArrayCollection($roles);
-        $this->organisationStatuses = new ArrayCollection();
+        $this->organizationStatuses = new ArrayCollection();
     }
 
     /**
@@ -504,13 +506,101 @@ abstract class Person
     }
 
     /**
+     * This method is called recursively to create a one-dimensional role flattening the
+     * roles' inheritance structure.
+     *
+     * @param array $inheritanceRoles The array with the roles that should be unfolded
+     * @param array $return The one-dimensional return array
+     * @return array
+     */
+    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
+    {
+        foreach ($inheritanceRoles as $role) {
+            $return[] = $role;
+            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\Users\Statuses\Organization $organizationStatus
+     * @return \CommonBundle\Entity\Users\Person
+     */
+    public function addOrganizationStatus(OrganizationStatus $organizationStatus)
+    {
+        $this->organizationStatuses->add($organizationStatus);
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return \CommonBundle\Entity\Users\Statuses\Organization
+     */
+    public function getOrganizationStatus(AcademicYearEntity $academicYear)
+    {
+        foreach($this->organizationStatuses as $status) {
+            if ($status->getAcademicYear() == $academicYear)
+                return $status;
+        }
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
+     */
+    public function canHaveOrganizationStatus(AcademicYearEntity $academicYear)
+    {
+        if ($this->organizationStatuses->count() >= 1) {
+            if ($this->organizationStatuses->exists(
+                function($key, $value) use ($academicYear) {
+                    if ($value->getAcademicYear() == $academicYear)
+                        return true;
+                }
+            )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether or not this person is a member.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
+     */
+    public function isMember(AcademicYearEntity $academicYear)
+    {
+        if ($this->getOrganizationStatus($academicYear) == 'non_member')
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Checks whether or not this person is a praesidium member.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return boolean
+     */
+    public function isPraesidium(AcademicYearEntity $academicYear)
+    {
+        if ($this->getOrganizationStatus($academicYear)->getStatus() == 'praesidium')
+            return true;
+
+        return false;
+    }
+
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \Zend\Mail\Transport $mailTransport
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param boolean $onlyShibboleth Activate only login by Shibboleth
      *
      * @return \CommonBundle\Entity\Users\Person
      */
-    public function activate(EntityManager $entityManager, Transport $mailTransport, $onlyShibboleth = true)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;
@@ -553,39 +643,5 @@ abstract class Person
         }
 
         return $this;
-    }
-
-    /**
-     * This method is called recursively to create a one-dimensional role flattening the
-     * roles' inheritance structure.
-     *
-     * @param array $inheritanceRoles The array with the roles that should be unfolded
-     * @param array $return The one-dimensional return array
-     * @return array
-     */
-    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
-    {
-        foreach ($inheritanceRoles as $role) {
-            $return[] = $role;
-            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
-        }
-
-        return $return;
-    }
-
-    /**
-     * Checks whether or not this person is a member.
-     *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @return boolean
-     */
-    public function isMember(AcademicYear $academicYear)
-    {
-        foreach ($this->organisationStatuses as $status) {
-            if ($academicYear == $status->getAcademicYear() && 'non_member' != $status->getStatus())
-                return true;
-        }
-
-        return false;
     }
 }

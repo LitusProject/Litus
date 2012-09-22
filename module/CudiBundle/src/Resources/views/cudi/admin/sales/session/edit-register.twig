@@ -1,0 +1,16 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/sales/session/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	    <h1>Edit Cash Register of Sale Session</h1>
+	    <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
+	    <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
+	    <br />
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+{% endblock %}

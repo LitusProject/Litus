@@ -3,19 +3,19 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Nodes\Page,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    PageBundle\Entity\Nodes\Page,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -29,13 +29,19 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->_getPage()))
+        if (!($page = $this->_getPage())) {
+            $this->getResponse()->setStatusCode(404);
             return new ViewModel();
+        }
+
+        $submenu = $this->_buildSubmenu($page);
+        if (empty($submenu) && null !== $page->getParent())
+            $submenu = $this->_buildSubmenu($page->getParent());
 
         return new ViewModel(
             array(
                 'page' => $page,
-                'submenu' => $this->_buildSubmenu($page)
+                'submenu' => $submenu,
             )
         );
     }
@@ -129,47 +135,15 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getPage()
     {
-        if (null === $this->getParam('name')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No name was given to identify the page!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'page',
-                array(
-                    'action' => 'view'
-                )
-            );
-
+        if (null === $this->getParam('name'))
             return;
-        }
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Nodes\Page')
             ->findOneByName($this->getParam('name'));
 
-        if (null === $page) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No page with the given name was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'page',
-                array(
-                    'action' => 'view'
-                )
-            );
-
+        if (null === $page)
             return;
-        }
 
         return $page;
     }

@@ -91,10 +91,6 @@ header {
         }
     }
 
-    ul.main-nav {
-        padding-right: 20px;
-    }
-
     .btn-navbar {
         .buttonBackground(@navbarBackgroundHighlight, @navbarBackground);
     }
@@ -109,11 +105,11 @@ header {
             }
 
             .profile {
-                margin: -2px 4px 0 0;
-                background: transparent url(../img/profile.png) 0 0;
+                margin: 0 4px 0 0;
+                background: transparent url(/_site/img/profile.png) 0 0;
                 display: inline-block;
-                width: 21px;
-                height: 22px;
+                width: 20px;
+                height: 20px;
             }
 
             &:hover,
@@ -131,34 +127,6 @@ header {
                 display: block;
                 font-size: 12px;
                 color: @cGray;
-            }
-        }
-
-        #loginDropdown {
-            ul {
-                padding-bottom: 10px;
-
-                li {
-                    padding: 10px;
-
-                    input[type="checkbox"],
-                    label {
-                        margin: 0;
-                    }
-
-                    a.btn {
-                        color: #fff;
-                    }
-
-                    .remember_me {
-                        float: left;
-                        margin-top: 8px;
-                    }
-                }
-
-                .divider {
-                    padding: 0;
-                }
             }
         }
     }
@@ -258,6 +226,10 @@ header {
 
             min-height: 75px;
 
+            blockquote {
+                padding-right: 5px;
+            }
+
             .date {
                 position: absolute;
 
@@ -295,6 +267,42 @@ header {
 
         .page-header {
             margin-bottom: 18px;
+        }
+
+        .login-container {
+            width: 224px;
+            margin: 0 auto;
+            padding: 10px;
+
+            input[type="checkbox"],
+            label {
+                margin: 0;
+            }
+
+            a.btn {
+                color: #fff;
+            }
+
+            .remember_me {
+                float: left;
+                margin-top: 8px;
+            }
+        }
+
+        .accordion-heading {
+            a {
+                padding: 5px 15px;
+                height: 27px;
+                line-height: 27px;
+
+                span {
+                    height: 27px;
+
+                    button {
+                        margin-top: -4px;
+                    }
+                }
+            }
         }
     }
 
@@ -370,4 +378,41 @@ footer {
     margin-bottom: 10px;
     border-bottom: 1px solid @grayLighter;
     .clearfix();
+}
+
+fieldset .control-group:first-child {
+    padding-top: 20px;
+}
+
+.flashmessage.fade {
+    .transition(all .15s linear);
+    height: 0;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+    border: 0;
+
+    &.in {
+        height: auto;
+        margin-bottom: 18px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 1px;
+    }
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.dl-horizontal {
+    &.wide {
+        dt {
+            width: 250px;
+        }
+        dd {
+            margin-left: 270px;
+        }
+    }
 }

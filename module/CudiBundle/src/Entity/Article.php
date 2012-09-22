@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,14 +16,15 @@ namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Article")
- * @Table(name="cudi.articles")
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")
+ * @ORM\Table(name="cudi.articles")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
  *      "external"="CudiBundle\Entity\Articles\External",
  *      "internal"="CudiBundle\Entity\Articles\Internal"}
  * )
@@ -34,93 +34,100 @@ abstract class Article
     /**
      * @var integer The ID of this article
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The title of this article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var string The authors of the article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $authors;
 
     /**
      * @var string The publishers of the article
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $publishers;
 
     /**
      * @var integer The year the article was published
      *
-     * @Column(name="year_published", type="integer", length=4, nullable=true)
+     * @ORM\Column(name="year_published", type="integer", length=4, nullable=true)
      */
     private $yearPublished;
 
     /**
      * @var \DateTime The time the article was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var integer The version number of this article
      *
-     * @Column(name="version_number", type="smallint", nullable=true)
+     * @ORM\Column(name="version_number", type="smallint", nullable=true)
      */
     private $versionNumber;
 
     /**
      * @var integer The ISBN number of this article
      *
-     * @Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $isbn;
 
     /**
      * @var string The url with a link to extra information of this article
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $url;
 
     /**
      * @var boolean The flag whether the article is old or not
      *
-     * @Column(name="is_history", type="boolean")
+     * @ORM\Column(name="is_history", type="boolean")
      */
     private $isHistory;
 
     /**
      * @var boolean The flag whether the article is just created by a prof
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isProf;
 
     /**
      * @var boolean The flag whether the article is downloadable
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $downloadable;
 
     /**
+     * @var boolean The flag whether the article is the same as previous year
+     *
+     * @ORM\Column(name="same_as_previous_year", type="boolean")
+     */
+    private $sameAsPreviousYear;
+
+    /**
      * @var string The article type
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $type;
 
@@ -148,8 +155,9 @@ abstract class Article
      * @param string|null $url The url of the article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
+     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
      */
-    public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable)
+    public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable, $sameAsPreviousYear)
     {
         $this->setTitle($title)
             ->setAuthors($authors)
@@ -161,7 +169,8 @@ abstract class Article
             ->setIsHistory(false)
             ->setIsProf(false)
             ->setType($type)
-            ->setIsDownloadable($downloadable);
+            ->setIsDownloadable($downloadable)
+            ->setIsSameAsPreviousYear($sameAsPreviousYear);
         $this->timestamp = new DateTime();
     }
 
@@ -387,6 +396,25 @@ abstract class Article
     public function setIsDownloadable($downloadable)
     {
         $this->downloadable = $downloadable;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSameAsPreviousYear()
+    {
+        return $this->sameAsPreviousYear;
+    }
+
+    /**
+     * @param boolean $sameAsPreviousYear
+     *
+     * @return \CudiBundle\Entity\Article
+     */
+    public function setIsSameAsPreviousYear($sameAsPreviousYear)
+    {
+        $this->sameAsPreviousYear = $sameAsPreviousYear;
         return $this;
     }
 

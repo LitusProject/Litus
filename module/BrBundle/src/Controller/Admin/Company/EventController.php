@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -64,14 +63,18 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $commonEvent = new CommonEvent(
                     $this->getAuthentication()->getPersonObject(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
+                    (DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false)
+                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
                 );
+
+                $this->getEntityManager()->persist($commonEvent);
 
                 $event = new Event(
                     $commonEvent,
@@ -83,14 +86,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = new Translation(
-                        $commonEvent,
-                        $language,
-                        $formData['location_' . $language->getAbbrev()],
-                        $formData['title_' . $language->getAbbrev()],
-                        $formData['content_' . $language->getAbbrev()]
-                    );
-                    $this->getEntityManager()->persist($translation);
+                    if (
+                        '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                            && '' != $formData['content_' . $language->getAbbrev()]
+                    ) {
+                        $translation = new Translation(
+                            $commonEvent,
+                            $language,
+                            $formData['location_' . $language->getAbbrev()],
+                            $formData['title_' . $language->getAbbrev()],
+                            $formData['content_' . $language->getAbbrev()]
+                        );
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
 
                 $this->getEntityManager()->persist($event);
@@ -132,9 +140,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $event->getEvent());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $event->getEvent()
                     ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                     ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
@@ -151,14 +160,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             ->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
                     } else {
-                        $translation = new Translation(
-                            $event,
-                            $language,
-                            $formData['location_' . $language->getAbbrev()],
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['content_' . $language->getAbbrev()]
-                        );
-                        $this->getEntityManager()->persist($translation);
+                        if (
+                            '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
+                                && '' != $formData['content_' . $language->getAbbrev()]
+                        ) {
+                            $translation = new Translation(
+                                $event,
+                                $language,
+                                $formData['location_' . $language->getAbbrev()],
+                                $formData['title_' . $language->getAbbrev()],
+                                $formData['content_' . $language->getAbbrev()]
+                            );
+                            $this->getEntityManager()->persist($translation);
+                        }
                     }
                 }
                 $this->getEntityManager()->flush();
@@ -216,9 +230,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = new PosterForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('calendar.poster_path');
@@ -229,7 +244,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $image = new Imagick($file->getFileName());
 
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                    $fileName = $event->getEvent()->getPoster();
+                    $fileName = '/' . $event->getEvent()->getPoster();
                 } else {
                     $fileName = '';
                     do{

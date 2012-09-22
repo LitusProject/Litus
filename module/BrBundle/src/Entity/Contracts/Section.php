@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,13 +16,14 @@ namespace BrBundle\Entity\Contracts;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Person,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * A section represents a part of a contract.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Contracts\Section")
- * @Table(name="br.contracts_sections")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Contracts\Section")
+ * @ORM\Table(name="br.contracts_sections")
  */
 class Section
 {
@@ -32,59 +32,59 @@ class Section
     /**
      * @var int A generated ID
      *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var string The name of this section
      *
-     * @Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true)
      */
     private $name;
 
     /**
      * @var string The content of this section
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $content;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The author of this section
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="author", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
 
     /**
      * @var string The academic year in which this section was written
      *
-     * @Column(type="string", length=9)
+     * @ORM\Column(type="string", length=9)
      */
     private $year;
 
     /**
      * @var int The price (VAT excluded!) a company has to pay when they agree to this section of the contract
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $price;
 
     /**
      * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      *
-     * @Column(name="vat_type", type="string", length=1)
+     * @ORM\Column(name="vat_type", type="string", length=1)
      */
     private $vatType;
 
     /**
      * @var string The short description of this section shown in invoices
      *
-     * @Column(name="invoice_description", type="string", nullable=true)
+     * @ORM\Column(name="invoice_description", type="string", nullable=true)
      */
     private $invoiceDescription;
 

@@ -1,18 +1,3 @@
-[submodule "vendor/ZendFramework"]
-	path = vendor/ZendFramework
-	url = git://github.com/LitusProject/zf2.git
-[submodule "vendor/ZfTwig"]
-	path = vendor/ZfTwig
-	url = git://github.com/LitusProject/ZfTwig.git
-[submodule "vendor/AsseticBundle"]
-	path = vendor/AsseticBundle
-	url = git://github.com/LitusProject/zf2-assetic-module.git
-[submodule "vendor/MistDoctrine"]
-	path = vendor/MistDoctrine
-	url = git://github.com/LitusProject/MistDoctrine.git
 [submodule "module/CommonBundle/src/Resources/assets/bootstrap"]
 	path = module/CommonBundle/src/Resources/assets/bootstrap
 	url = git://github.com/twitter/bootstrap.git
-[submodule "vendor/EdpMarkdown"]
-	path = vendor/EdpMarkdown
-	url = git://github.com/EvanDotPro/EdpMarkdown.git

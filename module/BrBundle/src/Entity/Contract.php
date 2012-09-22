@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,93 +19,94 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Contracts\Section,
     CommonBundle\Entity\Users\Person,
     DateTime,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a contract.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Br\Contract")
- * @Table(name="br.contracts")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Br\Contract")
+ * @ORM\Table(name="br.contracts")
  */
 class Contract
 {
     /**
      * @var int The contract's ID
      *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var \DateTime The date and time when this contract was written
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The author of this contract
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="author", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
 
     /**
      * @var \BrBundle\Entity\Company The company for which this contract is meant
      *
-     * @ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 
     /**
      * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
-     * @OneToMany(
+     * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Contracts\Composition",
      *      mappedBy="contract",
      *      cascade={"all"},
      *      orphanRemoval=true
      * )
-     * @OrderBy({"position" = "ASC"})
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $composition;
 
     /**
      * @var int The discount the company gets, in %.
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $discount;
 
     /**
      * @var string The title of the contract
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
      *
-     * @Column(name="invoice_nb", type="integer")
+     * @ORM\Column(name="invoice_nb", type="integer")
      */
     private $invoiceNb;
 
     /**
      * @var int The contract number. A form of identification that means something to the human users.
      *
-     * @Column(name="contract_nb", type="integer", unique=true)
+     * @ORM\Column(name="contract_nb", type="integer", unique=true)
      */
     private $contractNb;
 
     /**
      * @var bool True if the contract has been updated but the updated version has not been generated yet.
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $dirty;
 

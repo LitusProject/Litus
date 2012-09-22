@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -56,9 +55,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $cashRegister = new CashRegister();
                 $this->getEntityManager()->persist($cashRegister);
 
@@ -118,9 +118,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new CommentForm($session);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $session->setComment($formData['comment']);
 
                 $this->getEntityManager()->flush();
@@ -175,9 +176,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $cashRegister);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
@@ -234,9 +236,10 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $cashRegister = new CashRegister();
 
                 $devices = $this->getEntityManager()

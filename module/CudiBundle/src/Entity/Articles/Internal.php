@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,64 +15,73 @@
 namespace CudiBundle\Entity\Articles;
 
 use CudiBundle\Entity\Articles\Options\Binding,
-    CudiBundle\Entity\Articles\Options\Color;
+    CudiBundle\Entity\Articles\Options\Color,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")
- * @Table(name="cudi.articles_internal")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Articles\Internal")
+ * @ORM\Table(name="cudi.articles_internal")
  */
 class Internal extends \CudiBundle\Entity\Article
 {
     /**
      * @var integer The number of black and white pages
      *
-     * @Column(name="nb_black_and_white", type="smallint")
+     * @ORM\Column(name="nb_black_and_white", type="smallint")
      */
     private $nbBlackAndWhite;
 
     /**
      * @var integer The number of colored pages
      *
-     * @Column(name="nb_colored", type="smallint")
+     * @ORM\Column(name="nb_colored", type="smallint")
      */
     private $nbColored;
 
     /**
      * @var \CudiBundle\Entity\Articles\Options\Binding The binding of this article
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Binding")
-     * @JoinColumn(name="binding", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Binding")
+     * @ORM\JoinColumn(name="binding", referencedColumnName="id")
      */
     private $binding;
 
     /**
      * @var boolean Whether the aricle is an official one.
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $official;
 
     /**
      * @var boolean Flag whether the article is rectoverso or not.
      *
-     * @Column(name="recto_verso", type="boolean")
+     * @ORM\Column(name="recto_verso", type="boolean")
      */
     private $rectoVerso;
 
     /**
      * @var \CudiBundle\Entity\Articles\Options\Color The color of the front page.
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Color")
-     * @JoinColumn(name="front_page_color", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Articles\Options\Color")
+     * @ORM\JoinColumn(name="front_page_color", referencedColumnName="id")
      */
     private $frontPageColor;
 
     /**
      * @var boolean Whether the aricle is perforated or not.
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isPerforated;
+
+    /**
+     * @var boolean Flag whether the article pages are colored
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $colored;
 
     /**
      * @throws \InvalidArgumentException
@@ -86,6 +94,7 @@ class Internal extends \CudiBundle\Entity\Article
      * @param string|null $url The url of the article
      * @param string $type The article type
      * @param boolean $downloadable The flag whether the article is downloadable
+     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
      * @param integer $nbBlackAndWhite The number of blach and white pages of the article
      * @param integer $nbColored The number of colored pages of the article
      * @param \CudiBundle\Entity\Articles\Options\Binding $binding The binding of the article
@@ -93,11 +102,12 @@ class Internal extends \CudiBundle\Entity\Article
      * @param boolean $rectoverso Whether the article is recto-verso or not
      * @param \CudiBundle\Entity\Articles\Options\Color $frontPageColor The front page color of the article
      * @param boolean $isPerforated Whether the article is perforated or not
+     * @param boolean $isPerforated Whether the article pages are colored or not
      */
     public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated
+        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored
     ) {
-        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable);
+        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
 
         $this->setNbBlackAndWhite($nbBlackAndWhite)
             ->setNbColored($nbColored)
@@ -105,7 +115,8 @@ class Internal extends \CudiBundle\Entity\Article
             ->setIsOfficial($official)
             ->setIsRectoVerso($rectoverso)
             ->setFrontColor($frontPageColor)
-            ->setIsPerforated($isPerforated);
+            ->setIsPerforated($isPerforated)
+            ->setIsColored($colored);
     }
 
     /**
@@ -250,6 +261,25 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
+     * @return boolean
+     */
+    public function isColored()
+    {
+        return $this->colored;
+    }
+
+    /**
+     * @param boolean $colored
+     *
+     * @return \CudiBundle\Entity\Articles\Internal
+     */
+    public function setIsColored($colored)
+    {
+        $this->colored = $colored;
+        return $this;
+    }
+
+    /**
      * @return \CudiBundle\Entity\Article
      */
     public function duplicate()
@@ -263,13 +293,15 @@ class Internal extends \CudiBundle\Entity\Article
             $this->getURL(),
             $this->getType(),
             $this->isDownloadable(),
+            $this->isSameAsPreviousYear(),
             $this->getNbBlackAndWhite(),
             $this->getNbColored(),
             $this->getBinding(),
             $this->isOfficial(),
             $this->isRectoVerso(),
             $this->getFrontColor(),
-            $this->isPerforated()
+            $this->isPerforated(),
+            $this->isColored()
         );
     }
 
@@ -287,5 +319,81 @@ class Internal extends \CudiBundle\Entity\Article
     public function isInternal()
     {
         return true;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculateSellPrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.sell_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return integer
+     */
+    public function precalculatePurchasePrice(EntityManager $entityManager)
+    {
+        $prices = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.purchase_prices')
+        );
+
+        $total = 0;
+        switch ($this->binding->getCode()) {
+            case 'glued':
+                $total += $prices['binding_glued'];
+                break;
+            case 'stapled':
+                $total += $prices['binding_stapled'];
+                break;
+            default:
+                $total += $prices['binding_none'];
+                break;
+        }
+        if ($this->rectoVerso) {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        } else {
+            if ($this->nbColored > 0)
+                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
+            else
+                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+        }
+        return $total / 1000;
     }
 }

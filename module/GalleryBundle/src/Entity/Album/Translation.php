@@ -2,54 +2,49 @@
 
 namespace GalleryBundle\Entity\Album;
 
-use CommonBundle\Entity\General\Language;
+use CommonBundle\Component\Util\Url,
+    CommonBundle\Entity\General\Language,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="GalleryBundle\Repository\Album\Translation")
- * @Table(name="gallery.translation")
+ * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Translation")
+ * @ORM\Table(name="gallery.translation")
  */
 class Translation
 {
     /**
      * @var int The ID of this tanslation
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \GalleryBundle\Entity\Album\Album The album of this translation
      *
-     * @ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="translations")
-     * @JoinColumn(name="album", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="translations")
+     * @ORM\JoinColumn(name="album", referencedColumnName="id")
      */
     private $album;
 
     /**
      * @var \CommonBundle\Entity\General\Language The language of this tanslation
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
-     * @JoinColumn(name="language", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="language", referencedColumnName="id")
      */
     private $language;
 
     /**
      * @var string The title of this tanslation
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
-
-    /**
-     * @var string The name of this tanslation
-     *
-     * @Column(type="string", unique=true)
-     */
-    private $name;
 
     /**
      * @param \GalleryBundle\Entity\Album\Album $album
@@ -62,7 +57,6 @@ class Translation
         $this->album = $album;
         $this->language = $language;
         $this->title = $title;
-        $this->_setName($title);
     }
 
     /**
@@ -97,26 +91,6 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->_setName($title);
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @param \PageBundle\Entity\Nodes\Page
-     */
-    private function _setName($name)
-    {
-        $this->name = $this->album->getDate()->format('Ymd') . '_' . str_replace(' ', '_', strtolower($name));
         return $this;
     }
 }

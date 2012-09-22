@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -57,15 +56,17 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $company = new Company(
                     $formData['company_name'],
                     $formData['vat_number'],
                     new Address(
                         $formData['address_street'],
                         $formData['address_number'],
+                        $formData['address_mailbox'],
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
@@ -112,9 +113,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new EditForm($this->getEntityManager(), $company);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $company->setName($formData['company_name'])
                     ->setVatNumber($formData['vat_number'])
                     ->setHistory($formData['history'])
@@ -123,6 +125,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     ->getAddress()
                         ->setStreet($formData['address_street'])
                         ->setNumber($formData['address_number'])
+                        ->setMailbox($formData['address_mailbox'])
                         ->setPostal($formData['address_postal'])
                         ->setCity($formData['address_city'])
                         ->setCountry($formData['address_country']);
@@ -179,9 +182,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $form = new LogoForm();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.logo_path');

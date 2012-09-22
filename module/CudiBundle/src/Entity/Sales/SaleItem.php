@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,65 +17,66 @@ namespace CudiBundle\Entity\Sales;
 use CudiBundle\Entity\Sales\Article,
     CudiBundle\Entity\Sales\QueueItem,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
- * @Table(name="cudi.sales_sale_items", indexes={@index(name="sales_sale_item_time", columns={"timestamp"})})
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\SaleItem")
+ * @ORM\Table(name="cudi.sales_sale_items", indexes={@ORM\Index(name="sales_sale_item_time", columns={"timestamp"})})
  */
 class SaleItem
 {
     /**
      * @var integer The ID of the sale item
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time the sale item was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CudiBundle\Entity\Sales\Session The session of the sale item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
-     * @JoinColumn(name="session", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
+     * @ORM\JoinColumn(name="session", referencedColumnName="id")
      */
     private $session;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the sale item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var integer The number sold of the article
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 
     /**
      * @var integer The price of the selling
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $price;
 
     /**
      * @var \CudiBundle\Entity\Sales\QueueItem The queue item belonging to the sale item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\QueueItem")
-     * @JoinColumn(name="queue_item", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\QueueItem")
+     * @ORM\JoinColumn(name="queue_item", referencedColumnName="id")
      */
     private $queueItem;
 

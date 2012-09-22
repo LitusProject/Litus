@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -29,19 +28,19 @@ use BrBundle\Entity\Company\Vacancy,
 class Edit extends Add
 {
     /**
-     * @param mixed $opts The validator's options
+     * @param \BrBundle\Entity\Company\Vacancy $vacancy
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Vacancy $vacancy, $opts = null)
+    public function __construct(Vacancy $vacancy, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Edit')
-            ->setAttrib('class', 'companies_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Edit')
+            ->setAttribute('class', 'companies_edit');
+        $this->add($field);
 
         $this->populateFromVacancy($vacancy);
     }

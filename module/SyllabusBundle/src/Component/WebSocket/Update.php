@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,7 +17,7 @@ namespace SyllabusBundle\Component\WebSocket\Syllabus;
 use CommonBundle\Component\WebSocket\User,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\XMLParser\Study as StudyParser,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -33,7 +32,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
@@ -44,10 +43,9 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      */
-    public function __construct(EntityManager $entityManager, Transport $mailTransport)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
         $address = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')

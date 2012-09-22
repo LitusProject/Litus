@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -35,10 +34,11 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         $form = new AddForm($article, $this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
-                   $discount = new Discount($article);
+            if ($form->isValid()) {
+                $discount = new Discount($article);
 
                 if ($formData['template'] == 0) {
                     $discount->setDiscount(
@@ -176,11 +176,11 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        $article = $this->getEntityManager()
+        $discount = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Discount')
             ->findOneById($this->getParam('id'));
 
-        if (null === $article) {
+        if (null === $discount) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -199,6 +199,6 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             return;
         }
 
-        return $article;
+        return $discount;
     }
 }

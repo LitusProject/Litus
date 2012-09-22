@@ -3,69 +3,69 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Entity\Sales\Discounts;
 
-use CudiBundle\Entity\Sales\Article as Article;
+use CudiBundle\Entity\Sales\Article as Article,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
- * @Table(name="cudi.sales_discounts_discounts")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Discount")
+ * @ORM\Table(name="cudi.sales_discounts_discounts")
  */
 class Discount
 {
     /**
      * @var integer The ID of the discount
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Sales\Discounts\Template The template of the discount
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Discounts\Template")
-     * @JoinColumn(name="template", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Discounts\Template")
+     * @ORM\JoinColumn(name="template", referencedColumnName="id")
      */
     private $template;
 
     /**
      * @var integer The value of the discount
      *
-     * @Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $value;
 
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $method;
 
     /**
      * @var string The type of discount (member, acco)
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $type;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the discount
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 

@@ -1,0 +1,149 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/prof/action/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+	    <h1>Action</h1>
+	    Person: <b>{{ action.getPerson().getFullName() }}</b><br />
+	    Date: <b>{{ action.getTimestamp().format('d/m/Y H:i') }}</b><br />
+	    Status: <b>{% if action.isCompleted() %}
+	            Confirmed by {{ action.getCompletePerson().getFullName() }}
+	        {% elseif action.isRefused() %}
+	            Refused by {{ action.getCompletePerson().getFullName() }}
+	        {% else %}
+	            Not confirmed
+	        {% endif %}</b><br />
+	    {% if action.getEntityName() == 'article' %}
+	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Edited{% endif %} Article</b><br />
+	        Article: <b>{{ action.getEntity().getTitle() }}</b><br /><br />
+	        {% if action.getAction() == 'edit' %}
+	            <table>
+	                <tr>
+	                    <th>Property</th>
+	                    <th>Old Value</th>
+	                    <th>New Value</th>
+	                </tr>
+
+	                <tr>
+	                    <td>Title</td>
+	                    <td>{{ action.getPreviousEntity().getTitle() }}</td>
+	                    <td>{{ action.getEntity().getTitle() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>Authors</td>
+	                    <td>{{ action.getPreviousEntity().getAuthors() }}</td>
+	                    <td>{{ action.getEntity().getAuthors() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>Publishers</td>
+	                    <td>{{ action.getPreviousEntity().getPublishers() }}</td>
+	                    <td>{{ action.getEntity().getPublishers() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>Year Published</td>
+	                    <td>{{ action.getPreviousEntity().getYearPublished() }}</td>
+	                    <td>{{ action.getEntity().getYearPublished() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>ISBN</td>
+	                    <td>{{ action.getPreviousEntity().getISBN() }}</td>
+	                    <td>{{ action.getEntity().getISBN() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>URL</td>
+	                    <td>{{ action.getPreviousEntity().getURL() }}</td>
+	                    <td>{{ action.getEntity().getURL() }}</td>
+	                </tr>
+	                <tr>
+	                    <td>Downloadable</td>
+	                    <td>{% if action.getPreviousEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
+	                    <td>{% if action.getEntity().isDowloadable() %}Yes{% else %}No{% endif %}</td>
+	                </tr>
+                    <tr>
+                        <td>Same As Previous Year</td>
+                        <td>{% if action.getPreviousEntity().isSameAsPreviousYear() %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if action.getEntity().isSameAsPreviousYear() %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+	                <tr>
+	                    <td>Type</td>
+	                    <td>{{ action.getPreviousEntity().getType()|capitalize }}</td>
+	                    <td>{{ action.getEntity().getType()|capitalize }}</td>
+	                </tr>
+                    {% if action.getEntity().isInternal() %}
+                        <tr>
+                            <td>Binding</td>
+                            <td>{{ action.getPreviousEntity().getBinding().getName() }}</td>
+                            <td>{{ action.getEntity().getBinding().getName() }}</td>
+                        </tr>
+                        <tr>
+                            <td>Binding</td>
+                            <td>{% if action.getPreviousEntity().isRecoverso() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().getBinding().isRecoverso() %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Binding</td>
+                            <td>{% if action.getPreviousEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().isPerforated() %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                    {% endif %}
+    	        </table>
+	        {% endif %}
+	    {% elseif action.getEntityName() == 'mapping' %}
+	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} Mapping</b><br />
+	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
+	        Subject: <b>{{ action.getEntity().getSubject().getName() }}</b><br />
+	        Mandatory: <b>{% if action.getEntity().isMandatory() %}yes{% else %}no{% endif %}</b>
+	    {% elseif action.getEntityName() == 'file' %}
+	        Type: <b>{% if action.getAction() == 'add' %}Added{% else %}Removed{% endif %} File</b><br />
+	        Article: <b>{{ action.getEntity().getArticle().getTitle() }}</b><br />
+	        Filename: <b>{{ action.getEntity().getFile().getName() }}</b><br />
+	        Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
+	        <br />
+	        {% if hasAccess('admin_article_file', 'download') %}
+	        	<input type="button" class="download downloadFile" data-file="{{ url('admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " />
+	        {% endif %}
+	    {% endif %}
+	</div>
+
+	<aside>
+	    {% if hasAccess('admin_prof_action', 'refuse') and action.isUnCompleted() %}
+    	    <div class="sidebox">
+    	        <div class="title">Refuse Action</div>
+    	        <div class="content">
+    	            <p>
+    	                <i>Please hit the link below to refuse this action!</i>
+    	            </p>
+    	        	<p>
+    	        		<a href="{{ url("admin_prof_action", {"action": "refuse", "id": action.getId()}) }}" id="updateNow">&rarr; Refuse</a>
+    	        	</p>
+    	        </div>
+    	    </div>
+    	{% endif %}
+	    {% if hasAccess('admin_prof_action', 'confirm') and action.isUnCompleted() %}
+    	    <div class="sidebox">
+    	        <div class="title">Confirm Action</div>
+    	        <div class="content">
+    	            <p>
+    	                <i>Please hit the link below to confirm this action!</i>
+    	            </p>
+    	        	<p>
+    	        		<a href="{{ url("admin_prof_action", {"action": "confirm", "id": action.getId()}) }}" id="updateNow">&rarr; Confirm</a>
+    	        	</p>
+    	        </div>
+    	    </div>
+    	{% endif %}
+	</aside>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.downloadFile').each(function () {
+				$(this).downloadFile($(this).data('file'));
+			});
+		});
+	</script>
+{% endblock %}

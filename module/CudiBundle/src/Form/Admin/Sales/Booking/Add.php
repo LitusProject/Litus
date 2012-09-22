@@ -3,25 +3,23 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Hidden,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Booking
@@ -30,60 +28,136 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(EntityManager $entityManager, $options = null)
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $field = new Hidden('person_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'personId')
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setAttribute('id', 'personId');
+        $this->add($field);
 
         $field = new Text('person');
         $field->setLabel('Person')
-            ->setAttrib('style', 'width: 400px;')
-            ->setAttrib('id', 'personSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('id', 'personSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Hidden('article_id');
-        $field->setRequired()
-            ->addValidator(new IntValidator())
-            ->setAttrib('id', 'articleId')
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setAttribute('id', 'articleId');
+        $this->add($field);
 
         $field = new Text('article');
         $field->setLabel('Article')
-            ->setAttrib('class', 'disableEnter')
-            ->setAttrib('style', 'width: 400px;')
-            ->setAttrib('id', 'articleSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('class', 'disableEnter')
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('id', 'articleSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('number');
         $field->setLabel('Number')
-            ->setAttrib('autocomplete', 'off')
-            ->setRequired()
-            ->addValidator(new IntValidator())
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('autocomplete', 'off')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'bookings_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'bookings_add');
+        $this->add($field);
+    }
 
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'person_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'person',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'article_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'article',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'number',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

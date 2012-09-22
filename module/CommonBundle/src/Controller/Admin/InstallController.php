@@ -3,17 +3,20 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Controller\Admin;
+
+use CommonBundle\Entity\General\Address\City,
+    CommonBundle\Entity\General\Address\Street,
+    CommonBundle\Entity\General\Language;
 
 /**
  * InstallController
@@ -25,6 +28,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     protected function initConfig()
     {
         $this->_installLanguages();
+        $this->_installCities();
 
         $this->installConfig(
             array(
@@ -98,9 +102,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'key'         => 'shibboleth_code_handler_url',
                     'value'       => serialize(
                         array(
-                            'admin' => 'https://dev.vtk.be/admin/auth/shibboleth',
-                            'prof'  => 'https://dev.vtk.be/cudi/prof/auth/shibboleth',
-                            'site'  => 'https://dev.vtk.be/auth/shibboleth',
+                            'admin'    => 'https://dev.vtk.be/admin/auth/shibboleth',
+                            'prof'     => 'https://dev.vtk.be/cudi/prof/auth/shibboleth',
+                            'site'     => 'https://dev.vtk.be/auth/shibboleth',
+                            'register' => 'https://dev.vtk.be/secretary/registration',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
@@ -115,6 +120,16 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'value'       => 'nl',
                     'description' => 'The abbreviation of the language that will be used of no other translation is present',
                 ),
+                array(
+                    'key'         => 'common.geocoding_api_url',
+                    'value'       => 'https://maps.googleapis.com/maps/api/geocode/',
+                    'description' => 'The URL to Google\'s geocoding API',
+                ),
+                array(
+                    'key'         => 'common.static_maps_api_url',
+                    'value'       => 'https://maps.googleapis.com/maps/api/staticmap',
+                    'description' => 'The URL to Google\'s static maps API',
+                ),
             )
         );
     }
@@ -128,7 +143,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
                     ),
                     'admin_auth' => array(
-                        'authenticate', 'login', 'logout'
+                        'authenticate', 'login', 'logout', 'shibboleth'
+                    ),
+                    'admin_cache' => array(
+                        'manage', 'flush'
                     ),
                     'admin_config' => array(
                         'edit', 'manage'
@@ -136,38 +154,56 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'admin_index' => array(
                         'index'
                     ),
+                    'admin_location' => array(
+                        'add', 'edit', 'delete', 'manage'
+                    ),
                     'admin_role' => array(
                         'add', 'edit', 'delete', 'manage'
+                    ),
+                    'account' => array(
+                        'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                    ),
+                    'auth' => array(
+                        'login', 'logout', 'shibboleth'
                     ),
                     'index' => array(
                         'index'
                     ),
 
-                    'syllabus_install' => array(
+                    'api_install' => array(
                         'index'
                     ),
-                    'page_install' => array(
-                        'index'
-                    ),
-                    'news_install' => array(
-                        'index'
-                    ),
-                    'mail_install' => array(
-                        'index'
-                    ),
-                    'gallery_install' => array(
-                        'index'
-                    ),
-                    'cudi_install' => array(
-                        'index'
-                    ),
-                    'common_install' => array(
+                    'br_install' => array(
                         'index'
                     ),
                     'calendar_install' => array(
                         'index'
                     ),
-                    'br_install' => array(
+                    'common_install' => array(
+                        'index'
+                    ),
+                    'cudi_install' => array(
+                        'index'
+                    ),
+                    'gallery_install' => array(
+                        'index'
+                    ),
+                    'logistics_install' => array(
+                        'index'
+                    ),
+                    'mail_install' => array(
+                        'index'
+                    ),
+                    'news_install' => array(
+                        'index'
+                    ),
+                    'page_install' => array(
+                        'index'
+                    ),
+                    'secretary_install' => array(
+                        'index'
+                    ),
+                    'syllabus_install' => array(
                         'index'
                     ),
                 )
@@ -182,10 +218,23 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                     'actions' => array(
                         'admin_auth' => array(
-                            'authenticate', 'login', 'logout'
+                            'authenticate', 'login', 'logout', 'shibboleth'
+                        ),
+                        'auth' => array(
+                            'login', 'logout', 'shibboleth'
                         ),
                         'index' => array(
                             'index'
+                        ),
+                        'account' => array(
+                            'activate'
+                        ),
+                    ),
+                ),
+                'student' => array(
+                    'actions' => array(
+                        'account' => array(
+                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                         ),
                     ),
                 ),
@@ -205,9 +254,35 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
 
-            if (null == $language) {
+            if (null === $language) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
+            }
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    private function _installCities()
+    {
+        $cities = include('config/streets.php');
+
+        foreach($cities as $cityData) {
+            $city = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Address\City')
+                ->findOneByPostal($cityData['postal']);
+
+            if (null === $city) {
+                $city = new City($cityData['postal'], $cityData['name']);
+                $this->getEntityManager()->persist($city);
+            }
+
+            foreach($cityData['streets'] as $streetData) {
+                $street = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Address\Street')
+                    ->findOneByCityAndName($city, $streetData['name']);
+                if (null === $street)
+                    $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
             }
         }
 

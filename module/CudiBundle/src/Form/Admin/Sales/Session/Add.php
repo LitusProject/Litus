@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,13 +15,12 @@
 namespace CudiBundle\Form\Admin\Sales\Session;
 
 use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Validator\Int as IntValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Add Sale Session content
@@ -31,45 +29,61 @@ use CommonBundle\Entity\General\Bank\CashRegister,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(EntityManager $entityManager, $options = null )
-    {
-        parent::__construct($options);
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
 
-        $units = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
-            ->findAll();
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null )
+    {
+        parent::__construct($name);
+
+        $this->_entityManager = $entityManager;
+
+        $units = $this->_getUnits();
 
         foreach($units as $unit) {
             $field = new Text('unit_' . $unit->getId());
             $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
-                ->setAttrib('autocomplete', 'off')
+                ->setAttribute('autocomplete', 'off')
                 ->setRequired()
-                ->setValue(0)
-                ->addValidator(new IntValidator())
-                ->setDecorators(array(new FieldDecorator()));
-            $this->addElement($field);
+                ->setValue(0);
+            $this->add($field);
         }
 
-        $devices = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
-            ->findAll();
+        $devices = $this->_getDevices();
 
         foreach($devices as $device) {
             $field = new Text('device_' . $device->getId());
             $field->setLabel($device->getName())
-                ->setAttrib('autocomplete', 'off')
+                ->setAttribute('autocomplete', 'off')
                 ->setRequired()
-                ->setValue(0)
-                ->addValidator(new PriceValidator())
-                ->setDecorators(array(new FieldDecorator()));
-            $this->addElement($field);
+                ->setValue(0);
+            $this->add($field);
         }
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'sale_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'sale_add');
+        $this->add($field);
+    }
+
+    private function _getUnits()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+            ->findAll();
+    }
+
+    private function _getDevices()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+            ->findAll();
     }
 
     public function populateFromCashRegister(CashRegister $cashRegister)
@@ -80,6 +94,55 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         foreach($cashRegister->getMoneyUnitAmounts() as $amount)
             $data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
 
-        $this->populate($data);
+        $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $units = $this->_getUnits();
+            foreach($units as $unit) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'unit_' . $unit->getId(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'int',
+                                ),
+                            ),
+                        )
+                    )
+                );
+            }
+
+            $devices = $this->_getDevices();
+            foreach($devices as $device) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'device_' . $device->getId(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new PriceValidator(),
+                            ),
+                        )
+                    )
+                );
+            }
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,50 +16,51 @@ namespace CudiBundle\Entity\Stock;
 
 use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
- * @Table(name="cudi.stock_deliveries", indexes={@index(name="stock_deliveries_time", columns={"timestamp"})})
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
+ * @ORM\Table(name="cudi.stock_deliveries", indexes={@ORM\Index(name="stock_deliveries_time", columns={"timestamp"})})
  */
 class Delivery
 {
     /**
      * @var integer The ID of the delivery item
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The article of the delivery
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var \DateTime The time of the delivery
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var integer The number of the delivery
      *
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $number;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who ordered the order
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

@@ -1,0 +1,158 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+    {{ headTitle('Litus Logistics', 'PREPEND') }}
+
+    {{ headLink() }}
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a href="{{ unionUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
+            <ul class="nav">
+                {% if hasAccess('logistics_index', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav pull-right lang-nav visible-desktop">
+                <li class="dropdown" id="langDropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ translate('Language') }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for language in languages %}
+                            <li>
+                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right auth-nav">
+                {% if authenticatedPerson is not null %}
+                    <li class="dropdown" id="accountDropdown">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="profile-wrapper">
+                                <i class="profile"></i>
+                            </span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="">
+                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url("logistics_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="dropdown" id="loginDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {{ translate('Login') }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+
+
+                            <li>
+
+                                <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}
+                                    {{ translate('KU Leuven&mdash;Central Login') }}
+                                {% endautoescape %}</a>
+
+                            </li>
+                            <hr/>
+
+                            <li>
+                                {% do loginForm.prepare() %}
+                                {% autoescape false %}
+                                    {% set buttons = [] %}
+                                    {{ form().openTag(loginForm) }}
+                                        {% for element in loginForm.getElements() %}
+                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                <div class="remember_me">
+                                                    <label>
+                                                        {{ formElement(element) }}
+                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                    </label>
+                                                </div>
+                                            {% else %}
+                                                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                    <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                    <div class="controls">
+                                                        <div>{{ formElement(element) }}</div>
+                                                        {% if element.getMessages()|length > 0 %}
+                                                            <div class="help-inline">
+                                                                {{ formElementErrors(element) }}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {{ form().closeTag() }}
+                                {% endautoescape %}
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<header>
+    <div class="inner">
+        <div class="container">
+            <h1>{{ translate('Logistics') }}</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    {% include 'logistics/partials/flashMessenger.twig' %}
+
+    <div id="content_controller">
+        {% block content %} {% endblock %}
+    </div>
+
+    <footer>
+        Litus Logistics | Code by <a href="http://litus.cc">Litus</a>
+
+        {% if 'development' == environment %}
+            <span class="development_information">
+                Execution Time: {{ developmentInformation.executionTime }} ms | Doctrine's UoW: {{ developmentInformation.doctrineUnitOfWork }}
+            </span>
+        {% endif %}
+    </footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown form').on('click', function (e) {
+                e.stopPropagation()
+            });
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>

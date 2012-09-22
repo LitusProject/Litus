@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,26 +18,27 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Users\Statuses\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Users\Credential,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is a person that represents a contact in a company.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Users\People\Corporate")
- * @Table(name="users.people_corporate")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Users\People\Corporate")
+ * @ORM\Table(name="users.people_corporate")
  */
 class Corporate extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @var \BrBundle\Entity\Company The user's company
      *
-     * @ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 
     /**
-     * @OneToMany(targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Users\Statuses\Corporate", mappedBy="person", cascade={"persist"})
      */
     private $corporateStatuses;
 

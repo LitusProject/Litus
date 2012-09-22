@@ -3,25 +3,25 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\Subject")
- * @Table(
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject")
+ * @ORM\Table(
  *    name="syllabus.subjects",
- *    indexes={@index(name="subjects_name", columns={"name", "code"})}
+ *    indexes={@ORM\Index(name="subjects_name", columns={"name", "code"})}
  * )
  */
 class Subject
@@ -29,44 +29,44 @@ class Subject
     /**
      * @var integer The ID of the subject
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The code of the subject
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $code;
 
     /**
      * @var string The name of the subject
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var integer The semester number of the subject
      *
-     * @Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private $semester;
 
     /**
      * @var integer The credits of the subject
      *
-     * @Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private $credits;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The enrollments of the subject
      *
-     * @OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
      */
     private $enrollments;
 

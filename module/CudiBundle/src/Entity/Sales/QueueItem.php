@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,86 +18,87 @@ use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\PayDesk,
     CudiBundle\Entity\Sales\Session,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\QueueItem")
- * @Table(name="cudi.sales_queue_items")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\QueueItem")
+ * @ORM\Table(name="cudi.sales_queue_items")
  */
 class QueueItem
 {
     /**
      * @var integer The ID of the queue item
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the queue item
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var \CudiBundle\Entity\Sales\Session The session of the queue item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
-     * @JoinColumn(name="session", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Session")
+     * @ORM\JoinColumn(name="session", referencedColumnName="id")
      */
     private $session;
 
     /**
      * @var \CudiBundle\Entity\Sales\PayDesk The pay desk of the queue item
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\PayDesk")
-     * @JoinColumn(name="pay_desk", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\PayDesk")
+     * @ORM\JoinColumn(name="pay_desk", referencedColumnName="id")
      */
     private $payDesk;
 
     /**
      * @var integer The number of the queue item
      *
-     * @Column(type="smallint", name="queue_number")
+     * @ORM\Column(type="smallint", name="queue_number")
      */
     private $queueNumber;
 
     /**
      * @var string The status of the queue item
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $status;
 
     /**
      * @var \DateTime The time the queue item was created
      *
-     * @Column(type="datetime", name="sign_in_time")
+     * @ORM\Column(type="datetime", name="sign_in_time")
      */
     private $signInTime;
 
     /**
      * @var \DateTime The time there were articles sold to the queue item
      *
-     * @Column(type="datetime", name="sold_time", nullable=true)
+     * @ORM\Column(type="datetime", name="sold_time", nullable=true)
      */
     private $soldTime;
 
     /**
      * @var string The comment of the queue item
      *
-     * @Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 
     /**
      * @var string The pay method of the queue item
      *
-     * @Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $payMethod;
 

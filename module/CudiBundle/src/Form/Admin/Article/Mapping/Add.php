@@ -3,27 +3,25 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Form\Admin\Article\Mapping;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CudiBundle\Component\Validator\SubjectCode as SubjectCodeValidator,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Hidden,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Checkbox,
-    Zend\Validator\Int as IntValidator;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Mapping
@@ -37,52 +35,81 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     protected $_entityManager = null;
 
-    public function __construct(EntityManager $entityManager, $opts = null)
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
         $field = new Hidden('subject_id');
-        $field->addValidator(new IntValidator())
-            ->setAttrib('id', 'subjectId')
-            ->clearDecorators()
-            ->setDecorators(array('ViewHelper'));
-        $this->addElement($field);
+        $field->setAttribute('id', 'subjectId');
+        $this->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttrib('size', 70)
-            ->setAttrib('id', 'subjectSearch')
-            ->setAttrib('autocomplete', 'off')
-            ->setAttrib('data-provide', 'typeahead')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('size', 70)
+            ->setAttribute('id', 'subjectSearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
 
         $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+        $field->setLabel('Mandatory');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'article_subject_mapping_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'article_subject_mapping_add');
+        $this->add($field);
     }
 
-    public function isValid($data)
+    public function getInputFilter()
     {
-        if ($data['subject_id'] == '') {
-            $this->getElement('subject')
-                ->setRequired()
-                ->addValidator(new SubjectCodeValidator($this->_entityManager));
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+
+            if (isset($this->data['subject_id']) && $this->data['subject_id'] == '') {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'subject',
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new SubjectCodeValidator($this->_entityManager),
+                            ),
+                        )
+                    )
+                );
+            } else {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'subject_id',
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'int',
+                                ),
+                            ),
+                        )
+                    )
+                );
+            }
+
+            $this->_inputFilter = $inputFilter;
         }
-
-        $isValid = parent::isValid($data);
-
-        return $isValid;
+        return $this->_inputFilter;
     }
 }

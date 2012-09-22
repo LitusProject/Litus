@@ -26,12 +26,12 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'calendarBundle' => array(
+                'calendarbundle' => array(
                     'admin_calendar' => array(
                         'add', 'delete', 'edit', 'editPoster', 'manage', 'poster'
                     ),
                     'calendar' => array(
-                        'overview', 'poster', 'view'
+                        'month', 'overview', 'poster', 'view'
                     ),
                 )
             )
@@ -42,7 +42,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 'guest' => array(
                     'parent_roles' => array(),
                     'actions' => array(
-                    )
+                        'calendar' => array(
+                            'month', 'overview', 'poster', 'view'
+                        ),
+                    ),
                 ),
             )
         );

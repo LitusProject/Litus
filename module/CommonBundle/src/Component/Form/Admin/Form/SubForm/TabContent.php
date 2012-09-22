@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,34 +19,17 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabContent extends \Zend\Form\SubForm
+class TabContent extends \CommonBundle\Component\Form\Admin\Fieldset
 {
     /**
-     * Load the default decorators
+     * Constructor
      *
-     * @return \CommonBundle\Component\Form\Admin\Form\SubForm\TabContent
+     * @param null|string|int $name Optional name for the element
      */
-    public function loadDefaultDecorators()
+    public function __construct($name = null)
     {
-        if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return $this;
-        }
+        parent::__construct($name);
 
-        $decorators = $this->getDecorators();
-        if (empty($decorators)) {
-            $this->addDecorator('FormElements')
-                ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_content'));
-        }
-        return $this;
-    }
-
-    /**
-     * Get name of array elements belong to
-     *
-     * @return string|null
-     */
-    public function getElementsBelongTo()
-    {
-        return null;
+        $this->setAttribute('class', 'tab_content');
     }
 }

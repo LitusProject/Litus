@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -53,9 +52,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -70,14 +70,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
+                        $formData['same_as_previous_year'],
                         0,
                         0,
                         $binding,
                         true,
                         $formData['rectoverso'],
                         null,
-                        false,
-                        $formData['perforated']
+                        $formData['perforated'],
+                        $formData['colored']
                     );
                 } else {
                     $article = new External(
@@ -88,8 +89,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['isbn'] != ''? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
-                        $formData['downloadable']
-                       );
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
                 }
 
                 $article->setIsProf(true);
@@ -163,9 +165,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $form = new EditForm($this->getEntityManager(), $article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if (!$article->isProf()) {
                     $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);
@@ -200,6 +203,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $duplicate->setIsDownloadable($formData['downloadable']);
                         $edited = true;
                     }
+                    if ($article->isSameAsPreviousYear() !== (bool) $formData['same_as_previous_year']) {
+                        $duplicate->setIsSameAsPreviousYear($formData['same_as_previous_year']);
+                        $edited = true;
+                    }
                     if ($article->getType() != $formData['type']) {
                         $duplicate->setType($formData['type']);
                         $edited = true;
@@ -218,6 +225,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         }
                         if ($article->isPerforated() !== (bool) $formData['perforated']) {
                             $duplicate->setIsPerforated($formData['perforated']);
+                            $edited = true;
+                        }
+                        if ($article->isColored() !== (bool) $formData['colored']) {
+                            $duplicate->setIsColored($formData['colored']);
                             $edited = true;
                         }
                     }

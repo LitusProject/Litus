@@ -1,0 +1,30 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'shift/admin/shift/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#managerSearch').typeaheadRemote(
+                {
+                    source: '{{ url("admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#managerId').val($(this).data('value').id);
+                } else {
+                    $('#managerId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

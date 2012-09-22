@@ -3,24 +3,27 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\WebSocket\User,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\WebSocket\User,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\Users\Person,
+    CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CudiBundle\Entity\Sales\Booking,
     CudiBundle\Entity\Sales\SaleItem,
     CudiBundle\Entity\Sales\QueueItem,
     CudiBundle\Entity\Sales\Session,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -41,6 +44,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $_lockedItems;
 
     /**
+     * @var array
+     */
+    private $_collectedItems;
+
+    /**
      * @param Doctrine\ORM\EntityManager $entityManager
      * @param string $address The url for the websocket master socket
      * @param integer $port The port to listen on
@@ -55,8 +63,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getConfigValue('cudi.queue_socket_port');
 
         parent::__construct($address, $port);
+
         $this->_entityManager = $entityManager;
         $this->_lockedItems = array();
+        $this->_collectedItems = array();
     }
 
     /**
@@ -93,14 +103,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     protected function onClose(User $user, $statusCode, $reason)
     {
         foreach($this->_lockedItems as $key => $value) {
-            if ($user == $value)
+            if ($user == $value) {
+                unset($this->_lockedItems[$key]);
+                parent::onClose($user, $statusCode, $reason);
+                $this->sendQueueToAll();
                 break;
-        }
-
-        if (isset($key)) {
-            unset($this->_lockedItems[$key]);
-            parent::onClose($user, $statusCode, $reason);
-            $this->sendQueueToAll();
+            }
         }
     }
 
@@ -111,7 +119,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param string $data
      */
     private function _gotAction(User $user, $data)
-    {echo $data;
+    {
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 
@@ -126,11 +134,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'startCollecting':
                 $this->_updateItemStatus($params, 'collecting');
+                $this->sendText($user, $this->_getCollectInfo($user, $params));
+                break;
+            case 'saveCollecting':
+                $this->_saveCollecting(json_decode($params));
                 break;
             case 'cancelCollecting':
+                if (isset($this->_lockedItems[$params]))
+                    unset($this->_lockedItems[$params]);
                 $this->_updateItemStatus($params, 'signed_in');
                 break;
             case 'stopCollecting':
+                if (isset($this->_lockedItems[$params]))
+                    unset($this->_lockedItems[$params]);
                 $this->_updateItemStatus($params, 'collected');
                 break;
             case 'setHold':
@@ -188,6 +204,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Save collected items
+     *
+     * @param object $data
+     */
+    private function _saveCollecting($data)
+    {
+        $this->_collectedItems[$data->id] = $data->articles;
+    }
+
+    /**
      * Send queue to all users
      */
     private function sendQueueToAll()
@@ -221,12 +247,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings)) {
-            return json_encode(
-                (object) array(
-                    'error' => 'noBookings',
-                )
-            );
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && $registration->hasPayed() && $metaData->becomeMember()) {
+            if (empty($bookings)) {
+                return json_encode(
+                    (object) array(
+                        'error' => 'noBookings',
+                    )
+                );
+            }
         }
 
         $queueItem = $this->_entityManager
@@ -239,6 +275,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->_entityManager->persist($queueItem);
             $this->_entityManager->flush();
         }
+
+        $this->_printQueueTicket($queueItem, 'signin');
 
         return json_encode(
             (object) array(
@@ -277,13 +315,62 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'person' => (object) array(
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
-                        'member' => $item->getPerson()->isMember(),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
                     ),
                     'articles' => $this->_createJsonBooking(
                         $this->_entityManager
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
                             ->findAllOpenByPerson($item->getPerson()),
-                        $item->getPerson()
+                        $item
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * Get all the info in json for the collecting
+     *
+     * @param \CommonBundle\Component\WebSockets\Sale\User $user
+     * @param int $itemId
+     *
+     * @return string
+     */
+    private function _getCollectInfo(User $user, $itemId)
+    {
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
+        if (!is_numeric($itemId) || $enableCollectScanning !== '1')
+            return;
+
+        $item = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\QueueItem')
+            ->findOneById($itemId);
+
+        if (!isset($item))
+            return;
+
+        $this->_printQueueTicket($item, 'collect');
+
+        $this->_lockedItems[$item->getId()] = $user;
+
+        return json_encode(
+            (object) array(
+                'collecting' => (object) array(
+                    'id' => $item->getId(),
+                    'comment' => $item->getComment(),
+                    'person' => (object) array(
+                        'id' => $item->getPerson()->getId(),
+                        'name' => $item->getPerson()->getFullName(),
+                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                    ),
+                    'articles' => $this->_createJsonBooking(
+                        $this->_entityManager
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findAllOpenByPerson($item->getPerson()),
+                        $item
                     )
                 )
             )
@@ -297,24 +384,67 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      *
      * @return array
      */
-    private function _createJsonBooking($items, Person $person)
+    private function _createJsonBooking($items, QueueItem $queueItem)
     {
+        $person = $queueItem->getPerson();
         $results = array();
+
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+            $results[] = (object) array(
+                'id' => 'membership',
+                'price' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.membership_price'),
+                'title' => 'Membership',
+                'barcode' => '',
+                'barcodes' => array(),
+                'author' => $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('union_name'),
+                'number' => 1,
+                'status' => 'assigned',
+                'discounts' => array(),
+            );
+        }
+
         foreach($items as $item) {
+            $barcodes = array($item->getArticle()->getBarcode());
+            foreach($item->getArticle()->getAdditionalBarcodes() as $barcode)
+                $barcodes[] = $barcode->getBarcode();
+
+            $collected = 0;
+            if (isset($this->_collectedItems[$queueItem->getId()])) {
+                foreach($this->_collectedItems[$queueItem->getId()] as $id => $booking) {
+                    if ($id == $item->getId())
+                        $collected = $booking;
+                }
+            }
+
             $result = (object) array(
                 'id' => $item->getId(),
                 'price' => $item->getArticle()->getSellPrice(),
                 'title' => $item->getArticle()->getMainArticle()->getTitle(),
                 'barcode' => $item->getArticle()->getBarcode(),
+                'barcodes' => $barcodes,
                 'author' => $item->getArticle()->getMainArticle()->getAuthors(),
                 'number' => $item->getNumber(),
                 'status' => $item->getStatus(),
+                'collected' => $collected,
                 'discounts' => array(),
             );
             foreach($item->getArticle()->getDiscounts() as $discount)
                 $result->discounts[$discount->getType()] = $discount->apply($item->getArticle()->getSellPrice());
             $results[] = $result;
         }
+
         return $results;
     }
 
@@ -378,6 +508,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->status = $item->getStatus();
             $result->locked = isset($this->_lockedItems[$item->getId()]);
+
             if ($item->getPayDesk())
                 $result->payDesk = $item->getPayDesk()->getName();
             $results[] = $result;
@@ -432,6 +563,33 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($queueItem))
             return;
 
+        $articles = array();
+        $prices = array();
+        $totalPrice = 0;
+
+        if (isset($data->articles->membership) && 1 == $data->articles->membership) {
+            $queueItem->getPerson()
+                ->addOrganizationStatus(
+                    new OrganizationStatus(
+                        $queueItem->getPerson(),
+                        'member',
+                        $this->_getCurrentAcademicYear()
+                    )
+                );
+            $registration = $this->_entityManager
+                ->getRepository('SecretaryBundle\Entity\Registration')
+                ->findOneByAcademicAndAcademicYear($queueItem->getPerson(), $this->_getCurrentAcademicYear());
+            $registration->setPayed();
+            $this->_entityManager->flush();
+
+            $price =$this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_price');
+            $articles[] = 'Membership';
+            $prices[] = $price;
+            $totalPrice += $price;
+        }
+
         $queueItem->setPayMethod($data->payMethod);
 
         $bookings = $this->_entityManager
@@ -453,7 +611,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $price = $booking->getArticle()->getSellPrice();
                 foreach($booking->getArticle()->getDiscounts() as $discount) {
                     if ($discount->getType() == $data->discount) {
-                        if ($discount->getType() == 'member' && !$booking->getPerson()->isMember())
+                        if ($discount->getType() == 'member' && !$booking->getPerson()->isMember($this->_getCurrentAcademicYear()))
                             continue;
                         $price = $discount->apply($booking->getArticle()->getSellPrice());
                     }
@@ -468,8 +626,24 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $this->_entityManager->persist($saleItem);
 
                 $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() - $currentNumber);
+
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($currentNumber > 1 ?' (' . $currentNumber . 'x)' : '');
+                $prices[] = $price * $currentNumber / 100;
+                $totalPrice += $price * $currentNumber;
             }
         }
+
+        Printer::salePrint(
+            $this->_entityManager,
+            'paydesk_' . $queueItem->getPayDesk(),
+            $queueItem->getPerson()->getUniversityIdentification(),
+            (int) $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            $totalPrice / 100,
+            $articles,
+            $prices
+        );
 
         $this->_entityManager->flush();
 
@@ -478,7 +652,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _undoSelling($data)
     {
-        print_r($data);
         $queueItem = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\QueueItem')
             ->findOneById($data->id);
@@ -493,7 +666,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findByQueueItem($queueItem);
 
         foreach($saleItems as $saleItem) {
-            $booking = $this->getEntityManager()
+            $booking = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
                 ->findOneSoldByArticleAndNumber($saleItem->getArticle(), $saleItem->getNumber());
 
@@ -506,5 +679,85 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
 
         $this->_updateItemStatus($data->id, 'collected');
+    }
+
+    private function _getCurrentAcademicYear()
+    {
+        return $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneById(2); // TODO: remove this
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $this->_entityManager->persist($academicYear);
+            $this->_entityManager->flush();
+        }
+
+        return $academicYear;
+    }
+
+    private function _printQueueTicket(QueueItem $item, $printer)
+    {
+        $bookings = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($item->getPerson());
+
+        $articles = array();
+        $prices = array();
+        $totalPrice = 0;
+
+        $registration = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Registration')
+            ->findOneByAcademicAndAcademicYear($item->getPerson(), $this->_getCurrentAcademicYear());
+
+        $metaData = $this->_entityManager
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($item->getPerson(), $this->_getCurrentAcademicYear());
+
+        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+            $price =$this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_price');
+            $articles[] = 'Membership';
+            $prices[] = $price;
+            $totalPrice += $price;
+        }
+
+        if (sizeof($bookings > 0)) {
+            foreach($bookings as $booking) {
+                if ($booking->getStatus() != 'assigned')
+                    continue;
+                $articles[] = $booking->getArticle()->getMainArticle()->getTitle() . ($booking->getNumber() > 1 ?' (' . $booking->getNumber() . 'x)' : '');
+                $prices[] = $booking->getArticle()->getSellPrice() * $booking->getNumber() / 100;
+                $totalPrice += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+            }
+        }
+
+        Printer::queuePrint(
+            $this->_entityManager,
+            $printer,
+            $item->getPerson()->getUniversityIdentification(),
+            (int) $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_item_barcode_prefix') + $item->getId(),
+            $item->getQueueNumber(),
+            $totalPrice / 100,
+            $articles,
+            $prices
+        );
     }
 }

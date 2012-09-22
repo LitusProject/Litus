@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,27 +16,29 @@ namespace NewsBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
-    Doctrine\Common\Collections\ArrayCollection;
+    CommonBundle\Component\Util\Url,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
- * @Table(name="nodes.news")
+ * @ORM\Entity(repositoryClass="NewsBundle\Repository\Nodes\News")
+ * @ORM\Table(name="nodes.news")
  */
 class News extends \CommonBundle\Entity\Nodes\Node
 {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
      *
-     * @OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Nodes\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
 
     /**
      * @var string The name of this news item
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
@@ -74,7 +75,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage() == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 
@@ -119,7 +120,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      * @param boolean $allowFallback
      * @return string
      */
-    public function getSummary($length = 100, Language $language = null, $allowFallback = true)
+    public function getSummary($length = 200, Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
@@ -142,8 +143,7 @@ class News extends \CommonBundle\Entity\Nodes\Node
      */
     public function updateName()
     {
-        $translation = $this->getTranslation();
-        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . Url::createSlug($this->getTranslation()->getTitle());
         return $this;
     }
 }

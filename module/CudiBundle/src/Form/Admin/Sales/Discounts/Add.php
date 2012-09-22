@@ -3,28 +3,27 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Form\Admin\Sales\Discounts;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Discount as DiscountValidator,
     CudiBundle\Entity\Sales\Article,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Hidden,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Discount
@@ -38,76 +37,72 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     protected $_entityManager = null;
 
-    public function __construct(Article $article, EntityManager $entityManager, $options = null)
+    /**
+     * @var \CudiBundle\Entity\Sales\Article
+     */
+    protected $_article;
+
+    /**
+     * @param \CudiBundle\Entity\Sales\Article $article
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(Article $article, EntityManager $entityManager, $name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_article = $article;
 
         $field = new Select('template');
-        $field->setAttrib('id', 'discount_template')
+        $field->setAttribute('id', 'discount_template')
             ->setLabel('Template')
-            ->setMultiOptions($this->_getTemplates())
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', $this->_getTemplates())
+            ->setRequired();
+        $this->add($field);
 
         $templates = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sales\Discounts\Template')
             ->findAll();
+
         foreach($templates as $template) {
             $field = new Hidden('template_' . $template->getId() . '_value');
-            $field->setAttrib('id', 'template_' . $template->getId() . '_value')
-                ->setValue(number_format($template->getValue()/100, 2))
-                ->clearDecorators()
-                ->setDecorators(array('ViewHelper'));
-            $this->addElement($field);
+            $field->setValue(number_format($template->getValue()/100, 2));
+            $this->add($field);
 
             $field = new Hidden('template_' . $template->getId() . '_method');
-            $field->setAttrib('id', 'template_' . $template->getId() . '_method')
-                ->setValue($template->getMethod())
-                ->clearDecorators()
-                ->setDecorators(array('ViewHelper'));
-            $this->addElement($field);
+            $field->setValue($template->getMethod());
+            $this->add($field);
 
             $field = new Hidden('template_' . $template->getId() . '_type');
-            $field->setAttrib('id', 'template_' . $template->getId() . '_type')
-                ->setValue($template->getType())
-                ->clearDecorators()
-                ->setDecorators(array('ViewHelper'));
-            $this->addElement($field);
+            $field->setValue($template->getType());
+            $this->add($field);
         }
 
         $field = new Text('value');
-        $field->setAttrib('id', 'discount_template_value')
+        $field->setAttribute('id', 'discount_template_value')
             ->setLabel('Value')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new PriceValidator());
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Select('method');
-        $field->setAttrib('id', 'discount_template_method')
+        $field->setAttribute('id', 'discount_template_method')
             ->setLabel('Method')
-            ->setMultiOptions(array('percentage' => 'Percentage', 'fixed' => 'Fixed', 'override' => 'Override'))
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('options', array('percentage' => 'Percentage', 'fixed' => 'Fixed', 'override' => 'Override'))
+            ->setRequired();
+        $this->add($field);
 
         $field = new Select('type');
-        $field->setAttrib('id', 'discount_template_type')
+        $field->setAttribute('id', 'discount_template_type')
             ->setLabel('Type')
-               ->setRequired()
-            ->setMultiOptions(array('member' => 'Member', 'acco' => 'Acco'))
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new DiscountValidator($article, $entityManager));
-        $this->addElement($field);
+            ->setRequired()
+            ->setAttribute('options', array('member' => 'Member', 'acco' => 'Acco'));
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-                ->setAttrib('class', 'discount_add')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'discount_add');
+        $this->add($field);
     }
 
     private function _getTemplates()
@@ -122,39 +117,61 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $templateOptions;
     }
 
-    public function isValid($data)
+    public function getInputFilter()
     {
-        if ($data['template'] != 0) {
-            $validatorsInternal = array();
-            $requiredInternal = array();
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
 
-            $validatorsInternal['value'] = $this->getElement('value')->getValidators();
-            $requiredInternal['value'] = $this->getElement('value')->isRequired();
-            $this->getElement('value')->clearValidators()
-                ->setRequired(false);
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'template',
+                        'required' => true,
+                    )
+                )
+            );
 
-            $validatorsInternal['method'] = $this->getElement('method')->getValidators();
-            $requiredInternal['method'] = $this->getElement('method')->isRequired();
-            $this->getElement('method')->clearValidators()
-                ->setRequired(false);
+            $required = (isset($data['template']) && $data['template'] == 0);
 
-            $validatorsInternal['type'] = $this->getElement('type')->getValidators();
-            $requiredInternal['type'] = $this->getElement('type')->isRequired();
-            $this->getElement('type')->clearValidators()
-                ->setRequired(false);
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'value',
+                        'required' => $required,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PriceValidator(),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'method',
+                        'required' => $required,
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'type',
+                        'required' => $required,
+                        'validators' => array(
+                            new DiscountValidator($this->_article, $this->_entityManager),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
         }
-
-        $isValid = parent::isValid($data);
-
-        if ($data['template'] != 0) {
-            $this->getElement('value')->setValidators($validatorsInternal['value'])
-                ->setRequired($requiredInternal['value']);
-            $this->getElement('method')->setValidators($validatorsInternal['method'])
-                ->setRequired($requiredInternal['method']);
-            $this->getElement('type')->setValidators($validatorsInternal['type'])
-                ->setRequired($requiredInternal['type']);
-        }
-
-        return $isValid;
+        return $this->_inputFilter;
     }
 }

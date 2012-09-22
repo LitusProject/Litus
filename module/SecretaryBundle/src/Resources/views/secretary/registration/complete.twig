@@ -1,0 +1,84 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Registration') }}</h1>
+    </div>
+
+    {% include 'secretary/registration/partials/navigation.twig' %}
+
+    <div class="row page">
+        <div class="span12">
+            <h3>{{ translate('Personal') }}</h3>
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Name') }}</dt>
+                <dd>{{ academic.getFullName() }}&nbsp;</dd>
+                <dt>{{ translate('Birthday') }}</dt>
+                <dd>{{ dateLocalized(academic.getBirthday(), 'd MMMM Y') }}&nbsp;</dd>
+                <dt>{{ translate('Sex') }}</dt>
+                <dd>{{ academic.getSex()|capitalize }}&nbsp;</dd>
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ academic.getPhoneNumber() }}&nbsp;</dd>
+                <dt>{{ translate('University Identification') }}</dt>
+                <dd>{{ academic.getUniversityIdentification() }}&nbsp;</dd>
+                <dt>{{ translate('University E-mail') }}</dt>
+                <dd>{{ academic.getUniversityEmail() }}&nbsp;</dd>
+                <dt>{{ translate('Personal E-mail') }}</dt>
+                <dd>{{ academic.getPersonalEmail() }}&nbsp;</dd>
+            </dl>
+
+            <h3>{{ translate('Addresses') }}</h3>
+            <div class="row">
+                <div class="span6">
+                    <address>
+                        <strong>{{ translate('Primary Address') }}</strong><br>
+                        {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}
+                            {% if academic.getPrimaryAddress().getMailbox() %}
+                                {{ translate('Mailbox') }} {{ academic.getPrimaryAddress().getMailbox() }}
+                            {% endif %}<br>
+                        {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br>
+                        {{ academic.getPrimaryAddress().getCountry() }}
+                    </address>
+                </div>
+                <div class="span6">
+                    <address>
+                        <strong>{{ translate('Secondary Address') }}</strong><br>
+                        {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}
+                            {% if academic.getSecondaryAddress().getMailbox() %}
+                                {{ translate('Mailbox') }} {{ academic.getSecondaryAddress().getMailbox() }}
+                            {% endif %}<br>
+                        {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br>
+                        {{ academic.getSecondaryAddress().getCountry() }}
+                    </address>
+                </div>
+            </div>
+
+            <h3>{{ translate('Organization') }}</h3>
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Membership') }}</dt>
+                <dd>{% if metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
+                <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('T-shirt Size') }}</dt>
+                <dd>{{ metaData.getTshirtSize() }}</dd>
+            </dl>
+
+            <h3>{{ translate('Studies') }}</h3>
+            {% for study in studies %}
+                <h4>{{ study.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
+                {% for subject in study.subjects %}
+                    <ul>
+                        {% if subject.getSubject().getId() in subjects %}
+                            <li>{{ subject.getSubject().getName() }}</li>
+                        {% endif %}
+                    </ul>
+                {% endfor %}
+            {% endfor %}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('booking') }}" class="btn btn-primary">{{ translate('Book Textbooks') }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

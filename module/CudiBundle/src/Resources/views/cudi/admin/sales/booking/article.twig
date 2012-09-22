@@ -1,0 +1,74 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'cudi/admin/sales/booking/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	    <br class="clear">
+	    <br class="clear">
+
+	    {% if paginator is not null %}
+	        <h1>Article</h1>
+	        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+	        <br class="clear">
+
+    		<table class="full_width manage">
+    	        <tr>
+    	            <th>Person</th>
+    	            <th width="40px">&nbsp;</th>
+    	            <th width="120px">Date</th>
+    	            <th width="120px">Expires On</th>
+    	            <th width="80px">Status</th>
+    	            <th width="70px">Actions</th>
+    	        </tr>
+
+    	        {% for booking in paginator %}
+    	            <tr class="item">
+    	                <td>{{ booking.getPerson().getFullName() }}</td>
+    	                <td>&times;{{ booking.getNumber() }}</td>
+    	                <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
+    	                <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
+    	                <td class="status">{{ booking.getStatus()|capitalize }}</td>
+    	                <td class="actions">
+    	                    {% if hasAccess('admin_sales_booking', 'edit') %}
+    	                        <a href="{{ url('admin_sales_booking', {'action': 'edit', 'id': booking.getId(), 'period': activePeriod.getId()}) }}" class="edit">Edit</a>
+    	                    {% endif %}
+    	                </td>
+    	            </tr>
+    	        {% endfor %}
+    	    </table>
+
+    		{% include 'admin/partials/paginationControl.twig' %}
+    	{% endif %}
+	</div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#controller_nav .assignAll').click(openAssignAllModal);
+            $('#search').click(function (e) {
+                e.preventDefault();
+                if (isNaN(parseFloat($('#articleId').val())) || $('#articleId').val() == '')
+                    return;
+                window.location.href = '{{ url("admin_sales_booking", {'action': 'article'}) }}/' + $('#articleId').val();
+            });
+
+            $('#articleSearch').typeaheadRemote(
+                {
+	                source: '{{ url("admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#articleId').val($(this).data('value').id);
+                } else {
+                    $('#articleId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -12,6 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class Person extends EntityRepository
 {
+
+    public function findOneById($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('CommonBundle\Entity\Users\Person', 'p')
+            ->where(
+                $query->expr()->eq('p.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findAllByRole($role)
     {
         $resultSet = $this->_em
@@ -42,7 +61,8 @@ class Person extends EntityRepository
                         ),
                         ':name'
                     )
-                ))
+                )
+            )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery()
             ->getResult();
@@ -89,5 +109,36 @@ class Person extends EntityRepository
             return $barcode->getPerson();
 
         return null;
+    }
+
+
+    public function findAllByNameTypeahead($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CommonBundle\Entity\Users\Person', 'a')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
+                            $query->expr()->lower('a.lastName')
+                        ),
+                        ':name'
+                    ),
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
+                            $query->expr()->lower('a.firstName')
+                        ),
+                        ':name'
+                    )
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }

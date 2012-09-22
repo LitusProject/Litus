@@ -1,0 +1,171 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'common/admin/academic/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+	<div class="flashmessage success_message full_width academic_removed_success hide">
+		<div class="title">Success</div>
+		<div class="content">
+			<p>The academic was successfully removed!</p>
+		</div>
+	</div>
+	<div class="flashmessage error_message full_width academic_removed_error hide">
+		<div class="title">Error</div>
+		<div class="content">
+			<p>An error occurred while trying to delete the academic.</p>
+		</div>
+	</div>
+
+	<div id="controller_action">
+		<div id="student_search" style="display: none;">
+			<div style="padding: 4px; text-align: right">
+				Search:
+				<select id="searchField">
+					<option value="username">Username</option>
+					<option value="name">Name</option>
+					<option value="university_identification">University Identification</option>
+				</select>
+				is
+				<input type="text" id="searchString" size="30" />
+			</div>
+
+			<table class="full_width manage">
+		    	<tr>
+		        	<th>Username</th>
+		        	<th>Identification</th>
+		        	<th width="200px">Name</th>
+		        	<th width="200px">E-mail</th>
+		        	<th width="70px">Action</th>
+				</tr>
+			</table>
+		</div>
+
+		<div id="default_page">
+		    <table class="full_width manage">
+		        <thead>
+		            <tr>
+		                <th>Username</th>
+		                <th>Identification</th>
+		                <th width="200px">Name</th>
+		                <th width="200px">E-mail</th>
+		                <th width="70px">Action</th>
+		            </tr>
+		        </thead>
+
+		        <tbody>
+		            {% for academic in paginator %}
+		                <tr class="item item-{{ academic.getId() }}">
+		                    <td>{{ academic.getUsername() }}</td>
+		                    <td>{{ academic.getUniversityIdentification() }}
+		                    <td>{{ academic.getFullName() }}</td>
+		                    <td>{{ academic.getEmail() }}</td>
+		                    <td class="actions">
+		                        {% if hasAccess('admin_academic', 'edit') %}
+								    <a href="{{ url('admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
+								{% endif %}
+								{% if hasAccess('admin_academic', 'delete') %}
+								    <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>
+								{% endif %}
+		                    </td>
+		                </tr>
+		            {% endfor %}
+		        </tbody>
+		    </table>
+
+			{% include 'admin/partials/paginationControl.twig' %}
+		</div>
+	</div>
+
+	<div class="modal hide fade" id="removeAcademic">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Academic
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the following student: <b class="fullname"></b>?
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    {% if hasAccess('admin_academic', 'search') %}
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#student_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_academic', {'action': 'search'}) }}',
+				display: function (data) {
+					$('#student_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#student_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+						row.append('<td>' + this.username + '</td>')
+							.append('<td>' + this.universityIdentification + '</td>')
+							.append('<td>' + this.fullName + '</td>')
+							.append('<td>' + this.email + '</td>')
+							.append(
+								$('<td>', {'class': 'actions'})
+									.append('<a href="{{ url('admin_academic', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+								);
+							deleteButton.data({
+								id: this.id,
+								fullname: this.fullName
+							});
+					});
+					$('#student_search .delete').click(openModal);
+					$('#student_search table').change();
+				},
+				clear: function () {
+					$('#student_search table').find('tr.item').remove();
+				}
+			});
+			{% endif %}
+
+			$('.item .delete').click(openModal);
+		});
+
+		function openModal(e) {
+			var $this = $(this);
+			e.preventDefault();
+			var removeAcademic = $('#removeAcademic');
+			removeAcademic.find('.fullname').html($(this).data('fullname'));
+			removeAcademic.find('.cancel').one('click', function () {
+				removeAcademic.modal('hide');
+			});
+			var id = $this.data('id');
+			removeAcademic.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + id, function (data) {
+				    if (data && 'success' == data.status) {
+    					$('.flashmessage').addClass('hide');
+    					$('.academic_removed_success').removeClass('hide');
+    					$('.item-' + id).remove();
+    					removeAcademic.modal('hide');
+    				} else {
+    				    errorRemove();
+    				}
+				}, 'json').error(errorRemove);
+			});
+			removeAcademic.modal();
+		}
+
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.academic_removed_error').removeClass('hide');
+		    $('#removeAcademic').modal('hide');
+		}
+	</script>
+{% endblock %}

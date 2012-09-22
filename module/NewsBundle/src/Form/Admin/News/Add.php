@@ -3,29 +3,28 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     NewsBundle\Entity\Nodes\News,
-    Zend\Form\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text,
-    Zend\Form\Element\Textarea;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add News
@@ -42,18 +41,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
         $tabs = new Tabs('languages');
-        $this->addElement($tabs);
+        $this->add($tabs);
 
-        $tabContent = new TabContent();
+        $tabContent = new TabContent('tab_content');
 
         foreach($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
@@ -62,34 +61,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             $field = new Text('title_' . $language->getAbbrev());
             $field->setLabel('Title')
-                ->setAttrib('width', '400px')
-                ->setDecorators(array(new FieldDecorator()));
+                ->setAttribute('width', '400px')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
 
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
-                $field->setRequired();
-
-            $pane->addElement($field);
+            $pane->add($field);
 
             $field = new Textarea('content_' . $language->getAbbrev());
             $field->setLabel('Content')
-                ->setAttrib('rows', 20)
-                ->setDecorators(array(new FieldDecorator()));
+                ->setAttribute('rows', 20)
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
 
-            if ($language == \Zend\Registry::get('Litus_Localization_FallbackLanguage'))
-                $field->setRequired();
+            $pane->add($field);
 
-            $pane->addElement($field);
-
-            $tabContent->addSubForm($pane, 'tab_' . $language->getAbbrev());
+            $tabContent->add($pane);
         }
 
-        $this->addSubForm($tabContent, 'tab_content');
+        $this->add($tabContent);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'news_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'news_add');
+        $this->add($field);
     }
 
     protected function getLanguages()
@@ -97,5 +89,44 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            foreach($this->getLanguages() as $language) {
+                if ($language->getAbbrev() !== \Locale::getDefault())
+                    continue;
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'title_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'content_' . $language->getAbbrev(),
+                            'required' => true,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        )
+                    )
+                );
+            }
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

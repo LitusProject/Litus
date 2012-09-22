@@ -17,8 +17,9 @@ return array(
     'modules' => array(
         'AsseticBundle',
         'EdpMarkdown',
-        'MistDoctrine',
-        'ZfTwig',
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'ZfcTwig',
 
         'CommonBundle',
 
@@ -28,18 +29,27 @@ return array(
         'ShiftBundle',
         'SyllabusBundle',
 
+    	'LogisticsBundle',
+        'SecretaryBundle',
+
+        'BannerBundle',
         'CalendarBundle',
         'NewsBundle',
+        'NotificationBundle',
         'PageBundle',
+        'GalleryBundle',
+
+        'FormBundle',
 
         'ApiBundle',
     ),
     'module_listener_options' => array(
-        'config_cache_enabled' => false,
-        'cache_dir'            => 'data/cache',
-        'module_paths'         => array(
-            'module',
-            'vendor',
+        'config_glob_paths'    => array(
+            'config/autoload/{,*.}{global,local}.php',
+        ),
+        'module_paths' => array(
+            './module',
+            './vendor',
         ),
     ),
 );

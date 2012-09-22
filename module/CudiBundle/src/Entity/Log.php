@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,42 +15,43 @@
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Log")
- * @Table(name="cudi.log")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log")
+ * @ORM\Table(name="cudi.log")
  */
 class Log
 {
     /**
      * @var integer The ID of the log
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of the log
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the log
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The vat number of the supplier
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $text;
 

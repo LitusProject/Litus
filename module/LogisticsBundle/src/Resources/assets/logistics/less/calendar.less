@@ -1,0 +1,51 @@
+/**
+ * Logistics
+ *
+ * Copyright 2011 Litus
+ *
+ * Author: Niels Avonds <niels.avonds@litus.cc>
+ */
+
+.fc.loading {
+	opacity:@dLoadingOpacity;
+}
+
+/*
+ * Round corners
+ */
+thead tr.fc-first th.fc-first {
+	border-radius: @pBorderRadius 0px 0px 0px;
+}
+
+thead tr.fc-first th.fc-last {
+	border-radius: 0px @pBorderRadius 0px 0px;
+}
+
+.fc-view-month {
+	
+	tbody tr.fc-last td.fc-first {
+		border-radius: 0px 0px 0px @pBorderRadius;
+	}
+	
+	tbody tr.fc-last td.fc-last {
+		border-radius: 0px 0px @pBorderRadius 0px;
+	}
+}
+
+.fc-agenda {
+	tbody tr.fc-last th.fc-first {
+		border-radius: 0px 0px 0px @pBorderRadius;
+	}
+	
+	tbody tr.fc-last td.fc-last {
+		border-radius: 0px 0px @pBorderRadius 0px;
+	}
+}
+
+/*
+ * Popovers
+ */
+.popover {
+	width: @pPopoverWidth !important;
+	padding-bottom: @pPopoverMargin;
+}

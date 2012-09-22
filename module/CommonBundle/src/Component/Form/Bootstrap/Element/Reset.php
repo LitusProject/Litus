@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,21 +19,26 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Reset
+class Reset extends \Zend\Form\Element\Submit
 {
+    /**
+     * Seed attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'type' => 'reset',
+    );
 
     /**
-     * Create new Reset button
-     *
-     * @param  string|array|Config $spec
-     * @param  array|Traversable $options
-     * @return void
-     * @throws ElementException if no element name after initialization
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct($spec, $options = null)
+    public function __construct($name, $options = null)
     {
-        parent::__construct($spec, $options);
-        $this->setAttrib('class', 'btn');
-        $this->removeDecorator('DtDdWrapper');
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+        $this->setAttribute('class', 'btn');
     }
 }

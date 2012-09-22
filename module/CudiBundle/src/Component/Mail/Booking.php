@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,8 +15,9 @@
 namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\EntityManager,
     Zend\Mail\Message,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -29,25 +29,25 @@ class Booking
     /**
      * Send a mail for assigned bookings
      *
-     * @param \Zend\Mail\Transport $mailTransport
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param array $bookings
      * @param \CommonBundle\Entity\Users\Person $person
      */
-    public static function sendMail(Transport $mailTransport, $bookings, Person $person)
+    public static function sendMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        $message = $this->_em
+        $message = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail');
 
-        $subject = $this->_em
+        $subject = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_assigned_mail_subject');
 
-        $mailAddress = $this->getEntityManager()
+        $mailAddress = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail');
 
-        $mailName = $this->getEntityManager()
+        $mailName = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail_name');
 
@@ -62,7 +62,7 @@ class Booking
             ->addTo($person->getEmail(), $person->getFullName())
             ->addCc($mailAddress, $mailName)
             ->addBcc(
-                $this->getEntityManager()
+                $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
