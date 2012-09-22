@@ -264,7 +264,7 @@ class Page extends \CommonBundle\Entity\Nodes\Node
     public function canBeEditedBy(Person $person)
     {
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role))
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
                 return true;
         }
 

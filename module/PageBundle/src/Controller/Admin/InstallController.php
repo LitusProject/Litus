@@ -56,6 +56,15 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->installRoles(
             array(
+                'editor' => array(
+                    'system' => true,
+                    'parents' => array(),
+                    'actions' => array(
+                        'admin_page' => array(
+                            'add', 'delete', 'edit', 'manage', 'upload', 'uploadProgress'
+                        ),
+                    )
+                ),
                 'guest' => array(
                     'system' => true,
                     'parents' => array(),
@@ -65,7 +74,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         ),
                     )
                 ),
-            )
+            ),
         );
     }
 }
