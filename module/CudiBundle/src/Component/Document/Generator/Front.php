@@ -147,7 +147,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                             new Object(
                                 'street',
                                 null,
-                                $address->getStreet() . ' ' . $address->getNumber() . ' ' . $address->getMailbox()
+                                $address->getStreet() . ' ' . $address->getNumber() . (null === $address->getMailbox() ? '' : '/' . $address->getMailbox())
                             ),
                             new Object(
                                 'city',
