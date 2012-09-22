@@ -73,6 +73,7 @@ abstract class InstallController extends AdminController
                 $value = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue($item['key']);
+
                 if (null === $value) {
                     $config = new Config($item['key'], $item['value']);
                     $config->setDescription($item['description']);

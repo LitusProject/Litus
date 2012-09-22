@@ -192,7 +192,7 @@ VTK Cudi
                             'recto_verso_color' => 10600,
                         )
                     ),
-                    'description' => 'The purchase prices of an internal article ( * 100 000 )',
+                    'description' => 'The purchase prices of an internal article (multiplied by 100 000)',
                 ),
                 array(
                     'key'         => 'cudi.sell_prices',
@@ -207,7 +207,7 @@ VTK Cudi
                             'recto_verso_color' => 7,
                         )
                     ),
-                    'description' => 'The purchase prices of an internal article ( * 100 )',
+                    'description' => 'The purchase prices of an internal article (multiplied by 100)',
                 ),
                 array(
                     'key'         => 'cudi.front_address_name',
