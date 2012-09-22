@@ -372,7 +372,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $academic->getPrimaryAddress()
                         ->setStreet($primaryStreet->getName())
                         ->setNumber($formData['primary_address_address_number'])
-                        ->setNumber($formData['primary_address_address_mailbox'])
+                        ->setMailbox($formData['primary_address_address_mailbox'])
                         ->setPostal($primaryCity->getPostal())
                         ->setCity($primaryCity->getName())
                         ->setCountry('BE');
