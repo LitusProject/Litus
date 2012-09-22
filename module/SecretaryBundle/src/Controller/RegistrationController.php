@@ -185,25 +185,33 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
+                        $registrationArticles = unserialize(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.registration_articles')
+                        );
 
+                        // Add the tshirt too
                         $tshirts = unserialize(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('cudi.tshirt_article')
                         );
+                        $registrationArticles[] = $tshirts[$formData['tshirt_size']];
 
-                        $booking = new Booking(
-                            $this->getEntityManager(),
-                            $academic,
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sales\Article')
-                                ->findOneById($tshirts[$formData['tshirt_size']]),
-                            'assigned',
-                            1,
-                            true
-                        );
-
-                        $this->getEntityManager()->persist($booking);
+                        foreach ($registrationArticles as $registrationArticle) {
+                            $booking = new Booking(
+                                $this->getEntityManager(),
+                                $academic,
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($registrationArticle),
+                                'assigned',
+                                1,
+                                true
+                            );
+                            $this->getEntityManager()->persist($booking);
+                        }
 
                     } else {
                         $metaData = new MetaData(
@@ -440,7 +448,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 if (null !== $metaData) {
 
-                    if ($metaData->getTshirtSize() !== null) {
+                    if (null !== $metaData->getTshirtSize()) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sales\Booking')
                             ->findOneAssignedByArticleAndPerson(
@@ -450,7 +458,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                 $academic
                             );
 
-                        if ($booking !== null)
+                        if (null !== $booking)
                             $this->getEntityManager()->remove($booking);
                     }
 
@@ -487,20 +495,27 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-
                 if ($metaData->becomeMember()) {
 
-                    $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
-                        ->findOneSoldByArticleAndPerson(
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sales\Article')
-                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                            $academic
-                        );
+                    $hasShirt = false;
+                    foreach ($tshirts as $tshirt) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneSoldByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($tshirt),
+                                $academic
+                            );
+
+                        if (null !== $booking) {
+                            $hasShirt = true;
+                            break;
+                        }
+                    }
 
                     // Only make a new booking if no tshirt has been sold before
-                    if ($booking === null) {
+                    if (!$hasShirt) {
                         $booking = new Booking(
                             $this->getEntityManager(),
                             $academic,
@@ -514,6 +529,55 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                         $this->getEntityManager()->persist($booking);
                     }
+
+                    // Book the other articles that should be booked on registration
+                    $registrationArticles = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.registration_articles')
+                    );
+
+                    foreach ($registrationArticles as $registrationArticle) {
+
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneSoldByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($registrationArticle),
+                                $academic
+                            );
+
+                        // Already got this article, continue
+                        if (null !== $booking)
+                            continue;
+
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneAssignedByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($registrationArticle),
+                                $academic
+                            );
+
+                        // Already booked this article, continue
+                        if (null !== $booking)
+                            continue;
+
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $academic,
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($registrationArticle),
+                            'assigned',
+                            1,
+                            true
+                        );
+                        $this->getEntityManager()->persist($booking);
+                    }
+
                 }
 
                 $academic->activate(
