@@ -159,7 +159,7 @@ return array(
             'admin_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin[/:action]',
+                    'route' => '/admin',
                     'defaults' => array(
                         'controller' => 'admin_index',
                         'action'     => 'index',
