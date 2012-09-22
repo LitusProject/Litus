@@ -36,7 +36,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'key'         => 'secretary.membership_price',
                     'value'       => '1000',
-                    'description' => 'The price for membership',
+                    'description' => 'The price for the membership (multiplied by 100)',
                 ),
                 array(
                     'key'         => 'secretary.terms_and_conditions_nl',
