@@ -76,7 +76,7 @@ class MetaData
     /**
      * @var string The size of the T-shirt
      *
-     * @ORM\Column(name="tshirt_size", type="string", length=2)
+     * @ORM\Column(name="tshirt_size", type="string", length=2, nullable=true)
      */
     private $tshirtSize;
 
@@ -118,7 +118,7 @@ class MetaData
      */
     public static function isValidTshirtSize($size)
     {
-        return array_key_exists($size, self::$POSSIBLE_TSHIRT_SIZES);
+        return $size == null || array_key_exists($size, self::$POSSIBLE_TSHIRT_SIZES);
     }
 
     /**

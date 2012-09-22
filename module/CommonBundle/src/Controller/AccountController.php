@@ -208,45 +208,80 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 if (null !== $metaData) {
+                    if ($metaData->getTshirtSize() !== null) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneAssignedByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                                $academic
+                            );
+
+                        if ($booking !== null)
+                            $this->getEntityManager()->remove($booking);
+                    }
+
+                    $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
+
+                    if ($becomeMember) {
+                        $metaData->setBecomeMember($becomeMember)
+                            ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                            ->setBakskeByMail($formData['bakske'])
+                            ->setTshirtSize($formData['tshirt_size']);
+                    } // If not member, no metadata changes (since it's impossible to change from member to non_member)
+                } else {
+
+                    if ($formData['become_member']) {
+                        $metaData = new MetaData(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $formData['become_member'],
+                            $formData['irreeel'],
+                            $formData['bakske'],
+                            $formData['tshirt_size']
+                        );
+                    } else {
+                        $metaData = new MetaData(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $formData['become_member'],
+                            false,
+                            false,
+                            null
+                        );
+                    }
+
+                    $this->getEntityManager()->persist($metaData);
+                }
+
+                if ($metaData->becomeMember()) {
+
                     $booking = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sales\Booking')
-                        ->findOneAssignedByArticleAndPerson(
+                        ->findOneSoldByArticleAndPerson(
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sales\Article')
                                 ->findOneById($tshirts[$metaData->getTshirtSize()]),
                             $academic
                         );
 
-                    $this->getEntityManager()->remove($booking);
+                    // Only make a new booking if no tshirt has been sold before
+                    if ($booking === null) {
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $academic,
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($tshirts[$formData['tshirt_size']]),
+                            'assigned',
+                            1,
+                            true
+                        );
 
-                    $metaData->setBecomeMember($metaData->becomeMember() ? true : $formData['become_member'])
-                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
-                        ->setBakskeByMail($formData['bakske'])
-                        ->setTshirtSize($formData['tshirt_size']);
-                } else {
-                    $metaData = new MetaData(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $formData['become_member'],
-                        $formData['irreeel'],
-                        $formData['bakske'],
-                        $formData['tshirt_size']
-                    );
-                    $this->getEntityManager()->persist($metaData);
+                        $this->getEntityManager()->persist($booking);
+                    }
                 }
-
-                $booking = new Booking(
-                    $this->getEntityManager(),
-                    $academic,
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
-                        ->findOneById($tshirts[$formData['tshirt_size']]),
-                    'assigned',
-                    1,
-                    true
-                );
-
-                $this->getEntityManager()->persist($booking);
 
                 $academic->activate(
                     $this->getEntityManager(),
