@@ -536,6 +536,7 @@ VTK Cudi
             $address = new Address(
                 'Kasteelpark Arenberg',
                 41,
+                null,
                 3001,
                 'Heverlee',
                 'BE'
@@ -553,7 +554,8 @@ VTK Cudi
         } catch(Exception $e) {
             $address = new Address(
                 'Studentenwijk Arenberg',
-                '6/0',
+                '6',
+                '0',
                 3001,
                 'Heverlee',
                 'BE'

@@ -240,6 +240,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             }
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
+                var_dump($this->getParam('controller'), $this->getParam('action'));
+
                 if (
                     $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
                         && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
@@ -319,12 +321,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     public function getAuthenticationHandler()
     {
-        return array(
-            'action'         => 'login',
-            'controller'     => 'auth',
-
-            'auth_route'     => 'admin_auth',
-            'redirect_route' => 'admin_index'
+        throw new \RuntimeException(
+            'Do not extend \CommonBundle\Component\Controller\ActionController directly'
         );
     }
 
@@ -351,7 +349,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneById(2); // TODO: remove this
+            ->findOneById(2); // @TODO: remove this
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 

@@ -92,6 +92,23 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
+     *
+     * @return array
+     */
+    public function getAuthenticationHandler()
+    {
+        return array(
+            'action'         => 'login',
+            'controller'     => 'auth',
+
+            'auth_route'     => 'admin_auth',
+            'redirect_route' => 'admin_index'
+        );
+    }
+
+    /**
      * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
