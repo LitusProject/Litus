@@ -3,23 +3,24 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Entity\General;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This class represents a configuration entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Config")
- * @Table(name="general.config")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Config")
+ * @ORM\Table(name="general.config")
  */
 class Config
 {
@@ -32,22 +33,22 @@ class Config
     /**
      * @var string The entry's key
      *
-     * @Id
-     * @Column(type="string")
+     * @ORM\Id
+     * @ORM\Column(type="string")
      */
     private $key;
 
     /**
      * @var string The entry's value
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $value;
 
     /**
      * @var string A description for this configuration entry
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $description;
 

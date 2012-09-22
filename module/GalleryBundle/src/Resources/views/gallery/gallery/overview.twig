@@ -1,0 +1,29 @@
+{% extends 'common/layout.twig' %}
+
+{% block content %}
+    <h1>{{ translate('Gallery') }}</h1>
+    
+    <h2>{{ translate('Academic Year') }} {{ currentYear }}</h2>
+    {% for album in attribute(albums, currentYear).albums %}
+        <div class="album">
+            <div class="title">{{ album.getTitle(language) }}</div>
+            <a href="{{ url(language.getAbbrev ~ '_fun_gallery_album', {"id": album.getName(language)}) }}">
+                <img src="{{ filePath }}/{{ album.getId() }}{{ album.getPhoto().getThumbPath() }}" alt="{{ album.getTitle(language) }}" />
+            </a>
+        </div>
+    {% endfor %}
+    <br class="clear" />
+    
+    <h2>{{ translate('Archive') }}</h2>
+    {% for year in albums %}
+        {% if year.year != currentYear %}
+            <div class="album">
+                <div class="title">{{ year.year }}</div>
+                <a href="{{ url(language.getAbbrev ~ '_fun_gallery_year', {"id": year.year}) }}">
+                    <img src="{{ filePath }}/{{ random(year.albums).getId() }}{{ random(year.albums).getPhoto().getThumbPath() }}" alt="{{ year.year }}" />
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <br class="clear" />
+{% endblock %}

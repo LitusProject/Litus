@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -24,27 +23,34 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors;
  */
 class File extends \Zend\Form\Element\File
 {
+    /**
+     * @param  null|int|string  $name    Optional name for the element
+     * @param  array            $options Optional options for the element
+     * @throws Exception\InvalidArgumentException
+     */
+    public function __construct($name, $options = array())
+    {
+        parent::__construct($name, $options);
+        $this->setAttribute('id', $name);
+        $this->setLabelAttributes(
+            array(
+                'class' => 'control-label',
+            )
+        );
+    }
 
     /**
-     * Load default decorators
+     * Specifies whether this element is a required field.
      *
-     * @return CommonBundle\Component\Form\Bootstrap\Element
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param boolean $flag
+     * @return void
      */
-    public function loadDefaultDecorators()
+    public function setRequired($flag = true)
     {
-        if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return $this;
-        }
-
-        $decorators = $this->getDecorators();
-        if (empty($decorators)) {
-            $this->addDecorator('File')
-                 ->addDecorator(new Errors())
-                 ->addDecorator('Description', array('tag' => 'span', 'class' => 'help-block'))
-                 ->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'controls'))
-                 ->addDecorator('Label', array('class' => 'control-label'))
-                 ->addDecorator('HtmlTag', array('class' => 'control-group', 'tag' => 'div'));
-        }
+        $this->setAttribute('required', $flag);
+        $this->_required = $flag;
         return $this;
     }
 }

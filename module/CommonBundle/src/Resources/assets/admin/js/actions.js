@@ -82,23 +82,26 @@
       var placement = typeof this.options.placement == 'function' ?
         this.options.placement.call(this, this.tip(), this.$element) :
         this.options.placement;
+      var clientY = e.clientY + $(document).scrollTop();
+      var clientX = e.clientX + $(document).scrollLeft();
+
       if (placement == 'top'
-              && e.clientX > this.tip().offset().left && e.clientX < this.tip().offset().left + this.tip().width()
-              && e.clientY > this.tip().offset().top && e.clientY < this.tip().offset().top + this.tip().height() + this.$element.height() + 20)
+              && clientX > this.tip().offset().left && clientX < this.tip().offset().left + this.tip().width()
+              && clientY > this.tip().offset().top && clientY < this.tip().offset().top + this.tip().height() + this.$element.height() + 20)
           return;
       else if (placement == 'bottom'
-              && e.clientX > this.tip().offset().left && e.clientX < this.tip().offset().left + this.tip().width()
-              && e.clientY > this.tip().offset().top - this.$element.height() - 20 && e.clientY < this.tip().offset().top + this.tip().height())
+              && clientX > this.tip().offset().left && clientX < this.tip().offset().left + this.tip().width()
+              && clientY > this.tip().offset().top - this.$element.height() - 20 && clientY < this.tip().offset().top + this.tip().height())
           return;
       else if (placement == 'left'
-              && e.clientX > this.tip().offset().left && e.clientX < this.tip().offset().left + this.tip().width() + this.$element.width() + 30
-              && e.clientY > this.tip().offset().top && e.clientY < this.tip().offset().top + this.tip().height() + 10)
+              && clientX > this.tip().offset().left && clientX < this.tip().offset().left + this.tip().width() + this.$element.width() + 30
+              && clientY > this.tip().offset().top && clientY < this.tip().offset().top + this.tip().height() + 10)
           return;
       else if (placement == 'right'
-              && e.clientX > this.tip().offset().left - this.$element.width() - 20 && e.clientX < this.tip().offset().left + this.tip().width()
-              && e.clientY > this.tip().offset().top && e.clientY < this.tip().offset().top + this.tip().height() + 10)
+              && clientX > this.tip().offset().left - this.$element.width() - 20 && clientX < this.tip().offset().left + this.tip().width()
+              && clientY > this.tip().offset().top && clientY < this.tip().offset().top + this.tip().height() + 10)
           return;
-      
+
       $(document).off('mousemove.actionsTooltip', $.proxy(this.leave, this))
 
       if (this.timeout) clearTimeout(this.timeout)
@@ -119,7 +122,7 @@
         , placement
         , tp
         , that
-        
+
       $('.tooltip').remove();
 
       if (this.enabled) {
@@ -161,7 +164,7 @@
             tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width}
             break
         }
-        
+
         $tip.find('a').click(function () {
             that.hide();
         });
@@ -177,7 +180,7 @@
   , setContent: function () {
       var $tip = this.tip()
         , title = this.getTitle()
-      
+
       $tip.find('.tooltip-inner').html(title)
       $tip.removeClass('fade in top bottom left right')
     }

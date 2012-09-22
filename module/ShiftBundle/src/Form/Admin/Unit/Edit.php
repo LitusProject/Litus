@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,19 +29,18 @@ class Edit extends Add
 {
     /**
      * @param \ShiftBundle\Entity\Unit $unit The unit we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Unit $unit, $opts = null)
+    public function __construct(Unit $unit, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'unit_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'unit_edit');
+        $this->add($field);
 
         $this->_populateFromUnit($unit);
     }
@@ -53,6 +51,6 @@ class Edit extends Add
             'name' => $unit->getName()
         );
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }

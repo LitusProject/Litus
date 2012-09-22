@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -160,11 +159,13 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 if ($current->isInternal()) {
                     $current->setBinding($edited->getBinding())
                         ->setIsRectoVerso($edited->isRectoVerso())
-                        ->setIsPerforated($edited->isPerforated());
+                        ->setIsPerforated($edited->isPerforated())
+                        ->setIsColored($edited->isColored());
 
                     $edited->setBinding($duplicate->getBinding())
                         ->setIsRectoVerso($duplicate->isRectoVerso())
-                        ->setIsPerforated($duplicate->isPerforated());
+                        ->setIsPerforated($duplicate->isPerforated())
+                        ->setIsColored($duplicate->isColored());
                 }
 
                 $history = new History($current, $edited);
@@ -226,9 +227,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $form = new ArticleForm($this->getEntityManager(), $action->getEntity());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $action->getEntity()->setTitle($formData['title'])
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
@@ -253,7 +255,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         ->setIsOfficial($formData['official'])
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
-                        ->setIsPerforated($formData['perforated']);
+                        ->setIsPerforated($formData['perforated'])
+                        ->setIsColored($formData['colored']);
                 }
 
                 $action->getEntity()->setIsProf(false);
@@ -289,9 +292,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $form = new FileForm($action->getEntity());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $action->getEntity()
                     ->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);

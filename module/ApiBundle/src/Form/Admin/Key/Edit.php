@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,25 +29,23 @@ class Edit extends Add
 {
     /**
      * @param \ApiBundle\Entity\Key $key The key we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Key $key, $opts = null)
+    public function __construct(Key $key, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $field = new Text('code');
         $field->setLabel('Code')
-            ->setAttrib('disabled', 'disabled')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('disabled', 'disabled');
+        $this->add($field);
 
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'key_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'key_edit');
+        $this->add($field);
 
         $this->_populateFromKey($key);
     }
@@ -60,6 +57,6 @@ class Edit extends Add
             'code' => $key->getCode()
         );
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }

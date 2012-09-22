@@ -22,6 +22,28 @@
 		top: -25%;
 	}
 	&.fade.in { top: 50%; }
+
+	.form {
+		.row {
+            clear: both;
+            padding-top: 2 * @defaultSpacing;
+            width: 560px;
+
+            .label {
+                float: left;
+                width: @formLabelWidth;
+                margin-top: @formSpacing;
+                height: 0px;
+                text-align: right;
+            }
+
+            .field {
+                float: right;
+                width: 560px - (@formLabelWidth + 2 * @defaultSpacing);
+                text-align: left;
+            }
+        }
+	}
 }
 
 .modal-backdrop {
@@ -59,6 +81,10 @@
 
 	p {
 		margin-bottom: 10px;
+	}
+	
+	table.full-width {
+		width: 526px;
 	}
 
 	.footer {

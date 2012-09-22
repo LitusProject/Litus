@@ -3,17 +3,18 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Form\Admin;
+
+use Zend\InputFilter\InputFilterAwareInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -21,23 +22,76 @@ namespace CommonBundle\Component\Form\Admin;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Form extends \Zend\Form\Form
+abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 {
     /**
-     * @param mixed $options The form's options
+     * @var \Zend\InputFilter\InputFilter
      */
-    public function __construct($options)
+    protected $_inputFilter;
+
+    /**
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct($name = null)
     {
-        parent::__construct($options = null);
+        parent::__construct($name);
 
-        $this->setMethod('post');
+        $this->setAttribute('method', 'post')
+            ->setAttribute('class', 'form')
+            ->setAttribute('novalidate', true);
+    }
 
-        $this->addDecorator(
-            'HtmlTag',
-            array(
-                 'tag' => 'div',
-                 'class' => 'form'
-            )
-        );
+    /**
+     * Set data to validate and/or populate elements
+     *
+     * Typically, also passes data on to the composed input filter.
+     *
+     * @param  array|\ArrayAccess|\Traversable $data
+     * @return Form|FormInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setData($data)
+    {
+        parent::setData($data);
+
+        $this->setInputFilter($this->getInputFilter());
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|Traversable $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Recursively populate values of attached elements and fieldsets
+     *
+     * @param  array|Traversable $data
+     * @return void
+     * @throws Exception\InvalidArgumentException
+     */
+    public function populateValues($data)
+    {
+        parent::populateValues($data);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
+        return $this;
     }
 }

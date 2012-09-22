@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,32 +19,18 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabPane extends \Zend\Form\SubForm
+class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
 {
     /**
      * Constructor
      *
-     * Registers form view helper as decorator
-     *
-     * @param mixed $options
-     * @return void
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options = null)
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
 
-        $this->clearDecorators();
-        $this->addDecorator('FormElements')
-            ->addDecorator('HtmlTag', array('tag' => 'div', 'class' => 'tab_pane', 'id' => $options));
-    }
-
-    /**
-     * Get name of array elements belong to
-     *
-     * @return string|null
-     */
-    public function getElementsBelongTo()
-    {
-        return null;
+        $this->setAttribute('class', 'tab_pane');
+        $this->setAttribute('id', $name);
     }
 }

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,7 +29,7 @@ use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
     Zend\Dom\Query as DomQuery,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Study
@@ -45,7 +44,7 @@ class Study
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport
+     * @var \Zend\Mail\Transport\TransportInterface
      */
     private $_mailTransport;
 
@@ -71,10 +70,11 @@ class Study
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param string $xmlPath
      * @param array $callback
      */
-    public function __construct(EntityManager $entityManager, Transport $mailTransport, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -365,7 +365,7 @@ class Study
                 }
             }
 
-            if ($prof->canHaveUniversityStatus($this->_academicYear->getCode(true))) {
+            if ($prof->canHaveUniversityStatus($this->_academicYear)) {
                 $prof->addUniversityStatus(
                     new UniversityStatus(
                         $prof,

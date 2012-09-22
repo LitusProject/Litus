@@ -61,6 +61,26 @@ class Article extends EntityRepository
        return null;
     }
 
+    public function findOneById($id)
+    {
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        ->from('CudiBundle\Entity\Sales\Article', 'a')
+        ->where(
+            $query->expr()->eq('a.id', ':id')
+        )
+        ->setParameter('id', $id)
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findOneByBarcode($barcode)
     {
         $start = AcademicYearUtil::getStartOfAcademicYear();
@@ -114,6 +134,29 @@ class Article extends EntityRepository
             return $resultSet[0];
 
         return null;
+    }
+
+    public function findAllByTypeAndAcademicYear($type, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+        ->from('CudiBundle\Entity\Sales\Article', 'a')
+        ->innerJoin('a.mainArticle', 'm')
+        ->where($query->expr()->andX(
+            $query->expr()->eq('m.type', ':type'),
+            $query->expr()->eq('a.isHistory', 'false'),
+            $query->expr()->eq('a.academicYear', ':academicYear'),
+            $query->expr()->eq('m.isHistory', 'false'),
+            $query->expr()->eq('m.isProf', 'false')
+        )
+        )
+        ->setParameter('type', $type)
+        ->setParameter('academicYear', $academicYear->getId())
+        ->orderBy('m.title', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+        return $resultSet;
     }
 
     public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear)

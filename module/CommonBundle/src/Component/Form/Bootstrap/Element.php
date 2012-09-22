@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,32 +26,6 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
 class Element extends \Zend\Form\Element
 {
     /**
-     * Load default decorators
-     *
-     * @return CommonBundle\Component\Form\Bootstrap\Element
-     */
-    public function loadDefaultDecorators()
-    {
-        if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return $this;
-        }
-
-        $decorators = $this->getDecorators();
-        if (empty($decorators)) {
-            $getId = function(Decorator $decorator) {
-                return $decorator->getElement()->getId() . '-element';
-            };
-            $this->addDecorator('ViewHelper')
-                ->addDecorator(new Errors())
-                ->addDecorator('Description', array('tag' => 'span', 'class' => 'help-block'))
-                ->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'controls'))
-                ->addDecorator('Label', array('class' => 'control-label'))
-                ->addDecorator('HtmlTag', array('class' => 'control-group', 'tag' => 'div'));
-        }
-        return $this;
-    }
-
-    /**
      * Specifies whether this element is a required field.
      *
      * Also sets the HTML5 'required' attribute.
@@ -62,13 +35,7 @@ class Element extends \Zend\Form\Element
      */
     public function setRequired($flag = true)
     {
-        if ($flag) {
-            $this->required = 'true';
-        } else {
-            if (isset($this->required)) {
-                unset($this->required);
-            }
-        }
-        return parent::setRequired($flag);
+        $this->setAttribute('required', $flag);
+        return $this;
     }
 }

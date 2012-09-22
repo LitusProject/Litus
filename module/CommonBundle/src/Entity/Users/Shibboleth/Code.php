@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,51 +15,52 @@
 namespace CommonBundle\Entity\Users\Shibboleth;
 
 use DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * We register the server's hostname as the Shibboleth SP with the KU Leuven.
  * Because of this, however, we need to create an extra step to get the authentication
  * result to Litus.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Shibboleth\Code")
- * @Table(name="users.shibboleth_codes")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Shibboleth\Code")
+ * @ORM\Table(name="users.shibboleth_codes")
  */
 class Code
 {
     /**
      * @var string The ID of this code
      *
-     * @Id
-     * @Column(type="string", length=32)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=32)
      */
     private $id;
 
     /**
      * @var \DateTime The time at which this code was created
      *
-     * @Column(name="creation_time", type="datetime")
+     * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
      * @var \DateTime The time at which this session will end
      *
-     * @Column(name="expiration_time", type="datetime")
+     * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
      * @var string The authenticated person's university identification
      *
-     * @Column(name="university_identification", type="string", length=8)
+     * @ORM\Column(name="university_identification", type="string", length=8)
      */
     private $universityIdentification;
 
     /**
      * @var string The code
      *
-     * @Column(type="string", length=32, unique=true)
+     * @ORM\Column(type="string", length=32, unique=true)
      */
     private $code;
 

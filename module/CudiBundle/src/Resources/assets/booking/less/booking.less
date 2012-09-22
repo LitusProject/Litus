@@ -1,0 +1,38 @@
+table.bookings {
+    .course-title {
+    	background-color: @cCourseTitleBackground;
+    }
+
+    .spacer {
+        height: 10px;
+
+        td {
+            padding: 0;
+            margin: 0;
+        }
+
+        &:first-of-type {
+            height: 0;
+        }
+    }
+
+    input.input-very-mini {
+        width: @pInputWidth;
+        height: @pInputHeight;
+        margin-bottom: @pInputMargin;
+        padding-bottom: @pInputPadding;
+        padding-top: @pInputPadding;
+    }
+
+    /*
+     * Workaround for input[type=submit] and <button> having different height when styled with .btn class.
+     */
+    input.btn {
+      vertical-align: baseline;
+      height: 30px;
+    }
+
+    .help-inline ul {
+        list-style-type: none;
+    }
+}

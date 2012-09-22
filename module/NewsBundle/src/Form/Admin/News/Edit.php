@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,26 +30,18 @@ class Edit extends Add
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \NewsBundle\Entity\Nodes\News $news The news item we're going to modify
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, News $news, $opts = null)
+    public function __construct(EntityManager $entityManager, News $news, $name = null)
     {
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, $name);
 
-        $form = $this->getSubForm('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $title = $form->getSubForm('tab_' . $language->getAbbrev())->getElement('title_' . $language->getAbbrev());
-            $title->clearValidators();
-        }
-
-        $this->removeElement('submit');
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'news_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'news_edit');
+        $this->add($field);
 
         $this->_populateFromNews($news);
     }
@@ -63,6 +54,6 @@ class Edit extends Add
             $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
         }
 
-        $this->populate($data);
+        $this->setData($data);
     }
 }

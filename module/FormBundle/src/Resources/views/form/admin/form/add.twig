@@ -1,0 +1,25 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'form/admin/form/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
+        $(document).ready(function () {
+            $('textarea').gollum();
+        });
+    </script>
+{% endblock %}

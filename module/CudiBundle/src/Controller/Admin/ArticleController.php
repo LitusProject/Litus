@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -60,9 +59,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ($formData['internal']) {
                     $binding = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Articles\Options\Binding')
@@ -81,13 +81,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
+                        $formData['same_as_previous_year'],
                         $formData['nb_black_and_white'],
                         $formData['nb_colored'],
                         $binding,
                         $formData['official'],
                         $formData['rectoverso'],
                         $frontColor,
-                        $formData['perforated']
+                        $formData['perforated'],
+                        $formData['colored']
                     );
                 } else {
                     $article = new External(
@@ -98,8 +100,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['isbn'] != ''? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
-                        $formData['downloadable']
-                       );
+                        $formData['downloadable'],
+                        $formData['same_as_previous_year']
+                    );
                 }
 
                 $this->getEntityManager()->persist($article);
@@ -137,7 +140,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'admin_article',
                     array(
-                        'action' => 'manage',
+                        'action' => 'edit',
+                        'id' => $article->getId(),
                     )
                 );
 
@@ -165,9 +169,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new EditForm($this->getEntityManager(), $article);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $history = new History($article);
                 $this->getEntityManager()->persist($history);
 
@@ -178,6 +183,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
+                    ->setIsSameAsPreviousYear($formData['same_as_previous_year'])
                     ->setType(isset($formData['type']) ? $formData['type'] : 'common');
 
                 if ($article->isInternal()) {
@@ -195,7 +201,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->setIsOfficial($formData['official'])
                         ->setIsRectoVerso($formData['rectoverso'])
                         ->setFrontColor($frontPageColor)
-                        ->setIsPerforated($formData['perforated']);
+                        ->setIsPerforated($formData['perforated'])
+                        ->setIsColored($formData['colored']);
                 }
 
                 $this->getEntityManager()->flush();
@@ -258,6 +265,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
+        $academicYear = $this->getAcademicYear();
+
         switch($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
@@ -289,6 +298,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $result = array();
         foreach($articles as $article) {
+            $article->setEntityManager($this->getEntityManager());
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getTitle();
@@ -296,6 +307,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->publisher = $article->getPublishers();
             $item->yearPublished = $article->getYearPublished() ? $article->getYearPublished() : '';
             $item->isInternal = $article->isInternal();
+            $item->saleArticle = $article->getSaleArticle($academicYear) ? $article->getSaleArticle($academicYear)->getId() : 0;
             $result[] = $item;
         }
 

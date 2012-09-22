@@ -3,18 +3,17 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 return array(
-    'Litus Prof' => 'Litus Prof',
+    'Prof' => 'Prof',
     'Home' => 'Start',
     'Subjects' => 'Vakken',
     'Articles' => 'Artikels',
@@ -41,6 +40,7 @@ return array(
     'Name' => 'Naam',
     'Semester' => 'Semester',
     'Credits' => 'Studiepunten',
+    'Remove' => 'Verwijder',
 
     'Error' => 'Fout',
     'An error occurred while removing the comment.' => 'Er is een fout opgetreden tijdens het verwijderen van de commentaar.',
@@ -109,12 +109,14 @@ return array(
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
 
     'URL' => 'URL',
-    'Downloadable' => 'Downloadbaar',
+    'Downloadable (on Toledo)' => 'Downloadbaar (op Toledo)',
+    'Same As Previous Year' => 'Zelfde Als Vorig Jaar',
     'Type' => 'Type',
     'Internal Article' => 'Intern Artikel',
     'Binding' => 'Inbinding',
     'Recto Verso' => 'Recto Verso',
     'Perforated' => 'Geperforeerd',
+    'Colored' => 'Gekleurd',
     'Mandatory' => 'Verplicht',
     'Subject Mapping' => 'Vak Verbindingen',
     'Add' => 'Toevoegen',
@@ -133,10 +135,10 @@ return array(
     'None' => 'Los',
     'Glued' => 'Gelijmd',
 
+    'ERROR' => 'FOUT',
     'SUCCESS' => 'SUCCES',
     'The article was successfully created!' => 'Het artikel is succesvol aangemaakt!',
     'The article was successfully updated!' => 'Het artikel is succesvol aangepast!',
-    'ERROR' => 'FOUT',
     'No ID was given to identify the article!' => 'Er was geen ID opgegeven om het artikel te identificeren!',
     'No article with the given ID was found!' => 'Er is geen artikel gevonden met het opgegeven ID!',
     'The mapping was successfully added!' => 'De verbinding is succesvol aangemaakt!',
@@ -144,9 +146,9 @@ return array(
     'No mapping with the given ID was found!' => 'Er is geen verbinding gevonden met het opgegeven ID!',
     'No ID was given to identify the subject!' => 'Er was geen ID opgegeven om het vak te identificerent!',
     'No subject with the given ID was found!' => 'Er is geen vak gevonden met het opgegeven ID!',
-    'You are successfully logged in!' => 'Je bent succesvol aangemeld!',
-    'You cannot be logged in!' => 'Je kon niet aangemeld worden!',
-    'You are successfully logged out!' => 'Je bent succesvol afgemeld!',
+    'You have been successfully logged in!' => 'Je bent succesvol aangemeld!',
+    'You could not be logged in!' => 'Je kon niet aangemeld worden!',
+    'You have been successfully logged out!' => 'Je bent succesvol afgemeld!',
     'The comment was successfully created!' => 'De commentaar was succesvol aangemaakt!',
     'No ID was given to identify the comment!' => 'Er was geen ID opgegeven om de commentaar te identificeren!',
     'No comment with the given ID was found!' => 'Er is geen commentaar gevonden met het opgegeven ID!',
@@ -154,4 +156,6 @@ return array(
     'No file with the given ID was found!' => 'Er is geen bestand gevonden met het opgegeven ID!',
     'The docent was successfully added!' => 'De docent is succesvol toegevoegd!',
     'The student enrollment was successfully updated!' => 'De student inschrijving is succesvol aangepast!',
+
+    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'Als dit een artikel is dat uitgegeven wordt door VTK, gelieve dan <i>Intern Artikel</i> aan te vinken. Als het een handboek is, gelieve dat niet aan te vinken. Bij een <i>Intern Artikel</i> heb je de mogelijkheid om bestanden te uploaden.',
 );

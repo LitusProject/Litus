@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -38,7 +37,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $result = array(
             'username' => $person->getUsername(),
             'full_name' => $person->getFullName(),
-            'email' => $person->getPrimaryEmail()
+            'email' => $person->getEmail()
         );
 
         if ($person instanceof Academic) {
@@ -47,25 +46,25 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => $result
+                'result' => (object) $result
             )
         );
     }
 
     private function _getPerson()
     {
-        if ('' != $this->getRequest()->post()->get('session', '')) {
+        if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Session')
-                ->findOneById($this->getRequest()->post()->get('session'));
+                ->findOneById($this->getRequest()->getPost('session'));
 
             return $session->getPerson();
         }
 
-        if ('' != $this->getRequest()->post()->get('username', '')) {
+        if (null !== $this->getRequest()->getPost('username')) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Users\Person')
-                ->getOneByUsername($this->getRequest()->post()->get('username'));
+                ->findOneByUsername($this->getRequest()->getPost('username'));
         }
 
         return null;

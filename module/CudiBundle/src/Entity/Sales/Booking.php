@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,85 +18,86 @@ use CommonBundle\Entity\Users\Person,
     CudiBundle\Entity\Sales\Article,
     DateInterval,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
- * @Table(name="cudi.sales_bookings", indexes={@index(name="sales_booking_time", columns={"bookDate"})})
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Booking")
+ * @ORM\Table(name="cudi.sales_bookings", indexes={@ORM\Index(name="sales_booking_time", columns={"bookDate"})})
  */
 class Booking
 {
     /**
      * @var integer The ID of the booking
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person of the booking
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var \CudiBundle\Entity\Sales\Article The booked article
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
-     * @JoinColumn(name="article", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sales\Article")
+     * @ORM\JoinColumn(name="article", referencedColumnName="id")
      */
     private $article;
 
     /**
      * @var integer The number of articles booked
      *
-     * @Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private $number;
 
     /**
      * @var string The status of the booking
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $status;
 
     /**
      * @var \DateTime The time the booking will expire
      *
-     * @Column(name="expirationdate", type="datetime", nullable=true)
+     * @ORM\Column(name="expirationdate", type="datetime", nullable=true)
      */
     private $expirationDate;
 
     /**
      * @var \DateTime The time the booking was assigned
      *
-     * @Column(name="assignmentdate", type="datetime", nullable=true)
+     * @ORM\Column(name="assignmentdate", type="datetime", nullable=true)
      */
     private $assignmentDate;
 
     /**
      * @var \DateTime The time the booking was made
      *
-     * @Column(name="bookdate", type="datetime")
+     * @ORM\Column(name="bookdate", type="datetime")
      */
     private $bookDate;
 
     /**
      * @var \DateTime The time the booking was sold
      *
-     * @Column(name="saledate", type="datetime", nullable=true)
+     * @ORM\Column(name="saledate", type="datetime", nullable=true)
      */
     private $saleDate;
 
     /**
      * @var \DateTime The time the booking was canceled
      *
-     * @Column(name="cancelationdate", type="datetime", nullable=true)
+     * @ORM\Column(name="cancelationdate", type="datetime", nullable=true)
      */
     private $cancelationDate;
 
@@ -116,10 +116,11 @@ class Booking
      * @param \CudiBundle\Entity\Sales\Article $article The booked article
      * @param string $status The status of the booking
      * @param integer $number The number of articles booked
+     * @param boolean $force Force the booking
      */
-    public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1)
+    public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1, $force = false)
     {
-        if (!$article->isBookable())
+        if (!$article->isBookable() && !$force)
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
 
         $this->person = $person;

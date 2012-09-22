@@ -1,0 +1,76 @@
+{% macro renderForm(form) %}
+    {% do form.prepare() %}
+    {% autoescape false %}
+        {% set buttons = [] %}
+        {{ form().openTag(form) }}
+            {{ _self.renderFieldset(form) }}
+        {{ form().closeTag() }}
+    {% endautoescape %}
+{% endmacro %}
+
+{% macro renderFieldset(fieldset) %}
+    {% autoescape false %}
+        {% set buttons = [] %}
+        {% for element in fieldset.getElements() %}
+            {% if element.getAttribute('type') == 'submit'or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
+                {% set buttons = buttons|merge([element]) %}
+            {% elseif element.getAttribute('type') == 'tabs' %}
+            <ul class="tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                {% for language,tab in element.getTabs() %}
+                    <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
+                {% endfor %}
+            </ul>
+            {% elseif element.getAttribute('type') == 'hidden' %}
+                <div>
+                    {{ formElement(element) }}
+                </div>
+            {% elseif element.getAttribute('type') == 'radio' %}
+                <div>
+                    <div class="field">
+                        <div>
+                            {{ formElement(element) }}
+                        </div>
+                    </div>
+                    <div class="errors">{{ formElementErrors(element) }}</div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <span class="label">
+                        {{ formLabel().openTag(element) }}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {{ formLabel().closeTag() }}
+                    </span>
+                    <span class="field">
+                        {{ formElement(element) }}
+                    </span>
+                    <div class="errors">{{ formElementErrors(element) }}</div>
+                    {{ formLabel.closeTag() }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% for child in fieldset.getFieldsets() %}
+            {% if child.isCollection() %}
+                <fieldset class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
+                    <legend>{{ translate(child.getLabel()) }}</legend>
+                    {{ _self.renderFieldset(child) }}
+                </fieldset>
+            {% else %}
+                <div class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
+                    {{ _self.renderFieldset(child) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if buttons|length > 0 %}
+            <div class="form-actions">
+                {% for button in buttons %}
+                    <div class="row">
+                        <span class="label"></span>
+                        <span class="field">
+                            {{ formElement(button) }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endautoescape %}
+{% endmacro %}

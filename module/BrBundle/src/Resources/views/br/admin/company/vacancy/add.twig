@@ -1,0 +1,14 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/company/vacancy/partials/navigation.twig' %}
+
+	<div id="controller_action">
+	    <h1>Company</h1>
+	    <p>Name: <b>{{ company.getName() }}</b></p>
+	    <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+{% endblock %}

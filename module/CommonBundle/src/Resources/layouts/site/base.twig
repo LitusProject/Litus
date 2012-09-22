@@ -4,7 +4,7 @@
 <head>
 
     {{ headMeta() }}
-	{{ headTitle(translator().translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
+	{{ headTitle(translate('Vlaamse Technische Kring Leuven'), 'PREPEND') }}
 
 	{{ headLink() }}
 </head>
@@ -13,13 +13,13 @@
     <nav class="navbar navbar-fixed-top main-navbar main-navbar-fixed-top">
     	<div class="navbar-inner main-navbar-inner">
     		<div class="container">
-    		    <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    		    <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".main-nav">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="#">{{ translator().translate('VTK Leuven vzw') }}</a>
-                <div class="nav-collapse collapse">
+                <a class="title hidden-desktop" href="#">{{ translate('VTK Leuven vzw') }}</a>
+                <div class="main-nav nav-collapse main-nav">
         			<ul class="nav main-nav">
                         {% for item in menu %}
                             {% if 'category' == item.type %}
@@ -42,32 +42,42 @@
         		<ul class="nav pull-right lang-nav visible-desktop">
         		    <li class="dropdown" id="langDropdown">
         			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translator().translate('Language') }} <span class="caret"></span>
+        			        {{ translate('Language') }} <span class="caret"></span>
         		        </a>
         		        <ul class="dropdown-menu">
         		            {% for language in languages %}
-        			            <li><a href="#">{{ language.getName() }}</a></li>
+        			            <li><a href="{{ url('index', {'language': language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a></li>
         		            {% endfor %}
         		        </ul>
         			</li>
         		</ul>
         		<ul class="nav pull-right auth-nav visible-desktop">
-        		    <li class="dropdown" id="loginDropdown">
-        			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        			        {{ translator().translate('Login') }} <span class="caret"></span>
-        		        </a>
-        		        <ul class="dropdown-menu">
-        		        	<li style="text-align: center;">
-			                	<a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translator().translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-        		        	</li>
-                            <li class="divider"></li>
-        		            <li>
-        		                {% autoescape false %}
-        		                	{{ loginForm }}
-        		                {% endautoescape %}
-        		            </li>
-        		        </ul>
-        			</li>
+        		    {% if authenticatedPerson is not null %}
+                        <li class="dropdown" id="accountDropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="profile-wrapper">
+                                    <i class="profile"></i>
+                                </span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ url('account') }}">
+                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                        </li>
+                    {% endif %}
         		</ul>
     		</div>
     	</div>
@@ -78,19 +88,23 @@
         	<div class="inner">
         		<div class="container">
         			<img class="siteLogo" src="/_site/img/logo.png" />
-        			<h1 class="siteName">{{ translator().translate('Vlaamse Technische Kring Leuven') }}</h1>
+        			<h1 class="siteName">{{ translate('Vlaamse Technische Kring Leuven') }}</h1>
 
         			<div id="carouselHeader" class="carousel slide visible-desktop">
                         <div class="carousel-inner">
-                            <div class="active item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-02.jpg" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/bootstrap-mdo-sfmoma-03.jpg" alt="">
-                            </div>
+
+                            {% for key, banner in banners %}
+                                <div class="item item-{{ key }}">
+                                    {% if banner.getUrl() != '' %}
+                                    <a href="{{ banner.getUrl() }}">
+                                    {% endif %}
+                                        <img src="/banner/view/image{{ banner.getImage() }}" alt="">
+                                    {% if banner.getUrl() != '' %}
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
                         </div>
                         <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
                         <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
@@ -101,6 +115,8 @@
 
         <div id="content">
             <div class="container">
+                {% include 'site/partials/flashMessenger.twig' %}
+
             	{% block content %} {% endblock %}
             </div>
         </div>
@@ -111,10 +127,10 @@
     		<div class="container">
 		        <div class="row-fluid">
 		        	<span class="span3">
-		        		<span class="title">{{ translator().translate('Links') }}</span>
+		        		<span class="title">{{ translate('Links') }}</span>
 		        	</span>
 		        	<span class="span9">
-		        		<span class="title">{{ translator().translate('Partners') }}</span>
+		        		<span class="title">{{ translate('Partners') }}</span>
 		        	</span>
 		        </div>
 		    </div>
@@ -122,12 +138,12 @@
 
         <div class="container bottom">
         	<span class="title">
-        		&copy; 2012 {{ translator().translate('Vlaamse Technische Kring vzw') }}
+        		&copy; 2012 {{ translate('Vlaamse Technische Kring vzw') }}
         	</span>
 
         	<span class="social">
-        		<a href="http://facebook.com/vtk"><img src="/_site/img/facebook.png" /></a>
-        		<a href="http://twitter.com/vtk_leuven"><img src="/_site/img/twitter.png" /></a>
+        		<a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
+        		<a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
         	</span>
         </div>
     </footer>
@@ -139,6 +155,8 @@
             $('.dropdown form').on('click', function (e) {
                 e.stopPropagation();
             });
+
+            $('.item-0').addClass('active');
 
             $('.carousel').carousel();
         });

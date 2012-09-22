@@ -1,0 +1,112 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'shift/admin/shift/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width shift_removed_success hide">
+    	<div class="title">Success</div>
+    	<div class="content">
+    		<p>The shift was successfully removed!</p>
+    	</div>
+    </div>
+    <div class="flashmessage error_message full_width shift_removed_error hide">
+    	<div class="title">Error</div>
+    	<div class="content">
+    		<p>An error occurred while trying to delete the shift.</p>
+    	</div>
+    </div>
+
+	<div id="controller_action">
+	    <table class="full_width manage">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th>Event</th>
+	                <th>Start</th>
+	                <th>End</th>
+	                <th width="70px">Actions</th>
+	            </tr>
+	        </thead>
+
+	        <tbody>
+	            {% for shift in paginator %}
+	                <tr class="item item-{{ shift.getId() }}">
+	                    <td>{{ shift.getName() }}</td>
+	                    <td>{{ shift.getEvent().getTitle(language) }}</td>
+	                    <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
+	                    <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+	                    <td class="actions">
+	                        {% if hasAccess('admin_shift', 'edit') %}
+	                            <a href="{{ url('admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
+	                        {% endif %}
+	                        {% if hasAccess('admin_shift', 'delete') %}
+	                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
+	                        {% endif %}
+	                    </td>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+
+	<div class="modal hide fade" id="removeShift">
+		<div class="modal-header">
+			<span>Litus Admin</span>
+			/Delete Shift
+		</div>
+		<div class="modal-body">
+			<p>
+				You are about to delete the unit with the following name: <b class="name"></b>?
+				Please note that this operation cannot be undone!
+			</p>
+			<p>
+				Are you sure you want to continue?
+			</p>
+			<div class="footer">
+				<input type="button" class="delete" value="Yes">
+				<input type="button" class="cancel" data-dismiss="modal" value="No">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.item .delete').click(openModal);
+		});
+
+		function openModal(e) {
+			var $this = $(this);
+			e.preventDefault();
+			var removeShift = $('#removeShift');
+			removeShift.find('.name').html($(this).data('name'));
+			removeShift.find('.cancel').one('click', function () {
+				removeShift.modal('hide');
+			});
+			var id = $this.data('id');
+			removeShift.find('.delete').unbind('click').click(function () {
+				$.post('{{ url('admin_shift', {"action": "delete"})}}/' + id, function (data) {
+				    if (data && 'success' == data.status) {
+						$('.flashmessage').addClass('hide');
+						$('.shift_removed_success').removeClass('hide');
+						$('.item-' + id).remove();
+						removeShift.modal('hide');
+					} else {
+					    errorRemove();
+					}
+				}, 'json').error(errorRemove);
+			});
+			removeShift.modal();
+		}
+
+		function errorRemove() {
+		    $('.flashmessage').addClass('hide');
+		    $('.shift_removed_error').removeClass('hide');
+		    $('#removeShift').modal('hide');
+		}
+	</script>
+{% endblock %}

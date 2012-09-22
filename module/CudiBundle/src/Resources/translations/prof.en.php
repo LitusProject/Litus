@@ -3,18 +3,17 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 return array(
-    'Litus Prof' => 'Litus Prof',
+    'Prof' => 'Prof',
     'Home' => 'Home',
     'Subjects' => 'Subjects',
     'Articles' => 'Articles',
@@ -41,6 +40,7 @@ return array(
     'Name' => 'Name',
     'Semester' => 'Semester',
     'Credits' => 'Credits',
+    'Remove' => 'Remove',
 
     'Error' => 'Error',
     'An error occurred while removing the comment.' => 'An error occurred while removing the comment.',
@@ -109,12 +109,14 @@ return array(
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
 
     'URL' => 'URL',
-    'Downloadable' => 'Downloadable',
+    'Downloadable (on Toledo)' => 'Downloadable (on Toledo)',
+    'Same As Previous Year' => 'Same As Previous Year',
     'Type' => 'Type',
     'Internal Article' => 'Internal Article',
     'Binding' => 'Binding',
     'Recto Verso' => 'Recto Verso',
     'Perforated' => 'Perforated',
+    'Colored' => 'Colored',
     'Mandatory' => 'Mandatory',
     'Subject Mapping' => 'Subject Mapping',
     'Add' => 'Add',
@@ -133,10 +135,10 @@ return array(
     'None' => 'None',
     'Glued' => 'Glued',
 
+    'ERROR' => 'ERROR',
     'SUCCESS' => 'SUCCESS',
     'The article was successfully created!' => 'The article was successfully created!',
     'The article was successfully updated!' => 'The article was successfully updated!',
-    'ERROR' => 'ERROR',
     'No ID was given to identify the article!' => 'No ID was given to identify the article!',
     'No article with the given ID was found!' => 'No article with the given ID was found!',
     'The mapping was successfully added!' => 'The mapping was successfully added',
@@ -144,9 +146,9 @@ return array(
     'No mapping with the given ID was found!' => 'No mapping with the given ID was found!',
     'No ID was given to identify the subject!' => 'No ID was given to identify the subject!',
     'No subject with the given ID was found!' => 'No subject with the given ID was found!',
-    'You are successfully logged in!' => 'You are successfully logged in!',
-    'You cannot be logged in!' => 'You cannot be logged in!',
-    'You are successfully logged out!' => 'You are successfully logged out!',
+    'You have been successfully logged in!' => 'You have been successfully logged in!',
+    'You could be logged in!' => 'You could be logged in!',
+    'You have been successfully logged out!' => 'You have been successfully logged out!',
     'The comment was successfully created!' => 'The comment was successfully created!',
     'No ID was given to identify the comment!' => 'No ID was given to identify the comment!',
     'No comment with the given ID was found!' => 'No comment with the given ID was found!',
@@ -156,4 +158,6 @@ return array(
     'No ID was given to identify the mapping!' => 'No ID was given to identify the mapping!',
     'No mapping with the given ID was found!' => 'No mapping with the given ID was found!',
     'The student enrollment was successfully updated!' => 'The student enrollment was successfully updated!',
+
+    'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.' => 'If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.',
 );

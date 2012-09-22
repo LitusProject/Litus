@@ -1,0 +1,40 @@
+{% extends 'prof/base.twig' %}
+
+{% block content %}
+	<div class="page-header">
+	    <h2>{{ translate('Add Article') }}</h2>
+	</div>
+	{% autoescape false %}
+		{{ translate('If this is an article that will be published by VTK, please check <i>Internal Article</i>. If the article is a textbook, please don\'t check it. With an <i>Internal Article</i> you have the possibility to upload files.') }}
+	{% endautoescape %}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#internal').click(toggleInternal);
+			toggleInternal();
+
+			$('#subjectSearch').typeaheadRemote(
+			    {
+			        source: '{{ url("prof_subject_typeahead", {"language": language.getAbbrev()})}}',
+			    }
+			).change(function (e) {
+			    if ($(this).data('value')) {
+			        $('#subjectId').val($(this).data('value').id);
+			    } else {
+			        $('#subjectId').val('');
+			    }
+			});
+		});
+
+		function toggleInternal() {
+			if ($('#internal').is(':checked'))
+				$('#internal_form').show();
+			else
+				$('#internal_form').hide();
+		}
+	</script>
+{% endblock %}

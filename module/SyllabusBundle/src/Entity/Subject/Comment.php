@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,57 +17,58 @@ namespace SyllabusBundle\Entity\Subject;
 use CommonBundle\Entity\Users\Person,
     SyllabusBundle\Entity\Subject,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")
- * @Table(name="syllabus.subjects_comments")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")
+ * @ORM\Table(name="syllabus.subjects_comments")
  */
 class Comment
 {
     /**
      * @var integer The ID of the comment
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time the comment was created
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
      * @var string The content of the comment
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $text;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person that created the comment
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var \SyllabusBundle\Entity\Subject The subject of the comment
      *
-     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-     * @JoinColumn(name="subject", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+     * @ORM\JoinColumn(name="subject", referencedColumnName="id")
      */
     private $subject;
 
     /**
      * @var string The type of the comment
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $type;
 

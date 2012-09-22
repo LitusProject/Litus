@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -63,9 +62,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $newUser = new SupplierPerson(
                     $formData['username'],
                     array(
@@ -80,9 +80,15 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     $formData['sex'],
                     $supplier
                 );
-                $newUser->activate($this->getEntityManager(), $this->getMailTransport());
+
+                $newUser->activate(
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    false
+                );
+
                 $this->getEntityManager()->persist($newUser);
-                exit;
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -121,9 +127,10 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $user);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $user->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])

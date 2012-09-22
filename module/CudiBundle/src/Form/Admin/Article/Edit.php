@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,6 +17,8 @@ namespace CudiBundle\Form\Admin\Article;
 use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -27,27 +28,53 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
  */
 class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
-    public function __construct(EntityManager $entityManager, Article $article, $options = null)
+    /**
+     * @var \CudiBundle\Entity\Article
+     */
+    private $_article;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Article $article
+     * @param null|string|int $name Optional name for the element
+     */
+    public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($entityManager, $name);
 
-        $this->removeElement('submit');
+        $this->_article = $article;
 
-        foreach($this->getDisplayGroup('subject_form')->getElements() as $element)
-            $this->removeElement($element->getName());
-        $this->removeDisplayGroup('subject_form');
+        $this->remove('submit');
+
+        $this->remove('subject');
 
         if ($article->getType() == 'common') {
-            $this->getElement('type')->setAttrib('disabled', 'disabled')
-                ->setRequired(false);
+            $this->get('article')
+                ->remove('type');
         }
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-                ->setAttrib('class', 'article_edit')
-                ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'article_edit');
+        $this->add($field);
 
         $this->populateFromArticle($article);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+            $factory = new InputFactory();
+
+            if ($this->_article->getType() == 'common')
+                $inputFilter->remove('type');
+
+            $inputFilter->remove('subject');
+            $inputFilter->remove('subject_id');
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

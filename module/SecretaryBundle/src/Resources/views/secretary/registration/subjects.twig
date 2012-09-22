@@ -1,0 +1,73 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success fade" id="subjects_saved_success">
+        <div class="content">
+            {{ translate('Your subjects were successfully saved!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="subjects_saved_error">
+        <div class="content">
+            {{ translate('An error occurred while saving your subjects!') }}
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ translate('Registration') }}</h1>
+    </div>
+
+    {% include 'secretary/registration/partials/navigation.twig' %}
+
+    <div class="row page" id="studies">
+        <div class="span12">
+            <h2>
+                {{ translate('Choose your subjects:') }}
+                <div class="pull-right">
+                    <a href="{{ url('secretary_registration', {'action': 'complete'}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+                </div>
+            </h2>
+            {% for mapping in mappings %}
+                <h3>{{ mapping.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
+                {% for subject in mapping.subjects %}
+                    <label class="checkbox">
+                        <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.getSubject().getId() in enrollments %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
+                    </label>
+                {% endfor %}
+            {% endfor %}
+            <div class="form-actions" style="text-align: center;">
+                <a href="{{ url('secretary_registration', {'action': 'complete'}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.subject_enroll').change(function () {
+                saveChanges();
+            });
+        });
+
+        function saveChanges() {
+            var subjects = [];
+            $('.subject_enroll:checked').each(function () {
+                subjects.push($(this).data('id'));
+            });
+
+            $.post('{{ url('secretary_registration', {"action": "saveSubjects"})}}', {"subjects": subjects}, function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').removeClass('in');
+                    $('#subjects_saved_success').addClass('in');
+                } else {
+                    errorSave();
+                }
+            }, 'json').error(errorSave);
+        }
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#subjects_saved_error').addClass('in');
+        }
+    </script>
+{% endblock %}

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -32,28 +31,31 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $this->getLocator()->get('Zend\View\Renderer\PhpRenderer')
+        $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $result->menu = $this->_buildMenu();
 
         $loginForm = new LoginForm(
             $this->url()->fromRoute(
-                'index',
+                'auth',
                 array(
                     'action' => 'login'
                 )
             )
         );
 
-        $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->loginForm = $loginForm;
         $result->shibbolethUrl = $this->_getShibbolethUrl();
+
+        $result->banners = $this->getEntityManager()
+            ->getRepository('BannerBundle\Entity\Nodes\Banner')
+            ->findAllActive();
 
         $e->setResult($result);
 
@@ -100,7 +102,13 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Nodes\Page')
-                ->findByCategory($category);
+                ->findBy(
+                    array(
+                        'category' => $category,
+                        'parent' => null,
+                        'endTime' => null
+                    )
+                );
 
             foreach ($pages as $page) {
                 $menu[$i]['items'][] = array(

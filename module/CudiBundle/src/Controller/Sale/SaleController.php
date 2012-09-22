@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -33,6 +32,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $enableCollectScanning = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
         $payDesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
             ->findAll();
@@ -42,6 +45,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'socketUrl' => $this->getSocketUrl(),
                 'barcodePrefix' => $barcodePrefix,
                 'payDesks' => $payDesks,
+                'enableCollectScanning' => $enableCollectScanning,
             )
         );
     }
@@ -51,7 +55,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         if (!($queueItem = $this->_getQueueItem()))
             return new ViewModel();
 
-        $queueItem->setComment($this->getRequest()->post()->get('comment'));
+
+        $formData = $this->getRequest()->getPost();
+        $queueItem->setComment($formData['comment']);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -70,9 +76,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         $form = new ReturnSaleForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\Person')
                     ->findOneById($formData['person_id']);

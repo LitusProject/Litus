@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -106,9 +105,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if($form->isValid($formData)) {
+            if($form->isValid()) {
                 $booking = new Booking(
                     $this->getEntityManager(),
                     $this->getEntityManager()
@@ -122,7 +122,35 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->getEntityManager()->persist($booking);
-                //$this->getEntityManager()->flush();
+
+                $enableAssignment = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_assignment');
+
+                if ($enableAssignment == '1') {
+                    $currentPeriod = $this->getActiveStockPeriod();
+
+                    $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                    if ($available > 0) {
+                        if ($available >= $booking->getNumber()) {
+                            $booking->setStatus('assigned');
+                        } else {
+                            $new = new Booking(
+                                $this->getEntityManager(),
+                                $booking->getPerson(),
+                                $booking->getArticle(),
+                                'booked',
+                                $booking->getNumber() - $available
+                            );
+                            
+                            $this->getEntityManager()->persist($new);
+                            $booking->setNumber($available)
+                                ->setStatus('assigned');
+                        }
+                    }
+                }
+
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -185,7 +213,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
-        $mailForm->setAction($this->url()->fromRoute('admin_cudi_mail'));
+        $mailForm->setAttribute('action', $this->url()->fromRoute('admin_cudi_mail'));
 
         return new ViewModel(
             array(
@@ -229,11 +257,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
         if ($available <= 0) {
-            return new ViewModel(
-                array(
-                    'result' => (object) array("status" => "error"),
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'The booking could not be assigned! Not enough articles in stock.'
                 )
             );
+
+            $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+            return new ViewModel();
         }
 
         if ($available < $booking->getNumber()) {
@@ -244,13 +278,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 'booked',
                 $booking->getNumber() - $available
             );
-
+            $this->getEntityManager()->persist($new);
             $booking->setNumber($available);
         }
 
         $booking->setStatus('assigned');
 
-        BookingMail::sendMail($this->getMailTransport(), array($booking), $booking->getPerson());
+        BookingMail::sendMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
 
         $this->getEntityManager()->flush();
 

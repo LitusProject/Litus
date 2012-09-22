@@ -9,7 +9,7 @@
         closeSale: function () {},
         isSelling: function () {},
     };
-    
+
     var methods = {
         gotBarcode: function (value) {
             _gotBarcode($(this), value);
@@ -17,20 +17,20 @@
         },
     	init: function (options) {
     	    var settings = $.extend(defaults, options);
-    	    
+
     	    $(this).data('showQueueSettings', settings);
-    	    
+
     	    _init($(this));
-    	    
+
     	    return this;
         },
         setPayDesk: function (payDesk) {
             _setPayDesk($(this), payDesk);
-            
+
             return this;
         },
     }
-    
+
     $.fn.showQueue = function (method) {
     	if (methods[method]) {
     		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -40,7 +40,7 @@
     		$.error('Method ' +  method + ' does not exist on $.showQueue');
     	}
     };
-    
+
     function _addActions ($this) {
     	$this.find('.startCollecting:not(.disabled)').unbind('click').click(function () {
     		_sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
@@ -64,10 +64,11 @@
     		_sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
     	});
     }
-    
+
     function _gotBarcode ($this, value) {
         var options = $this.data('showQueueSettings');
-             
+        value = value - options.barcodePrefix;
+        
         $this.find('tr').each(function () {
             if ($(this).data('info').id == value) {
                 switch ($(this).data('info').status) {
@@ -81,7 +82,7 @@
             }
         });
     }
-    
+
     function _init ($this) {
         var options = $this.data('showQueueSettings');
         $.webSocket(
@@ -104,7 +105,9 @@
         				_addActions($this);
         			} else if(data.sale) {
         				options.openSale('showQueue', data);
-        			}
+        			} else if(data.collecting && options.collectScanning) {
+                        options.openCollecting('showQueue', data);
+                    }
         		},
         		error: function (e) {
         			options.errorDialog.addClass('in');
@@ -114,17 +117,16 @@
         	}
         );
     }
-    
+
     function _sendToSocket (text) {
     	$.webSocket('send', {name: 'showQueue', text: text});
     }
-    
+
     function _setPayDesk ($this, payDesk) {
-        console.log('setpaydesk');
         _sendToSocket('action: setPayDesk ' + payDesk);
         $this.data('payDesk', payDesk);
     }
-    
+
     function _showQueueItem ($this, item) {
         var options = $this.data('showQueueSettings');
 
@@ -138,7 +140,7 @@
 			$('<td>', {'class': 'status'}).html(options.statusTranslate(item.status)),
 			actions = $('<td>', {'class': 'actions'})
 		).data('info', item);
-		
+
 		actions.data('servingQueueId', item.id);
 
 		switch (item.status) {
@@ -180,10 +182,10 @@
 		}
 		if (item.locked)
 			row.find('button').addClass('disabled');
-			
+
 		if (options.isSelling())
 		    actions.find('.startSelling').hide();
-		
+
 		$this.append(row);
 	}
 }) (jQuery);

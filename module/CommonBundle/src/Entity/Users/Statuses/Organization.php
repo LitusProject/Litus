@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,13 +15,14 @@
 namespace CommonBundle\Entity\Users\Statuses;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\Users\Person;
+    CommonBundle\Entity\Users\Person,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the different types of memberships the organization has.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
- * @Table(name="users.organization_statuses")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Statuses\Organization")
+ * @ORM\Table(name="users.organization_statuses")
  */
 class Organization
 {
@@ -41,34 +41,34 @@ class Organization
     /**
      * @var int The ID of this union status
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person this union status describes
      *
-     * @ManyToOne(
-     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="unionStatuses"
+     * @ORM\ManyToOne(
+     *         targetEntity="CommonBundle\Entity\Users\Person", inversedBy="organizationStatuses"
      * )
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The actual status value
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $status;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear The year of the status
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @JoinColumn(name="academic_year", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
     private $academicYear;
 
@@ -80,7 +80,7 @@ class Organization
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
     {
-        if(!self::isValidPerson($person))
+        if(!self::isValidPerson($person, $academicYear))
             throw new \InvalidArgumentException('Invalid person');
 
         $this->person = $person;
@@ -112,9 +112,9 @@ class Organization
      * @param \CommonBundle\Entity\Users\Person $person The person to check
      * @return bool
      */
-    public static function isValidPerson(Person $person)
+    public static function isValidPerson(Person $person, AcademicYear $academicYear)
     {
-        return ($person != null) && $person->canHaveUnionStatus();
+        return ($person != null) && $person->canHaveOrganizationStatus($academicYear);
     }
 
     /**
@@ -146,5 +146,13 @@ class Organization
     public static function isValidStatus($status)
     {
         return array_key_exists($status, self::$possibleStatuses);
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 }

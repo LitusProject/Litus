@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -57,10 +56,11 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
             if ($form->isValid($formData)) {
-                $fallbackLanguage = \Zend\Registry::get('Litus_Localization_FallbackLanguage');
+                $fallbackLanguage = \Locale::getDefault();
 
                 $category = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Category')
@@ -77,7 +77,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 $page = new Page(
                     $this->getAuthentication()->getPersonObject(),
-                    $formData['title_' . $fallbackLanguage->getAbbrev()],
+                    $formData['title_' . $fallbackLanguage],
                     $category,
                     $editRoles
                 );
@@ -147,9 +147,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = new EditForm($this->getEntityManager(), $page);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $page->close();
 
                 $category = $this->getEntityManager()
@@ -266,7 +267,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
 
             if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
                     $_POST['type'] !== 'file') {
@@ -306,7 +307,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadProgressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
 
         return new ViewModel(
             array(

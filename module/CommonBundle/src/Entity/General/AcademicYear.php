@@ -3,48 +3,48 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Entity\General;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents an academic year entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\AcademicYear")
- * @Table(name="general.academic_years")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\AcademicYear")
+ * @ORM\Table(name="general.academic_years")
  */
 class AcademicYear
 {
     /**
      * @var integer The ID of the address
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The start date of this academic year
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $start;
 
     /**
      * @var \DateTime The end date of this academic year
      *
-     * @Column(name="university_start", type="datetime")
+     * @ORM\Column(name="university_start", type="datetime")
      */
     private $universityStart;
 

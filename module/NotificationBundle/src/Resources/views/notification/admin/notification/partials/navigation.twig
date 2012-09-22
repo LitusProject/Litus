@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="notification">Notification</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('admin_notification', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_notification", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('admin_notification', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_notification", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

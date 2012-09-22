@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,7 +16,8 @@ namespace CalendarBundle\Controller;
 
 use DateInterval,
     DateTime,
-    Zend\Date\Date,
+    IntlDateFormatter,
+    Markdown_Parser,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -30,25 +30,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function overviewAction()
     {
-        $events = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Nodes\Event')
-            ->findAllActive();
-
-        $calendarItems = array();
-        foreach($events as $event) {
-            $date = $event->getStartDate()->format('d-M');
-            if (!isset($calendarItems[$date])) {
-                $calendarItems[$date] = (object) array(
-                    'date' => $event->getStartDate(),
-                    'events' => array()
-                );
-            }
-            $calendarItems[$date]->events[] = $event;
-        }
-
         return new ViewModel(
             array(
-                'calendarItems' => $calendarItems,
                 'date' => new DateTime(),
             )
         );
@@ -56,8 +39,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->_getEvent()))
-            return $this->notFoundAction();
+        if (!($event = $this->_getEvent())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         return new ViewModel(
             array(
@@ -68,8 +53,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster()))
-            return $this->notFoundAction();
+        if (!($event = $this->_getEventByPoster())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -97,8 +84,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $date = $this->getParam('id');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
-        if (!$first)
-            return $this->notFoundAction();
+        if (!$first) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
 
         $last = clone $first;
         $last->add(new DateInterval('P1M'));
@@ -107,22 +96,39 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllBetween($first, $last);
 
-        $parser = new \MarkdownExtra_Parser();
+        $parser = new Markdown_Parser();
+
+        $dayFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'd MMM'
+        );
+
+        $hourFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'h:mm'
+        );
 
         $calendarItems = array();
         foreach($events as $event) {
             $date = $event->getStartDate()->format('d-M');
-            $startDate = new Date($event->getStartDate()->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'date' => $startDate->toString('d MMM'),
+                    'date' => $dayFormatter->format($event->getStartDate()),
                     'events' => array()
                 );
             }
             $calendarItems[$date]->events[] = (object) array(
                 'id' => $event->getId(),
                 'title' => $event->getTitle($this->getLanguage()),
-                'startDate' => $startDate->toString('h:mm'),
+                'startDate' => $hourFormatter->format($event->getStartDate()),
                 'content' => $parser->transform($event->getContent($this->getLanguage())),
                 'url' => $this->url()->fromRoute(
                     'calendar',
@@ -134,12 +140,19 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             );
         }
 
-        $first = new Date($first->format('Y/m/d H:i:s'), 'y/M/d H:m:s');
+        $formatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'MMMM'
+        );
 
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    'month' => ucfirst($first->toString('MMMM')),
+                    'month' => ucfirst($formatter->format($first)),
                     'days' => $calendarItems,
                 )
             )

@@ -3,60 +3,60 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Entity\Sales\Discounts;
 
-use CudiBundle\Entity\Sales\Article as Article;
+use CudiBundle\Entity\Sales\Article as Article,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Template")
- * @Table(name="cudi.sales_discounts_templates")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sales\Discounts\Template")
+ * @ORM\Table(name="cudi.sales_discounts_templates")
  */
 class Template
 {
     /**
      * @var integer The ID of the template
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The name of the discount template
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var integer The value of the discount
      *
-     * @Column(type="bigint")
+     * @ORM\Column(type="bigint")
      */
     private $value;
 
     /**
      * @var string The method of this discount (percentage, fixed, override)
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $method;
 
     /**
      * @var string The type of discount (member, acco)
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $type;
 

@@ -1,0 +1,88 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/company/partials/navigation.twig' %}
+
+	<div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+
+    <aside>
+        {% if hasAccess('admin_company', 'logo') %}
+            <div class="sidebox">
+                <div class="title">Edit Logo</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to edit the logo of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit Logo</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_event', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Events</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the events of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_internship', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Internships</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the internships of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_internship', {"action": "manage", "id": company.getId()}) }}">&rarr; Internships</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('admin_company_vacancy', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Vacancies</div>
+               	<div class="content">
+                	<p>
+                    	<i>Please hit the link below to view the vacancy of this company!</i>
+                    </p>
+                    <p>
+                       	<a href="{{ url('admin_company_vacancy', {"action": "manage", "id": company.getId()}) }}">&rarr; Vacancies</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+	    $(document).ready(function () {
+	        $('textarea#history').gollum({
+	            toolbar: {
+					"bold": ["bold", "Bold", "bold"],
+					"italic": ["italic", "Italic", "italic"],
+                    "divider": "-",
+                    "link": ["link", "Link", "link"],
+                    "divider": "-",
+                    "ul": ["ul", "Unordered List", "u-list"],
+                    "ol": ["ol", "Ordered List", "o-list"],
+                    "blockquote": ["blockquote", "Blockquote", "quotemark"],
+                    "hr": ["hr", "Horizontal Rule", "horizontal-rule"],
+                    "divider": "-",
+                    "help": ["help", "Help", "help"],
+                },
+                width: '500px',
+	        });
+	    });
+    </script>
+{% endblock %}

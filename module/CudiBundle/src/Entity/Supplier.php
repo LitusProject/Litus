@@ -3,61 +3,61 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Address,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Supplier")
- * @Table(name="cudi.suppliers")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Supplier")
+ * @ORM\Table(name="cudi.suppliers")
  */
 class Supplier
 {
     /**
      * @var integer The ID of the supplier
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The name of the supplier
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The phone number of the supplier
      *
-     * @Column(type="string", name="phone_number", nullable=true)
+     * @ORM\Column(type="string", name="phone_number", nullable=true)
      */
     private $phoneNumber;
 
     /**
      * @var \CommonBundle\Entity\General\Address The address of the supplier
      *
-     * @OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
-     * @JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
 
     /**
      * @var string The vat number of the supplier
      *
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $vatNumber;
 

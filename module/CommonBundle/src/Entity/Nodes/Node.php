@@ -3,18 +3,23 @@
 namespace CommonBundle\Entity\Nodes;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Nodes\Node")
- * @Table(name="nodes.nodes")
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="inheritance_type", type="string")
- * @DiscriminatorMap({
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Nodes\Node")
+ * @ORM\Table(name="nodes.nodes")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "banner"="BannerBundle\Entity\Nodes\Banner",
+ *      "form"="FormBundle\Entity\Nodes\Form",
+ *      "formentry"="FormBundle\Entity\Nodes\Entry",
  *      "page"="PageBundle\Entity\Nodes\Page",
  *      "news"="NewsBundle\Entity\Nodes\News",
+ *      "notification"="NotificationBundle\Entity\Nodes\Notification",
  *      "event"="CalendarBundle\Entity\Nodes\Event"
  * })
  */
@@ -23,34 +28,34 @@ abstract class Node
     /**
      * @var int The ID of this node
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \DateTime The time of creation of this node
      *
-     * @Column(name="creation_time", type="datetime")
+     * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person who created this node
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="creation_person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
 
     /**
-     * @param \CommonBundle\Entity\Users\Person $person
+     * @param \CommonBundle\Entity\Users\Person $creationPerson
      */
-    public function __construct(Person $person)
+    public function __construct(Person $creationPerson)
     {
         $this->creationTime = new DateTime();
-        $this->creationPerson = $person;
+        $this->creationPerson = $creationPerson;
     }
 
     /**

@@ -1,0 +1,108 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'syllabus/admin/study/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% include 'syllabus/admin/study/partials/years.twig' %}
+
+	<div id="controller_action">
+	    <h1>Study</h1>
+
+	    <p>Title: <b>{{ study.getFullTitle() }}</b></p>
+	    <p>Phase: <b>{{ study.getPhase() }}</b></p>
+	    <p>Language: <b>{{ study.getLanguage() }}</b></p>
+	    <br />
+
+	    <div id="subject_search" style="display:none;">
+	    	<div style="padding:4px;text-align:right">
+	    		Search:
+	    		<select id="searchField">
+	    			<option value="name">Name</option>
+	    			<option value="code">Code</option>
+	    		</select>
+	    		is
+	    		<input type="text" id="searchString" size="30" />
+	    	</div>
+
+	    	<table class="full_width manage">
+	        	<tr>
+	        	    <th width="80px">Code</th>
+	        	    <th>Name</th>
+	        	    <th width="70px">Semester</th>
+	        	    <th width="60px">Credits</th>
+	        	    <th width="80px">Mandatory</th>
+	        	    <th width="70px">Students</th>
+		            <th width="70px">Actions</th>
+	        	</tr>
+	    	</table>
+	    </div>
+
+		<div id="default_page">
+			<table class="full_width manage">
+		        <tr>
+		            <th width="80px">Code</th>
+		            <th>Name</th>
+		            <th width="70px">Semester</th>
+		            <th width="60px">Credits</th>
+		            <th width="80px">Mandatory</th>
+		            <th width="70px">Students</th>
+		            <th width="70px">Actions</th>
+		        </tr>
+
+		        {% for mapping in mappings %}
+		            <tr class="item">
+		                <td>{{ mapping.getSubject().getCode() }}</td>
+		                <td>{{ mapping.getSubject().getName() }}</td>
+		                <td>{{ mapping.getSubject().getSemester() }}</td>
+		                <td>{{ mapping.getSubject().getCredits() }}</td>
+		                <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
+		                <td>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</td>
+		                <td class="actions">
+		                    {% if hasAccess('admin_subject', 'subject') %}
+		                        <a href="{{ url('admin_subject', {"action": "subject", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+		                    {% endif %}
+		                </td>
+		            </tr>
+		        {% endfor %}
+		    </table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+		    {% if hasAccess('admin_subject', 'search') %}
+			$.searchDatabase({
+				defaultPage: $('#default_page'),
+				searchDiv: $('#subject_search'),
+				searchString: $('#searchString'),
+				searchField: $('#searchField'),
+				url: '{{ url('admin_subject', {'action': 'search', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
+				display: function (data) {
+					$('#subject_search table').find('tr.item').remove();
+					$(data).each(function () {
+						$('#subject_search table').append(row = $('<tr>', {class: 'item'}));
+						row.append('<td>' + this.code + '</td>')
+							.append('<td>' + this.name + '</td>')
+							.append('<td>' + this.semester + '</td>')
+							.append('<td>' + this.credits + '</td>')
+							.append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
+							.append('<td>' + this.credits + '</td>')
+							.append(actions = $('<td>', {'class': 'actions'}));
+						{% if hasAccess('admin_subject', 'subject') %}
+						    actions.append('<a href="{{ url('admin_subject', {"action": "subject"}) }}/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+						{% endif %}
+					});
+					$('#subject_search table').change();
+				},
+				clear: function () {
+					$('#subject_search table').find('tr.item').remove();
+				}
+			});
+			{% endif %}
+		});
+	</script>
+{% endblock %}

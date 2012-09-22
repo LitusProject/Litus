@@ -1,0 +1,16 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+    {% if authenticatedPerson is not null %}
+	    <h2>{{ formSpecification.getTitle(language) }}</h2>
+
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -33,7 +32,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $paginator = $this->paginator()->createFromEntity(
             'PageBundle\Entity\Category',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'active' => true
+            )
         );
 
         return new ViewModel(
@@ -49,9 +51,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $category = new Category();
 
                 if ('' != $formData['parent']) {
@@ -116,9 +119,10 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         $form = new EditForm($this->getEntityManager(), $category);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 if ('' != $formData['parent']) {
                     $parent = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\Nodes\Page')
@@ -187,7 +191,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         if (!($category = $this->_getCategory()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($category);
+        $category->deactivate();
 
         $this->getEntityManager()->flush();
 

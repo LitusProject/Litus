@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,44 +15,45 @@
 namespace CommonBundle\Entity\Users;
 
 use CommonBundle\Entity\Users\Person,
-    DateTime;
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's barcode.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Users\Barcode")
- * @Table(name="users.barcodes")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Users\Barcode")
+ * @ORM\Table(name="users.barcodes")
  */
 class Barcode
 {
     /**
      * @var int The ID of this credential
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person associated with this barcode
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="barcodes")
-     * @JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person", inversedBy="barcodes")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var string The barcode
      *
-     * @Column(type="bigint")
+     * @ORM\Column(type="bigint")
      */
     private $barcode;
 
     /**
      * @var \DateTime The time of creation
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $time;
 

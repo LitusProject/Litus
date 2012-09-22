@@ -3,27 +3,24 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Form\Admin\Role;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Role as RoleValidator,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
-    Zend\Form\Form,
-    Zend\Form\Element\Multiselect,
-    Zend\Form\Element\Submit,
-    Zend\Form\Element\Text;
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Add Role
@@ -39,39 +36,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
-        parent::__construct($opts);
+        parent::__construct($name);
 
         $this->_entityManager = $entityManager;
 
         $field = new Text('name');
         $field->setLabel('Name')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()))
-            ->addValidator(new RoleValidator($this->_entityManager));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
-        $field = new Multiselect('parents');
+        $field = new Select('parents');
         $field->setLabel('Parents')
-            ->setMultiOptions($this->_createParentsArray())
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createParentsArray());
+        $this->add($field);
 
-        $field = new Multiselect('actions');
+        $field = new Select('actions');
         $field->setLabel('Allowed Actions')
-            ->setMultiOptions($this->_createActionsArray())
-            ->setAttrib('style', 'height: 300px;')
-            ->setDecorators(array(new FieldDecorator()));
-        $this->addElement($field);
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createActionsArray())
+            ->setAttribute('style', 'height: 300px;');
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Add')
-            ->setAttrib('class', 'groups_add')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Add')
+            ->setAttribute('class', 'group_add');
+        $this->add($field);
     }
 
     /**
@@ -87,11 +81,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $parents = array();
-        foreach ($roles as $role) {
+        foreach ($roles as $role)
             $parents[$role->getName()] = $role->getName();
-        }
 
-        ksort($parents);
+        asort($parents);
 
         return $parents;
     }
@@ -104,34 +97,54 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     private function _createActionsArray()
     {
-        $query = new QueryBuilder(
-            $this->_entityManager
-        );
-        $query->select('r')
-            ->from('CommonBundle\Entity\Acl\Resource', 'r')
-            ->where('r.parent IS NULL');
-        $resources = $query->getQuery()->useResultCache(true)->getResult();
+        $resources = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Resource')
+            ->findByParent(null);
 
         $actions = array();
         foreach ($resources as $resource) {
-            $resourceActions = $resource->getActions($this->_entityManager);
-            foreach ($resourceActions as $resourceAction) {
-                $actions[$resource->getName()][$resourceAction->getId()] = $resourceAction->getName();
-            }
-
             $resourceChildren = $resource->getChildren($this->_entityManager);
             foreach ($resourceChildren as $resourceChild) {
                 $childActions = $resourceChild->getActions($this->_entityManager);
+                $actions[$resourceChild->getName()] = array(
+                    'label' => $resourceChild->getName(),
+                    'options' => array()
+                );
                 foreach ($childActions as $childAction) {
-                    $actions[$resourceChild->getName()][$childAction->getId()] = $childAction->getName();
+                    $actions[$resourceChild->getName()]['options'][$childAction->getId()] = $childAction->getName();
                 }
 
-                asort($actions[$resourceChild->getName()]);
+                asort($actions[$resourceChild->getName()]['options']);
             }
         }
 
         ksort($actions);
 
         return $actions;
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new RoleValidator($this->_entityManager),
+                        ),
+                    )
+                )
+            );
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

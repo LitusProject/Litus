@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -122,7 +121,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'key'         => 'cudi.billing_address_name',
                     'value'       => 'VTK vzw',
-                    'description' => 'The name of the billing organisation of the cudi',
+                    'description' => 'The name of the billing organization of the cudi',
                 ),
                 array(
                     'key'         => 'cudi.reservation_expire_time',
@@ -181,24 +180,91 @@ VTK Cudi
                     'description' => 'The start date of the academic year for a prof',
                 ),
                 array(
-                    'key'         => 'cudi.price_page_black_and_white',
-                    'value'       => '10',
-                    'description' => 'The price of a black and white page',
+                    'key'         => 'cudi.purchase_prices',
+                    'value'       => serialize(
+                        array(
+                            'binding_glued'     => 81620,
+                            'binding_stapled'   => 6360,
+                            'binding_none'      => 19080,
+                            'recto_bw'          => 2862,
+                            'recto_verso_bw'    => 2862,
+                            'recto_color'       => 6360,
+                            'recto_verso_color' => 10600,
+                        )
+                    ),
+                    'description' => 'The purchase prices of an internal article ( * 100 000 )',
                 ),
                 array(
-                    'key'         => 'cudi.price_page_color',
-                    'value'       => '15',
-                    'description' => 'The price of a colored page',
-                ),
-                array(
-                    'key'         => 'cudi.price_perforated',
-                    'value'       => '50',
-                    'description' => 'The price of a perforated article',
+                    'key'         => 'cudi.sell_prices',
+                    'value'       => serialize(
+                        array(
+                            'binding_glued'     => 83,
+                            'binding_stapled'   => 7,
+                            'binding_none'      => 20,
+                            'recto_bw'          => 2,
+                            'recto_verso_bw'    => 2,
+                            'recto_color'       => 7,
+                            'recto_verso_color' => 7,
+                        )
+                    ),
+                    'description' => 'The purchase prices of an internal article ( * 100 )',
                 ),
                 array(
                     'key'         => 'cudi.front_address_name',
                     'value'       => 'CuDi VTK vzw',
                     'description' => 'The name of the address on the front of an article',
+                ),
+                array(
+                    'key'         => 'cudi.article_barcode_prefix',
+                    'value'       => '978',
+                    'description' => 'The start for a serving queue item barcode',
+                ),
+                array(
+                    'key'         => 'cudi.enable_collect_scanning',
+                    'value'       => '1',
+                    'description' => 'Enable scanning of collected items before selling',
+                ),
+                array(
+                    'key'         => 'cudi.enable_automatic_assignment',
+                    'value'       => '1',
+                    'description' => 'Enable automatic assignment of bookings',
+                ),
+                array(
+                    'key'         => 'cudi.print_socket_address',
+                    'value'       => '127.0.0.1',
+                    'description' => 'The ip address of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.print_socket_port',
+                    'value'       => '4444',
+                    'description' => 'The port of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.printers',
+                    'value'       => serialize(
+                        array(
+                            'signin'    => 'SignInPrinter',
+                            'collect'   => 'CollectPrinter',
+                            'paydesk_1' => 'PayDesk_1Printer',
+                            'paydesk_2' => 'PayDesk_2Printer',
+                            'paydesk_3' => 'PayDesk_3Printer',
+                        )
+                    ),
+                    'description' => 'The port of the print socket',
+                ),
+                array(
+                    'key'         => 'cudi.tshirt_article',
+                    'value'       => serialize(
+                        array(
+                            'XS'  => 189,
+                            'S'   => 190,
+                            'M'   => 191,
+                            'L'   => 192,
+                            'XL'  => 193,
+                            'XXL' => 194,
+                        )
+                    ),
+                    'description' => 'The T-shirt articles',
                 ),
             )
         );
@@ -224,7 +290,7 @@ VTK Cudi
                         'delete', 'manage'
                     ),
                     'admin_article_file' => array(
-                        'delete', 'download', 'edit', 'manage', 'progress', 'upload'
+                        'delete', 'download', 'edit', 'front', 'manage', 'progress', 'upload'
                     ),
                     'admin_article_subject' => array(
                         'delete', 'manage'
@@ -239,7 +305,7 @@ VTK Cudi
                         'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
                     'admin_sales_booking' => array(
-                        'add', 'article', 'assign', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
+                        'add', 'article', 'assign', 'assignAll', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
                     ),
                     'admin_sales_discount' => array(
                         'delete', 'manage'
@@ -257,7 +323,7 @@ VTK Cudi
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
                     ),
                     'admin_stock_order' => array(
-                        'add', 'delete', 'edit', 'export', 'manage', 'place', 'pdf', 'supplier'
+                        'add', 'cancel', 'delete', 'edit', 'export', 'manage', 'place', 'pdf', 'supplier'
                     ),
                     'admin_stock_period' => array(
                         'manage', 'new', 'search', 'view'
@@ -307,6 +373,9 @@ VTK Cudi
                     'supplier_index' => array(
                         'index'
                     ),
+                    'booking' => array(
+                        'book', 'cancel', 'view',
+                    ),
                 )
             )
         );
@@ -355,6 +424,13 @@ VTK Cudi
                             'manage', 'subject', 'typeahead'
                         ),
                     )
+                ),
+                'student' => array(
+                    'actions' => array(
+                        'booking' => array(
+                            'book', 'cancel', 'view',
+                        ),
+                    ),
                 ),
             )
         );

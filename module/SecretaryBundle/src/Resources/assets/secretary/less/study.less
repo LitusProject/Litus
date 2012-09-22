@@ -1,0 +1,20 @@
+.accordion-heading {
+    &.selected {
+        background-color: #dff0d8;
+    }
+    &.childSelected {
+        background-color: #d9edf7;
+    }
+
+    .title {
+        display: inline-block;
+        max-width: 600px;
+        overflow: hidden;
+    }
+
+    a:hover {
+        .title {
+            text-decoration: underline;
+        }
+    }
+}

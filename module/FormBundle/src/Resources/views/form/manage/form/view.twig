@@ -1,0 +1,134 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+
+    <div class="flashmessage alert alert-success fade" id="entry_removed_success">
+	    <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Success') }}</div>
+    	<div class="content">
+    		<p>{{ translate('The entry was succesfully removed.') }}</p>
+    	</div>
+    </div>
+    <div class="flashmessage alert alert-error fade" id="entry_removed_error">
+	    <a class="close" data-dismiss="alert">&times;</a>
+    	<div class="title">{{ translate('Error') }}</div>
+    	<div class="content">
+    		<p>{{ translate('An error occurred while removing the entry.') }}</p>
+    	</div>
+    </div>
+
+    {% if authenticatedPerson is not null %}
+	    <h2>{{ form.getTitle(language) }}</h2>
+
+	    <table class="table">
+
+	    	<thead>
+	    		<tr>
+	    			<th width="130px">{{ translate("Submitter") }}</th>
+	    			<th width="130px">{{ translate("Submitted") }}</th>
+
+	    			{% for field in fields %}
+	    				<th>{{ field.getLabel(language) }}</th>
+    				{% endfor %}
+
+    				{% if canedit %}
+    					<th width="175px">{{ translate("Actions") }}</th>
+    				{% endif %}
+
+	    		</tr>
+			</thead>
+
+    		<tbody>
+		    {% for entry in entries %}
+		    	<tr class="item item-{{ entry.getId() }}">
+    				<td>{{ entry.getCreationPerson().getFullName() }}</td>
+    				<td>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y H:mm') }}</td>
+
+	    			{% for field in fields %}
+	    				<td class="column-{{ field.getId() }}"></td>
+    				{% endfor %}
+
+    				{% if canedit %}
+    					<td>
+							<a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-mini">{{ translate("Edit") }}</a>
+							<a href="#" class="btn btn-mini delete" data-id={{ entry.getId() }} data-name={{ entry.getCreationPerson().getFullName()}} >{{ translate("Delete") }}</a>
+    					</td>
+    				{% endif %}
+
+	    		</tr>
+		    {% endfor %}
+			</tbody>
+		</table>
+
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+
+	<div class="modal hide fade" id="removeEntry">
+    	<div class="modal-header">
+    		<a class="close" data-dismiss="modal">&times;</a>
+    		<h3>{{ translate('Delete Entry') }}</h3>
+    	</div>
+		<div class="modal-body">
+			<p>
+				{{ translate("You are about to delete the following user's entry") }}: <b class="user-name"></b>.
+				{{ translate("Please note that this operation cannot be undone!") }}
+			</p>
+			<p>
+				{{ translate("Are you sure you want to continue?") }}
+			</p>
+		</div>
+		<div class="modal-footer">
+			<button class="confirm btn btn-danger">{{ translate('Yes') }}</button>
+			<button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$('.item .delete').click(openModal);
+
+			// Very cumbersome solution to make sure the field entries are filled in the right column
+			{% for entry in entries %}
+				{% for fieldentry in entry.getFieldEntries() %}
+					$('.item-{{ entry.getId() }} .column-{{ fieldentry.getField().getId() }}').text("{{ fieldentry.getValue() }}");
+				{% endfor %}
+			{% endfor %}
+
+		});
+
+		function openModal(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+			var removeEntry = $('#removeEntry');
+			removeEntry.find('.user-name').text($(this).data('name'));
+			removeEntry.find('.confirm').unbind('click').click(function () {
+				$.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+				    if (data && 'success' == data.status) {
+		                $('.flashmessage').removeClass('in');
+						$('#entry_removed_success').addClass('in');
+						$this.parent().parent().remove();
+						removeEntry.modal('hide');
+					} else {
+					    errorRemove();
+					}
+				}, 'json').error(errorRemove);
+			});
+			removeEntry.modal();
+		}
+
+		function errorRemove() {
+		    $('.flashmessage').removeClass('in');
+			$('#entry_removed_error').addClass('in');
+		    $('#removeEntry').modal('hide');
+		}
+	</script>
+{% endblock %}

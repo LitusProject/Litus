@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -139,6 +138,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50630513.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016928.xml',
                             'http://onderwijsaanbod.kuleuven.be/opleidingen/v/e/xml/SC_51016872.xml',
+                            'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_50527959.xml',
                         )
                     ),
                     'description' => 'The url to the xml',
@@ -167,7 +167,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'delete', 'manage'
                     ),
                     'admin_update_syllabus' => array(
-                        'index'
+                        'index', 'updateNow'
                     ),
                 )
             )

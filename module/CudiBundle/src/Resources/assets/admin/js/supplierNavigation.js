@@ -9,6 +9,7 @@
                     position: 'absolute',
                     top: 0,
                     left: totalWidth,
+                    whiteSpace: 'nowrap',
                 }
             );
             totalWidth += $(this).outerWidth(true) + 3;

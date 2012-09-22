@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -46,7 +45,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->findAllByArticle($article);
 
         $form = new AddForm();
-        $form->setAction(
+        $form->setAttribute(
+            'action',
             $this->url()->fromRoute(
                 'admin_article_file',
                 array(
@@ -70,15 +70,14 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        $this->initAjax();
-
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
         $form = new AddForm();
-        $formData = $this->getRequest()->post()->toArray();
+        $formData = $this->getRequest()->getPost();
+        $form->setData($formData);
 
-        if ($form->isValid($formData)) {
+        if ($form->isValid() && isset($_FILES['file'])) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
@@ -105,6 +104,18 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->getEntityManager()->persist($file);
             $this->getEntityManager()->flush();
 
+            $mapping = $this->getEntityManager()
+                ->getRepository('Cudibundle\Entity\Files\Mapping')
+                ->findOneByArticleAndFile($article, $file);
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCESS',
+                    'The file was successfully uploaded!'
+                )
+            );
+
             return new ViewModel(
                 array(
                     'status' => 'success',
@@ -112,19 +123,25 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                         'info' => (object) array(
                             'name' => $file->getName(),
                             'description' => $file->getDescription(),
+                            'printable' => $mapping->isPrintable(),
+                            'mappingId' => $mapping->getId(),
                             'id' => $file->getId(),
                         ),
                     ),
                 )
             );
         } else {
-            $errors = $form->getErrors();
+            $errors = $form->getMessages();
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                $formErrors[$element->getId()] = array();
+                if (!isset($errors[$element->getName()]))
+                    continue;
+
+                $formErrors[$element->getAttribute('id')] = array();
+
                 foreach ($errors[$element->getName()] as $error) {
-                    $formErrors[$element->getId()][] = $element->getMessages()[$error];
+                    $formErrors[$element->getAttribute('id')][] = $error;
                 }
             }
 
@@ -147,9 +164,10 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $form = new EditForm($mapping);
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $mapping->setPrintable($formData['printable'])
                     ->getFile()->setDescription($formData['description']);
 
@@ -233,7 +251,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function progressAction()
     {
-        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->post()->get('upload_id');
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
 
         return new ViewModel(
             array(

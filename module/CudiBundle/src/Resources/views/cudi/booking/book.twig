@@ -1,0 +1,96 @@
+{% extends 'site/base.twig' %}
+
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Book Textbooks') }}</h1>
+    </div>
+
+    <div class="row page">
+        <div class="span12">
+            {% if authenticatedPerson == null %}
+				{{ translate('Please log in to book textbooks.') }}
+			{% else %}
+
+    		{% autoescape false %}
+	        {{ form().openTag(form) }}
+
+				<table class="table bookings">
+
+					<thead>
+						<tr>
+							<th>{{ translate('Title') }}</th>
+							<th>{{ translate('Authors') }}</th>
+							<th width="100px">{{ translate('Price / piece') }}</th>
+							<th width="70px">{{ translate('Mandatory') }}</th>
+							<th width="80px">#</th>
+							<th width="80px" style="text-align: center">{{ translate('Booked') }}</th>
+						</tr>
+					</thead>
+
+					<tbody>
+
+					{% for subjectArticle in subjectArticleMap %}
+						<tr class="spacer"><td colspan="6"></td></tr>
+
+						<tr class="course-title">
+							<td colspan="6">
+								{% if null == subjectArticle['subject'] %}
+									{{ translate('General') }}
+								{% else %}
+									{{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
+								{% endif %}
+						 	</td>
+					 	</tr>
+
+						{% for map in subjectArticle['articles'] %}
+
+							<tr>
+								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
+								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
+								<td>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</td>
+								<td>{{ map['mandatory'] ? 'X' : '' }}</td>
+								<td>
+									{% if map['article'].isBookable() %}
+										{% set name = 'article-' ~ map['article'].getId() %}
+										{% set element = form.get(name) %}
+										{{ formElement(element) }}
+									{% else %}
+										<span class="label label-info">{{ translate('Not Bookable') }}</span>
+									{% endif %}
+								</td>
+								<td style="text-align: center">{{ map['booked'] }}</td>
+							</tr>
+
+					        {% if element.getMessages()|length > 0  and map['article'].isBookable() %}
+					        <tr>
+					        	<td colspan="6"  style="border-top-width:0px;">
+						            <div class="help-inline pull-right">
+						                {{ formElementErrors(element) }}
+						            </div>
+					            </td>
+				            </tr>
+					        {% endif %}
+
+						{% endfor %}
+
+					{% endfor %}
+
+					</tbody>
+
+				</table>
+
+				<a class="btn pull-left" href="{{ url('booking', {'action' : 'view', "language" : language.getAbbrev()}) }}">{{ translate('Back') }}</a>
+
+            	{% if form.get('submit') %}
+            		{{ formElement(form.get('submit')) }}
+				{% endif %}
+
+			{{ form().closeTag() }}
+
+			{% endautoescape %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

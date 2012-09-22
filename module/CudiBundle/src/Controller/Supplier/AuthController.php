@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,9 +30,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         $form = new LoginForm();
 
         if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->post()->toArray();
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-            if ($form->isValid($formData)) {
+            if ($form->isValid()) {
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
@@ -43,7 +43,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'SUCCESS',
-                            'You are successfully logged in!'
+                            'You have been successfully logged in!'
                         )
                     );
                 } else {
@@ -51,7 +51,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         new FlashMessage(
                             FlashMessage::ERROR,
                             'ERROR',
-                            'You cannot be logged in!'
+                            'You could not be logged in!'
                         )
                     );
                 }
@@ -76,7 +76,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             new FlashMessage(
                 FlashMessage::SUCCESS,
                 'SUCCESS',
-                'You are successfully logged out!'
+                'You have been successfully logged out!'
             )
         );
 

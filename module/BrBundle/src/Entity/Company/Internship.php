@@ -3,56 +3,56 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company;
+use BrBundle\Entity\Company,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an internship.
  *
- * @Entity(repositoryClass="BrBundle\Repository\Company\Internship")
- * @Table(name="br.companies_internships")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Internship")
+ * @ORM\Table(name="br.companies_internships")
  */
 class Internship
 {
     /**
      * @var string The internship's ID
      *
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var string The internship's name
      *
-     * @Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
      * @var string The description of the internship
      *
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @var \BrBundle\Entity\Company The company of the internship
      *
-     * @OneToOne(targetEntity="BrBundle\Entity\Company")
-     * @JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 

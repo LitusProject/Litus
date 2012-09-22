@@ -3,23 +3,24 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Entity\General;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * This class represents a address entry that is saved in the database
  *
- * @Entity(repositoryClass="CommonBundle\Repository\General\Address")
- * @Table(name="general.addresses")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Address")
+ * @ORM\Table(name="general.addresses")
  */
 class Address
 {
@@ -295,58 +296,67 @@ class Address
     /**
      * @var integer The ID of the address
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The street
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $street;
 
     /**
      * @var string The house number
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $number;
 
     /**
+     * @var string The mailbox
+     *
+     * @ORM\Column(name="mailbox", type="string", nullable=true)
+     */
+    private $mailbox;
+
+    /**
      * @var string The postal
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $postal;
 
     /**
      * @var string The city
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $city;
 
     /**
      * @var string The country
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $country;
 
     /**
      * @param string $street
      * @param string $number
+     * @param string $mailbox
      * @param string $postal
      * @param string $city
      * @param string $country
      */
-    public function __construct($street, $number, $postal, $city, $country)
+    public function __construct($street, $number, $mailbox, $postal, $city, $country)
     {
         $this->setStreet($street)
             ->setNumber($number)
+            ->setMailbox($mailbox)
             ->setPostal($postal)
             ->setCity($city)
             ->setCountry($country);
@@ -395,6 +405,25 @@ class Address
     public function setNumber($number)
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailbox()
+    {
+        return $this->mailbox;
+    }
+
+    /**
+     * @param string $mailbox
+     *
+     * @return \CommonBundle\Entity\General\Address
+     */
+    public function setMailbox($mailbox)
+    {
+        $this->mailbox = $mailbox;
         return $this;
     }
 

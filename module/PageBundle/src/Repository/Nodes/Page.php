@@ -17,7 +17,9 @@ class Page extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Nodes\Page', 'p')
-            ->where('p.endTime is null')
+            ->where(
+                $query->expr()->isNull('p.endTime')
+            )
             ->getQuery()
             ->getResult();
 
@@ -34,5 +36,27 @@ class Page extends EntityRepository
     {
         return $this->_em->getRepository('PageBundle\Entity\Nodes\Page')
             ->findBy(array('parent' => $parent, 'endTime' => null));
+    }
+
+    public function findOneByName($name)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PageBundle\Entity\Nodes\Page', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNull('p.endTime'),
+                    $query->expr()->eq('p.name', ':name')
+                )
+            )
+            ->setParameter('name', $name)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
     }
 }

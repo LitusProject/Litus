@@ -1,0 +1,31 @@
+{% extends 'common/layout.twig' %}
+
+{% block content %}
+    <h1>{{ translate('Gallery') }}</h1>
+    
+    <h2>{{ album.getTitle(language) }}</h2>
+    
+    <div id="images">
+        {% for photo in album.getPhotos() %}
+            {% if not photo.isCensored() %}
+                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getFilePath() }}" class="imageGallery"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}{{ photo.getThumbPath() }}"></a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br class="clear" />
+{% endblock %}
+
+{% block controller_script %}
+    <script type="text/javascript">
+    	$(document).ready(function () {
+    		$('#images').imageGallery({
+    		    closeText				: '{{ translate('Close') }}',
+    		    previousText			: '{{ translate('Previous') }}',
+    		    playText				: '',
+    		    pauzeText				: '',
+    		    nextText				: '{{ translate('Next') }}',
+    			zIndex					: 20000
+    		});
+    	});
+    </script>
+{% endblock %}

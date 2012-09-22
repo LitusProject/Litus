@@ -3,24 +3,21 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Zend\Form\Element\File,
-    Zend\Form\Element\Submit,
-    Zend\Validator\File\Extension as ExtensionValidator,
-    Zend\Validator\File\Size as FileSizeValidator;
+use CommonBundle\Component\Form\Admin\Element\File,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
  * Event poster form.
@@ -30,24 +27,56 @@ use CommonBundle\Component\Form\Admin\Decorator\FileDecorator,
 class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param mixed $options The form's options
+     * @param null|string|int $name Optional name for the element
      */
-    public function __construct($options = null)
+    public function __construct($name = null)
     {
-        parent::__construct($options);
+        parent::__construct($name);
+
+        $this->setAttribute('enctype', 'multipart/form-data');
 
         $field = new File('poster');
         $field->setLabel('Poster')
-            ->setDecorators(array(new FileDecorator()))
-            ->setRequired()
-            ->addValidator(new ExtensionValidator(array('jpg', 'png')))
-            ->addValidator(new FileSizeValidator('2MB'));
-        $this->addElement($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
-        $field->setLabel('Save')
-            ->setAttrib('class', 'image_edit')
-            ->setDecorators(array(new ButtonDecorator()));
-        $this->addElement($field);
+        $field->setValue('Save')
+            ->setAttribute('class', 'image_edit');
+        $this->add($field);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'poster',
+                        'required' => false,
+                        'validators' => array(
+                            array(
+                                'name' => 'fileextension',
+                                'options' => array(
+                                    'extension' => 'jpg,png',
+                                ),
+                            ),
+                            array(
+                                'name' => 'filefilessize',
+                                'options' => array(
+                                    'extension' => '2MB',
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

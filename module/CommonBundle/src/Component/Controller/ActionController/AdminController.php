@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,9 +36,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      * @param \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
-    public function execute(MvcEvent $e)
+    public function onDispatch(MvcEvent $e)
     {
-        $result = parent::execute($e);
+        $result = parent::onDispatch($e);
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -77,14 +76,14 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $language = new Language(
                 'en', 'English'
             );
+            $this->getEntityManager()->persist($language);
+            $this->getEntityManager()->flush();
         }
 
-        $this->getLocator()->get('translator')->setLocale(
-            $language->getAbbrev()
-        );
+        $this->getTranslator()->setCache($this->getCache());
+        $this->getTranslator()->setLocale($language->getAbbrev());
 
-        \Zend\Registry::set('Zend_Locale', $language->getAbbrev());
-        \Zend\Registry::set('Zend_Translator', $this->getLocator()->get('translator'));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($language);

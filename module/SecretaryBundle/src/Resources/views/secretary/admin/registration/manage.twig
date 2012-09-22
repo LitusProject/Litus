@@ -1,0 +1,68 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'secretary/admin/registration/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        <div id="registration_search">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="university_identification">University Identification</option>
+                    <option value="name">Name</option>
+                    <option value="barcode">Barcode</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th width="200px">University Identification</th>
+                    <th>Name</th>
+                    <th width="120px">Date</th>
+                    <th width="120px">Payed</th>
+                    <th width="120px">Barcode</th>
+                    <th width="120px">Action</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#searchString').focus();
+            {% if hasAccess('admin_secretary_registration', 'search') %}
+            $.searchDatabase({
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                url: '{{ url('admin_secretary_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#registration_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#registration_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.universityIdentification + '</td>')
+                            .append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.date + '</td>')
+                            .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
+                            .append('<td>' + this.barcode + '</td>')
+                            .append(actions = $('<td>', {'class': 'actions'}));
+
+                        {% if hasAccess('admin_secretary_registration', 'barcode') %}
+                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "barcode"}) }}/' + this.id +'" class="edit">Barcode</a>');
+                        {% endif %}
+                    });
+                    $('#registration_search table').change();
+                },
+                clear: function () {
+                    $('#registration_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

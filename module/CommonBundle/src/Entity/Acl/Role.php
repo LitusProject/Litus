@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,39 +16,40 @@ namespace CommonBundle\Entity\Acl;
 
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\Acl\Action,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Represents a group of users and is capable of determining which rights those users have.
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Acl\Role")
- * @Table(name="acl.roles")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Acl\Role")
+ * @ORM\Table(name="acl.roles")
  */
 class Role
 {
     /**
      * @var string The name of the role
      *
-     * @Id
-     * @Column(type="string")
+     * @ORM\Id
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var boolean Whether or not this is a system role
      *
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $system;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The role's parents
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
      *      name="acl.roles_inheritance_map",
-     *      joinColumns={@JoinColumn(name="child", referencedColumnName="name")},
-     *      inverseJoinColumns={@JoinColumn(name="parent", referencedColumnName="name")}
+     *      joinColumns={@ORM\JoinColumn(name="child", referencedColumnName="name")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="parent", referencedColumnName="name")}
      * )
      */
     private $parents;
@@ -57,11 +57,11 @@ class Role
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The role's actions
      *
-     * @ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
-     * @JoinTable(
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
+     * @ORM\JoinTable(
      *      name="acl.roles_actions_map",
-     *      joinColumns={@JoinColumn(name="role", referencedColumnName="name")},
-     *      inverseJoinColumns={@JoinColumn(name="action", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="action", referencedColumnName="id")}
      * )
      */
     private $actions;
@@ -104,7 +104,6 @@ class Role
     public function setParents(array $parents)
     {
         $this->parents = new ArrayCollection($parents);
-
         return $this;
     }
 
@@ -123,7 +122,6 @@ class Role
     public function setActions(array $actions)
     {
         $this->actions = new ArrayCollection($actions);
-
         return $this;
     }
 

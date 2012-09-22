@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,21 +15,22 @@
 namespace CudiBundle\Entity\Users\People;
 
 use CommonBundle\Entity\Users\Credential,
-    CudiBundle\Entity\Supplier as SupplierEntity;
+    CudiBundle\Entity\Supplier as SupplierEntity,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an supplier person.
  *
- * @Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
- * @Table(name="users.people_suppliers")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Users\People\Supplier")
+ * @ORM\Table(name="users.people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\Users\Person
 {
     /**
      * @var \CudiBundle\Entity\Supplier The supplier associated with this person
      *
-     * @ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
-     * @JoinColumn(name="supplier", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
      */
     private $supplier;
 

@@ -3,61 +3,69 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SyllabusBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="SyllabusBundle\Repository\Study")
- * @Table(name="syllabus.studies")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
+ * @ORM\Table(name="syllabus.studies")
  */
 class Study
 {
     /**
      * @var integer The ID of the study
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The title of the study
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var integer The phase number of the study
      *
-     * @Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private $phase;
 
     /**
      * @var string The language of the study
      *
-     * @Column(type="string", length=2)
+     * @ORM\Column(type="string", length=2)
      */
     private $language;
 
     /**
      * @var \SyllabusBundle\Entity\Study The parent study of the study
      *
-     * @ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @JoinColumn(name="parent", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study", inversedBy="children")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @var \SyllabusBundle\Entity\Study The parent study of the study
+     *
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Study", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @param string $title
@@ -137,5 +145,13 @@ class Study
         if ($this->parent)
             return array_merge(array($this->parent), $this->parent->getParents());
         return array();
+    }
+
+    /**
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

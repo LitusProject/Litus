@@ -3,17 +3,18 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Entity\Acl;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class that represents an action that can be executed on a certain resource.
@@ -21,10 +22,10 @@ namespace CommonBundle\Entity\Acl;
  * Examples:
  * DELETE a forum post, COOK a contact form, ...
  *
- * @Entity(repositoryClass="CommonBundle\Repository\Acl\Action")
- * @Table(
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\Acl\Action")
+ * @ORM\Table(
  *      name="acl.actions"),
- *      uniqueConstraints={@UniqueConstraint(name="action_unique", columns={"name", "resource"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="action_unique", columns={"name", "resource"})}
  * )
  */
 class Action
@@ -32,24 +33,24 @@ class Action
     /**
      * @var int The ID of this action
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string $name The name of the action
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var \CommonBundle\Entity\Acl\Resource The name of the resource
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Acl\Resource")
-     * @JoinColumn(name="resource", referencedColumnName="name")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Acl\Resource")
+     * @ORM\JoinColumn(name="resource", referencedColumnName="name")
      */
     private $resource;
 

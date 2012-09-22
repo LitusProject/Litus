@@ -3,6 +3,7 @@
 namespace CudiBundle\Repository\Sales;
 
 use CommonBundle\Entity\Users\Person,
+    Exception,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sales\Article as ArticleEntity,
     CudiBundle\Entity\Sales\Booking as BookingEntity,
@@ -10,7 +11,7 @@ use CommonBundle\Entity\Users\Person,
     DateTime,
     Doctrine\ORM\EntityRepository,
     Doctrine\ORM\Query\Expr\Join,
-    Zend\Mail\Transport;
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -22,7 +23,7 @@ class Booking extends EntityRepository
 {
     public function findAllActiveByPeriod(Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -49,7 +50,7 @@ class Booking extends EntityRepository
 
     public function findAllByPersonAndPeriod(Person $person, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -74,7 +75,7 @@ class Booking extends EntityRepository
 
     public function findAllByArticleAndPeriod(ArticleEntity $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -99,7 +100,7 @@ class Booking extends EntityRepository
 
     public function findAllInactiveByPeriod(Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -128,7 +129,7 @@ class Booking extends EntityRepository
 
     public function findAllByPersonNameAndTypeAndPeriod($person, $type, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->innerJoin('b.person', 'p', Join::WITH,
@@ -189,7 +190,7 @@ class Booking extends EntityRepository
 
     public function findAllByArticleAndTypeAndPeriod($article, $type, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->innerJoin('b.article', 'a')
@@ -236,7 +237,7 @@ class Booking extends EntityRepository
 
     public function findAllByStatusAndTypeAndPeriod($status, $type, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -284,7 +285,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -312,7 +313,7 @@ class Booking extends EntityRepository
 
     public function findAllBookedByArticleAndPeriod(ArticleEntity $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -342,7 +343,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -365,19 +366,57 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findOneAssignedByArticleAndPerson(ArticleEntity $article, Person $person)
+    {
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->eq('b.status', '\'assigned\''),
+                    $query->expr()->gt('b.bookDate', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter(':person', $person->getId())
+            ->setParameter(':article', $article->getId())
+            ->setParameter('startDate', $period->getStartDate());
+
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findAllOpenByPerson(Person $person)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        $query = $this->_em->createQueryBuilder();
+        if ($period === null)
+            throw new Exception("There is no active stock period!");
+
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where($query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->neq('b.status', '\'sold\''),
                     $query->expr()->neq('b.status', '\'expired\''),
+                    $query->expr()->neq('b.status', '\'canceled\''),
                     $query->expr()->gt('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
@@ -394,9 +433,28 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findOneById($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+        ->from('CudiBundle\Entity\Sales\Booking', 'b')
+        ->where(
+            $query->expr()->eq('b.id', ':id')
+        )
+        ->setParameter('id', $id)
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
+
     public function findOneSoldByPersonAndArticle(Person $person, ArticleEntity $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -418,11 +476,9 @@ class Booking extends EntityRepository
         return null;
     }
 
-
-
     public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(
@@ -443,7 +499,7 @@ class Booking extends EntityRepository
             return $resultSet[0];
     }
 
-    public function assignAll(Transport $mailTransport)
+    public function assignAll(TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -495,14 +551,14 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach($persons as $person)
-            BookingMail::sendMail($mailTransport, $person['bookings'], $person['person']);
+            BookingMail::sendMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
 
         return $counter;
     }
 
     public function expireBookings()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $bookings = $query->select('b')
             ->from('CudiBundle\Entity\Sales\Booking', 'b')
             ->where(

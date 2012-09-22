@@ -3,12 +3,11 @@
  * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Michiel Staessen <michiel.staessen@litus.cc>
- * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,85 +16,86 @@ namespace CudiBundle\Entity\Prof;
 
 use CommonBundle\Entity\Users\Person,
     DateTime,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="CudiBundle\Repository\Prof\Action")
- * @Table(name="cudi.prof_actions")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Prof\Action")
+ * @ORM\Table(name="cudi.prof_actions")
  */
 class Action
 {
     /**
      * @var integer The ID of this action
      *
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The entity name
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $entity;
 
     /**
      * @var integer The entity id
      *
-     * @Column(name="entity_id", type="integer")
+     * @ORM\Column(name="entity_id", type="integer")
      */
     private $entityId;
 
     /**
      * @var integer The previous entity id
      *
-     * @Column(name="previous_id", type="integer", nullable=true)
+     * @ORM\Column(name="previous_id", type="integer", nullable=true)
      */
     private $previousId;
 
     /**
      * @var string The action type
      *
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     private $action;
 
     /**
      * @var \DateTime The time this action was executed
      *
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person executed this action
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $person;
 
     /**
      * @var \CommonBundle\Entity\Users\Person The person completed this action
      *
-     * @ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
-     * @JoinColumn(name="completed_person", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Users\Person")
+     * @ORM\JoinColumn(name="completed_person", referencedColumnName="id")
      */
     private $completedPerson;
 
     /**
      * @var \DateTime The time this action was confirmed
      *
-     * @Column(name="confirm_date", type="datetime", nullable=true)
+     * @ORM\Column(name="confirm_date", type="datetime", nullable=true)
      */
     private $confirmDate;
 
     /**
      * @var \DateTime The time this action was refused
      *
-     * @Column(name="refuse_date", type="datetime", nullable=true)
+     * @ORM\Column(name="refuse_date", type="datetime", nullable=true)
      */
     private $refuseDate;
 

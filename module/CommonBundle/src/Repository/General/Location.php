@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class Location extends EntityRepository
 {
+    public function findAllActive()
+    {
+        return $this->_em->getRepository('CommonBundle\Entity\General\Location')
+            ->findBy(array('active' => true), array('name' => 'ASC'));
+    }
 }
