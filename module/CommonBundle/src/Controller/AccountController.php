@@ -208,45 +208,135 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 if (null !== $metaData) {
-                    $booking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Booking')
-                        ->findOneAssignedByArticleAndPerson(
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sales\Article')
-                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                            $academic
-                        );
+                    if ($metaData->getTshirtSize() !== null) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneAssignedByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                                $academic
+                            );
 
-                    $this->getEntityManager()->remove($booking);
+                        if ($booking !== null)
+                            $this->getEntityManager()->remove($booking);
+                    }
 
-                    $metaData->setBecomeMember($metaData->becomeMember() ? true : $formData['become_member'])
-                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
-                        ->setBakskeByMail($formData['bakske'])
-                        ->setTshirtSize($formData['tshirt_size']);
+                    $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
+
+                    if ($becomeMember) {
+                        $metaData->setBecomeMember($becomeMember)
+                            ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                            ->setBakskeByMail($formData['bakske'])
+                            ->setTshirtSize($formData['tshirt_size']);
+                    } // If not member, no metadata changes (since it's impossible to change from member to non_member)
                 } else {
-                    $metaData = new MetaData(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $formData['become_member'],
-                        $formData['irreeel'],
-                        $formData['bakske'],
-                        $formData['tshirt_size']
-                    );
+
+                    if ($formData['become_member']) {
+                        $metaData = new MetaData(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $formData['become_member'],
+                            $formData['irreeel'],
+                            $formData['bakske'],
+                            $formData['tshirt_size']
+                        );
+                    } else {
+                        $metaData = new MetaData(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $formData['become_member'],
+                            false,
+                            false,
+                            null
+                        );
+                    }
+
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                $booking = new Booking(
-                    $this->getEntityManager(),
-                    $academic,
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sales\Article')
-                        ->findOneById($tshirts[$formData['tshirt_size']]),
-                    'assigned',
-                    1,
-                    true
-                );
+                if ($metaData->becomeMember()) {
 
-                $this->getEntityManager()->persist($booking);
+                    $hasShirt = false;
+                    foreach ($tshirts as $tshirt) {
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneSoldByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($tshirt),
+                                $academic
+                            );
+
+                        if (null !== $booking) {
+                            $hasShirt = true;
+                            break;
+                        }
+                    }
+
+                    // Only make a new booking if no tshirt has been sold before
+                    if (!$hasShirt) {
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $academic,
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($tshirts[$formData['tshirt_size']]),
+                            'assigned',
+                            1,
+                            true
+                        );
+
+                        $this->getEntityManager()->persist($booking);
+                    }
+
+                    // Book the other articles that should be booked on registration
+                    $registrationArticles = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.registration_articles');
+
+                    foreach ($registrationArticles as $registrationArticle) {
+
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneSoldByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($registrationArticle),
+                                $academic
+                            );
+
+                        // Already got this article, continue
+                        if (null !== $booking)
+                            continue;
+
+                        $booking = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sales\Booking')
+                            ->findOneAssignedByArticleAndPerson(
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sales\Article')
+                                    ->findOneById($registrationArticle),
+                                $academic
+                            );
+
+                        // Already booked this article, continue
+                        if (null !== $booking)
+                            continue;
+
+                        $booking = new Booking(
+                            $this->getEntityManager(),
+                            $academic,
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sales\Article')
+                                ->findOneById($registrationArticle),
+                            'assigned',
+                            1,
+                            true
+                        );
+                        $this->getEntityManager()->persist($booking);
+                    }
+
+                }
 
                 $academic->activate(
                     $this->getEntityManager(),
