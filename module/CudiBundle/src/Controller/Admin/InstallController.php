@@ -266,6 +266,15 @@ VTK Cudi
                     ),
                     'description' => 'The T-shirt articles',
                 ),
+                array(
+                    'key'         => 'cudi.registration_articles',
+                    'value'       => serialize(
+                        array(
+                            11,
+                        )
+                    ),
+                    'description' => 'The articles assigned at registration',
+                ),
             )
         );
 
