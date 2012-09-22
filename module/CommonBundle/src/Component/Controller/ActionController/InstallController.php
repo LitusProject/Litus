@@ -112,8 +112,10 @@ abstract class InstallController extends AdminController
             }
 
             if (null === $role) {
+                $system = array_key_exists('system', $config) ? $config['system'] : false;
+
                 $role = new Role(
-                    $roleName, $config['system'], $parents
+                    $roleName, $system, $parents
                 );
 
                 $this->getEntityManager()->persist($role);

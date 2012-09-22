@@ -213,7 +213,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
                                      new Object(
                                          'street',
                                          null,
-                                         $delivery_address->getStreet() . ' ' . $delivery_address->getNumber() . ' ' . $delivery_address->getMailbox()
+                                         $delivery_address->getStreet() . ' ' . $delivery_address->getNumber() . (null === $delivery_address->getMailbox() ? '' : '/' . $delivery_address->getMailbox())
                                      ),
                                      new Object(
                                          'city',
@@ -244,7 +244,7 @@ class OrderPdf extends \CommonBundle\Component\Document\Generator\Pdf
                                      new Object(
                                          'street',
                                          null,
-                                         $billing_address->getStreet() . ' ' . $billing_address->getNumber() . ' ' . $billing_address->getMailbox()
+                                         $billing_address->getStreet() . ' ' . $billing_address->getNumber() . (null === $billing_address->getMailbox() ? '' : '/' . $billing_address->getMailbox())
                                      ),
                                      new Object(
                                          'city',
