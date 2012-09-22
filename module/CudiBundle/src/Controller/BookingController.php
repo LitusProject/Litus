@@ -150,11 +150,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
-            $articles[] = array(
-                'article' => $commonArticle,
-                'mandatory' => false,
-                'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
-            );
+
+            // Only add bookable articles
+            if ($commonArticle->isBookable()) {
+                $articles[] = array(
+                    'article' => $commonArticle,
+                    'mandatory' => false,
+                    'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
+                );
+            }
         }
 
         $result[] = array(
