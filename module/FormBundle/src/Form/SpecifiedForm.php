@@ -14,9 +14,12 @@
 
 namespace FormBundle\Form;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
+    FormBundle\Component\Exception\UnsupportedTypeException,
+    FormBundle\Entity\Fields\Checkbox as CheckboxField,
     FormBundle\Entity\Fields\String as StringField,
     FormBundle\Entity\Fields\Dropdown,
     FormBundle\Entity\Nodes\Form,
@@ -65,6 +68,10 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
                 $this->add($field);
+            } elseif ($fieldSpecification instanceof CheckboxField) {
+                $field = new Checkbox('field-' . $fieldSpecification->getId());
+                $field->setLabel($fieldSpecification->getLabel($language));
+                $this->add($field);
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
@@ -105,6 +112,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                         )
                     );
                 } elseif ($fieldSpecification instanceof Dropdown) {
+                } elseif ($fieldSpecification instanceof CheckboxField) {
                 } else {
                     throw new UnsupportedTypeException('This field type is unknown!');
                 }
