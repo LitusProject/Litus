@@ -573,8 +573,10 @@ abstract class Person
      */
     public function isMember(AcademicYearEntity $academicYear)
     {
-        if ($this->getOrganizationStatus($academicYear) == 'non_member')
-            return false;
+        if (null !== $this->getOrganizationStatus($academicYear)) {
+            if ($this->getOrganizationStatus($academicYear) == 'non_member')
+                return false;
+        }
 
         return true;
     }
@@ -587,8 +589,10 @@ abstract class Person
      */
     public function isPraesidium(AcademicYearEntity $academicYear)
     {
-        if ($this->getOrganizationStatus($academicYear)->getStatus() == 'praesidium')
-            return true;
+        if (null !== $this->getOrganizationStatus($academicYear)) {
+            if ($this->getOrganizationStatus($academicYear)->getStatus() == 'praesidium')
+                return true;
+        }
 
         return false;
     }
