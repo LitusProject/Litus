@@ -98,7 +98,7 @@
 			// Very cumbersome solution to make sure the field entries are filled in the right column
 			{% for entry in entries %}
 				{% for fieldentry in entry.getFieldEntries() %}
-					$('.item-{{ entry.getId() }} .column-{{ fieldentry.getField().getId() }}').text("{{ fieldentry.getValue() }}");
+					$('.item-{{ entry.getId() }} .column-{{ fieldentry.getField().getId() }}').text("{{ fieldentry.getValueString(language) }}");
 				{% endfor %}
 			{% endfor %}
 

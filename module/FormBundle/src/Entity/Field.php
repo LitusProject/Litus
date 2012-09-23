@@ -25,8 +25,16 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field")
- * @ORM\Table(name="forms.fields") */
-class Field
+ * @ORM\Table(name="forms.fields")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "string"="FormBundle\Entity\Fields\String",
+ *      "options"="FormBundle\Entity\Fields\OptionSelector",
+ *      "dropdown"="FormBundle\Entity\Fields\Dropdown"
+ * })
+ */
+abstract class Field
 {
 
     /**
@@ -45,13 +53,6 @@ class Field
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $form;
-
-    /**
-     * @var string The type of this field.
-     *
-     * @ORM\Column(name="type", type="string")
-     */
-    private $type;
 
     /**
      * @var int The order of this field.
@@ -75,11 +76,18 @@ class Field
     private $translations;
 
     /**
+     * @var array The possible types of a field
+     */
+    public static $POSSIBLE_TYPES = array(
+        'string' => 'String',
+        'dropdown' => 'Dropdown',
+    );
+
+    /**
      * @param string $label
      */
-    public function __construct($form, $type, $order, $required)
+    public function __construct($form, $order, $required)
     {
-        $this->type = $type;
         $this->form = $form;
         $this->order = $order;
         $this->required = $required;
@@ -115,23 +123,6 @@ class Field
      */
     public function getOrder() {
         return $this->order;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return \FormBundle\Entity\Field
-     */
-    public function setType($type) {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return $this->type;
     }
 
     /**
@@ -187,5 +178,7 @@ class Field
 
         return null;
     }
+
+    abstract public function getValueString(Language $language, $value);
 
 }

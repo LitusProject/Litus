@@ -15,11 +15,14 @@
 namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
     FormBundle\Entity\Nodes\Form,
+    FormBundle\Entity\Field,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -70,10 +73,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->setRequired($language->getAbbrev() == \Locale::getDefault());
             $pane->add($field);
 
+            $option_form = new Collection('option_form_' . $language->getAbbrev());
+            $option_form->setLabel('Options')
+                ->setAttribute('class', 'option_form hide');
+            $pane->add($option_form);
+
+            $field = new Text('options_' . $language->getAbbrev());
+            $field->setLabel('Options');
+            $option_form->add($field);
+
             $tabContent->add($pane);
         }
 
         $this->add($tabContent);
+
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setRequired()
+            ->setAttribute('options', Field::$POSSIBLE_TYPES);
+        $this->add($field);
 
         $field = new Text('order');
         $field->setLabel('Order')

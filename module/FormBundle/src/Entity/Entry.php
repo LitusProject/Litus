@@ -93,4 +93,8 @@ class Entry
         $this->value = $value;
         return $this;
     }
+
+    public function getValueString(Language $language) {
+        return $this->getField()->getValueString($language, $this->getValue());
+    }
 }

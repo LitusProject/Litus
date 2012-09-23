@@ -14,8 +14,11 @@
 
 namespace FormBundle\Form;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
+    FormBundle\Entity\Fields\String as StringField,
+    FormBundle\Entity\Fields\Dropdown,
     FormBundle\Entity\Nodes\Form,
     FormBundle\Entity\Nodes\Entry,
     Doctrine\ORM\EntityManager,
@@ -52,13 +55,18 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllByForm($form);
 
         foreach ($fields as $fieldSpecification) {
-            if ('string' == $fieldSpecification->getType()) {
+            if ($fieldSpecification instanceof StringField) {
                 $field = new Text('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setRequired($fieldSpecification->isRequired());
                 $this->add($field);
+            } elseif ($fieldSpecification instanceof Dropdown) {
+                $field = new Select('field-' . $fieldSpecification->getId());
+                $field->setLabel($fieldSpecification->getLabel($language))
+                    ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
+                $this->add($field);
             } else {
-                // Unable to handle this type
+                throw new UnsupportedTypeException('This field type is unknown!');
             }
         }
 
@@ -84,7 +92,7 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
             $factory = new InputFactory();
 
             foreach ($this->_form->getFields() as $fieldSpecification) {
-                if ('string' == $fieldSpecification->getType()) {
+                if ($fieldSpecification instanceof StringField) {
                     $inputFilter->add(
                         $factory->createInput(
                             array(
@@ -96,8 +104,9 @@ class SpecifiedForm extends \CommonBundle\Component\Form\Bootstrap\Form
                             )
                         )
                     );
+                } elseif ($fieldSpecification instanceof Dropdown) {
                 } else {
-                    // Unable to handle this type
+                    throw new UnsupportedTypeException('This field type is unknown!');
                 }
             }
 

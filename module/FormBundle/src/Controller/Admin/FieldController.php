@@ -15,7 +15,9 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Entity\Field,
+    FormBundle\Entity\Fields\String as StringField,
+    FormBundle\Entity\Fields\Dropdown,
+    FormBundle\Entity\Fields\OptionTranslation,
     FormBundle\Entity\Translation,
     FormBundle\Form\Admin\Field\Add as AddForm,
     FormBundle\Form\Admin\Field\Edit as EditForm,
@@ -26,7 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FieldController extends \CommonBundle\Component\Controller\ActionController
+class FieldController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -57,20 +59,46 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $field = new Field(
-                    $formSpecification,
-                    'string', // TODO: support more types
-                    $formData['order'],
-                    $formData['required']
-                );
-
-                $formSpecification->addField($field);
-
-                $this->getEntityManager()->persist($field);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
+
+                switch($formData['type']) {
+                    case 'string':
+                        $field = new StringField(
+                            $formSpecification,
+                            $formData['order'],
+                            $formData['required']
+                        );
+                        break;
+                    case 'dropdown':
+                        $field = new Dropdown(
+                            $formSpecification,
+                            $formData['order'],
+                            $formData['required']
+                        );
+
+                        foreach($languages as $language) {
+                            if ('' != $formData['options_' . $language->getAbbrev()]) {
+                                $translation = new OptionTranslation(
+                                    $field,
+                                    $language,
+                                    $formData['options_' . $language->getAbbrev()]
+                                );
+
+                                $this->getEntityManager()->persist($translation);
+                            }
+                        }
+
+                        break;
+                    default:
+                        throw new UnsupportedTypeException('This field type is unknown'!);
+                }
+
+                $formSpecification->addField($field);
+
+                $this->getEntityManager()->persist($field);
 
                 foreach($languages as $language) {
                     if ('' != $formData['label_' . $language->getAbbrev()]) {
