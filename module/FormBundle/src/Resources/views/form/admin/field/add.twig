@@ -29,7 +29,7 @@
         }
 
         function toggleOptions() {
-        	if ('string' == $('#type').val())
+        	if ('string' == $('#type').val() || 'checkbox' == $('#type').val())
         		$('.option_form').addClass('hide');
         	else
         		$('.option_form').removeClass('hide');

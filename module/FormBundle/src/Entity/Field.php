@@ -31,7 +31,8 @@ use CommonBundle\Entity\General\Language,
  * @ORM\DiscriminatorMap({
  *      "string"="FormBundle\Entity\Fields\String",
  *      "options"="FormBundle\Entity\Fields\OptionSelector",
- *      "dropdown"="FormBundle\Entity\Fields\Dropdown"
+ *      "dropdown"="FormBundle\Entity\Fields\Dropdown",
+ *      "checkbox"="FormBundle\Entity\Fields\Checkbox"
  * })
  */
 abstract class Field
@@ -81,6 +82,7 @@ abstract class Field
     public static $POSSIBLE_TYPES = array(
         'string' => 'String',
         'dropdown' => 'Dropdown',
+        'checkbox' => 'Checkbox',
     );
 
     /**

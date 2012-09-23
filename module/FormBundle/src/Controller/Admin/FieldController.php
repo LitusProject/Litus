@@ -15,6 +15,7 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    FormBundle\Entity\Fields\Checkbox,
     FormBundle\Entity\Fields\String as StringField,
     FormBundle\Entity\Fields\Dropdown,
     FormBundle\Entity\Fields\OptionTranslation,
@@ -91,6 +92,13 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             }
                         }
 
+                        break;
+                    case 'checkbox':
+                        $field = new Checkbox(
+                            $formSpecification,
+                            $formData['order'],
+                            $formData['required']
+                        );
                         break;
                     default:
                         throw new UnsupportedTypeException('This field type is unknown!');
