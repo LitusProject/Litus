@@ -25,6 +25,12 @@ return array(
 
     'The entry was succesfully removed.' => 'The entry was succesfully removed.',
     'An error occurred while removing the entry.' => 'An error occurred while removing the entry.',
+    'The entry was successfully edited!' => 'The entry was successfully edited!',
+    'You don\'t have access to edit the given form!' => 'You don\'t have access to edit the given form!',
+    'No ID was given to identify the form!' => 'No ID was given to identify the form!',
+    'No form with the given ID was found!' => 'No form with the given ID was found!',
+    'No ID was given to identify the entry!' => 'No ID was given to identify the entry!',
+    'No entry with the given ID was found!' => 'No entry with the given ID was found!',
 
     'Delete Entry' => 'Delete Entry',
     'You are about to delete the following user\'s entry' => 'You are about to delete the following user\'s entry',

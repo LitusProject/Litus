@@ -86,8 +86,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Nodes\Entry')
             ->findAllByForm($form);
 
-        // CHECK IF THIS USER CAN VIEW THIS  (= has a mapping)
-
         return new ViewModel(
             array(
                 'form'    => $form,
