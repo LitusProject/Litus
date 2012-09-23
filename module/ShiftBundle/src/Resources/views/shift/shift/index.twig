@@ -70,7 +70,7 @@
                     $(this).addClass('active disabled');
                 })
 
-                var count = parseInt(button.data('count'));
+                var count = parseInt(button.data('count'), 10);
 
                 $.post(
                     '{{ url('shift', {"action": "responsible"}) }}',
@@ -80,7 +80,7 @@
                             $('.flashmessage').removeClass('in');
                             $('#responsible_success').addClass('in');
 
-                            updateButton(button, parseInt(data.ratio), count);
+                            updateButton(button, parseInt(data.ratio, 10), count);
                         } else {
                             errorSave();
                         }
@@ -168,12 +168,12 @@
 
                         <span class="pull-right">
                             {% if 'search' == accordionName %}
-                                {% if shift.canHaveAsResponsible(entityManager, academicYear, authenticatedPerson) %}
+                                {% if shift.canHaveAsResponsible(entityManager, academicYear, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
                                         {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
                                     </button>
                                 {% endif %}
-                                {% if shift.canHaveAsVolunteer(entityManager, academicYear, authenticatedPerson) %}
+                                {% if shift.canHaveAsVolunteer(entityManager, academicYear, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
                                         {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
                                     </button>
@@ -230,21 +230,25 @@
                                 </div>
                             </span>
                             <span class="span4">
-                                <dl>
-                                    <dt>{{ translate('Responsibles') }}</dt>
+                                {% if 0 != shift.getNbResponsibles() %}
+                                    <dl>
+                                        <dt>{{ translate('Responsibles') }}</dt>
 
-                                    {% for responsible in shift.getResponsibles() %}
-                                        <dd>{{ responsible.getPerson().getFullName() }}</dd>
-                                    {% endfor %}
-                                </dl>
+                                        {% for responsible in shift.getResponsibles() %}
+                                            <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
 
-                                <dl>
-                                    <dt>{{ translate('Volunteers') }}</dt>
+                                {% if 0 != shift.getNbVolunteers() %}
+                                    <dl>
+                                        <dt>{{ translate('Volunteers') }}</dt>
 
-                                    {% for volunteer in shift.getVolunteers() %}
-                                        <dd>{{ volunteer.getPerson().getFullName() }}</dd>
-                                    {% endfor %}
-                                </dl>
+                                        {% for volunteer in shift.getVolunteers() %}
+                                            <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
                             </span>
                         </div>
                     </div>

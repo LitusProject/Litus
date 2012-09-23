@@ -77,7 +77,7 @@ return array(
                     'route' => '/admin/install/all',
                     'defaults' => array(
                         'controller' => 'all_install',
-                        'action'     => 'install',
+                        'action'     => 'index',
                     ),
                 ),
             ),
