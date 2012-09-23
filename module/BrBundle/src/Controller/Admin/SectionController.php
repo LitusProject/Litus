@@ -24,7 +24,7 @@ use BrBundle\Entity\Contracts\Section,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class SectionController extends \CommonBundle\Component\Controller\ActionController
+class SectionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
