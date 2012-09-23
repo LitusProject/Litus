@@ -1,17 +1,3 @@
-{% extends 'admin/base.twig' %}
-
-{% block content %}
-	{% include 'admin/partials/flashMessenger.twig' %}
-
-	{% if installerReady %}
-		<div class="flashmessage success_message full_width">
-			<div class="title">SUCCESS</div>
-			<div class="content">
-				<p>The SyllabusBundle was successfully installed.</p>
-			</div>
-		</div>
-	{% endif %}
-
-	<div id="controller_action">
-	</div>
-{% endblock %}
+{% autoescape false %}
+	{{ result|json_encode }}
+{% endautoescape %}

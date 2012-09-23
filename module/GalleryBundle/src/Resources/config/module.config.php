@@ -3,7 +3,7 @@
 return array(
     'router' => array(
         'routes' => array(
-            'install_gallery' => array(
+            'gallery_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route'    => '/admin/install/gallery',
