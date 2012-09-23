@@ -14,7 +14,8 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
+use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
     CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
     Doctrine\ORM\EntityManager,
     Shiftbundle\Entity\Shift,
@@ -36,10 +37,11 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $name);
 
-        if (!$shift->canEditDates()) {
-            $this->remove('start_date');
-            $this->remove('end_date');
-        }
+        $field = new Hidden('start_date');
+        $this->add($field);
+
+        $field = new Hidden('end_date');
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Save')

@@ -132,7 +132,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
                 }
 
-
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Users\People\Academic');
 

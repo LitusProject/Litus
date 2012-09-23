@@ -170,6 +170,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'index'
                     ),
 
+                    'all_install' => array(
+                        'index'
+                    ),
                     'api_install' => array(
                         'index'
                     ),

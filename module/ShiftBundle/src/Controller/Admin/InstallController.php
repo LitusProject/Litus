@@ -50,6 +50,28 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_unit' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_shift' => array(
+                        'add', 'delete', 'edit', 'manage'
+                    ),
+                    'shift' => array(
+                        'index', 'responsible', 'signout', 'volunteer'
+                    ),
+                ),
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'student' => array(
+                    'system' => true,
+                    'parents' => array(
+                        'guest',
+                    ),
+                    'actions' => array(
+                        'shift' => array(
+                            'index', 'responsible', 'signout', 'volunteer'
+                        ),
+                    ),
                 ),
             )
         );
