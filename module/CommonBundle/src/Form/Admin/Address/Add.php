@@ -56,7 +56,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset
 
         $field = new Text($prefix . 'address_mailbox');
         $field->setLabel('Mailbox')
-            ->setRequired()
             ->setAttribute('size', 5);
         $this->add($field);
 

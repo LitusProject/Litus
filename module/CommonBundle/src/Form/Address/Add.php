@@ -57,8 +57,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
 
         $field = new Text($prefix . 'address_mailbox');
         $field->setLabel('Mailbox')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-small')
-            ->setRequired();
+            ->setAttribute('class', $field->getAttribute('class') . ' input-small');
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal');

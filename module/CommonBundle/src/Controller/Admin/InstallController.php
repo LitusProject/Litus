@@ -122,12 +122,12 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'common.geocoding_api_url',
-                    'value'       => 'https://maps.googleapis.com/maps/api/geocode/',
+                    'value'       => 'http://maps.googleapis.com/maps/api/geocode/',
                     'description' => 'The URL to Google\'s geocoding API',
                 ),
                 array(
                     'key'         => 'common.static_maps_api_url',
-                    'value'       => 'https://maps.googleapis.com/maps/api/staticmap',
+                    'value'       => 'http://maps.googleapis.com/maps/api/staticmap',
                     'description' => 'The URL to Google\'s static maps API',
                 ),
             )
