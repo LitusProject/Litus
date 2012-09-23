@@ -93,7 +93,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                         break;
                     default:
-                        throw new UnsupportedTypeException('This field type is unknown'!);
+                        throw new UnsupportedTypeException('This field type is unknown!');
                 }
 
                 $formSpecification->addField($field);
@@ -137,79 +137,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
-                'form' => $form,
-            )
-        );
-    }
-
-    public function editAction()
-    {
-        if (!($field = $this->_getField()))
-            return new ViewModel();
-
-        $form = new EditForm($field, $this->getEntityManager());
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $field->setOrder($formData['order'])
-                    ->setRequired($formData['required']);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach($languages as $language) {
-                    if ('' != $formData['label_' . $language->getAbbrev()]) {
-                        $translation = $field->getTranslation($language, false);
-
-                        if ($translation === null) {
-                            $translation = new Translation(
-                                $field,
-                                $language,
-                                $formData['label_' . $language->getAbbrev()]
-                            );
-                        } else {
-                            $translation->setLabel($formData['label_' . $language->getAbbrev()]);
-                        }
-
-                        $this->getEntityManager()->persist($translation);
-                    } else {
-                        // Delete translation if it already exists
-                        $translation = $field->getTranslation($language, false);
-
-                        if ($translation !== null) {
-                            $this->getEntityManager()->remove($translation);
-                        }
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The field was successfully edited!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'admin_form_field',
-                    array(
-                        'action' => 'manage',
-                        'id' => $field->getForm()->getId(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
                 'form' => $form,
             )
         );
