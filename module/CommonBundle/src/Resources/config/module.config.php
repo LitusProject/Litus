@@ -71,6 +71,16 @@ return array(
                     ),
                 ),
             ),
+            'all_install' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/install/all',
+                    'defaults' => array(
+                        'controller' => 'all_install',
+                        'action'     => 'install',
+                    ),
+                ),
+            ),
             'admin_academic' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -283,6 +293,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'common_install' => 'CommonBundle\Controller\Admin\InstallController',
+            'all_install'    => 'CommonBundle\Controller\Admin\AllInstallController',
 
             'index'          => 'CommonBundle\Controller\IndexController',
             'account'        => 'CommonBundle\Controller\AccountController',

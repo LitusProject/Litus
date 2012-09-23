@@ -29,6 +29,18 @@ return array(
         ),
     ),
     'routes' => array(
+        'sport_install' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'    => '/admin/install/sport',
+                'constraints' => array(
+                ),
+                'defaults' => array(
+                    'controller' => 'sport_install',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -58,6 +70,11 @@ return array(
                     'action'     => 'manage',
                 ),
             ),
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'sport_install'  => 'SportBundle\Controller\Admin\InstallController',
         ),
     ),
 );

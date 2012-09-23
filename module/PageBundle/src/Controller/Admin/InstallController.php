@@ -73,7 +73,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         ),
                     )
                 ),
-            ),
+            )
         );
     }
 }

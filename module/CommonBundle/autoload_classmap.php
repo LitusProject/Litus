@@ -164,6 +164,7 @@ return array(
     'CommonBundle\Controller\Admin\ConfigController'                                   => __DIR__ . '/src/Controller/Admin/ConfigController.php',
     'CommonBundle\Controller\Admin\AuthController'                                     => __DIR__ . '/src/Controller/Admin/AuthController.php',
     'CommonBundle\Controller\Admin\IndexController'                                    => __DIR__ . '/src/Controller/Admin/IndexController.php',
+    'CommonBundle\Controller\Admin\AllInstallController'                               => __DIR__ . '/src/Controller/Admin/AllInstallController.php',
     'CommonBundle\Controller\AccountController'                                        => __DIR__ . '/src/Controller/AccountController.php',
     'CommonBundle\Controller\AuthController'                                           => __DIR__ . '/src/Controller/AuthController.php',
     'CommonBundle\Controller\IndexController'                                          => __DIR__ . '/src/Controller/IndexController.php',

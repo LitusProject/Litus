@@ -20,6 +20,11 @@ return array(
             '@admin_css',
             '@admin_js',
         ),
+        'all_install' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
 
         'admin_academic' => array(
             '@common_jquery',

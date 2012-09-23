@@ -1,0 +1,48 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="flashmessages" class="full_width">
+	</div>
+
+	<div id="controller_action">
+	</div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			{% for key, bundle in bundles %}
+
+							$.post('{{ url(bundle ~ '_install', {'action' : 'index'}) }}', function (data) {
+                                if (data && 'success' == data.status) {
+
+                                	successInstall('{{ bundle }}');
+
+                                } else {
+                                    {{ bundle }}error()
+                                }
+                            }, 'json').error({{ bundle }}error);
+
+			{% endfor %}
+		});
+
+		function successInstall(bundleName) {
+			$('#flashmessages').append(
+				'<div class="flashmessage success_message full_width"><div class="title">Success</div><div class="content"><p>The ' + bundleName + 'Bundle was successfully installed.</p></div></div>'
+			);
+		}
+
+		{% for key, bundle in bundles %}
+
+			function {{bundle}}error() {
+				$('#flashmessages').append(
+					'<div class="flashmessage error_message full_width"><div class="title">Error</div><div class="content"><p>The {{bundle}}Bundle failed to install.</p></div></div>'
+				);
+			}
+
+		{% endfor %}
+
+	</script>
+{% endblock %}

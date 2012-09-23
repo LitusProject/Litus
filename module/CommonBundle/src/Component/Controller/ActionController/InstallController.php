@@ -42,7 +42,7 @@ abstract class InstallController extends AdminController
 
         return new ViewModel(
             array(
-                'installerReady' => true,
+                'result' => (object) array("status" => "success"),
             )
         );
     }
