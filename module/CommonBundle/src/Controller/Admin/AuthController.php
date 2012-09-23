@@ -24,7 +24,7 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController
+class AuthController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function authenticateAction()
     {
