@@ -21,7 +21,19 @@
 
         $(document).ready(function () {
             $('#languages a:first').click();
+            $('#type').change(toggleType);
         });
+
+        function toggleType() {
+        	toggleOptions();
+        }
+
+        function toggleOptions() {
+        	if ('string' == $('#type').val())
+        		$('.option_form').addClass('hide');
+        	else
+        		$('.option_form').removeClass('hide');
+        }
 
     </script>
 {% endblock %}
