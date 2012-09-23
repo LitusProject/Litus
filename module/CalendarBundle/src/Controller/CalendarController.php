@@ -113,7 +113,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
             IntlDateFormatter::GREGORIAN,
-            'h:mm'
+            'HH:mm'
         );
 
         $calendarItems = array();
