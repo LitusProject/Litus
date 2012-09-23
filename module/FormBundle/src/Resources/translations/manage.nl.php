@@ -25,6 +25,12 @@ return array(
 
     'The entry was succesfully removed.' => 'De inschrijving werd met succes verwijderd.',
     'An error occurred while removing the entry.' => 'Er trad een fout op bij het verwijderen van de inschrijving.',
+    'The entry was successfully edited!' => 'De inschrijving werd met succes bewerkt.',
+    'You don\'t have access to edit the given form!' => 'Je hebt geen toegang tot het bewerken van dit formulier!',
+    'No ID was given to identify the form!' => 'Er werd geen formulier ID gegeven!',
+    'No form with the given ID was found!' => 'Er werd geen formulier gevonden met dit ID!',
+    'No ID was given to identify the entry!' => 'Er werd geen inschrijving ID gegeven!',
+    'No entry with the given ID was found!' => 'Er werd geen inschrijving gevonden met dit ID!',
 
     'Delete Entry' => 'Inschrijving verwijderen',
     'You are about to delete the following user\'s entry' => 'Je staat op het punt om de volgende gebruiker zijn inschrijving te verwijderen',
