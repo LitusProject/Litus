@@ -25,7 +25,7 @@ use CommonBundle\Component\Authentication\Authentication,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController
+class AuthController extends \CudiBundle\Component\Controller\ProfController
 {
     public function loginAction()
     {
