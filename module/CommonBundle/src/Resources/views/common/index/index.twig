@@ -19,7 +19,7 @@
 
 		        	<p>
 		        	    {% for event in day.events %}
-    		        		<i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'id': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{% autoescape false %}{{ markdown(event.getContent(language)) }}{% endautoescape %}">{{ dateLocalized(event.getStartDate(), 'h:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+    		        		<i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'id': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{% autoescape false %}{{ markdown(event.getContent(language)) }}{% endautoescape %}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
     		        	{% endfor %}
 		        	</p>
 		        </div>

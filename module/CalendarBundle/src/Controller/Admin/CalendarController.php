@@ -123,9 +123,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->findAll();
 
                 foreach($languages as $language) {
-                    $translation = $event->getTranslation($language);
+                    $translation = $event->getTranslation($language, false);
 
-                    if ($translation) {
+                    if (null !== $translation) {
                         $translation->setLocation($formData['location_' . $language->getAbbrev()])
                             ->setTitle($formData['title_' . $language->getAbbrev()])
                             ->setContent($formData['content_' . $language->getAbbrev()]);
