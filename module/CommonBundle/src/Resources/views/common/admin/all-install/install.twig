@@ -15,15 +15,15 @@
 		$(document).ready(function() {
 			{% for key, bundle in bundles %}
 
-							$.post('{{ url(bundle ~ '_install', {'action' : 'index'}) }}', function (data) {
-                                if (data && 'success' == data.status) {
+				$.post('{{ url(bundle ~ '_install', {'action' : 'index'}) }}', function (data) {
+                    if (data && 'success' == data.status) {
 
-                                	successInstall('{{ bundle }}');
+                    	successInstall('{{ bundle }}');
 
-                                } else {
-                                    {{ bundle }}error()
-                                }
-                            }, 'json').error({{ bundle }}error);
+                    } else {
+                        {{ bundle }}error()
+                    }
+                }, 'json').error({{ bundle }}error);
 
 			{% endfor %}
 		});
