@@ -209,6 +209,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'secretary_install' => array(
                         'index'
                     ),
+                    'shift_install' => array(
+                        'index'
+                    ),
                     'syllabus_install' => array(
                         'index'
                     ),
