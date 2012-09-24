@@ -105,12 +105,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneByName('student')
                     );
 
+                    $universityEmail = $formData['university_email'] . '@student.kuleuven.be';
+
                     $academic = new Academic(
                         $this->getParam('identification'),
                         $roles,
                         $formData['first_name'],
                         $formData['last_name'],
-                        $formData['primary_email'] ? $formData['personal_email'] : $formData['university_email'],
+                        $formData['primary_email'] ? $formData['personal_email'] : $universityEmail,
                         $formData['phone_number'],
                         $formData['sex'],
                         $this->getParam('identification')
@@ -141,7 +143,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         )
                         ->setPersonalEmail($formData['personal_email'])
-                        ->setUniversityEmail($formData['university_email'])
+                        ->setUniversityEmail($universityEmail)
                         ->setPrimaryAddress(
                             new Address(
                                 $primaryStreet,
@@ -360,15 +362,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
+            $universityEmail = $formData['university_email'] . '@student.kuleuven.be';
+
             if ($form->isValid()) {
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
-                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $formData['university_email'])
+                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
                     ->setPhoneNumber($formData['phone_number'])
                     ->setSex($formData['sex'])
                     ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
                     ->setPersonalEmail($formData['personal_email'])
-                    ->setUniversityEmail($formData['university_email']);
+                    ->setUniversityEmail($universityEmail);
 
                 if ($formData['primary_address_address_city'] != 'other') {
                     $primaryCity = $this->getEntityManager()
