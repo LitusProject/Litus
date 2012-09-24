@@ -44,7 +44,7 @@ return array(
     'Personal E-mail' => 'Persoonlijke E-mail',
     'I want to receive VTK e-mail at my personal e-mail address' => 'Ik wil VTK e-mail ontvangen op mijn persoonlijk e-mail adres',
     'Organization' => 'Organisatie',
-    'I want to become a member of the organization' => 'Ik wil lid worden van de organizatie',
+    'I want to become a member of the organization' => 'Ik wil lid worden van de organisatie (&euro;10)',
     'I have read and agree with the terms and conditions' => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
     'I want to receive my Ir.Reëel at CuDi' => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail' => 'Ik wil \'t Bakske ontvangen via e-mail',
