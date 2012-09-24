@@ -349,7 +349,7 @@ return array(
             'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
         ),
         'cacheEnabled' => true,
-        'cachePath' => './data/cache',
+        'cachePath' => __DIR__ . '/../../../../../data/cache',
         'baseUrl' => '/_assetic',
         'controllers' => $asseticConfig['controllers'],
         'routes' => $asseticConfig['routes'],
