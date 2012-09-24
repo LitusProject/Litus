@@ -3,7 +3,7 @@
 {% block content %}
 
 	{% for notification in notifications %}
-		<div class="alert alert-info">
+		<div class="alert alert-info notification">
 	        {{ markdown(notification.getContent()) }}
 	    </div>
 	{% endfor %}
