@@ -23,7 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AuthController extends \CommonBundle\Component\Controller\ActionController
+class AuthController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
     public function loginAction()
     {

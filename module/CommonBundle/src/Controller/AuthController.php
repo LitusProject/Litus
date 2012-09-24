@@ -123,7 +123,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                     if ($authentication->isAuthenticated()) {
                         $this->redirect()->toRoute(
-                            'admin_index'
+                            'index'
                         );
                     }
                 }
