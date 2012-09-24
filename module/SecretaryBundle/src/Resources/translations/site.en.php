@@ -85,5 +85,7 @@ return array(
     'XL - Female' => 'XL - Female',
 
     'This field should not contain an @' => 'This field should not contain an @',
-
+    'Other Subjects' => 'Other Subjects',
+    'Add Other Subjects' => 'Add Other Subjects',
+    'The subject was succesfully added!' => 'The subject was succesfully added!',
 );

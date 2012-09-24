@@ -131,6 +131,20 @@ return array(
                     ),
                 ),
             ),
+            'subject_typeahead' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/syllabus/subject/typeahead/:academicyear[/:string]',
+                    'constraints' => array(
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'string'       => '[%a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'syllabus_subject',
+                        'action'     => 'typeahead',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -161,6 +175,7 @@ return array(
             'admin_subject'          => 'SyllabusBundle\Controller\Admin\SubjectController',
             'admin_subject_comment'  => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
             'admin_prof'             => 'SyllabusBundle\Controller\Admin\ProfController',
+            'syllabus_subject'       => 'SyllabusBundle\Controller\SubjectController',
         ),
     ),
 );

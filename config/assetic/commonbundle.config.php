@@ -116,6 +116,7 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_modal',
             '@secretary_css',
+            '@common_typeahead_remote',
         ),
     ),
     'routes' => array(),
