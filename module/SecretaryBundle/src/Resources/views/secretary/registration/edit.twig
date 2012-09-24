@@ -59,7 +59,7 @@
                 e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
             });
-            
+
             $('#register').click(function (e) {
                 e.preventDefault();
                 console.log($('form#register_form'));
@@ -77,6 +77,9 @@
             $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
+
+            $('#university_email').wrap('<div class=\"input-append\" />');
+            $('#university_email').after('<span class=\"add-on\">@student.kuleuven.be</span>');
         });
 
         function cityChange() {

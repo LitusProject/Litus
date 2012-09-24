@@ -83,4 +83,6 @@ return array(
     'M - Female' => 'M - Vrouw',
     'L - Female' => 'L - Vrouw',
     'XL - Female' => 'XL - Vrouw',
+
+    'This field should not contain an @' => 'Dit veld mag geen @ bevatten',
 );

@@ -84,4 +84,6 @@ return array(
     'L - Female' => 'L - Female',
     'XL - Female' => 'XL - Female',
 
+    'This field should not contain an @' => 'This field should not contain an @',
+
 );
