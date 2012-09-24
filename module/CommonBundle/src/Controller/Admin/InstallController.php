@@ -203,6 +203,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'news_install' => array(
                         'index'
                     ),
+                    'notification_install' => array(
+                        'index'
+                    ),
                     'page_install' => array(
                         'index'
                     ),
