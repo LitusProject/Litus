@@ -31,7 +31,7 @@ return array(
     'Profile Image' => 'Profiel Foto',
     'Phone Number' => 'Telefoonnummer',
     'University Identification' => 'Universiteits Identificatie',
-    'Primary Address' => 'Primair Adres',
+    'Primary Address' => 'Kotadres',
     'Secondary Address' => 'Secundair Adres',
     'Street' => 'Straat',
     'Number' => 'Nummer',
