@@ -169,6 +169,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_update_syllabus' => array(
                         'index', 'updateNow'
                     ),
+                    'syllabus_subject' => array(
+                        'typeahead'
+                    ),
                 )
             )
         );

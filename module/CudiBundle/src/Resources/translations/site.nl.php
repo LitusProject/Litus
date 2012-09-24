@@ -38,4 +38,6 @@ return array(
     'Back' => 'Terug',
 
     'General' => 'Algemeen',
+
+    'The textbooks have been booked!' => 'De boeken zijn gereserveerd!',
 );

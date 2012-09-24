@@ -67,8 +67,26 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             ->setAttribute('options', $cities);
         $this->add($field);
 
+        $field = new Text($prefix . 'address_postal_other');
+        $field->setLabel('Postal Code')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text($prefix . 'address_city_other');
+        $field->setLabel('City')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text($prefix . 'address_street_other');
+        $field->setLabel('Street')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setRequired();
+        $this->add($field);
+
         foreach($streets as $id => $collection) {
-            $field = new Select($prefix . 'address_street' . $id);
+            $field = new Select($prefix . 'address_street_' . $id);
             $field->setLabel('Street')
                 ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge ' . $prefix . 'address_street')
                 ->setAttribute('options', $collection);
@@ -110,6 +128,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
             }
         }
+        $optionsCity['other'] = 'Other';
 
         if (null !== $this->_cache) {
             $this->_cache->setItem(
@@ -144,20 +163,64 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             )
         );
 
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_street',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'type' => 16,
+        /*if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_street',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 16,
+                            ),
                         ),
                     ),
-                ),
-            )
-        );
+                )
+            );
+        } else {
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_street_other',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_postal_other',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                )
+            );
+
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_city_other',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                        ),
+                    ),
+                )
+            );
+        }*/
 
         $inputs[] = $factory->createInput(
             array(
@@ -184,6 +247,14 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                array(
+                                    'max' => 5,
+                                )
+                            )
+                        )
                     ),
                 ),
             )

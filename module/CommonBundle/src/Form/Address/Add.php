@@ -105,14 +105,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_street',
                 'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'alpha',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
-                ),
             )
         );
 
@@ -141,6 +133,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                array(
+                                    'max' => 5,
+                                )
+                            )
+                        )
                     ),
                 ),
             )
@@ -165,11 +165,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_city',
                 'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'alpha',
-                    ),
-                ),
             )
         );
 

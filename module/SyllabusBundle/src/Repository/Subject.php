@@ -19,33 +19,26 @@ class Subject extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->where(
-                $query->expr()->eq('m.academicYear', ':academicYear')
-            )
-            ->setParameter('academicYear', $academicYear->getId())
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach($resultSet as $subject)
-            $ids[] = $subject->getSubject()->getId();
-
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
-            ->from('SyllabusBundle\Entity\Subject', 's')
-            ->where(
+            ->innerJoin('m.subject', 's', Join::WITH,
                 $query->expr()->andX(
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('s.name'), ':name'),
                         $query->expr()->like($query->expr()->lower('s.code'), ':name')
-                    ),
-                    $query->expr()->in('s.id', $ids)
+                    )
                 )
             )
+            ->where(
+                $query->expr()->eq('m.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear->getId())
             ->setParameter('name', strtolower(trim($name)) . '%')
             ->getQuery()
             ->getResult();
 
-        return $resultSet;
+        $subjects = array();
+        foreach($resultSet as $map)
+            $subjects[] = $map->getSubject();
+
+        return $subjects;
     }
 }

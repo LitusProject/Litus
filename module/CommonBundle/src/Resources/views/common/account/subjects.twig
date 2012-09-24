@@ -33,6 +33,18 @@
             {% endfor %}
         </div>
     </div>
+
+    <h2>{{ translate('Other Subjects') }}</h2>
+    {% for subject in otherSubjects %}
+        <label class="checkbox">
+            <input type="checkbox" class="subject_enroll" data-id="{{ subject.getId() }}" checked="checked"> {{ subject.getName() }}<small>&mdash;{{ subject.getCode() }}</small>
+        </label>
+    {% endfor %}
+
+    <h2>{{ translate('Add Other Subjects') }}</h2>
+
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 {% endblock %}
 
 {% block content_script %}
@@ -40,6 +52,18 @@
         $(document).ready(function () {
             $('.subject_enroll').change(function () {
                 saveChanges();
+            });
+
+            $('#subjectSearch').typeaheadRemote(
+                {
+                    source: '{{ url("subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#subjectId').val($(this).data('value').id);
+                } else {
+                    $('#subjectId').val('');
+                }
             });
         });
 
