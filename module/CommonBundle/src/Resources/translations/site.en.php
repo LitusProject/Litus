@@ -56,4 +56,6 @@ return array(
     'Subjects' => 'Subjects',
     'Choose Your Subjects' => 'Choose Your Subjects',
     'Your data was succesfully updated!' => 'Your data was succesfully updated!',
+
+    'Other' => 'Other',
 );
