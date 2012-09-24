@@ -256,12 +256,15 @@ VTK Cudi
                     'key'         => 'cudi.tshirt_article',
                     'value'       => serialize(
                         array(
-                            'XS'  => 189,
-                            'S'   => 190,
-                            'M'   => 191,
-                            'L'   => 192,
-                            'XL'  => 193,
-                            'XXL' => 194,
+                            'F_S'   => 232,
+                            'F_M'   => 233,
+                            'F_L'   => 234,
+                            'F_XL'  => 235,
+
+                            'M_S'   => 228,
+                            'M_M'   => 229,
+                            'M_L'   => 230,
+                            'M_XL'  => 231,
                         )
                     ),
                     'description' => 'The T-shirt articles',
