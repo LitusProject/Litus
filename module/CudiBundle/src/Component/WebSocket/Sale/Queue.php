@@ -123,6 +123,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 
+        $now = new DateTime();
+        echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $action . ' - ' . $params . ' - ' . $user->getExtraData('payDesk');
+
         switch ($action) {
             case 'addToQueue':
                 $result = $this->_addToQueue(
@@ -173,6 +176,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'setPayDesk':
                 $user->setExtraData('payDesk', trim($params));
+                echo 'set----' . $user->getExtraData('payDesk')  . PHP_EOL;
                 break;
         }
 
@@ -342,7 +346,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!is_numeric($itemId) || $enableCollectScanning !== '1')
+        if (!is_numeric($itemId))
             return;
 
         $item = $this->_entityManager
@@ -353,6 +357,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $this->_printQueueTicket($item, 'collect');
+
+        if ($enableCollectScanning !== '1')
+            return;
 
         $this->_lockedItems[$item->getId()] = $user;
 
@@ -592,7 +599,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
             $prices[] = $price / 100;
-            $totalPrice += $price / 100;
+            $totalPrice += $price;
         }
 
         $queueItem->setPayMethod($data->payMethod);
@@ -643,7 +650,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         Printer::salePrint(
             $this->_entityManager,
-            'paydesk_' . $queueItem->getPayDesk()->getName(),
+            $queueItem->getPayDesk()->getName(),
             $queueItem->getPerson()->getUniversityIdentification(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -743,7 +750,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
             $prices[] = $price / 100;
-            $totalPrice += $price / 100;
+            $totalPrice += $price;
         }
 
         if (sizeof($bookings > 0)) {

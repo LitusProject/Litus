@@ -24,8 +24,13 @@
 
     	    return this;
         },
-        setPayDesk: function (payDesk) {
+        setPayDesk: function (payDesk) {alert('set');
             _setPayDesk($(this), payDesk);
+
+            return this;
+        },
+        updatePayDesk: function () {
+            _setPayDesk($(this), $(this).data('payDesk'));
 
             return this;
         },
@@ -43,24 +48,31 @@
 
     function _addActions ($this) {
     	$this.find('.startCollecting:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.cancelCollecting:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: cancelCollecting ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.stopCollecting:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: stopCollecting ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.setHold:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: setHold ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.unsetHold:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: unsetHold ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.startSelling:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: startSelling ' + $(this).parent().data('servingQueueId'));
     	});
     	$this.find('.cancelSelling:not(.disabled)').unbind('click').click(function () {
+            $this.showQueue('updatePayDesk');
     		_sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
     	});
     }
