@@ -65,7 +65,8 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.study_enroll').click(function () {
+            $('.study_enroll').click(function (e) {
+                e.preventDefault();
                 $(this).toggleClass('active');
                 updateHeadings();
                 saveChanges();
