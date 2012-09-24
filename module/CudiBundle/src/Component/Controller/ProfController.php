@@ -80,7 +80,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getConfigValue('start_organization_year')
             );
             $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $academicYear = new AcademicYear($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
         }
