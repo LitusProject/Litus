@@ -141,6 +141,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                         'options' => array(
                             'allowWhiteSpace' => true,
                         ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                array(
+                                    'max' => 5,
+                                )
+                            )
+                        )
                     ),
                 ),
             )

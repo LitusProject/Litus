@@ -34,7 +34,7 @@
                         <strong>{{ translate('Primary Address') }}</strong><br>
                         {{ academic.getPrimaryAddress().getStreet() }} {{ academic.getPrimaryAddress().getNumber() }}
                             {% if academic.getPrimaryAddress().getMailbox() %}
-                                {{ translate('Mailbox') }} {{ academic.getPrimaryAddress().getMailbox() }}
+                                / {{ academic.getPrimaryAddress().getMailbox() }}
                             {% endif %}<br>
                         {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br>
                         {{ academic.getPrimaryAddress().getCountry() }}
@@ -45,7 +45,7 @@
                         <strong>{{ translate('Secondary Address') }}</strong><br>
                         {{ academic.getSecondaryAddress().getStreet() }} {{ academic.getSecondaryAddress().getNumber() }}
                             {% if academic.getSecondaryAddress().getMailbox() %}
-                                {{ translate('Mailbox') }} {{ academic.getSecondaryAddress().getMailbox() }}
+                                / {{ academic.getSecondaryAddress().getMailbox() }}
                             {% endif %}<br>
                         {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br>
                         {{ academic.getSecondaryAddress().getCountry() }}
