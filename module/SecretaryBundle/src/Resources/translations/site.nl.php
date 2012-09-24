@@ -74,4 +74,13 @@ return array(
     'Organization' => 'Organisatie',
     'Membership' => 'Lidmaatschap',
     'Book Textbooks' => 'Cursussen Reserveren',
+
+    'S - Male' => 'S - Man',
+    'M - Male' => 'M - Man',
+    'L - Male' => 'L - Man',
+    'XL - Male' => 'XL - Man',
+    'S - Female' => 'S - Vrouw',
+    'M - Female' => 'M - Vrouw',
+    'L - Female' => 'L - Vrouw',
+    'XL - Female' => 'XL - Vrouw',
 );
