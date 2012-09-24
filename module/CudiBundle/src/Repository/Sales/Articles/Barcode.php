@@ -39,4 +39,25 @@ class Barcode extends EntityRepository
 
         return null;
     }
+
+    public function findAllByArticle($article, AcademicYear $academicYear) {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sales\Articles\Barcode', 'b')
+            ->innerJoin('b.article', 'a', Join::WITH,
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.academicYear', ':academicYear')
+                )
+            )
+            ->where(
+                $query->expr()->eq('b.article', ':article')
+            )
+            ->setParameter('article', $article)
+            ->setParameter('academicYear', $academicYear->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

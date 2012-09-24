@@ -40,7 +40,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $article->addAdditionalBarcode(new Barcode($article, $formData['barcode']));
 
-                //$this->getEntityManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -64,7 +64,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         $barcodes = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Articles\Barcode')
-            ->findByArticle($article);
+            ->findAllByArticle($article, $this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
