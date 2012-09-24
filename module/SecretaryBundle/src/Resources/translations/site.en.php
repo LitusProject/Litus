@@ -31,7 +31,7 @@ return array(
     'Profile Image' => 'Profile Image',
     'Phone Number' => 'Phone Number',
     'University Identification' => 'University Identification',
-    'Primary Address' => 'Primary Address',
+    'Primary Address' => 'Kot Address',
     'Secondary Address' => 'Secondary Address',
     'Street' => 'Street',
     'Number' => 'Number',
