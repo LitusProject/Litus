@@ -24,7 +24,7 @@
 
     	    return this;
         },
-        setPayDesk: function (payDesk) {alert('set');
+        setPayDesk: function (payDesk) {
             _setPayDesk($(this), payDesk);
 
             return this;
