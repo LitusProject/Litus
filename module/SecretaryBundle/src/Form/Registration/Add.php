@@ -117,11 +117,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $personal->add($field);
 
         $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
-        $field->setLabel('Primary Address');
+        $field->setLabel('Kot Address');
         $this->add($field);
 
         $field = new AddressForm('secondary_address', 'secondary_address');
-        $field->setLabel('Secondary Address');
+        $field->setLabel('Home Address');
         $this->add($field);
 
         $internet = new Collection('internet');
@@ -151,7 +151,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($organization);
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization')
+        $field->setLabel('I want to become a member of the organization (&euro;10)')
             ->setValue(true);
         $organization->add($field);
 
