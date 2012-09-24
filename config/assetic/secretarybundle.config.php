@@ -38,6 +38,7 @@ return array(
             '@bootstrap_js_modal',
             '@bootstrap_js_alert',
             '@secretary_css',
+            '@common_typeahead_remote',
         ),
     ),
     'routes' => array(),
