@@ -81,11 +81,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('end_date');
-        $field->setLabel('End Date');
+        $field->setLabel('End Date')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
         $this->add($field);
 
         $field = new Submit('submit');

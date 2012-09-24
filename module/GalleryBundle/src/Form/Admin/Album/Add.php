@@ -74,6 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 		$field = new Text('date');
 		$field->setLabel('Date')
 		    ->setAttribute('class', $field->getAttribute('class') . ' input-large')
+            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
 		    ->setRequired();
 		$this->add($field);
 
