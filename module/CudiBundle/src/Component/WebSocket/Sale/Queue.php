@@ -537,10 +537,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($item))
             return;
 
-        if ('selling' == $status && isset($user))
-            $item->setPayDesk($this->_entityManager
+        if ('selling' == $status && isset($user)) {
+            $paydesk = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\PayDesk')
-                ->findOneByCode($user->getExtraData('payDesk')));
+                ->findOneByCode($user->getExtraData('payDesk'));
+
+            if ($paydesk) {
+                $item->setPayDesk($paydesk);
+            }
+        }
 
         $item->setStatus($status);
 
@@ -640,6 +645,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            $queueItem->getQueueNumber(),
             $totalPrice / 100,
             $articles,
             $prices
