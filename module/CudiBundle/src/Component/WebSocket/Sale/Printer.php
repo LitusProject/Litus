@@ -55,7 +55,7 @@ class Printer {
         if (!isset($printers[$printer]))
             return;
 
-        $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;echo $data;
+        $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,

@@ -122,7 +122,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
-echo $action . ' - ' . $user->getExtraData('payDesk') . '-' . $params . PHP_EOL;
+
+        $now = new DateTime();
+        echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $action . ' - ' . $params . ' - ' . $user->getExtraData('payDesk');
+
         switch ($action) {
             case 'addToQueue':
                 $result = $this->_addToQueue(
