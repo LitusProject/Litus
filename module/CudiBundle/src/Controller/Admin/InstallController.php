@@ -316,6 +316,9 @@ VTK Cudi
                     'admin_sales_article' => array(
                         'activate', 'add', 'delete', 'edit', 'manage', 'search', 'sellProf', 'typeahead'
                     ),
+                    'admin_sales_barcode' => array(
+                        'delete', 'manage'
+                    ),
                     'admin_sales_booking' => array(
                         'add', 'article', 'assign', 'assignAll', 'delete', 'edit', 'expire', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign'
                     ),
