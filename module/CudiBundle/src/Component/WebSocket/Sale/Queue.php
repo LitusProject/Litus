@@ -586,8 +586,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
-            $prices[] = $price;
-            $totalPrice += $price;
+            $prices[] = $price / 100;
+            $totalPrice += $price / 100;
         }
 
         $queueItem->setPayMethod($data->payMethod);
@@ -733,8 +733,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
-            $prices[] = $price;
-            $totalPrice += $price;
+            $prices[] = $price / 100;
+            $totalPrice += $price / 100;
         }
 
         if (sizeof($bookings > 0)) {
