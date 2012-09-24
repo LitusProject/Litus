@@ -342,7 +342,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!is_numeric($itemId) || $enableCollectScanning !== '1')
+        if (!is_numeric($itemId))
             return;
 
         $item = $this->_entityManager
@@ -353,6 +353,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             return;
 
         $this->_printQueueTicket($item, 'collect');
+
+        if ($enableCollectScanning !== '1')
+            return;
 
         $this->_lockedItems[$item->getId()] = $user;
 
