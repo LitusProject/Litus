@@ -191,7 +191,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                 ->getConfigValue('cudi.registration_articles')
                         );
 
-                        // Add the tshirt too
+                        // Add the T-shirt too
                         $tshirts = unserialize(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
