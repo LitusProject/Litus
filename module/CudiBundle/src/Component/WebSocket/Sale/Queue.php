@@ -635,7 +635,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         Printer::salePrint(
             $this->_entityManager,
-            'paydesk_' . $queueItem->getPayDesk(),
+            'paydesk_' . $queueItem->getPayDesk()->getName(),
             $queueItem->getPerson()->getUniversityIdentification(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

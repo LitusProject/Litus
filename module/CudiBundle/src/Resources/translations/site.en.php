@@ -38,4 +38,6 @@ return array(
     'Back' => 'Back',
 
     'General' => 'General',
+
+    'The textbooks have been booked!' => 'The textbooks have been booked!',
 );
