@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="span6">
                     <address>
-                        <strong>{{ translate('Primary Address') }}</strong><br>
+                        <strong>{{ translate('Kot Address') }}</strong><br>
                         {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}
                             {% if authenticatedPerson.getPrimaryAddress().getMailbox() %}
                                 / {{ authenticatedPerson.getPrimaryAddress().getMailbox() }}
@@ -42,7 +42,7 @@
                 </div>
                 <div class="span6">
                     <address>
-                        <strong>{{ translate('Secondary Address') }}</strong><br>
+                        <strong>{{ translate('Home Address') }}</strong><br>
                         {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
                             {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
                                 / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}

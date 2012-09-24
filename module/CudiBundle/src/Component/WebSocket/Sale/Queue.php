@@ -314,7 +314,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'comment' => $item->getComment(),
                     'person' => (object) array(
                         'id' => $item->getPerson()->getId(),
-                        'name' => $item->getPerson()->getFullName(),
+                        'name' => $item->getPerson()->getFullName() . ' (' . $item->getPerson()->getUniversityIdentification() . ')',
                         'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
                     ),
                     'articles' => $this->_createJsonBooking(
