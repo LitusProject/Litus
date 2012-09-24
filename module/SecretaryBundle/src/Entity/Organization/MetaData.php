@@ -76,7 +76,7 @@ class MetaData
     /**
      * @var string The size of the T-shirt
      *
-     * @ORM\Column(name="tshirt_size", type="string", length=2, nullable=true)
+     * @ORM\Column(name="tshirt_size", type="string", length=4, nullable=true)
      */
     private $tshirtSize;
 

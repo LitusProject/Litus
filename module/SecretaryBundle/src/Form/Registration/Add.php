@@ -216,7 +216,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
-                $data['primary_address_address_street' . $city->getId()] = $street ? $street->getId() : 0;
+                $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
                 $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
                 $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
             }
