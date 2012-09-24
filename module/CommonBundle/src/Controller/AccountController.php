@@ -122,29 +122,38 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     ->setPersonalEmail($formData['personal_email'])
                     ->setUniversityEmail($formData['university_email']);
 
-                $primaryCity = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Address\City')
-                    ->findOneById($formData['primary_address_address_city']);
-                $primaryStreet = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Address\Street')
-                    ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
+                if ($formData['primary_address_address_city'] != 'other') {
+                    $primaryCity = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\City')
+                        ->findOneById($formData['primary_address_address_city']);
+                    $primaryCity = $primaryCity->getName();
+                    $primaryPostal = $primaryCity->getPostal();
+                    $primaryStreet = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\Street')
+                        ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
+                        ->getName();
+                } else {
+                    $primaryCity = $formData['primary_address_address_city_other'];
+                    $primaryStreet = $formData['primary_address_address_street_other'];
+                    $primaryPostal = $formData['primary_address_address_postal_other'];
+                }
 
                 if (null !== $academic->getPrimaryAddress()) {
                     $academic->getPrimaryAddress()
-                        ->setStreet($primaryStreet->getName())
+                        ->setStreet($primaryStreet)
                         ->setNumber($formData['primary_address_address_number'])
                         ->setMailbox($formData['primary_address_address_mailbox'])
-                        ->setPostal($primaryCity->getPostal())
-                        ->setCity($primaryCity->getName())
+                        ->setPostal($primaryPostal)
+                        ->setCity($primaryCity)
                         ->setCountry('BE');
                 } else {
                     $academic->setPrimaryAddress(
                         new Address(
-                            $primaryStreet->getName(),
+                            $primaryStreet,
                             $formData['primary_address_address_number'],
                             $formData['primary_address_address_mailbox'],
-                            $primaryCity->getPostal(),
-                            $primaryCity->getName(),
+                            $primaryPostal,
+                            $primaryCity,
                             'BE'
                         )
                     );
