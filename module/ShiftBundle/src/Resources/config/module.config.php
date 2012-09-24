@@ -93,6 +93,20 @@ return array(
             ),
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/shift.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/shift.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'controllers' => array(
         'invokables' => array(
             'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
