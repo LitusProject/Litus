@@ -74,4 +74,14 @@ return array(
     'Organization' => 'Organization',
     'Membership' => 'Membership',
     'Book Textbooks' => 'Book Textbooks',
+
+    'S - Male' => 'S - Male',
+    'M - Male' => 'M - Male',
+    'L - Male' => 'L - Male',
+    'XL - Male' => 'XL - Male',
+    'S - Female' => 'S - Female',
+    'M - Female' => 'M - Female',
+    'L - Female' => 'L - Female',
+    'XL - Female' => 'XL - Female',
+
 );

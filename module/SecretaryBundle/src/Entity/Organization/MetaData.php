@@ -84,12 +84,15 @@ class MetaData
      * @var array The possible T-shirt sizes
      */
     public static $POSSIBLE_TSHIRT_SIZES = array(
-        'XS' => 'XS',
-        'S' => 'S',
-        'M' => 'M',
-        'L' => 'L',
-        'XL' => 'XL',
-        'XXL' => 'XXL',
+        'M_S' => 'S - Male',
+        'M_M' => 'M - Male',
+        'M_L' => 'L - Male',
+        'M_XL' => 'XL - Male',
+
+        'F_S' => 'S - Female',
+        'F_M' => 'M - Female',
+        'F_L' => 'L - Female',
+        'F_XL' => 'XL - Female',
     );
 
     /**
