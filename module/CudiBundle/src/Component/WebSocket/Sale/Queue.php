@@ -122,7 +122,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $action = substr($data, strlen('action: '), strpos($data, ' ', strlen('action: ')) - strlen('action: '));
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
-
+echo $action . ' - ' . $user->getExtraData('payDesk') . '-' . $params . PHP_EOL;
         switch ($action) {
             case 'addToQueue':
                 $result = $this->_addToQueue(
@@ -173,6 +173,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'setPayDesk':
                 $user->setExtraData('payDesk', trim($params));
+                echo 'set----' . $user->getExtraData('payDesk')  . PHP_EOL;
                 break;
         }
 
@@ -646,7 +647,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         Printer::salePrint(
             $this->_entityManager,
-            'paydesk_' . $queueItem->getPayDesk()->getName(),
+            $queueItem->getPayDesk()->getName(),
             $queueItem->getPerson()->getUniversityIdentification(),
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
