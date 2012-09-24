@@ -164,7 +164,7 @@
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}">
-                        {{ shift.getStartDate().format('d/m/Y H:i') }}-{{ shift.getEndDate().format('H:i') }}&mdash;{{ shift.getName() }}
+                        {{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}-{{ dateLocalized(shift.getEndDate(), 'H:mm') }}&mdash;{{ shift.getName() }}
 
                         <span class="pull-right">
                             {% if 'search' == accordionName %}
@@ -196,9 +196,9 @@
                                     <span class="span6">
                                         <dl>
                                             <dt>{{ translate('Start') }}</dt>
-                                            <dd>{{ shift.getStartDate().format('d/m/Y H:i') }}</dd>
+                                            <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/Y H:mm') }}</dd>
                                             <dt>{{ translate('End') }}</dt>
-                                            <dd>{{ shift.getEndDate().format('d/m/Y H:i') }}</dd>
+                                            <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/Y H:mm') }}</dd>
                                         </dl>
                                     </span>
 
