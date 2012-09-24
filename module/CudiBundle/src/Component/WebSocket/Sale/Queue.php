@@ -537,10 +537,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($item))
             return;
 
-        if ('selling' == $status && isset($user))
-            $item->setPayDesk($this->_entityManager
+        if ('selling' == $status && isset($user)) {
+            $paydesk = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sales\PayDesk')
-                ->findOneByCode($user->getExtraData('payDesk')));
+                ->findOneByCode($user->getExtraData('payDesk'));
+
+            if ($paydesk) {
+                $item->setPayDesk($paydesk);
+            }
+        }
 
         $item->setStatus($status);
 
@@ -586,8 +591,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
-            $prices[] = $price;
-            $totalPrice += $price;
+            $prices[] = $price / 100;
+            $totalPrice += $price / 100;
         }
 
         $queueItem->setPayMethod($data->payMethod);
@@ -597,6 +602,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findAllOpenByPerson($queueItem->getPerson());
 
         foreach($bookings as $booking) {
+            if (!isset($data->articles->{$booking->getId()}))
+                continue;
+
             $currentNumber = $data->articles->{$booking->getId()};
             if ($currentNumber > 0 && $currentNumber <= $booking->getNumber() && $booking->getStatus() == 'assigned') {
                 if ($booking->getNumber() == $currentNumber) {
@@ -640,6 +648,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             (int) $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
+            $queueItem->getQueueNumber(),
             $totalPrice / 100,
             $articles,
             $prices
@@ -733,8 +742,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
             $articles[] = 'Membership';
-            $prices[] = $price;
-            $totalPrice += $price;
+            $prices[] = $price / 100;
+            $totalPrice += $price / 100;
         }
 
         if (sizeof($bookings > 0)) {
