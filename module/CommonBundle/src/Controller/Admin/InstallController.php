@@ -236,7 +236,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                             'index'
                         ),
                         'account' => array(
-                            'activate'
+                            'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                         ),
                     ),
                 ),
