@@ -106,8 +106,11 @@
                             {% endfor %}
 
                         </div>
-                        <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
-                        <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
+
+                        {% if banners|length > 1 %}
+                            <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
+                            <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
+                        {% endif %}
         			</div>
         		</div>
         	</div>

@@ -126,6 +126,20 @@ return array(
             ),
         ),
     ),
+    'translator' => array(
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/logistics.en.php',
+                'locale'   => 'en'
+            ),
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../translations/logistics.nl.php',
+                'locale'   => 'nl'
+            ),
+        ),
+    ),
     'assetic_configuration' => array(
         'modules' => array(
             'logisticsbundle' => array(

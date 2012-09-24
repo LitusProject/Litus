@@ -56,4 +56,6 @@ return array(
     'Subjects' => 'Vakken',
     'Choose Your Subjects' => 'Kies Je Vakken',
     'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
+
+    'Other' => 'Andere',
 );

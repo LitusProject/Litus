@@ -28,6 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Edit as EditForm,
+    SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
 
@@ -40,6 +41,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'home'
+            );
+
+            return new ViewModel();
+        }
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
@@ -122,29 +139,38 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     ->setPersonalEmail($formData['personal_email'])
                     ->setUniversityEmail($formData['university_email']);
 
-                $primaryCity = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Address\City')
-                    ->findOneById($formData['primary_address_address_city']);
-                $primaryStreet = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Address\Street')
-                    ->findOneById($formData['primary_address_address_street' . $formData['primary_address_address_city']]);
+                if ($formData['primary_address_address_city'] != 'other') {
+                    $primaryCity = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\City')
+                        ->findOneById($formData['primary_address_address_city']);
+                    $primaryPostal = $primaryCity->getPostal();
+                    $primaryCity = $primaryCity->getName();
+                    $primaryStreet = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Address\Street')
+                        ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
+                        ->getName();
+                } else {
+                    $primaryCity = $formData['primary_address_address_city_other'];
+                    $primaryStreet = $formData['primary_address_address_street_other'];
+                    $primaryPostal = $formData['primary_address_address_postal_other'];
+                }
 
                 if (null !== $academic->getPrimaryAddress()) {
                     $academic->getPrimaryAddress()
-                        ->setStreet($primaryStreet->getName())
+                        ->setStreet($primaryStreet)
                         ->setNumber($formData['primary_address_address_number'])
                         ->setMailbox($formData['primary_address_address_mailbox'])
-                        ->setPostal($primaryCity->getPostal())
-                        ->setCity($primaryCity->getName())
+                        ->setPostal($primaryPostal)
+                        ->setCity($primaryCity)
                         ->setCountry('BE');
                 } else {
                     $academic->setPrimaryAddress(
                         new Address(
-                            $primaryStreet->getName(),
+                            $primaryStreet,
                             $formData['primary_address_address_number'],
                             $formData['primary_address_address_mailbox'],
-                            $primaryCity->getPostal(),
-                            $primaryCity->getName(),
+                            $primaryPostal,
+                            $primaryCity,
                             'BE'
                         )
                     );
@@ -453,18 +479,64 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAuthentication()->getPersonObject();
 
+        $form = new SubjectForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    new SubjectEnrollment(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Subject')
+                            ->findOneById($formData['subject_id'])
+                    )
+                );
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The subject was succesfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'account',
+                    array(
+                        'action' => 'subjects',
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                    )
+                );
+            }
+        }
+
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
+        $studySubjects = array();
         foreach($enrollments as $enrollment) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear());
             $mappings[] = array(
                 'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+                'subjects' => $subjects,
             );
+            foreach($subjects as $subject)
+                $studySubjects[] = $subject->getSubject()->getId();
         }
 
         $enrollments = $this->getEntityManager()
@@ -472,13 +544,21 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
-        foreach($enrollments as $enrollment)
+        $otherSubjects = array();
+        foreach($enrollments as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
+
+            if (!in_array($enrollment->getSubject()->getId(), $studySubjects))
+                $otherSubjects[] = $enrollment->getSubject();
+        }
 
         return new ViewModel(
             array(
+                'form' => $form,
                 'mappings' => $mappings,
                 'enrollments' => $subjectIds,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                'otherSubjects' => $otherSubjects,
             )
         );
     }

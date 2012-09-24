@@ -67,7 +67,7 @@ return array(
 
     'Choose your subjects:' => 'Kies je vakken:',
     'Complete Your Registration' => 'Voltooi Je Inschrijving',
-    'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgelsagen!',
+    'Your subjects were successfully saved!' => 'Je vakken zijn succesvol opgeslagen!',
     'An error occurred while saving your subjects!' => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',
 
     'Addresses' => 'Adressen',
@@ -83,4 +83,9 @@ return array(
     'M - Female' => 'M - Vrouw',
     'L - Female' => 'L - Vrouw',
     'XL - Female' => 'XL - Vrouw',
+
+    'This field should not contain an @' => 'Dit veld mag geen @ bevatten',
+    'Other Subjects' => 'Andere Vakken',
+    'Add Other Subjects' => 'Andere Vakken Toevoegen',
+    'The subject was succesfully added!' => 'Het vak is succesvol toegevoegd!',
 );

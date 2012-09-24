@@ -26,6 +26,7 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Entity\Users\People\Academic,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
+    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
@@ -129,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('university_email');
         $field->setLabel('University E-mail')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired();
         $internet->add($field);
 
@@ -185,6 +186,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
     {
+
+        $universityEmail = $academic->getUniversityEmail();
+
+        if ($universityEmail) {
+            $universityEmail = explode('@', $universityEmail)[0];
+        }
+
         $data = array(
             'first_name' => $academic->getFirstName(),
             'last_name' => $academic->getLastName(),
@@ -198,7 +206,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
             'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
             'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
-            'university_email' => $academic->getUniversityEmail(),
+            'university_email' => $universityEmail,
             'personal_email' => $academic->getPersonalEmail(),
             'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
             'become_member' => $metaData ? $metaData->becomeMember() : false,
@@ -216,7 +224,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
-                $data['primary_address_address_street' . $city->getId()] = $street ? $street->getId() : 0;
+                $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
                 $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
                 $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
             }
@@ -356,9 +364,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
+                            new NoAtValidator(),
                         ),
                     )
                 )

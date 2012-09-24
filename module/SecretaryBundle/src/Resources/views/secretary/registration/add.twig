@@ -70,7 +70,7 @@
                 e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
             });
-            
+
             $('#register').click(function (e) {
                 e.preventDefault();
                 console.log($('form#register_form'));
@@ -88,13 +88,23 @@
             $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
+
+            $('#university_email').wrap('<div class=\"input-append\" />');
+            $('#university_email').after('<span class=\"add-on\">@student.kuleuven.be</span>');
+
+            $('#first_name').blur(nameChange);
+            $('#last_name').blur(nameChange);
         });
+
+        function nameChange() {
+            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
+        }
 
         function cityChange() {
             var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').hide();
+            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.control-group').hide();
             if (city != 0)
-                $('#primary_address_address_street' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').show();
+                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').show();
         }
 
         function toggleMember() {

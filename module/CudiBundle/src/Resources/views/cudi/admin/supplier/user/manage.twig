@@ -24,7 +24,7 @@
 	    <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
 	    <p>Street: <b>{{ supplier.getAddress().getStreet() }} {{ supplier.getAddress().getNumber() }}
             {% if supplier.getAddress().getMailbox() %}
-                {{ translate('Mailbox') }} {{ supplier.getAddress().getMailbox() }}
+                / {{ supplier.getAddress().getMailbox() }}
             {% endif %}</b></p>
 	    <p>City: <b>{{ supplier.getAddress().getPostal() }} {{ supplier.getAddress().getCity() }}</b></p>
 	    <p>Country: <b>{{ supplier.getAddress().getCountry() }}</b></p>
