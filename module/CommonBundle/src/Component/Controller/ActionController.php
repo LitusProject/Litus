@@ -240,8 +240,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             }
         } else {
             if (!$this->getAuthentication()->isAuthenticated()) {
-                var_dump($this->getParam('controller'), $this->getParam('action'));
-
                 if (
                     $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
                         && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
