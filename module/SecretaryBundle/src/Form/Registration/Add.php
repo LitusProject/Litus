@@ -150,7 +150,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($organization);
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization');
+        $field->setLabel('I want to become a member of the organization')
+            ->setValue(true);
         $organization->add($field);
 
         $field = new Checkbox('conditions');
