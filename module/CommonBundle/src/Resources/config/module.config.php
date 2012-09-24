@@ -344,7 +344,7 @@ return array(
     ),
     'assetic_configuration' => array(
         'debug' => false,
-        'webPath' => './public/_assetic',
+        'webPath' => __DIR__ . '/../../../../../public/_assetic',
         'strategyForRenderer' => array(
             'AsseticBundle\View\ViewHelperStrategy' => 'Zend\View\Renderer\PhpRenderer'
         ),
