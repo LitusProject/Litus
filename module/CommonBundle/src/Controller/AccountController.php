@@ -28,6 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SecretaryBundle\Form\Registration\Edit as EditForm,
+    SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\View\Model\ViewModel;
 
@@ -462,18 +463,64 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAuthentication()->getPersonObject();
 
+        $form = new SubjectForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    new SubjectEnrollment(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Subject')
+                            ->findOneById($formData['subject_id'])
+                    )
+                );
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The subject was succesfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'account',
+                    array(
+                        'action' => 'subjects',
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                    )
+                );
+            }
+        }
+
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
+        $studySubjects = array();
         foreach($enrollments as $enrollment) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear());
             $mappings[] = array(
                 'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+                'subjects' => $subjects,
             );
+            foreach($subjects as $subject)
+                $studySubjects[] = $subject->getSubject()->getId();
         }
 
         $enrollments = $this->getEntityManager()
@@ -481,13 +528,21 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
-        foreach($enrollments as $enrollment)
+        $otherSubjects = array();
+        foreach($enrollments as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
+
+            if (!in_array($enrollment->getSubject()->getId(), $studySubjects))
+                $otherSubjects[] = $enrollment->getSubject();
+        }
 
         return new ViewModel(
             array(
+                'form' => $form,
                 'mappings' => $mappings,
                 'enrollments' => $subjectIds,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                'otherSubjects' => $otherSubjects,
             )
         );
     }
