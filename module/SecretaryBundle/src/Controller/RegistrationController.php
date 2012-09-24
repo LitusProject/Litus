@@ -123,14 +123,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $primaryCity = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Address\City')
                             ->findOneById($formData['primary_address_address_city']);
-                        $primaryCity = $primaryCity->getName();
+                        $primaryCityName = $primaryCity->getName();
                         $primaryPostal = $primaryCity->getPostal();
                         $primaryStreet = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Address\Street')
                             ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
                             ->getName();
                     } else {
-                        $primaryCity = $formData['primary_address_address_city_other'];
+                        $primaryCityName = $formData['primary_address_address_city_other'];
                         $primaryStreet = $formData['primary_address_address_street_other'];
                         $primaryPostal = $formData['primary_address_address_postal_other'];
                     }
@@ -151,7 +151,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                 $formData['primary_address_address_number'],
                                 $formData['primary_address_address_mailbox'],
                                 $primaryPostal,
-                                $primaryCity,
+                                $primaryCityName,
                                 'BE'
                             )
                         )
@@ -379,14 +379,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $primaryCity = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\City')
                         ->findOneById($formData['primary_address_address_city']);
-                    $primaryCity = $primaryCity->getName();
+                    $primaryCityName = $primaryCity->getName();
                     $primaryPostal = $primaryCity->getPostal();
                     $primaryStreet = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\Street')
                         ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
                         ->getName();
                 } else {
-                    $primaryCity = $formData['primary_address_address_city_other'];
+                    $primaryCityName = $formData['primary_address_address_city_other'];
                     $primaryStreet = $formData['primary_address_address_street_other'];
                     $primaryPostal = $formData['primary_address_address_postal_other'];
                 }
@@ -397,7 +397,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         ->setNumber($formData['primary_address_address_number'])
                         ->setMailbox($formData['primary_address_address_mailbox'])
                         ->setPostal($primaryPostal)
-                        ->setCity($primaryCity)
+                        ->setCity($primaryCityName)
                         ->setCountry('BE');
                 } else {
                     $academic->setPrimaryAddress(
@@ -406,7 +406,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['primary_address_address_number'],
                             $formData['primary_address_address_mailbox'],
                             $primaryPostal,
-                            $primaryCity,
+                            $primaryCityName,
                             'BE'
                         )
                     );
