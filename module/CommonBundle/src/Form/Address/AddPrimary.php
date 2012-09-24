@@ -163,20 +163,64 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             )
         );
 
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_street',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'type' => 16,
+        /*if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_street',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 16,
+                            ),
                         ),
                     ),
-                ),
-            )
-        );
+                )
+            );
+        } else {
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_street_other',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_postal_other',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                )
+            );
+
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_city_other',
+                    'required' => true,
+                    'validators' => array(
+                        array(
+                            'name' => 'alpha',
+                        ),
+                    ),
+                )
+            );
+        }*/
 
         $inputs[] = $factory->createInput(
             array(

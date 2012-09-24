@@ -51,4 +51,27 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue('Add');
         $this->add($field);
     }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'int'),
+                        ),
+                    )
+                )
+            );
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
+    }
 }
