@@ -602,6 +602,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findAllOpenByPerson($queueItem->getPerson());
 
         foreach($bookings as $booking) {
+            if (!isset($data->articles->{$booking->getId()}))
+                continue;
+
             $currentNumber = $data->articles->{$booking->getId()};
             if ($currentNumber > 0 && $currentNumber <= $booking->getNumber() && $booking->getStatus() == 'assigned') {
                 if ($booking->getNumber() == $currentNumber) {
