@@ -4,7 +4,7 @@
 
 	{% for notification in notifications %}
 		<div class="alert alert-info">
-	        {{ notification.getContent() }}
+	        {{ markdown(notification.getContent()) }}
 	    </div>
 	{% endfor %}
 
