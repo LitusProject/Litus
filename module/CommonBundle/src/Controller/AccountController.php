@@ -41,6 +41,22 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
+        if (null === $this->getAuthentication()->getPersonObject()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Please login first!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'home'
+            );
+
+            return new ViewModel();
+        }
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
@@ -127,8 +143,8 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                     $primaryCity = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\City')
                         ->findOneById($formData['primary_address_address_city']);
-                    $primaryCity = $primaryCity->getName();
                     $primaryPostal = $primaryCity->getPostal();
+                    $primaryCity = $primaryCity->getName();
                     $primaryStreet = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\Street')
                         ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
