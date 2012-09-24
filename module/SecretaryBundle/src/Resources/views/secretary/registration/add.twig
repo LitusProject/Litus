@@ -97,7 +97,7 @@
         });
 
         function nameChange() {
-            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase());
+            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
         }
 
         function cityChange() {
