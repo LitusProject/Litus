@@ -269,7 +269,7 @@
 		<div class="modal-body">
 		    {% for payDesk in payDesks %}
 				<div class="span2">
-				    <h3>Desk {{ payDesk.getName() }}</h3>
+				    <h3>{{ payDesk.getName() }}</h3>
 				    <br>
 				    <button class="btn" data-code="{{ payDesk.getCode() }}">Choose</button>
 				</div>
