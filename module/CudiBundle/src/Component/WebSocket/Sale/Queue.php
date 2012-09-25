@@ -361,7 +361,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (!isset($item))
             return;
 
-        $this->_printQueueTicket($item, 'collect');
+        $this->_printQueueTicket($item, $user->getExtraData('payDesk'));
 
         if ($enableCollectScanning !== '1')
             return;
@@ -704,9 +704,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getCurrentAcademicYear()
     {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneById(2); // TODO: remove this
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
