@@ -116,8 +116,10 @@
         				});
         				_addActions($this);
         			} else if(data.sale) {
+                        $this.showQueue('updatePayDesk');
         				options.openSale('showQueue', data);
         			} else if(data.collecting && options.collectScanning) {
+                        $this.showQueue('updatePayDesk');
                         options.openCollecting('showQueue', data);
                     }
         		},
