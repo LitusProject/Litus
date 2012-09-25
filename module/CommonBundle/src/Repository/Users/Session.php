@@ -19,7 +19,10 @@ class Session extends EntityRepository
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\Users\Session', 's')
             ->where(
-                $query->expr()->lt('s.expirationTime', ':expirationTime')
+                $query->expr()->orX(
+                    $query->expr()->lt('s.expirationTime', ':expirationTime'),
+                    $query->expr()->eq('s.active', 'false')
+                )
             )
             ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()

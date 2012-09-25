@@ -243,11 +243,13 @@ VTK Cudi
                     'key'         => 'cudi.printers',
                     'value'       => serialize(
                         array(
-                            'signin'    => 'SignInPrinter',
-                            'collect'   => 'CollectPrinter',
-                            'paydesk_1' => 'PayDesk_1Printer',
-                            'paydesk_2' => 'PayDesk_2Printer',
-                            'paydesk_3' => 'PayDesk_3Printer',
+                            'signin'    => 'SignIn_Printer',
+                            'collect_1' => 'Collect_Printer',
+                            'collect_2' => 'Collect_Printer',
+                            'collect_3' => 'Collect_Printer',
+                            'paydesk_1' => 'SaleOne_Printer',
+                            'paydesk_2' => 'SaleTwo_Printer',
+                            'paydesk_3' => 'SaleThree_Printer',
                         )
                     ),
                     'description' => 'The port of the print socket',

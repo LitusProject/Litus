@@ -37,7 +37,7 @@ class Subject extends EntityRepository
 
         $subjects = array();
         foreach($resultSet as $map)
-            $subjects[] = $map->getSubject();
+            $subjects[$map->getSubject()->getId()] = $map->getSubject();
 
         return $subjects;
     }

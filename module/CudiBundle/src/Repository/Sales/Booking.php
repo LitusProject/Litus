@@ -552,7 +552,7 @@ class Booking extends EntityRepository
         foreach($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
             if ($available <= 0)
-                break;
+                continue;
 
             $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sales\Booking')
