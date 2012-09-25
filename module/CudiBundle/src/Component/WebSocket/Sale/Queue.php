@@ -124,7 +124,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $params = trim(substr($data, strpos($data, ' ', strlen('action: ')) + 1));
 
         $now = new DateTime();
-        echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $action . ' - ' . $params . ' - ' . $user->getExtraData('payDesk');
+        echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $action . ' - ' . $params . ' - ' . $user->getExtraData('payDesk') . PHP_EOL;
+
+        $paydesk = $user->getExtraData('payDesk');
+        if ($action !== 'setPayDesk' && empty($paydesk)) {
+            $this->sendText($user, json_encode((object) array('error' => 'paydesk')));
+            return;
+        }
 
         switch ($action) {
             case 'addToQueue':
@@ -176,7 +182,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 break;
             case 'setPayDesk':
                 $user->setExtraData('payDesk', trim($params));
-                echo 'set----' . $user->getExtraData('payDesk')  . PHP_EOL;
                 break;
         }
 
