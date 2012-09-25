@@ -127,7 +127,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $action . ' - ' . $params . ' - ' . $user->getExtraData('payDesk') . PHP_EOL;
 
         $paydesk = $user->getExtraData('payDesk');
-        if ($action !== 'setPayDesk' && empty($paydesk)) {
+        if ($action !== 'setPayDesk' && $action !== 'addToQueue'  && empty($paydesk)) {
             $this->sendText($user, json_encode((object) array('error' => 'paydesk')));
             return;
         }
