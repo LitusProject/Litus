@@ -25,7 +25,7 @@ class Shift extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
-                    $query->expr()->gt('s.startDate', ':now')
+                    $query->expr()->gt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -42,7 +42,7 @@ class Shift extends EntityRepository
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
                     $query->expr()->andX(
-                        $query->expr()->gt('s.startDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now'),
                         $query->expr()->eq('s.event', ':event')
                     )
             )
@@ -62,7 +62,7 @@ class Shift extends EntityRepository
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
                     $query->expr()->andX(
-                        $query->expr()->gt('s.startDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now'),
                         $query->expr()->eq('s.unit', ':unit')
                     )
             )
@@ -83,7 +83,7 @@ class Shift extends EntityRepository
             ->innerJoin('s.responsibles', 'r')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.startDate', ':now'),
+                    $query->expr()->gt('s.endDate', ':now'),
                     $query->expr()->eq('r.person', ':person')
                 )
             )
@@ -99,7 +99,7 @@ class Shift extends EntityRepository
             ->innerJoin('s.volunteers', 'v')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.startDate', ':now'),
+                    $query->expr()->gt('s.endDate', ':now'),
                     $query->expr()->eq('v.person', ':person')
                 )
             )

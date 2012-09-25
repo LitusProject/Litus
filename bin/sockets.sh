@@ -11,11 +11,11 @@ function backgroundTask() {
 		echo " Running: $1"
 		return 0
 	fi
-	
+
 	echo "Starting: $1"
 	$1 &
 }
 
 # Starting the WebSockets
-backgroundTask "php bin/CudiBundle/queue.php --run"
-backgroundTask "php bin/SyllabusBundle/update.php --run"
+backgroundTask "php -q bin/CudiBundle/queue.php --run"
+backgroundTask "php -q bin/SyllabusBundle/update.php --run"

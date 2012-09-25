@@ -38,7 +38,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
         $payDesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\PayDesk')
-            ->findAll();
+            ->findBy(array(), array('name' => 'ASC'));
 
         return new ViewModel(
             array(
