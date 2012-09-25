@@ -40,9 +40,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice();
+        }
+
         return new ViewModel(
             array(
                 'bookings' => $bookings,
+                'total' => $total,
             )
         );
     }
