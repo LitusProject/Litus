@@ -56,6 +56,8 @@ class Printer {
             return;
 
         $data = 'PRINT ' . $printers[$printer] . ' ' . $type . ' ' . $data;
+        $now = new DateTime();
+        echo '[' . $now->format('d/m/Y H:i:s') . ']:' . $data . PHP_EOL;
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
         socket_connect(
             $socket,
