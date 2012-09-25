@@ -45,7 +45,6 @@
 					 	</tr>
 
 						{% for map in subjectArticle['articles'] %}
-
 							<tr>
 								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
 								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
@@ -72,9 +71,7 @@
 					            </td>
 				            </tr>
 					        {% endif %}
-
 						{% endfor %}
-
 					{% endfor %}
 
 					</tbody>
@@ -93,4 +90,15 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$('input[id*=article-]').each(function(i) {
+			$('[id="' + this.id + '"]').each(function(i) {
+				if (i > 0)
+					$(this).remove();
+			});
+		});
+	</script>
 {% endblock %}
