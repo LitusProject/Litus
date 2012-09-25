@@ -17,5 +17,5 @@ function backgroundTask() {
 }
 
 # Starting the WebSockets
-backgroundTask "php -q bin/CudiBundle/queue.php --run"
-backgroundTask "php -q bin/SyllabusBundle/update.php --run"
+backgroundTask "php bin/CudiBundle/queue.php --run"
+backgroundTask "php bin/SyllabusBundle/update.php --run"

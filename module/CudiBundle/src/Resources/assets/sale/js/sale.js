@@ -176,6 +176,7 @@
 	    });
 
 	    $this.find('.customer .name').html(settings.data.sale.person.name);
+	    $this.find('.customer .university_identification').html(settings.data.sale.person.university_identification);
 	    if (settings.data.sale.person.member) {
 	        $this.find('.discounts #discount_member').attr('checked', true);
 	    } else {
