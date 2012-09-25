@@ -44,6 +44,18 @@
 							</td>
 	        			</tr>
         			{% endfor %}
+
+        			<tr class="total">
+        				<td>{{ translate('Total') }}</td>
+    					<td/>
+	            			<td>&euro; {{ (total/100)|number_format(2) }}</td>
+						<td/>
+						<td/>
+						<td/>
+						<td/>
+    				</tr>
+
+
             	</table>
 
             	<a href={{ url('booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>

@@ -40,9 +40,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice();
+        }
+
         return new ViewModel(
             array(
                 'bookings' => $bookings,
+                'total' => $total,
             )
         );
     }
@@ -102,6 +108,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
 
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllOpenByPerson($authenticatedPerson);
+
+        $booked = array();
+        foreach($bookings as $booking) {
+            if (!isset($booked[$booking->getArticle()->getId()]))
+                $booked[$booking->getArticle()->getId()] = 0;
+            $booked[$booking->getArticle()->getId()] += $booking->getNumber();
+        }
+
         $result = array();
         foreach ($enrollments as $enrollment) {
             $subject = $enrollment->getSubject();
@@ -119,7 +136,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 if ($article !== null) {
                     $articles[] = array(
                         'article' => $article,
-                        'mandatory' => $subjectMap->isMandatory()
+                        'mandatory' => $subjectMap->isMandatory(),
+                        'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
                     );
                 }
             }
@@ -136,17 +154,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $commonArticles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Article')
             ->findAllByTypeAndAcademicYear('common', $currentYear);
-
-        $bookings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sales\Booking')
-            ->findAllOpenByPerson($authenticatedPerson);
-
-        $booked = array();
-        foreach($bookings as $booking) {
-            if (!isset($booked[$booking->getArticle()->getId()]))
-                $booked[$booking->getArticle()->getId()] = 0;
-            $booked[$booking->getArticle()->getId()] += $booking->getNumber();
-        }
 
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
