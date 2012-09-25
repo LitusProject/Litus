@@ -51,7 +51,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'home'
+                'index'
             );
 
             return new ViewModel();
