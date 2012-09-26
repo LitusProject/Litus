@@ -89,6 +89,11 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
+                    'key'         => 'shibboleth_logout_url',
+                    'value'       => 'https://idp.kuleuven.be/idp/logout',
+                    'description' => 'The Shibboleth logout URL, which ends the provider\'s session',
+                ),
+                array(
                     'key'         => 'shibboleth_person_key',
                     'value'       => 'Shib-Person-uid',
                     'description' => 'The key in the $_SERVER array that accesses the university identification',
@@ -176,7 +181,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'api_install' => array(
                         'index'
                     ),
-                    'banner' => array(
+                    'banner_install' => array(
                         'index'
                     ),
                     'br_install' => array(

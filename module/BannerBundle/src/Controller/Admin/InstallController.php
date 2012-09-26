@@ -41,8 +41,26 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'bannerBundle' => array(
+                    'banner' => array(
+                        'view'
+                    ),
                     'admin_banner' => array(
                         'add', 'delete', 'edit', 'manage'
+                    ),
+                ),
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'banner' => array(
+                            'view'
+                        ),
                     ),
                 ),
             )

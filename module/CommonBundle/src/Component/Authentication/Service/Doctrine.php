@@ -93,10 +93,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      *
      * @param \Zend\Authentication\Adapter $adapter The supplied adapter
      * @param boolean $rememberMe Remember this authentication session
+     * @param boolean $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(AdapterInterface $adapter = null, $rememberMe = true)
+    public function authenticate(AdapterInterface $adapter = null, $rememberMe = true, $shibboleth = false)
     {
         $result = null;
 
@@ -109,6 +110,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR'],
+                    $shibboleth,
                     $this->_expire
                 );
                 $this->_entityManager->persist($newSession);
@@ -210,6 +212,8 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         setcookie(
             $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
         );
+
+        return $session;
     }
 
     /**
