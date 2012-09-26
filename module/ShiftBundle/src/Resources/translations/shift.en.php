@@ -22,4 +22,5 @@ return array(
     'You were signed up as a volunteer for the selected shift!' => 'You were signed up as a volunteer for the selected shift!',
     'You were signed up as a responsible for the selected shift!' => 'You were signed up as a responsible for the selected shift!',
     'No shifts were found that match the given query.' => 'No shifts were found that match the given query.',
+    'Please log in to view the shifts!' => 'Please log in to view the shifts!',
 );

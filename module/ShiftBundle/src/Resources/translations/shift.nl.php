@@ -22,4 +22,5 @@ return array(
     'You were signed up as a volunteer for the selected shift!' => 'Je werd ingeschreven als vrijwilliger op de geselecteerde shift!',
     'You were signed up as a responsible for the selected shift!' => 'Je werd ingeschreven als verantwoordelijke op de geselecteerde shift!',
     'No shifts were found that match the given query.' => 'Er werden geen shiften gevonden die overeenkomen met de gegeven vraag..',
+    'Please log in to view the shifts!' => 'Meld je aan om de shiften te bekijken!',
 );
