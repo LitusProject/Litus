@@ -108,6 +108,8 @@ class Booking
         'booked', 'assigned', 'sold', 'expired', 'canceled'
     );
 
+    private $_entityManager;
+
     /**
      * @throws \InvalidArgumentException
      *
@@ -122,6 +124,8 @@ class Booking
     {
         if (!$article->isBookable() && !$force)
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
+
+        $this->_entityManager = $entityManager;
 
         $this->person = $person;
         $this->setArticle($article)
@@ -249,7 +253,7 @@ class Booking
             $this->cancelationDate = null;
 
             if ($this->article->canExpire()) {
-                $expireTime = $entityManager
+                $expireTime = $this->_entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.reservation_expire_time');
 
