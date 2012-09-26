@@ -130,15 +130,18 @@
 	}
 
 	function _gotBarcode ($this, value) {
+		var found = false;
 	    $this.find('.articles tr').each(function () {
 	    	for (var i = 0 ; i < $(this).data('info').barcodes.length ; i++) {
 	    		if ($(this).data('info').barcodes[i] == value && $(this).data('info').currentNumber < $(this).data('info').number) {
+	    			found = true;
 	    			$(this).find('.addArticle').click();
 	            	return false;
 	    		}
 	    	}
-	        $this.find('#barcodeFailure').addClass('in');
 	    });
+	    if (!found)
+	    	$this.find('#barcodeFailure').addClass('in');
 	}
 
 	function _init ($this) {
@@ -168,7 +171,7 @@
 	    	    .find('#payedMoney').calculateChange({
 	    	        changeField: $this.find('#modalConcludeSelling #changeMoney'),
 	    	        totalMoney: $this.find('#totalMoney').data('value')
-	    	    });
+	    	    }).focus();
 	    	$this.find('#modalConcludeSelling .confirmConclude').unbind('click').click(function () {
 	    		$this.find('#modalConcludeSelling').modal('hide');
 	    		$this.sale('conclude');
