@@ -15,8 +15,11 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
+    DateInterval,
     ShiftBundle\Entity\Shifts\Responsible,
     ShiftBundle\Entity\Shifts\Volunteer,
+    ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
     Zend\View\Model\ViewModel;
@@ -35,6 +38,27 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
         $unitSearchForm = new UnitSearchForm($this->getEntityManager());
+        $dateSearchForm = new DateSearchForm($this->getEntityManager());
+
+        if (!$this->getAuthentication()->getPersonObject()) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::WARNING,
+                    'Warning',
+                    'Please log in to view the shifts!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return new ViewModel();
+        }
 
         $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -87,6 +111,30 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     );
                 }
             }
+
+            if (isset($formData['date'])) {
+                $dateSearchForm->setData($formData);
+
+                if ($dateSearchForm->isValid() && '' != $formData['date']) {
+
+                    $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
+                    $start_date->setTime(0, 0, 0);
+                    $end_date = clone $start_date;
+                    $end_date->add(new DateInterval('P1D'));
+
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllActiveBetweenDates($start_date, $end_date);
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The given search query was invalid!'
+                        )
+                    );
+                }
+            }
         }
 
         if (null !== $searchResults) {
@@ -100,10 +148,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'eventSearchForm' => $eventSearchForm,
                 'unitSearchForm' => $unitSearchForm,
+                'dateSearchForm' => $dateSearchForm,
                 'myShifts' => $myShifts,
                 'searchResults' => $searchResults,
                 'entityManager' => $this->getEntityManager(),
-                'academicYear' => $this->getCurrentAcademicYear()
+                'academicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
