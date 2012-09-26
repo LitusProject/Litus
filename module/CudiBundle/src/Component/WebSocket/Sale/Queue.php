@@ -264,14 +264,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
-        if ($registration && $registration->hasPayed() && $metaData->becomeMember()) {
-            if (empty($bookings)) {
-                return json_encode(
-                    (object) array(
-                        'error' => 'noBookings',
-                    )
-                );
-            }
+        if (empty($bookings) && !(null !== $registration && !$registration->hasPayed() && $metaData->becomeMember())) {
+            return json_encode(
+                (object) array(
+                    'error' => 'noBookings',
+                )
+            );
         }
 
         $queueItem = $this->_entityManager
@@ -411,7 +409,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($person, $this->_getCurrentAcademicYear());
 
-        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+        if (null !== $registration && !$registration->hasPayed() && $metaData->becomeMember()) {
             $results[] = (object) array(
                 'id' => 'membership',
                 'price' => $this->_entityManager
@@ -748,7 +746,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($item->getPerson(), $this->_getCurrentAcademicYear());
 
-        if ($registration && !$registration->hasPayed() && $metaData->becomeMember()) {
+        if (null !== $registration && !$registration->hasPayed() && $metaData->becomeMember()) {
             $price =$this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_price');
