@@ -10,7 +10,7 @@
 
 	<div class="row-fluid">
 	    <div class="span6">
-	    	<a href="{{ url('calendar') }}"><img class="headingIcon" src="/_site/img/glyphicons-calendar.png" /></a>
+	    	<a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
 	    	<h2>{{ translate('Calendar') }}</h2>
 
 		    {% for day in calendarItems %}
@@ -24,7 +24,7 @@
 		        	</p>
 		        </div>
 		    {% else %}
-		    	<div class="headingSpacer"></div>
+		    	<div class="heading-spacer"></div>
 
 		    	<div class="alert">
 		    	    {{ translate('No events were created yet.') }}
@@ -33,7 +33,7 @@
 	    </div>
 
 	   	<div class="span6">
-	   		<a href="{{ url('news') }}"><img class="headingIcon" src="/_site/img/glyphicons-news.png" /></a>
+	   		<a href="{{ url('news') }}"><img class="heading-icon" src="/_site/img/glyphicons-news.png" /></a>
 	    	<h2>{{ translate('News') }}</h2>
 
 	    	{% for item in newsItems %}
@@ -50,7 +50,7 @@
     				</blockquote>
 	    		</div>
 	    	{% else %}
-	    		<div class="headingSpacer"></div>
+	    		<div class="heading-spacer"></div>
 
 	    		<div class="alert">
 	    		    {{ translate('No news items were posted yet.') }}

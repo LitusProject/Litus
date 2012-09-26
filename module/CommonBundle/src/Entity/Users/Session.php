@@ -79,12 +79,19 @@ class Session
     private $active;
 
     /**
+     * @var string The type of this session
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $shibboleth;
+
+    /**
      * @param int|\DateTime $expirationTime
      * @param \CommonBundle\Entity\Users\Person $person
      * @param string $userAgent
      * @param string $ip
      */
-    public function __construct(Person $person, $userAgent, $ip, $expirationTime = 3600)
+    public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
         $this->id = md5(uniqid(rand(), true));
 
@@ -101,6 +108,9 @@ class Session
         $this->person = $person;
         $this->userAgent = $userAgent;
         $this->ip = $ip;
+
+        $this->shibboleth = $shibboleth;
+
         $this->active = true;
     }
 
@@ -169,6 +179,22 @@ class Session
     }
 
     /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShibboleth()
+    {
+        return $this->shibboleth;
+    }
+
+    /**
      * Checks whether or not this session is valid.
      *
      * Note:
@@ -198,6 +224,7 @@ class Session
                 $this->person,
                 $this->userAgent,
                 $ip,
+                $this->shibboleth,
                 $this->expirationTime
             );
 

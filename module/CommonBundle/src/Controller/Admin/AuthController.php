@@ -82,11 +82,19 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
     public function logoutAction()
     {
-        $this->getAuthentication()->forget();
+        $session = $this->getAuthentication()->forget();
 
-        $this->redirect()->toRoute(
-            'admin_auth'
-        );
+        if ($session->isShibboleth()) {
+            $shibbolethLogoutUrl = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_logout_url');
+
+            $this->redirect()->toUrl($shibbolethLogoutUrl);
+        } else {
+            $this->redirect()->toRoute(
+                'admin_auth'
+            );
+        }
 
         return new ViewModel();
     }
@@ -113,7 +121,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->flush();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'), '', true, true
                     );
 
                     if ($authentication->isAuthenticated()) {

@@ -59,9 +59,10 @@ class Authentication
      * @param string $identity The provided identity
      * @param string $credential The provided credential
      * @param boolean $rememberMe Remember this authentication session
+     * @param boolean $shibboleth Whether or not this is sessions initiated by Shibboleth
      * @return void
      */
-    public function authenticate($identity = '', $credential = '', $rememberMe = false)
+    public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)
     {
         if (isset($this->_result) && $identity == '')
             return;
@@ -72,7 +73,7 @@ class Authentication
                 ->setCredential($credential);
         }
 
-        $this->_result = $this->_service->authenticate($this->_adapter, $rememberMe);
+        $this->_result = $this->_service->authenticate($this->_adapter, $rememberMe, $shibboleth);
     }
 
     /**
@@ -82,9 +83,10 @@ class Authentication
      */
     public function forget()
     {
-        $this->_service->clearIdentity();
-
+        $session = $this->_service->clearIdentity();
         unset($this->_result);
+
+        return $session;
     }
 
     /**

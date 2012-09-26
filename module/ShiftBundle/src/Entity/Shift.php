@@ -540,6 +540,11 @@ class Shift
         return $this;
     }
 
+    /**
+     * Whether or not this shift's dates can be edited.
+     *
+     * @return boolean
+     */
     public function canEditDates()
     {
         return (0 == $this->countResponsibles()) && (0 == $this->countVolunteers());

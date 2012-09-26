@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class News extends EntityRepository
 {
-    public function findAll($nbResults = 5)
+    public function findAll($nbResults = 3)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
