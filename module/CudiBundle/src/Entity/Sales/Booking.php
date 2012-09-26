@@ -248,7 +248,7 @@ class Booking
             $this->saleDate = null;
             $this->cancelationDate = null;
 
-            if ($article->canExpire()) {
+            if ($this->article->canExpire()) {
                 $expireTime = $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.reservation_expire_time');
