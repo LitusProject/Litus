@@ -21,7 +21,7 @@ use CommonBundle\Entity\Users\Person,
 /**
  * This entity stores a volunteer for a shift.
  *
- * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Responsible")
+ * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shifts\Volunteer")
  * @ORM\Table(name="shifts.volunteers")
  */
 class Volunteer
