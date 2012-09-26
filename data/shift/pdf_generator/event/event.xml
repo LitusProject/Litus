@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<event name="Openingscantus" date="26 September 2012">
+	<our_union short_name="VTK">
+		<name>VTK vzw</name>
+	    <logo>data/images/logo/logo.svg</logo>
+	</our_union>
+	<shifts>
+		<shift>
+			<date>26/09/2012 14:00-18:00</date>
+			<name>Inschrijven</name>
+			<person>Pieter Maene</person>
+			<responsible>1</responsible>
+		</shift>
+		<shift>
+			<date>26/09/2012 14:00-18:00</date>
+			<name>Inschrijven om te werken op een hele leuke shift bij onze zalige cursusdienst</name>
+			<person>Pieter Maene</person>
+			<responsible>1</responsible>
+		</shift>
+	</shifts>
+</event>

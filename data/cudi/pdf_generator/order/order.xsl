@@ -11,14 +11,14 @@
 >
 
 	<xsl:import href="../../../pdf_generator/essentials.xsl"/>
-	
+
 	<xsl:import href="../../../pdf_generator/our_union/essentials.xsl"/>
 	<xsl:import href="../../../pdf_generator/our_union/logo.xsl"/>
-	
+
 	<xsl:import href="i18n/default.xsl"/>
-	
+
 	<xsl:output method="xml" indent="yes"/>
-	
+
 	<xsl:template match="order">
 	    <fo:root font-size="10pt">
 	        <fo:layout-master-set>
@@ -27,7 +27,7 @@
 	                <fo:region-before region-name="header-block" extent="-35mm"/>
 	                <fo:region-after region-name="footer-block" extent="0mm"/>
 	            </fo:simple-page-master>
-	
+
 	            <fo:page-sequence-master master-name="document">
 	               <fo:repeatable-page-master-alternatives>
 	                   <fo:conditional-page-master-reference odd-or-even="even" master-reference="page-master"/>
@@ -35,7 +35,7 @@
 	               </fo:repeatable-page-master-alternatives>
 	            </fo:page-sequence-master>
 	        </fo:layout-master-set>
-	        
+
 	        <xsl:choose>
 	        	<xsl:when test="count($external_items_count) != 0">
 	                <fo:page-sequence master-reference="document">
@@ -56,7 +56,7 @@
 	                                <fo:table-column column-width="55%"/>
 	                                <fo:table-column column-width="18%"/>
 	                                <fo:table-column column-width="9%"/>
-	                				
+
 	                				<fo:table-header>
 	                				    <fo:table-row>
 	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"	border-style="solid" border-width="0.5mm" border-color="black">
@@ -73,7 +73,7 @@
 	                				        </fo:table-cell>
 	                				    </fo:table-row>
 	                				</fo:table-header>
-	                				
+
 	                                <fo:table-body>
 	                                	<xsl:apply-templates select="external_items"/>
 	                                </fo:table-body>
@@ -83,7 +83,7 @@
 	                </fo:page-sequence>
 	            </xsl:when>
 	        </xsl:choose>
-		    
+
 			<xsl:choose>
 				<xsl:when test="count($internal_items_count) != 0">
 			        <fo:page-sequence master-reference="document">
@@ -106,7 +106,7 @@
 			                        <fo:table-column column-width="11%"/>
 			                        <fo:table-column column-width="8%"/>
 			                        <fo:table-column column-width="8%"/>
-			        				
+
 			        				<fo:table-header>
 			        				    <fo:table-row>
 			        				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
@@ -129,7 +129,7 @@
 			        				        </fo:table-cell>
 			        				    </fo:table-row>
 			        				</fo:table-header>
-			        				
+
 			                        <fo:table-body>
 			                        	<xsl:apply-templates select="internal_items"/>
 			                        </fo:table-body>
@@ -139,7 +139,7 @@
 			        </fo:page-sequence>
 			    </xsl:when>
 			</xsl:choose>
-		            
+
 			<xsl:choose>
 				<xsl:when test="count($internal_items_count) = 0 and count($external_items_count) = 0">
 			        <fo:page-sequence master-reference="document">
@@ -161,33 +161,33 @@
 			</xsl:choose>
 	    </fo:root>
 	</xsl:template>
-	
+
 	<xsl:template name="date" match="date">
 	    <xsl:value-of select="/order/@date"/>
 	</xsl:template>
-	
+
 	<xsl:template name="mail" match="mail">
 	    <xsl:value-of select="/order/cudi/mail"/>
 	</xsl:template>
-	
+
 	<xsl:template name="phone" match="phone">
 	    <xsl:value-of select="/order/cudi/phone"/>
 	</xsl:template>
-	
+
 	<xsl:template name="union_name" match="union_name">
 	    <xsl:value-of select="/order/our_union/name"/>
 	</xsl:template>
-	
+
 	<xsl:template name="name" match="name">
 	    <xsl:value-of select="/order/cudi/@name"/>
 	</xsl:template>
-	
+
 	<xsl:template name="header" match="header">
 		<fo:table table-layout="fixed" width="100%">
 	        <fo:table-column column-width="27%"/>
 	        <fo:table-column column-width="40%"/>
 	        <fo:table-column column-width="33%"/>
-	
+
 	        <fo:table-body>
 	            <fo:table-row>
 	                <fo:table-cell padding="3mm" border-end-color="black" border-end-style="solid" border-end-width="0.7mm">
@@ -212,12 +212,12 @@
 	        </fo:table-body>
 	    </fo:table>
 	</xsl:template>
-	
+
 	<xsl:template name="footer" match="footer">
 		<fo:table table-layout="fixed" width="100%">
 	        <fo:table-column column-width="67%"/>
 	        <fo:table-column column-width="33%"/>
-	
+
 	        <fo:table-body>
 	            <fo:table-row>
 	                <fo:table-cell padding-start="3mm">
@@ -232,29 +232,29 @@
 	        </fo:table-body>
 	    </fo:table>
 	</xsl:template>
-	
+
 	<xsl:template name="delivery_address_block" match="delivery_address_block">
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/delivery_address/name"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/delivery_address/street"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/delivery_address/city"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/delivery_address/extra"/></fo:block>
 	</xsl:template>
-	
+
 	<xsl:template name="billing_address_block" match="billing_address_block">
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/name"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/person"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/street"/></fo:block>
 		<fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/city"/></fo:block>
 	</xsl:template>
-	
+
 	<xsl:template match="external_items">
 		<xsl:apply-templates select="external_item"/>
 	</xsl:template>
-	
+
 	<xsl:template match="internal_items">
 		<xsl:apply-templates select="internal_item"/>
 	</xsl:template>
-	
+
 	<xsl:template match="external_item">
 	    <fo:table-row>
 	        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
@@ -271,7 +271,7 @@
 	        </fo:table-cell>
 	    </fo:table-row>
 	</xsl:template>
-	
+
 	<xsl:template match="internal_item">
 	    <fo:table-row>
 	        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
@@ -303,10 +303,10 @@
 	        </fo:table-cell>
 	    </fo:table-row>
 	</xsl:template>
-	
+
 	<xsl:param name="external_items_count" select="/order/external_items/*"/>
 	<xsl:param name="internal_items_count" select="/order/internal_items/*"/>
-	
+
 	<xsl:template name="printCheckedBox">
 		<xsl:param name="imageheight">8</xsl:param>
 		<xsl:param name="imagewidth">8</xsl:param>
@@ -344,5 +344,5 @@
 	          </svg:svg>
 	    </fo:instream-foreign-object>
 	</xsl:template>
-	
+
 </xsl:stylesheet>
