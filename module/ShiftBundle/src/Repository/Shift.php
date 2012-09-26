@@ -75,6 +75,28 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllActiveBetweenDates($startDate, $endDate)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                    $query->expr()->andX(
+                        $query->expr()->gt('s.endDate', ':now'),
+                        $query->expr()->lt('s.startDate', ':end_date'),
+                        $query->expr()->gt('s.endDate', ':start_date')
+                    )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
     public function findAllActiveByPerson(Person $person)
     {
         $query = $this->_em->createQueryBuilder();
