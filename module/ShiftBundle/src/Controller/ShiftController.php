@@ -36,6 +36,26 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
         $unitSearchForm = new UnitSearchForm($this->getEntityManager());
 
+        if (!$this->getAuthentication()->getPersonObject()) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::WARNING,
+                    'Warning',
+                    'Please log in to view the shifts!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'index',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
