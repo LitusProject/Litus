@@ -126,17 +126,8 @@ class Booking
         $this->person = $person;
         $this->setArticle($article)
             ->setNumber($number)
-            ->setStatus($status);
+            ->setStatus($status, $entityManager);
         $this->bookDate = new DateTime();
-
-        if ($article->canExpire()) {
-            $expireTime = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.reservation_expire_time');
-
-            $now = new DateTime();
-            $this->expirationDate = $now->add(new DateInterval($expireTime));
-        }
     }
 
     /**
@@ -241,7 +232,7 @@ class Booking
      *
      * @return \CudiBundle\Entity\Sales\Booking
      */
-    public function setStatus($status)
+    public function setStatus($status, $entityManager)
     {
         if (!self::isValidBookingStatus($status))
             throw new \InvalidArgumentException('The BookingStatus is not valid.');
@@ -251,10 +242,20 @@ class Booking
             $this->assignmentDate = null;
             $this->saleDate = null;
             $this->cancelationDate = null;
+            $this->expirationDate = null;
         } elseif ($status == 'assigned') {
             $this->assignmentDate = new DateTime();
             $this->saleDate = null;
             $this->cancelationDate = null;
+
+            if ($this->article->canExpire()) {
+                $expireTime = $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.reservation_expire_time');
+
+                $now = new DateTime();
+                $this->expirationDate = $now->add(new DateInterval($expireTime));
+            }
         } elseif ($status == 'sold') {
             $this->saleDate = new DateTime();
             $this->cancelationDate = null;
