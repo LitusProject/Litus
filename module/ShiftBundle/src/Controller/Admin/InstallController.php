@@ -53,6 +53,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_shift' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_subscription' => array(
+                        'manage', 'delete',
+                    )
                     'shift' => array(
                         'index', 'responsible', 'signout', 'volunteer'
                     ),

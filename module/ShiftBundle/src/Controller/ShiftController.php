@@ -223,6 +223,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($volunteer->getPerson()->getOrganizationStatus($this->getCurrentAcademicYear()) == OrganizationStatus::$possibleStatuses['praesidium']) {
                     $shift->removeVolunteer($volunteer);
 
+
+
                     // @TODO: Send mail
 
                     $this->getEntityManager()->remove($volunteer);
