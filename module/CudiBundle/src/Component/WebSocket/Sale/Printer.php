@@ -28,7 +28,7 @@ class Printer {
         $data .= '#';
         foreach($prices as $price)
             $data .= '#' . number_format($price, 2);
-        self::_print($entityManger, $printer, $printer == 'collect' ? 2 : 1, $data);
+        self::_print($entityManger, $printer, strpos($printer, 'collect') === 0 ? 2 : 1, $data);
     }
 
     public static function salePrint(EntityManager $entityManger, $printer, $identification, $barcode, $queueNum, $totalPrice, $articles, $prices)

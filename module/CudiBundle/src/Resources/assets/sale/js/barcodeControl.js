@@ -1,6 +1,6 @@
 (function ($) {
 	var defaults = {
-        clearTime: 100,
+        clearTime: 50,
         barcodeLength: 12,
 		onBarcode: function () {},
 	};
@@ -23,12 +23,12 @@
 			var $this = $(this);
 
 			$(this).data('barcodeControlSettings', settings);
-			$('body').focus();
 			_clear($(this));
 
 			$('body').unbind('keydown.barcodeControl').bind('keydown.barcodeControl', function (e) {
-			    if (e.target == undefined || $(e.target).is('input'))
+			    if (e.target == undefined || $(e.target).is('input') && $(e.target).is(':visible')) {
 			        return;
+			    }
 
 				if (_isNumericKey(e.which)) {
 				    e.preventDefault();
