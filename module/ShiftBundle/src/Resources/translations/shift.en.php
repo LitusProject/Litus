@@ -23,4 +23,6 @@ return array(
     'You were signed up as a responsible for the selected shift!' => 'You were signed up as a responsible for the selected shift!',
     'No shifts were found that match the given query.' => 'No shifts were found that match the given query.',
     'Please log in to view the shifts!' => 'Please log in to view the shifts!',
+    'The subscription was successfully removed!' => 'The subscription was successfully removed!',
+    'An error occurred while trying to delete a subscription.' => 'An error occurred while trying to delete a subscription.',
 );

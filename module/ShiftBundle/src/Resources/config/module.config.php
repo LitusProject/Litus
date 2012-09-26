@@ -42,6 +42,22 @@ return array(
                     ),
                 ),
             ),
+            'admin_subscription' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'type'   => '[a-zA-Z]*',
+                        'page'   => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_subscription',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'admin_unit' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -111,6 +127,7 @@ return array(
         'invokables' => array(
             'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
             'admin_shift'   => 'ShiftBundle\Controller\Admin\ShiftController',
+            'admin_subscription'   => 'ShiftBundle\Controller\Admin\SubscriptionController',
             'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
 
             'shift'         => 'ShiftBundle\Controller\ShiftController',
