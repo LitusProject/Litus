@@ -81,7 +81,7 @@ class Session
     /**
      * @var string The type of this session
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $shibboleth;
 
