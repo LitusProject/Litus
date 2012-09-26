@@ -72,22 +72,22 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
 
     public function logoutAction()
     {
-        $this->getAuthentication()->forget();
+        $session = $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You have been successfully logged out!'
-            )
-        );
+        if ($session->isShibboleth()) {
+            $shibbolethLogoutUrl = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shibboleth_logout_url');
 
-        $this->redirect()->toRoute(
-            'prof_index',
-            array(
-                'language' => $this->getLanguage()->getAbbrev(),
-            )
-        );
+            $this->redirect()->toUrl($shibbolethLogoutUrl);
+        } else {
+            $this->redirect()->toRoute(
+                'prof_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+        }
 
         return new ViewModel();
     }
