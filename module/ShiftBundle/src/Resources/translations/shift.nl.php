@@ -23,4 +23,6 @@ return array(
     'You were signed up as a responsible for the selected shift!' => 'Je werd ingeschreven als verantwoordelijke op de geselecteerde shift!',
     'No shifts were found that match the given query.' => 'Er werden geen shiften gevonden die overeenkomen met de gegeven vraag..',
     'Please log in to view the shifts!' => 'Meld je aan om de shiften te bekijken!',
+    'The subscription was successfully removed!' => 'De inschrijving werd succesvol verwijderd!',
+    'An error occurred while trying to delete a subscription.' => 'Er trad een fout op bij het verwijderen van de inschrijving!',
 );

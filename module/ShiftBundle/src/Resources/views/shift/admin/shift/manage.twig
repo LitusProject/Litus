@@ -43,6 +43,9 @@
 	                        {% if hasAccess('admin_shift', 'delete') %}
 	                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
 	                        {% endif %}
+	                        {% if hasAccess('admin_shift', 'view') %}
+	                            <a href="{{ url('admin_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
+	                        {% endif %}
 	                    </td>
 	                </tr>
 	            {% endfor %}
