@@ -47,11 +47,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function deleteAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($subscription = $this->_getSubscription()))
             return new ViewModel();
 
+        // @TODO: Send an e-mail to this guy
         $this->getEntityManager()->remove($subscription);
 
         $this->getEntityManager()->flush();
