@@ -81,7 +81,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $booking->setStatus('canceled');
+        $booking->setStatus('canceled', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -212,7 +212,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                             if ($available > 0) {
                                 if ($available >= $booking->getNumber()) {
-                                    $booking->setStatus('assigned');
+                                    $booking->setStatus('assigned', $this->getEntityManager());
                                 } else {
                                     $new = new Booking(
                                         $this->getEntityManager(),
@@ -224,7 +224,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                                     $this->getEntityManager()->persist($new);
                                     $booking->setNumber($available)
-                                        ->setStatus('assigned');
+                                        ->setStatus('assigned', $this->getEntityManager());
                                 }
                             }
                         }

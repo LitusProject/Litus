@@ -574,7 +574,7 @@ class Booking extends EntityRepository
                     $booking->setNumber($available);
                 }
 
-                   $booking->setStatus('assigned');
+                $booking->setStatus('assigned', $this->getEntityManager());
 
                 if (!isset($persons[$booking->getPerson()->getId()]))
                     $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
@@ -606,7 +606,7 @@ class Booking extends EntityRepository
             ->getResult();
 
         foreach($bookings as $booking) {
-               $booking->setStatus('expired');
+               $booking->setStatus('expired', $this->getEntityManager());
         }
     }
 }

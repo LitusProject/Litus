@@ -622,12 +622,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $currentNumber = $data->articles->{$booking->getId()};
             if ($currentNumber > 0 && $currentNumber <= $booking->getNumber() && $booking->getStatus() == 'assigned') {
                 if ($booking->getNumber() == $currentNumber) {
-                    $booking->setStatus('sold');
+                    $booking->setStatus('sold', $this->_entityManager);
                 } else {
                     $remainder = new Booking($this->_entityManager, $booking->getPerson(), $booking->getArticle(), 'assigned', $booking->getNumber() - $currentNumber);
                     $this->_entityManager->persist($remainder);
                     $booking->setNumber($currentNumber)
-                        ->setStatus('sold');
+                        ->setStatus('sold', $this->_entityManager);
                 }
 
                 $price = $booking->getArticle()->getSellPrice();
@@ -694,7 +694,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->findOneSoldByArticleAndNumber($saleItem->getArticle(), $saleItem->getNumber());
 
             if (isset($booking))
-                $booking->setStatus('assigned');
+                $booking->setStatus('assigned', $this->_entityManager);
 
             $saleItem->getArticle()->setStockValue($saleItem->getArticle()->getStockValue() + $saleItem->getNumber());
         }

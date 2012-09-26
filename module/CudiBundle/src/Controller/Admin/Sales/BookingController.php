@@ -133,7 +133,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                     $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                     if ($available > 0) {
                         if ($available >= $booking->getNumber()) {
-                            $booking->setStatus('assigned');
+                            $booking->setStatus('assigned', $this->getEntityManager());
                         } else {
                             $new = new Booking(
                                 $this->getEntityManager(),
@@ -145,7 +145,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                             
                             $this->getEntityManager()->persist($new);
                             $booking->setNumber($available)
-                                ->setStatus('assigned');
+                                ->setStatus('assigned', $this->getEntityManager());
                         }
                     }
                 }
@@ -282,7 +282,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $booking->setNumber($available);
         }
 
-        $booking->setStatus('assigned');
+        $booking->setStatus('assigned', $this->getEntityManager());
 
         BookingMail::sendMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
 
@@ -306,7 +306,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        $booking->setStatus('booked');
+        $booking->setStatus('booked', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
@@ -327,7 +327,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($booking = $this->_getBooking()))
             return new ViewModel();
 
-        $booking->setStatus('expired');
+        $booking->setStatus('expired', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
