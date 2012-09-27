@@ -303,7 +303,7 @@
 			});
 
 			$('#startCollectingNext').click(function () {
-				$('#queueList .startCollecting:first').click();
+				$('#queueList .startCollecting:visible').filter(':first').click();
 			});
 
 			$('body').barcodeControl();
