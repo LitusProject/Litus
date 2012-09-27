@@ -5,6 +5,7 @@ namespace CalendarBundle\Entity\Nodes;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\Users\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +19,7 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     /**
      * @var array The translations of this event
      *
-     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Nodes\Translation", mappedBy="event", cascade={"persist", "remove"})
      */
     private $translations;
 
@@ -62,6 +63,8 @@ class Event extends \CommonBundle\Entity\Nodes\Node
         $this->name = $startDate->format('d_m_Y_H_i');
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -193,6 +196,17 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param \CalendarBundle\Entity\Nodes\Translation $translation
+     *
+     * @return \CalendarBundle\Entity\Nodes\Event
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $this->translations->add($translation);
+        return $this;
     }
 
     /**
