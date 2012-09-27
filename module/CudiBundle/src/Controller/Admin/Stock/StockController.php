@@ -106,6 +106,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
             $item->supplier = $article->getSupplier()->getName();
+            $item->nbAssigned = $period->getNbAssigned($article);
+            $item->nbNotAssigned = $period->getNbBooked($article);
             $item->nbInStock = $article->getStockValue();
             $item->nbNotDelivered = $period->getNbOrdered($article) - $period->getNbDelivered($article);
             $item->nbNotDelivered = $item->nbNotDelivered < 0 ? 0 : $item->nbNotDelivered;

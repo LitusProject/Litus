@@ -145,6 +145,9 @@
 
     function _init ($this) {
         var options = $this.data('showQueueSettings');
+        $('#hideHold').click(function () {
+            _toggleHoldItems($this);
+        });
         $.webSocket(
         	{
         		name: 'showQueue',
@@ -171,6 +174,8 @@
                             if ($.inArray(parseInt($(this).data('info').id, 10), inQueue) < 0)
                                 $(this).remove();
                         });
+
+                        _toggleHoldItems($this);
         			} else if(data.sale) {
                         $this.showQueue('updatePayDesk');
         				options.openSale('showQueue', data);
@@ -246,5 +251,16 @@
 
         if (previousStatus != item.status)
             _addActions($this, row);
+    }
+
+    function _toggleHoldItems($this) {
+        if ($('#hideHold').is(':checked')) {
+            $this.find('tr').each(function () {
+                if ($(this).data('info').status == 'hold')
+                    $(this).hide();
+            });
+        } else {
+            $this.find('tr').show();
+        }
     }
 }) (jQuery);
