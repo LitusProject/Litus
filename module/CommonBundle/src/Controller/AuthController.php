@@ -134,6 +134,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         $this->redirect()->toRoute(
                             'index'
                         );
+                    } else {
+                        $this->redirect()->toRoute(
+                            'secretary_registration'
+                        );
                     }
                 }
             }
