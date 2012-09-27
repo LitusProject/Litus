@@ -110,7 +110,7 @@ You have been removed from the following shift by an administrator:
                     ),
                     'admin_subscription' => array(
                         'manage', 'delete',
-                    )
+                    ),
                     'shift' => array(
                         'index', 'responsible', 'signout', 'volunteer'
                     ),
