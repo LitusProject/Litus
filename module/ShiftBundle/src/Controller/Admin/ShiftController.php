@@ -216,10 +216,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->setSubject($subject);
 
         foreach ($shift->getVolunteers() as $volunteer)
-            $mail->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
+            $mail->addBcc($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
 
         foreach ($shift->getResponsibles() as $responsible)
-            $mail->addTo($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
+            $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
 
         if ('production' == getenv('APPLICATION_ENV'))
             $this->getMailTransport()->send($mail);
