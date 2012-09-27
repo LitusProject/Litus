@@ -52,7 +52,33 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         if (!($subscription = $this->_getSubscription()))
             return new ViewModel();
 
-        // @TODO: Send an e-mail to this guy
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail_name');
+
+        $message = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.subscription_deleted_mail');
+
+        $subject = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.subscription_deleted_mail_subject');
+
+        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+        $mail = new Message();
+        $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
+            ->setSubject($subject);
+
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
+
         $this->getEntityManager()->remove($subscription);
 
         $this->getEntityManager()->flush();

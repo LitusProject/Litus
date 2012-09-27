@@ -189,7 +189,38 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift = $this->_getShift()))
             return new ViewModel();
 
-        // @TODO: Send an e-mail to all people on the shift
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail_name');
+
+        $message = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.shift_deleted_mail');
+
+        $subject = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.shift_deleted_mail_subject');
+
+        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+        $mail = new Message();
+        $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+            ->setFrom($mailAddress, $mailName)
+            ->setSubject($subject);
+
+        foreach ($shift->getVolunteers() as $volunteer)
+            $mail->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
+
+        foreach ($shift->getResponsibles() as $responsible)
+            $mail->addTo($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
+
+        if ('production' == getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
+
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
         );
