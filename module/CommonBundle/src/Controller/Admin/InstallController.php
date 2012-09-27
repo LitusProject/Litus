@@ -196,6 +196,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'cudi_install' => array(
                         'index'
                     ),
+                    'form_install' => array(
+                        'index'
+                    ),
                     'gallery_install' => array(
                         'index'
                     ),
