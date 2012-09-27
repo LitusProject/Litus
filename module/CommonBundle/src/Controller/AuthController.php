@@ -63,6 +63,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                             'You could not be logged in!'
                         )
                     );
+
+                    $this->redirect()->toRoute(
+                        'index',
+                        array(
+                            'action' => 'index'
+                        )
+                    );
+
+                    return new ViewModel();
                 }
             }
         }
