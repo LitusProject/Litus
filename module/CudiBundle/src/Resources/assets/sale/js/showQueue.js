@@ -82,6 +82,8 @@
         }
         if (row.data('info').locked)
             row.find('button').addClass('disabled');
+        else
+            row.find('button').removeClass('disabled');
 
         if (options.isSelling())
             startSelling.hide();
