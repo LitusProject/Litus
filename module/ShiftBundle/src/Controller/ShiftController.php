@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**

@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
