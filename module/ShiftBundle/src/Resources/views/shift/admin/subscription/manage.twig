@@ -33,8 +33,10 @@
                 <tr class="item item-{{ responsible.getId() }}">
                     <td>{{ responsible.getPerson().getFullName() }}</td>
                     <td class="actions">
-                        {% if hasAccess('admin_subscription', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ responsible.getId() }}" data-type="responsible" data-name="{{ responsible.getPerson().getFullName() }}">Delete</a>
+                    	{% if shift.canBeEditedBy(authenticatedPerson) %}
+	                        {% if hasAccess('admin_subscription', 'delete') %}
+	                            <a href="#" class="delete" data-id="{{ responsible.getId() }}" data-type="responsible" data-name="{{ responsible.getPerson().getFullName() }}">Delete</a>
+	                        {% endif %}
                         {% endif %}
                     </td>
                 </tr>
