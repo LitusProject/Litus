@@ -249,7 +249,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->setSubject($subject);
 
                     if ('production' == getenv('APPLICATION_ENV'))
-                        $mailTransport->send($mail);
+                        $this->getMailTransport()->send($mail);
 
                     $this->getEntityManager()->remove($volunteer);
                 }
