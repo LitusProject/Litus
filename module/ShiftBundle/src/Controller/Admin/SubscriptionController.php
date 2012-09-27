@@ -93,7 +93,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->setSubject($subject);
 
         if ('production' == getenv('APPLICATION_ENV'))
-            $mailTransport->send($mail);
+            $this->getMailTransport()->send($mail);
 
         $this->getEntityManager()->remove($subscription);
 
