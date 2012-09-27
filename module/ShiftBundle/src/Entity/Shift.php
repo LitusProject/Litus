@@ -614,4 +614,23 @@ class Shift
 
         return null;
     }
+
+    /**
+     * Indicates whether the given person can edit this shift and its subscriptions.
+     *
+     * @param \CommonBundle\Entity\Users\Person $person The person to check.
+     * @return boolean
+     */
+    public function canBeEditedBy(Person $person)
+    {
+        if ($this->getCreationPerson()->getId() === $person->getId())
+            return true;
+
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor')
+                return true;
+        }
+
+        return false;
+    }
 }
