@@ -22,6 +22,8 @@
 		    	<tr>
 		        	<th>Article</th>
 		        	<th width="100px">Supplier</th>
+	            	<th width="95px" class="widest">Assigned</th>
+	            	<th width="95px" class="widest">Not Assigned</th>
 		        	<th width="95px">In stock</th>
 	            	<th width="95px">Not delivered</th>
 		        	<th width="95px">Reserved</th>
@@ -35,6 +37,8 @@
 	        	<tr>
 	            	<th>Article</th>
 	            	<th width="100px">Supplier</th>
+	            	<th width="95px" class="widest">Assigned</th>
+	            	<th width="95px" class="widest">Not Assigned</th>
 	            	<th width="95px">In stock</th>
 	            	<th width="95px">Not delivered</th>
 	            	<th width="95px">Reserved</th>
@@ -45,6 +49,8 @@
 		            <tr>
 		                <td>{{ article.getMainArticle().getTitle() }}</td>
 		                <td>{{ article.getSupplier().getName() }}</td>
+		                <td class="widest">{{ period.getNbAssigned(article) }}</td>
+		                <td class="widest">{{ period.getNbBooked(article) }}</td>
 		                <td>{{ article.getStockValue() }}</td>
 		                <td>{% if period.getNbOrdered(article) - period.getNbDelivered(article) < 0 %}0{% else %}{{ period.getNbOrdered(article) - period.getNbDelivered(article) }}{% endif %}</td>
 		                <td>{{ period.getNbBooked(article) + period.getNbAssigned(article) }}</td>
@@ -78,6 +84,8 @@
 						$('#stock_search table').append(row = $('<tr>', {class: 'item'}));
 						row.append('<td>' + this.title  + '</td>')
 							.append('<td>' + this.supplier + '</td>')
+							.append('<td class="widest">' + this.nbAssigned + '</td>')
+							.append('<td class="widest">' + this.nbNotAssigned + '</td>')
 							.append('<td>' + this.nbInStock + '</td>')
 							.append('<td>' + this.nbNotDelivered + '</td>')
 							.append('<td>' + this.nbReserved + '</td>')
