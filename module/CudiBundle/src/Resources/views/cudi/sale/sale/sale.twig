@@ -408,7 +408,7 @@
 					$('#sale').sale('close');
 				},
 				isSelling: function () {
-				    return $('#sale').data('saleSettings') ? true : false;
+				    return $('#sale').is(':visible') || $('#collecting').is(':visible');
 				}
 			});
 		});
