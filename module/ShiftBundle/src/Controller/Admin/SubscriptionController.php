@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,10 +48,25 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function deleteAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         if (!($subscription = $this->_getSubscription()))
             return new ViewModel();
+
+        $repository = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift');
+        switch ($this->getParam('type')) {
+            case 'volunteer':
+                $shift = $repository->findOneActiveByVolunteer($subscription->getId());
+                $shift->removeVolunteer($subscription);
+                break;
+            case 'responsible':
+                $shift = $repository->findOneActiveByResponsible($subscription->getId());
+                $shift->removeResponsible($subscription);
+                break;
+            default:
+                return new ViewModel();
+        }
 
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

@@ -54,7 +54,6 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 if ('production' == getenv('APPLICATION_ENV'))
                     $mailTransport->send($mail);
 
-
                 return new ViewModel(
                     array(
                         'status' => 'success',
