@@ -154,11 +154,11 @@
 					$.webSocket('send', {name: 'showQueue', text: 'initialize: {"queueType": "shortQueue", "session": "' + options.session + '" }'});
 					if ($this.data('payDesk'))
 					    _setPayDesk($this, $this.data('payDesk'));
-        		},
-        		message: function (e, data) {
-        			options.errorDialog.removeClass('in');
-        			if (data.queue) {
-        				var inQueue = [];
+                },
+                message: function (e, data) {
+                    options.errorDialog.removeClass('in');
+                    if (data.queue) {
+                        var inQueue = [];
                         $(data.queue).each(function () {
                             inQueue.push(parseInt(this.id, 10));
                             if ($this.find('#queueItem-' + this.id).length > 0)
