@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
     ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -223,9 +224,32 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($volunteer->getPerson()->getOrganizationStatus($this->getCurrentAcademicYear()) == OrganizationStatus::$possibleStatuses['praesidium']) {
                     $shift->removeVolunteer($volunteer);
 
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shiftbundle.mail');
 
+                    $mailName = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shiftbundle.mail_name');
 
-                    // @TODO: Send mail
+                    $message = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shiftbundle.praesidium_removed_mail');
+
+                    $subject = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shiftbundle.praesidium_removed_mail_subject');
+
+                    $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+                    $mail = new Message();
+                    $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+                        ->setFrom($mailAddress, $mailName)
+                        ->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName())
+                        ->setSubject($subject);
+
+                    if ('production' == getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
 
                     $this->getEntityManager()->remove($volunteer);
                 }
