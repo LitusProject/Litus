@@ -85,9 +85,6 @@
         else
             row.find('button').removeClass('disabled');
 
-        if (options.isSelling())
-            startSelling.hide();
-
         startCollecting.unbind('click')
             .filter(':not(.disabled)').click(function () {
                 $this.showQueue('updatePayDesk');
@@ -251,6 +248,10 @@
 
         if (previousStatus != item.status)
             _addActions($this, row);
+
+        if (options.isSelling()) {
+            row.find('.startCollecting, .startSelling').hide();
+        }
     }
 
     function _toggleHoldItems($this) {
