@@ -17,11 +17,11 @@
 	<xsl:import href="i18n/default.xsl"/>
 
     <xsl:output method="xml" indent="yes"/>
-    
+
     <xsl:template match="article">
-        
+
         <fo:root>
-            
+
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="article_front" page-height="297mm" page-width="210mm" margin-top="20mm" margin-bottom="20mm" margin-right="20mm">
                     <xsl:attribute name="margin-left">
@@ -35,18 +35,18 @@
                     <fo:region-after extent="0cm"/>
                 </fo:simple-page-master>
             </fo:layout-master-set>
-        
+
             <fo:page-sequence master-reference="article_front">
                 <fo:static-content flow-name="xsl-region-before"><fo:block/></fo:static-content>
                 <fo:static-content flow-name="xsl-region-after"><fo:block/></fo:static-content>
-                
+
                 <fo:flow flow-name="xsl-region-body">
-                    
+
                     <fo:table table-layout="fixed" width="100%">
                         <fo:table-column column-number="1" column-width="16mm"/>
                         <fo:table-column column-number="2" column-width="0.1mm" />
                         <fo:table-column column-number="3" column-width="140mm"/>
-                        
+
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell display-align="center" padding-right="3mm">
@@ -70,7 +70,7 @@
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-                    
+
                     <fo:block-container position="absolute" top="80mm" left="0mm" width="170mm" height="100mm">
                         <fo:block font-family="sans-serif" font-size="24pt" font-weight="bold" text-align="center" space-after="20mm">
                             <xsl:apply-templates select="title"/>
@@ -79,13 +79,13 @@
                             <xsl:apply-templates select="authors"/>
                         </fo:block>
                     </fo:block-container>
-                    
+
                     <fo:block-container position="absolute" top="210mm" left="0mm" width="170mm" height="20mm">
                         <fo:block font-family="sans-serif" font-size="12pt">
                             <fo:table table-layout="fixed" width="100%">
                                 <fo:table-column column-number="1" column-width="20mm"/>
                                 <fo:table-column column-number="2" column-width="150mm"/>
-                                
+
                                 <fo:table-body>
                                     <xsl:for-each select="subjects/subject">
                                         <fo:table-row>
@@ -101,13 +101,13 @@
                             </fo:table>
                         </fo:block>
                     </fo:block-container>
-                    
+
                     <fo:block-container position="absolute" top="220mm" left="0mm" width="170mm" height="37mm">
                         <fo:table table-layout="fixed" width="100%">
                             <fo:table-column column-number="1" column-width="20mm"/>
                             <fo:table-column column-number="2" column-width="110mm"/>
                             <fo:table-column column-number="3" column-width="40mm"/>
-                            
+
                             <fo:table-body>
                                 <fo:table-row>
                                     <fo:table-cell display-align="after">
@@ -115,7 +115,7 @@
                                             <xsl:apply-templates select="our_union"/>
                                         </fo:block>
                                     </fo:table-cell>
-                                
+
                                     <fo:table-cell display-align="after" padding-start="3mm">
                                         <fo:block font-family="sans-serif" font-size="10pt">
                                             <fo:block font-weight="bold"><xsl:value-of select="address/name"/></fo:block>
@@ -124,12 +124,12 @@
                                             <fo:block><xsl:value-of select="address/site"/></fo:block>
                                         </fo:block>
                                     </fo:table-cell>
-                                    
+
                                     <fo:table-cell display-align="after">
                                         <fo:block font-family="sans-serif" font-size="12pt" font-weight="bold" text-align="center" space-after="2mm">
                                             <xsl:value-of select="price"/>&#160;<xsl:call-template name="euro"/>
                                         </fo:block>
-                                                                            
+
                                         <fo:block>
                                             <fo:instream-foreign-object>
                                                 <xsl:call-template name="barcode-EAN">
@@ -144,13 +144,13 @@
                             </fo:table-body>
                         </fo:table>
                     </fo:block-container>
-                    
+
                 </fo:flow>
-                
+
             </fo:page-sequence>
-            
+
         </fo:root>
-        
+
     </xsl:template>
 
 </xsl:stylesheet>
