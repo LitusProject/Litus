@@ -46,41 +46,87 @@
     	}
     };
 
-    function _addActions ($this) {
-    	$this.find('.startCollecting:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
+    function _addActions ($this, row) {
+        var options = $this.data('showQueueSettings');
+
+        row.find('button').hide();
+        var startCollecting = row.find('.startCollecting');
+        var stopCollecting = row.find('.stopCollecting');
+        var stopCollecting = row.find('.stopCollecting');
+        var startSelling = row.find('.startSelling');
+        var cancelSelling = row.find('.cancelSelling');
+        var hold = row.find('.setHold');
+        var unhold = row.find('.unsetHold');
+
+        switch (row.data('info').status) {
+            case 'signed_in':
+                startCollecting.show();
+                hold.show();
+                break;
+            case 'collecting':
+                stopCollecting.show();
+                cancelCollecting.show();
+                hold.show();
+                break;
+            case 'collected':
+                startSelling.show();
+                hold.show();
+                break;
+            case 'selling':
+                cancelSelling.show();
+                hold.show();
+                break;
+            case 'hold':
+                unhold.show();
+                break;
+        }
+        if (row.data('info').locked)
+            row.find('button').addClass('disabled');
+
+        if (options.isSelling())
+            startSelling.hide();
+
+        startCollecting.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: startCollecting ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.cancelCollecting:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: cancelCollecting ' + $(this).parent().data('servingQueueId'));
+        cancelCollecting.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: cancelCollecting ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.stopCollecting:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: stopCollecting ' + $(this).parent().data('servingQueueId'));
+        stopCollecting.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: stopCollecting ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.setHold:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: setHold ' + $(this).parent().data('servingQueueId'));
+        hold.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: setHold ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.unsetHold:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: unsetHold ' + $(this).parent().data('servingQueueId'));
+        unhold.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: unsetHold ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.startSelling:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: startSelling ' + $(this).parent().data('servingQueueId'));
+        startSelling.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: startSelling ' + $(this).parent().data('servingQueueId'));
     	});
-    	$this.find('.cancelSelling:not(.disabled)').unbind('click').click(function () {
-            $this.showQueue('updatePayDesk');
-    		_sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
+        cancelSelling.unbind('click')
+            .filter(':not(.disabled)').click(function () {
+                $this.showQueue('updatePayDesk');
+        		_sendToSocket('action: cancelSelling ' + $(this).parent().data('servingQueueId'));
     	});
     }
 
     function _gotBarcode ($this, value) {
         var options = $this.data('showQueueSettings');
         value = value - options.barcodePrefix;
-        
+
         $this.find('tr').each(function () {
             if ($(this).data('info').id == value) {
                 switch ($(this).data('info').status) {
@@ -110,11 +156,19 @@
         		message: function (e, data) {
         			options.errorDialog.removeClass('in');
         			if (data.queue) {
-        				$this.html('');
-        				$(data.queue).each(function () {
-        					_showQueueItem($this, this);
-        				});
-        				_addActions($this);
+        				var inQueue = [];
+                        $(data.queue).each(function () {
+                            inQueue.push(parseInt(this.id, 10));
+                            if ($this.find('#queueItem-' + this.id).length > 0)
+                                _updateQueueItem($this, this);
+                            else
+                                _showQueueItem($this, this);
+                        });
+
+                        $this.find('tr').each(function () {
+                            if ($.inArray(parseInt($(this).data('info').id, 10), inQueue) < 0)
+                                $(this).remove();
+                        });
         			} else if(data.sale) {
                         $this.showQueue('updatePayDesk');
         				options.openSale('showQueue', data);
@@ -147,7 +201,7 @@
     function _showQueueItem ($this, item) {
         var options = $this.data('showQueueSettings');
 
-		var row = $('<tr>').append(
+		var row = $('<tr>', {'id': 'queueItem-' + item.id}).append(
 			$('<td>', {'class': 'number'}).html(item.number),
 			$('<td>', {'class': 'name'}).append(
 			    (item.name ? item.name : 'guest ' + item.id),
@@ -160,49 +214,35 @@
 
 		actions.data('servingQueueId', item.id);
 
-		switch (item.status) {
-			case 'signed_in':
-				actions.append(
-					$('<button>', {'class': 'btn btn-success startCollecting'}).html('Print'),
-					' ',
-					$('<button>', {'class': 'btn btn-warning setHold hold'}).html('Hold')
-				);
-				break;
-			case 'collecting':
-				actions.append(
-					$('<button>', {'class': 'btn btn-success stopCollecting'}).html('Done'),
-					' ',
-					$('<button>', {'class': 'btn btn-danger cancelCollecting'}).html('Cancel'),
-					' ',
-					$('<button>', {'class': 'btn btn-warning setHold hold'}).html('Hold')
-				);
-				break;
-			case 'collected':
-				actions.append(
-					$('<button>', {'class': 'btn btn-success startSelling'}).html('Sell'),
-					' ',
-					$('<button>', {'class': 'btn btn-warning setHold hold'}).html('Hold')
-				);
-				break;
-			case 'selling':
-				actions.append(
-					$('<button>', {'class': 'btn btn-danger cancelSelling'}).html('Cancel'),
-					' ',
-					$('<button>', {'class': 'btn btn-warning setHold hold'}).html('Hold')
-				);
-				break;
-			case 'hold':
-				actions.append(
-					$('<button>', {'class': 'btn btn-warning unsetHold'}).html('Unhold')
-				);
-				break;
-		}
-		if (item.locked)
-			row.find('button').addClass('disabled');
-
-		if (options.isSelling())
-		    actions.find('.startSelling').hide();
+        actions.append(
+            startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html('Print').hide(),
+            stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html('Done').hide(),
+            cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html('Cancel').hide(),
+            startSelling = $('<button>', {'class': 'btn btn-success startSelling'}).html('Sell').hide(),
+            cancelSelling = $('<button>', {'class': 'btn btn-danger cancelSelling'}).html('Cancel').hide(),
+            hold = $('<button>', {'class': 'btn btn-warning setHold hold'}).html('Hold').hide(),
+            unhold = $('<button>', {'class': 'btn btn-warning unsetHold'}).html('Unhold').hide()
+        );
 
 		$this.append(row);
+        _addActions($this, row);
 	}
+
+    function _updateQueueItem($this, item) {
+        var options = $this.data('showQueueSettings');
+        var row = $('#queueItem-' + item.id);
+        var previousStatus = row.data('info').status;
+
+        row.find('.number').html(item.number);
+        row.find('.name').html('').append(
+            (item.name ? item.name : 'guest ' + item.id),
+            ' ',
+            (item.payDesk ? $('<span>', {class: 'label label-info'}).html(item.payDesk) : '')
+        );
+        row.find('.status').html(options.statusTranslate(item.status));
+        row.data('info', item);
+
+        if (previousStatus != item.status)
+            _addActions($this, row);
+    }
 }) (jQuery);
