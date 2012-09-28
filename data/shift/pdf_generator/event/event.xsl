@@ -23,7 +23,7 @@
 	<xsl:template match="event">
 	    <fo:root font-size="10pt">
 	        <fo:layout-master-set>
-	            <fo:simple-page-master master-name="page-master" page-height="210mm" page-width="297mm" margin-top="55mm" margin-bottom="40mm" margin-left="15mm" margin-right="15mm">
+	            <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="55mm" margin-bottom="40mm" margin-left="15mm" margin-right="15mm">
 	                <fo:region-body margin-bottom="8mm"/>
 	                <fo:region-before region-name="header-block" extent="-35mm"/>
 	                <fo:region-after region-name="footer-block" extent="0mm"/>
@@ -47,33 +47,7 @@
 	        	        </fo:static-content>
 	                	<fo:flow flow-name="xsl-region-body">
 	                        <fo:block>
-	                            <fo:table table-layout="fixed" width="100%" font-size="10pt" border-style="solid" border-width="0.5mm" border-color="black">
-	                                <fo:table-column column-width="16%"/>
-	                                <fo:table-column column-width="49%"/>
-	                                <fo:table-column column-width="25%"/>
-	                                <fo:table-column column-width="10%"/>
-
-	                				<fo:table-header>
-	                				    <fo:table-row>
-	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"	border-style="solid" border-width="0.5mm" border-color="black">
-	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="date"/></fo:block>
-	                				        </fo:table-cell>
-	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="name"/></fo:block>
-	                				        </fo:table-cell>
-	                				        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	                				            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="person"/></fo:block>
-	                				        </fo:table-cell>
-	                				        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	                				            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="responsible"/></fo:block>
-	                				        </fo:table-cell>
-	                				    </fo:table-row>
-	                				</fo:table-header>
-
-	                                <fo:table-body>
-	                                	<xsl:apply-templates select="shifts"/>
-	                                </fo:table-body>
-	                            </fo:table>
+	                        	<xsl:apply-templates select="shifts"/>
 	                        </fo:block>
 	                    </fo:flow>
 	                </fo:page-sequence>
@@ -120,15 +94,55 @@
 	</xsl:template>
 
 	<xsl:template match="shift">
-	    <fo:table-row>
-	        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	            <fo:block text-align="left"><xsl:apply-templates select="date"/></fo:block>
-	        </fo:table-cell>
+	    <xsl:choose>
+        	<xsl:when test="count(people/*) != 0">
+        		<fo:block text-align="left" font-size="12pt" font-weight="bold" margin-bottom="1mm">
+					<xsl:apply-templates select="date"/>—<xsl:apply-templates select="name"/>
+				</fo:block>
+
+                <fo:table table-layout="fixed" width="100%" margin-bottom="5mm">
+			        <fo:table-column column-width="55%"/>
+			        <fo:table-column column-width="30%"/>
+			        <fo:table-column column-width="15%"/>
+
+			        <fo:table-header>
+					    <fo:table-row>
+					        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"	border-style="solid" border-width="0.5mm" border-color="black">
+					            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="name"/></fo:block>
+					        </fo:table-cell>
+					        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
+					            <fo:block text-align="left" font-weight="bold"><xsl:call-template name="phone_number"/></fo:block>
+					        </fo:table-cell>
+					        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
+					            <fo:block text-align="center" font-weight="bold"><xsl:call-template name="responsible"/></fo:block>
+					        </fo:table-cell>
+					    </fo:table-row>
+					</fo:table-header>
+
+			        <fo:table-body>
+			            <xsl:apply-templates select="people"/>
+			        </fo:table-body>
+			    </fo:table>
+            </xsl:when>
+            <xsl:otherwise>
+            	<fo:block text-align="left" font-size="12pt" font-weight="bold" margin-bottom="5mm">
+					<xsl:apply-templates select="date"/>—<xsl:apply-templates select="name"/>
+				</fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="people">
+		<xsl:apply-templates select="person"/>
+	</xsl:template>
+
+	<xsl:template match="person">
+		<fo:table-row>
 	        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
 	            <fo:block text-align="left"><xsl:apply-templates select="name"/></fo:block>
 	        </fo:table-cell>
 	        <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
-	            <fo:block text-align="left"><xsl:apply-templates select="person"/></fo:block>
+	            <fo:block text-align="left"><xsl:apply-templates select="phone_number"/></fo:block>
 	        </fo:table-cell>
 	        <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
 	            <fo:block text-align="center" font-family="Arial">
