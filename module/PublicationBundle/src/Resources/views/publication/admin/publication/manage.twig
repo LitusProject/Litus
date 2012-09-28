@@ -42,6 +42,9 @@
 						    {% if hasAccess('admin_edition_pdf', 'manage') %}
 		                        <a href="{{ url('admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="view">Pdfs</a>
 		                    {% endif %}
+						    {% if hasAccess('admin_edition_html', 'manage') %}
+		                        <a href="{{ url('admin_edition_html', {"action": "manage", "id": publication.getId() }) }}" class="view">Htmls</a>
+		                    {% endif %}
 						</td>
 					</tr>
 
