@@ -37,9 +37,34 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        <li class="hidden-desktop">
-                            <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
-                        </li>
+                        {% if authenticatedPerson is not null %}
+                            <li class="dropdown hidden-desktop" id="accountDropdown">
+                                <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
+                                    Account
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ url('account') }}">
+                                            <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                            <small class="metadata"><em>{{ authenticatedPerson.getUniversityIdentification() }}</em></small>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="{{ url('booking') }}">{{ translate('Book Textbooks') }}</a>
+                                        <a href="{{ url('shift') }}">{{ translate('Shifts') }}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="{{ url("auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="hidden-desktop">
+                                <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
+                            </li>
+                        {% endif %}
         			</ul>
         		</div>
         		<ul class="nav pull-right lang-nav visible-desktop">

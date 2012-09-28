@@ -191,6 +191,22 @@ class Event extends \CommonBundle\Entity\Nodes\Node
     }
 
     /**
+     * @param integer $length
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getSummary($length = 100, Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getSummary($length);
+
+        return '';
+    }
+
+    /**
      * @return string
      */
     public function getName()
