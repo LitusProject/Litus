@@ -270,4 +270,23 @@ class Form extends \CommonBundle\Entity\Nodes\Node
         return null;
     }
 
+    /**
+     * Indicates whether the given person can edit this form.
+     *
+     * @param \CommonBundle\Entity\Users\Person $person The person to check.
+     * @return boolean
+     */
+    public function canBeEditedBy(Person $person)
+    {
+        if ($this->getCreationPerson()->getId() === $person->getId())
+            return true;
+
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'editor')
+                return true;
+        }
+
+        return false;
+    }
+
 }
