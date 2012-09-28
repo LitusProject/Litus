@@ -72,7 +72,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setSubject($formData['subject']);
 
                 foreach($enrollments as $enrollment)
-                    $mail->addTo($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
+                    $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
 
                 if ('production' == getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

@@ -64,9 +64,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#conditions').parent().append(
-                link = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
+                conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
-            link.click(function (e) {
+            conditionsLink.click(function (e) {
                 e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
             });

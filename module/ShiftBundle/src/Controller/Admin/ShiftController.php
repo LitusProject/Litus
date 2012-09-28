@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,11 +31,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActive(),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'ShiftBundle\Entity\Shift',
+            $this->getParam('page'),
+            array(),
+            array(
+                'startDate' => 'ASC',
+            )
         );
 
         return new ViewModel(
@@ -189,7 +192,38 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift = $this->_getShift()))
             return new ViewModel();
 
-        // @TODO: Send an e-mail to all people on the shift
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail_name');
+
+        $message = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.shift_deleted_mail');
+
+        $subject = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.shift_deleted_mail_subject');
+
+        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+        $mail = new Message();
+        $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+            ->setFrom($mailAddress, $mailName)
+            ->setSubject($subject);
+
+        foreach ($shift->getVolunteers() as $volunteer)
+            $mail->addBcc($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
+
+        foreach ($shift->getResponsibles() as $responsible)
+            $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
+
+        if ('production' == getenv('APPLICATION_ENV'))
+            $this->getMailTransport()->send($mail);
+
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
         );

@@ -19,6 +19,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,12 +48,53 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function deleteAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         if (!($subscription = $this->_getSubscription()))
             return new ViewModel();
 
-        // @TODO: Send an e-mail to this guy
+        $repository = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift');
+        switch ($this->getParam('type')) {
+            case 'volunteer':
+                $shift = $repository->findOneActiveByVolunteer($subscription->getId());
+                $shift->removeVolunteer($subscription);
+                break;
+            case 'responsible':
+                $shift = $repository->findOneActiveByResponsible($subscription->getId());
+                $shift->removeResponsible($subscription);
+                break;
+            default:
+                return new ViewModel();
+        }
+
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.mail_name');
+
+        $message = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.subscription_deleted_mail');
+
+        $subject = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shiftbundle.subscription_deleted_mail_subject');
+
+        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+        $mail = new Message();
+        $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
+            ->setSubject($subject);
+
+        if ('production' == getenv('APPLICATION_ENV'))
+            $this->getMailTransport()->send($mail);
+
         $this->getEntityManager()->remove($subscription);
 
         $this->getEntityManager()->flush();

@@ -40,7 +40,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
-                        <span class="title">{{ study.getTitle() }}</span><span class="title">&mdash;{{ translate('Phase') }} {{ study.getPhase() }}</span>
+                        <span class="title">{{ study.getTitle() }}</span><span class="phase">&mdash;{{ translate('Phase') }} {{ study.getPhase() }}</span>
 
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">

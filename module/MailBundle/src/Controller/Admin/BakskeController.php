@@ -12,23 +12,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Controller\Admin;
+namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Form\Admin\Mail\Send as MailForm,
+    MailBundle\Form\Admin\Bakske\Mail as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
- * MailController
+ * BakskeController
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class MailController extends \CudiBundle\Component\Controller\ActionController
+class BakskeController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+
     public function sendAction()
     {
-        $this->initAjax();
+        $currentYear = $this->getCurrentAcademicYear();
 
         $form = new MailForm();
 
@@ -37,54 +38,52 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.mail');
+                    ->getConfigValue('mail.bakske_mail');
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.mail_name');
+                    ->getConfigValue('mail.bakske_mail_name');
 
                 $mail = new Message();
                 $mail->setBody($formData['message'])
                     ->setFrom($mailAddress, $mailName)
-                    ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);
+
+                $metadatas = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+                    ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
+
+                foreach($metadatas as $metadata)
+                    $mail->addBcc($metadata->getAcademic()->getEmail(), $metadata->getAcademic()->getFullName());
 
                 if ('production' == getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
-                return new ViewModel(
-                    array(
-                        'status' => 'success',
-                        'result' => (object) array("status" => "success"),
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The mail was successfully sent!'
                     )
                 );
-            } else {
-                $errors = $form->getErrors();
-                $formErrors = array();
 
-                foreach ($form->getElements() as $key => $element) {
-                    $formErrors[$element->getId()] = array();
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getId()][] = $element->getMessages()[$error];
-                    }
-                }
-
-                return new ViewModel(
+                $this->redirect()->toRoute(
+                    'admin_mail_bakske',
                     array(
-                        'status' => 'error',
-                        'form' => array(
-                            'errors' => $formErrors
-                        ),
+                        'action' => 'send'
                     )
                 );
+
+                return new ViewModel();
             }
         }
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "error")
+                'form' => $form,
             )
         );
     }

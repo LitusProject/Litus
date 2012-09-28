@@ -184,8 +184,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $user->setExtraData('payDesk', trim($params));
                 break;
         }
-
-        $this->sendQueueToAll();
+        if ($action !== 'setPayDesk')
+            $this->sendQueueToAll();
     }
 
     /**
