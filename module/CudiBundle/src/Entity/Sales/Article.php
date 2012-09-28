@@ -470,7 +470,7 @@ class Article
             $this->getAcademicYear()
         );
         foreach($this->additionalBarcodes as $barcode)
-            $article->addAdditionalBarocode(new Barcode($article, $barcode->getBarcode()));
+            $article->addAdditionalBarcode(new Barcode($article, $barcode->getBarcode()));
 
         return $article;
     }

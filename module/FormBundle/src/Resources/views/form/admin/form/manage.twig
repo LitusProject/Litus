@@ -42,11 +42,13 @@
                     		{% if hasAccess('form_view', 'view') %}
 								<a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
                     		{% endif %}
-	                        {% if hasAccess('admin_form', 'edit') %}
-	                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                        {% if hasAccess('admin_form', 'delete') %}
-	                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
+                    		{% if form.canBeEditedBy(authenticatedPerson) %}
+		                        {% if hasAccess('admin_form', 'edit') %}
+		                            <a href="{{ url('admin_form', {"action": "edit", "id": form.getId()}) }}" class="edit">Edit</a>
+		                        {% endif %}
+		                        {% if hasAccess('admin_form', 'delete') %}
+		                            <a href="#" data-id="{{ form.getId() }}" data-name="{{ form.getTitle(language) }}" class="delete">Delete</a>
+		                        {% endif %}
 	                        {% endif %}
 	                    </td>
 	                </tr>
