@@ -16,14 +16,14 @@ namespace PublicationBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\PdfEdition,
-    PublicationBundle\Form\Admin\PdfEdition\Add as AddForm,
+    PublicationBundle\Entity\HtmlEdition,
+    PublicationBundle\Form\Admin\HtmlEdition\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel;
 
-class PdfEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class HtmlEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -32,7 +32,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('PublicationBundle\Entity\PdfEdition')
+                ->getRepository('PublicationBundle\Entity\HtmlEdition')
                 ->findAllByPublication($publication),
             $this->getParam('page')
         );
@@ -62,10 +62,10 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
                 $upload = new FileUpload();
 
                 $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-                $upload->addValidator(new ExtensionValidator('pdf'));
+                $upload->addValidator(new ExtensionValidator('zip'));
 
                 if ($upload->isValid()) {
-//                    $edition = new PdfEdition($publication, $formData['title'], $formData['file']);
+//                    $edition = new HtmlEdition($publication, $formData['title'], $formData['file']);
 
 //                    $this->getEntityManager()->persist($edition);
 //                    $this->getEntityManager()->flush();
@@ -79,7 +79,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_edition_pdf',
+                        'admin_edition_html',
                         array(
                             'action' => 'manage',
                             'id' => $publication->getId(),
@@ -148,7 +148,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\PdfEdition')
+            ->getRepository('PublicationBundle\Entity\HtmlEdition')
             ->findOneActiveById($this->getParam('id'));
 
         if (null === $edition) {

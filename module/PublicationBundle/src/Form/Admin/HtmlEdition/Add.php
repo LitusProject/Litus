@@ -12,10 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Form\Admin\PdfEdition;
+namespace PublicationBundle\Form\Admin\HtmlEdition;
 
 use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\PublicationTitleValidator,
     PublicationBundle\Entity\Publication,
@@ -53,8 +54,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new Textarea('html');
+        $field->setLabel('Html')
+            ->setAttribute('rows', 20)
+            ->setRequired();
+        $this->add($field);
+
         $field = new File('file');
-        $field->setLabel('File')
+        $field->setLabel('Images Archive')
             ->setRequired();
         $this->add($field);
 

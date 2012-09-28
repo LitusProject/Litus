@@ -55,6 +55,21 @@ return array(
                     ),
                 ),
             ),
+            'admin_edition_html' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/edition/html[/:action[/:id][/page/:page]]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_edition_html',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -82,6 +97,7 @@ return array(
 
             'admin_publication'        => 'PublicationBundle\Controller\Admin\PublicationController',
             'admin_edition_pdf'        => 'PublicationBundle\Controller\Admin\PdfEditionController',
+            'admin_edition_html'        => 'PublicationBundle\Controller\Admin\HtmlEditionController',
         ),
     ),
 );
