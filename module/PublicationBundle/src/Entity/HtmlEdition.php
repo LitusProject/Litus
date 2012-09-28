@@ -13,7 +13,8 @@
  */
 namespace PublicationBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
 
@@ -41,6 +42,14 @@ class HtmlEdition
      * @ORM\Column(type="string", nullable=false)
      */
     private $title;
+
+    /**
+     * @var CommonBundle\Entity\General\AcademicYear
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="year", referencedColumnName="id", nullable=false)
+     */
+    private $academicYear;
 
     /**
      * @var string The html of this edition.
@@ -71,9 +80,10 @@ class HtmlEdition
      * @param string $html The html of this edition
      * @param string $images The images path of this edition
      */
-    public function __construct(Publication $publication, $title, $html, $images)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, $images)
     {
         $this->publication = $publication;
+        $this->academicYear = $academicYear;
         $this->title = $title;
         $this->html = $html;
         $this->images = $images;
@@ -90,6 +100,14 @@ class HtmlEdition
     public function getPublication()
     {
         return $this->publication;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear The publication of this edition.
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
