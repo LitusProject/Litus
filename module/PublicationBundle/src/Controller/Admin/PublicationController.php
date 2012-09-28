@@ -15,6 +15,9 @@
 namespace PublicationBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    PublicationBundle\Entity\Publication,
+    PublicationBundle\Form\Admin\Publication\Add as AddForm,
+    PublicationBundle\Form\Admin\Publication\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 class PublicationController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -22,8 +25,10 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     public function manageAction()
     {
 
-        $paginator = $this->paginator()->createFromEntity(
-            'PublicationBundle\Entity\Publication',
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('PublicationBundle\Entity\Publication')
+                ->findAllActive(),
             $this->getParam('page')
         );
 
@@ -37,49 +42,29 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        $form = new Add($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
-            // Form is being posted, persist the new driver.
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Users\People\Academic');
-                if ($formData['person_id'] == '') {
 
-                    // No autocompletion used, we assume the username was entered
-                    $person = $repository->findOneByUsername($formData['person_name']);
-                } else {
-                    $person = $repository->findOneById($formData['person_id']);
-                }
+                $publication = new Publication($formData['title']);
 
-                $yearIds = $formData['years'];
-                $years = array();
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
-                    $years[] = $repository->findOneById($yearId);
-                }
-
-                $color = $formData['color'];
-
-                $driver = new Driver($person, $color);
-                $driver->setYears($years);
-                $this->getEntityManager()->persist($driver);
+                $this->getEntityManager()->persist($publication);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCES',
-                        'The driver was succesfully created!'
+                        'The publication was succesfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_driver',
+                    'admin_publication',
                     array(
                         'action' => 'manage',
                     )
@@ -98,10 +83,10 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($driver = $this->_getDriver()))
+        if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new Edit($this->getEntityManager(), $driver);
+        $form = new EditForm($this->getEntityManager(), $publication);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -109,29 +94,19 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
             if ($form->isValid()) {
 
-                $yearIds = $formData['years'];
-                $years = array();
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
-                    $years[] = $repository->findOneById($yearId);
-                }
-
-                $driver->setColor($formData['color']);
-                $driver->setYears($years);
-
+                $publication->setTitle($formData['title']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'SUCCESS',
-                        'The driver was successfully updated!'
+                        'The publication was successfully updated!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_driver',
+                    'admin_publication',
                     array(
                         'action' => 'manage'
                     )
@@ -150,12 +125,12 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function deleteAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
-        if (!($driver = $this->_getDriver()))
+        if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($driver);
+        $publication->delete();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -163,5 +138,52 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 'result' => (object) array("status" => "success"),
             )
         );
+    }
+
+    private function _getPublication()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the publication!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_publication',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $publication = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Publication')
+            ->findOneActiveById($this->getParam('id'));
+
+        if (null === $publication) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No publication with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_publication',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $publication;
     }
 }

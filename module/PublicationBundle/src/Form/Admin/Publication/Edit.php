@@ -14,62 +14,53 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use PublicationBundle\Entity\Publication,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\PublicationTitleValidator,
-    PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    PublicationBundle\Component\Validator\PublicationTitleValidator;
 
 /**
- * The form used to add a new Publication
+ * This form allows the user to edit the Publication.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \PublicationBundle\Form\Admin\Publication\Add
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var \PublicationBundle\Entity\Publication
      */
-    protected $_entityManager = null;
+    private $_id;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \PublicationBundle\Entity\Publication $publication
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Publication $publication, $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($entityManager, $name);
 
-        $this->_entityManager = $entityManager;
+        $this->_id = $publication->getId();
 
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setRequired(true);
-        $this->add($field);
+        $this->remove('submit');
 
         $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'publication_add');
+        $field->setValue('Save')
+            ->setAttribute('class', 'publication_edit');
         $this->add($field);
+
+        $this->populateFromPublication($publication);
     }
 
-    public function populateFromPublication(Publication $publication)
-    {
-        $formData = array(
-            'title' => $publication->getTitle(),
-        );
-
-        $this->setData($formData);
-    }
-
-    public function getInputFilter()
-    {
+    public function getInputFilter() {
         if ($this->_inputFilter == null) {
 
-            $inputFilter = new InputFilter();
+            $inputFilter = parent::getInputFilter();
             $factory = new InputFactory();
+
+            $inputFilter->remove('title');
 
             $inputFilter->add(
                 $factory->createInput(
@@ -80,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new PublicationTitleValidator($this->_entityManager)
+                            new PublicationTitleValidator($this->_entityManager, $this->_id)
                         ),
                     )
                 )

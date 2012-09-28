@@ -28,12 +28,10 @@ return array(
             'admin_publication' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/publication[/:action[/:id][/page/:page][/:field/:string]]',
+                    'route' => '/admin/publication[/:action[/:id][/page/:page]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
-                        'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'string'  => '[%a-zA-Z0-9_-]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(

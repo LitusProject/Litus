@@ -59,12 +59,17 @@ class Publication
         $this->deleted = false;
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     /**
      * @return string The title of this publication
      */
     public function getTitle()
     {
-        return $this->person;
+        return $this->title;
     }
 
     /**
@@ -74,6 +79,15 @@ class Publication
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return \PublicationBundle\Entity\Publiation This
+     */
+    public function delete()
+    {
+        $this->deleted = true;
         return $this;
     }
 }
