@@ -124,15 +124,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             new FlashMessage(
                                 FlashMessage::ERROR,
                                 'Error',
-                                'The given search query was invalid, enter a date in the format dd/mm/yyyy'
+                                'The given search query was invalid; please enter a date in the format dd/mm/yyyy!'
                             )
                         );
-                    }
-                    else {
+                    } else {
                         $start_date->setTime(0, 0, 0);
                         $end_date = clone $start_date;
                         $end_date->add(new DateInterval('P1D'));
-    
+
                         $searchResults = $this->getEntityManager()
                             ->getRepository('ShiftBundle\Entity\Shift')
                             ->findAllActiveBetweenDates($start_date, $end_date);
