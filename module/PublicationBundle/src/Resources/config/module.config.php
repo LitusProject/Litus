@@ -49,6 +49,20 @@ return array(
             'publication_view' => __DIR__ . '/../views',
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            'orm_default' => array(
+                'drivers' => array(
+                    'PublicationBundle\Entity' => 'my_annotation_driver'
+                ),
+            ),
+            'my_annotation_driver' => array(
+                'paths' => array(
+                    'publicationbundle' => __DIR__ . '/../../Entity',
+                ),
+            ),
+        ),
+    ),
     'controllers' => array(
         'invokables' => array(
             'publication_install'      => 'PublicationBundle\Controller\Admin\InstallController',
