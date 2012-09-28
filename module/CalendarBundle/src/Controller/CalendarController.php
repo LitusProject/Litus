@@ -17,7 +17,6 @@ namespace CalendarBundle\Controller;
 use DateInterval,
     DateTime,
     IntlDateFormatter,
-    Markdown_Parser,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -96,8 +95,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CalendarBundle\Entity\Nodes\Event')
             ->findAllBetween($first, $last);
 
-        $parser = new Markdown_Parser();
-
         $dayFormatter = new IntlDateFormatter(
             $this->getTranslator()->getLocale(),
             IntlDateFormatter::NONE,
@@ -129,7 +126,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 'id' => $event->getId(),
                 'title' => $event->getTitle($this->getLanguage()),
                 'startDate' => $hourFormatter->format($event->getStartDate()),
-                'content' => $parser->transform($event->getContent($this->getLanguage())),
+                'content' => $event->getSummary(200, $this->getLanguage()),
                 'url' => $this->url()->fromRoute(
                     'calendar',
                     array(
