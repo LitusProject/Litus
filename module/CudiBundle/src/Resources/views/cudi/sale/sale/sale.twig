@@ -313,6 +313,7 @@
 			$('body').barcodeControl();
 
 			$('#queueModal').on('shown', function () {
+				$('#queueList').showQueue('updateActions');
 			    $('body').barcodeControl('option', {
 			        onBarcode: function (value) {
 			            $('#queueList').showQueue('gotBarcode', value);
