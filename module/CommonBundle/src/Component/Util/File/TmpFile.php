@@ -140,6 +140,6 @@ class TmpFile
      */
     public function __destruct()
     {
-        $this->destroy();
+        //$this->destroy();
     }
 }

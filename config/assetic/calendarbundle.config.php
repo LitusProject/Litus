@@ -27,6 +27,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_form_upload_progress',
+            '@common_download_file',
             '@gollum_css',
             '@gollum_js',
             '@admin_css',

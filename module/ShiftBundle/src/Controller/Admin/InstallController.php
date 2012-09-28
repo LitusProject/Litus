@@ -35,7 +35,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'shiftbundle.responsible_signout_treshold',
-                    'value'       => 'P12H',
+                    'value'       => 'PT12H',
                     'description' => 'The date interval after which a responsible cannot be signed out from a shift',
                 ),
                 array(
@@ -60,7 +60,7 @@ You have been removed from the following shift by a non-praesidium volunteer:
                 ),
                 array(
                     'key'         => 'shiftbundle.praesidium_removed_mail_subject',
-                    'value'       => 'Shift Unsubscription',
+                    'value'       => 'Shift Signout',
                     'description' => 'The subject of the mail sent to a praesidium member when a volunteer removes him from a shift.',
                 ),
                 array(
@@ -90,8 +90,13 @@ You have been removed from the following shift by an administrator:
                 ),
                 array(
                     'key'         => 'shiftbundle.subscription_deleted_mail_subject',
-                    'value'       => 'Shift Unsubscription',
+                    'value'       => 'Shift Signout',
                     'description' => 'The subject of the mail sent to a shift subscriber when he is removed from the shift.',
+                ),
+                array(
+                    'key'         => 'shift.pdf_generator_path',
+                    'value'       => 'data/shift/pdf_generator',
+                    'description' => 'The path to the PDF generator files',
                 ),
             )
         );
