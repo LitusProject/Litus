@@ -33,7 +33,7 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\HtmlEdition')
-                ->findAllByPublication($publication),
+                ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 

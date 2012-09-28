@@ -33,7 +33,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\PdfEdition')
-                ->findAllByPublication($publication),
+                ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
