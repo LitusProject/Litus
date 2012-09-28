@@ -29,6 +29,9 @@
 
             return this;
         },
+        updateActions: function () {
+            _updateActions($(this));
+        },
         updatePayDesk: function () {
             _setPayDesk($(this), $(this).data('payDesk'));
 
@@ -49,41 +52,7 @@
     function _addActions ($this, row) {
         var options = $this.data('showQueueSettings');
 
-        row.find('button').hide();
-        var startCollecting = row.find('.startCollecting');
-        var stopCollecting = row.find('.stopCollecting');
-        var stopCollecting = row.find('.stopCollecting');
-        var startSelling = row.find('.startSelling');
-        var cancelSelling = row.find('.cancelSelling');
-        var hold = row.find('.setHold');
-        var unhold = row.find('.unsetHold');
-
-        switch (row.data('info').status) {
-            case 'signed_in':
-                startCollecting.show();
-                hold.show();
-                break;
-            case 'collecting':
-                stopCollecting.show();
-                cancelCollecting.show();
-                hold.show();
-                break;
-            case 'collected':
-                startSelling.show();
-                hold.show();
-                break;
-            case 'selling':
-                cancelSelling.show();
-                hold.show();
-                break;
-            case 'hold':
-                unhold.show();
-                break;
-        }
-        if (row.data('info').locked)
-            row.find('button').addClass('disabled');
-        else
-            row.find('button').removeClass('disabled');
+        _visibilityActions(row);
 
         startCollecting.unbind('click')
             .filter(':not(.disabled)').click(function () {
@@ -251,6 +220,11 @@
 
         if (options.isSelling()) {
             row.find('.startCollecting, .startSelling').hide();
+        } else {
+            if (item.status == 'signed_in')
+                row.find('.startCollecting').show();
+            else if (item.status == 'collected')
+                row.find('.startSelling').show();
         }
     }
 
@@ -263,5 +237,51 @@
         } else {
             $this.find('tr').show();
         }
+    }
+
+    function _visibilityActions(row) {
+        row.find('button').hide();
+        var startCollecting = row.find('.startCollecting');
+        var stopCollecting = row.find('.stopCollecting');
+        var stopCollecting = row.find('.stopCollecting');
+        var startSelling = row.find('.startSelling');
+        var cancelSelling = row.find('.cancelSelling');
+        var hold = row.find('.setHold');
+        var unhold = row.find('.unsetHold');
+
+        switch (row.data('info').status) {
+            case 'signed_in':
+                startCollecting.show();
+                hold.show();
+                break;
+            case 'collecting':
+                stopCollecting.show();
+                cancelCollecting.show();
+                hold.show();
+                break;
+            case 'collected':
+                startSelling.show();
+                hold.show();
+                break;
+            case 'selling':
+                cancelSelling.show();
+                hold.show();
+                break;
+            case 'hold':
+                unhold.show();
+                break;
+        }
+        if (row.data('info').locked)
+            row.find('button').addClass('disabled');
+        else
+            row.find('button').removeClass('disabled');
+    }
+
+    function _updateActions($this) {
+        var options = $this.data('showQueueSettings');
+
+        $this.find('tr').each(function() {
+            _visibilityActions($(this));
+        });
     }
 }) (jQuery);

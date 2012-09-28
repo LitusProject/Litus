@@ -78,6 +78,7 @@
 	    	return;
 
 	    settings.modal.permanentModal('open', {closable: false});
+	    $('#queueList').showQueue('updateActions');
 	    $this.removeData('saleSettings');
 	}
 
