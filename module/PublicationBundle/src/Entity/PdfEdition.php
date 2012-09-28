@@ -13,7 +13,8 @@
  */
 namespace PublicationBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
 
@@ -43,6 +44,14 @@ class PdfEdition
     private $title;
 
     /**
+     * @var CommonBundle\Entity\General\AcademicYear
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="year", referencedColumnName="id", nullable=false)
+     */
+    private $academicYear;
+
+    /**
      * @var string The file where this pdf is located.
      *
      * @ORM\Column(type="string", nullable=false)
@@ -63,9 +72,10 @@ class PdfEdition
      * @param string $title The title of this edition
      * @param string $file The file of this edition
      */
-    public function __construct(Publication $publication, $title, $file)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $file)
     {
         $this->publication = $publication;
+        $this->academicYear = $academicYear;
         $this->title = $title;
         $this->file = $file;
     }
@@ -81,6 +91,14 @@ class PdfEdition
     public function getPublication()
     {
         return $this->publication;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear The publication of this edition.
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
