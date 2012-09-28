@@ -90,17 +90,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
                     ) {
-                        $translation = new Translation(
-                            $commonEvent,
-                            $language,
-                            $formData['location_' . $language->getAbbrev()],
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['content_' . $language->getAbbrev()]
+                        $commonEvent->addTranslation(
+                            new Translation(
+                                $commonEvent,
+                                $language,
+                                $formData['location_' . $language->getAbbrev()],
+                                $formData['title_' . $language->getAbbrev()],
+                                $formData['content_' . $language->getAbbrev()]
+                            )
                         );
                         $this->getEntityManager()->persist($translation);
                     }
                 }
 
+                $event->updateName();
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
 
@@ -164,17 +167,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                                 && '' != $formData['content_' . $language->getAbbrev()]
                         ) {
-                            $translation = new Translation(
-                                $event,
-                                $language,
-                                $formData['location_' . $language->getAbbrev()],
-                                $formData['title_' . $language->getAbbrev()],
-                                $formData['content_' . $language->getAbbrev()]
+                            $event->addTranslation(
+                                new Translation(
+                                    $event,
+                                    $language,
+                                    $formData['location_' . $language->getAbbrev()],
+                                    $formData['title_' . $language->getAbbrev()],
+                                    $formData['content_' . $language->getAbbrev()]
+                                )
                             );
                             $this->getEntityManager()->persist($translation);
                         }
                     }
                 }
+                $event->updateName();
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

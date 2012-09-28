@@ -243,6 +243,10 @@
 			</table>
 		</div>
 		<div class="modal-footer">
+			<label class="checkbox pull-left">
+				<input type="checkbox" id="hideHold" checked="checked">
+				Hide Hold
+			</label>
 		    <button id="undoLastSelling" class="btn btn-danger hide" data-key="117">
 		        <i class="icon-arrow-left icon-white"></i>
 		        Undo Last Selling - F6
@@ -303,7 +307,7 @@
 			});
 
 			$('#startCollectingNext').click(function () {
-				$('#queueList .startCollecting:first').click();
+				$('#queueList .startCollecting:visible').filter(':first').click();
 			});
 
 			$('body').barcodeControl();
@@ -404,7 +408,7 @@
 					$('#sale').sale('close');
 				},
 				isSelling: function () {
-				    return $('#sale').data('saleSettings') ? true : false;
+				    return $('#sale').is(':visible') || $('#collecting').is(':visible');
 				}
 			});
 		});

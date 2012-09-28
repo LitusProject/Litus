@@ -345,9 +345,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getCurrentAcademicYear()
     {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneById(2); // @TODO: remove this
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 

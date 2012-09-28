@@ -3,7 +3,8 @@
 namespace CalendarBundle\Entity\Nodes;
 
 use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Markdown_Parser;
 
 /**
  * This entity stores the node item.
@@ -146,5 +147,15 @@ class Translation
     {
         $this->content = $content;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary($length = 100)
+    {
+        $parser = new Markdown_Parser();
+        $summary = trim(trim($parser->transform($this->content), '<p>'), '</p>');
+        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
     }
 }
