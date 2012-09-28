@@ -128,6 +128,26 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
+        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $form = new EditForm($this->getEntityManager(), $formSpecification);
 
         if ($this->getRequest()->isPost()) {
@@ -215,6 +235,26 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         if (!($form = $this->_getForm()))
             return new ViewModel();
+
+        if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
 
         // Delete all fields
         $fields = $this->getEntityManager()

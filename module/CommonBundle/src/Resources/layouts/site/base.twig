@@ -97,7 +97,7 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="{{ url('booking', 'book') }}">{{ translate('My Bookings') }}</a>
+                                    <a href="{{ url('booking', {'action' : 'book'} ) }}">{{ translate('My Bookings') }}</a>
                                 </li>
                                 <li>
                                     <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
@@ -186,6 +186,7 @@
                         <p class="companies">
                             <a id="nmbs" href="http://www.nmbs.be"></a>
                             <a id="deloitte" href="http://www.deloitte.com/be"></a>
+                            <a id="kbc" href="http://www.kbc.be"></a>
                             <a id="exxon" href="http://www.exxonmobil.com"></a>
                         </p>
 		        	</span>

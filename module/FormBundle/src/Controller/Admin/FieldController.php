@@ -36,6 +36,26 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
 
+        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($formSpecification);
@@ -52,6 +72,26 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($formSpecification = $this->_getForm()))
             return new ViewModel();
+
+        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
 
         $form = new AddForm($formSpecification, $this->getEntityManager());
 
@@ -156,6 +196,26 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!($field = $this->_getField()))
             return new ViewModel();
+
+        if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You are not authorized to edit this form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_form',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+        }
 
         // Delete all entered values
         $entries = $this->getEntityManager()
