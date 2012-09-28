@@ -21,6 +21,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
+
         $paginator = $this->paginator()->createFromEntity(
             'PublicationBundle\Entity\Publication',
             $this->getParam('page')
