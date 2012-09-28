@@ -8,6 +8,7 @@
 		<shift>
 			<date>26/09/2012 14:00-18:00</date>
 			<name>Inschrijven</name>
+			<manager>Pieter Maene</manager>
 			<people>
 				<person>
 					<name>Pieter Maene</name>
@@ -34,11 +35,13 @@
 		<shift>
 			<date>26/09/2012 14:00-18:00</date>
 			<name>Inschrijven</name>
+			<manager>Pieter Maene</manager>
 			<people></people>
 		</shift>
 		<shift>
 			<date>26/09/2012 14:00-18:00</date>
 			<name>Inschrijven</name>
+			<manager>Pieter Maene</manager>
 			<people>
 				<person>
 					<name>Pieter Maene</name>

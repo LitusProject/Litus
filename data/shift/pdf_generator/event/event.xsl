@@ -37,22 +37,28 @@
 	            </fo:page-sequence-master>
 	        </fo:layout-master-set>
 
-	        <xsl:choose>
-	        	<xsl:when test="count($shifts) != 0">
-	                <fo:page-sequence master-reference="document">
-	                	<fo:static-content flow-name="header-block">
-	                		<fo:block>
-	        		            <xsl:call-template name="header"/>
-	        		    	</fo:block>
-	        	        </fo:static-content>
+	        <fo:page-sequence master-reference="document">
+            	<fo:static-content flow-name="header-block">
+            		<fo:block>
+    		            <xsl:call-template name="header"/>
+    		    	</fo:block>
+    	        </fo:static-content>
+
+		        <xsl:choose>
+		        	<xsl:when test="count($shifts) != 0">
 	                	<fo:flow flow-name="xsl-region-body">
 	                        <fo:block>
 	                        	<xsl:apply-templates select="shifts"/>
 	                        </fo:block>
 	                    </fo:flow>
-	                </fo:page-sequence>
-	            </xsl:when>
-	        </xsl:choose>
+		            </xsl:when>
+		            <xsl:otherwise>
+		            	<fo:flow flow-name="xsl-region-body">
+							<fo:block text-align="left" font-style="italic" font-size="10pt" margin-bottom="1mm"></fo:block>
+						</fo:flow>
+		            </xsl:otherwise>
+		        </xsl:choose>
+		    </fo:page-sequence>
 	    </fo:root>
 	</xsl:template>
 
@@ -96,8 +102,11 @@
 	<xsl:template match="shift">
 	    <xsl:choose>
         	<xsl:when test="count(people/*) != 0">
-        		<fo:block text-align="left" font-size="12pt" font-weight="bold" margin-bottom="1mm">
+        		<fo:block text-align="left" font-size="12pt" font-weight="bold">
 					<xsl:apply-templates select="date"/>—<xsl:apply-templates select="name"/>
+				</fo:block>
+				<fo:block text-align="left" font-style="italic" font-size="10pt" margin-bottom="1mm">
+					<xsl:apply-templates select="manager"/>
 				</fo:block>
 
                 <fo:table table-layout="fixed" width="100%" margin-bottom="5mm">
@@ -125,8 +134,11 @@
 			    </fo:table>
             </xsl:when>
             <xsl:otherwise>
-            	<fo:block text-align="left" font-size="12pt" font-weight="bold" margin-bottom="5mm">
+            	<fo:block text-align="left" font-size="12pt" font-weight="bold">
 					<xsl:apply-templates select="date"/>—<xsl:apply-templates select="name"/>
+				</fo:block>
+				<fo:block text-align="left" font-style="italic" font-size="10pt" margin-bottom="1mm">
+					<xsl:apply-templates select="manager"/>
 				</fo:block>
             </xsl:otherwise>
         </xsl:choose>

@@ -60,11 +60,12 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_shift = $shift;
+        $this->_event = $event;
+        $this->_shifts = $shifts;
     }
 
     /**
-     * Generate the XML for the fop.
+     * Generate the XML for FOP.
      *
      * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
      */
@@ -74,37 +75,85 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
 
         $union_name = $configs->getConfigValue('union_name');
         $logo = $configs->getConfigValue('union_logo');
-        foreach ($this->_shifts as $shift) {
-            $people = 
 
-            foreach ($shifts->getResponsibles() as $responsible) {
-                new Object(
-                    'shift',
+        $shifts = array();
+        foreach ($this->_shifts as $shift) {
+            $people = array();
+
+            foreach ($shift->getResponsibles() as $responsible) {
+                $people[] = new Object(
+                    'person',
                     array(),
                     array(
                         new Object(
-                            'date',
-                            array(),
-                            $shift->getStart
-                        ),
-                        new Object(
                             'name',
                             array(),
-
+                            $responsible->getPerson()->getFullName()
                         ),
                         new Object(
-                            'person',
+                            'phone_number',
                             array(),
-
+                            $responsible->getPerson()->getPhoneNumber()
                         ),
                         new Object(
                             'responsible',
                             array(),
-
-                        ),
+                            '1'
+                        )
                     )
-                )
+                );
             }
+
+            foreach ($shift->getVolunteers() as $volunteer) {
+                $people[] = new Object(
+                    'person',
+                    array(),
+                    array(
+                        new Object(
+                            'name',
+                            array(),
+                            $volunteer->getPerson()->getFullName()
+                        ),
+                        new Object(
+                            'phone_number',
+                            array(),
+                            $volunteer->getPerson()->getPhoneNumber()
+                        ),
+                        new Object(
+                            'responsible',
+                            array(),
+                            '0'
+                        )
+                    )
+                );
+            }
+
+            $shifts[] = new Object(
+                'shift',
+                array(),
+                array(
+                    new Object(
+                        'date',
+                        array(),
+                        $shift->getStartDate()->format('d/m/Y H:i') . '-' . $shift->getEndDate()->format('H:i')
+                    ),
+                    new Object(
+                        'name',
+                        array(),
+                        $shift->getName()
+                    ),
+                    new Object(
+                        'manager',
+                        array(),
+                        $shift->getManager()->getFullName()
+                    ),
+                    new Object(
+                        'people',
+                        array(),
+                        $people
+                    ),
+                )
+            );
         }
 
         $xml = new Generator($tmpFile);
@@ -113,28 +162,29 @@ class EventPdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'event',
                 array(
-                    'name' => $this->_event->getTitle();
-                    'date' => $this->_event->getStartDate()->format('d F Y H:i');
+                    'name' => $this->_event->getTitle(),
+                    'date' => $this->_event->getStartDate()->format('d F Y H:i')
                 ),
                 array(
                     new Object(
                         'our_union',
+                        array(),
                         array(
                             new Object(
                                 'name',
-                                null,
+                                array(),
                                 $union_name
                             ),
                             new Object(
                                 'logo',
-                                null,
+                                array(),
                                 $logo
                             )
                         )
                     ),
                     new Object(
                         'shifts',
-                        null,
+                        array(),
                         $shifts
                     )
                 )
