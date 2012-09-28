@@ -215,8 +215,10 @@
         row.find('.status').html(options.statusTranslate(item.status));
         row.data('info', item);
 
-        if (previousStatus != item.status)
+        if (previousStatus != item.status) {
             _addActions($this, row);
+        }
+        _visibilityActions(row, false);
 
         if (options.isSelling()) {
             row.find('.startCollecting, .startSelling').hide();
@@ -239,11 +241,14 @@
         }
     }
 
-    function _visibilityActions(row) {
-        row.find('button').hide();
+    function _visibilityActions(row, allowHide) {
+        allowHide = allowHide == undefined ? true : allowHide;
+        if (allowHide)
+            row.find('button').hide();
+
         var startCollecting = row.find('.startCollecting');
         var stopCollecting = row.find('.stopCollecting');
-        var stopCollecting = row.find('.stopCollecting');
+        var cancelCollecting = row.find('.cancelCollecting');
         var startSelling = row.find('.startSelling');
         var cancelSelling = row.find('.cancelSelling');
         var hold = row.find('.setHold');
@@ -283,5 +288,9 @@
         $this.find('tr').each(function() {
             _visibilityActions($(this));
         });
+
+        if (options.isSelling()) {
+            $this.find('.startCollecting, .startSelling').hide();
+        }
     }
 }) (jQuery);
