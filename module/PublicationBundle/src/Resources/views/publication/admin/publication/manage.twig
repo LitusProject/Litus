@@ -39,6 +39,9 @@
 						    {% if hasAccess('admin_publication', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ publication.getId() }}" data-title="{{ publication.getTitle() }}">Delete</a>
 		                    {% endif %}
+						    {% if hasAccess('admin_edition_pdf', 'manage') %}
+		                        <a href="{{ url('admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="view">Pdfs</a>
+		                    {% endif %}
 						</td>
 					</tr>
 

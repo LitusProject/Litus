@@ -4,9 +4,13 @@ return array(
     'PublicationBundle\Module'                                        => __DIR__ . '/Module.php',
     'PublicationBundle\Form\Admin\Publication\Add'                    => __DIR__ . '/src/Form/Admin/Publication/Add.php',
     'PublicationBundle\Form\Admin\Publication\Edit'                   => __DIR__ . '/src/Form/Admin/Publication/Edit.php',
+    'PublicationBundle\Form\Admin\PdfEdition\Add'                     => __DIR__ . '/src/Form/Admin/PdfEdition/Add.php',
     'PublicationBundle\Repository\Publication'                        => __DIR__ . '/src/Repository/Publication.php',
+    'PublicationBundle\Repository\PdfEdition'                         => __DIR__ . '/src/Repository/PdfEdition.php',
     'PublicationBundle\Component\Validator\PublicationTitleValidator' => __DIR__ . '/src/Component/Validator/PublicationTitleValidator.php',
     'PublicationBundle\Entity\Publication'                            => __DIR__ . '/src/Entity/Publication.php',
+    'PublicationBundle\Entity\PdfEdition'                             => __DIR__ . '/src/Entity/PdfEdition.php',
+    'PublicationBundle\Controller\Admin\PdfEditionController'         => __DIR__ . '/src/Controller/Admin/PdfEditionController.php',
     'PublicationBundle\Controller\Admin\InstallController'            => __DIR__ . '/src/Controller/Admin/InstallController.php',
     'PublicationBundle\Controller\Admin\PublicationController'        => __DIR__ . '/src/Controller/Admin/PublicationController.php',
 );
