@@ -15,8 +15,8 @@
 	    <xsl:text>Naam</xsl:text>
 	</xsl:template>
 
-	<xsl:template name="person">
-	    <xsl:text>Persoon</xsl:text>
+	<xsl:template name="phone_number">
+	    <xsl:text>Telefoonummer</xsl:text>
 	</xsl:template>
 
 	<xsl:template name="responsible">

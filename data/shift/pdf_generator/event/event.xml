@@ -8,14 +8,59 @@
 		<shift>
 			<date>26/09/2012 14:00-18:00</date>
 			<name>Inschrijven</name>
-			<person>Pieter Maene</person>
-			<responsible>1</responsible>
+			<people>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+			</people>
 		</shift>
 		<shift>
 			<date>26/09/2012 14:00-18:00</date>
-			<name>Inschrijven om te werken op een hele leuke shift bij onze zalige cursusdienst</name>
-			<person>Pieter Maene</person>
-			<responsible>1</responsible>
+			<name>Inschrijven</name>
+			<people></people>
+		</shift>
+		<shift>
+			<date>26/09/2012 14:00-18:00</date>
+			<name>Inschrijven</name>
+			<people>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+				<person>
+					<name>Pieter Maene</name>
+					<phone_number>+32478650979</phone_number>
+					<responsible>1</responsible>
+				</person>
+			</people>
 		</shift>
 	</shifts>
 </event>
