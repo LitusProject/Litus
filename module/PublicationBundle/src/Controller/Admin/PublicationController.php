@@ -125,7 +125,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function deleteAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
