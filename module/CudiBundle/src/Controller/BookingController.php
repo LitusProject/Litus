@@ -108,15 +108,26 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
 
-        $bookings = $this->getEntityManager()
+        $bookingsOpen = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sales\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
         $booked = array();
-        foreach($bookings as $booking) {
+        foreach($bookingsOpen as $booking) {
             if (!isset($booked[$booking->getArticle()->getId()]))
                 $booked[$booking->getArticle()->getId()] = 0;
             $booked[$booking->getArticle()->getId()] += $booking->getNumber();
+        }
+
+        $bookingsSold = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sales\Booking')
+            ->findAllSoldByPerson($authenticatedPerson);
+
+        $sold = array();
+        foreach($bookingsSold as $booking) {
+            if (!isset($sold[$booking->getArticle()->getId()]))
+                $sold[$booking->getArticle()->getId()] = 0;
+            $sold[$booking->getArticle()->getId()] += $booking->getNumber();
         }
 
         $result = array();
@@ -138,6 +149,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         'article' => $article,
                         'mandatory' => $subjectMap->isMandatory(),
                         'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
+                        'sold' => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
                     );
                 }
             }
@@ -164,6 +176,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'article' => $commonArticle,
                     'mandatory' => false,
                     'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
+                    'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
                 );
             }
         }
