@@ -185,6 +185,24 @@
 		                	</li>
 		                {% endif %}
 
+		                {% if hasAccess('admin_publication', 'manage') %}
+		                	<li>
+		                		<div class="subtitle">
+		                			<b>Pulication</b><br />
+		                			Publications &amp; Editions
+		                		</div>
+		                		<ul
+		                			{% if 'admin_publication' == getParam('controller') or 'admin_edition' == getParam('controller') %}
+		                				style="display: block;"
+		                			{% endif %}
+		                		>
+		                			{% if hasAccess('admin_publication', 'manage') %}
+					                    <li><a href="{{ url('admin_publication') }}">Publications</a></li>
+					                {% endif %}
+		                		</ul>
+		                	</li>
+		                {% endif %}
+
 		                {% if hasAccess('admin_shift', 'manage') or hasAccess('admin_unit', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
