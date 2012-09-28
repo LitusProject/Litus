@@ -4,7 +4,7 @@
 >
 
 	<xsl:template name="shift_list">
-	    <xsl:text>List of Shifts</xsl:text>
+	    <xsl:text>Shift List</xsl:text>
 	</xsl:template>
 
 	<xsl:template name="date">
