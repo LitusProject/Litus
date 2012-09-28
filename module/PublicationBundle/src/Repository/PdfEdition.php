@@ -2,7 +2,8 @@
 
 namespace PublicationBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityRepository,
 	PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**
@@ -13,15 +14,20 @@ use Doctrine\ORM\EntityRepository,
  */
 class PdfEdition extends EntityRepository
 {
-	public function findAllByPublication(PublicationEntity $publication)
+	public function findAllByPublicationAndAcademicYear(PublicationEntity $publication, AcademicYear $academicYear)
 	{
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\PdfEdition', 'p')
             ->where(
-            	$query->expr()->eq('p.publication', ':publication')
+                $query->expr()->andX(
+            	   $query->expr()->eq('p.publication', ':publication'),
+                   $query->expr()->eq('p.academicYear', ':year')
+               )
+
             )
             ->setParameter('publication', $publication)
+            ->setParameter('year', $academicYear)
             ->getQuery()
             ->getResult();
 
