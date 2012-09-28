@@ -45,7 +45,7 @@
 					 	</tr>
 
 						{% for map in subjectArticle['articles'] %}
-							<tr>
+							<tr {% if map['sold'] > 0 %}class="success"{% endif %}>
 								<td>{{ map['article'].getMainArticle().getTitle() }}</td>
 								<td>{{ map['article'].getMainArticle().getAuthors() }}</td>
 								<td>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</td>
