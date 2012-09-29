@@ -24,25 +24,39 @@ $databaseConfig = include __DIR__ . '/../database.config.php';
 return array(
     'doctrine' => array(
         'configuration' => array(
+            'odm_default' => array(
+                  'generate_proxies'   => ('development' == getenv('APPLICATION_ENV')),
+                  'proxy_dir'          => 'data/proxies',
+
+                  'generate_hydrators' => ('development' == getenv('APPLICATION_ENV')),
+                  'hydrator_dir'       => 'data/hydrators',
+            ),
             'orm_default' => array(
-                'generate_proxies'  => ('development' == getenv('APPLICATION_ENV')),
+                'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
                 'proxyDir'         => 'data/proxies/',
             )
         ),
         'connection' => array(
+            'odm_default' => array(
+                'host'     => $databaseConfig['document']['host'],
+                'port'     => $databaseConfig['document']['port'],
+                'user'     => $databaseConfig['document']['user'],
+                'password' => $databaseConfig['document']['password'],
+                'dbname'   => $databaseConfig['document']['dbname']
+            ),
             'orm_default' => array(
-                'driverClass' => $databaseConfig['driver'],
+                'driverClass' => $databaseConfig['relational']['driver'],
                 'params' => array(
-                    'host'     => $databaseConfig['host'],
-                    'port'     => $databaseConfig['port'],
-                    'user'     => $databaseConfig['user'],
-                    'password' => $databaseConfig['password'],
-                    'dbname'   => $databaseConfig['dbname'],
+                    'host'     => $databaseConfig['relational']['host'],
+                    'port'     => $databaseConfig['relational']['port'],
+                    'user'     => $databaseConfig['relational']['user'],
+                    'password' => $databaseConfig['relational']['password'],
+                    'dbname'   => $databaseConfig['relational']['dbname'],
                 ),
             ),
         ),
         'driver' => array(
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
             ),
         ),
