@@ -33,4 +33,29 @@ class HtmlEdition extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneByPublicationTitleAndAcademicYear(PublicationEntity $publication, $title, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PublicationBundle\Entity\HtmlEdition', 'p')
+            ->where(
+                $query->expr()->andX(
+                   $query->expr()->eq('p.publication', ':publication'),
+                   $query->expr()->eq('p.title', ':title'),
+                   $query->expr()->eq('p.academicYear', ':year')
+               )
+
+            )
+            ->setParameter('publication', $publication)
+            ->setParameter('title', $title)
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0]))
+            return $resultSet[0];
+
+        return null;
+    }
 }

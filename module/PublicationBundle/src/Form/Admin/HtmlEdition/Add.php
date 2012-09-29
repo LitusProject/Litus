@@ -17,8 +17,9 @@ namespace PublicationBundle\Form\Admin\HtmlEdition;
 use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\PublicationTitleValidator,
+    PublicationBundle\Component\Validator\HtmlEditionTitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -36,15 +37,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     protected $_entityManager = null;
 
+    private $_publication = null;
+
+    private $_academicYear = null;
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+        $this->_publication = $publication;
+        $this->_academicYear = $academicYear;
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
@@ -102,6 +109,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'pattern' => '/^[a-zA-Z0-9]*$/',
                                 ),
                             ),
+                            new HtmlEditionTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )

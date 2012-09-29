@@ -51,7 +51,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
