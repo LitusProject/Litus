@@ -14,10 +14,19 @@
  */
 
 return array(
-    'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
-    'host'     => 'localhost',
-    'port'     => '5432',
-    'user'     => 'litus',
-    'password' => 'huQeyU8te3aXusaz',
-    'dbname'   => 'litus',
+    'document' => array(
+        'server'   => 'localhost',
+        'port'     => '27017',
+        'user'     => null,
+        'password' => null,
+        'dbname'   => null,
+    ),
+    'relational' => array(
+        'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
+        'host'     => 'localhost',
+        'port'     => '5432',
+        'user'     => 'litus',
+        'password' => 'huQeyU8te3aXusaz',
+        'dbname'   => 'litus',
+    )
 );

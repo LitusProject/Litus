@@ -19,6 +19,7 @@ return array(
         'EdpMarkdown',
         'DoctrineModule',
         'DoctrineORMModule',
+        'DoctrineMongoODMModule',
         'ZfcTwig',
 
         'CommonBundle',
