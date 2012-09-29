@@ -78,7 +78,7 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
 
                     $zip = new ZipArchive;
 
-                    if ($zip->open($filename) === TRUE) {
+                    if (TRUE === $zip->open($filename)) {
                         $zip->extractTo($edition->getImagesDirectory());
                         $zip->close();
                     } else {
