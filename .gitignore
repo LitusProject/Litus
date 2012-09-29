@@ -27,7 +27,7 @@ data/banner/images
 
 public/_assetic
 public/_gallery/albums
-publc/_publications
+public/_publications
 
 # Exclude composer files
 vendor/
