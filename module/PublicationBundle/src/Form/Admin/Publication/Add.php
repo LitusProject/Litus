@@ -80,6 +80,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
+                            array(
+                                'name' => 'regex',
+                                'options' => array(
+                                    'pattern' => '/^[a-zA-Z0-9]*$/',
+                                ),
+                            ),
                             new PublicationTitleValidator($this->_entityManager)
                         ),
                     )

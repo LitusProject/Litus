@@ -67,7 +67,7 @@ class PublicationTitleValidator extends \Zend\Validator\AbstractValidator
 
         $publication = $this->_entityManager
             ->getRepository('PublicationBundle\Entity\Publication')
-            ->findOneActiveByTitle($value);
+            ->findOneByTitle($value);
 
         if ($publication) {
             if ($this->_id === null || $publication->getId() !== $this->_id) {
