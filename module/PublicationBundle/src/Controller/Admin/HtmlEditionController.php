@@ -52,7 +52,7 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -281,10 +281,11 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         return $publication;
     }
 
-    private function _rrmdir($dir) {
+    private function _rrmdir($dir)
+    {
         foreach(glob($dir . '/*') as $file) {
             if(is_dir($file))
-                rrmdir($file);
+                $this->_rrmdir($file);
             else
                 unlink($file);
             }
