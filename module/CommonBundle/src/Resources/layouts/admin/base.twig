@@ -185,7 +185,7 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_publication', 'manage') or hasAccess('admin_mail_bakske', 'manage') %}
+		                {% if hasAccess('admin_publication', 'manage') or hasAccess('admin_mail_bakske', 'send') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Pulication</b><br />
@@ -199,7 +199,7 @@
 		                			{% if hasAccess('admin_publication', 'manage') %}
 					                    <li><a href="{{ url('admin_publication') }}">Publications</a></li>
 					                {% endif %}
-		                			{% if hasAccess('admin_mail_bakske', 'manage') %}
+		                			{% if hasAccess('admin_mail_bakske', 'send') %}
 					                    <li><a href="{{ url('admin_mail_bakske') }}">Mail HTML Bakske</a></li>
 					                {% endif %}
 		                		</ul>
