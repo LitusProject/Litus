@@ -44,7 +44,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
 

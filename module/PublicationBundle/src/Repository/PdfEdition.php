@@ -14,6 +14,9 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class PdfEdition extends EntityRepository
 {
+
+    
+
 	public function findAllByPublicationAndAcademicYear(PublicationEntity $publication, AcademicYear $academicYear)
 	{
         $query = $this->_em->createQueryBuilder();

@@ -59,13 +59,6 @@ class HtmlEdition
     private $html;
 
     /**
-     * @var string The directory where the images for this html edition are located.
-     *
-     * @ORM\Column(type="string", nullable=false)
-     */
-    private $images;
-
-    /**
      * @var \PublicationBundle\Entity\Publication The publication to which this edition belongs.
      *
      * @ORM\ManyToOne(targetEntity="PublicationBundle\Entity\Publication")
@@ -80,13 +73,12 @@ class HtmlEdition
      * @param string $html The html of this edition
      * @param string $images The images path of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, $images)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html)
     {
         $this->publication = $publication;
         $this->academicYear = $academicYear;
         $this->title = $title;
         $this->html = $html;
-        $this->images = $images;
     }
 
     public function getId()
@@ -129,8 +121,9 @@ class HtmlEdition
     /**
      * @return string The location of the images of this edition.
      */
-    public function getImages()
+    public function getImagesDirectory()
     {
-        return $this->images;
+        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
+            '/html/' . $this->getPublication()->getTitle() . '/' . $this->getTitle();
     }
 }
