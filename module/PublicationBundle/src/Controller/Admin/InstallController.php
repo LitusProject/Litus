@@ -43,6 +43,16 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'value'       => '1',
                     'description' => 'The id of the publication that represents the weekly magazine.',
                 ),
+                array(
+                    'key'         => 'publication.bakske_mail',
+                    'value'       => 'bakske@vtk.be',
+                    'description' => 'The bakske mail address.',
+                ),
+                array(
+                    'key'         => 'publication.bakske_mail_name',
+                    'value'       => 'Het Bakske',
+                    'description' => 'The bakske mail name.',
+                ),
             )
         );
     }
