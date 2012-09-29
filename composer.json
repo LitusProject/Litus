@@ -12,9 +12,12 @@
     ],
     "require": {
         "zendframework/zendframework" : "dev-master",
-        "zf-commons/zfc-twig": "dev-master",
+
         "doctrine/doctrine-orm-module": "dev-master",
+	"doctrine/doctrine-mongo-odm-module": "dev-master",
+
+        "EvanDotPro/EdpMarkdown": "dev-master",
         "widmogrod/zf2-assetic-module": "dev-master",
-        "EvanDotPro/EdpMarkdown": "dev-master"
+        "zf-commons/zfc-twig": "dev-master"
     }
 }
