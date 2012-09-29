@@ -40,6 +40,7 @@ return array(
         'GalleryBundle',
 
         'FormBundle',
+        'PublicationBundle',
 
         'ApiBundle',
     ),
