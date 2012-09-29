@@ -80,7 +80,7 @@ class PdfEditionTitleValidator extends \Zend\Validator\AbstractValidator
     {
 
         $edition = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\PdfEdition')
+            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
         if ($edition) {

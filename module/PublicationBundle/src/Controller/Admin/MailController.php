@@ -40,7 +40,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($publicationId);
 
         $editions = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\HtmlEdition')
+            ->getRepository('PublicationBundle\Entity\Editions\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear());
 
         $form = new SendForm($editions);
@@ -54,7 +54,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                 $editionId = $formData['edition'];
 
                 $edition = $this->getEntityManager()
-                    ->getRepository('PublicationBundle\Entity\HtmlEdition')
+                    ->getRepository('PublicationBundle\Entity\Editions\Html')
                     ->findOneById($editionId);
 
                 $mailAddress = $this->getEntityManager()
