@@ -144,6 +144,21 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    public function viewAction()
+    {
+        $edition = $this->_getEdition();
+
+        if (!$edition) {
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'edition' => $edition
+            )
+        );
+    }
+
     public function progressAction()
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
