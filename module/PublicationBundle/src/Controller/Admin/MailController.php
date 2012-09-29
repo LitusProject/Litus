@@ -74,6 +74,8 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                     ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
 
+                $mail->addTo($mailAddress, $mailName);
+
                 foreach($recipients as $recipient)
                     $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
 
