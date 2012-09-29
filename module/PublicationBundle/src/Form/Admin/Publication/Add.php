@@ -12,77 +12,83 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\Bakske;
+namespace PublicationBundle\Form\Admin\Publication;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+    Doctrine\ORM\EntityManager,
+    PublicationBundle\Component\Validator\PublicationTitleValidator,
+    PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
- * Send Mail
+ * The form used to add a new Publication
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
-        $this->add($field);
+        $this->_entityManager = $entityManager;
 
-        $field = new Textarea('message');
-        $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px;height: 200px;')
-            ->setRequired();
+        $field = new Text('title');
+        $field->setLabel('Title')
+            ->setRequired(true);
         $this->add($field);
 
         $field = new Submit('submit');
-        $field->setValue('Send')
-            ->setAttribute('class', 'mail');
+        $field->setValue('Add')
+            ->setAttribute('class', 'publication_add');
         $this->add($field);
+    }
+
+    public function populateFromPublication(Publication $publication)
+    {
+        $formData = array(
+            'title' => $publication->getTitle(),
+        );
+
+        $this->setData($formData);
     }
 
     public function getInputFilter()
     {
         if ($this->_inputFilter == null) {
+
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'subject',
+                        'name' => 'title',
                         'required' => true,
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new PublicationTitleValidator($this->_entityManager)
                         ),
                     )
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'message',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
             $this->_inputFilter = $inputFilter;
         }
+
         return $this->_inputFilter;
     }
 }
