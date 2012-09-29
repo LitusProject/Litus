@@ -80,7 +80,7 @@ class HtmlEditionTitleValidator extends \Zend\Validator\AbstractValidator
     {
 
         $edition = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\HtmlEdition')
+            ->getRepository('PublicationBundle\Entity\Editions\Html')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
         if ($edition) {

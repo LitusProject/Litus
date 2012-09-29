@@ -16,7 +16,7 @@ namespace PublicationBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\PdfEdition,
+    PublicationBundle\Entity\Editions\Pdf as PdfEdition,
     PublicationBundle\Form\Admin\PdfEdition\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
@@ -32,7 +32,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('PublicationBundle\Entity\PdfEdition')
+                ->getRepository('PublicationBundle\Entity\Editions\Pdf')
                 ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
@@ -175,7 +175,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\PdfEdition')
+            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {

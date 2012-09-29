@@ -11,7 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace PublicationBundle\Entity;
+namespace PublicationBundle\Entity\Editions;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM,
@@ -21,10 +21,16 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * This is the entity for a publication
  *
- * @ORM\Entity(repositoryClass="PublicationBundle\Repository\HtmlEdition")
- * @ORM\Table(name="publications.htmleditions")
+ * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\Edition")
+ * @ORM\Table(name="publications.editions")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "html"="PublicationBundle\Entity\Editions\Html",
+ *      "pdf"="PublicationBundle\Entity\Editions\Pdf"}
+ * )
  */
-class HtmlEdition
+class Edition
 {
 
     /**
@@ -52,13 +58,6 @@ class HtmlEdition
     private $academicYear;
 
     /**
-     * @var string The html of this edition.
-     *
-     * @ORM\Column(type="text", nullable=false)
-     */
-    private $html;
-
-    /**
      * @var \PublicationBundle\Entity\Publication The publication to which this edition belongs.
      *
      * @ORM\ManyToOne(targetEntity="PublicationBundle\Entity\Publication")
@@ -70,15 +69,13 @@ class HtmlEdition
      * Creates a new edition with the given title
      *
      * @param string $title The title of this edition
-     * @param string $html The html of this edition
      * @param string $images The images path of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title)
     {
         $this->publication = $publication;
         $this->academicYear = $academicYear;
         $this->title = $title;
-        $this->html = $html;
     }
 
     public function getId()
@@ -108,22 +105,5 @@ class HtmlEdition
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * @return string The html of this edition
-     */
-    public function getHtml()
-    {
-        return $this->html;
-    }
-
-    /**
-     * @return string The location of the images of this edition.
-     */
-    public function getImagesDirectory()
-    {
-        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/html/' . $this->getPublication()->getTitle() . '/' . $this->getTitle();
     }
 }
