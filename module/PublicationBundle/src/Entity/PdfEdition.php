@@ -52,13 +52,6 @@ class PdfEdition
     private $academicYear;
 
     /**
-     * @var string The file where this pdf is located.
-     *
-     * @ORM\Column(type="string", nullable=false)
-     */
-    private $file;
-
-    /**
      * @var \PublicationBundle\Entity\Publication The publication to which this edition belongs.
      *
      * @ORM\ManyToOne(targetEntity="PublicationBundle\Entity\Publication")
@@ -72,12 +65,11 @@ class PdfEdition
      * @param string $title The title of this edition
      * @param string $file The file of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $file)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title)
     {
         $this->publication = $publication;
         $this->academicYear = $academicYear;
         $this->title = $title;
-        $this->file = $file;
     }
 
     public function getId()
@@ -109,11 +101,17 @@ class PdfEdition
         return $this->title;
     }
 
+    public function getDirectory()
+    {
+        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
+            '/pdf/' . $this->getPublication()->getTitle();
+    }
+
     /**
      * @return string The pdf file of this edition
      */
-    public function getFile()
+    public function getFileName()
     {
-        return $this->file;
+        return $this->getDirectory() . '/' . $this->getTitle() . '.pdf';
     }
 }

@@ -21,7 +21,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    \ZipArchive;
 
 class HtmlEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -65,10 +66,42 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
                 $upload->addValidator(new ExtensionValidator('zip'));
 
                 if ($upload->isValid()) {
-//                    $edition = new HtmlEdition($publication, $formData['title'], $formData['file']);
 
-//                    $this->getEntityManager()->persist($edition);
-//                    $this->getEntityManager()->flush();
+                    $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html']);
+
+                    if (!file_exists($edition->getImagesDirectory()))
+                        mkdir($edition->getImagesDirectory(), 0775, true);
+
+                    $upload = new FileUpload();
+                    $filename = $upload->getFileName();
+                    $upload->receive();
+
+                    $zip = new ZipArchive;
+
+                    if ($zip->open($filename) === TRUE) {
+                        $zip->extractTo($edition->getImagesDirectory());
+                        $zip->close();
+                    } else {
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::ERROR,
+                                'Error',
+                                'Something went wrong while extracting the archive!'
+                            )
+                        );
+
+                        $this->redirect()->toRoute(
+                            'admin_publication',
+                            array(
+                                'action' => 'manage'
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+
+                    $this->getEntityManager()->persist($edition);
+                    $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -105,6 +138,19 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
             array(
                 'publication' => $publication,
                 'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
+            )
+        );
+    }
+
+    public function progressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
             )
         );
     }
@@ -116,6 +162,7 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
+        $this->_rrmdir($edition->getImagesDirectory());
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
@@ -149,7 +196,7 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
 
         $edition = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\HtmlEdition')
-            ->findOneActiveById($this->getParam('id'));
+            ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
             $this->flashMessenger()->addMessage(
@@ -217,5 +264,15 @@ class HtmlEditionController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         return $publication;
+    }
+
+    private function _rrmdir($dir) {
+        foreach(glob($dir . '/*') as $file) {
+            if(is_dir($file))
+                rrmdir($file);
+            else
+                unlink($file);
+            }
+        rmdir($dir);
     }
 }

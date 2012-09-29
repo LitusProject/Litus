@@ -18,7 +18,7 @@ class HtmlEdition extends EntityRepository
 	{
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
-            ->from('PublicationBundle\Entity\PdfEdition', 'p')
+            ->from('PublicationBundle\Entity\HtmlEdition', 'p')
             ->where(
                 $query->expr()->andX(
                    $query->expr()->eq('p.publication', ':publication'),

@@ -59,16 +59,29 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
             if ($form->isValid()) {
 
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.file_path');
+
                 $upload = new FileUpload();
 
                 $upload->addValidator(new SizeValidator(array('max' => '30MB')));
                 $upload->addValidator(new ExtensionValidator('pdf'));
 
                 if ($upload->isValid()) {
-//                    $edition = new PdfEdition($publication, $formData['title'], $formData['file']);
 
-//                    $this->getEntityManager()->persist($edition);
-//                    $this->getEntityManager()->flush();
+                    $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title']);
+
+                    if (!file_exists($edition->getDirectory()))
+                        mkdir($edition->getDirectory(), 0775, true);
+
+                    $upload = new FileUpload();
+
+                    $upload->addFilter('Rename', $edition->getFileName());
+                    $upload->receive();
+
+                    $this->getEntityManager()->persist($edition);
+                    $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -105,6 +118,19 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
             array(
                 'publication' => $publication,
                 'form' => $form,
+                'uploadProgressName' => ini_get('session.upload_progress.name'),
+                'uploadProgressId' => uniqid(),
+            )
+        );
+    }
+
+    public function progressAction()
+    {
+        $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
+
+        return new ViewModel(
+            array(
+                'result' => isset($_SESSION[$uploadId]) ? $_SESSION[$uploadId] : '',
             )
         );
     }
@@ -116,6 +142,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
+        unlink($edition->getFileName());
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
@@ -149,7 +176,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
         $edition = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\PdfEdition')
-            ->findOneActiveById($this->getParam('id'));
+            ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
             $this->flashMessenger()->addMessage(
