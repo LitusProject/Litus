@@ -223,7 +223,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $image = new Imagick($file->getFileName());
 
                 if ($event->getPoster() != '' || $event->getPoster() !== null) {
-                    $fileName = $event->getPoster();
+                    $fileName = '/' . $event->getPoster();
                 } else {
                     $fileName = '';
                     do{
