@@ -96,8 +96,8 @@ return array(
             'publication_install' => 'PublicationBundle\Controller\Admin\InstallController',
 
             'admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
-            'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\PdfEditionController',
-            'admin_edition_html'  => 'PublicationBundle\Controller\Admin\HtmlEditionController',
+            'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
+            'admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
         ),
     ),
 );
