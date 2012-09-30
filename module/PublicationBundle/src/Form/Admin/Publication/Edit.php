@@ -51,7 +51,16 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
             ->setAttribute('class', 'publication_edit');
         $this->add($field);
 
-        $this->populateFromPublication($publication);
+        $this->_populateFromPublication($publication);
+    }
+
+    private function populateFromPublication(Publication $publication)
+    {
+        $formData = array(
+            'title' => $publication->getTitle(),
+        );
+
+        $this->setData($formData);
     }
 
     public function getInputFilter() {

@@ -55,15 +55,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    public function populateFromPublication(Publication $publication)
-    {
-        $formData = array(
-            'title' => $publication->getTitle(),
-        );
-
-        $this->setData($formData);
-    }
-
     public function getInputFilter()
     {
         if ($this->_inputFilter == null) {
@@ -83,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array(
                                 'name' => 'regex',
                                 'options' => array(
-                                    'pattern' => '/^[a-zA-Z0-9]*$/',
+                                    'pattern' => '/^[a-zA-Z0-9 ]*$/',
                                 ),
                             ),
                             new PublicationTitleValidator($this->_entityManager)

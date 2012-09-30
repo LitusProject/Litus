@@ -43,7 +43,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The maximum number of search results shown',
                 ),
                 array(
-                    'key'         => 'account_deactivated_mail',
+                    'key'         => 'common.account_deactivated_mail',
                     'value'       => 'Dear,
 
 Your account on Litus is deactivated.
@@ -51,8 +51,21 @@ Click here to activate it again: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
-                    'key'         => 'account_deactivated_subject',
+                    'key'         => 'common.account_deactivated_subject',
                     'value'       => 'Account deactivated',
+                    'description' => 'The mail subject when an account is deactivated',
+                ),
+                array(
+                    'key'         => 'common.account_activated_mail',
+                    'value'       => 'Dear {{ name }},
+
+An account for you is created on Litus with username {{ username }}.
+Click here to activate it: http://litus/account/activate/code/{{ code }}',
+                    'description' => 'The email sent when an account is deactivated',
+                ),
+                array(
+                    'key'         => 'common.account_activated_subject',
+                    'value'       => 'Account created',
                     'description' => 'The mail subject when an account is deactivated',
                 ),
                 array(
@@ -64,19 +77,6 @@ Click here to activate it again: http://litus/account/activate/code/{{ code }}',
                     'key'         => 'system_mail_name',
                     'value'       => 'Litus Project',
                     'description' => 'The system mail name',
-                ),
-                array(
-                    'key'         => 'account_activated_mail',
-                    'value'       => 'Dear {{ name }},
-
-An account for you is created on Litus with username {{ username }}.
-Click here to activate it: http://litus/account/activate/code/{{ code }}',
-                    'description' => 'The email sent when an account is deactivated',
-                ),
-                array(
-                    'key'         => 'account_activated_subject',
-                    'value'       => 'Account created',
-                    'description' => 'The mail subject when an account is deactivated',
                 ),
                 array(
                     'key'         => 'start_organization_year',

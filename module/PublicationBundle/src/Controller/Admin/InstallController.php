@@ -41,17 +41,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'key'         => 'publication.bakske_id',
                     'value'       => '1',
-                    'description' => 'The id of the publication that represents the weekly magazine.',
-                ),
-                array(
-                    'key'         => 'publication.bakske_mail',
-                    'value'       => 'bakske@vtk.be',
-                    'description' => 'The bakske mail address.',
-                ),
-                array(
-                    'key'         => 'publication.bakske_mail_name',
-                    'value'       => 'Het Bakske',
-                    'description' => 'The bakske mail name.',
+                    'description' => 'The ID of the publication that represents the weekly magazine',
                 ),
             )
         );
@@ -70,9 +60,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     ),
                     'admin_edition_pdf' => array(
                         'add', 'delete', 'manage', 'progress',
-                    ),
-                    'admin_mail_bakske' => array(
-                        'send',
                     ),
                 )
             )

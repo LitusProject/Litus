@@ -32,15 +32,24 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'PageBundle\Entity\Nodes\Page',
-            $this->getParam('page'),
-            array(
-                'endTime' => null
-            ),
-            array(
-                'name' => 'ASC'
-            )
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Nodes\Page')
+            ->findBy(
+                array(
+                    'endTime' => null
+                ),
+                array(
+                    'name' => 'ASC'
+                )
+            );
+
+        foreach ($pages as $key => $page) {
+            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+                unset($pages[$key]);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $pages, $this->getParam('page')
         );
 
         return new ViewModel(

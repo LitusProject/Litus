@@ -48,10 +48,29 @@ class Edit extends Add
 
         $field = new Submit('submit');
         $field->setValue('Edit')
-            ->setAttribute('class', 'companies_edit');
+            ->setAttribute('class', 'company_edit');
         $this->add($field);
 
-        $this->populateFromCompany($company);
+        $this->_populateFromCompany($company);
+    }
+
+    private function _populateFromCompany(Company $company)
+    {
+        $this->setData(
+            array(
+                'company_name' => $company->getName(),
+                'history' => $company->getHistory(),
+                'description' => $company->getDescription(),
+                'sector' => $company->getSectorCode(),
+                'vat_number' => $company->getVatNumber(),
+                'address_street' => $company->getAddress()->getStreet(),
+                'address_number' => $company->getAddress()->getNumber(),
+                'address_mailbox' => $company->getAddress()->getMailbox(),
+                'address_postal' => $company->getAddress()->getPostal(),
+                'address_city' => $company->getAddress()->getCity(),
+                'address_country' => $company->getAddress()->getCountryCode(),
+            )
+        );
     }
 
     public function getInputFilter()

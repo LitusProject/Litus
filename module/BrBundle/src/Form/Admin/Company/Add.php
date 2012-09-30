@@ -76,27 +76,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'companies_add');
+            ->setAttribute('class', 'company_add');
         $this->add($field);
-    }
-
-    public function populateFromCompany(Company $company)
-    {
-        $this->setData(
-            array(
-                'company_name' => $company->getName(),
-                'history' => $company->getHistory(),
-                'description' => $company->getDescription(),
-                'sector' => $company->getSectorCode(),
-                'vat_number' => $company->getVatNumber(),
-                'address_street' => $company->getAddress()->getStreet(),
-                'address_number' => $company->getAddress()->getNumber(),
-                'address_mailbox' => $company->getAddress()->getMailbox(),
-                'address_postal' => $company->getAddress()->getPostal(),
-                'address_city' => $company->getAddress()->getCity(),
-                'address_country' => $company->getAddress()->getCountryCode(),
-            )
-        );
     }
 
     private function _getSectors()

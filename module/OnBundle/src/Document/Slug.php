@@ -15,7 +15,7 @@
 namespace OnBundle\Document;
 
 use CommonBundle\Entity\Users\Person,
-    Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver as ODM,
+    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -26,7 +26,7 @@ use CommonBundle\Entity\Users\Person,
  *     repositoryClass="OnBundle\Repository\Slug"
  * )
  */
-class Url
+class Slug
 {
     /**
      * @var integer The ID of this slug
@@ -43,12 +43,12 @@ class Url
     private $creationPerson;
 
     /**
-     * @var string The actual slug
+     * @var string The name of the slug
      *
      * @ODM\Field(type="string")
      * @ODM\UniqueIndex
      */
-    private $slug;
+    private $name;
 
     /**
      * @var string The URL this logs redirects to
@@ -66,14 +66,14 @@ class Url
 
     /**
      * @param \CommonBundle\Entity\Users\Person $person
-     * @param string $slug
+     * @param string $name
      * @param string $url
      */
-    public function __construct(Person $person, $slug, $url)
+    public function __construct(Person $person, $name, $url)
     {
         $this->person = $person->getId();
 
-        $this->slug = $slug;
+        $this->name = $name;
         $this->url = $url;
     }
 
@@ -97,18 +97,18 @@ class Url
     /**
      * @return string
      */
-    public function getSlug()
+    public function getName()
     {
-        return $this->slug;
+        return $this->name;
     }
 
     /**
-     * @param string $slug
+     * @param string $name
      * @return \OnBundle\Document\Slug
      */
-    public function setSlug($slug)
+    public function setName($name)
     {
-        $this->slug = $slug;
+        $this->name = $name;
         return $this;
     }
 
