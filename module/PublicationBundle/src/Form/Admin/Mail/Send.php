@@ -17,6 +17,8 @@ namespace PublicationBundle\Form\Admin\Mail;
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -28,21 +30,30 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Send extends \CommonBundle\Component\Form\Admin\Form
 {
+
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The current year
+     */
+    private $_academicYear;
+
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($editions, $name = null)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $name = null)
     {
         parent::__construct($name);
 
-        $editionNames = array();
-        foreach($editions as $edition) {
-            $editionNames[$edition->getId()] = $edition->getTitle();
-        }
+        $this->_entityManager = $entityManager;
+        $this->_academicYear = $academicYear;
 
         $field = new Select('edition');
         $field->setLabel('Edition')
-            ->setAttribute('options', $editionNames)
+            ->setAttribute('options', $this->_createEditionsArray())
             ->setRequired();
         $this->add($field);
 
@@ -56,6 +67,30 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Send')
             ->setAttribute('class', 'mail');
         $this->add($field);
+    }
+
+    private function _createEditionsArray()
+    {
+        $publicationId = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.bakske_id');
+
+        $publication = $this->_entityManager
+            ->getRepository('PublicationBundle\Entity\Publication')
+            ->findOneById($publicationId);
+
+        $editions = $this->_entityManager
+            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->findAllByPublicationAndAcademicYear($publication, $this->_academicYear);
+
+        if (empty($editions))
+            throw new \RuntimeException('There needs to be at least one edition before you can mail it');
+
+        $editionsArray = array();
+        foreach ($editions as $edition)
+            $editionsArray[$edition->getId()] = $edition->getTitle();
+
+        return $editionsArray;
     }
 
     public function getInputFilter()
