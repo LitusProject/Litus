@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'pdf_edit');
+            ->setAttribute('class', 'pdf_add');
         $this->add($field);
     }
 
