@@ -14,12 +14,12 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use PublicationBundle\Entity\Publication,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
+    PublicationBundle\Entity\Publication,
+    PublicationBundle\Component\Validator\Title\Publication as PublicationTitleValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    PublicationBundle\Component\Validator\PublicationTitleValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * This form allows the user to edit the Publication.

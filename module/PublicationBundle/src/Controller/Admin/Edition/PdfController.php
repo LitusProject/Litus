@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Controller\Admin\Pdf;
+namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Publication,
@@ -23,7 +23,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel;
 
-class PdfEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+/**
+ * PdfController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
+class PdfController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {

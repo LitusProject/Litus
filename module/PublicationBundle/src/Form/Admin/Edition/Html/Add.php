@@ -19,7 +19,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\HtmlEditionTitleValidator,
+    PublicationBundle\Component\Validator\TitleValidator\Edition\Html as HtmlTitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -108,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'pattern' => '/^[a-zA-Z0-9]*$/',
                                 ),
                             ),
-                            new HtmlEditionTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                            new HtmlTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )

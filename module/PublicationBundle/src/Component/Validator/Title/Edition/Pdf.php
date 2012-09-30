@@ -12,16 +12,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Component\Validator;
+namespace PublicationBundle\Component\Validator\Title\Edition;
 
-use Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
+    PublicationBundle\Entity\Publication;
 
 /**
  * Checks whether a publication title already exists.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class PublicationTitleValidator extends \Zend\Validator\AbstractValidator
+class Pdf extends \Zend\Validator\AbstractValidator
 {
     const TITLE_EXISTS = 'titleExists';
 
@@ -36,10 +38,20 @@ class PublicationTitleValidator extends \Zend\Validator\AbstractValidator
     private $_id;
 
     /**
+     * @var PublicationBundle\Entity\Publication The publication
+     */
+    private $_publication;
+
+    /**
+     * @var CommonBundle\Entity\General\AcademicYear The year
+     */
+    private $_academicYear;
+
+    /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TITLE_EXISTS => 'There is a publication with this title already!',
+        self::TITLE_EXISTS => 'There is a pdf edition with this title already for this publication!',
     );
 
     /**
@@ -47,16 +59,18 @@ class PublicationTitleValidator extends \Zend\Validator\AbstractValidator
      * @param $id The id that should be ignored when checking for duplicate titles.
      * @param mixed $opts The validator's options.
      */
-    public function __construct(EntityManager $entityManager, $id = null, $opts = array())
+    public function __construct(EntityManager $entityManager, Publication $publication, Academicyear $academicYear, $id = null, $opts = array())
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
         $this->_id = $id;
+        $this->_publication = $publication;
+        $this->_academicYear = $academicYear;
     }
 
     /**
-     * Returns true if no publication with this title exists.
+     * Returns true if no edition with this title exists.
      *
      * @param string $value The value of the field that will be validated
      * @param array $context The context of the field that will be validated
@@ -65,12 +79,12 @@ class PublicationTitleValidator extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
 
-        $publication = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Publication')
-            ->findOneByTitle($value);
+        $edition = $this->_entityManager
+            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+            ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
-        if ($publication) {
-            if ($this->_id === null || $publication->getId() !== $this->_id) {
+        if ($edition) {
+            if ($this->_id === null || $edition->getId() !== $this->_id) {
                 $this->error(self::TITLE_EXISTS);
                 return false;
             }
