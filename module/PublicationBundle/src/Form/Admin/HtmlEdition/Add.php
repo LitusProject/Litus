@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'publication_add');
+            ->setAttribute('class', 'edition_add');
         $this->add($field);
     }
 

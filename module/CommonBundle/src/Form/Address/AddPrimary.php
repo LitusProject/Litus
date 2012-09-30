@@ -203,7 +203,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits',
+                            'name' => 'alnum',
                         ),
                     ),
                 )

@@ -19,6 +19,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sales\Articles\Barcode,
     CudiBundle\Entity\Supplier as Supplier,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -167,6 +168,8 @@ class Article
             ->setVersionNumber(1)
             ->setIsHistory(false)
             ->setAcademicYear($academicYear);
+        $this->discounts = new ArrayCollection();
+        $this->additionalBarcodes = new ArrayCollection();
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
     }
