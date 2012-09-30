@@ -38,7 +38,7 @@ return array(
         ),
         'connection' => array(
             'odm_default' => array(
-                'host'     => $databaseConfig['document']['host'],
+                'host'     => $databaseConfig['document']['server'],
                 'port'     => $databaseConfig['document']['port'],
                 'user'     => $databaseConfig['document']['user'],
                 'password' => $databaseConfig['document']['password'],
@@ -56,6 +56,9 @@ return array(
             ),
         ),
         'driver' => array(
+            'odm_annotation_driver' => array(
+                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+            ),
             'orm_annotation_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
             ),

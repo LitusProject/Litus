@@ -116,10 +116,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'LogisticsBundle\Entity' => 'my_annotation_driver'
+                    'LogisticsBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'logisticsbundle' => __DIR__ . '/../../Entity',
                 ),

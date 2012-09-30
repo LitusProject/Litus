@@ -657,10 +657,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'CudiBundle\Entity' => 'my_annotation_driver'
+                    'CudiBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'cudibundle' => __DIR__ . '/../../Entity',
                 ),

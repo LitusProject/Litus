@@ -67,10 +67,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'BannerBundle\Entity' => 'my_annotation_driver'
+                    'BannerBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'BannerBundle' => __DIR__ . '/../../Entity',
                 ),

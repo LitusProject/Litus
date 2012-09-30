@@ -43,6 +43,7 @@ return array(
         'FormBundle',
 
         'ApiBundle',
+        'OnBundle',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(

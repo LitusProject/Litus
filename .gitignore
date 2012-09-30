@@ -16,14 +16,15 @@
 config/database.config.php
 
 # Cached data doesn't have to be versioned
-data/cache
-data/cudi/files
-data/common/profile
-data/proxies
-data/br/companies
-data/calendar/posters
-data/page/files
 data/banner/images
+data/br/companies
+data/cache
+data/calendar/posters
+data/common/profile
+data/cudi/files
+data/hydrators
+data/page/files
+data/proxies
 
 public/_assetic
 public/_gallery/albums

@@ -332,10 +332,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'CommonBundle\Entity' => 'my_annotation_driver'
+                    'CommonBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'commonbundle' => __DIR__ . '/../../Entity',
                 ),

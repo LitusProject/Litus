@@ -99,10 +99,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'ShiftBundle\Entity' => 'my_annotation_driver'
+                    'ShiftBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'shiftbundle' => __DIR__ . '/../../Entity',
                 ),

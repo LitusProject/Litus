@@ -129,10 +129,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'FormBundle\Entity' => 'my_annotation_driver'
+                    'FormBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'formbundle' => __DIR__ . '/../../Entity',
                 ),
