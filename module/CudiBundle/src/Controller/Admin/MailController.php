@@ -51,7 +51,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);
 
-                if ('production' == getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
                 return new ViewModel(

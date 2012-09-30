@@ -48,7 +48,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function deleteAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($subscription = $this->_getSubscription()))
             return new ViewModel();
@@ -92,7 +92,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
             ->setSubject($subject);
 
-        if ('production' == getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV'))
             $this->getMailTransport()->send($mail);
 
         $this->getEntityManager()->remove($subscription);

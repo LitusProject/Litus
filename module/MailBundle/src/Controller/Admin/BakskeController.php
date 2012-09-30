@@ -64,7 +64,7 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
                 foreach($recipients as $recipient)
                     $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
 
-                if ('production' == getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
                 $this->flashMessenger()->addMessage(

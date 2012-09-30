@@ -96,7 +96,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
 
-            if ('production' == getenv('APPLICATION_ENV'))
+            if ('development' != getenv('APPLICATION_ENV'))
                 $this->_mailTransport->send($mail);
         }
         $this->_entityManager->flush();

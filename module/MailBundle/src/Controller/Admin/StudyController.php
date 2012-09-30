@@ -74,7 +74,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 foreach($enrollments as $enrollment)
                     $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
 
-                if ('production' == getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
                 $this->flashMessenger()->addMessage(
