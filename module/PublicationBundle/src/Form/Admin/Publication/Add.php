@@ -16,7 +16,7 @@ namespace PublicationBundle\Form\Admin\Publication;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\PublicationTitleValidator,
+    PublicationBundle\Component\Validator\Title\Publication as PublicationTitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
