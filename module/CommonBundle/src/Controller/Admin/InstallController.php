@@ -46,36 +46,36 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'key'         => 'common.account_deactivated_mail',
                     'value'       => 'Dear,
 
-Your account on Litus is deactivated.
+Your account on VTK has been deactivated.
 Click here to activate it again: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
                     'key'         => 'common.account_deactivated_subject',
-                    'value'       => 'Account deactivated',
+                    'value'       => 'Account Deactivated',
                     'description' => 'The mail subject when an account is deactivated',
                 ),
                 array(
                     'key'         => 'common.account_activated_mail',
                     'value'       => 'Dear {{ name }},
 
-An account for you is created on Litus with username {{ username }}.
+An account for you was created on VTK with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
                     'key'         => 'common.account_activated_subject',
-                    'value'       => 'Account created',
+                    'value'       => 'Account Created',
                     'description' => 'The mail subject when an account is deactivated',
                 ),
                 array(
                     'key'         => 'system_mail_address',
-                    'value'       => 'info@litus.cc',
+                    'value'       => 'vtk@vtk.be',
                     'description' => 'The system mail address',
                 ),
                 array(
                     'key'         => 'system_mail_name',
-                    'value'       => 'Litus Project',
+                    'value'       => 'VTK',
                     'description' => 'The system mail name',
                 ),
                 array(

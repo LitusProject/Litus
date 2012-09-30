@@ -30,18 +30,19 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
-
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The current year
+     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
      */
     private $_academicYear;
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $name = null)

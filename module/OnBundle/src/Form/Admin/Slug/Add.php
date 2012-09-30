@@ -33,14 +33,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($name);
 
-        $field = new Text('host');
-        $field->setLabel('Host')
-            ->setRequired();
+        $field = new Text('name');
+        $field->setLabel('Name');
+        $this->add($field);
+
+        $field = new Text('url');
+        $field->setLabel('URL');
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'key_add');
+            ->setAttribute('class', 'slug_add');
         $this->add($field);
     }
 
@@ -53,14 +56,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'host',
+                        'name'     => 'name',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'hostname',
+                                'name' => 'uri',
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'url',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'uri',
                             ),
                         ),
                     )

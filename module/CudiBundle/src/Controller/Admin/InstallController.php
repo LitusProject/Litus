@@ -85,7 +85,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'union_url',
-                    'value'       => 'http://www.vtk.be',
+                    'value'       => 'http://vtk.be',
                     'description' => 'The URL of the union',
                 ),
                 array(
