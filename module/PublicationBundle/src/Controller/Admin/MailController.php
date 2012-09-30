@@ -12,26 +12,38 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Controller\Admin;
+namespace PublicationBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Form\Admin\Bakske\Mail as MailForm,
+    PublicationBundle\Form\Admin\Mail\Send as SendForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
- * BakskeController
+ * MailController
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class BakskeController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class MailController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
     public function sendAction()
     {
         $currentYear = $this->getCurrentAcademicYear();
 
-        $form = new MailForm();
+        $publicationId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.bakske_id');
+
+        $publication = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Publication')
+            ->findOneById($publicationId);
+
+        $editions = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Editions\Html')
+            ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear());
+
+        $form = new SendForm($editions);
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -39,25 +51,33 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
 
             if ($form->isValid()) {
 
+                $editionId = $formData['edition'];
+
+                $edition = $this->getEntityManager()
+                    ->getRepository('PublicationBundle\Entity\Editions\Html')
+                    ->findOneById($editionId);
+
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('mail.bakske_mail');
+                    ->getConfigValue('publication.bakske_mail');
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('mail.bakske_mail_name');
+                    ->getConfigValue('publication.bakske_mail_name');
 
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setBody($edition->getHtml())
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
-                $metadatas = $this->getEntityManager()
+                $recipients = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                     ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
 
-                foreach($metadatas as $metadata)
-                    $mail->addBcc($metadata->getAcademic()->getEmail(), $metadata->getAcademic()->getFullName());
+                $mail->addTo($mailAddress, $mailName);
+
+                foreach($recipients as $recipient)
+                    $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
 
                 if ('production' == getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

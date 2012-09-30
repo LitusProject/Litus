@@ -65,19 +65,6 @@ return array(
                     ),
                 ),
             ),
-            'admin_mail_bakske' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '/admin/mail/bakske[/:action]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'admin_mail_bakske',
-                        'action'     => 'send',
-                    ),
-                ),
-            ),
         ),
     ),
     'view_manager' => array(
@@ -91,7 +78,6 @@ return array(
             'admin_mail'        => 'MailBundle\Controller\Admin\MailController',
             'admin_mail_prof'   => 'MailBundle\Controller\Admin\ProfController',
             'admin_mail_study'  => 'MailBundle\Controller\Admin\StudyController',
-            'admin_mail_bakske' => 'MailBundle\Controller\Admin\BakskeController',
         ),
     ),
 );

@@ -217,6 +217,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'page_install' => array(
                         'index'
                     ),
+                    'publication_install' => array(
+                        'index'
+                    ),
                     'secretary_install' => array(
                         'index'
                     ),
