@@ -37,8 +37,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     protected $_entityManager = null;
 
+    /**
+     * @var \PublicationBundle\Entity\Publication The publication
+     */
     private $_publication = null;
 
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
+     */
     private $_academicYear = null;
 
     /**
@@ -76,15 +82,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'edition_add');
         $this->add($field);
-    }
-
-    public function populateFromPublication(Publication $publication)
-    {
-        $formData = array(
-            'title' => $publication->getTitle(),
-        );
-
-        $this->setData($formData);
     }
 
     public function getInputFilter()

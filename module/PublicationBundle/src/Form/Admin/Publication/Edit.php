@@ -54,7 +54,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
         $this->_populateFromPublication($publication);
     }
 
-    private function populateFromPublication(Publication $publication)
+    private function _populateFromPublication(Publication $publication)
     {
         $formData = array(
             'title' => $publication->getTitle(),
