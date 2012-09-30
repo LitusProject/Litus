@@ -161,14 +161,14 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'cudi') or hasAccess('admin_mail_study', 'send') %}
+		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'cudi') or hasAccess('admin_mail_study', 'send') or hasAccess('admin_mail_bakske', 'send') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Mail</b><br />
 		                			Mass Mail, Aliasses &amp; Mailing Lists
 		                		</div>
 		                		<ul
-		                			{% if 'admin_mail' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') %}
+		                			{% if 'admin_mail' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
@@ -181,26 +181,26 @@
 		                		    {% if hasAccess('admin_mail_study', 'send') %}
 		                		        <li><a href="{{ url('admin_mail_study') }}">Student</a></li>
 		                		    {% endif %}
+		                			{% if hasAccess('admin_mail_bakske', 'send') %}
+					                    <li><a href="{{ url('admin_mail_bakske') }}">HTML Bakske</a></li>
+					                {% endif %}
 		                		</ul>
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_publication', 'manage') or hasAccess('admin_mail_bakske', 'send') %}
+		                {% if hasAccess('admin_publication', 'manage') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Pulication</b><br />
 		                			Publications &amp; Editions
 		                		</div>
 		                		<ul
-		                			{% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') %}
+		                			{% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
 		                			{% if hasAccess('admin_publication', 'manage') %}
 					                    <li><a href="{{ url('admin_publication') }}">Publications</a></li>
-					                {% endif %}
-		                			{% if hasAccess('admin_mail_bakske', 'send') %}
-					                    <li><a href="{{ url('admin_mail_bakske') }}">Mail HTML Bakske</a></li>
 					                {% endif %}
 		                		</ul>
 		                	</li>
