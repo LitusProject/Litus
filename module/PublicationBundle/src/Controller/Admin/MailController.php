@@ -29,21 +29,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 
     public function sendAction()
     {
-        $currentYear = $this->getCurrentAcademicYear();
-
-        $publicationId = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('publication.bakske_id');
-
-        $publication = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Publication')
-            ->findOneById($publicationId);
-
-        $editions = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Html')
-            ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear());
-
-        $form = new SendForm($editions);
+        $form = new SendForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
