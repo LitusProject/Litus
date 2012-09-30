@@ -82,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'edition_add');
+            ->setAttribute('class', 'html_add');
         $this->add($field);
     }
 
