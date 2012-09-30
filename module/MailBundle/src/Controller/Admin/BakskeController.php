@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Controller\Admin;
+namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Form\Admin\Mail\Send as SendForm,
@@ -24,9 +24,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class MailController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class BakskeController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function sendAction()
     {
         $currentYear = $this->getCurrentAcademicYear();
@@ -59,11 +58,11 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
 
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('publication.bakske_mail');
+                    ->getConfigValue('mail.bakske_mail');
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('publication.bakske_mail_name');
+                    ->getConfigValue('mail.bakske_mail_name');
 
                 $mail = new Message();
                 $mail->setBody($edition->getHtml())

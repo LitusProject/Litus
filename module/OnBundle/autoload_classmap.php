@@ -5,8 +5,8 @@ return array(
     'OnBundle\Controller\Admin\InstallController' => __DIR__ . '//src/Controller/Admin/InstallController.php',
     'OnBundle\Controller\Admin\SlugController'    => __DIR__ . '//src/Controller/Admin/SlugController.php',
     'OnBundle\Controller\RedirectController'      => __DIR__ . '//src/Controller/RedirectController.php',
-    'OnBundle\Document\Url'                       => __DIR__ . '//src/Document/Slug.php',
+    'OnBundle\Document\Slug'                      => __DIR__ . '//src/Document/Slug.php',
     'OnBundle\Form\Admin\Key\Add'                 => __DIR__ . '//src/Form/Admin/Slug/Add.php',
     'OnBundle\Form\Admin\Key\Edit'                => __DIR__ . '//src/Form/Admin/Slug/Edit.php',
-    'OnBundle\Repository\Key'                     => __DIR__ . '//src/Repository/Slug.php',
+    'OnBundle\Repository\Slug'                    => __DIR__ . '//src/Repository/Slug.php',
 );

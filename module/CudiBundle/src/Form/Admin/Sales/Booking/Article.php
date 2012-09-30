@@ -50,7 +50,7 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Search')
-            ->setAttribute('class', 'bookings')
+            ->setAttribute('class', 'booking')
             ->setAttribute('id', 'search');
         $this->add($field);
     }

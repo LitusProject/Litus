@@ -37,6 +37,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
             'news',
             'notification',
             'page',
+            'publication',
             'secretary',
             'shift',
             'syllabus',

@@ -27,11 +27,6 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'admin_mail_bakske' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'admin_edition_pdf' => array(
             '@common_jquery',
             '@admin_css',

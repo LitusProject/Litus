@@ -68,6 +68,14 @@
 			                {% endif %}
 			            </ul>
 		            {% endif %}
+
+		            {% if hasAccess('admin_slug', 'manage') %}
+			            <ul>
+			                {% if hasAccess('admin_slug', 'manage') %}
+			                    <li><a href="{{ url('admin_slug') }}">Slugs</a></li>
+			                {% endif %}
+			            </ul>
+		            {% endif %}
 		    	</li>
             </ul>
 
@@ -168,10 +176,13 @@
 		                			Mass Mail, Aliasses &amp; Mailing Lists
 		                		</div>
 		                		<ul
-		                			{% if 'admin_mail' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') %}
+		                			{% if 'admin_mail' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') or 'admin_mail_prof' == getParam('controller') or 'admin_mail_study' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
+		                			{% if hasAccess('admin_mail_bakske', 'send') %}
+					                    <li><a href="{{ url('admin_mail_bakske') }}">Bakske</a></li>
+					                {% endif %}
 		                		    {% if hasAccess('admin_mail', 'groups') %}
 		                		        <li><a href="{{ url('admin_mail') }}">Groups</a></li>
 		                		    {% endif %}
@@ -192,15 +203,12 @@
 		                			Publications &amp; Editions
 		                		</div>
 		                		<ul
-		                			{% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') or 'admin_mail_bakske' == getParam('controller') %}
+		                			{% if 'admin_publication' == getParam('controller') or 'admin_edition_html' == getParam('controller') or 'admin_edition_pdf' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
 		                			{% if hasAccess('admin_publication', 'manage') %}
 					                    <li><a href="{{ url('admin_publication') }}">Publications</a></li>
-					                {% endif %}
-		                			{% if hasAccess('admin_mail_bakske', 'send') %}
-					                    <li><a href="{{ url('admin_mail_bakske') }}">Mail HTML Bakske</a></li>
 					                {% endif %}
 		                		</ul>
 		                	</li>

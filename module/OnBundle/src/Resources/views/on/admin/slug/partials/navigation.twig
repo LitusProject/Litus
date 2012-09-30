@@ -1,13 +1,13 @@
 <header id="controller_header">
-    <div class="title"><span class="key">API Keys</span></div>
+    <div class="title"><span class="slug">Slugs</span></div>
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('admin_key', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_key", {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('admin_slug', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_slug", {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('admin_key', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_key", {"action": "manage"}) }}">Manage</a></li>
+            {% if hasAccess('admin_slug', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("admin_slug", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

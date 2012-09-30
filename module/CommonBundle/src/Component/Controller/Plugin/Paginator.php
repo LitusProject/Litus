@@ -89,12 +89,12 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      * @param int $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
-    public function createFromEntity($document, $currentPage, array $conditions = array(), array $orderBy = null)
+    public function createFromDocument($document, $currentPage, array $conditions = array(), array $orderBy = null)
     {
         return $this->createFromArray(
             (0 == count($conditions)) ?
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy(array(), $orderBy) :
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy($conditions, $orderBy),
+                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy(array(), $orderBy)->toArray() :
+                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy($conditions, $orderBy)->toArray(),
             $currentPage
         );
     }

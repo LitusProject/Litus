@@ -622,11 +622,11 @@ abstract class Person
 
             $message = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('account_activated_mail');
+                ->getConfigValue('common.account_activated_mail');
 
             $subject = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('account_activated_subject');
+                ->getConfigValue('common.account_activated_subject');
 
             $mailAddress = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

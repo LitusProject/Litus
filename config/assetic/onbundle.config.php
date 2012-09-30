@@ -15,30 +15,18 @@
 
 return array(
     'controllers'  => array(
-        'mail_install' => array(
+        'on_install' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail' => array(
+
+        'admin_slug' => array(
             '@common_jquery',
-            '@admin_css',
             '@admin_js',
-        ),
-        'admin_mail_bakske' => array(
-            '@common_jquery',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@admin_css',
-            '@admin_js',
-        ),
-        'admin_mail_prof' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'admin_mail_study' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
         ),
     ),
     'routes' => array(),

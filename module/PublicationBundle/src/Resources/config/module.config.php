@@ -70,21 +70,6 @@ return array(
                     ),
                 ),
             ),
-            'admin_mail_bakske' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/mail/bakske[/:action[/:id][/page/:page]]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'admin_mail_bakske',
-                        'action'     => 'send',
-                    ),
-                ),
-            ),
         ),
     ),
     'view_manager' => array(
@@ -96,10 +81,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'PublicationBundle\Entity' => 'my_annotation_driver'
+                    'PublicationBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'publicationbundle' => __DIR__ . '/../../Entity',
                 ),
@@ -108,12 +93,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'publication_install'      => 'PublicationBundle\Controller\Admin\InstallController',
+            'publication_install' => 'PublicationBundle\Controller\Admin\InstallController',
 
-            'admin_publication'        => 'PublicationBundle\Controller\Admin\PublicationController',
-            'admin_edition_pdf'        => 'PublicationBundle\Controller\Admin\PdfEditionController',
-            'admin_edition_html'        => 'PublicationBundle\Controller\Admin\HtmlEditionController',
-            'admin_mail_bakske'        => 'PublicationBundle\Controller\Admin\MailController',
+            'admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
+            'admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\PdfEditionController',
+            'admin_edition_html'  => 'PublicationBundle\Controller\Admin\HtmlEditionController',
         ),
     ),
 );

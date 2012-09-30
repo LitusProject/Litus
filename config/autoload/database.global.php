@@ -38,7 +38,7 @@ return array(
         ),
         'connection' => array(
             'odm_default' => array(
-                'host'     => $databaseConfig['document']['server'],
+                'server'   => $databaseConfig['document']['server'],
                 'port'     => $databaseConfig['document']['port'],
                 'user'     => $databaseConfig['document']['user'],
                 'password' => $databaseConfig['document']['password'],

@@ -27,15 +27,19 @@ use CommonBundle\Entity\Users\Code,
 class Doctrine implements \CommonBundle\Component\Authentication\Action
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface
+     * @var \Zend\Mail\Transport\TransportInterface The mail transport interface
      */
     private $_mailTransport;
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport The mail transport interface
+     */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
         $this->_entityManager = $entityManager;
@@ -72,11 +76,11 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
 
             $email = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('account_deactivated_mail');
+                ->getConfigValue('common.account_deactivated_mail');
 
             $subject = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('account_deactivated_subject');
+                ->getConfigValue('common.account_deactivated_subject');
 
             $mailaddress = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
