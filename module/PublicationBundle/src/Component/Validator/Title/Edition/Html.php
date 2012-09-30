@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Component\Validator;
+namespace PublicationBundle\Component\Validator\Title\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
@@ -23,7 +23,7 @@ use CommonBundle\Entity\General\AcademicYear,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class HtmlEditionTitleValidator extends \Zend\Validator\AbstractValidator
+class Html extends \Zend\Validator\AbstractValidator
 {
     const TITLE_EXISTS = 'titleExists';
 

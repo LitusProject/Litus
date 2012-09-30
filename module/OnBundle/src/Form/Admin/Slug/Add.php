@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'uri',
+                                'name' => ,
                             ),
                         ),
                     )

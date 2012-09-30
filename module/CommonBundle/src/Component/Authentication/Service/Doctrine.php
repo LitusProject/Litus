@@ -118,19 +118,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
                     setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix,
-                        $newSession->getId(),
-                        time() + $this->_expire,
-                        '/',
-                        '.' . preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+                        $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
                     );
                 } else {
                     setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix,
-                        '',
-                        -1,
-                        '/',
-                        '.' . preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+                        $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
                     );
                 }
 
@@ -159,19 +151,11 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $this->getStorage()->write($sessionValidation);
                     if ($rememberMe) {
                         setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix,
-                            $sessionValidation,
-                            time() + $this->_expire,
-                            '/',
-                            '.' . preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+                            $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
                         );
                     } else {
                         setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix,
-                            '',
-                            -1,
-                            '/',
-                            '.' . preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+                            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
                         );
                     }
                 }
