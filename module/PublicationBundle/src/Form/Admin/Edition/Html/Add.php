@@ -12,13 +12,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Form\Admin\PdfEdition;
+namespace PublicationBundle\Form\Admin\Edition\Html;
 
 use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\PdfEditionTitleValidator,
+    PublicationBundle\Component\Validator\HtmlEditionTitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -68,14 +69,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new Textarea('html');
+        $field->setLabel('Html')
+            ->setAttribute('rows', 20)
+            ->setRequired();
+        $this->add($field);
+
         $field = new File('file');
-        $field->setLabel('File')
+        $field->setLabel('Images Archive')
             ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'pdf_edit');
+            ->setAttribute('class', 'html_add');
         $this->add($field);
     }
 
@@ -101,12 +108,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'pattern' => '/^[a-zA-Z0-9]*$/',
                                 ),
                             ),
-                            new PdfEditionTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                            new HtmlEditionTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )
             );
-
 
             $this->_inputFilter = $inputFilter;
         }
