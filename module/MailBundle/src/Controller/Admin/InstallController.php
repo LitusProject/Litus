@@ -28,6 +28,16 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
+                    'key'         => 'mail.bakske_mail',
+                    'value'       => 'bakske@vtk.be',
+                    'description' => 'The mail address from which Het Bakske is sent',
+                ),
+                array(
+                    'key'         => 'mail.bakske_mail_name',
+                    'value'       => 'Het Bakske',
+                    'description' => 'The mail address name from which Het Bakske is sent',
+                ),
+                array(
                     'key'         => 'mail.start_cudi_mail_subject',
                     'value'       => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
                     'description' => 'The subject of the mail send to profs at the start of a new semester',
