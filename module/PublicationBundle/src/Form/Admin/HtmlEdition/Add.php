@@ -49,6 +49,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \PublicationBundle\Entity\Publication $publication The publication to add an edition to.
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year.
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $name = null)
