@@ -12,18 +12,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Controller\Admin;
+namespace PublicationBundle\Controller\Admin\Edition;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Publication,
-    PublicationBundle\Entity\Editions\Pdf as PdfEdition,
-    PublicationBundle\Form\Admin\PdfEdition\Add as AddForm,
+    PublicationBundle\Entity\Editions\Html as HtmlEdition,
+    PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    \ZipArchive;
 
-class PdfEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class HtmlEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -32,7 +33,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+                ->getRepository('PublicationBundle\Entity\Editions\Html')
                 ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
@@ -59,26 +60,45 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
 
             if ($form->isValid()) {
 
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.file_path');
-
                 $upload = new FileUpload();
 
                 $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-                $upload->addValidator(new ExtensionValidator('pdf'));
+                $upload->addValidator(new ExtensionValidator('zip'));
 
                 if ($upload->isValid()) {
 
-                    $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title']);
+                    $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html']);
 
-                    if (!file_exists($edition->getDirectory()))
-                        mkdir($edition->getDirectory(), 0775, true);
+                    if (!file_exists($edition->getImagesDirectory()))
+                        mkdir($edition->getImagesDirectory(), 0775, true);
 
                     $upload = new FileUpload();
-
-                    $upload->addFilter('Rename', $edition->getFileName());
+                    $filename = $upload->getFileName();
                     $upload->receive();
+
+                    $zip = new ZipArchive;
+
+                    if (TRUE === $zip->open($filename)) {
+                        $zip->extractTo($edition->getImagesDirectory());
+                        $zip->close();
+                    } else {
+                        $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                FlashMessage::ERROR,
+                                'Error',
+                                'Something went wrong while extracting the archive!'
+                            )
+                        );
+
+                        $this->redirect()->toRoute(
+                            'admin_publication',
+                            array(
+                                'action' => 'manage'
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
 
                     $this->getEntityManager()->persist($edition);
                     $this->getEntityManager()->flush();
@@ -92,7 +112,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
                     );
 
                     $this->redirect()->toRoute(
-                        'admin_edition_pdf',
+                        'admin_edition_html',
                         array(
                             'action' => 'manage',
                             'id' => $publication->getId(),
@@ -124,6 +144,21 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         );
     }
 
+    public function viewAction()
+    {
+        $edition = $this->_getEdition();
+
+        if (!$edition) {
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'edition' => $edition
+            )
+        );
+    }
+
     public function progressAction()
     {
         $uploadId = ini_get('session.upload_progress.prefix') . $this->getRequest()->getPost()->get('upload_id');
@@ -142,7 +177,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
-        unlink($edition->getFileName());
+        $this->_rrmdir($edition->getImagesDirectory());
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
@@ -175,7 +210,7 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Editions\Pdf')
+            ->getRepository('PublicationBundle\Entity\Editions\Html')
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
@@ -244,5 +279,16 @@ class PdfEditionController extends \CommonBundle\Component\Controller\ActionCont
         }
 
         return $publication;
+    }
+
+    private function _rrmdir($dir)
+    {
+        foreach(glob($dir . '/*') as $file) {
+            if(is_dir($file))
+                $this->_rrmdir($file);
+            else
+                unlink($file);
+            }
+        rmdir($dir);
     }
 }
