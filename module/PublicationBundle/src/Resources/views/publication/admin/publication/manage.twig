@@ -40,10 +40,10 @@
 		                        <a href="#" class="delete" data-id="{{ publication.getId() }}" data-title="{{ publication.getTitle() }}">Delete</a>
 		                    {% endif %}
 						    {% if hasAccess('admin_edition_pdf', 'manage') %}
-		                        <a href="{{ url('admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="pdf_edition">PDFs</a>
+		                        <a href="{{ url('admin_edition_pdf', {"action": "manage", "id": publication.getId() }) }}" class="pdf">PDFs</a>
 		                    {% endif %}
 						    {% if hasAccess('admin_edition_html', 'manage') %}
-		                        <a href="{{ url('admin_edition_html', {"action": "manage", "id": publication.getId() }) }}" class="html_edition">HTMLs</a>
+		                        <a href="{{ url('admin_edition_html', {"action": "manage", "id": publication.getId() }) }}" class="html">HTMLs</a>
 		                    {% endif %}
 						</td>
 					</tr>
