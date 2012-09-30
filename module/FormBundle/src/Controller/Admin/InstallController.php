@@ -34,6 +34,21 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_form' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'admin_form_field' => array(
+                        'add', 'delete', 'manage'
+                    ),
+                    'admin_form_viewer' => array(
+                        'add', 'delete', 'manage'
+                    ),
+                    'form_view' => array(
+                        'view', 'complete',
+                    ),
+                    'form_manage' => array(
+                        'index', 'view', 'edit', 'delete',
+                    ),
+                    'form_manage_auth' => array(
+                        'login', 'logout',
+                    ),
                 ),
             )
         );
