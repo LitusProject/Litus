@@ -221,7 +221,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($shift->getResponsibles() as $responsible)
             $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
 
-        if ('production' == getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV'))
             $this->getMailTransport()->send($mail);
 
         $this->getEntityManager()->remove(
