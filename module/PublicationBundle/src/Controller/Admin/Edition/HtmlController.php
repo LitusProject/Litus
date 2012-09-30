@@ -24,7 +24,12 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel,
     \ZipArchive;
 
-class HtmlEditionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+/**
+ * HtmlController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
+class HtmlController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {

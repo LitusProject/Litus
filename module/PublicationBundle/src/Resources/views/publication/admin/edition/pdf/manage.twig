@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'publication/admin/html-edition/partials/navigation.twig' %}
+	{% include 'publication/admin/edition/pdf/partials/navigation.twig' %}
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
@@ -33,10 +33,7 @@
 					<tr class="item item-{{ edition.getId() }}">
 						<td>{{ edition.getTitle() }}</td>
 						<td class="actions">
-						    {% if hasAccess('admin_edition_html', 'view') %}
-		                        <a href="{{ url('admin_edition_html', {'action': 'view','id': edition.getId()}) }}" class="view">View</a>
-		                    {% endif %}
-						    {% if hasAccess('admin_edition_html', 'delete') %}
+						    {% if hasAccess('admin_edition_pdf', 'delete') %}
 		                        <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
 		                    {% endif %}
 						</td>
@@ -70,23 +67,6 @@
 		</div>
 	</div>
 
-	<div class="modal hide fade" id="progressModal">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Upload Images
-		</div>
-		<div class="modal-body">
-			<p>
-				Your files are being uploaded.
-			</p>
-			<p>
-				<div class="progress progress-striped active">
-				    <div class="bar" style="width: 100%;"></div>
-				</div>
-			</p>
-		</div>
-	</div>
-
 {% endblock %}
 
 {% block content_script %}
@@ -107,7 +87,7 @@
 			removeEdition.find('.editionTitle').html($(this).data('title'));
 			var id = $this.data('id');
 			removeEdition.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_edition_html', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_edition_pdf', {"action": "delete"})}}/' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.edition_removed_success').removeClass('hide');

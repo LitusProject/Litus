@@ -20,6 +20,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Form\Admin\Publication\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
+/**
+ * PublicationController
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
 class PublicationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()

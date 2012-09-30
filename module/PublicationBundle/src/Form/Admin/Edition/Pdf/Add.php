@@ -18,7 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\PdfEditionTitleValidator,
+    PublicationBundle\Component\Validator\TitleValidator\Edition\Pdf as PdfTitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'pattern' => '/^[a-zA-Z0-9]*$/',
                                 ),
                             ),
-                            new PdfEditionTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                            new PdfTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )
