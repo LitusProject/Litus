@@ -77,6 +77,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                                 'name' => 'greaterthan',
                                 'options' => array(
                                     'min' => 0,
+                                    'inclusive' => true,
                                 ),
                             ),
                         ),

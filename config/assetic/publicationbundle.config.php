@@ -15,25 +15,42 @@
 
 return array(
     'controllers'  => array(
-        'mail_install' => array(
+        'publication_install' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail' => array(
+        'admin_publication' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'admin_mail_bakske' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
         ),
-        'admin_mail_prof' => array(
+        'admin_edition_pdf' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_form_upload_progress',
+            '@common_download_file',
+            '@common_permanent_modal',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
-        'admin_mail_study' => array(
+        'admin_edition_html' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_form_upload_progress',
+            '@common_download_file',
+            '@common_permanent_modal',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
     ),
     'routes' => array(),

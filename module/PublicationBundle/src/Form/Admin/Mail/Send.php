@@ -12,10 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Form\Admin\Bakske;
+namespace PublicationBundle\Form\Admin\Mail;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Element\Select,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -25,24 +26,29 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Form\Admin\Form
+class Send extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct($editions, $name = null)
     {
         parent::__construct($name);
+
+        $editionNames = array();
+        foreach($editions as $edition) {
+            $editionNames[$edition->getId()] = $edition->getTitle();
+        }
+
+        $field = new Select('edition');
+        $field->setLabel('Edition')
+            ->setAttribute('options', $editionNames)
+            ->setRequired();
+        $this->add($field);
 
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('message');
-        $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px;height: 200px;')
             ->setRequired();
         $this->add($field);
 
@@ -70,17 +76,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 )
             );
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'message',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
             $this->_inputFilter = $inputFilter;
         }
         return $this->_inputFilter;
