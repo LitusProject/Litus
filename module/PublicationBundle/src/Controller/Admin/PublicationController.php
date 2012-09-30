@@ -24,12 +24,15 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Publication')
                 ->findAllActive(),
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'title' => 'ASC'
+            )
         );
 
         return new ViewModel(

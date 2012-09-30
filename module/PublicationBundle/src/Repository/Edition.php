@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicationBundle\Repository\Editions;
+namespace PublicationBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

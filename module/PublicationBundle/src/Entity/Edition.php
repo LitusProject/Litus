@@ -11,7 +11,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace PublicationBundle\Entity\Editions;
+namespace PublicationBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM,
@@ -21,7 +21,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * This is the entity for a publication
  *
- * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\Edition")
+ * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Edition")
  * @ORM\Table(name="publications.editions")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
@@ -32,7 +32,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Edition
 {
-
     /**
      * @var integer The ID of this article
      *
