@@ -24,9 +24,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\HtmlEdition")
  * @ORM\Table(name="publications.htmleditions")
  */
-class Html extends Edition
+class Html extends \PublicationBundle\Entity\Edition
 {
-
     /**
      * @var string The html of this edition.
      *

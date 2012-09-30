@@ -35,14 +35,14 @@ class Publication
     private $id;
 
     /**
-     * @var string The title of this publication.
+     * @var string The title of this publication
      *
      * @ORM\Column(type="string", nullable=false)
      */
     private $title;
 
     /**
-     * @var boolean Indicates whether this publication is history.
+     * @var boolean Indicates whether this publication is history
      *
      * @ORM\Column(type="boolean", nullable=false)
      */

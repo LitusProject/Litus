@@ -24,9 +24,8 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Editions\PdfEdition")
  * @ORM\Table(name="publications.pdfeditions")
  */
-class Pdf extends Edition
+class Pdf extends \PublicationBundle\Entity\Edition
 {
-
     /**
      * Creates a new edition with the given title
      *
