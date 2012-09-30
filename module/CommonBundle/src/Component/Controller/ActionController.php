@@ -370,6 +370,17 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * We want an easy method to retrieve the DocumentManager from
+     * the DI container.
+     *
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     */
+    public function getDocumentManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+    }
+
+    /**
      * We want an easy method to retrieve the EntityManager from
      * the DI container.
      *

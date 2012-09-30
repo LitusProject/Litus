@@ -15,90 +15,73 @@
 return array(
     'router' => array(
         'routes' => array(
-            'news_install' => array(
+            'on_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/news',
+                    'route'    => '/admin/install/api',
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'news_install',
+                        'controller' => 'api_install',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin_news' => array(
+            'admin_slug' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/site/news[/:action[/:id][/page/:page]]',
+                    'route'    => '/admin/on/slug[/:action[/:id][/page/:page]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'admin_news',
+                        'controller' => 'admin_slug',
                         'action'     => 'manage',
                     ),
                 ),
             ),
-            'news' => array(
+            'on_redirect' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/news[/:action[/:name][/page/:page]]',
+                    'route'    => '/on[/:id]',
                     'constraints' => array(
-                        'action'   => '[a-zA-Z0-9_-]*',
-                        'name'     => '[a-zA-Z0-9_-]*',
-                        'page'     => '[0-9]*',
-                        'language' => '[a-z]{2}',
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'news',
-                        'action'     => 'overview',
+                        'controller' => 'on_redirect',
+                        'action'     => 'index',
                     ),
                 ),
-            ),
-        ),
-    ),
-    'translator' => array(
-        'translation_files' => array(
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.nl.php',
-                'locale'   => 'nl'
             ),
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'news_view' => __DIR__ . '/../views',
+            'on_view' => __DIR__ . '/../views',
         ),
     ),
     'doctrine' => array(
         'driver' => array(
-            'orm_default' => array(
+            'odm_default' => array(
                 'drivers' => array(
-                    'NewsBundle\Entity' => 'orm_annotation_driver'
+                    'OnBundle\Document' => 'odm_annotation_driver'
                 ),
             ),
-            'orm_annotation_driver' => array(
+            'odm_annotation_driver' => array(
                 'paths' => array(
-                    'newsbundle' => __DIR__ . '/../../Entity',
+                    'onbundle' => __DIR__ . '/../../Document',
                 ),
             ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
-            'news_install' => 'NewsBundle\Controller\Admin\InstallController',
-            'admin_news'   => 'NewsBundle\Controller\Admin\NewsController',
+            'on_install'  => 'OnBundle\Controller\Admin\InstallController',
+            'admin_slug'  => 'OnBundle\Controller\Admin\SlugController',
 
-            'news'  => 'NewsBundle\Controller\NewsController',
+            'on_redirect' => 'OnBundle\Controller\RedirectController',
         ),
     ),
 );

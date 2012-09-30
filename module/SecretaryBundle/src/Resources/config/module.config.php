@@ -83,10 +83,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'SecretaryBundle\Entity' => 'my_annotation_driver'
+                    'SecretaryBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'secretarybundle' => __DIR__ . '/../../Entity',
                 ),

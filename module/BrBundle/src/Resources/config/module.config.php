@@ -153,10 +153,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'BrBundle\Entity' => 'my_annotation_driver'
+                    'BrBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'brbundle' => __DIR__ . '/../../Entity',
                 ),

@@ -109,10 +109,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'PageBundle\Entity' => 'my_annotation_driver'
+                    'PageBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'pagebundle' => __DIR__ . '/../../Entity',
                 ),

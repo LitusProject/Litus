@@ -65,10 +65,10 @@ return array(
         'driver' => array(
             'orm_default' => array(
                 'drivers' => array(
-                    'ApiBundle\Entity' => 'my_annotation_driver'
+                    'ApiBundle\Entity' => 'orm_annotation_driver'
                 ),
             ),
-            'my_annotation_driver' => array(
+            'orm_annotation_driver' => array(
                 'paths' => array(
                     'apibundle' => __DIR__ . '/../../Entity',
                 ),
