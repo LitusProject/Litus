@@ -12,19 +12,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Controller\Admin;
+namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PublicationBundle\Form\Admin\Mail\Send as SendForm,
+    MailBundle\Form\Admin\Bakske\Mail as SendForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
- * MailController
+ * BakskeController
  *
  * @autor Niels Avonds <niels.avonds@litus.cc>>
  */
-class MailController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class BakskeController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
     public function sendAction()

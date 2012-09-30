@@ -12,7 +12,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Form\Admin\Mail;
+namespace MailBundle\Form\Admin\Bakske;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Send extends \CommonBundle\Component\Form\Admin\Form
+class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
 
     /**

@@ -71,9 +71,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_edition_pdf' => array(
                         'add', 'delete', 'manage', 'progress',
                     ),
-                    'admin_mail_bakske' => array(
-                        'send',
-                    ),
                 )
             )
         );
