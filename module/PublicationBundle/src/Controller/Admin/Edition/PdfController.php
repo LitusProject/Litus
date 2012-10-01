@@ -64,10 +64,6 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
             if ($form->isValid()) {
 
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.file_path');
-
                 $upload = new FileUpload();
 
                 $upload->addValidator(new SizeValidator(array('max' => '30MB')));
