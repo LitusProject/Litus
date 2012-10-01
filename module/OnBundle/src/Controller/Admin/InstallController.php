@@ -28,9 +28,27 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'apibundle' => array(
-                    'admin_key' => array(
+                'onbundle' => array(
+                    'admin_slug' => array(
                         'add', 'delete', 'edit', 'manage'
+                    ),
+                    'redirect' => array(
+                        'index'
+                    ),
+                ),
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'redirect' => array(
+                            'index'
+                        ),
                     ),
                 ),
             )
