@@ -89,7 +89,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $session = $this->getAuthentication()->forget();
 
-        if ($session->isShibboleth()) {
+        if (null !== $session && $session->isShibboleth()) {
             $shibbolethLogoutUrl = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shibboleth_logout_url');
