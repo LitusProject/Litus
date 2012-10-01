@@ -215,6 +215,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->setFrom($mailAddress, $mailName)
             ->setSubject($subject);
 
+        $mail->addTo($mailAddress, $mailName);
+
         foreach ($shift->getVolunteers() as $volunteer)
             $mail->addBcc($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
 
