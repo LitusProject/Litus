@@ -18,7 +18,7 @@ return array(
             'notification_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/notification',
+                    'route' => '/admin/install/notification',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_notification' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/site/notification[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/site/notification[/:action[/:id][/page/:page]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

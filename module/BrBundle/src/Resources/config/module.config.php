@@ -28,7 +28,7 @@ return array(
             'admin_company' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/company[/:action[/:id]]',
+                    'route' => '/admin/company[/:action[/:id]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
@@ -42,7 +42,7 @@ return array(
             'admin_company_event' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/company/event[/:action[/:id]]',
+                    'route' => '/admin/company/event[/:action[/:id]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
@@ -56,7 +56,7 @@ return array(
             'admin_company_internship' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/company/internship[/:action[/:id]]',
+                    'route' => '/admin/company/internship[/:action[/:id]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
@@ -70,7 +70,7 @@ return array(
             'admin_company_vacancy' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/company/vacancy[/:action[/:id]]',
+                    'route' => '/admin/company/vacancy[/:action[/:id]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-zA-Z0-9_-]*',
@@ -99,7 +99,7 @@ return array(
             'admin_section' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/section[/:action[/:id[/:confirm]]]',
+                    'route' => '/admin/section[/:action[/:id[/:confirm]]]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

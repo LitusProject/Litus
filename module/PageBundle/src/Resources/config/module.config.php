@@ -60,7 +60,7 @@ return array(
             'page' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/page[/:name]',
+                    'route' => '[/:language]/page[/:name]',
                     'constraints' => array(
                         'name'     => '[a-zA-Z0-9_-]*',
                         'language' => '[a-z]{2}',
@@ -74,7 +74,7 @@ return array(
             'page_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/page/file/:name',
+                    'route' => '/page/file/:name',
                     'constraints' => array(
                         'name'     => '[a-zA-Z0-9_-]*',
                     ),

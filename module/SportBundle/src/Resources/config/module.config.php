@@ -32,7 +32,7 @@ return array(
         'sport_install' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/admin/install/sport',
+                'route' => '/admin/install/sport',
                 'constraints' => array(
                 ),
                 'defaults' => array(
@@ -44,7 +44,7 @@ return array(
         'admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/admin/company[/:action[/:id[/:confirm]]]',
+                'route' => '/admin/company[/:action[/:id[/:confirm]]]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -59,7 +59,7 @@ return array(
         'admin_section' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/admin/section[/:action[/:id[/:confirm]]]',
+                'route' => '/admin/section[/:action[/:id[/:confirm]]]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
