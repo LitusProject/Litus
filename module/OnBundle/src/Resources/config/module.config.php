@@ -18,7 +18,7 @@ return array(
             'on_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/api[/]',
+                    'route' => '/admin/install/on[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
