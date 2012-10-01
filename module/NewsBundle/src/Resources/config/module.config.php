@@ -18,7 +18,7 @@ return array(
             'news_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/news',
+                    'route' => '/admin/install/news[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_news' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/site/news[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/site/news[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'news' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/news[/:action[/:name][/page/:page]]',
+                    'route' => '[/:language]/news[/:action[/:name][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]*',

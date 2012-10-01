@@ -18,7 +18,7 @@ return array(
 		    'logistics_install' => array(
 		        'type' => 'Zend\Mvc\Router\Http\Segment',
 		        'options' => array(
-		            'route' => '/admin/install/logistics',
+		            'route' => '/admin/install/logistics[/]',
 		            'defaults' => array(
 		                'controller' => 'logistics_install',
 		                'action'     => 'index',
@@ -28,7 +28,7 @@ return array(
 			'admin_driver' => array(
 				'type'    => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-                    'route' => '/admin/driver[/:action[/:id][/page/:page][/:field/:string]]',
+                    'route' => '/admin/driver[/:action[/:id][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
 			'admin_van_reservation' => array(
 			    'type'    => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/start/:start][/end/:end][/return/:return]]',
+			        'route' => '/admin/van_reservation[/:action[/:id][/page/:page][/start/:start][/end/:end][/return/:return]][/]',
 			        'constraints' => array(
 			            'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'id'      => '[0-9]*',
@@ -63,7 +63,7 @@ return array(
 			'logistics_index' => array(
 			    'type' => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '[/:language]/logistics[/:action]',
+			        'route' => '[/:language]/logistics[/:action][/]',
 			        'constraints' => array(
 			            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
 			            'session'  => '[0-9]*',
@@ -78,7 +78,7 @@ return array(
             'logistics_auth' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/logistics/auth[/:action]',
+                    'route' => '[/:language]/logistics/auth[/:action][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',
@@ -93,7 +93,7 @@ return array(
 			'logistics_reservation_fetch' => array(
 			    'type'    => 'Zend\Mvc\Router\Http\Segment',
 			    'options' => array(
-			        'route' => '/logistics/fetch[/:start][/:end]',
+			        'route' => '/logistics/fetch[/:start][/:end][/]',
 			        'constraints' => array(
                         'start' => '[0-9]*',
                         'end'   => '[0-9]*',

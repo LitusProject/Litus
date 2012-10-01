@@ -18,7 +18,7 @@ return array(
             'on_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/api',
+                    'route' => '/admin/install/api[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_slug' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/on/slug[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/on/slug[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[a-z0-9]*',
@@ -45,7 +45,7 @@ return array(
             'on_redirect' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Hostname',
                 'options' => array(
-                    'route' => '[/:name]',
+                    'route' => '[/:name][/]',
                     'constraints' => array(
                         'name'  => '[a-zA-Z0-9]*',
                     ),

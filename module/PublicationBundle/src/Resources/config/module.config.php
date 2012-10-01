@@ -18,7 +18,7 @@ return array(
             'publication_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/publication',
+                    'route' => '/admin/install/publication[/]',
                     'defaults' => array(
                         'controller' => 'publication_install',
                         'action'     => 'index',
@@ -28,7 +28,7 @@ return array(
             'admin_publication' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/publication[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/publication[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -43,7 +43,7 @@ return array(
             'admin_edition_pdf' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/edition/pdf[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/edition/pdf[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -58,7 +58,7 @@ return array(
             'admin_edition_html' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/edition/html[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/edition/html[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

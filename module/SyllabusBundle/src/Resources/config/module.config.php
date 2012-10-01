@@ -18,7 +18,7 @@ return array(
             'syllabus_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/syllabus',
+                    'route' => '/admin/install/syllabus[/]',
                     'defaults' => array(
                         'controller' => 'syllabus_install',
                         'action'     => 'index',
@@ -28,7 +28,7 @@ return array(
             'admin_update_syllabus' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/update[/:action[/:id]]',
+                    'route' => '/admin/syllabus/update[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -42,7 +42,7 @@ return array(
             'admin_study' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/study[/:action[/:id][/page/:page][/:academicyear][/:field/:string]]',
+                    'route' => '/admin/syllabus/study[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -60,7 +60,7 @@ return array(
             'admin_subject' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string]]',
+                    'route' => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -77,7 +77,7 @@ return array(
             'admin_subject_comment' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/subject/comments[/:action[/:id]]',
+                    'route' => '/admin/syllabus/subject/comments[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -92,7 +92,7 @@ return array(
             'admin_subject_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/subject/typeahead/:academicyear[/:string]',
+                    'route' => '/admin/syllabus/subject/typeahead/:academicyear[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'string'       => '[%a-zA-Z0-9_-]*',
@@ -106,7 +106,7 @@ return array(
             'admin_prof' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/prof[/:action[/:id]][/:academicyear]',
+                    'route' => '/admin/syllabus/prof[/:action[/:id]][/:academicyear][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -121,7 +121,7 @@ return array(
             'admin_prof_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/syllabus/prof/typeahead[/:string]',
+                    'route' => '/admin/syllabus/prof/typeahead[/:string][/]',
                     'constraints' => array(
                         'string'  => '[%a-zA-Z0-9_-]*',
                     ),
@@ -134,7 +134,7 @@ return array(
             'subject_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/syllabus/subject/typeahead/:academicyear[/:string]',
+                    'route' => '/syllabus/subject/typeahead/:academicyear[/:string][/]',
                     'constraints' => array(
                         'academicyear' => '[0-9]{4}-[0-9]{4}',
                         'string'       => '[%a-zA-Z0-9_-]*',
