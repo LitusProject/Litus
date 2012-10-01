@@ -32,6 +32,25 @@
     	        {% endfor %}
     	    </table>
 	    {% endif %}
+
+        <h1>Active Sessions</h1>
+        <table>
+            <tr>
+                <th>IP</th>
+                <th width="130px">Start Time</th>
+                <th width="130px">Expiration Time</th>
+                <th width="120px">Shibboleth</th>
+            </tr>
+
+            {% for session in activeSessions %}
+                <tr class="item">
+                    <td>{{ session.getIp() }}</td>
+                    <td>{{ dateLocalized(session.getStartTime(), 'd/M/Y H:mm') }}</td>
+                    <td>{{ dateLocalized(session.getExpirationTime(),'d/M/Y H:mm') }}</td>
+                    <td>{% if session.isShibboleth() %}Yes{% else %}No{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </table>
 	</div>
 
 	<aside>
