@@ -143,7 +143,7 @@
 
 			var id = $(this).data('id');
 
-			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}/' + id, function (data) {
+			$.post('{{ url('admin_van_reservation', {"action": "assignme"})}}' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
 					$('.item-' + id + ' .driverdata').html(data.driver + ' - <i><a href="#" class="unassignme" data-id=' + id + '>Unassign Me</a></i>');
@@ -160,7 +160,7 @@
 
 			var id = $(this).data('id');
 
-			$.post('{{ url('admin_van_reservation', {"action": "unassignme"})}}/' + id, function (data) {
+			$.post('{{ url('admin_van_reservation', {"action": "unassignme"})}}' + id, function (data) {
 			    if (data && 'success' == data.status) {
 					$('.flashmessage').addClass('hide');
 					$('.item-' + id + ' .driverdata').html('None: <i><a href="#" class="assignme" data-id=' + id + '>Assign Me</a></i>');
@@ -194,7 +194,7 @@
 			removeReservation.find('.reservationReason').html($(this).data('reason'));
 			var id = $this.data('id');
 			removeReservation.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_van_reservation', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_van_reservation', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.reservation_removed_success').removeClass('hide');

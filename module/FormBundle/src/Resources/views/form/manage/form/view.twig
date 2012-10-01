@@ -111,7 +111,7 @@
 			var removeEntry = $('#removeEntry');
 			removeEntry.find('.user-name').text($(this).data('name'));
 			removeEntry.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+				$.post('{{ url('form_manage', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
 				    if (data && 'success' == data.status) {
 		                $('.flashmessage').removeClass('in');
 						$('#entry_removed_success').addClass('in');

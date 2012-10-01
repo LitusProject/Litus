@@ -149,7 +149,7 @@
 		    var removeArticle = $('#modalRemoveArticle');
 		    removeArticle.find('.articleTitle').html($(this).data('article'));
 		    removeArticle.find('.confirm').unbind('click').click(function () {
-		    	$.post('{{ url('prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+		    	$.post('{{ url('prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
 		    	    if (data && 'success' == data.status) {
 		    			$('.flashmessage').removeClass('in');
 		    			$('#article_removed_success').addClass('in');
@@ -176,7 +176,7 @@
 		    var removeProf = $('#modalRemoveProf');
 		    removeProf.find('.profName').html($(this).data('name'));
 		    removeProf.find('.confirm').unbind('click').click(function () {
-		    	$.post('{{ url('prof_prof', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+		    	$.post('{{ url('prof_prof', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
 		    	    if (data && 'success' == data.status) {
 		    			$('.flashmessage').removeClass('in');
 		    			$('#prof_removed_success').addClass('in');
