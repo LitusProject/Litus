@@ -151,11 +151,19 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $this->getStorage()->write($sessionValidation);
                     if ($rememberMe) {
                         setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
+                            $this->_namespace . '_' . $this->_cookieSuffix,
+                            $sessionValidation,
+                            time() + $this->_expire,
+                            '',
+                            preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
                         );
                     } else {
                         setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
+                            $this->_namespace . '_' . $this->_cookieSuffix,
+                            '',
+                            -1,
+                            '/',
+                            preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
                         );
                     }
                 }
@@ -213,7 +221,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             $this->_namespace . '_' . $this->_cookieSuffix,
             '',
             -1,
-            '/',
+            '',
             preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
         );
 
