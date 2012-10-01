@@ -255,9 +255,10 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             ->setReceiveIrReeelAtCudi($formData['irreeel'])
                             ->setBakskeByMail($formData['bakske'])
                             ->setTshirtSize($formData['tshirt_size']);
-                    } // If not member, no metadata changes (since it's impossible to change from member to non_member)
+                    } else {
+                        $metaData->setBakskeByMail($formData['bakske']);
+                    }
                 } else {
-
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -273,7 +274,7 @@ class AccountController extends \CommonBundle\Component\Controller\ActionControl
                             $this->getCurrentAcademicYear(),
                             $formData['become_member'],
                             false,
-                            false,
+                            $formData['bakske'],
                             null
                         );
                     }
