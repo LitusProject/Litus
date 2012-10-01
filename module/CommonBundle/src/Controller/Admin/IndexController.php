@@ -29,9 +29,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllUncompleted(10);
 
-        $activeSessions = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\Session')
-            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+        $activeSessions = array();
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $activeSessions = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\Session')
+                ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+        }
 
         return new ViewModel(
             array(
