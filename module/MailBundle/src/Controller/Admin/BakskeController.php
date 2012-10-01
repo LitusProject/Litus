@@ -17,6 +17,9 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\Bakske\Mail as SendForm,
     Zend\Mail\Message,
+    Zend\Mime\Part,
+    Zend\Mime\Mime,
+    Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -50,8 +53,13 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('mail.bakske_mail_name');
 
+                $part = new Part($edition->getHtml());
+                $part->type = Mime::TYPE_HTML;
+                $message = new MimeMessage();
+                $message->addPart($part);
+
                 $mail = new Message();
-                $mail->setBody($edition->getHtml())
+                $mail->setBody($message)
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
@@ -61,8 +69,17 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
 
                 $mail->addTo($mailAddress, $mailName);
 
-                foreach($recipients as $recipient)
-                    $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                if ($formData['test']) {
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_administrator_mail');
+
+                    $mail->addTo($mailAddress, 'System Administrator');
+                } else {
+                    foreach($recipients as $recipient)
+                        $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                }
+
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

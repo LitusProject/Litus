@@ -14,6 +14,7 @@
 namespace PublicationBundle\Entity\Editions;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Component\Util\Url,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;

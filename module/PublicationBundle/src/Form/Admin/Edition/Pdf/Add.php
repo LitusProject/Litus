@@ -95,12 +95,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'regex',
-                                'options' => array(
-                                    'pattern' => '/^[a-zA-Z0-9]*$/',
-                                ),
-                            ),
                             new PdfTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
