@@ -28,7 +28,6 @@ data/proxies
 
 public/_assetic
 public/_gallery/albums
-public/_publications
 
 # Exclude composer files
 vendor/
