@@ -49,7 +49,7 @@ class Translation
     /**
      * @var string The introduction of this tanslation
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $introduction;
 
