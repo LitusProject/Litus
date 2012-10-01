@@ -18,7 +18,7 @@ return array(
             'api_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/api',
+                    'route' => '/admin/install/api[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_key' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/api/key[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/api/key[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'api_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/api/auth[/:action]',
+                    'route' => '/api/auth[/:action][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
