@@ -45,7 +45,7 @@ return array(
             'on_redirect' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Hostname',
                 'options' => array(
-                    'route' => '[/:name][/]',
+                    'route' => '/on[/:name][/]',
                     'constraints' => array(
                         'name'  => '[a-zA-Z0-9]*',
                     ),
