@@ -18,7 +18,7 @@ return array(
             'form_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/form',
+                    'route' => '/admin/install/form[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_form' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/form[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/form[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'admin_form_field' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/form/field[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/form/field[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -60,7 +60,7 @@ return array(
             'admin_form_viewer' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/form/viewer[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/form/viewer[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -75,7 +75,7 @@ return array(
             'form_view' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/form[/:action[/:id]]',
+                    'route' => '[/:language]/form[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -90,7 +90,7 @@ return array(
             'form_manage' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/form/manage[/:action[/:id]]',
+                    'route' => '[/:language]/form/manage[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -105,7 +105,7 @@ return array(
             'form_manage_auth' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/form/manage/auth[/:action]',
+                    'route' => '[/:language]/form/manage/auth[/:action][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'session'  => '[0-9]*',

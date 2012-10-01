@@ -18,7 +18,7 @@ return array(
             'shift_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/shift',
+                    'route' => '/admin/install/shift[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/shift[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/shift[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'admin_subscription' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]]',
+                    'route' => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -61,7 +61,7 @@ return array(
             'admin_unit' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/unit[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/unit[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -76,7 +76,7 @@ return array(
             'shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/shift[/:action[/:id]]',
+                    'route' => '[/:language]/shift[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]*',
