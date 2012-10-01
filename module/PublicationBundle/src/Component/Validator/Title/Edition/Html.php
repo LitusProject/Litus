@@ -33,7 +33,7 @@ class Html extends \Zend\Validator\AbstractValidator
     protected $_entityManager = null;
 
     /**
-     * @var int The id to ignore.
+     * @var int The ID to ignore
      */
     private $_id;
 
@@ -56,7 +56,7 @@ class Html extends \Zend\Validator\AbstractValidator
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param $id The id that should be ignored when checking for duplicate titles.
+     * @param $id The ID that should be ignored when checking for duplicate titles.
      * @param mixed $opts The validator's options.
      */
     public function __construct(EntityManager $entityManager, Publication $publication, Academicyear $academicYear, $id = null, $opts = array())
@@ -78,13 +78,12 @@ class Html extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-
         $edition = $this->_entityManager
             ->getRepository('PublicationBundle\Entity\Editions\Html')
             ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
 
-        if ($edition) {
-            if ($this->_id === null || $edition->getId() !== $this->_id) {
+        if (null !== $edition) {
+            if (null === $this->_id || $edition->getId() !== $this->_id) {
                 $this->error(self::TITLE_EXISTS);
                 return false;
             }

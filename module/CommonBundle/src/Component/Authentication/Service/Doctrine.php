@@ -117,13 +117,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
-                    setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix, $newSession->getId(), time() + $this->_expire, '/'
-                    );
+                    $this->_setCookie($newSession->getId(), time() + $this->_expire);
                 } else {
-                    setcookie(
-                        $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
-                    );
+                    $this->_setCookie('', -1);
                 }
 
                 $result = $adapterResult;
@@ -150,13 +146,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                 if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
                     if ($rememberMe) {
-                        setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix, $sessionValidation, time() + $this->_expire, '/'
-                        );
+                        $this->_setCookie($sessionValidation, time() + $this->_expire);
                     } else {
-                        setcookie(
-                            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
-                        );
+                        $this->_setCookie('', -1);
                     }
                 }
 
@@ -204,14 +196,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
         if (null !== $session) {
             $session->deactivate();
-
             $this->_entityManager->flush();
         }
 
         $this->getStorage()->clear();
-        setcookie(
-            $this->_namespace . '_' . $this->_cookieSuffix, '', -1, '/'
-        );
+
+        $this->_setCookie('', -1);
 
         return $session;
     }
@@ -240,5 +230,17 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     {
         $this->_action = $action;
         return $this;
+    }
+
+    /**
+     * Set the authentication cookie.
+     *
+     * @param string $value The cookie's value
+     * @param int $expire The cookie's expiration time
+     */
+    private function _setCookie($value, $expire) {
+        setcookie(
+            $this->_namespace . '_' . $this->_cookieSuffix, $value, $expire, '/'
+        );
     }
 }

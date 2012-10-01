@@ -18,7 +18,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Edition\Pdf as PdfTitleValidator,
+    PublicationBundle\Component\Validator\Title\Edition\Pdf as TitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -95,7 +95,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new PdfTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                            new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )
