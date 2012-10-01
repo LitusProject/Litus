@@ -32,7 +32,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_slug' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
-                    'redirect' => array(
+                    'on_redirect' => array(
                         'index'
                     ),
                 ),
@@ -46,7 +46,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'parents' => array(
                     ),
                     'actions' => array(
-                        'redirect' => array(
+                        'on_redirect' => array(
                             'index'
                         ),
                     ),
