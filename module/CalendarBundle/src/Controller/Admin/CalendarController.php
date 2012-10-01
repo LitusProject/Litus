@@ -296,7 +296,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findByEvent($event);
+            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
 
         $file = new TmpFile();
         $document = new EventPdfGenerator($this->getEntityManager(), $event, $shifts, $file);
