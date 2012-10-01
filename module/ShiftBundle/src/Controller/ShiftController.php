@@ -42,7 +42,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $dateSearchForm = new DateSearchForm($this->getEntityManager());
 
         if (!$this->getAuthentication()->getPersonObject()) {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::WARNING,

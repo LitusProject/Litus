@@ -2,7 +2,8 @@
 
 namespace CommonBundle\Repository\Users;
 
-use DateTime,
+use CommonBundle\Entity\Users\Person,
+    DateTime,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -24,6 +25,28 @@ class Session extends EntityRepository
                     $query->expr()->eq('s.active', 'false')
                 )
             )
+            ->setParameter('expirationTime', new DateTime('now'))
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('CommonBundle\Entity\Users\Session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.person', ':person'),
+                    $query->expr()->orX(
+                        $query->expr()->gt('s.expirationTime', ':expirationTime'),
+                        $query->expr()->eq('s.active', 'true')
+                    )
+                )
+            )
+            ->setParameter('person', $person)
             ->setParameter('expirationTime', new DateTime('now'))
             ->getQuery()
             ->getResult();

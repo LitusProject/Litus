@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Textarea('html');
-        $field->setLabel('Html')
+        $field->setLabel('HTML')
             ->setAttribute('rows', 20)
             ->setRequired();
         $this->add($field);
