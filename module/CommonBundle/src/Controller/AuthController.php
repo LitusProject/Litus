@@ -36,6 +36,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $this->getAuthentication()->forget();
+
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
@@ -125,6 +127,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
+
+                    $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
