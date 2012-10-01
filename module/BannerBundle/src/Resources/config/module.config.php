@@ -18,7 +18,7 @@ return array(
             'banner_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/banner',
+                    'route' => '/admin/install/banner[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_banner' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/site/banner[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/site/banner[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'banner' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/banner[/:action[/image/:image]]',
+                    'route' => '/banner[/:action[/image/:image]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'image'    => '[a-zA-Z0-9]*',
