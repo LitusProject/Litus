@@ -22,7 +22,7 @@ return array(
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'api_install',
+                        'controller' => 'on_install',
                         'action'     => 'index',
                     ),
                 ),
