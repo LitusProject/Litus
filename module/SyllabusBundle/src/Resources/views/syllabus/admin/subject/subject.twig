@@ -139,7 +139,7 @@
 			removeMapping.find('.docentName').html($(this).data('docent'));
 			var id = $this.data('id');
 			removeMapping.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_prof', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_prof', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.mapping_removed_success').removeClass('hide');

@@ -173,7 +173,7 @@
 			removeFile.find('.fileName').html($(this).data('name'));
 			removeFile.find('.fileDescription').html($(this).data('description'));
 			removeFile.find('.confirm').unbind('click').click(function () {
-				$.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}/' + $this.data('id'), function (data) {
+				$.post('{{ url('prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
 				    if (data && 'success' == data.status) {
 		                $('.flashmessage').removeClass('in');
 						$('#file_removed_success').addClass('in');

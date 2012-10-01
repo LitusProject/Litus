@@ -90,7 +90,7 @@
             });
             var id = $this.data('id');
             removeLocation.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('admin_location', {"action": "delete"})}}/' + id, function (data) {
+                $.post('{{ url('admin_location', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.location_removed_success').removeClass('hide');

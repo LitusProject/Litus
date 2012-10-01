@@ -104,7 +104,7 @@
 			removeMapping.find('.subjectName').html($(this).data('subject'));
 			var id = $this.data('id');
 			removeMapping.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_subject', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_article_subject', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.mapping_removed_success').removeClass('hide');
