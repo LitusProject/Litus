@@ -30,7 +30,7 @@ return array(
             'all_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/all',
+                    'route' => '/admin/install/all[/]',
                     'defaults' => array(
                         'controller' => 'all_install',
                         'action'     => 'index',
