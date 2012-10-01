@@ -18,11 +18,11 @@ return array(
             'on_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/api[/]',
+                    'route' => '/admin/install/on[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'api_install',
+                        'controller' => 'on_install',
                         'action'     => 'index',
                     ),
                 ),
@@ -45,7 +45,7 @@ return array(
             'on_redirect' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Hostname',
                 'options' => array(
-                    'route' => '[/:name][/]',
+                    'route' => '/on[/:name][/]',
                     'constraints' => array(
                         'name'  => '[a-zA-Z0-9]*',
                     ),
