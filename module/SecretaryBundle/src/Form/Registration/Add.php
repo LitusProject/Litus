@@ -242,6 +242,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
             $data['bakske'] = $metaData->bakskeByMail();
             $data['tshirt_size'] = $metaData->getTshirtSize();
+        } else if ($metaData) {
+            $data['bakske'] = $metaData->bakskeByMail();
         }
 
         $this->setData($data);

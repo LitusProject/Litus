@@ -169,7 +169,7 @@
 		                	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_mail', 'groups') or hasAccess('admin_mail_prof', 'cudi') or hasAccess('admin_mail_study', 'send') %}
+		                {% if hasAccess('admin_mail', 'groups') or 'admin_mail_bakske' == getParam('controller') or hasAccess('admin_mail_prof', 'cudi') or hasAccess('admin_mail_study', 'send') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Mail</b><br />

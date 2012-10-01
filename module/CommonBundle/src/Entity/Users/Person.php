@@ -642,7 +642,7 @@ abstract class Person
                 ->addTo($this->getEmail(), $this->getFullName())
                 ->setSubject($subject);
 
-            if ('production' == getenv('APPLICATION_ENV'))
+            if ('development' != getenv('APPLICATION_ENV'))
                 $mailTransport->send($mail);
         }
 
