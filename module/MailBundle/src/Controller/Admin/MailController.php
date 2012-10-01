@@ -83,6 +83,8 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                         ->findAllByStatus($status, $this->getCurrentAcademicYear());
                 }
 
+                $mail->addTo($mailAddress, $mailName);
+
                 foreach($persons as $person)
                     $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
 
