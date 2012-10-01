@@ -34,6 +34,8 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $this->getAuthentication()->forget();
+
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']
                 );
