@@ -60,6 +60,6 @@ class Html extends \PublicationBundle\Entity\Edition
     public function getImagesDirectory()
     {
         return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/html/' . $this->getPublication()->getTitle() . '/' . $this->getTitle();
+            '/html/' . Url::createSlug($this->getPublication()->getTitle()) . '/' . Url::createSlug($this->getTitle());
     }
 }
