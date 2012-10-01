@@ -214,7 +214,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             '',
             -1,
             '/',
-            '.' . preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+            preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
         );
 
         return $session;
