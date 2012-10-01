@@ -14,6 +14,7 @@
 namespace PublicationBundle\Entity\Editions;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Component\Util\Url,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
@@ -40,7 +41,7 @@ class Pdf extends \PublicationBundle\Entity\Edition
     public function getDirectory()
     {
         return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/pdf/' . $this->getPublication()->getTitle();
+            '/pdf/' . Url::createSlug($this->getPublication()->getTitle());
     }
 
     /**
@@ -48,6 +49,6 @@ class Pdf extends \PublicationBundle\Entity\Edition
      */
     public function getFileName()
     {
-        return $this->getDirectory() . '/' . $this->getTitle() . '.pdf';
+        return $this->getDirectory() . '/' . Url::createSlug($this->getTitle()) . '.pdf';
     }
 }

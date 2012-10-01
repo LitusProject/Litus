@@ -86,7 +86,7 @@ class MailController extends \CommonBundle\Component\Controller\ActionController
                 foreach($persons as $person)
                     $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
 
-                if ('production' == getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
                 $this->flashMessenger()->addMessage(

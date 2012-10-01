@@ -231,7 +231,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $this->getCurrentAcademicYear(),
                             $formData['become_member'],
                             false,
-                            false,
+                            $formData['bakske'],
                             null
                         );
                     }
@@ -492,7 +492,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->setReceiveIrReeelAtCudi($formData['irreeel'])
                             ->setBakskeByMail($formData['bakske'])
                             ->setTshirtSize($formData['tshirt_size']);
-                    } // If not member, no metadata changes (since it's impossible to change from member to non_member)
+                    } else {
+                        $metaData->setBakskeByMail($formData['bakske']);
+                    }
                 } else {
 
                     if ($formData['become_member']) {
@@ -510,7 +512,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $this->getCurrentAcademicYear(),
                             $formData['become_member'],
                             false,
-                            false,
+                            $formData['bakske'],
                             null
                         );
                     }
