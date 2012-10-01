@@ -100,7 +100,7 @@
 			removeField.find('.formSpecification').html($(this).data('form'));
 			var id = $this.data('id');
 			removeField.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_form_field', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_form_field', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.field_removed_success').show();

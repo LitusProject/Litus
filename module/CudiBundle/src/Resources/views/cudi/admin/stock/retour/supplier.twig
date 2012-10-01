@@ -100,7 +100,7 @@
 			removeRetour.find('.retourNumber').html($(this).data('number'));
 			var id = $this.data('id');
 			removeRetour.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_stock_retour', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.retour_removed_success').removeClass('hide');
