@@ -13,7 +13,7 @@ use CommonBundle\Entity\Users\Person,
  */
 class Action extends EntityRepository
 {
-    public function findAllUncompleted()
+    public function findAllUncompleted($nbResults = null)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -25,6 +25,7 @@ class Action extends EntityRepository
                 )
             )
             ->orderBy('a.timestamp', 'ASC')
+            ->setMaxResults($nbResults)
             ->getQuery()
             ->getResult();
 
