@@ -94,7 +94,7 @@
 			cancelBooking.find('.articleTitle').html($(this).data('title'));
 			var id = $this.data('id');
 			cancelBooking.find('.continue').unbind('click').click(function () {
-				$.post('{{ url('booking', {"action": "cancel"})}}/' + id, function (data) {
+				$.post('{{ url('booking', {"action": "cancel"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 				    	$('.flashmessage').addClass('hide');
     					$('.item-' + id).remove();

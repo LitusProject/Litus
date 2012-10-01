@@ -83,7 +83,7 @@
 			});
 			var id = $this.data('id');
 			removeUnit.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_unit', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_unit', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.unit_removed_success').removeClass('hide');
