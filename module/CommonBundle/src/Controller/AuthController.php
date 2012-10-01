@@ -127,7 +127,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->flush();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'), '', true, true
                     );
 
                     if ($authentication->isAuthenticated()) {
