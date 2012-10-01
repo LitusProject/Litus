@@ -18,7 +18,7 @@ return array(
             'mail_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/mail',
+                    'route' => '/admin/install/mail[/]',
                     'defaults' => array(
                         'controller' => 'mail_install',
                         'action'     => 'index',
@@ -28,7 +28,7 @@ return array(
             'admin_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/groups[/:action[/:type/:group]]',
+                    'route' => '/admin/mail/groups[/:action[/:type/:group]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -42,7 +42,7 @@ return array(
             'admin_mail_bakske' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/bakske[/:action]',
+                    'route' => '/admin/mail/bakske[/:action][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -55,7 +55,7 @@ return array(
             'admin_mail_prof' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/prof[/:action]',
+                    'route' => '/admin/mail/prof[/:action][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -68,7 +68,7 @@ return array(
             'admin_mail_study' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/study[/:action]',
+                    'route' => '/admin/mail/study[/:action][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -81,7 +81,7 @@ return array(
             'admin_mail_bakske' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/mail/bakske[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/mail/bakske[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
