@@ -61,8 +61,17 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
 
                 $mail->addTo($mailAddress, $mailName);
 
-                foreach($recipients as $recipient)
-                    $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                if ($formData['test']) {
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_administrator_mail');
+
+                    $mail->addTo($mailAddress, 'System Administrator');
+                } else {
+                    foreach($recipients as $recipient)
+                        $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                }
+
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
