@@ -14,7 +14,8 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
@@ -56,6 +57,10 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Edition')
             ->setAttribute('options', $this->_createEditionsArray())
             ->setRequired();
+        $this->add($field);
+
+        $field = new Checkbox('test');
+        $field->setLabel('Test Mail');
         $this->add($field);
 
         $field = new Text('subject');
