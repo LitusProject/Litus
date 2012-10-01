@@ -12,26 +12,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Component\Validator\Title;
+namespace OnBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
- * Checks whether a publication title already exists.
+ * Checks whether a slug name already exists.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Publication extends \Zend\Validator\AbstractValidator
+class Name extends \Zend\Validator\AbstractValidator
 {
-    const TITLE_EXISTS = 'titleExists';
+    const TITLE_EXISTS = 'nameExists';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance
      */
-    protected $_entityManager = null;
+    protected $_documentManager = null;
 
     /**
-     * @var int The id to ignore.
+     * @var int The ID to ignore.
      */
     private $_id;
 
@@ -43,15 +43,15 @@ class Publication extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param $id The id that should be ignored when checking for duplicate titles
+     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
+     * @param $id The ID that should be ignored when checking for duplicate names
      * @param mixed $opts The validator's options.
      */
-    public function __construct(EntityManager $entityManager, $id = null, $opts = array())
+    public function __construct(DocumentManager $documentManager, $id = null, $opts = array())
     {
         parent::__construct($opts);
 
-        $this->_entityManager = $entityManager;
+        $this->_documentManager = $documentManager;
         $this->_id = $id;
     }
 
@@ -64,12 +64,13 @@ class Publication extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $publication = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Publication')
-            ->findOneByTitle($value);
 
-        if (null !== $publication) {
-            if (null === $this->_id || $publication->getId() !== $this->_id) {
+        $slug = $this->_documentManager
+            ->getRepository('OnBundle\Document\Slug')
+            ->findOneByName($value);
+
+        if (null !== $slug) {
+            if (null === $this->_id || $slug->getId() !== $this->_id) {
                 $this->error(self::TITLE_EXISTS);
                 return false;
             }

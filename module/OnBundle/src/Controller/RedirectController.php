@@ -22,51 +22,32 @@ use CommonBundle\Entity\Users\People\Academic,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class RedirectController extends \ApiBundle\Component\Controller\ActionController\ApiController
+class RedirectController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function getPersonAction()
+    public function indexAction()
     {
-        if (!($person = $this->_getPerson())) {
-            return new ViewModel(
-                array(
-                    'result' => null
-                )
-            );
+        if (!($slug = $this->_getSlug())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
         }
 
-        $result = array(
-            'username' => $person->getUsername(),
-            'full_name' => $person->getFullName(),
-            'email' => $person->getEmail()
+        $slug->incrementHits();
+        $this->getDocumentManager()->flush();
+
+        $this->redirect()->toUrl(
+            $slug->getUrl()
         );
 
-        if ($person instanceof Academic) {
-            $result['university_status'] = $person->getUniversityStatus($this->getCurrentAcademicYear());
-        }
-
-        return new ViewModel(
-            array(
-                'result' => (object) $result
-            )
-        );
+        return new ViewModel();
     }
 
-    private function _getPerson()
+    private function _getSlug()
     {
-        if (null !== $this->getRequest()->getPost('session')) {
-            $session = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Session')
-                ->findOneById($this->getRequest()->getPost('session'));
+        if (null === $this->getParam('name'))
+            return null;
 
-            return $session->getPerson();
-        }
-
-        if (null !== $this->getRequest()->getPost('username')) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Users\Person')
-                ->findOneByUsername($this->getRequest()->getPost('username'));
-        }
-
-        return null;
+        return $this->getDocumentManager()
+            ->getRepository('OnBundle\Document\Slug')
+            ->findOneByName($this->getParam('name'));
     }
 }
