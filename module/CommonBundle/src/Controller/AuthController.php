@@ -131,7 +131,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'), '', true, true
                     );
 
                     if ($authentication->isAuthenticated()) {
