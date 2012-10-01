@@ -3,7 +3,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
+RewriteRule ^(.*)$ - [NC,L]
 
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^!(dev|www)\.vtk\.be
@@ -15,4 +15,4 @@ RewriteCond %{HTTP_HOST} ^!(dev|www)\.vtk\.be
 RewriteCond %{HTTP_HOST} ^(.*)\.vtk\.be
 RewriteRule ^(.*)$ https://vtk.be/%1/$1 [NC,L]
 
-RewriteRule ^.*$ index.php [NC,L]
+RewriteRule ^(.*)$ index.php [NC,L]
