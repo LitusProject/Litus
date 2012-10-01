@@ -54,7 +54,7 @@ class BakskeController extends \CommonBundle\Component\Controller\ActionControll
                     ->getConfigValue('mail.bakske_mail_name');
 
                 $part = new Part($edition->getHtml());
-                $part->type = Mime::TYPE_TEXT;
+                $part->type = Mime::TYPE_HTML;
                 $message = new MimeMessage();
                 $message->addPart($part);
 
