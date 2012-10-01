@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Textarea('html');
-        $field->setLabel('Html')
+        $field->setLabel('HTML')
             ->setAttribute('rows', 20)
             ->setRequired();
         $this->add($field);
@@ -102,12 +102,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'regex',
-                                'options' => array(
-                                    'pattern' => '/^[a-zA-Z0-9]*$/',
-                                ),
-                            ),
                             new HtmlTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
