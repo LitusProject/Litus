@@ -436,7 +436,7 @@ return array(
             'prof_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/cudi/prof/auth[/:action[/identification/:identification[/hash/:hash]]]',
+                    'route' => '[/:language]/cudi/prof/auth[/:action[/identification/:identification[/hash/:hash]]]',
                     'constraints' => array(
                         'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'identification' => '[mrsu][0-9]{7}',
