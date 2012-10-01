@@ -214,6 +214,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'notification_install' => array(
                         'index'
                     ),
+                    'on_install' => array(
+                        'index'
+                    ),
                     'page_install' => array(
                         'index'
                     ),
