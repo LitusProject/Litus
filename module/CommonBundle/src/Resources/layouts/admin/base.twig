@@ -309,17 +309,20 @@
 			            	</li>
 		                {% endif %}
 
-		                {% if hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
+		                {% if hasAccess('admin_department', 'manage') or hasAccess('admin_study', 'manage') or hasAccess('admin_update_syllabus', 'update') %}
 		                	<li>
 		                		<div class="subtitle">
 		                			<b>Syllabus</b><br />
-		                			Studies &amp; Subjects
+		                			Departments &amp; Studies &amp; Subjects
 		                		</div>
 		                		<ul
 		                			{% if 'admin_study' == getParam('controller') or 'admin_subject' == getParam('controller') or 'admin_update_syllabus' == getParam('controller') or 'admin_prof' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
+		                			{% if hasAccess('admin_department', 'manage') %}
+		                		        <li><a href="{{ url('admin_department') }}">Departments</a></li>
+		                		    {% endif %}
 		                		    {% if hasAccess('admin_study', 'manage') %}
 		                		        <li><a href="{{ url('admin_study') }}">Studies</a></li>
 		                		    {% endif %}
