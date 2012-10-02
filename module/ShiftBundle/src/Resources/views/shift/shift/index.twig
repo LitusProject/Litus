@@ -52,11 +52,11 @@
         </span>
         <span class="span8">
             <h2>{{ translate('My Shifts') }}</h2>
-                {{ _self.displayShifts(entityManager, academicYear, authenticatedPerson, myShifts, 'myShifts') }}
+                {{ _self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
 
             <h2>{{ translate('Results') }}</h2>
             {% if searchResults is not null %}
-                {{ _self.displayShifts(entityManager, academicYear, authenticatedPerson, searchResults, 'search') }}
+                {{ _self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
             {% else %}
                 <div class="alert alert-warning">
                     {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
@@ -164,7 +164,7 @@
     </script>
 {% endblock %}
 
-{% macro displayShifts(entityManager, academicYear, authenticatedPerson, shifts, accordionName) %}
+{% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
     <div class="accordion" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
@@ -174,12 +174,12 @@
 
                         <span class="pull-right">
                             {% if 'search' == accordionName %}
-                                {% if shift.canHaveAsResponsible(entityManager, academicYear, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
+                                {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" type="button">
                                         {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
                                     </button>
                                 {% endif %}
-                                {% if shift.canHaveAsVolunteer(entityManager, academicYear, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
+                                {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
                                     <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" type="button">
                                         {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
                                     </button>

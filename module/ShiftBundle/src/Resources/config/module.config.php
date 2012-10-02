@@ -42,6 +42,21 @@ return array(
                     ),
                 ),
             ),
+            'admin_shift_counter' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/shift/counter[/:action[/:id]][/:academicyear][/:field/:string][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_shift_counter',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin_subscription' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -125,12 +140,13 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'shift_install' => 'ShiftBundle\Controller\Admin\InstallController',
-            'admin_shift'   => 'ShiftBundle\Controller\Admin\ShiftController',
-            'admin_subscription'   => 'ShiftBundle\Controller\Admin\SubscriptionController',
-            'admin_unit'    => 'ShiftBundle\Controller\Admin\UnitController',
+            'shift_install'       => 'ShiftBundle\Controller\Admin\InstallController',
+            'admin_shift'         => 'ShiftBundle\Controller\Admin\ShiftController',
+            'admin_shift_counter' => 'ShiftBundle\Controller\Admin\CounterController',
+            'admin_subscription'  => 'ShiftBundle\Controller\Admin\SubscriptionController',
+            'admin_unit'          => 'ShiftBundle\Controller\Admin\UnitController',
 
-            'shift'         => 'ShiftBundle\Controller\ShiftController',
+            'shift'               => 'ShiftBundle\Controller\ShiftController',
         ),
     ),
 );

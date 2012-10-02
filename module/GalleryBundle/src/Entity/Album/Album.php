@@ -183,7 +183,7 @@ class Album
     public function getPhoto()
     {
         do {
-            $num = rand(0, sizeof($this->photos) - 1);
+            $num = rand(0, count($this->photos) - 1);
         } while($this->photos[$num]->isCensored());
         return $this->photos[$num];
     }

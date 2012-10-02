@@ -56,6 +56,14 @@ class Shift
     private $creationPerson;
 
     /**
+     * @var \CommonBundle\Entity\General\AcademicYear The shift's academic year
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
      * @var boolean The moment this shift starts
      *
      * @ORM\Column(name="start_date", type="datetime")
@@ -157,6 +165,7 @@ class Shift
 
     /**
      * @param \CommonBundle\Entity\Users\Person $creationPerson
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \DateTime $startDate
      * @param \DateTime $endDate
      * @param \CommonBundle\Entity\Users\Person $manager
@@ -169,10 +178,11 @@ class Shift
      * @param string $description
      */
     public function __construct(
-        Person $creationPerson, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
+        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
     )
     {
         $this->creationPerson = $creationPerson;
+        $this->academicYear = $academicYear;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->manager = $manager;
@@ -201,6 +211,14 @@ class Shift
     public function getCreationPerson()
     {
         return $this->creationPerson;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
@@ -285,13 +303,12 @@ class Shift
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \ShiftBundle\Entity\Shifts\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
-    public function addResponsible(EntityManager $entityManager, AcademicYear $academicYear, Responsible $responsible)
+    public function addResponsible(EntityManager $entityManager, Responsible $responsible)
     {
-        if (!$this->canHaveAsResponsible($entityManager, $academicYear, $responsible->getPerson()))
+        if (!$this->canHaveAsResponsible($entityManager, $responsible->getPerson()))
             throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
 
         $this->responsibles->add($responsible);
@@ -321,13 +338,12 @@ class Shift
      * shift.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
      * @return boolean
      */
-    public function canHaveAsResponsible(EntityManager $entityManager, AcademicYear $academicYear, Person $person)
+    public function canHaveAsResponsible(EntityManager $entityManager, Person $person)
     {
-        if (!$person->isPraesidium($academicYear))
+        if (!$person->isPraesidium($this->getAcademicYear()))
             return false;
 
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\Shift')
@@ -375,13 +391,12 @@ class Shift
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \ShiftBundle\Entity\Shifts\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
-    public function addVolunteer(EntityManager $entityManager, AcademicYear $academicYear, Volunteer $volunteer)
+    public function addVolunteer(EntityManager $entityManager, Volunteer $volunteer)
     {
-        if (!$this->canHaveAsVolunteer($entityManager, $academicYear, $volunteer->getPerson()))
+        if (!$this->canHaveAsVolunteer($entityManager, $volunteer->getPerson()))
             throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
 
         $this->volunteers->add($volunteer);
@@ -411,11 +426,10 @@ class Shift
      * shift.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year
      * @param \CommonBundle\Entity\Users\Person $person The person that should be checked
      * @return boolean
      */
-    public function canHaveAsVolunteer(EntityManager $entityManager, AcademicYear $academicYear, Person $person)
+    public function canHaveAsVolunteer(EntityManager $entityManager, Person $person)
     {
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($person);
@@ -438,7 +452,7 @@ class Shift
 
             $getStartDate = clone $this->getStartDate();
 
-            if ($volunteer->getPerson()->isPraesidium($academicYear)) {
+            if ($volunteer->getPerson()->isPraesidium($this->getAcademicYear())) {
                 if ($this->getStartDate()->sub($responsibleSignoutTreshold) < $now)
                     return true;
             }
