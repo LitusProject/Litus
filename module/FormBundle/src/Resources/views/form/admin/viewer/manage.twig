@@ -33,7 +33,7 @@
             {% for viewer in viewers %}
                 <tr class="item item-{{ viewer.getId() }}">
                     <td>{{ viewer.getPerson().getFullName() }}</td>
-                    <td>{% if viewer.isEdit() %} X {% endif %}</td>
+                    <td>{% if viewer.isEdit() %}&times;{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_viewer', 'delete') %}
                             <a href="#" class="delete" data-id="{{ viewer.getId() }}" data-name="{{ viewer.getPerson().getFullName() }}" data-form="{{ viewer.getForm().getTitle(language) }}">Delete</a>

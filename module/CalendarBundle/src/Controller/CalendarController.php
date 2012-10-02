@@ -80,6 +80,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function monthAction()
     {
+        $this->initAjax();
+
         $date = $this->getParam('id');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 

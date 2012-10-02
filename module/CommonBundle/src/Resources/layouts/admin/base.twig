@@ -221,10 +221,13 @@
 		                			Units &amp; Shifts
 		                		</div>
 		                		<ul
-		                			{% if 'admin_shift' == getParam('controller') or 'admin_unit' == getParam('controller') %}
+		                			{% if 'admin_shift' == getParam('controller') or 'admin_shift_counter' == getParam('controller') or 'admin_unit' == getParam('controller') %}
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
+		                			{% if hasAccess('admin_shift_counter', 'manage') %}
+					                    <li><a href="{{ url('admin_shift_counter') }}">Counter</a></li>
+					                {% endif %}
 		                			{% if hasAccess('admin_shift', 'manage') %}
 					                    <li><a href="{{ url('admin_shift') }}">Shifts</a></li>
 					                {% endif %}

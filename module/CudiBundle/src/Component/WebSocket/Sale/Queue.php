@@ -755,7 +755,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $totalPrice += $price;
         }
 
-        if (sizeof($bookings > 0)) {
+        if (count($bookings > 0)) {
             foreach($bookings as $booking) {
                 if ($booking->getStatus() != 'assigned')
                     continue;

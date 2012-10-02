@@ -161,8 +161,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'dateSearchForm' => $dateSearchForm,
                 'myShifts' => $myShifts,
                 'searchResults' => $searchResults,
-                'entityManager' => $this->getEntityManager(),
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'entityManager' => $this->getEntityManager()
             )
         );
     }
@@ -179,7 +178,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
+        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')
@@ -220,7 +219,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $this->getCurrentAcademicYear(), $person))) {
+        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')
