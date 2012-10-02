@@ -64,6 +64,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'name'     => 'subject_id',
                         'required' => true,
                         'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators'  => array(
                             array('name' => 'int'),
                         ),
                     )
