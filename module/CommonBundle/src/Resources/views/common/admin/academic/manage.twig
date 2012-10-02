@@ -118,7 +118,7 @@
 							.append('<td>' + this.email + '</td>')
 							.append(
 								$('<td>', {'class': 'actions'})
-									.append('<a href="{{ url('admin_academic', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a>')
+									.append('<a href="{{ url('admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
 									.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
 								);
 							deleteButton.data({
@@ -148,7 +148,7 @@
 			});
 			var id = $this.data('id');
 			removeAcademic.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_academic', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_academic', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.academic_removed_success').removeClass('hide');
