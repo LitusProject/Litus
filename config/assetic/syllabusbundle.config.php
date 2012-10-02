@@ -12,7 +12,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
- 
+
 return array(
     'controllers'  => array(
         'syllabus_install' => array(
@@ -28,6 +28,11 @@ return array(
             '@common_permanent_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+        ),
+        'admin_department' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
         ),
         'admin_study' => array(
             '@common_jquery',
