@@ -225,7 +225,7 @@
 		                				style="display: block;"
 		                			{% endif %}
 		                		>
-		                			{% if hasAccess('admin_shift_counter', 'manage') %}
+		                			{% if hasAccess('admin_shift_counter', 'index') %}
 					                    <li><a href="{{ url('admin_shift_counter') }}">Counter</a></li>
 					                {% endif %}
 		                			{% if hasAccess('admin_shift', 'manage') %}
