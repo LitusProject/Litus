@@ -14,6 +14,9 @@ fi
 bin/Doctrine/doctrine-module orm:schema-tool:update --force
 bin/Doctrine/doctrine-module orm:generate-proxies data/proxies/
 
+bin/Doctrine/doctrine-module odm:generate:proxies data/proxies/
+bin/Doctrine/doctrine-module odm:generate:hydrators data/hydrators/
+
 # Making sure our LESS stylesheets are recompiled
 touch module/CommonBundle/src/Resources/assets/admin/less/admin.less
 touch module/CommonBundle/src/Resources/assets/bootstrap/less/bootstrap.less
