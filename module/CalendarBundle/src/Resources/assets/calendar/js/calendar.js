@@ -87,14 +87,13 @@
                     $('<h2>').html(data.month)
                 );
 
-            $(data.days).each(function () {
-                for (key in this) break;
+            $.each(data.days, function (key, value) {
                 column.append(
                     day = $('<div>', {'class': 'item'}).html(
-                        $('<span>', {'class': 'date left'}).html(this[key].date)
+                        $('<span>', {'class': 'date left'}).html(value.date)
                     )
                 );
-                $(this[key].events).each(function () {
+                $(value.events).each(function () {
                     day.append(
                         $('<p>').append(
                             $('<i>', {'class': 'icon-time'}), ' ',
