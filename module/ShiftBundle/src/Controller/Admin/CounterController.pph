@@ -12,24 +12,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Controller\Admin;
+namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Users\Barcode,
     DateInterval,
     DateTime,
     SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
     Zend\View\Model\ViewModel;
 
 /**
- * RegistrationController
+ * CounterController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class RegistrationController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class CounterController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    public function manageAction()
+    public function indexAction()
     {
         $academicYear = $this->_getAcademicYear();
 
@@ -58,84 +58,23 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    public function barcodeAction()
-    {
-        if (!($registration = $this->_getRegistration()))
-            return new ViewModel();
-
-        $academicYears = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        $form = new BarcodeForm($registration->getAcademic(), $this->getEntityManager());
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The barcode was successfully set!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'admin_secretary_registration',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'registration' => $registration,
-                'activeAcademicYear' => $registration->getAcademicYear(),
-                'academicYears' => $academicYears,
-                'form' => $form,
-            )
-        );
-    }
-
     public function searchAction()
     {
-        $academicYear = $this->_getAcademicYear();
-
         $this->initAjax();
 
+        $academicYear = $this->_getAcademicYear();
+
+        $people = null;
         switch($this->getParam('field')) {
             case 'university_identification':
-                $registrations = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findAllByUniversityIdentification(
-                        $this->getParam('string'),
-                        $academicYear
-                    );
+                $people = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\Academic')
+                    ->findAllByUniversityIdentification($this->getParam('string'));
                 break;
             case 'name':
-                $registrations = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findAllByName(
-                        $this->getParam('string'),
-                        $academicYear
-                    );
-                break;
-            case 'barcode':
-                $registrations = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findAllByBarcode(
-                        $this->getParam('string'),
-                        $academicYear
-                    );
+                $people = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Users\Academic')
+                    ->findAllByName($this->getParam('string'));
                 break;
         }
 
@@ -146,14 +85,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         array_splice($registrations, $numResults);
 
         $result = array();
-        foreach($registrations as $registration) {
+        foreach ($people as $person) {
+            $shifts = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllByPerson($person, $academicYear);
+
+            $counter[$person->getUsername()] = count($shifts);
+
             $item = (object) array();
-            $item->id = $registration->getId();
-            $item->universityIdentification = $registration->getAcademic()->getUniversityIdentification();
-            $item->name = $registration->getAcademic()->getFullName();
-            $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
-            $item->payed = $registration->hasPayed();
-            $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
+            $item->id = $person->getId();
+            $item->universityIdentification = $person->getUniversityIdentification();
+            $item->name = $person->getFullName();
+            $item->count = count($shifts);
             $result[] = $item;
         }
 
@@ -217,9 +160,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 
@@ -236,14 +179,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the registration!'
+                    'No ID was given to identify the person!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 
@@ -264,9 +207,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'admin_secretary_registration',
+                'admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 
