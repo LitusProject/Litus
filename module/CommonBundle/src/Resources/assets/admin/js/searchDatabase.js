@@ -9,9 +9,9 @@
 			minLength: 3,
 			display: function () {}
 		};
-		
+
 		opts = $.extend(defaults, opts);
-	
+
 		$(document).keydown(function (e) {
 			if (70 == e.keyCode && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
@@ -31,7 +31,7 @@
 				opts.defaultPage.show();
 			}
 		});
-		
+
 		opts.searchString.data('timeout', null);
 		$.each([opts.searchField, opts.searchString], function (i, v) {
 			v.bind('change click keyup', function () {
@@ -44,7 +44,7 @@
 						return;
 					}
 					$.ajax({
-						url: opts.url + '/' + opts.searchField.val() + '/' + opts.searchString.val(),
+						url: stripTrailingSlash(opts.url) + '/' + opts.searchField.val() + '/' + opts.searchString.val(),
 						method: 'get',
 						dataType: 'json',
 						success: opts.display
@@ -52,5 +52,11 @@
 				}, 200));
 			});
 		});
+
+		function stripTrailingSlash(str) {
+			if(str.substr(-1) == '/')
+			    return str.substr(0, str.length - 1);
+			return str;
+		}
 	};
 }) (jQuery);
