@@ -3,6 +3,7 @@
 return array(
     'ShiftBundle\Module'                                  => __DIR__ . '//Module.php',
     'ShiftBundle\Component\Document\Generator\EventPdf'   => __DIR__ . '//src/Component/Document/Generator/EventPdf.php',
+    'ShiftBundle\Controller\Admin\CounterController'      => __DIR__ . '//src/Controller/Admin/CounterController.php',
     'ShiftBundle\Controller\Admin\InstallController'      => __DIR__ . '//src/Controller/Admin/InstallController.php',
     'ShiftBundle\Controller\Admin\ShiftController'        => __DIR__ . '//src/Controller/Admin/ShiftController.php',
     'ShiftBundle\Controller\Admin\SubscriptionController' => __DIR__ . '//src/Controller/Admin/SubscriptionController.php',

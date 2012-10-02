@@ -3,16 +3,15 @@
 {% block content %}
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    {% include 'secretary/admin/registration/partials/navigation.twig' %}
+    {% include 'shift/admin/counter/partials/navigation.twig' %}
 
     <div id="controller_action">
-        <div id="registration_search">
+        <div id="shift_counter_search">
             <div style="padding: 4px; text-align: right;">
                 Search:
                 <select id="searchField">
                     <option value="university_identification">University Identification</option>
                     <option value="name">Name</option>
-                    <option value="barcode">Barcode</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -22,10 +21,7 @@
                 <tr>
                     <th width="200px">University Identification</th>
                     <th>Name</th>
-                    <th width="120px">Date</th>
-                    <th width="120px">Payed</th>
-                    <th width="120px">Barcode</th>
-                    <th width="120px">Action</th>
+                    <th width="120px">Count</th>
                 </tr>
             </table>
         </div>
@@ -36,30 +32,23 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#searchString').focus();
-            {% if hasAccess('admin_secretary_registration', 'search') %}
+            {% if hasAccess('admin_shift_counter', 'search') %}
             $.searchDatabase({
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('admin_secretary_registration', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('admin_shift_counter', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
-                    $('#registration_search table').find('tr.item').remove();
+                    $('#shift_counter_search table').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#registration_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        $('#shift_counter_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.date + '</td>')
-                            .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
-                            .append('<td>' + this.barcode + '</td>')
-                            .append(actions = $('<td>', {'class': 'actions'}));
-
-                        {% if hasAccess('admin_secretary_registration', 'barcode') %}
-                            actions.append('<a href="{{ url('admin_secretary_registration', {"action": "barcode"}) }}/' + this.id +'" class="edit">Barcode</a>');
-                        {% endif %}
+                            .append('<td>' + this.count + '</td>');
                     });
-                    $('#registration_search table').change();
+                    $('#shift_counter_search table').change();
                 },
                 clear: function () {
-                    $('#registration_search table').find('tr.item').remove();
+                    $('#shift_counter_search table').find('tr.item').remove();
                 }
             });
             {% endif %}
