@@ -89,7 +89,7 @@
 							.append('<td>' + this.nbInStock + '</td>')
 							.append('<td>' + this.nbNotDelivered + '</td>')
 							.append('<td>' + this.nbReserved + '</td>')
-							.append('<td class="actions"><a href="{{ url('admin_stock', {"action": "edit"}) }}/' + this.id + '" class="edit">Edit</a></td>');
+							.append('<td class="actions"><a href="{{ url('admin_stock', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a></td>');
 					});
 					$('#stock_search table').change();
 				}
