@@ -44,7 +44,7 @@
 						return;
 					}
 					$.ajax({
-						url: stripTrailingSlash(opts.url) + '/' + opts.searchField.val() + '/' + opts.searchString.val(),
+						url: opts.url + opts.searchField.val() + '/' + opts.searchString.val(),
 						method: 'get',
 						dataType: 'json',
 						success: opts.display
@@ -52,11 +52,5 @@
 				}, 200));
 			});
 		});
-
-		function stripTrailingSlash(str) {
-			if(str.substr(-1) == '/')
-			    return str.substr(0, str.length - 1);
-			return str;
-		}
 	};
 }) (jQuery);
