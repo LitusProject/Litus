@@ -36,7 +36,7 @@
             $.searchDatabase({
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                url: '{{ url('admin_shift_count', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('admin_shift_counter', {'action': 'search', 'academicyear': activeAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#shift_counter_search table').find('tr.item').remove();
                     $(data).each(function () {
