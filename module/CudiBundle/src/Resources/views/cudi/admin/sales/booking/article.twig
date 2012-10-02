@@ -55,7 +55,7 @@
                 e.preventDefault();
                 if (isNaN(parseFloat($('#articleId').val())) || $('#articleId').val() == '')
                     return;
-                window.location.href = '{{ url("admin_sales_booking", {'action': 'article'}) }}/' + $('#articleId').val();
+                window.location.href = '{{ url("admin_sales_booking", {'action': 'article'}) }}' + $('#articleId').val();
             });
 
             $('#articleSearch').typeaheadRemote(
