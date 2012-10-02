@@ -4,6 +4,7 @@ namespace ShiftBundle\Repository;
 
 use DateTime,
     CalendarBundle\Entity\Nodes\Event,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityRepository,
     ShiftBundle\Entity\Unit as UnitEntity;
@@ -138,6 +139,11 @@ class Shift extends EntityRepository
 
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $query = $queryBuilder->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.responsibles', 'r');
+
         $where = null;
         if (null === $academicYear) {
             $where = $query->expr()->eq('r.person', ':person');
@@ -148,11 +154,7 @@ class Shift extends EntityRepository
             );
         }
 
-        $queryBuilder = $this->_em->createQueryBuilder();
-        $query = $queryBuilder->select('s')
-            ->from('ShiftBundle\Entity\Shift', 's')
-            ->innerJoin('s.responsibles', 'r')
-            ->where($where)
+        $query->where($where)
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('person', $person);
 
