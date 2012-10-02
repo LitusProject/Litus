@@ -243,8 +243,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
             $this->_namespace . '_' . $this->_cookieSuffix,
             $value,
             $expire,
-            '/',
-            preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+            '/'
         );
     }
 }
