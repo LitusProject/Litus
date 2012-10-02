@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/department/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/department/partials/years.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="100px">Students</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for department in paginator %}
+                <tr class="item">
+                    <td>{{ department.getName() }}</td>
+                    <td>{{ department.getNbStudents(currentAcademicYear) }}</td>
+                    <td class="actions">
+                        {% if hasAccess('admin_department', 'edit') %}
+                            <a href="{{ url('admin_department', {'action': 'edit', 'id': department.getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}
