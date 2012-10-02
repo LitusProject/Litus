@@ -4,6 +4,7 @@ namespace ShiftBundle\Repository;
 
 use DateTime,
     CalendarBundle\Entity\Nodes\Event,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\Users\Person,
     Doctrine\ORM\EntityRepository,
     ShiftBundle\Entity\Unit as UnitEntity;
@@ -129,6 +130,75 @@ class Shift extends EntityRepository
             ->setParameter('now', new DateTime())
             ->setParameter('person', $person)
             ->getQuery()
+            ->getResult();
+
+        return array_merge(
+            $responsibleResultSet, $volunteerResultSet
+        );
+    }
+
+    public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
+    {
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $query = $queryBuilder->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.responsibles', 'r');
+
+        $where = null;
+        if (null === $academicYear) {
+            $where = $query->expr()->eq('r.person', ':person');
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('s.academicYear', ':academicYear'),
+                $query->expr()->eq('r.person', ':person')
+            );
+        }
+
+        $query->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('s.startDate', ':now'),
+                    $where
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person);
+
+        if (null !== $academicYear)
+            $query->setParameter('academicYear', $academicYear);
+
+        $responsibleResultSet = $query->getQuery()
+            ->getResult();
+
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $query = $queryBuilder->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v');
+
+        $where = null;
+        if (null === $academicYear) {
+            $where = $query->expr()->eq('v.person', ':person');
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('s.academicYear', ':academicYear'),
+                $query->expr()->eq('v.person', ':person')
+            );
+        }
+
+        $query->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('s.startDate', ':now'),
+                    $where
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person);
+
+        if (null !== $academicYear)
+            $query->setParameter('academicYear', $academicYear);
+
+        $volunteerResultSet = $query->getQuery()
             ->getResult();
 
         return array_merge(

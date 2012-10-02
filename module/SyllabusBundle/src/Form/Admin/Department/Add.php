@@ -12,44 +12,57 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Form\Registration\Subject;
+namespace SyllabusBundle\Form\Admin\Department;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Admin\Element\Text,
+    Doctrine\ORM\EntityManager,
+    SyllabusBundle\Component\Validator\Department\Name as NameValidator,
+    SyllabusBundle\Entity\Department,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Hidden;
+    Zend\Form\Element\Submit;
 
 /**
- * Add Subject
+ * Add Department
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
-        $field = new Hidden('subject_id');
-        $field->setAttribute('id', 'subjectId');
-        $this->add($field);
+        $this->_entityManager = $entityManager;
 
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
-            ->setAttribute('id', 'subjectSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
+        $field = new Text('name');
+        $field->setLabel('Name')
+            ->setAttribute('size', 70)
             ->setRequired();
         $this->add($field);
 
-        $field = new Submit('add_subject');
-        $field->setValue('Add');
+        $field = new Submit('submit');
+        $field->setValue('Add')
+            ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    protected function populateFromDepartment(Department $department)
+    {
+        $this->setData(
+            array(
+                'name' => $department->getName(),
+            )
+        );
     }
 
     public function getInputFilter()
@@ -61,18 +74,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'subject_id',
+                        'name'     => 'name',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators'  => array(
-                            array('name' => 'int'),
+                        'validators' => array(
+                            new NameValidator($this->_entityManager),
                         ),
                     )
                 )
             );
-
             $this->_inputFilter = $inputFilter;
         }
         return $this->_inputFilter;

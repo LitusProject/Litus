@@ -103,7 +103,7 @@ class Academic extends \CommonBundle\Entity\Users\Person
     {
         parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
 
-        $this->setUniversityIdentification($universityIdentification);
+        $this->university_identification = $universityIdentification;
         $this->universityStatuses = new ArrayCollection();
     }
 

@@ -43,9 +43,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 {
     public function addAction()
     {
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Users\People\Academic')
-            ->findOneByUniversityIdentification($this->getParam('identification'));
+        if (null !== $this->getParam('identification')) {
+            $academic = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Users\People\Academic')
+                ->findOneByUniversityIdentification($this->getParam('identification'));
+        } else {
+            $academic = null;
+        }
 
         try {
             $terms_and_conditions = $this->getEntityManager()

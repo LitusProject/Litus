@@ -79,7 +79,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     $formData['email'],
                     $formData['phone_number'],
                     $formData['sex'],
-                    $formData['university_identification']
+                    ('' == $formData['university_identification'] ? null : $formData['university_identification'])
                 );
 
                 if ('' != $formData['organization_status']) {

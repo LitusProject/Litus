@@ -146,7 +146,7 @@ class Study
 
             $this->getEntityManager()->flush();
 
-            $this->_callback('progress', round($counter/sizeof($urls)*100, 4));
+            $this->_callback('progress', round($counter/count($urls)*100, 4));
         }
     }
 
@@ -185,7 +185,7 @@ class Study
                     $title = html_entity_decode(preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel));
                     $titles = explode('+', $title);
 
-                    if (sizeof($titles) == 2) {
+                    if (count($titles) == 2) {
                         if (isset($subStudies[$titles[0]])) {
                             $subStudy = $subStudies[$titles[0]];
                         } else {
@@ -423,13 +423,13 @@ class Study
             ->send();
 
         preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
-        if (sizeof($matches) > 1)
+        if (count($matches) > 1)
             $email = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
         else
             $email = null;
 
         preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
-        if (sizeof($matches) > 1)
+        if (count($matches) > 1)
             $phone = trim(str_replace(' ', '', $matches[1]));
         else
             $phone = null;

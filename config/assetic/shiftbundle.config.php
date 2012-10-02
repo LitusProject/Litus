@@ -30,6 +30,11 @@ return array(
             '@common_jquery_form',
             '@common_typeahead_remote',
         ),
+        'admin_shift_counter' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
         'admin_subscription' => array(
             '@common_jquery',
             '@admin_js',

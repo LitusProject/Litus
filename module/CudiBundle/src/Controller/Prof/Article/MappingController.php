@@ -85,7 +85,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             }
         }
 
-        $nbArticles = sizeof(
+        $nbArticles = count(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findAllByProf($this->getAuthentication()->getPersonObject())
