@@ -75,6 +75,7 @@ class Slug
 
         $this->name = $name;
         $this->url = $url;
+        $this->hits = 0;
     }
 
     /**

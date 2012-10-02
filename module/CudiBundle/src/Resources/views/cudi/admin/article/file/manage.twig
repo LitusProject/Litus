@@ -168,7 +168,7 @@
 			removeFile.find('.fileDescription').html($(this).data('description'));
 			var id = $this.data('id');
 			removeFile.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_article_file', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_article_file', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.file_removed_success').removeClass('hide');

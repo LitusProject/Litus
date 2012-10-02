@@ -100,11 +100,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add($field);
 
         $field = new Text('max');
-        $field->setLabel('Total max entries');
+        $field->setLabel('Total Max Entries');
         $this->add($field);
 
         $field = new Checkbox('multiple');
-        $field->setLabel('Multiple entries / person allowed');
+        $field->setLabel('Multiple Entries / Person Allowed');
         $this->add($field);
 
         $field = new Submit('submit');

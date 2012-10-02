@@ -79,7 +79,7 @@
             width: 4,
             lines: 10
         }).attr('month', param);
-        $.post($this.data('calendar').url + '/' + param, function (data) {
+        $.post($this.data('calendar').url + param, function (data) {
             var column = $this.find('.calendarColumn[month="' + param + '"]');
 
             column.html('')

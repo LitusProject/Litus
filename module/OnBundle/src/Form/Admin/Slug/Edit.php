@@ -12,12 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace OnBundle\Form\Admin\Key;
+namespace OnBundle\Form\Admin\Slug;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Component\Form\Admin\Decorator\FieldDecorator,
-    ApiBundle\Entity\Key,
-    Zend\Form\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Text,
+    Doctrine\ODM\MongoDB\DocumentManager,
+    OnBundle\Document\Slug,
     Zend\Form\Element\Submit;
 
 /**
@@ -28,35 +27,49 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends Add
 {
     /**
-     * @param \ApiBundle\Entity\Key $key The key we're going to modify
+     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
+     * @param \OnBundle\Document\Slug $slug The key we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Key $key, $name = null)
+    public function __construct(DocumentManager $documentManager, Slug $slug, $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($documentManager, $name);
 
-        $field = new Text('code');
-        $field->setLabel('Code')
-            ->setAttribute('disabled', 'disabled');
+        $field = new Text('name');
+        $field->setLabel('Name')
+            ->setRequired();
         $this->add($field);
 
         $this->remove('submit');
 
         $field = new Submit('submit');
         $field->setValue('Save')
-            ->setAttribute('class', 'key_edit');
+            ->setAttribute('class', 'slug_edit');
         $this->add($field);
 
-        $this->_populateFromKey($key);
+        $this->_populateFromSlug($slug);
     }
 
-    private function _populateFromKey(Key $key)
+    private function _populateFromSlug(Slug $slug)
     {
         $data = array(
-            'host' => $key->getHost(),
-            'code' => $key->getCode()
+            'name' => $slug->getName(),
+            'url' => $slug->getUrl()
         );
 
         $this->setData($data);
+    }
+
+    public function getInputFilter()
+    {
+        if ($this->_inputFilter == null) {
+            $inputFilter = parent::getInputFilter();
+
+            $inputFilter->get('name')
+                ->setRequired(true);
+
+            $this->_inputFilter = $inputFilter;
+        }
+        return $this->_inputFilter;
     }
 }

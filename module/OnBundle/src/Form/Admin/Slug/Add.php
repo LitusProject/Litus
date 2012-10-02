@@ -12,9 +12,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace OnBundle\Form\Admin\Key;
+namespace OnBundle\Form\Admin\Slug;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
+    Doctrine\ODM\MongoDB\DocumentManager,
+    OnBundle\Component\Validator\Name as NameValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -27,18 +29,27 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance
+     */
+    protected $_documentManager = null;
+
+    /**
+     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct(DocumentManager $documentManager, $name = null)
     {
         parent::__construct($name);
+
+        $this->_documentManager = $documentManager;
 
         $field = new Text('name');
         $field->setLabel('Name');
         $this->add($field);
 
         $field = new Text('url');
-        $field->setLabel('URL');
+        $field->setLabel('URL')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
@@ -57,14 +68,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $factory->createInput(
                     array(
                         'name'     => 'name',
-                        'required' => true,
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => ,
-                            ),
+                            new NameValidator($this->_documentManager),
                         ),
                     )
                 )

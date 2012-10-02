@@ -35,7 +35,7 @@
                 <tr class="item item-{{ field.getId() }}">
                     <td>{{ field.getLabel(language) }}</td>
                     <td>{{ field.getOrder() }}</td>
-                    <td>{% if field.isRequired() %}X{% endif %}</td>
+                    <td>{% if field.isRequired() %}&times;{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('admin_form_field', 'delete') %}
                             <a href="#" class="delete" data-id="{{ field.getId() }}" data-label="{{ field.getLabel(language) }}" data-form="{{ field.getForm().getTitle(language) }}">Delete</a>
@@ -100,7 +100,7 @@
 			removeField.find('.formSpecification').html($(this).data('form'));
 			var id = $this.data('id');
 			removeField.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_form_field', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_form_field', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.field_removed_success').show();

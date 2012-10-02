@@ -17,55 +17,10 @@ $asseticConfig = include __DIR__ . '/../../../../../config/assetic.config.php';
 return array(
     'router' => array(
         'routes' => array(
-            'index' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '[/:language]/',
-                    'constraints' => array(
-                        'language' => '[a-z]{2}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'account' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '[/:language]/account[/:action[/code/:code]]',
-                    'constraints' => array(
-                        'language' => '[a-z]{2}',
-                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'       => '[a-zA-Z0-9_-]*',
-                        'code'     => '[a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'account',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'auth' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]]]',
-                    'constraints' => array(
-                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'identification' => '[mrsu][0-9]{7}',
-                        'hash'           => '[a-zA-Z0-9_-]*',
-                        'language'       => '[a-z]{2}',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'auth',
-                        'action'     => 'login',
-                    ),
-                ),
-            ),
             'common_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/common',
+                    'route' => '/admin/install/common[/]',
                     'defaults' => array(
                         'controller' => 'common_install',
                         'action'     => 'index',
@@ -75,7 +30,7 @@ return array(
             'all_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/install/all',
+                    'route' => '/admin/install/all[/]',
                     'defaults' => array(
                         'controller' => 'all_install',
                         'action'     => 'index',
@@ -85,7 +40,7 @@ return array(
             'admin_academic' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]]',
+                    'route' => '/admin/academic[/:action[/:id][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -102,7 +57,7 @@ return array(
             'admin_academic_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/academic/typeahead[/:string]',
+                    'route' => '/admin/academic/typeahead[/:string][/]',
                     'constraints' => array(
                         'string'       => '[%a-zA-Z0-9_-]*',
                     ),
@@ -115,7 +70,7 @@ return array(
             'admin_person_typeahead' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/person/typeahead[/:string]',
+                    'route' => '/admin/person/typeahead[/:string][/]',
                     'constraints' => array(
                         'string'       => '[%a-zA-Z0-9_-]*',
                     ),
@@ -128,7 +83,7 @@ return array(
             'admin_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/auth[/:action[/identification/:identification[/hash/:hash]]]',
+                    'route' => '/admin/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                     'constraints' => array(
                         'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'identification' => '[mrsu][0-9]{7}',
@@ -143,7 +98,7 @@ return array(
             'admin_cache' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/cache/:action',
+                    'route' => '/admin/cache[/:action][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -156,7 +111,7 @@ return array(
             'admin_config' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/config[/:action[/key/:key]]',
+                    'route' => '/admin/config[/:action[/key/:key]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'key'    => '[a-zA-Z][\.a-zA-Z0-9_-]*',
@@ -170,7 +125,7 @@ return array(
             'admin_index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin',
+                    'route' => '/admin[/]',
                     'defaults' => array(
                         'controller' => 'admin_index',
                         'action'     => 'index',
@@ -180,7 +135,7 @@ return array(
             'admin_location' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/location[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/location[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -195,7 +150,7 @@ return array(
             'admin_role' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/role[/:action[/name/:name][/page/:page]]',
+                    'route' => '/admin/role[/:action[/name/:name][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -204,6 +159,51 @@ return array(
                     'defaults' => array(
                         'controller' => 'admin_role',
                         'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language][/]',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'account' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/account[/:action[/code/:code]][/]',
+                    'constraints' => array(
+                        'language' => '[a-z]{2}',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[a-zA-Z0-9_-]*',
+                        'code'     => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'account',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'auth' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
+                    'constraints' => array(
+                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'identification' => '[mrsu][0-9]{7}',
+                        'hash'           => '[a-zA-Z0-9_-]*',
+                        'language'       => '[a-z]{2}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'auth',
+                        'action'     => 'login',
                     ),
                 ),
             ),

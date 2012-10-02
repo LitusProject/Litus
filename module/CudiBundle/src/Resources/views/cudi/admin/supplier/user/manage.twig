@@ -110,7 +110,7 @@
 			removeUser.find('.supplier').html($(this).data('supplier'));
 			var id = $this.data('id');
 			removeUser.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}/' + id), function (data) {
+				$.post('{{ url('admin_supplier_user', {"action": "delete"})}}' + id), function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').hide();
     					$('.user_removed_success').show();

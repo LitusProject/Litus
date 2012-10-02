@@ -94,7 +94,7 @@
 			});
 			var id = $this.data('id');
 			removeShift.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_shift', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_shift', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.shift_removed_success').removeClass('hide');

@@ -47,7 +47,7 @@
                     <td>{{ session.getIp() }}</td>
                     <td>{{ dateLocalized(session.getStartTime(), 'd/M/Y H:mm') }}</td>
                     <td>{{ dateLocalized(session.getExpirationTime(),'d/M/Y H:mm') }}</td>
-                    <td>{% if session.isShibboleth() %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
                 </tr>
             {% endfor %}
         </table>

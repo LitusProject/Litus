@@ -99,7 +99,7 @@
 			removeDiscount.find('.discount').html($(this).data('discount'));
 			var id = $this.data('id');
 			removeDiscount.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_sales_discount', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
 						$('.flashmessage').addClass('hide');
 						$('.discount_removed_success').removeClass('hide');

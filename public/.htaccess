@@ -3,6 +3,18 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
+RewriteRule ^(.*)$ - [NC,L]
 
-RewriteRule ^.*$ index.php [NC,L]
+RewriteCond %{HTTP_HOST} ^admin\.vtk\.be
+RewriteRule ^(.*)$ https://vtk.be/admin/$1 [R=301,NC,L]
+
+RewriteCond %{HTTP_HOST} ^api\.vtk\.be
+RewriteRule ^(.*)$ https://vtk.be/api/$1 [R=301,NC,L]
+
+RewriteCond %{HTTP_HOST} ^on\.vtk\.be
+RewriteRule ^(.*)$ https://vtk.be/on/$1 [R=301,NC,L]
+
+RewriteCond %{HTTP_HOST} ^supplier\.vtk\.be
+RewriteRule ^(.*)$ https://vtk.be/supplier/$1 [R=301,NC,L]
+
+RewriteRule ^(.*)$ index.php [NC,L]
