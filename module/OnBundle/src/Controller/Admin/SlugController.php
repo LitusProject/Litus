@@ -44,38 +44,41 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getDocumentManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                do {
-                    $code = md5(uniqid(rand(), true));
-                    $found = $this->getEntityManager()
-                        ->getRepository('ApiBundle\Entity\Key')
-                        ->findOneByCode($code);
-                } while(isset($found));
+                if ('' == $formData['name']) {
+                    do {
+                        $name = $this->_createRandomName();
+                        $found = $this->getDocumentManager()
+                            ->getRepository('OnBundle\Document\Slug')
+                            ->findOneByName($name);
+                    } while(isset($found));
+                }
 
-                $key = new Key(
-                    $formData['host'],
-                    $code
+                $slug = new Slug(
+                    $this->getAuthentication()->getPersonObject(),
+                    ('' == $formData['name'] ? $name : $formData['name']),
+                    $formData['url']
                 );
-                $this->getEntityManager()->persist($key);
+                $this->getDocumentManager()->persist($slug);
 
-                $this->getEntityManager()->flush();
+                $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Succes',
-                        'The key was successfully created!'
+                        'The slug was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'admin_slug',
                     array(
                         'action' => 'manage'
                     )
@@ -94,17 +97,18 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($key = $this->_getKey()))
+        if (!($slug = $this->_getSlug()))
             return new ViewModel();
 
-        $form = new EditForm($key);
+        $form = new EditForm($this->getDocumentManager(), $slug);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $key->setHost($formData['host']);
+                $slug->setName($formData['name'])
+                    ->setUrl($formData['url']);
 
                 $this->getEntityManager()->flush();
 
@@ -117,7 +121,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'admin_key',
+                    'admin_slug',
                     array(
                         'action' => 'manage'
                     )
@@ -138,12 +142,12 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey()))
+        if (!($slug = $this->_getSlug()))
             return new ViewModel();
 
-        $key->revoke();
+        $this->getDocumentManager()->remove($slug);
 
-        $this->getEntityManager()->flush();
+        $this->getDocumentManager()->flush();
 
         return new ViewModel(
             array(
@@ -154,19 +158,30 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getKey()
+    private function _createRandomName()
+    {
+        $characters = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789';
+
+        $name = array();
+        for ($i = 0; $i < 8; $i++)
+            $name[$i] = $characters[rand(0, strlen($characters) - 1)];
+
+        return implode($name);
+    }
+
+    private function _getSlug()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the key!'
+                    'No ID was given to identify the slug!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_slug',
                 array(
                     'action' => 'manage'
                 )
@@ -175,21 +190,21 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $key = $this->getEntityManager()
-            ->getRepository('ApiBundle\Entity\Key')
+        $slug = $this->getDocumentManager()
+            ->getRepository('OnBundle\Document\Slug')
             ->findOneById($this->getParam('id'));
 
-        if (null === $key) {
+        if (null === $slug) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No key with the given ID was found!'
+                    'No slug with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'admin_key',
+                'admin_slug',
                 array(
                     'action' => 'manage'
                 )
@@ -198,6 +213,6 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        return $key;
+        return $slug;
     }
 }

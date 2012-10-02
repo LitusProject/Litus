@@ -16,7 +16,7 @@ namespace PublicationBundle\Form\Admin\Publication;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Publication as PublicationTitleValidator,
+    PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -71,13 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'regex',
-                                'options' => array(
-                                    'pattern' => '/^[a-zA-Z0-9 ]*$/',
-                                ),
-                            ),
-                            new PublicationTitleValidator($this->_entityManager)
+                            new TitleValidator($this->_entityManager)
                         ),
                     )
                 )

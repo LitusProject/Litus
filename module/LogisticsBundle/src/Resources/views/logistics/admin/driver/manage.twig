@@ -54,6 +54,7 @@
 
 		</div>
 
+		{% include 'admin/partials/paginationControl.twig' %}
     </div>
 
 	<div class="modal hide fade" id="removeDriver">
@@ -94,7 +95,7 @@
 			removeDriver.find('.driverName').html($(this).data('name'));
 			var id = $this.data('id');
 			removeDriver.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_driver', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_driver', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.driver_removed_success').removeClass('hide');

@@ -6,7 +6,7 @@ return array(
             'gallery_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/gallery',
+                    'route' => '/admin/install/gallery[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -18,7 +18,7 @@ return array(
             'admin_gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/site/gallery[/:action[/:id]][/page/:page]',
+                    'route' => '/admin/site/gallery[/:action[/:id]][/page/:page][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
@@ -33,7 +33,7 @@ return array(
             'common_gallery' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/gallery[/:action[/:id]]',
+                    'route' => '[/:language]/gallery[/:action[/:id]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[a-zA-Z0-9_-]*',

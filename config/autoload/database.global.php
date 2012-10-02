@@ -30,6 +30,8 @@ return array(
 
                   'generate_hydrators' => ('development' == getenv('APPLICATION_ENV')),
                   'hydrator_dir'       => 'data/hydrators',
+
+                  'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
                 'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),

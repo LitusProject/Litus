@@ -105,7 +105,7 @@
                             start = Math.round(start.getTime() / 1000);
                             end = Math.round(end.getTime() / 1000);
 
-                            $.post('{{ url('logistics_reservation_fetch', {}) }}/' + start + '/' + end, function (data) {
+                            $.post('{{ url('logistics_reservation_fetch', {}) }}' + start + '/' + end, function (data) {
                                 if (data && 'success' == data.status) {
                                     reservations = data.reservations;
 
@@ -154,7 +154,7 @@
                     $('#popover_header .reason').text(event.title);
 
                     {% if has_access('admin_van_reservation', 'edit') %}
-                        $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}/' + event.dbid + '/return/logistics_index');
+                        $("#popover_content a").attr("href", '{{ url('admin_van_reservation', {'action': 'edit'}) }}' + event.dbid + '/return/logistics_index');
                         $("#popover_content a").html('Edit');
                         $("#popover_content a").removeClass("hide");
                     {% else %}
@@ -196,7 +196,7 @@
 
 
                     {% if has_access('admin_van_reservation', 'add') %}
-                        $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}/start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000 + '/return/logistics_index');
+                        $("#add_popover_content_internal a").attr("href", '{{ url('admin_van_reservation', {'action': 'add'}) }}start/' + startDate.valueOf() / 1000 + '/end/' + endDate.valueOf() / 1000 + '/return/logistics_index');
                         $("#add_popover_content_internal a").html('Add');
                         $("#add_popover_content_internal a").removeClass("hide");
                     {% else %}

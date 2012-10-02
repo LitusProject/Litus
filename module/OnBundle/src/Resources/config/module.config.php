@@ -18,11 +18,11 @@ return array(
             'on_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/api',
+                    'route' => '/admin/install/on[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
-                        'controller' => 'api_install',
+                        'controller' => 'on_install',
                         'action'     => 'index',
                     ),
                 ),
@@ -30,10 +30,10 @@ return array(
             'admin_slug' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/on/slug[/:action[/:id][/page/:page]]',
+                    'route' => '/admin/on/slug[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
+                        'id'      => '[a-z0-9]*',
                         'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
@@ -45,9 +45,9 @@ return array(
             'on_redirect' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/on[/:id]',
+                    'route' => '/on[/:name][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'name'  => '[a-zA-Z0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'on_redirect',

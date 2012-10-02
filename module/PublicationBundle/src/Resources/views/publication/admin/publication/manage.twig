@@ -54,6 +54,7 @@
 
 		</div>
 
+		{% include 'admin/partials/paginationControl.twig' %}
     </div>
 
 	<div class="modal hide fade" id="removePublication">
@@ -94,7 +95,7 @@
 			removePublication.find('.publicationTitle').html($(this).data('title'));
 			var id = $this.data('id');
 			removePublication.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('admin_publication', {"action": "delete"})}}/' + id, function (data) {
+				$.post('{{ url('admin_publication', {"action": "delete"})}}' + id, function (data) {
 				    if (data && 'success' == data.status) {
     					$('.flashmessage').addClass('hide');
     					$('.publication_removed_success').removeClass('hide');

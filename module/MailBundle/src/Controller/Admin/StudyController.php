@@ -71,6 +71,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
+                $mail->addTo($mailAddress, $mailName);
+
                 foreach($enrollments as $enrollment)
                     $mail->addBcc($enrollment->getAcademic()->getEmail(), $enrollment->getAcademic()->getFullName());
 

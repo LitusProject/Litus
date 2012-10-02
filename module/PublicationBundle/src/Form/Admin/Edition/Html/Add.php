@@ -19,7 +19,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Edition\Html as HtmlTitleValidator,
+    PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
     PublicationBundle\Entity\Publication,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -102,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new HtmlTitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                            new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
                         ),
                     )
                 )

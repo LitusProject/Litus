@@ -18,7 +18,7 @@ return array(
             'secretary_install' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/install/secretary',
+                    'route' => '/admin/install/secretary[/]',
                     'constraints' => array(
                     ),
                     'defaults' => array(
@@ -30,7 +30,7 @@ return array(
             'admin_secretary_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/secretary/registration[/:action[/:id]][/:academicyear][/:field/:string]',
+                    'route' => '/admin/secretary/registration[/:action[/:id]][/:academicyear][/:field/:string][/]',
                     'constraints' => array(
                         'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'           => '[0-9]*',
@@ -45,7 +45,7 @@ return array(
             'secretary_registration' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '[/:language]/secretary/registration[/:action][/identification/:identification[/hash/:hash]]',
+                    'route' => '[/:language]/secretary/registration[/:action][/identification/:identification[/hash/:hash]][/]',
                     'constraints' => array(
                         'language'       => '[a-z]{2}',
                         'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
