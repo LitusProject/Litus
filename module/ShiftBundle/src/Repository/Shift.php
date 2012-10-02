@@ -165,10 +165,21 @@ class Shift extends EntityRepository
             ->getResult();
 
         $queryBuilder = $this->_em->createQueryBuilder();
-        $quert = $queryBuilder->select('s')
+        $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
-            ->innerJoin('s.volunteers', 'v')
-            ->where($where)
+            ->innerJoin('s.volunteers', 'v');
+
+        $where = null;
+        if (null === $academicYear) {
+            $where = $query->expr()->eq('v.person', ':person');
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('s.academicYear', ':academicYear'),
+                $query->expr()->eq('v.person', ':person')
+            );
+        }
+
+        $query->where($where)
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('person', $person);
 
