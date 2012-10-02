@@ -65,6 +65,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $shift = new Shift(
                     $this->getAuthentication()->getPersonObject(),
+                    $this->getCurrentAcademicYear(),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
                     DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
                     $manager,

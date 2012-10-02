@@ -124,7 +124,7 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $results = array();
-            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+            for($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $results[] = $resultSet[$i];
             }
@@ -150,7 +150,7 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
-            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+            for($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
@@ -178,7 +178,7 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
-            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+            for($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
@@ -203,7 +203,7 @@ class Period extends EntityRepository
             ->getResult();
 
         if ($notDelivered) {
-            for($i = 0 ; $i < sizeof($resultSet) ; $i++) {
+            for($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) <= 0)
                     unset($resultSet[$i]);
             }
