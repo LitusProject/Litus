@@ -118,7 +118,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'), '', true, true
                     );
 
                     if ($authentication->isAuthenticated()) {
