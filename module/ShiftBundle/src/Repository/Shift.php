@@ -154,8 +154,14 @@ class Shift extends EntityRepository
             );
         }
 
-        $query->where($where)
+        $query->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('s.startDate', ':now'),
+                    $where
+                )
+            )
             ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
             ->setParameter('person', $person);
 
         if (null !== $academicYear)
@@ -179,8 +185,14 @@ class Shift extends EntityRepository
             );
         }
 
-        $query->where($where)
+        $query->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('s.startDate', ':now'),
+                    $where
+                )
+            )
             ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
             ->setParameter('person', $person);
 
         if (null !== $academicYear)
