@@ -242,6 +242,12 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     {
         setcookie(
             $this->_namespace . '_' . $this->_cookieSuffix,
+            '',
+            -1,
+            '/'
+        )
+        setcookie(
+            $this->_namespace . '_' . $this->_cookieSuffix,
             $value,
             $expire,
             '/',
