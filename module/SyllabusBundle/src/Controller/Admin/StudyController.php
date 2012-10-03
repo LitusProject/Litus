@@ -101,7 +101,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         foreach($studies as $study) {
             $item = (object) array();
             $item->id = $study->getId();
-            $item->value = $study->getFullTitle() . '&mdash;Phase ' . $study->getPhase();
+            $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getFullTitle();
             $result[] = $item;
         }
 

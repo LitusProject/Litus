@@ -32,6 +32,24 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'admin_key' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
+                    'api_auth' => array(
+                        'getPerson'
+                    )
+                ),
+            )
+        );
+
+        $this->installRoles(
+            array(
+                'guest' => array(
+                    'system' => true,
+                    'parents' => array(
+                    ),
+                    'actions' => array(
+                        'api_auth' => array(
+                            'getPerson'
+                        ),
+                    ),
                 ),
             )
         );
