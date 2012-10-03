@@ -37,7 +37,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             'CudiBundle\Entity\Users\People\Supplier',
             $this->getParam('page'),
             array(
-                'canLogin' => true,
+                'canLogin' => 'true',
                 'supplier' => $supplier->getId()
             ),
             array(
