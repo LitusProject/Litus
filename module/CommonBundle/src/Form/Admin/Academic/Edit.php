@@ -23,7 +23,6 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Entity\Users\Statuses\Organization as OrganizationStatus,
     CommonBundle\Entity\Users\Statuses\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
-    SecretaryBundle\Component\Validator\Barcode as BarcodeValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
