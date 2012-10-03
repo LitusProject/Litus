@@ -188,7 +188,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shift->addResponsible(
             $this->getEntityManager(),
-            $this->getCurrentAcademicYear(),
             new Responsible(
                 $person,
                 $this->getCurrentAcademicYear()
@@ -209,7 +208,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function volunteerAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
@@ -266,7 +265,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shift->addVolunteer(
             $this->getEntityManager(),
-            $this->getCurrentAcademicYear(),
             new Volunteer(
                 $person
             )
