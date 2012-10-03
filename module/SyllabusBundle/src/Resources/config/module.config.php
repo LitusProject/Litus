@@ -73,6 +73,20 @@ return array(
                     ),
                 ),
             ),
+            'admin_study_typeahead' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/syllabus/study/typeahead/:academicyear[/:string][/]',
+                    'constraints' => array(
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'string'       => '[%a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'admin_study',
+                        'action'     => 'typeahead',
+                    ),
+                ),
+            ),
             'admin_subject' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

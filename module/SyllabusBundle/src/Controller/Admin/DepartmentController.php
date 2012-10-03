@@ -17,8 +17,10 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\Department,
+    SyllabusBundle\Entity\StudyDepartmentMap,
     SyllabusBundle\Form\Admin\Department\Add as AddForm,
     SyllabusBundle\Form\Admin\Department\Edit as EditForm,
+    SyllabusBundle\Form\Admin\Department\Study\Add as StudyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -39,6 +41,9 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                 ->findAll(),
             $this->getParam('page')
         );
+
+        foreach($paginator as $department)
+            $department->setEntityManager($this->getEntityManager());
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -150,6 +155,90 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
+                'department' => $department,
+            )
+        );
+    }
+
+    public function studiesAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        if (!($department = $this->_getDepartment()))
+            return new ViewModel();
+
+        $form = new StudyForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $study = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($formData['study_id']);
+                $this->getEntityManager()->persist(new StudyDepartmentMap($study, $department, $academicYear));
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Succes',
+                        'The department study mapping was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'admin_department',
+                    array(
+                        'action' => 'studies',
+                        'id' => $department->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'currentAcademicYear' => $academicYear,
+                    )
+                );
+            }
+        }
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+            ->findAllByDepartmentAndAcademicYear($department, $academicYear);
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+                'department' => $department,
+                'studies' => $studies,
+            )
+        );
+    }
+
+    public function deleteStudyAction()
+    {
+        $this->initAjax();
+
+        if (!($mapping = $this->_getMapping()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -233,6 +322,55 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
             return;
         }
 
+        $department->setEntityManager($this->getEntityManager());
+
         return $department;
+    }
+
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the mapping!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_department',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No mapping with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'admin_department',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $mapping;
     }
 }
