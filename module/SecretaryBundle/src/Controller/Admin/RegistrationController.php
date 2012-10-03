@@ -149,7 +149,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach($registrations as $registration) {
             $item = (object) array();
             $item->id = $registration->getId();
-            $item->universityIdentification = $registration->getAcademic()->getUniversityIdentification();
+            $item->universityIdentification = (
+                null !== $registration->getAcademic()->getUniversityIdentification()
+                    ? $registration->getAcademic()->getUniversityIdentification()
+                    : ''
+            );
             $item->name = $registration->getAcademic()->getFullName();
             $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
             $item->payed = $registration->hasPayed();
