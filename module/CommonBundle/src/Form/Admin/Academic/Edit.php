@@ -65,8 +65,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $this->add($collection);
 
         $field = new Text('university_identification');
-        $field->setLabel('Identification')
-            ->setRequired();
+        $field->setLabel('Identification');
         $collection->add($field);
 
         $field = new Select('university_status');
@@ -99,7 +98,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                 $factory->createInput(
                     array(
                         'name'     => 'university_identification',
-                        'required' => true,
+                        'required' => false,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
