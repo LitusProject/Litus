@@ -238,13 +238,20 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @param string $value The cookie's value
      * @param int $expire The cookie's expiration time
      */
-    private function _setCookie($value, $expire) {
+    private function _setCookie($value, $expire)
+    {
+        setcookie(
+            $this->_namespace . '_' . $this->_cookieSuffix,
+            '',
+            -1,
+            '/'
+        );
         setcookie(
             $this->_namespace . '_' . $this->_cookieSuffix,
             $value,
             $expire,
             '/',
-            preg_replace('/^(.*?)\.(.*)$/', '$2', $_SERVER['SERVER_NAME'])
+            preg_replace('/^(.*)\.(.*)\.(.*)$/', '$2.$3', $_SERVER['SERVER_NAME'])
         );
     }
 }
