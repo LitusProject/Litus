@@ -178,17 +178,32 @@ class DepartmentController extends \CommonBundle\Component\Controller\ActionCont
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($formData['study_id']);
-                $this->getEntityManager()->persist(new StudyDepartmentMap($study, $department, $academicYear));
 
-                $this->getEntityManager()->flush();
+                $map = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\StudyDepartmentMap')
+                    ->findOneByStudyDepartmentAndAcademicYear($study, $department, $academicYear);
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The department study mapping was successfully added!'
-                    )
-                );
+                if (null !== $map) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The department study mapping already existed!'
+                        )
+                    );
+                } else {
+                    $this->getEntityManager()->persist(new StudyDepartmentMap($study, $department, $academicYear));
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Succes',
+                            'The department study mapping was successfully added!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'admin_department',
