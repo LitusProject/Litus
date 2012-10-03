@@ -304,14 +304,18 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $result = array();
         foreach($academics as $academic) {
-            $item = (object) array();
-            $item->id = $academic->getId();
-            $item->username = $academic->getUsername();
-            $item->universityIdentification = $academic->getUniversityIdentification();
-            $item->fullName = $academic->getFullName();
-            $item->email = $academic->getEmail();
+            if ($academic->canLogin()) {
+                $item = (object) array();
+                $item->id = $academic->getId();
+                $item->username = $academic->getUsername();
+                $item->universityIdentification = (
+                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
+                );
+                $item->fullName = $academic->getFullName();
+                $item->email = $academic->getEmail();
 
-            $result[] = $item;
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(
